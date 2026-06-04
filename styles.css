@@ -113,6 +113,48 @@ body {
 
 /* =========================
    HERO
-========================= */
+=========================*/
 .hero {
-  height: calc(100vh -
+  min-height: 100vh;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 100px 60px;
+}
+
+.hero-left {
+  width: 55%;
+}
+
+.hero-brand {
+  margin-bottom: 40px;
+}
+
+.hero-brand h2 {
+  color: #00d9ff;
+  font-size: 2rem;
+  text-shadow: 0 0 10px #00d9ff;
+}
+
+.hero-brand span {
+  color: #888;
+}
+
+.hero-left h1 {
+  font-size: 4rem;
+  color: #00d9ff;
+  text-shadow: 0 0 15px #00d9ff;
+}
+
+.avatar {
+  width: 320px;
+  height: 320px;
+  object-fit: cover;
+
+  border-radius: 50%;
+  border: 2px solid #00d9ff;
+
+  box-shadow: 0 0 25px #00d9ff;
+}
