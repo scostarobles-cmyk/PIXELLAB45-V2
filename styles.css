@@ -177,3 +177,32 @@ body {
 
   object-fit: contain;
 }
+@media (max-width: 768px) {
+
+  .hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 120px 20px 40px;
+  }
+
+  .hero-left,
+  .hero-right {
+    width: 100%;
+  }
+
+  .hero-right {
+    justify-content: center;
+  }
+
+  .hero-logo {
+    width: 220px;
+  }
+
+  .hero-left h1 {
+    font-size: 2.5rem;
+  }
+
+  .avatar {
+    width: 280px;
+  }
+}
