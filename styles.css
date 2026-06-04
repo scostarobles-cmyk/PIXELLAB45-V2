@@ -98,6 +98,71 @@ body::before{
   bottom: 0;
   left: 0;
   width: 100%;
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #05070d;
+  color: #e6f7ff;
+  font-family: Arial, sans-serif;
+}
+
+/* NAVBAR */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 15px 40px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background: rgba(5, 7, 13, 0.9);
+}
+
+/* LOGO BLOQUE IZQUIERDO */
+.nav-logo-block {
+  display: flex;
+  flex-direction: column;
+}
+
+/* LOGO */
+.nav-logo {
+  color: #00d9ff;
+  font-size: 18px;
+  font-weight: bold;
+  text-shadow: 0 0 10px #00d9ff;
+}
+
+/* SUBTEXTO ABAJO DEL LOGO */
+.nav-subtext {
+  font-size: 12px;
+  color: #aaa;
+}
+
+/* LINKS */
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+}
+
+.nav-links a:hover {
+  color: #00d9ff;
+}
+
+/* DIVISORIA NEON */
+.divider {
+  margin-top: 70px;
   height: 2px;
 
   background: linear-gradient(
@@ -110,23 +175,44 @@ body::before{
   );
 
   box-shadow: 0 0 12px #00d9ff;
-  overflow: hidden;
 }
 
-/* SCAN ANIMADO */
-.nav-divider::after {
-  content: "";
-  position: absolute;
-  width: 25%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.5);
-  filter: blur(6px);
-  animation: scan 2s linear infinite;
+/* HERO */
+.hero {
+  height: calc(100vh - 70px);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 80px 60px 0;
 }
 
-@keyframes scan {
-  0% { transform: translateX(-120%); }
-  100% { transform: translateX(420%); }
+/* TEXTO GRANDE IZQUIERDA */
+.hero-left h1 {
+  font-size: 42px;
+  color: #00d9ff;
+  text-shadow: 0 0 10px #00d9ff;
+}
+
+.hero-left p {
+  margin-top: 10px;
+  color: #ccc;
+}
+
+/* AVATAR DERECHA */
+.hero-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar {
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  border: 2px solid #00d9ff;
+  box-shadow: 0 0 25px #00d9ff;
 }
 /* =========================
    RESPONSIVE
@@ -152,7 +238,4 @@ body::before{
     height:260px;
   }
 
-}
-body {
-  background: yellow !important;
 }
