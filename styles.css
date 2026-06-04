@@ -1,0 +1,118 @@
+/* =========================
+   RESET BASE
+========================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #05070d;
+  color: #e6f7ff;
+  font-family: Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px 40px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background: rgba(5, 7, 13, 0.9);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+}
+
+/* LOGO BLOQUE */
+.nav-logo-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-logo {
+  color: #00d9ff;
+  font-size: 18px;
+  font-weight: bold;
+  text-shadow: 0 0 10px #00d9ff;
+}
+
+.nav-subtext {
+  font-size: 12px;
+  color: #aaa;
+}
+
+/* LINKS */
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.nav-links a:hover {
+  color: #00d9ff;
+  text-shadow: 0 0 8px #00d9ff;
+}
+
+/* =========================
+   DIVISORIA NEON
+========================= */
+.divider {
+  margin-top: 70px;
+  height: 2px;
+  width: 100%;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #00d9ff,
+    #ffffff,
+    #00d9ff,
+    transparent
+  );
+
+  box-shadow: 0 0 12px #00d9ff;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ANIMACIÓN SCAN */
+.divider::after {
+  content: "";
+  position: absolute;
+  width: 25%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.4);
+  filter: blur(6px);
+  animation: scan 2s linear infinite;
+}
+
+@keyframes scan {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(420%);
+  }
+}
+
+/* =========================
+   HERO
+========================= */
+.hero {
+  height: calc(100vh -
