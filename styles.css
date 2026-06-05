@@ -306,6 +306,10 @@ body {
 .about-avatar {
   width: 220px;
   height: auto;
+
+  margin: 0 auto 25px auto;
+
+  display: block;
 }
 
 .about-text {
