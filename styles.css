@@ -501,3 +501,7 @@ body {
 
   color: #7f9aa5;
 }
+.footer {
+  background: red !important;
+  padding: 100px !important;
+}
