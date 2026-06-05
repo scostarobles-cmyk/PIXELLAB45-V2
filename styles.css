@@ -406,3 +406,60 @@ body {
 
   color: #d9eaf5;
 }
+/* =========================
+   CONTACTO
+========================= */
+
+.contact {
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.contact h2 {
+  font-size: 2.5rem;
+  color: #00d9ff;
+  margin-bottom: 20px;
+
+  text-shadow: 0 0 15px #00d9ff;
+}
+
+.contact p {
+  max-width: 700px;
+  margin: auto;
+  margin-bottom: 40px;
+
+  color: #d9eaf5;
+}
+
+.contact-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.contact-btn {
+  text-decoration: none;
+  color: white;
+
+  padding: 12px 25px;
+
+  border: 1px solid rgba(0,217,255,0.4);
+  border-radius: 12px;
+
+  background: rgba(255,255,255,0.03);
+
+  transition: all 0.3s ease;
+}
+
+.contact-btn:hover {
+  color: #00d9ff;
+
+  border-color: #00d9ff;
+
+  box-shadow:
+    0 0 10px #00d9ff,
+    0 0 20px rgba(0,217,255,0.4);
+
+  transform: translateY(-3px);
+}
