@@ -107,6 +107,7 @@ body {
    HERO
 ========================= */
 .hero {
+.hero {
   min-height: 100vh;
 
   padding: 120px 60px 60px;
@@ -116,14 +117,15 @@ body {
 
   background:
     linear-gradient(
-      rgba(5,7,13,0.75),
-      rgba(5,7,13,0.85)
+      rgba(5, 7, 13, 0.80),
+      rgba(5, 7, 13, 0.90)
     ),
     url("assets/img/tunnel.jpg");
 
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 .hero-logo {
