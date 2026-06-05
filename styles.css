@@ -466,3 +466,38 @@ body {
 
   transform: translateY(-3px);
 }
+/* =========================
+   FOOTER
+========================= */
+
+.footer {
+  padding: 50px 20px;
+
+  text-align: center;
+
+  border-top: 1px solid rgba(0,217,255,0.2);
+
+  background: rgba(255,255,255,0.02);
+}
+
+.footer-content h3 {
+  color: #00d9ff;
+
+  margin-bottom: 15px;
+
+  text-shadow: 0 0 10px #00d9ff;
+}
+
+.footer-content p {
+  color: #b8d6e3;
+
+  margin: 8px 0;
+}
+
+.footer-copy {
+  margin-top: 20px;
+
+  font-size: 0.9rem;
+
+  color: #7f9aa5;
+}
