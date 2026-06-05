@@ -213,3 +213,12 @@ body {
     width: 180px;
   }
 }
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-logo {
+  position: relative;
+  z-index: 2;
+}
