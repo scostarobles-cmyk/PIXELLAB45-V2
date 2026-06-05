@@ -109,100 +109,64 @@ body {
 ========================= */
 .hero {
   min-height: 100vh;
+  padding: 120px 60px 60px;
+}
 
+.hero-top {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 
-  gap: 60px;
-
-  padding: 120px 80px 60px;
+  margin-bottom: 40px;
 }
 
-/* LADO IZQUIERDO */
-.hero-left {
-  flex: 1;
-}
-
-/* LOGO */
 .hero-logo {
+  width: 280px;
+  height: auto;
+}
+
+.avatar {
   width: 320px;
   height: auto;
-
-  margin-bottom: 35px;
-
-  filter: drop-shadow(0 0 12px #00d9ff);
 }
 
-/* TITULO */
-.hero-left h1 {
-  font-size: 4.5rem;
-  line-height: 1.1;
+.hero-content {
+  max-width: 700px;
+}
 
+.hero-content h1 {
+  font-size: 4rem;
   color: #00d9ff;
-
-  text-shadow: 0 0 15px #00d9ff;
-
   margin-bottom: 20px;
 }
 
-/* TEXTO */
-.hero-left p {
+.hero-content p {
   font-size: 1.2rem;
-  line-height: 1.6;
-
   color: #cccccc;
-
-  max-width: 650px;
-}
-
-/* LADO DERECHO */
-.hero-right {
-  flex: 1;
-
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-/* AVATAR */
-.avatar {
-  width: 500px;
-  max-width: 100%;
-  height: auto;
-
-  border: none;
-  border-radius: 0;
-  box-shadow: none;
-
-  object-fit: contain;
 }
 @media (max-width: 768px) {
 
   .hero {
-    flex-direction: column;
-    text-align: center;
-    padding: 120px 20px 40px;
+    padding: 100px 20px 40px;
   }
 
-  .hero-left,
-  .hero-right {
-    width: 100%;
-  }
-
-  .hero-right {
-    justify-content: center;
+  .hero-top {
+    align-items: center;
   }
 
   .hero-logo {
-    width: 220px;
-  }
-
-  .hero-left h1 {
-    font-size: 2.5rem;
+    width: 140px;
   }
 
   .avatar {
-    width: 280px;
+    width: 160px;
+  }
+
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+
+  .hero-content p {
+    font-size: 1rem;
   }
 }
