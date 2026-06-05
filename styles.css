@@ -554,3 +554,62 @@ body {
   }
 
 }
+/* =========================
+   EBOOKS
+========================= */
+
+.ebooks{
+  padding:80px 20px;
+  text-align:center;
+}
+
+.ebooks h2{
+  margin-bottom:40px;
+  color:#00d9ff;
+  text-shadow:0 0 15px #00d9ff;
+}
+
+.ebook-card{
+  max-width:380px;
+  margin:auto;
+
+  padding:20px;
+
+  border:1px solid rgba(0,217,255,.3);
+  border-radius:20px;
+
+  background:rgba(255,255,255,.03);
+
+  transition:.3s;
+}
+
+.ebook-card:hover{
+  transform:translateY(-5px);
+
+  box-shadow:
+    0 0 15px rgba(0,217,255,.3),
+    0 0 30px rgba(0,217,255,.15);
+}
+
+.ebook-cover{
+  width:100%;
+  border-radius:12px;
+  margin-bottom:20px;
+}
+
+.ebook-card h3{
+  margin-bottom:10px;
+}
+
+.coming-soon{
+  display:inline-block;
+
+  margin-top:15px;
+
+  padding:8px 18px;
+
+  border:1px solid #00d9ff;
+  border-radius:30px;
+
+  color:#00d9ff;
+}
