@@ -441,30 +441,40 @@ body {
   gap: 20px;
 }
 
-.contact-btn {
-  text-decoration: none;
-  color: white;
+.contact-btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
 
-  padding: 12px 25px;
+  padding:12px 24px;
 
-  border: 1px solid rgba(0,217,255,0.4);
-  border-radius: 12px;
+  min-width:160px;
 
-  background: rgba(255,255,255,0.03);
+  white-space:nowrap;
 
-  transition: all 0.3s ease;
+  text-decoration:none;
+  color:#ffffff;
+
+  border:1px solid #00d9ff;
+  border-radius:12px;
+
+  background:rgba(0,217,255,0.05);
+
+  transition:all .3s ease;
 }
 
-.contact-btn:hover {
-  color: #00d9ff;
+.contact-btn:hover{
+  color:#00d9ff;
 
-  border-color: #00d9ff;
+  border-color:#00d9ff;
 
   box-shadow:
     0 0 10px #00d9ff,
-    0 0 20px rgba(0,217,255,0.4);
+    0 0 20px rgba(0,217,255,.5),
+    0 0 30px rgba(0,217,255,.3);
 
-  transform: translateY(-3px);
+  transform:translateY(-3px);
 }
 /* =========================
    FOOTER
