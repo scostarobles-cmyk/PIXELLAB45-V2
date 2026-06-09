@@ -288,3 +288,48 @@ function copiarGuion(){
     document.getElementById("mensajeGuionCopiado").innerText = "";
   }, 3000);
 }
+function generarIdeas(){
+
+  const tema =
+    document.getElementById("temaIdea").value;
+
+  let ideas = `
+💡 IDEAS DE CONTENIDO SOBRE ${tema}
+
+1. ¿Qué es ${tema} y por qué todos hablan de ello?
+2. 5 herramientas relacionadas con ${tema}
+3. Errores comunes al usar ${tema}
+4. Cómo empezar con ${tema}
+5. Tendencias futuras de ${tema}
+6. Casos reales de uso de ${tema}
+7. Mitos y verdades sobre ${tema}
+8. Cómo ganar dinero usando ${tema}
+9. Comparativa de herramientas de ${tema}
+10. Lo que nadie te cuenta sobre ${tema}
+`;
+
+  document.getElementById(
+    "resultadoIdeas"
+  ).innerText = ideas;
+}
+
+function copiarIdeas(){
+
+  const texto =
+    document.getElementById("resultadoIdeas").innerText;
+
+  if(texto.trim() === ""){
+    document.getElementById("mensajeIdeasCopiadas").innerText =
+      "⚠️ Primero genera ideas";
+    return;
+  }
+
+  navigator.clipboard.writeText(texto);
+
+  document.getElementById("mensajeIdeasCopiadas").innerText =
+    "✅ Ideas copiadas correctamente";
+
+  setTimeout(() => {
+    document.getElementById("mensajeIdeasCopiadas").innerText = "";
+  }, 3000);
+}
