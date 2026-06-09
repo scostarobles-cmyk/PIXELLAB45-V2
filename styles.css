@@ -780,3 +780,24 @@ section{
   font-weight:bold;
   text-align:center;
 }
+#resultadoIdeas{
+
+  margin-top:20px;
+
+  text-align:left;
+
+  white-space:pre-wrap;
+
+  color:#d9eaf5;
+}
+
+#mensajeIdeasCopiadas{
+
+  margin-top:10px;
+
+  color:#00d9ff;
+
+  font-weight:bold;
+
+  text-align:center;
+}
