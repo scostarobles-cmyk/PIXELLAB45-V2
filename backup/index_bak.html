@@ -8,6 +8,10 @@
   <title>PIXELLAB45</title>
 
   <link rel="stylesheet" href="styles.css">
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
@@ -15,10 +19,12 @@
   <!-- NAVBAR -->
   <header class="navbar">
     <nav class="nav-links">
-      <a href="#">Inicio</a>
-      <a href="#">IA</a>
-      <a href="#">Tools</a>
-      <a href="#">Contacto</a>
+      <a href="#inicio">Inicio</a>
+      <a href="#sobre-mi">Sobre mí</a>
+      <a href="#galeria">Galería</a>
+      <a href="#ai-lab">AI LAB</a>
+      <a href="#ebooks">Ebooks</a>
+      <a href="#contacto">Contacto</a>
     </nav>
   </header>
 
@@ -26,7 +32,7 @@
   <div class="divider"></div>
 
   <!-- HERO -->
-  <section class="hero">
+  <section id="inicio" class="hero">
 
   <img
     src="assets/img/logo.png"
@@ -59,7 +65,291 @@
   </div>
 
 </section>
+  <div class="section-divider"></div>
+  <section id="sobre-mi" class="about">
 
+  <h2>¿Quién es Dr. Pixel?</h2>
+
+    <img
+      src="assets/img/avatar.png"
+      alt="Dr. Pixel"
+      class="about-avatar">
+  <div class="about-card">
+
+    <div class="about-text">
+<p>
+  Hola, soy Sergio Costa, creador de PIXELLAB45.
+</p>
+
+<p>
+  Mi pasión por la tecnología, la inteligencia artificial y la innovación me llevó a crear este espacio para explorar, aprender y compartir todo lo relacionado con el futuro digital.
+</p>
+
+<p>
+  En PIXELLAB45 encontrarás contenido sobre IA, automatización, herramientas tecnológicas, tendencias emergentes y proyectos diseñados para ayudar a más personas a comprender y aprovechar el potencial de la tecnología.
+</p>
+
+<p>
+  Mi objetivo es convertir temas complejos en contenido práctico, visual y accesible, demostrando que la inteligencia artificial puede ser una herramienta poderosa para crear, aprender y crecer.
+</p>
+
+    </div>
+
+  </div>
+
+</section>
+
+<div class="section-divider"></div>
+  <section id="galeria" class="gallery">
+
+  <h2>Galería de Proyectos</h2>
+
+  <div class="gallery-grid">
+
+    <div class="project-card">
+  <img src="assets/img/projecto1.png" alt="Logo Personal">
+  <h3>Logo Personal</h3>
+  <p>Diseño de identidad visual creado para representar mi marca personal y mi pasión por la tecnología.</p>
+</div>
+
+<div class="project-card">
+  <img src="assets/img/projecto2.png" alt="Fondo Futurista">
+  <h3>Fondo Futurista</h3>
+  <p>Concepto visual inspirado en la inteligencia artificial, la innovación digital y los entornos cyberpunk.</p>
+</div>
+
+<div class="project-card">
+  <img src="assets/img/projecto3.png" alt="Arte Conceptual IA">
+  <h3>Arte Conceptual IA</h3>
+  <p>Creación artística generada con inteligencia artificial para explorar estilos visuales futuristas y de ciencia ficción.</p>
+</div>
+
+<div class="project-card">
+  <img src="assets/img/projecto4.png" alt="Portada Conceptual">
+  <h3>Portada Conceptual</h3>
+  <p>Diseño editorial experimental enfocado en tecnología, creatividad digital e inteligencia artificial.</p>
+</div>
+  </div>
+
+</section>
+  <div class="section-divider"></div>
+
+<section id="ai-lab" class="ai-lab">
+
+  <h2>🚀 PIXELLAB45 AI LAB</h2>
+
+  <p class="ai-subtitle">
+    Laboratorio personal de Inteligencia Artificial
+  </p>
+
+  <div class="ai-grid">
+
+    <div class="ai-card">
+      <h3>🎨 Generador de Imágenes</h3>
+      <p>Próximamente integrado con IA.</p>
+    </div>
+
+    <div class="ai-card">
+
+  <h3>✍️ Generador de Prompts</h3>
+
+  <input
+    type="text"
+    id="temaPrompt"
+    placeholder="Tema del contenido">
+
+  <select id="tipoContenido">
+    <option>TikTok</option>
+    <option>YouTube</option>
+    <option>Instagram</option>
+    <option>Blog</option>
+    <option>Ebook</option>
+  </select>
+
+  <button onclick="generarPrompt()">
+  Generar
+</button>
+
+<button onclick="copiarPrompt()">
+  📋 Copiar Prompt
+</button>
+
+<div id="mensajeCopiado"></div>
+<div id="resultadoPrompt"></div>
+    </div>
+<div class="ai-card">
+
+  <h3>🎬 Generador de Guiones IA</h3>
+
+  <input
+    type="text"
+    id="temaGuion"
+    placeholder="Tema del video">
+
+  <select id="duracionGuion">
+    <option>15 segundos</option>
+    <option>30 segundos</option>
+    <option>60 segundos</option>
+  </select>
+
+<button onclick="generarGuion()">
+  Generar Guion
+</button>
+
+<button onclick="copiarGuion()">
+  📋 Copiar Guion
+</button>
+
+<div id="mensajeGuionCopiado"></div>
+
+<div id="resultadoGuion"></div>
+
+  </div>
+    <div class="ai-card">
+
+  <h3>🎬 Storyboard Generator</h3>
+
+  <textarea
+    id="textoStoryboard"
+    placeholder="Pega aquí el guion..."
+    rows="6">
+  </textarea>
+
+  <button onclick="generarStoryboard()">
+    Generar Storyboard
+  </button>
+
+  <button class="copy-btn" onclick="copiarStoryboard()">
+    📋 Copiar Storyboard
+  </button>
+
+  <div id="mensajeStoryboard"></div>
+
+  <div id="resultadoStoryboard"></div>
+
+    </div>
+    <div class="ai-card">
+
+  <h3>💡 Generador de Ideas</h3>
+
+  <input
+    type="text"
+    id="temaIdea"
+    placeholder="Tema principal">
+      
+  <button onclick="generarIdeas()">
+    Generar Ideas
+  </button>
+
+  <button class="copy-btn" onclick="copiarIdeas()">
+    📋 Copiar Ideas
+  </button>
+
+  <div id="mensajeIdeasCopiadas"></div>
+
+  <div id="resultadoIdeas"></div>
+
+    </div>
+    <div class="ai-card">
+      <h3>🎬 Ideas para Videos</h3>
+      <p>Contenido viral para TikTok y YouTube.</p>
+    </div>
+
+    <div class="ai-card">
+      <h3>📚 Constructor de Ebooks</h3>
+      <p>Asistente para crear ebooks completos.</p>
+    </div>
+
+  </div>
+
+</section>
+<div class="section-divider"></div>
+
+<section id="ebooks" class="ebooks">
+
+  <h2>Ebooks y Recursos Digitales</h2>
+
+  <div class="ebook-card">
+
+    <img
+      src="assets/img/ebook-chatgpt-desde-cero.png"
+      alt="ChatGPT desde Cero"
+      class="ebook-cover">
+
+    <h3>ChatGPT desde Cero</h3>
+
+    <p>
+      Guía práctica para dominar la Inteligencia Artificial.
+    </p>
+
+    <span class="coming-soon">
+      Próximamente
+    </span>
+
+  </div>
+
+</section>
+<div class="section-divider"></div>
+  <section id="contacto" class="contact">
+
+  <h2>Contacto</h2>
+
+  <p>
+    ¿Quieres colaborar, compartir una idea o hablar sobre tecnología e inteligencia artificial?
+  </p>
+<div class="contact-buttons">
+
+  <a href="https://facebook.com/PixelLab45"
+     target="_blank"
+     class="contact-btn">
+    <i class="fab fa-facebook-f"></i>
+    Facebook
+  </a>
+
+  <a href="https://youtube.com/@Pixel_Lab45"
+     target="_blank"
+     class="contact-btn">
+    <i class="fab fa-youtube"></i>
+    YouTube
+  </a>
+
+  <a href="https://tiktok.com/@pixel-lavb45"
+     target="_blank"
+     class="contact-btn">
+    <i class="fab fa-tiktok"></i>
+    TikTok
+  </a>
+
+  <a href="https://instagram.com/pixel_lab45"
+     target="_blank"
+     class="contact-btn">
+    <i class="fab fa-instagram"></i>
+    Instagram
+  </a>
+
+</div>
+
+</section>
+
+<div class="section-divider"></div>
+  <footer class="footer">
+
+  <div class="footer-content">
+
+    <h3>PIXELLAB45</h3>
+
+    <p>
+      Inteligencia Artificial • Tecnología • Innovación
+    </p>
+
+    <p class="footer-copy">
+      © 2026 Sergio Costa | Todos los derechos reservados
+    </p>
+
+  </div>
+
+  </footer>
+  <script src="script.js"></script>
 </body>
 
 </html>
