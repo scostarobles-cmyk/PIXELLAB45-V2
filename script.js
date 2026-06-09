@@ -181,5 +181,10 @@ function copiarPrompt(){
   setTimeout(() => {
     document.getElementById("mensajeCopiado").innerText = "";
   }, 3000);
+  console.log("Botón copiar funcionando");
+
+  document.getElementById("mensajeCopiado").innerText =
+  "✅ BOTÓN FUNCIONANDO";
+  
 
 }
