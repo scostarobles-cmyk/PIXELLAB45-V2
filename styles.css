@@ -20,6 +20,9 @@ body {
 /* =========================
    NAVBAR
 ========================= */
+section{
+  scroll-margin-top: 140px;
+}
 .navbar {
   position: fixed;
   top: 0;
@@ -124,7 +127,9 @@ body {
 /* =========================
    HERO
 ========================= */
-
+section{
+  scroll-margin-top: 140px;
+}
 .hero {
   min-height: 100vh;
 
@@ -280,7 +285,9 @@ body {
 /* =========================
    ABOUT
 ========================= */
-
+section{
+  scroll-margin-top: 140px;
+}
 .about {
   padding: 80px 60px;
 }
@@ -344,7 +351,9 @@ body {
 /* =========================
    GALERÍA
 ========================= */
-
+section{
+  scroll-margin-top: 140px;
+}
 .gallery {
   padding: 80px 60px;
 }
@@ -412,7 +421,9 @@ body {
 /* =========================
    CONTACTO
 ========================= */
-
+section{
+  scroll-margin-top: 140px;
+}
 .contact {
   padding: 80px 20px;
   text-align: center;
@@ -571,7 +582,9 @@ body {
 /* =========================
    EBOOKS
 ========================= */
-
+section{
+  scroll-margin-top: 140px;
+}
 .ebooks{
   padding:80px 20px;
   text-align:center;
@@ -631,7 +644,9 @@ body {
 /* =========================
    AI LAB
 ========================= */
-
+section{
+  scroll-margin-top: 140px;
+}
 .ai-lab{
   padding:80px 20px;
   text-align:center;
