@@ -168,3 +168,13 @@ professional publishing design.
     "resultadoPrompt"
   ).innerText = resultado;
 }
+function copiarPrompt(){
+
+  const texto =
+    document.getElementById("resultadoPrompt").innerText;
+
+  navigator.clipboard.writeText(texto);
+
+  alert("✅ Prompt copiado al portapapeles");
+
+}
