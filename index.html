@@ -150,8 +150,28 @@
     </div>
 
     <div class="ai-card">
-      <h3>✍️ Generador de Prompts</h3>
-      <p>Prompts optimizados para imágenes y videos.</p>
+
+  <h3>✍️ Generador de Prompts</h3>
+
+  <input
+    type="text"
+    id="temaPrompt"
+    placeholder="Tema del contenido">
+
+  <select id="tipoContenido">
+    <option>TikTok</option>
+    <option>YouTube</option>
+    <option>Instagram</option>
+    <option>Blog</option>
+    <option>Ebook</option>
+  </select>
+
+  <button onclick="generarPrompt()">
+    Generar
+  </button>
+
+  <div id="resultadoPrompt"></div>
+
     </div>
 
     <div class="ai-card">
