@@ -238,6 +238,8 @@ section{
     width: 180px;
   }
 
+}
+
 .hero-content {
   position: relative;
   z-index: 2;
@@ -522,7 +524,7 @@ section{
 
   color: #7f9aa5;
 }
-..footer {
+.footer {
   padding: 50px 20px;
 
   text-align: center;
@@ -575,8 +577,6 @@ section{
   .divider{
     top:110px;
   }
-
-}
 
 }
 /* =========================
@@ -758,4 +758,5 @@ section{
   color:#00d9ff;
   font-weight:bold;
   text-align:center;
-}
+  }
+    
