@@ -386,25 +386,25 @@ Logo PIXELLAB45 con efecto neón.
   ).innerText = storyboard;
 }
 
-function copiarStoryboard(){
+function generarStoryboard() {
+  const guion = document.getElementById("textoStoryboard").value;
 
-  const texto =
-    document.getElementById("resultadoStoryboard").innerText;
-
-  if(texto.trim() === ""){
-
+  if (guion.trim() === "") {
     document.getElementById("mensajeStoryboard").innerText =
-      "⚠️ Primero genera un storyboard";
-
+      "⚠️ Primero pega un guion";
     return;
   }
 
-  navigator.clipboard.writeText(texto);
+  const lineas = guion.split('\n').filter(linea => linea.trim() !== '');
+  let storyboard = "🎬 STORYBOARD PIXELLAB45\n\n";
 
-  document.getElementById("mensajeStoryboard").innerText =
-    "✅ Storyboard copiado correctamente";
+  lineas.forEach((linea, index) => {
+    storyboard += `ESCENA ${index + 1}\n`;
+    storyboard += `⏱️ Duración: 4 segundos\n\n`;
+    storyboard += `🎙️ Narración:\n${linea}\n\n`;
+    storyboard += `🎥 Visual:\nDescribe una escena futurista relacionada con el tema.\n\n`;
+    storyboard += `──────────────────\n\n`;
+  });
 
-  setTimeout(() => {
-    document.getElementById("mensajeStoryboard").innerText = "";
-  }, 3000);
+  document.getElementById("resultadoStoryboard").innerText = storyboard;
 }
