@@ -753,3 +753,9 @@ section{
 
   color:#d9eaf5;
 }
+#mensajeCopiado{
+  margin-top:10px;
+  color:#00d9ff;
+  font-weight:bold;
+  text-align:center;
+}
