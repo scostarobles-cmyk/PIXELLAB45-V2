@@ -333,69 +333,20 @@ function copiarIdeas(){
     document.getElementById("mensajeIdeasCopiadas").innerText = "";
   }, 3000);
 }
-function generarStoryboard(){
-
-  const guion =
-    document.getElementById("textoStoryboard").value;
-
-  if(guion.trim() === ""){
-
-    document.getElementById("mensajeStoryboard").innerText =
-      "⚠️ Primero pega un guion";
-
-    return;
-  }
-
-  const storyboard = `
-🎬 STORYBOARD PIXELLAB45
-
-ESCENA 1
-⏱️ Duración: 3 segundos
-
-🎙️ Narración:
-Gancho inicial.
-
-🎥 Visual:
-Plano futurista relacionado con el tema.
-
-──────────────────
-
-ESCENA 2
-⏱️ Duración: 5 segundos
-
-🎙️ Narración:
-Desarrollo principal.
-
-🎥 Visual:
-Interfaz de IA mostrando información.
-
-──────────────────
-
-ESCENA 3
-⏱️ Duración: 4 segundos
-
-🎙️ Narración:
-Llamado a la acción.
-
-🎥 Visual:
-Logo PIXELLAB45 con efecto neón.
-`;
-
-  document.getElementById(
-    "resultadoStoryboard"
-  ).innerText = storyboard;
-}
-
 function generarStoryboard() {
   const guion = document.getElementById("textoStoryboard").value;
+  
+  alert("Guion recibido: " + guion);
 
   if (guion.trim() === "") {
-    document.getElementById("mensajeStoryboard").innerText =
-      "⚠️ Primero pega un guion";
+    document.getElementById("mensajeStoryboard").innerText = "⚠️ Primero pega un guion";
     return;
   }
 
   const lineas = guion.split('\n').filter(linea => linea.trim() !== '');
+  
+  alert("Líneas detectadas: " + lineas.length);
+
   let storyboard = "🎬 STORYBOARD PIXELLAB45\n\n";
 
   lineas.forEach((linea, index) => {
@@ -408,3 +359,26 @@ function generarStoryboard() {
 
   document.getElementById("resultadoStoryboard").innerText = storyboard;
 }
+
+function copiarStoryboard() {
+  const texto = document.getElementById("resultadoStoryboard").innerText;
+
+  if (texto.trim() === "") {
+    document.getElementById("mensajeStoryboard").innerText =
+      "⚠️ Primero genera un storyboard";
+    return;
+  }
+
+  navigator.clipboard.writeText(texto)
+    .then(() => {
+      document.getElementById("mensajeStoryboard").innerText =
+        "✅ Storyboard copiado correctamente";
+
+      setTimeout(() => {
+        document.getElementById("mensajeStoryboard").innerText = "";
+      }, 3000);
+    })
+    .catch(err => {
+      console.error("Error al copiar:", err);
+    });
+           }
