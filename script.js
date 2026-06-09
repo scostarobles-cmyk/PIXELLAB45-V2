@@ -175,6 +175,11 @@ function copiarPrompt(){
 
   navigator.clipboard.writeText(texto);
 
-  alert("✅ Prompt copiado al portapapeles");
+  document.getElementById("mensajeCopiado").innerText =
+    "✅ Prompt copiado correctamente";
+
+  setTimeout(() => {
+    document.getElementById("mensajeCopiado").innerText = "";
+  }, 3000);
 
 }
