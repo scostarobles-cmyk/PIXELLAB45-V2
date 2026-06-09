@@ -336,7 +336,7 @@ function copiarIdeas(){
 function generarStoryboard() {
   const guion = document.getElementById("textoStoryboard").value;
   
-  alert("Guion recibido: " + guion);
+  
 
   if (guion.trim() === "") {
     document.getElementById("mensajeStoryboard").innerText = "⚠️ Primero pega un guion";
@@ -345,7 +345,6 @@ function generarStoryboard() {
 
   const lineas = guion.split('\n').filter(linea => linea.trim() !== '');
   
-  alert("Líneas detectadas: " + lineas.length);
 
   let storyboard = "🎬 STORYBOARD PIXELLAB45\n\n";
 
