@@ -697,3 +697,59 @@ section{
 .ai-card p{
   color:#d9eaf5;
 }
+.ai-card input,
+.ai-card select{
+
+  width:100%;
+
+  margin:10px 0;
+
+  padding:12px;
+
+  border-radius:10px;
+
+  border:1px solid rgba(0,217,255,.3);
+
+  background:#0d1117;
+
+  color:white;
+}
+
+.ai-card button{
+
+  width:100%;
+
+  padding:12px;
+
+  border:none;
+
+  border-radius:10px;
+
+  cursor:pointer;
+
+  background:#00d9ff;
+
+  color:#05070d;
+
+  font-weight:bold;
+
+  margin-top:10px;
+}
+
+.ai-card button:hover{
+
+  box-shadow:
+    0 0 10px #00d9ff,
+    0 0 20px rgba(0,217,255,.4);
+}
+
+#resultadoPrompt{
+
+  margin-top:20px;
+
+  text-align:left;
+
+  white-space:pre-wrap;
+
+  color:#d9eaf5;
+}
