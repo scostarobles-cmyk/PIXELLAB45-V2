@@ -541,17 +541,31 @@ body {
 
   font-size: 0.9rem;
   }
-@media (max-width: 768px){
+@media (max-width:768px){
+
+  .navbar{
+    padding:10px;
+  }
 
   .nav-links{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
     gap:8px;
+    max-width:320px;
+    margin:auto;
   }
 
   .nav-links a{
-    font-size:0.9rem;
-    padding:8px 10px;
-    white-space:nowrap;
+    font-size:0.8rem;
+    padding:6px 10px;
   }
+
+  .divider{
+    top:110px;
+  }
+
+}
 
 }
 /* =========================
