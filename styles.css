@@ -770,3 +770,13 @@ section{
 
   color:#d9eaf5;
 }
+/* =========================
+   COPIAR GUION
+========================= */
+
+#mensajeGuionCopiado{
+  margin-top:10px;
+  color:#00d9ff;
+  font-weight:bold;
+  text-align:center;
+}

@@ -268,3 +268,23 @@ CTA para seguir la cuenta.
     "resultadoGuion"
   ).innerText = guion;
 }
+function copiarGuion(){
+
+  const texto =
+    document.getElementById("resultadoGuion").innerText;
+
+  if(texto.trim() === ""){
+    document.getElementById("mensajeGuionCopiado").innerText =
+      "⚠️ Primero genera un guion";
+    return;
+  }
+
+  navigator.clipboard.writeText(texto);
+
+  document.getElementById("mensajeGuionCopiado").innerText =
+    "✅ Guion copiado correctamente";
+
+  setTimeout(() => {
+    document.getElementById("mensajeGuionCopiado").innerText = "";
+  }, 3000);
+}
