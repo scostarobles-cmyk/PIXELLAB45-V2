@@ -760,3 +760,13 @@ section{
   text-align:center;
   }
     
+#resultadoGuion{
+
+  margin-top:20px;
+
+  text-align:left;
+
+  white-space:pre-wrap;
+
+  color:#d9eaf5;
+}
