@@ -188,3 +188,83 @@ function copiarPrompt(){
   
 
 }
+function generarGuion(){
+
+  const tema =
+    document.getElementById("temaGuion").value;
+
+  const duracion =
+    document.getElementById("duracionGuion").value;
+
+  let guion = "";
+
+  if(duracion === "15 segundos"){
+
+    guion = `
+🎬 GUION CORTO
+
+🎯 Gancho:
+"¿Sabías esto sobre ${tema}?"
+
+📝 Desarrollo:
+Explica rápidamente qué es y por qué importa.
+
+📢 CTA:
+"Sígueme para más contenido."
+`;
+
+  }
+
+  else if(duracion === "30 segundos"){
+
+    guion = `
+🎬 GUION MEDIO
+
+🎯 Gancho:
+"Lo que nadie te cuenta sobre ${tema}"
+
+📝 Desarrollo:
+Explica el concepto.
+
+Muestra ejemplos.
+
+Beneficios principales.
+
+📢 CTA:
+"Guarda este video y sígueme."
+`;
+
+  }
+
+  else{
+
+    guion = `
+🎬 GUION LARGO
+
+🎯 Introducción
+
+¿Qué es ${tema}?
+
+📝 Desarrollo
+
+Cómo funciona.
+
+Ventajas.
+
+Ejemplos reales.
+
+Errores comunes.
+
+📢 Conclusión
+
+Resumen final.
+
+CTA para seguir la cuenta.
+`;
+
+  }
+
+  document.getElementById(
+    "resultadoGuion"
+  ).innerText = guion;
+}
