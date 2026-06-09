@@ -801,3 +801,43 @@ section{
 
   text-align:center;
 }
+.ai-card textarea{
+
+  width:100%;
+
+  margin:10px 0;
+
+  padding:12px;
+
+  border-radius:10px;
+
+  border:1px solid rgba(0,217,255,.3);
+
+  background:#0d1117;
+
+  color:white;
+
+  resize:vertical;
+}
+
+#resultadoStoryboard{
+
+  margin-top:20px;
+
+  text-align:left;
+
+  white-space:pre-wrap;
+
+  color:#d9eaf5;
+}
+
+#mensajeStoryboard{
+
+  margin-top:10px;
+
+  color:#00d9ff;
+
+  font-weight:bold;
+
+  text-align:center;
+}
