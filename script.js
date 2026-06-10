@@ -288,34 +288,47 @@ function copiarVisuales(){
 
 async function generarImagen(){
 
-  const prompt =
-    document.getElementById("promptImagen").value;
+  const prompt = document.getElementById("promptImagen").value;
+  const resultado = document.getElementById("resultadoImagen");
 
-  try{
+  resultado.innerHTML = "⏳ Generando...";
 
-    const respuesta = await fetch(
-      "https://aged-wood-7eaf.scostarobles.workers.dev/?tema=" +
-      encodeURIComponent(prompt)
+  const res = await fetch(
+    "https://TU-WORKER.workers.dev/?tema=" +
+    encodeURIComponent(prompt)
+  );
+
+  const data = await res.json();
+
+  if (!data.id) {
+    resultado.innerHTML = "❌ Error creando imagen";
+    return;
+  }
+
+  // 🔁 POLLING EN FRONTEND
+  let status = data.status;
+  let result = data;
+
+  while (status !== "succeeded" && status !== "failed") {
+
+    await new Promise(r => setTimeout(r, 2000));
+
+    const check = await fetch(
+      "https://api.replicate.com/v1/predictions/" + data.id,
+      {
+        headers: {
+          "Authorization": "Token TU_TOKEN_AQUI"
+        }
+      }
     );
 
-    const datos = await respuesta.json();
-
-    document.getElementById(
-      "resultadoImagen"
-    ).innerHTML = `
-      <p><strong>Prompt generado:</strong></p>
-      <p>${datos.prompt}</p>
-    `;
-
+    result = await check.json();
+    status = result.status;
   }
 
-  catch(error){
-
-    document.getElementById(
-      "resultadoImagen"
-    ).innerHTML =
-      "❌ Error conectando con Cloudflare";
-
+  if (result.output) {
+    resultado.innerHTML = `<img src="${result.output[0]}" style="width:100%;border-radius:15px;">`;
+  } else {
+    resultado.innerHTML = "❌ Falló la generación";
   }
-
 }
