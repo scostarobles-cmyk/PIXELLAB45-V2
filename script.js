@@ -285,39 +285,25 @@ function copiarVisuales(){
     document.getElementById("mensajeVisual").innerText = "";
   }, 3000);
 }
-async function generarImagen(){
+async function probarAPI(){
 
-  const prompt =
-    document.getElementById("promptImagen").value;
+  try {
 
-  const resultado =
-    document.getElementById("resultadoImagen");
+    const respuesta = await fetch(
+      "https://aged-wood-7eaf.scostarobles.workers.dev/"
+    );
 
-  if(!prompt.trim()){
+    const datos = await respuesta.json();
 
-    resultado.innerHTML =
-      "⚠️ Escribe una descripción";
-
-    return;
-  }
-
-  resultado.innerHTML =
-    "⏳ Generando imagen...";
-
-  try{
-
-    const imagen =
-      await puter.ai.txt2img(prompt);
-
-    resultado.innerHTML =
-      `<img src="${imagen.src}" alt="Imagen IA">`;
+    alert(
+      datos.project + " v" + datos.version
+    );
 
   }
 
   catch(error){
 
-    resultado.innerHTML =
-      "❌ Error al generar imagen";
+    alert("Error conectando con Cloudflare");
 
     console.error(error);
 
