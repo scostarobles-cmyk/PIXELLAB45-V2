@@ -285,3 +285,42 @@ function copiarVisuales(){
     document.getElementById("mensajeVisual").innerText = "";
   }, 3000);
 }
+async function generarImagen(){
+
+  const prompt =
+    document.getElementById("promptImagen").value;
+
+  const resultado =
+    document.getElementById("resultadoImagen");
+
+  if(!prompt.trim()){
+
+    resultado.innerHTML =
+      "⚠️ Escribe una descripción";
+
+    return;
+  }
+
+  resultado.innerHTML =
+    "⏳ Generando imagen...";
+
+  try{
+
+    const imagen =
+      await puter.ai.txt2img(prompt);
+
+    resultado.innerHTML =
+      `<img src="${imagen.src}" alt="Imagen IA">`;
+
+  }
+
+  catch(error){
+
+    resultado.innerHTML =
+      "❌ Error al generar imagen";
+
+    console.error(error);
+
+  }
+
+}
