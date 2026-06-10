@@ -867,3 +867,13 @@ section{
   border-radius:15px;
   margin-top:10px;
 }
+#resultadoImagen{
+
+  margin-top:20px;
+
+  color:#d9eaf5;
+
+  text-align:left;
+
+  white-space:pre-wrap;
+}
