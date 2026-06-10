@@ -858,3 +858,12 @@ section{
   font-weight:bold;
   text-align:center;
 }
+#resultadoImagen{
+  margin-top:20px;
+}
+
+#resultadoImagen img{
+  width:100%;
+  border-radius:15px;
+  margin-top:10px;
+}
