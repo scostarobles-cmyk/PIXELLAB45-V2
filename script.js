@@ -285,6 +285,7 @@ function copiarVisuales(){
     document.getElementById("mensajeVisual").innerText = "";
   }, 3000);
 }
+
 async function generarImagen(){
 
   const prompt =
@@ -293,17 +294,18 @@ async function generarImagen(){
   try{
 
     const respuesta = await fetch(
-      "https://aged-wood-7eaf.scostarobles.workers.dev/"
+      "https://aged-wood-7eaf.scostarobles.workers.dev/?tema=" +
+      encodeURIComponent(prompt)
     );
 
     const datos = await respuesta.json();
 
-document.getElementById(
-  "resultadoImagen"
-).innerHTML = `
-  <p><strong>Prompt generado:</strong></p>
-  <p>${datos.prompt}</p>
-`;
+    document.getElementById(
+      "resultadoImagen"
+    ).innerHTML = `
+      <p><strong>Prompt generado:</strong></p>
+      <p>${datos.prompt}</p>
+    `;
 
   }
 
