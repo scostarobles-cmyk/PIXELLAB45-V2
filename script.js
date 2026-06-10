@@ -298,16 +298,12 @@ async function generarImagen(){
 
     const datos = await respuesta.json();
 
-    document.getElementById(
-      "resultadoImagen"
-    ).innerHTML = `
-      <p><strong>Prompt:</strong></p>
-      <p>${prompt}</p>
-
-      <p style="margin-top:15px;">
-      API conectada correctamente ✅
-      </p>
-    `;
+document.getElementById(
+  "resultadoImagen"
+).innerHTML = `
+  <p><strong>Prompt generado:</strong></p>
+  <p>${datos.prompt}</p>
+`;
 
   }
 
