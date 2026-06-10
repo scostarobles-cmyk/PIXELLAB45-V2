@@ -285,7 +285,10 @@ function copiarVisuales(){
     document.getElementById("mensajeVisual").innerText = "";
   }, 3000);
 }
-async function probarAPI(){
+async function generarImagen(){
+
+  const prompt =
+    document.getElementById("promptImagen").value;
 
   try{
 
@@ -293,17 +296,27 @@ async function probarAPI(){
       "https://aged-wood-7eaf.scostarobles.workers.dev/"
     );
 
-    const texto = await respuesta.text();
+    const datos = await respuesta.json();
 
-    alert(texto);
+    document.getElementById(
+      "resultadoImagen"
+    ).innerHTML = `
+      <p><strong>Prompt:</strong></p>
+      <p>${prompt}</p>
+
+      <p style="margin-top:15px;">
+      API conectada correctamente ✅
+      </p>
+    `;
 
   }
 
   catch(error){
 
-    console.error(error);
-
-    alert(error.message);
+    document.getElementById(
+      "resultadoImagen"
+    ).innerHTML =
+      "❌ Error conectando con Cloudflare";
 
   }
 
