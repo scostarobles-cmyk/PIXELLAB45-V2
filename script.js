@@ -287,25 +287,23 @@ function copiarVisuales(){
 }
 async function probarAPI(){
 
-  try {
+  try{
 
     const respuesta = await fetch(
       "https://aged-wood-7eaf.scostarobles.workers.dev/"
     );
 
-    const datos = await respuesta.json();
+    const texto = await respuesta.text();
 
-    alert(
-      datos.project + " v" + datos.version
-    );
+    alert(texto);
 
   }
 
   catch(error){
 
-    alert("Error conectando con Cloudflare");
-
     console.error(error);
+
+    alert(error.message);
 
   }
 
