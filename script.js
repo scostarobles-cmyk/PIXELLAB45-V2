@@ -307,7 +307,7 @@ async function generarImagen(){
 
     // Crear predicción
     const res = await fetch(
-      "https://aged-wood-7eaf.scostarobles.workers.dev/?tema=" +
+      "https://pixellab45.scostarobles.workers.dev/v/?tema=" +
       encodeURIComponent(prompt)
     );
 
