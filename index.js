@@ -4,7 +4,7 @@ export default {
 
     // Ruta principal
     if (url.pathname === "/") {
-      return new Response("Pixellab45 worker online", {
+      return new Response("Pixellab45 worker online con edicion desde fithub", {
         headers: { "content-type": "text/plain" },
       });
     }
