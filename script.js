@@ -287,7 +287,7 @@ function copiarVisuales(){
 }
 
 async function generarImagen(){
-
+alert("Botón presionado");
   const res = await fetch(
   "https://pixellab45-workere.scostarobles.workers.dev/"
 );
