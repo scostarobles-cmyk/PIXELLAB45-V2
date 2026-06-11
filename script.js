@@ -287,17 +287,37 @@ function copiarVisuales(){
 }
 
 async function generarImagen(){
-alert("Botón presionado");
-  const res = await fetch(
-  "https://pixellab45-workere.scostarobles.workers.dev/"
-);
-console.log("Respuesta:", data);
-alert(JSON.stringify(data));
-const data = await res.json();
 
-resultado.innerHTML =
-  "<pre>" +
-  JSON.stringify(data, null, 2) +
-  "</pre>";
+  alert("Botón presionado");
 
+  const resultado =
+    document.getElementById("resultadoImagen");
+
+  resultado.innerHTML =
+    "⏳ Probando Worker...";
+
+  try {
+
+    const res = await fetch(
+      "https://pixellab45-workere.scostarobles.workers.dev/"
+    );
+
+    const data = await res.json();
+
+    console.log("Respuesta:", data);
+
+    alert(JSON.stringify(data));
+
+    resultado.innerHTML =
+      "<pre>" +
+      JSON.stringify(data, null, 2) +
+      "</pre>";
+
+  } catch(error) {
+
+    alert("ERROR: " + error.message);
+
+    resultado.innerHTML =
+      "❌ " + error.message;
+  }
 }
