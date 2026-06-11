@@ -291,7 +291,8 @@ async function generarImagen(){
   const res = await fetch(
   "https://pixellab45-workere.scostarobles.workers.dev/"
 );
-
+console.log("Respuesta:", data);
+alert(JSON.stringify(data));
 const data = await res.json();
 
 resultado.innerHTML =
