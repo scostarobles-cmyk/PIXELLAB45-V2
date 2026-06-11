@@ -288,13 +288,8 @@ function copiarVisuales(){
 
 async function generarImagen(){
 
-  alert("Botón presionado");
-
   const resultado =
     document.getElementById("resultadoImagen");
-
-  resultado.innerHTML =
-    "⏳ Probando Worker...";
 
   try {
 
@@ -302,22 +297,16 @@ async function generarImagen(){
       "https://pixellab45-workere.scostarobles.workers.dev/"
     );
 
-    const data = await res.json();
-
-    console.log("Respuesta:", data);
-
-    alert(JSON.stringify(data));
+    const texto = await res.text();
 
     resultado.innerHTML =
-      "<pre>" +
-      JSON.stringify(data, null, 2) +
-      "</pre>";
+      "✅ Respuesta del Worker:<br><br>" +
+      texto;
 
-  } catch(error) {
-
-    alert("ERROR: " + error.message);
+  } catch(error){
 
     resultado.innerHTML =
-      "❌ " + error.message;
+      "❌ Error: " + error.message;
+
   }
 }
