@@ -307,7 +307,7 @@ async function generarImagen(){
 
     // Crear predicción
     const res = await fetch(
-      "https://pixellab45.scostarobles.workers.dev/v/?tema=" +
+      "https://pixellab45-workere.scostarobles.workers.dev/" +
       encodeURIComponent(prompt)
     );
 
