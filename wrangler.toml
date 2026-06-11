@@ -1,4 +1,4 @@
-name = "pixellab44-worker"
+name = 'pixellab45-v2'"
 
 main = "index.js"
 
