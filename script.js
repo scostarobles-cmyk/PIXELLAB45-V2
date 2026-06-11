@@ -288,25 +288,29 @@ function copiarVisuales(){
 
 async function generarImagen(){
 
-  const resultado =
-    document.getElementById("resultadoImagen");
+  alert("PASO 1");
 
   try {
+
+    alert("PASO 2");
 
     const res = await fetch(
       "https://pixellab45-workere.scostarobles.workers.dev/"
     );
 
+    alert("PASO 3");
+
     const texto = await res.text();
 
-    resultado.innerHTML =
-      "✅ Respuesta del Worker:<br><br>" +
+    alert("PASO 4");
+
+    document.getElementById("resultadoImagen").innerHTML =
       texto;
 
   } catch(error){
 
-    resultado.innerHTML =
-      "❌ Error: " + error.message;
+    alert("ERROR: " + error.message);
 
   }
+
 }
