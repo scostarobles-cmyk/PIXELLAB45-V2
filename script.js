@@ -288,47 +288,44 @@ function copiarVisuales(){
 
 async function generarImagen(){
 
-  const prompt = document.getElementById("promptImagen").value;
-  const resultado = document.getElementById("resultadoImagen");
+  const prompt =
+    document.getElementById("promptImagen").value;
 
-  resultado.innerHTML = "⏳ Generando...";
+  const resultado =
+    document.getElementById("resultadoImagen");
 
-  const res = await fetch(
-    "https://TU-WORKER.workers.dev/?tema=" +
-    encodeURIComponent(prompt)
-  );
-
-  const data = await res.json();
-
-  if (!data.id) {
-    resultado.innerHTML = "❌ Error creando imagen";
+  if(!prompt.trim()){
+    resultado.innerHTML =
+      "⚠️ Escribe un prompt";
     return;
   }
 
-  // 🔁 POLLING EN FRONTEND
-  let status = data.status;
-  let result = data;
+  resultado.innerHTML =
+    "⏳ Generando imagen...";
 
-  while (status !== "succeeded" && status !== "failed") {
+  try{
 
-    await new Promise(r => setTimeout(r, 2000));
-
-    const check = await fetch(
-      "https://api.replicate.com/v1/predictions/" + data.id,
-      {
-        headers: {
-          "Authorization": "Token TU_TOKEN_AQUI"
-        }
-      }
+    // Crear predicción
+    const res = await fetch(
+      "https://aged-wood-7eaf.scostarobles.workers.dev/?tema=" +
+      encodeURIComponent(prompt)
     );
 
-    result = await check.json();
-    status = result.status;
+    const data = await res.json();
+
+    // Mostrar temporalmente la respuesta
+    resultado.innerHTML = `
+      <p>✅ Predicción creada</p>
+      <pre>${JSON.stringify(data, null, 2)}</pre>
+    `;
+
   }
 
-  if (result.output) {
-    resultado.innerHTML = `<img src="${result.output[0]}" style="width:100%;border-radius:15px;">`;
-  } else {
-    resultado.innerHTML = "❌ Falló la generación";
+  catch(error){
+
+    resultado.innerHTML =
+      "❌ Error: " + error.message;
+
   }
+
 }
