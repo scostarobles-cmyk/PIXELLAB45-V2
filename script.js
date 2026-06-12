@@ -289,29 +289,38 @@ function copiarVisuales(){
 
 async function generarImagen() {
 
+  const prompt =
+    document.getElementById("promptImagen").value;
+
   const resultado =
     document.getElementById("resultadoImagen");
 
   try {
 
+    resultado.innerHTML = "Generando...";
+
     const respuesta = await fetch(
-      "https://pixellab45-v2.scostarobles.workers.dev/"
+      "https://pixellab45-v2.scostarobles.workers.dev/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ prompt })
+      }
     );
 
     const datos = await respuesta.json();
 
-    resultado.innerHTML = `
-      <img
-        src="${datos.image_url}"
-        style="max-width:100%;border-radius:10px;">
-    `;
+    resultado.innerHTML =
+      "<pre>" +
+      JSON.stringify(datos, null, 2) +
+      "</pre>";
 
   } catch(error) {
 
     resultado.innerHTML =
-      "ERROR REAL: " + error.message;
-
-    console.error(error);
+      "ERROR: " + error.message;
 
   }
 
