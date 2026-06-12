@@ -1,30 +1,28 @@
 export default {
   async fetch(request) {
 
-    if (request.method !== "POST") {
-      return Response.json({
+    const cors = {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type"
+    };
+
+    if (request.method === "OPTIONS") {
+      return new Response(null, { headers: cors });
+    }
+
+    return new Response(
+      JSON.stringify({
         ok: true,
         mensaje: "Worker activo"
-      });
-    }
-
-    try {
-
-      const { prompt } = await request.json();
-
-      return Response.json({
-        ok: true,
-        promptRecibido: prompt
-      });
-
-    } catch (err) {
-
-      return Response.json({
-        ok: false,
-        error: err.message
-      });
-
-    }
+      }),
+      {
+        headers: {
+          ...cors,
+          "Content-Type": "application/json"
+        }
+      }
+    );
 
   }
 };
