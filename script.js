@@ -289,22 +289,16 @@ function copiarVisuales(){
 
 async function generarImagen() {
 
-  const resultado = document.getElementById("resultadoImagen");
+  const resultado =
+    document.getElementById("resultadoImagen");
 
-  try {
+  const res = await fetch(
+    "https://pixellab45-v2.scostarobles.workers.dev/"
+  );
 
-    const res = await fetch(
-      "https://pixellab45-v2.scostarobles.workers.dev/"
-    );
+  const data = await res.json();
 
-    const texto = await res.text();
-
-    resultado.innerHTML = texto;
-
-  } catch (err) {
-
-    resultado.innerHTML = "ERROR: " + err.message;
-
-  }
+  resultado.innerHTML =
+    JSON.stringify(data);
 
 }
