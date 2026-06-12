@@ -878,14 +878,4 @@ section{
   white-space:pre-wrap;
 }
 
-window.generarImagen = function () {
 
-  const resultado = document.getElementById("resultadoImagen");
-
-  resultado.innerHTML = `
-    <div style="padding:10px;">
-      Función ejecutada correctamente ✅
-    </div>
-  `;
-
-};
