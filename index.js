@@ -1,7 +1,23 @@
 export default {
   async fetch(request) {
-    return new Response("Pixellab45 worker online desde github", {
-      headers: { "content-type": "text/plain" },
-    });
-  },
+
+    if (request.method === "POST") {
+
+      const { prompt } = await request.json();
+
+      return Response.json({
+        ok: true,
+        promptRecibido: prompt
+      });
+    }
+
+    return new Response(
+      "PIXELLAB45 Worker Online",
+      {
+        headers: {
+          "content-type": "text/plain"
+        }
+      }
+    );
+  }
 };
