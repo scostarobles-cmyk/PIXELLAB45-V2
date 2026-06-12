@@ -85,7 +85,9 @@ try {
   }
 
   const data = await replicateResponse.json();
-
+console.log(
+  JSON.stringify(data, null, 2)
+);
   return new Response(
     JSON.stringify({
       ok: true,
