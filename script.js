@@ -297,6 +297,8 @@ async function generarImagen() {
 
   try {
 
+    resultado.innerHTML = "🎨 Generando imagen...";
+
     const respuesta = await fetch(
       "https://pixellab45-v2.scostarobles.workers.dev/",
       {
@@ -304,21 +306,42 @@ async function generarImagen() {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ prompt })
+        body: JSON.stringify({
+          prompt
+        })
       }
     );
 
     const datos = await respuesta.json();
 
-    resultado.innerHTML =
-      "<pre>" +
-      JSON.stringify(datos, null, 2) +
-      "</pre>";
+    if (
+      datos.status === "succeeded" &&
+      datos.output
+    ) {
+
+      resultado.innerHTML = `
+        <img
+          src="${datos.output}"
+          alt="Imagen generada"
+          style="
+            width:100%;
+            max-width:600px;
+            border-radius:12px;
+            margin-top:10px;
+          ">
+      `;
+
+    } else {
+
+      resultado.innerHTML =
+        "❌ Error generando imagen";
+
+    }
 
   } catch(error) {
 
     resultado.innerHTML =
-      error.message;
+      "❌ " + error.message;
 
   }
 
