@@ -26,5 +26,14 @@ export default {
       return new Response(JSON.stringify({
         ok: true,
         image_url: imageUrl
-      }
-                                         }                
+      }), {
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+
+    // Si no es POST, respondemos con un mensaje simple
+    return new Response("PIXELLAB45 Worker Online", {
+      headers: { "content-type": "text/plain" }
+    });
+  }
+};
