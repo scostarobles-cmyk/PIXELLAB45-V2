@@ -1,11 +1,10 @@
 export default {
-  async fetch(request) {
+  async fetch(request, env) {
 
-    return new Response("WORKER FUNCIONA", {
-      headers: {
-        "Access-Control-Allow-Origin": "*"
-      }
+    return Response.json({
+      ok: true,
+      tokenExiste: !!env.REPLICATE_API_TOKEN
     });
 
   }
-};
+}
