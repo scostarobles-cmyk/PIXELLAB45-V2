@@ -286,41 +286,48 @@ function copiarVisuales(){
   }, 3000);
 }
 
-async function generarImagen(){
+async function generarImagen() {
 
-  const prompt =
-    document.getElementById("promptImagen").value;
+  const promptInput = document.getElementById("prompt");
+  const img = document.getElementById("img");
+  const btn = document.getElementById("btn");
 
-  const resultado =
-    document.getElementById("resultadoImagen");
+  const prompt = promptInput.value.trim();
 
-  resultado.innerHTML =
-    "Enviando prompt al Worker...";
+  if (!prompt) {
+    alert("Escribe un prompt");
+    return;
+  }
 
   try {
 
-    const respuesta = await fetch(
-      "https://pixellab45-v2.scostarobles.workers.dev/",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          prompt: prompt
-        })
-      }
-    );
+    // 🔒 bloquear botón mientras genera
+    btn.disabled = true;
+    btn.innerText = "Generando...";
 
-    const datos =
-      await respuesta.json();
+    img.src = ""; // limpia imagen anterior
 
-    resultado.innerHTML =
-      `<pre>${JSON.stringify(datos, null, 2)}</pre>`;
+    const res = await fetch("https://pixellab45-v2.scostarobles.workers.dev/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ prompt })
+    });
 
-  } catch(error){
+    const data = await res.json();
 
-    resultado.innerHTML =
-      "ERROR: " + error.message;
+    if (!data.ok) {
+      throw new Error(data.error || "Error generando imagen");
+    }
+
+    img.src = data.image_url;
+
+  } catch (err) {
+    console.error(err);
+    alert("Error al generar imagen");
+  } finally {
+    btn.disabled = false;
+    btn.innerText = "Generar";
   }
 }
