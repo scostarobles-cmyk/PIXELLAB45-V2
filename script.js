@@ -289,10 +289,7 @@ function copiarVisuales(){
 
 async function generarImagen(){
 
-  const prompt =
-    document.getElementById("promptImagen").value;
-
-  try{
+  try {
 
     const respuesta = await fetch(
       "https://pixellab45-v2.scostarobles.workers.dev/"
@@ -300,12 +297,9 @@ async function generarImagen(){
 
     const datos = await respuesta.json();
 
-document.getElementById(
-  "resultadoImagen"
-).innerHTML = `
-  <p><strong>Prompt generado:</strong></p>
-  <p>${datos.prompt}</p>
-`;
+    document.getElementById(
+      "resultadoImagen"
+    ).innerHTML = datos.mensaje;
 
   }
 
@@ -314,7 +308,7 @@ document.getElementById(
     document.getElementById(
       "resultadoImagen"
     ).innerHTML =
-      "❌ Error conectando con Cloudflare";
+      "ERROR REAL: " + error.message;
 
   }
 
