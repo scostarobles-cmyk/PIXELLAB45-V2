@@ -27,3 +27,4 @@ export default {
         ok: true,
         image_url: imageUrl
       }
+                                         }                
