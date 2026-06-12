@@ -11,7 +11,7 @@ export default {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          model: "tu_modelo_id", // Reemplaza con el ID del modelo en Replicate
+          model: "flux-1.1-pro", // Reemplaza con el ID del modelo en Replicate
           input: { prompt: prompt }
         })
       });
