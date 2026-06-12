@@ -26,4 +26,4 @@ export default {
       return new Response(JSON.stringify({
         ok: true,
         image_url: imageUrl
-      }),
+      }
