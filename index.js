@@ -1,9 +1,11 @@
 export default {
-  async fetch(request, env) {
+  async fetch(request) {
+
+    const { prompt } = await request.json();
 
     return Response.json({
       ok: true,
-      tokenExiste: !!env.REPLICATE_API_TOKEN
+      promptRecibido: prompt
     });
 
   }
