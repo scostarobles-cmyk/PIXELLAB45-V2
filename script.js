@@ -300,13 +300,18 @@ async function generarImagen() {
 
     const datos = await respuesta.json();
 
-    resultado.innerHTML =
-      `<img src="${datos.image_url}" style="max-width:100%">`;
+    resultado.innerHTML = `
+      <img
+        src="${datos.image_url}"
+        style="max-width:100%;border-radius:10px;">
+    `;
 
   } catch(error) {
 
     resultado.innerHTML =
-      "ERROR: " + error.message;
+      "ERROR REAL: " + error.message;
+
+    console.error(error);
 
   }
 
