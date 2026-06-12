@@ -288,7 +288,7 @@ function copiarVisuales(){
 }
 
 async function generarImagen(){
-
+alert("VERSION NUEVA");
   try {
 
     const respuesta = await fetch(
