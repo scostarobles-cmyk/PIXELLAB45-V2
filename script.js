@@ -287,18 +287,35 @@ function copiarVisuales(){
   }, 3000);
 }
 
-async function generarImagen() {
+async function generarImagen(){
 
-  const resultado =
-    document.getElementById("resultadoImagen");
+  const prompt =
+    document.getElementById("promptImagen").value;
 
-  const res = await fetch(
-    "https://pixellab45-v2.scostarobles.workers.dev/"
-  );
+  try{
 
-  const data = await res.json();
+    const respuesta = await fetch(
+      "https://aged-wood-7eaf.scostarobles.workers.dev/"
+    );
 
-  resultado.innerHTML =
-    JSON.stringify(data);
+    const datos = await respuesta.json();
+
+document.getElementById(
+  "resultadoImagen"
+).innerHTML = `
+  <p><strong>Prompt generado:</strong></p>
+  <p>${datos.prompt}</p>
+`;
+
+  }
+
+  catch(error){
+
+    document.getElementById(
+      "resultadoImagen"
+    ).innerHTML =
+      "❌ Error conectando con Cloudflare";
+
+  }
 
 }
