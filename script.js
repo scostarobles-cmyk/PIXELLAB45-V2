@@ -289,60 +289,91 @@ function copiarVisuales(){
 
 async function generarImagen() {
 
-  const prompt =
-    document.getElementById("promptImagen").value;
+const prompt =
+document.getElementById("promptImagen").value;
 
-  const resultado =
-    document.getElementById("resultadoImagen");
+const resultado =
+document.getElementById("resultadoImagen");
 
-  try {
+if (!prompt.trim()) {
 
-    resultado.innerHTML = "🎨 Generando imagen...";
+resultado.innerHTML =
+  "⚠️ Escribe un prompt primero";
 
-    const respuesta = await fetch(
-      "https://pixellab45-v2.scostarobles.workers.dev/",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          prompt
-        })
-      }
-    );
+return;
 
-    const datos = await respuesta.json();
+}
 
-    if (
-      datos.status === "succeeded" &&
-      datos.output
-    ) {
+try {
 
-      resultado.innerHTML = `
-        <img
-          src="${datos.output}"
-          alt="Imagen generada"
-          style="
-            width:100%;
-            max-width:600px;
-            border-radius:12px;
-            margin-top:10px;
-          ">
-      `;
+resultado.innerHTML =
+  "🎨 Generando imagen...";
 
-    } else {
-
-      resultado.innerHTML =
-        "❌ Error generando imagen";
-
-    }
-
-  } catch(error) {
-
-    resultado.innerHTML =
-      "❌ " + error.message;
-
+const respuesta = await fetch(
+  "https://pixellab45-v2.scostarobles.workers.dev/",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      prompt
+    })
   }
+);
+
+const datos =
+  await respuesta.json();
+
+console.log("Respuesta Worker:", datos);
+
+if (!datos.ok) {
+
+  resultado.innerHTML =
+    `❌ ${datos.error || "Error desconocido"}`;
+
+  return;
+}
+
+const prediction =
+  datos.data;
+
+if (
+  prediction.status === "succeeded"
+) {
+
+  let imagen = prediction.output;
+
+  if (Array.isArray(imagen)) {
+    imagen = imagen[0];
+  }
+
+  resultado.innerHTML = `
+    <img
+      src="${imagen}"
+      alt="Imagen generada"
+      style="
+        width:100%;
+        max-width:600px;
+        border-radius:12px;
+        margin-top:10px;
+      ">
+  `;
+
+} else {
+
+  resultado.innerHTML =
+    `❌ Estado: ${prediction.status}`;
+
+}
+
+} catch(error) {
+
+console.error(error);
+
+resultado.innerHTML =
+  `❌ ${error.message}`;
+
+}
 
 }
