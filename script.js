@@ -301,12 +301,12 @@ async function generarImagen() {
     const datos = await respuesta.json();
 
     resultado.innerHTML =
-      JSON.stringify(datos);
+      `<img src="${datos.image_url}" style="max-width:100%">`;
 
   } catch(error) {
 
     resultado.innerHTML =
-      "ERROR REAL: " + error.message;
+      "ERROR: " + error.message;
 
   }
 
