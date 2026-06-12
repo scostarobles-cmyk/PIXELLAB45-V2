@@ -297,8 +297,6 @@ async function generarImagen() {
 
   try {
 
-    resultado.innerHTML = "Generando...";
-
     const respuesta = await fetch(
       "https://pixellab45-v2.scostarobles.workers.dev/",
       {
@@ -320,7 +318,7 @@ async function generarImagen() {
   } catch(error) {
 
     resultado.innerHTML =
-      "ERROR: " + error.message;
+      error.message;
 
   }
 
