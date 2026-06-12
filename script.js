@@ -295,7 +295,7 @@ async function generarImagen(){
   try{
 
     const respuesta = await fetch(
-      "https://aged-wood-7eaf.scostarobles.workers.dev/"
+      "https://pixellab45-v2.scostarobles.workers.dev/"
     );
 
     const datos = await respuesta.json();
