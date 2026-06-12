@@ -287,8 +287,11 @@ function copiarVisuales(){
   }, 3000);
 }
 
-async function generarImagen(){
-alert("VERSION NUEVA");
+async function generarImagen() {
+
+  const resultado =
+    document.getElementById("resultadoImagen");
+
   try {
 
     const respuesta = await fetch(
@@ -297,17 +300,12 @@ alert("VERSION NUEVA");
 
     const datos = await respuesta.json();
 
-    document.getElementById(
-      "resultadoImagen"
-    ).innerHTML = datos.mensaje;
+    resultado.innerHTML =
+      JSON.stringify(datos);
 
-  }
+  } catch(error) {
 
-  catch(error){
-
-    document.getElementById(
-      "resultadoImagen"
-    ).innerHTML =
+    resultado.innerHTML =
       "ERROR REAL: " + error.message;
 
   }
