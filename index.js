@@ -1,22 +1,20 @@
 export default {
   async fetch(request, env) {
 
-    const corsHeaders = {
+    const cors = {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "POST, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type"
     };
 
     if (request.method === "OPTIONS") {
-      return new Response(null, { headers: corsHeaders });
+      return new Response(null, { headers: cors });
     }
 
     try {
 
       if (request.method !== "POST") {
-        return new Response("PIXELLAB45 Worker Online", {
-          headers: corsHeaders
-        });
+        return new Response("PIXELLAB45 Worker Online", { headers: cors });
       }
 
       const { prompt } = await request.json();
@@ -25,13 +23,10 @@ export default {
         return new Response(JSON.stringify({
           ok: false,
           error: "Prompt vacío"
-        }), {
-          status: 400,
-          headers: { ...corsHeaders, "Content-Type": "application/json" }
-        });
+        }), { headers: cors });
       }
 
-      // 1️⃣ Crear predicción (FLUX correcto)
+      // 1️⃣ Crear predicción
       const create = await fetch(
         "https://api.replicate.com/v1/models/black-forest-labs/flux-1.1-pro/predictions",
         {
@@ -51,18 +46,15 @@ export default {
       if (!prediction.id) {
         return new Response(JSON.stringify({
           ok: false,
-          error: "No se pudo crear predicción",
+          error: "No se creó predicción",
           raw: prediction
-        }), {
-          status: 500,
-          headers: { ...corsHeaders, "Content-Type": "application/json" }
-        });
+        }), { headers: cors });
       }
 
-      // 2️⃣ Polling interno
+      // 2️⃣ Polling robusto
       let result = prediction;
 
-      for (let i = 0; i < 25; i++) {
+      for (let i = 0; i < 30; i++) {
 
         await new Promise(r => setTimeout(r, 2000));
 
@@ -81,29 +73,38 @@ export default {
         if (result.status === "failed") break;
       }
 
-      // 3️⃣ Error model
+      // 3️⃣ VALIDACIÓN REAL DE OUTPUT
       if (result.status !== "succeeded") {
         return new Response(JSON.stringify({
           ok: false,
-          error: "Fallo en generación",
-          detail: result.error || result.status
-        }), {
-          status: 500,
-          headers: { ...corsHeaders, "Content-Type": "application/json" }
-        });
+          error: result.error || "Fallo en generación",
+          status: result.status
+        }), { headers: cors });
       }
 
-      // 4️⃣ Replicate devuelve array o string
-      const image = Array.isArray(result.output)
-        ? result.output[0]
-        : result.output;
+      // 4️⃣ EXTRAER IMAGEN (IMPORTANTE)
+      let image = null;
+
+      if (Array.isArray(result.output)) {
+        image = result.output[0];
+      } else {
+        image = result.output;
+      }
+
+      if (!image) {
+        return new Response(JSON.stringify({
+          ok: false,
+          error: "Replicate no devolvió imagen",
+          raw: result
+        }), { headers: cors });
+      }
 
       return new Response(JSON.stringify({
         ok: true,
         image_url: image
       }), {
         headers: {
-          ...corsHeaders,
+          ...cors,
           "Content-Type": "application/json"
         }
       });
@@ -114,7 +115,7 @@ export default {
         error: err.message
       }), {
         status: 500,
-        headers: { "Content-Type": "application/json" }
+        headers: cors
       });
     }
   }
