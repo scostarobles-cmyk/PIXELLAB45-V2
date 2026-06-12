@@ -1,12 +1,30 @@
 export default {
   async fetch(request) {
 
-    const { prompt } = await request.json();
+    if (request.method !== "POST") {
+      return Response.json({
+        ok: true,
+        mensaje: "Worker activo"
+      });
+    }
 
-    return Response.json({
-      ok: true,
-      promptRecibido: prompt
-    });
+    try {
+
+      const { prompt } = await request.json();
+
+      return Response.json({
+        ok: true,
+        promptRecibido: prompt
+      });
+
+    } catch (err) {
+
+      return Response.json({
+        ok: false,
+        error: err.message
+      });
+
+    }
 
   }
-}
+};
