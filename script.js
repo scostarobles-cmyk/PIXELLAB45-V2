@@ -289,46 +289,22 @@ function copiarVisuales(){
 
 async function generarImagen() {
 
-  const input = document.getElementById("promptImagen");
   const resultado = document.getElementById("resultadoImagen");
-
-  console.log("CLICK OK");
-
-  const prompt = input.value.trim();
-
-  if (!prompt) {
-    resultado.innerHTML = "Escribe un prompt";
-    return;
-  }
-
-  resultado.innerHTML = "Generando imagen...";
 
   try {
 
-    const res = await fetch("https://pixellab45-v2.scostarobles.workers.dev/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ prompt })
-    });
+    const res = await fetch(
+      "https://pixellab45-v2.scostarobles.workers.dev/"
+    );
 
-    console.log("STATUS:", res.status);
+    const texto = await res.text();
 
-    const data = await res.json();
-
-    console.log("DATA:", data);
-
-    if (data.ok && data.image_url) {
-      resultado.innerHTML = `
-        <img src="${data.image_url}" style="max-width:100%; border-radius:12px;">
-      `;
-    } else {
-      resultado.innerHTML = "Error: " + (data.error || "sin imagen");
-    }
+    resultado.innerHTML = texto;
 
   } catch (err) {
-    console.error("ERROR FETCH:", err);
-    resultado.innerHTML = "Error de conexión";
+
+    resultado.innerHTML = "ERROR: " + err.message;
+
   }
+
 }
