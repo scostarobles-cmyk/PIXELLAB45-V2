@@ -1,39 +1,120 @@
 export default {
-  async fetch(request) {
-    if (request.method === "POST") {
+  async fetch(request, env) {
+
+    const corsHeaders = {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type"
+    };
+
+    if (request.method === "OPTIONS") {
+      return new Response(null, { headers: corsHeaders });
+    }
+
+    try {
+
+      if (request.method !== "POST") {
+        return new Response("PIXELLAB45 Worker Online", {
+          headers: corsHeaders
+        });
+      }
+
       const { prompt } = await request.json();
 
-      // Hacemos la solicitud a Replicate
-      const replicateResponse = await fetch("https://api.replicate.com/v1/predictions", {
-        method: "POST",
-        headers: {
-          "Authorization": `Token ${env.REPLICATE_API_TOKEN}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          model: "flux-1.1-pro", // Reemplaza con el ID del modelo en Replicate
-          input: { prompt: prompt }
-        })
-      });
+      if (!prompt) {
+        return new Response(JSON.stringify({
+          ok: false,
+          error: "Prompt vacío"
+        }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" }
+        });
+      }
 
-      // Obtenemos la respuesta de Replicate
-      const replicateData = await replicateResponse.json();
+      // 1️⃣ Crear predicción (FLUX correcto)
+      const create = await fetch(
+        "https://api.replicate.com/v1/models/black-forest-labs/flux-1.1-pro/predictions",
+        {
+          method: "POST",
+          headers: {
+            "Authorization": `Token ${env.REPLICATE_API_TOKEN}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            input: { prompt }
+          })
+        }
+      );
 
-      // Extraemos la URL de la imagen generada
-      const imageUrl = replicateData.output; // Esto asume que Replicate devuelve una URL
+      const prediction = await create.json();
 
-      // Devolvemos la URL en la respuesta
+      if (!prediction.id) {
+        return new Response(JSON.stringify({
+          ok: false,
+          error: "No se pudo crear predicción",
+          raw: prediction
+        }), {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" }
+        });
+      }
+
+      // 2️⃣ Polling interno
+      let result = prediction;
+
+      for (let i = 0; i < 25; i++) {
+
+        await new Promise(r => setTimeout(r, 2000));
+
+        const poll = await fetch(
+          `https://api.replicate.com/v1/predictions/${prediction.id}`,
+          {
+            headers: {
+              "Authorization": `Token ${env.REPLICATE_API_TOKEN}`
+            }
+          }
+        );
+
+        result = await poll.json();
+
+        if (result.status === "succeeded") break;
+        if (result.status === "failed") break;
+      }
+
+      // 3️⃣ Error model
+      if (result.status !== "succeeded") {
+        return new Response(JSON.stringify({
+          ok: false,
+          error: "Fallo en generación",
+          detail: result.error || result.status
+        }), {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" }
+        });
+      }
+
+      // 4️⃣ Replicate devuelve array o string
+      const image = Array.isArray(result.output)
+        ? result.output[0]
+        : result.output;
+
       return new Response(JSON.stringify({
         ok: true,
-        image_url: imageUrl
+        image_url: image
       }), {
+        headers: {
+          ...corsHeaders,
+          "Content-Type": "application/json"
+        }
+      });
+
+    } catch (err) {
+      return new Response(JSON.stringify({
+        ok: false,
+        error: err.message
+      }), {
+        status: 500,
         headers: { "Content-Type": "application/json" }
       });
     }
-
-    // Si no es POST, respondemos con un mensaje simple
-    return new Response("PIXELLAB45 Worker Online", {
-      headers: { "content-type": "text/plain" }
-    });
   }
-};
