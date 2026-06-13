@@ -1,6 +1,7 @@
 console.log("SCRIPT CARGADO OK");
 
-let imagenesGuardadas = JSON.parse(localStorage.getItem("galeriaPixellab")) || [];
+let imagenesGuardadas =
+  JSON.parse(localStorage.getItem("galeriaPixellab")) || [];
 
 /* =========================
    PROMPTS
@@ -10,7 +11,7 @@ function generarPrompt() {
   const tema = document.getElementById("temaPrompt").value;
   const tipo = document.getElementById("tipoContenido").value;
 
-  if (tema.trim() === "") {
+  if (!tema.trim()) {
     document.getElementById("resultadoPrompt").innerText =
       "⚠️ Escribe un tema primero";
     return;
@@ -19,27 +20,11 @@ function generarPrompt() {
   let prompt = "";
 
   if (tipo === "TikTok") {
-    prompt = `
-🚀 PROMPT PIXELLAB45 - TIKTOK VIRAL
-
-Crea un video viral sobre:
-"${tema}"
-
-Incluye hook, problema, solución, ejemplo y CTA.
-`;
-  }
-
-  else if (tipo === "YouTube") {
-    prompt = `
-🚀 PROMPT PIXELLAB45 - YOUTUBE
-
-Guion educativo sobre "${tema}".
-Incluye intro, explicación, casos prácticos y CTA.
-`;
-  }
-
-  else {
-    prompt = `Contenido sobre "${tema}" para ${tipo}`;
+    prompt = `🚀 TIKTOK: ${tema}`;
+  } else if (tipo === "YouTube") {
+    prompt = `🚀 YOUTUBE: ${tema}`;
+  } else {
+    prompt = `${tema} para ${tipo}`;
   }
 
   document.getElementById("resultadoPrompt").innerText = prompt;
@@ -57,7 +42,7 @@ function generarGuion() {
   const tema = document.getElementById("temaGuion").value;
   const duracion = document.getElementById("duracionGuion").value;
 
-  if (tema.trim() === "") {
+  if (!tema.trim()) {
     document.getElementById("resultadoGuion").innerText =
       "⚠️ Escribe un tema primero";
     return;
@@ -69,11 +54,9 @@ function generarGuion() {
 Tema: ${tema}
 Duración: ${duracion}
 
-🔥 Hook impactante
-💡 Desarrollo claro
-📱 Ejemplo
-🚀 Cierre fuerte
-📢 CTA
+🔥 Hook
+💡 Desarrollo
+🚀 Cierre
 `;
 
   document.getElementById("resultadoGuion").innerText = guion;
@@ -90,7 +73,7 @@ function copiarGuion() {
 function generarIdeas() {
   const tema = document.getElementById("temaIdea").value;
 
-  if (tema.trim() === "") {
+  if (!tema.trim()) {
     document.getElementById("resultadoIdeas").innerText =
       "⚠️ Escribe un tema primero";
     return;
@@ -99,11 +82,9 @@ function generarIdeas() {
   const ideas = `
 🚀 IDEAS PIXELLAB45
 
-🔥 Viral: Nadie te cuenta esto sobre ${tema}
-🤯 Impacto: Probé ${tema} y esto pasó
-💰 Dinero: Cómo ganar dinero con ${tema}
-⚠️ Error: Errores comunes con ${tema}
-🎓 Educación: Aprende ${tema} fácil
+🔥 Viral: ${tema}
+💰 Dinero: ${tema}
+⚠️ Error: ${tema}
 `;
 
   document.getElementById("resultadoIdeas").innerText = ideas;
@@ -157,13 +138,6 @@ async function generarImagen() {
   }
 }
 
-    guardarImagen(imagen);
-
-  } catch (e) {
-    resultado.innerHTML = "❌ Error de conexión";
-  }
-}
-
 /* =========================
    GALERIA
 ========================= */
@@ -185,10 +159,9 @@ function renderGaleria() {
 
   imagenesGuardadas.forEach((url) => {
     const div = document.createElement("div");
-    div.className = "gallery-item";
 
     div.innerHTML = `
-      <img src="${url}" />
+      <img src="${url}" style="width:100%;border-radius:10px;">
       <button onclick="descargarImagen('${url}')">⬇</button>
     `;
 
