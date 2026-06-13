@@ -364,21 +364,19 @@ async function generarImagen() {
   const prompt = document.getElementById("promptImagen").value;
 
   try {
-    // 🎨 1. pedir al Worker la imagen
     const res = await fetch(
-      "https://pixellab45-v2.scostarobles.workers.dev/generate",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt })
-      }
+      "https://pixellab45-v2.scostarobles.workers.dev/generate?prompt=" +
+      encodeURIComponent(prompt)
     );
 
-    const imageBlob = await res.blob();
+    if (!res.ok) {
+      throw new Error("Worker no responde");
+    }
 
-    // 📤 2. subir a R2
+    const blob = await res.blob();
+
     const formData = new FormData();
-    formData.append("file", imageBlob, "pixellab45.png");
+    formData.append("file", blob, "pixellab45.png");
 
     const upload = await fetch(
       "https://pixellab45-v2.scostarobles.workers.dev/upload",
@@ -388,13 +386,13 @@ async function generarImagen() {
       }
     );
 
-    const result = await upload.json();
+    const data = await upload.json();
 
-    alert("Imagen creada ✔");
-    console.log(result);
+    alert("Imagen generada ✔");
+    console.log(data);
 
   } catch (err) {
-    console.error("ERROR:", err);
-    alert(err.message);
+    console.error(err);
+    alert("Error: " + err.message);
   }
 }
