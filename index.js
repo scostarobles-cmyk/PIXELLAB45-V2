@@ -33,7 +33,7 @@ export default {
       }
 
       // =========================
-      // 🎨 CLOUDFARE AI IMAGE MODEL
+      // 🎨 CLOUDFARE AI MODEL
       // =========================
 
       const result = await env.AI.run(
@@ -43,48 +43,42 @@ export default {
         }
       );
 
-      if (!result || !result.image) {
+      console.log("AI RESULT:", result);
+
+      // 🔥 extracción robusta (CORRECTA)
+      const image =
+        result?.image ||
+        result?.result?.image ||
+        result?.result ||
+        result?.output?.[0];
+
+      if (!image) {
         return json({
           ok: false,
-          error: "No se generó imagen",
-          raw: result
+          error: "Modelo no devolvió imagen",
+          debug: result
         }, 500);
       }
-const result = await env.AI.run(
-  "@cf/stabilityai/stable-diffusion-xl-base-1.0",
-  {
-    prompt: enhancePrompt(prompt)
+
+      return json({
+        ok: true,
+        data: {
+          output: image
+        }
+      });
+
+    } catch (err) {
+
+      return json({
+        ok: false,
+        error: err.message
+      }, 500);
+    }
   }
-);
-
-// 🔥 DEBUG REAL
-console.log("AI RESULT:", result);
-
-// 🔥 extracción robusta
-const image =
-  result?.image ||
-  result?.result?.image ||
-  result?.result ||
-  result?.output?.[0];
-
-if (!image) {
-  return json({
-    ok: false,
-    error: "Modelo no devolvió imagen",
-    debug: result
-  }, 500);
-}
-
-return json({
-  ok: true,
-  data: {
-    output: image
-  }
-});
-      
+};
 
 /* =========================
-   🧠 PROMPT ENGINE (PIXELLAB45 STYLE)
+   🧠 PROMPT ENGINE
 ========================= */
 
 function enhancePrompt(prompt) {
@@ -111,4 +105,4 @@ function json(obj, status = 200) {
       "Access-Control-Allow-Origin": "*"
     }
   });
-    }
+}
