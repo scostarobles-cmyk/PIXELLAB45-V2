@@ -365,25 +365,38 @@ async function generarImagen() {
   const prompt = document.getElementById("promptImagen").value;
 
   try {
-    // 1. LLAMAR A TU IA (YA LO TIENES)
-    const respuesta = await fetch("TU_ENDPOINT_IA", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ prompt })
-    });
+    // 🔥 1. VALIDACIÓN
+    if (!prompt || prompt.trim() === "") {
+      alert("Escribe un prompt");
+      return;
+    }
 
-    const data = await respuesta.json();
+    // 🎨 2. IA (CLOUDFARE WORKERS AI)
+    const result = await env.AI.run(
+      "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+      {
+        prompt: prompt
+      }
+    );
 
-    // 🔥 AQUÍ DEBE VENIR LA IMAGEN (URL o base64)
-    const imageUrl = data.image;
+    if (!result || !result.image) {
+      throw new Error("La IA no devolvió imagen");
+    }
 
-    // 2. CONVERTIR A BLOB
-    const imgResponse = await fetch(imageUrl);
-    const blob = await imgResponse.blob();
+    // 🖼️ 3. CONVERTIR BASE64 A BLOB
+    const byteCharacters = atob(result.image);
+    const byteNumbers = new Array(byteCharacters.length);
 
-    // 3. SUBIR A R2
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: "image/png" });
+
+    // 📤 4. SUBIR A WORKER / R2
     const formData = new FormData();
-    formData.append("file", blob, "pixellab45.png");
+    formData.append("file", blob, `pixellab45-${Date.now()}.png`);
 
     const upload = await fetch(
       "https://pixellab45-v2.scostarobles.workers.dev/upload",
@@ -393,14 +406,19 @@ async function generarImagen() {
       }
     );
 
-    const result = await upload.json();
+    const uploadResult = await upload.json();
 
-    console.log("SUBIDO A R2:", result);
+    if (!uploadResult.ok) {
+      throw new Error("Error subiendo a R2");
+    }
 
-    alert("Imagen guardada en galería ✔");
+    // 🧠 5. CONFIRMACIÓN
+    alert("Imagen generada y guardada en galería ✔");
+
+    console.log("RESULTADO FINAL:", uploadResult);
 
   } catch (err) {
-    console.error(err);
-    alert("Error generando imagen");
+    console.error("ERROR COMPLETO:", err);
+    alert("Error generando imagen: " + err.message);
   }
 }
