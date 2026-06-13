@@ -170,28 +170,77 @@ function copiarStoryboard() {
   setTimeout(() => {
     document.getElementById("mensajeStoryboard").innerText = "";
   }, 3000);
-}function generarIdeas(){
+}
+function generarIdeas(){
 
-  const tema =
-    document.getElementById("temaIdea").value;
+const tema =
+document.getElementById("temaIdea").value;
 
-  let ideas = `
-💡 IDEAS PIXELLAB45
+if(tema.trim() === ""){
 
-1. Cómo usar ${tema}
+document.getElementById("resultadoIdeas").innerText =
+  "⚠️ Escribe un tema primero";
 
-2. Errores comunes en ${tema}
+return;
 
-3. Herramientas gratuitas de ${tema}
+}
 
-4. Tendencias futuras de ${tema}
+let ideas = `
+🚀 IDEAS PIXELLAB45
 
-5. Tutorial rápido sobre ${tema}
+━━━━━━━━━━━━━━━━━━
+
+🔥 IDEA VIRAL
+
+Nadie te cuenta esto sobre ${tema}
+
+━━━━━━━━━━━━━━━━━━
+
+🤯 IDEA IMPACTANTE
+
+Probé ${tema} durante 30 días y esto pasó
+
+━━━━━━━━━━━━━━━━━━
+
+💰 IDEA MONETIZACIÓN
+
+Cómo ganar dinero usando ${tema}
+
+━━━━━━━━━━━━━━━━━━
+
+⚠️ IDEA ERROR COMÚN
+
+Los errores que todos cometen con ${tema}
+
+━━━━━━━━━━━━━━━━━━
+
+🎓 IDEA EDUCATIVA
+
+Guía rápida para dominar ${tema}
+
+━━━━━━━━━━━━━━━━━━
+
+🔮 IDEA FUTURISTA
+
+El futuro de ${tema} en los próximos años
+
+━━━━━━━━━━━━━━━━━━
+
+🛠 IDEA HERRAMIENTAS
+
+Las mejores herramientas relacionadas con ${tema}
+
+━━━━━━━━━━━━━━━━━━
+
+🎬 IDEA SHORTS / TIKTOK
+
+3 cosas que debes saber sobre ${tema} en menos de 60 segundos
 `;
 
-  document.getElementById(
-    "resultadoIdeas"
-  ).innerText = ideas;
+document.getElementById(
+"resultadoIdeas"
+).innerText = ideas;
+
 }
 
 function copiarIdeas(){
