@@ -118,9 +118,7 @@ function copiarIdeas() {
 ========================= */
 
 async function generarImagen() {
-const datos = await respuesta.json();
 
-console.log("RESPUESTA COMPLETA:", datos);
   const prompt = document.getElementById("promptImagen").value;
   const resultado = document.getElementById("resultadoImagen");
 
@@ -190,14 +188,6 @@ console.log("RESPUESTA COMPLETA:", datos);
         ">
     `;
 
-    guardarImagen(imagen);
-
-  } catch (error) {
-
-    console.error(error);
-
-    resultado.innerHTML = "❌ Error de conexión";
-  }
 }
     guardarImagen(imagen);
 
