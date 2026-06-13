@@ -1,77 +1,93 @@
 export default {
   async fetch(request, env) {
 
-    // CORS PRE-FLIGHT
     if (request.method === "OPTIONS") {
       return new Response(null, {
         status: 204,
-        headers: corsHeaders()
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, OPTIONS",
+          "Access-Control-Allow-Headers": "*"
+        }
       });
     }
 
     if (request.method !== "POST") {
-      return json({
-        ok: false,
-        error: "Solo POST permitido"
-      }, 405);
+      return new Response(
+        JSON.stringify({
+          ok: false,
+          error: "Solo POST permitido"
+        }),
+        {
+          status: 405,
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
+          }
+        }
+      );
     }
 
     try {
 
-      const contentType =
-        request.headers.get("content-type") || "";
-
-      let prompt = "";
-
-      if (contentType.includes("multipart/form-data")) {
-        const form = await request.formData();
-        prompt = form.get("prompt");
-      }
-      else if (contentType.includes("application/json")) {
-        const body = await request.json();
-        prompt = body.prompt;
-      }
+      const body = await request.json();
+      const prompt = body.prompt;
 
       if (!prompt) {
-        return json({
-          ok: false,
-          error: "Prompt requerido"
-        }, 400);
+        return new Response(
+          JSON.stringify({
+            ok: false,
+            error: "Prompt requerido"
+          }),
+          {
+            status: 400,
+            headers: {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*"
+            }
+          }
+        );
       }
 
-      // PRUEBA SIMPLE
-      return json({
-        ok: true,
-        prueba: "Worker funcionando",
-        promptRecibido: prompt
+      const image = await env.AI.run(
+        "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+        {
+          prompt: `
+cinematic ultra realistic 8k,
+futuristic cyberpunk lighting,
+high detail,
+professional digital art,
+
+${prompt}
+`,
+          width: 1024,
+          height: 1024,
+          num_steps: 20
+        }
+      );
+
+      return new Response(image, {
+        headers: {
+          "Content-Type": "image/png",
+          "Access-Control-Allow-Origin": "*"
+        }
       });
 
     } catch (err) {
 
-      return json({
-        ok: false,
-        error: String(err),
-        message: err?.message
-      }, 500);
+      return new Response(
+        JSON.stringify({
+          ok: false,
+          error: err.message
+        }),
+        {
+          status: 500,
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
+          }
+        }
+      );
     }
   }
 };
-
-function corsHeaders() {
-  return {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-    "Access-Control-Allow-Headers": "*",
-    "Content-Type": "application/json"
-  };
-}
-
-function json(obj, status = 200) {
-  return new Response(
-    JSON.stringify(obj),
-    {
-      status,
-      headers: corsHeaders()
-    }
-  );
-}
