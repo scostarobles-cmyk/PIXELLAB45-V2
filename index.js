@@ -50,7 +50,37 @@ export default {
           raw: result
         }, 500);
       }
+const result = await env.AI.run(
+  "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+  {
+    prompt: enhancePrompt(prompt)
+  }
+);
 
+// 🔥 DEBUG REAL
+console.log("AI RESULT:", result);
+
+// 🔥 extracción robusta
+const image =
+  result?.image ||
+  result?.result?.image ||
+  result?.result ||
+  result?.output?.[0];
+
+if (!image) {
+  return json({
+    ok: false,
+    error: "Modelo no devolvió imagen",
+    debug: result
+  }, 500);
+}
+
+return json({
+  ok: true,
+  data: {
+    output: image
+  }
+});
       return json({
         ok: true,
         data: {
