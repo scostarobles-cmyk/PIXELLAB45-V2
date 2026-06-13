@@ -21,23 +21,21 @@ export default {
       prompt = String(prompt || "");
 
       if (!prompt) {
-        return json({ ok: false, error: "Prompt vacío" }, 400);
+        return json({ ok: false, error: "Prompt requerido" }, 400);
       }
 
-      console.log("PROMPT:", prompt);
+      // =========================
+      // 🎨 MODELO NUEVO
+      // =========================
 
       const result = await env.AI.run(
-        "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+        "@cf/bytedance/stable-diffusion-xl-lightning",
         {
           prompt: enhancePrompt(prompt)
         }
       );
 
       console.log("RAW RESULT:", result);
-
-      // =========================
-      // 🔥 EXTRACCIÓN REALISTA
-      // =========================
 
       let image = null;
 
@@ -51,20 +49,13 @@ export default {
         image = result.result;
       }
 
-      // ❌ SI FALLA → MOSTRAMOS DEBUG REAL
       if (!image) {
         return json({
           ok: false,
-          error: "No se pudo extraer imagen",
-          debug_type: typeof result,
-          debug_keys: result ? Object.keys(result) : null,
+          error: "No se pudo extraer la imagen",
           raw: result
         }, 500);
       }
-
-      // =========================
-      // 🔥 CONVERSIÓN SEGURA
-      // =========================
 
       if (image instanceof Uint8Array) {
         image = btoa(String.fromCharCode(...image));
@@ -78,13 +69,9 @@ export default {
       });
 
     } catch (err) {
-
-      console.log("ERROR FULL:", err);
-
       return json({
         ok: false,
-        error: err.message,
-        stack: err.stack
+        error: err.message
       }, 500);
     }
   }
@@ -98,8 +85,7 @@ function enhancePrompt(prompt) {
   return `
 cinematic ultra realistic 8k,
 futuristic cyberpunk lighting,
-neon glow,
-ultra detailed,
+neon glow, ultra detailed, professional,
 
 ${prompt}
 `;
