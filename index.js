@@ -7,15 +7,10 @@ export default {
 
     try {
 
-      const contentType = request.headers.get("content-type") || "";
-      let prompt = "";
-
-      if (contentType.includes("multipart/form-data")) {
-        const form = await request.formData();
-        prompt = form.get("prompt");
-      } else {
-        const body = await request.json();
-        prompt = body.prompt;
+      return json({
+  ok: true,
+  prueba: "Worker funcionando"
+});
       }
 
       prompt = String(prompt || "");
