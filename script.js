@@ -172,7 +172,7 @@ function copiarStoryboard() {
   }, 3000);
 }
 function generarIdeas(){
- alert("Generador funcionando");
+ 
   const tema =
     document.getElementById("temaIdea").value;
 
