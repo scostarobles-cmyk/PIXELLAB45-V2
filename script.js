@@ -364,19 +364,28 @@ async function generarImagen() {
   const prompt = document.getElementById("promptImagen").value;
 
   try {
+    if (!prompt) {
+      alert("Escribe un prompt");
+      return;
+    }
+
+    // 🎨 1. GENERAR IMAGEN
     const res = await fetch(
-      "https://pixellab45-v2.scostarobles.workers.dev/generate?prompt=" +
-      encodeURIComponent(prompt)
+      "https://pixellab45-v2.scostarobles.workers.dev/generate",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt })
+      }
     );
 
-    if (!res.ok) {
-      throw new Error("Worker no responde");
-    }
+    if (!res.ok) throw new Error("Error generando imagen");
 
     const blob = await res.blob();
 
+    // 📤 2. SUBIR A R2
     const formData = new FormData();
-    formData.append("file", blob, "pixellab45.png");
+    formData.append("file", blob, `pixellab45-${Date.now()}.png`);
 
     const upload = await fetch(
       "https://pixellab45-v2.scostarobles.workers.dev/upload",
@@ -386,13 +395,15 @@ async function generarImagen() {
       }
     );
 
-    const data = await upload.json();
+    const result = await upload.json();
 
-    alert("Imagen generada ✔");
-    console.log(data);
+    if (!result.ok) throw new Error("Error subiendo imagen");
+
+    alert("Imagen guardada en galería ✔");
+    console.log("OK:", result);
 
   } catch (err) {
     console.error(err);
-    alert("Error: " + err.message);
+    alert(err.message);
   }
 }
