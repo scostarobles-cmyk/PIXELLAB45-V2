@@ -528,14 +528,35 @@ function copiarIdeas(){
   const texto =
     document.getElementById("resultadoIdeas").innerText;
 
-  navigator.clipboard.writeText(texto);
+  if(texto.trim() === ""){
 
-  document.getElementById("mensajeIdeasCopiadas").innerText =
-    "✅ Ideas copiadas correctamente";
+    document.getElementById("mensajeIdeasCopiadas").innerText =
+      "⚠️ Primero genera ideas";
 
-  setTimeout(() => {
-    document.getElementById("mensajeIdeasCopiadas").innerText = "";
-  }, 3000);
+    return;
+  }
+
+  navigator.clipboard.writeText(texto)
+    .then(() => {
+
+      document.getElementById("mensajeIdeasCopiadas").innerText =
+        "✅ Ideas copiadas correctamente";
+
+      setTimeout(() => {
+        document.getElementById("mensajeIdeasCopiadas").innerText = "";
+      }, 3000);
+
+    })
+    .catch(err => {
+
+      console.error(err);
+
+      document.getElementById("mensajeIdeasCopiadas").innerText =
+        "❌ Error al copiar";
+
+    });
+
+}
 
 }function generarVisuales(){
 
