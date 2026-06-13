@@ -363,17 +363,24 @@ function copiarVisuales(){
 
 async function generarImagen() {
 
-  const prompt = document.getElementById("promptImagen").value;
-  const resultado = document.getElementById("resultadoImagen");
+  const prompt =
+    document.getElementById("promptImagen").value;
+
+  const resultado =
+    document.getElementById("resultadoImagen");
 
   if (!prompt.trim()) {
-    resultado.innerHTML = "⚠️ Escribe un prompt primero";
+
+    resultado.innerHTML =
+      "⚠️ Escribe un prompt primero";
+
     return;
   }
 
   try {
 
-    resultado.innerHTML = "🧪 Probando conexión...";
+    resultado.innerHTML =
+      "🎨 Generando imagen...";
 
     const respuesta = await fetch(
       "https://pixellab45-v2.scostarobles.workers.dev/",
@@ -382,24 +389,41 @@ async function generarImagen() {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ prompt })
+        body: JSON.stringify({
+          prompt
+        })
       }
     );
 
-    const texto = await respuesta.text();
+    if (!respuesta.ok) {
+
+      resultado.innerHTML =
+        `❌ Error HTTP ${respuesta.status}`;
+
+      return;
+    }
+
+    const blob =
+      await respuesta.blob();
+
+    const imageUrl =
+      URL.createObjectURL(blob);
 
     resultado.innerHTML = `
-      <pre style="white-space:pre-wrap;text-align:left;">
-${texto}
-      </pre>
+      <img
+        src="${imageUrl}"
+        alt="Imagen generada"
+        style="
+          width:100%;
+          max-width:600px;
+          border-radius:12px;
+          margin-top:10px;
+        ">
     `;
 
   } catch (error) {
 
-    resultado.innerHTML = `
-      ❌ ERROR REAL:
-      <br><br>
-      ${error.message}
-    `;
+    resultado.innerHTML =
+      `❌ ${error.message}`;
   }
 }
