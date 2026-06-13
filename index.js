@@ -37,28 +37,48 @@ export default {
       // =========================
 
       const result = await env.AI.run(
-        "@cf/stabilityai/stable-diffusion-xl-base-1.0",
-        {
-          prompt: enhancePrompt(prompt)
-        }
-      );
+  "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+  {
+    prompt: enhancePrompt(prompt)
+  }
+);
 
-      console.log("AI RESULT:", result);
+console.log("AI RESULT:", result);
 
-      // 🔥 extracción robusta (CORRECTA)
-      const image =
-        result?.image ||
-        result?.result?.image ||
-        result?.result ||
-        result?.output?.[0];
+// 🔥 CLAVE REAL (Cloudflare SDXL)
+let image = result?.image;
 
-      if (!image) {
-        return json({
-          ok: false,
-          error: "Modelo no devolvió imagen",
-          debug: result
-        }, 500);
-      }
+// fallback por seguridad
+if (!image && result?.result?.image) {
+  image = result.result.image;
+}
+
+// último fallback
+if (!image && result?.output) {
+  image = result.output;
+}
+
+if (!image) {
+  return json({
+    ok: false,
+    error: "Modelo no devolvió imagen",
+    debug: result
+  }, 500);
+}
+
+// 🔥 convertir si es buffer (CASO COMÚN EN CLOUDFLARE)
+if (image instanceof Uint8Array) {
+  image = btoa(
+    String.fromCharCode(...image)
+  );
+}
+
+return json({
+  ok: true,
+  data: {
+    output: `data:image/png;base64,${image}`
+  }
+});
 
       return json({
         ok: true,
