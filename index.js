@@ -2,61 +2,45 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // 📤 UPLOAD
+    // 🎨 IA → genera imagen
+    if (url.pathname === "/generate" && request.method === "POST") {
+      const { prompt } = await request.json();
+
+      const result = await env.AI.run(
+        "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+        { prompt }
+      );
+
+      return new Response(result, {
+        headers: { "content-type": "application/octet-stream" }
+      });
+    }
+
+    // 📤 UPLOAD A R2
     if (url.pathname === "/upload" && request.method === "POST") {
       const formData = await request.formData();
       const file = formData.get("file");
 
-      if (!file) {
-        return new Response("No file", { status: 400 });
-      }
-
       const key = `gallery/${Date.now()}-${file.name}`;
 
       await env.PIXELLAB45_BUCKET.put(key, file.stream(), {
-        httpMetadata: {
-          contentType: file.type,
-        },
+        httpMetadata: { contentType: file.type }
       });
 
-      return Response.json({
-        ok: true,
-        key,
-        url: `/image/${key}`
-      });
+      return Response.json({ ok: true, key });
     }
 
-    // 🖼️ VER IMAGEN
-    if (url.pathname.startsWith("/image/")) {
-      const key = url.pathname.replace("/image/", "");
-      const object = await env.PIXELLAB45_BUCKET.get(key);
-
-      if (!object) {
-        return new Response("Not found", { status: 404 });
-      }
-
-      return new Response(object.body, {
-        headers: {
-          "Content-Type": object.httpMetadata?.contentType || "image/png",
-          "Cache-Control": "public, max-age=31536000"
-        },
-      });
-    }
-
-    // 📚 GALERÍA
+    // 🖼️ GALERÍA
     if (url.pathname === "/gallery") {
       const list = await env.PIXELLAB45_BUCKET.list({ prefix: "gallery/" });
 
-      const images = list.objects
-        .sort((a, b) => b.uploaded - a.uploaded)
-        .map(obj => ({
-          key: obj.key,
-          url: `/image/${obj.key}`
-        }));
-
-      return Response.json(images);
+      return Response.json(
+        list.objects.map(o => ({
+          key: o.key
+        }))
+      );
     }
 
-    return new Response("PIXELLAB45 OK");
+    return new Response("OK PIXELLAB45");
   }
 };
