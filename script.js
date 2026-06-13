@@ -195,7 +195,8 @@ function copiarPrompt(){
     document.getElementById("mensajeCopiado").innerText = "";
   }, 3000);
 
-}function generarGuion(){
+}
+function generarGuion(){
 
   const tema =
     document.getElementById("temaGuion").value;
@@ -203,7 +204,76 @@ function copiarPrompt(){
   const duracion =
     document.getElementById("duracionGuion").value;
 
-  let guion = `
+  if(tema.trim() === ""){
+
+    document.getElementById("resultadoGuion").innerText =
+      "⚠️ Escribe un tema primero";
+
+    return;
+  }
+
+  function random(arr){
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
+
+  const hooks = [
+    `Nadie te cuenta esto sobre ${tema}`,
+    `La mayoría usa mal ${tema}`,
+    `Este truco con ${tema} te sorprenderá`,
+    `Probé ${tema} y ocurrió algo increíble`,
+    `Si usas ${tema}, mira esto primero`
+  ];
+
+  let desarrollo = "";
+
+  if(duracion === "15 segundos"){
+
+    desarrollo = `
+🎯 Explica rápidamente qué es ${tema}
+
+💡 Muestra un beneficio clave
+
+📢 CTA:
+Sígueme para más contenido de IA.
+`;
+
+  }
+
+  else if(duracion === "30 segundos"){
+
+    desarrollo = `
+🎯 Presenta el problema
+
+💡 Explica cómo ${tema} puede ayudar
+
+📱 Da un ejemplo práctico
+
+📢 CTA:
+Sígueme para aprender más.
+`;
+
+  }
+
+  else {
+
+    desarrollo = `
+🎯 Presenta el tema
+
+📚 Explica cómo funciona
+
+🛠️ Muestra un caso práctico
+
+⚠️ Comenta un error común
+
+🚀 Conclusión
+
+📢 CTA:
+Sígueme para más contenido sobre tecnología e IA.
+`;
+
+  }
+
+  const guion = `
 🎬 GUION PIXELLAB45
 
 Tema:
@@ -214,24 +284,21 @@ ${duracion}
 
 ━━━━━━━━━━━━━━
 
-🎙️ INTRO
+🔥 HOOK
 
-¿Sabías que ${tema}
-está cambiando el mundo?
+${random(hooks)}
 
 ━━━━━━━━━━━━━━
 
 🎙️ DESARROLLO
 
-Explica los beneficios,
-casos de uso y ejemplos.
+${desarrollo}
 
 ━━━━━━━━━━━━━━
 
-🎙️ CTA
+🚀 CIERRE
 
-Sígueme para más contenido
-sobre IA y tecnología.
+¿Conocías esto sobre ${tema}?
 `;
 
   document.getElementById(
