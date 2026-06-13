@@ -12,7 +12,7 @@ export default {
       const contentType = request.headers.get("content-type") || "";
 
       // =========================
-      // 📦 INPUT (MULTIPART / JSON)
+      // 📦 INPUT
       // =========================
 
       if (contentType.includes("multipart/form-data")) {
@@ -26,66 +26,60 @@ export default {
       }
 
       if (!prompt) {
-        return json({
-          ok: false,
-          error: "Prompt requerido"
-        }, 400);
+        return json({ ok: false, error: "Prompt requerido" }, 400);
       }
 
       // =========================
-      // 🎨 CLOUDFARE AI MODEL
+      // 🎨 IA MODEL
       // =========================
 
       const result = await env.AI.run(
-  "@cfconsole.log("AI RAW RESULT:", result);
+        "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+        {
+          prompt: enhancePrompt(prompt)
+        }
+      );
 
-let image = null;
+      console.log("AI RAW RESULT:", result);
 
-// 🔥 CASO 1: directo (lo más común en Cloudflare)
-if (result?.image) {
-  image = result.image;
-}
+      let image = null;
 
-// 🔥 CASO 2: respuesta directa binaria
-else if (result instanceof Uint8Array) {
-  image = result;
-}
+      // 🔥 CASO 1
+      if (result?.image) {
+        image = result.image;
+      }
 
-// 🔥 CASO 3: envuelto en result
-else if (result?.result?.image) {
-  image = result.result.image;
-}
+      // 🔥 CASO 2
+      else if (result instanceof Uint8Array) {
+        image = result;
+      }
 
-// 🔥 CASO 4: result directo binario dentro de objeto
-else if (result?.result instanceof Uint8Array) {
-  image = result.result;
-}
+      // 🔥 CASO 3
+      else if (result?.result?.image) {
+        image = result.result.image;
+      }
 
-// ❌ si no hay nada
-if (!image) {
-  return json({
-    ok: false,
-    error: "No se pudo extraer imagen del modelo",
-    debug: result
-  }, 500);
-}
+      // 🔥 CASO 4
+      else if (result?.result instanceof Uint8Array) {
+        image = result.result;
+      }
 
-// 🔥 convertir a base64 SI es binario
-if (image instanceof Uint8Array) {
-  image = btoa(String.fromCharCode(...image));
-}
+      if (!image) {
+        return json({
+          ok: false,
+          error: "No se pudo extraer imagen del modelo",
+          debug: result
+        }, 500);
+      }
 
-// ✔ devolver lista para frontend
-return json({
-  ok: true,
-  data: {
-    output: `data:image/png;base64,${image}`
-  }
-});
+      if (image instanceof Uint8Array) {
+        image = btoa(String.fromCharCode(...image));
+      }
+
       return json({
         ok: true,
         data: {
-          output: image
+          output: `data:image/png;base64,${image}`
         }
       });
 
@@ -104,11 +98,11 @@ return json({
 ========================= */
 
 function enhancePrompt(prompt) {
-
   return `
 cinematic ultra realistic 8k,
 futuristic cyberpunk lighting,
-neon blue glow, high detail,
+neon blue glow,
+high detail,
 professional digital art,
 
 ${prompt}
@@ -127,4 +121,4 @@ function json(obj, status = 200) {
       "Access-Control-Allow-Origin": "*"
     }
   });
-}
+          }
