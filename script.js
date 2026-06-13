@@ -118,7 +118,9 @@ function copiarIdeas() {
 ========================= */
 
 async function generarImagen() {
+const datos = await respuesta.json();
 
+console.log("RESPUESTA COMPLETA:", datos);
   const prompt = document.getElementById("promptImagen").value;
   const resultado = document.getElementById("resultadoImagen");
 
