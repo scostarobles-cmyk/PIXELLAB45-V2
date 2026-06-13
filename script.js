@@ -547,12 +547,13 @@ function copiarIdeas(){
       }, 3000);
 
     })
-    .catch(err => {
+    .catch(error => {
 
-      console.error(err);
+      console.error(error);
 
-      document.getElementById("mensajeIdeasCopiadas").innerText =
-        "❌ Error al copiar";
+      alert(
+        "No se pudo copiar automáticamente. Intenta mantener presionado el texto y copiar manualmente."
+      );
 
     });
 
