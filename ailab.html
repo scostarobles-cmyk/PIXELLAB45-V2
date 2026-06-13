@@ -13,65 +13,38 @@
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-
-<body>
-
-  <!-- NAVBAR -->
-  <header class="navbar">
-    <nav class="nav-links">
-      <a href="#inicio">Inicio</a>
-      <a href="#sobre-mi">Sobre mí</a>
-      <a href="#galeria">Galería</a>
-      <a href="ailab.html">AI LAB</a>
-      <a href="#ebooks">Ebooks</a>
-      <a href="#contacto">Contacto</a>
-    </nav>
-  </header>
-
-  <!-- DIVISORIA -->
-  <div class="divider"></div>
-<section class="ailab-hero">
-
-  <h1>🚀 PIXELLAB45 AI LAB</h1>
-
-  <p>
-    Crea ideas, prompts, guiones, storyboards
-    e imágenes con Inteligencia Artificial.
-  </p>
-
-</section>
-
-<div class="section-divider"></div>
-
-
-<section id="ai-lab" class="ai-lab">
-
-  <h2>🚀 PIXELLAB45 AI LAB</h2>
-
-  <p class="ai-subtitle">
-    Laboratorio personal de Inteligencia Artificial
-  </p>
-
-  <div class="ai-grid">
-
-    <div class="ai-card">
-
-  <h3>🎨 PIXELLAB45 Image Studio</h3>
+<body><header class="navbar">
+  <nav class="nav-links">
+    <a href="index.html">🏠 Inicio</a>
+    <a href="#contenido">✍️ Contenido</a>
+    <a href="#visual">🎨 Visual</a>
+    <a href="#drpixel">🤖 Dr. Pixel</a>
+  </nav>
+</header><div class="divider"></div><section class="ailab-hero">  <h1>🚀 PIXELLAB45 AI LAB</h1>  <p>
+    Tu laboratorio de creación con Inteligencia Artificial.
+  </p></section><div class="section-divider"></div><section id="contenido" class="ai-section">  <h2>✍️ Creador de Contenido</h2>  <div class="ai-grid"><!-- IDEAS -->
+<div class="ai-card">
+  <h3>💡 Generador de Ideas</h3>
 
   <input
     type="text"
-    id="promptImagen"
-    placeholder="Describe la imagen">
+    id="temaIdea"
+    placeholder="Tema principal">
 
-  <button onclick="generarImagen()">
-    Generar Imagen
+  <button onclick="generarIdeas()">
+    Generar Ideas
   </button>
 
-  <div id="resultadoImagen"></div>
+  <button onclick="copiarIdeas()">
+    📋 Copiar Ideas
+  </button>
 
-    </div>
+  <div id="mensajeIdeasCopiadas"></div>
+  <div id="resultadoIdeas"></div>
+</div>
 
-    <div class="ai-card">
+<!-- PROMPTS -->
+<div class="ai-card">
 
   <h3>✍️ Generador de Prompts</h3>
 
@@ -89,211 +62,42 @@
   </select>
 
   <button onclick="generarPrompt()">
-  Generar
-</button>
-
-<button onclick="copiarPrompt()">
-  📋 Copiar Prompt
-</button>
-
-<div id="mensajeCopiado"></div>
-<div id="resultadoPrompt"></div>
-    </div>
-<div class="ai-card">
-
-  <h3>🎬 Generador de Guiones IA</h3>
-
-  <input
-    type="text"
-    id="temaGuion"
-    placeholder="Tema del video">
-
-  <select id="duracionGuion">
-    <option>15 segundos</option>
-    <option>30 segundos</option>
-    <option>60 segundos</option>
-  </select>
-
-<button onclick="generarGuion()">
-  Generar Guion
-</button>
-
-<button onclick="copiarGuion()">
-  📋 Copiar Guion
-</button>
-
-<div id="mensajeGuionCopiado"></div>
-
-<div id="resultadoGuion"></div>
-
-  </div>
-    <div class="ai-card">
-
-  <h3>🎬 Storyboard Generator</h3>
-
-  <textarea
-    id="textoStoryboard"
-    placeholder="Pega aquí el guion..."
-    rows="6">
-  </textarea>
-
-  <button onclick="generarStoryboard()">
-    Generar Storyboard
+    Generar
   </button>
 
-  <button class="copy-btn" onclick="copiarStoryboard()">
-    📋 Copiar Storyboard
+  <button onclick="copiarPrompt()">
+    📋 Copiar Prompt
   </button>
 
-  <div id="mensajeStoryboard"></div>
-
-  <div id="resultadoStoryboard"></div>
-
-    </div>
-  
-<div class="ai-card">
-
-  <h3>🖼️ Prompts Visuales IA</h3>
-
-  <input
-    type="text"
-    id="temaVisual"
-    placeholder="Tema visual">
-
-  <button onclick="generarVisuales()">
-    Generar Prompts
-  </button>
-
-  <button onclick="copiarVisuales()">
-    📋 Copiar Prompts
-  </button>
-
-  <div id="mensajeVisual"></div>
-
-  <div id="resultadoVisual"></div>
-
-</div>
-  <h3>💡 Generador de Ideas</h3>
-
-  <input
-    type="text"
-    id="temaIdea"
-    placeholder="Tema principal">
-      
-  <button onclick="generarIdeas()">
-    Generar Ideas
-  </button>
-
-  <button class="copy-btn" onclick="copiarIdeas()">
-    📋 Copiar Ideas
-  </button>
-
-  <div id="mensajeIdeasCopiadas"></div>
-
-  <div id="resultadoIdeas"></div>
-
-    </div>
-    <div class="ai-card">
-      <h3>🎬 Ideas para Videos</h3>
-      <p>Contenido viral para TikTok y YouTube.</p>
-    </div>
-
-    <div class="ai-card">
-      <h3>📚 Constructor de Ebooks</h3>
-      <p>Asistente para crear ebooks completos.</p>
-    </div>
-
-  </div>
-
-</section>
-<div class="section-divider"></div>
-
-<section id="ebooks" class="ebooks">
-
-  <h2>Ebooks y Recursos Digitales</h2>
-
-  <div class="ebook-card">
-
-    <img
-      src="assets/img/ebook-chatgpt-desde-cero.png"
-      alt="ChatGPT desde Cero"
-      class="ebook-cover">
-
-    <h3>ChatGPT desde Cero</h3>
-
-    <p>
-      Guía práctica para dominar la Inteligencia Artificial.
-    </p>
-
-    <span class="coming-soon">
-      Próximamente
-    </span>
-
-  </div>
-
-</section>
-<div class="section-divider"></div>
-  <section id="contacto" class="contact">
-
-  <h2>Contacto</h2>
-
-  <p>
-    ¿Quieres colaborar, compartir una idea o hablar sobre tecnología e inteligencia artificial?
-  </p>
-<div class="contact-buttons">
-
-  <a href="https://facebook.com/PixelLab45"
-     target="_blank"
-     class="contact-btn">
-    <i class="fab fa-facebook-f"></i>
-    Facebook
-  </a>
-
-  <a href="https://youtube.com/@Pixel_Lab45"
-     target="_blank"
-     class="contact-btn">
-    <i class="fab fa-youtube"></i>
-    YouTube
-  </a>
-
-  <a href="https://tiktok.com/@pixel-lavb45"
-     target="_blank"
-     class="contact-btn">
-    <i class="fab fa-tiktok"></i>
-    TikTok
-  </a>
-
-  <a href="https://instagram.com/pixel_lab45"
-     target="_blank"
-     class="contact-btn">
-    <i class="fab fa-instagram"></i>
-    Instagram
-  </a>
+  <div id="mensajeCopiado"></div>
+  <div id="resultadoPrompt"></div>
 
 </div>
 
-</section>
+  </div></section><div class="section-divider"></div><section id="visual" class="ai-section">  <h2>🎨 Estudio Visual</h2>  <div class="ai-grid"><div class="ai-card">
 
-<div class="section-divider"></div>
-  <footer class="footer">
+  <h3>🎨 PIXELLAB45 Image Studio</h3>
 
-  <div class="footer-content">
+  <input
+    type="text"
+    id="promptImagen"
+    placeholder="Describe la imagen">
 
-    <h3>PIXELLAB45</h3>
+  <button onclick="generarImagen()">
+    Generar Imagen
+  </button>
 
-    <p>
-      Inteligencia Artificial • Tecnología • Innovación
-    </p>
+  <div id="resultadoImagen"></div>
 
-    <p class="footer-copy">
-      © 2026 Sergio Costa | Todos los derechos reservados
-    </p>
+</div>
 
-  </div>
+  </div></section><div class="section-divider"></div><section id="drpixel" class="ai-section">  <h2>🤖 Dr. Pixel</h2>  <div class="ai-card"><h3>Próximamente</h3>
 
-  </footer>
-  <script src="https://js.puter.com/v2/"></script>
-  <script src="script.js"></script>
+<p>
+  Asistente inteligente para generar ideas,
+  prompts, guiones e imágenes con IA.
+</p>
+
+  </div></section><script src="https://js.puter.com/v2/"></script><script src="script.js"></script>
 </body>
-
 </html>
