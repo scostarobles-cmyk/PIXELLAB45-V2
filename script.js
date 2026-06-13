@@ -1,15 +1,21 @@
 console.log("SCRIPT CARGADO OK");
 
 /* =========================
-   UTILIDAD RANDOM GLOBAL
+   UTILIDADES SEGURAS
 ========================= */
-function random(arr) {
+
+function random(arr){
   return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function shuffle(arr){
+  return [...arr].sort(() => Math.random() - 0.5);
 }
 
 /* =========================
    PROMPT GENERADOR
 ========================= */
+
 function generarPrompt() {
 
   const tema = document.getElementById("temaPrompt").value;
@@ -23,39 +29,37 @@ function generarPrompt() {
 
   const estilos = [
     "cinematográfico",
-    "viral estilo TikTok",
+    "viral TikTok",
     "tech futurista",
-    "documental IA",
-    "storytelling emocional",
-    "educativo dinámico"
+    "educativo"
   ];
 
-  const estructura = [
-    "con gancho fuerte",
-    "con narrativa envolvente",
-    "con enfoque práctico",
-    "con enfoque viral",
-    "con tono experto"
+  const enfoques = [
+    "storytelling",
+    "educativo",
+    "viral",
+    "explicativo"
   ];
 
-  const estilo = random(estilos);
-  const forma = random(estructura);
+  const bloques = [
+    "título atractivo",
+    "idea principal clara",
+    "desarrollo del contenido",
+    "llamado a la acción",
+    "sugerencia visual"
+  ];
 
-  const prompt = `
-🚀 CREA CONTENIDO ${tipo.toUpperCase()}
+  let prompt = `
+🚀 CONTENIDO ${tipo.toUpperCase()}
 
 🎯 Tema: ${tema}
 
-🎬 Estilo: ${estilo}
-📌 Enfoque: ${forma}
+🎬 Estilo: ${random(estilos)}
+📌 Enfoque: ${random(enfoques)}
 
-INCLUYE:
+INSTRUCCIONES:
 
-🔥 TÍTULO VIRAL
-🧠 IDEA PRINCIPAL ORIGINAL
-📖 DESARROLLO CLARO Y DINÁMICO
-🎯 LLAMADO A LA ACCIÓN FUERTE
-🎥 SUGERENCIA VISUAL CINEMATOGRÁFICA
+${shuffle(bloques).map(b => `✔ ${b}`).join("\n")}
 `;
 
   document.getElementById("resultadoPrompt").innerText = prompt;
@@ -64,6 +68,7 @@ INCLUYE:
 /* =========================
    COPIAR PROMPT
 ========================= */
+
 function copiarPrompt() {
 
   const texto = document.getElementById("resultadoPrompt").innerText;
@@ -79,37 +84,38 @@ function copiarPrompt() {
 }
 
 /* =========================
-   GUIÓN MEJORADO
+   GUION GENERADOR
 ========================= */
-function generarGuion() {
+
+function generarGuion(){
 
   const tema = document.getElementById("temaGuion").value;
   const duracion = document.getElementById("duracionGuion").value;
 
-  if (tema.trim() === "") return;
+  if(tema.trim() === "") return;
 
   const hooks = [
     `¿Sabías que ${tema} está cambiando todo?`,
     `Nadie te explica esto sobre ${tema}`,
-    `Esto que descubres de ${tema} es increíble`,
-    `Lo que pasa con ${tema} te va a sorprender`
+    `Esto sobre ${tema} es sorprendente`,
+    `Lo que nadie te cuenta de ${tema}`
   ];
 
   const desarrollo = [
-    "Explícate con ejemplos simples y casos reales",
-    "Muestra beneficios prácticos y aplicaciones",
-    "Cuenta una historia basada en experiencia",
-    "Explica el impacto futuro de este tema"
+    "explica con ejemplos simples",
+    "narra un caso real",
+    "muestra impacto práctico",
+    "explicación clara paso a paso"
   ];
 
   const cta = [
-    "Sígueme para más contenido de IA",
-    "Guarda este video para después",
-    "Comparte esto si te sirvió",
-    "Comenta qué opinas sobre esto"
+    "sígueme para más contenido",
+    "guarda este video",
+    "comenta tu opinión",
+    "comparte esto"
   ];
 
-  const guion = `
+  let guion = `
 🎬 GUION PIXELLAB45
 
 Tema: ${tema}
@@ -118,19 +124,16 @@ Duración: ${duracion}
 ━━━━━━━━━━━━━━
 
 🎙️ HOOK
-
 ${random(hooks)}
 
 ━━━━━━━━━━━━━━
 
 📖 DESARROLLO
-
 ${random(desarrollo)}
 
 ━━━━━━━━━━━━━━
 
 🎯 CTA
-
 ${random(cta)}
 `;
 
@@ -140,7 +143,8 @@ ${random(cta)}
 /* =========================
    COPIAR GUION
 ========================= */
-function copiarGuion() {
+
+function copiarGuion(){
 
   const texto = document.getElementById("resultadoGuion").innerText;
 
@@ -155,8 +159,9 @@ function copiarGuion() {
 }
 
 /* =========================
-   STORYBOARD MEJORADO
+   STORYBOARD GENERADOR
 ========================= */
+
 function generarStoryboard() {
 
   const guion = document.getElementById("textoStoryboard").value;
@@ -167,24 +172,24 @@ function generarStoryboard() {
     return;
   }
 
-  const estilosVisuales = [
-    "escena futurista con neón azul",
-    "ambiente cyberpunk cinematográfico",
-    "laboratorio tecnológico avanzado",
-    "ciudad digital hiperrealista"
+  const visuales = [
+    "escena futurista cyberpunk",
+    "ciudad tecnológica avanzada",
+    "laboratorio de inteligencia artificial",
+    "interfaz digital moderna"
   ];
 
   const lineas = guion.split("\n").filter(l => l.trim() !== "");
 
   let storyboard = "🎬 STORYBOARD PIXELLAB45\n\n";
 
-  lineas.forEach((linea, index) => {
+  lineas.forEach((linea, i) => {
 
-    storyboard += `ESCENA ${index + 1}\n`;
-    storyboard += `⏱️ Duración: ${random([3,4,5,6])} segundos\n\n`;
-    storyboard += `🎙️ Narración:\n${linea}\n\n`;
-    storyboard += `🎥 Visual:\n${random(estilosVisuales)}\n\n`;
-    storyboard += `──────────────────\n\n`;
+    storyboard += `ESCENA ${i + 1}\n`;
+    storyboard += `⏱️ ${random([3,4,5,6])} segundos\n`;
+    storyboard += `🎙️ ${linea}\n`;
+    storyboard += `🎥 ${random(visuales)}\n`;
+    storyboard += `━━━━━━━━━━━━━━\n\n`;
   });
 
   document.getElementById("resultadoStoryboard").innerText = storyboard;
@@ -193,11 +198,16 @@ function generarStoryboard() {
 /* =========================
    COPIAR STORYBOARD
 ========================= */
+
 function copiarStoryboard() {
 
   const texto = document.getElementById("resultadoStoryboard").innerText;
 
-  if (texto.trim() === "") return;
+  if (texto.trim() === "") {
+    document.getElementById("mensajeStoryboard").innerText =
+      "⚠️ Primero genera un storyboard";
+    return;
+  }
 
   navigator.clipboard.writeText(texto);
 
@@ -210,56 +220,66 @@ function copiarStoryboard() {
 }
 
 /* =========================
-   IDEAS MEJORADAS
+   IDEAS GENERADOR
 ========================= */
-function generarIdeas() {
+
+function generarIdeas(){
 
   const tema = document.getElementById("temaIdea").value;
 
-  if (tema.trim() === "") return;
+  if(tema.trim() === ""){
+    document.getElementById("resultadoIdeas").innerText =
+      "⚠️ Escribe un tema primero";
+    return;
+  }
 
-  const viral = [
-    `Nadie te cuenta esto sobre ${tema}`,
-    `La verdad oculta de ${tema}`,
-    `Probé ${tema} y esto ocurrió`,
-    `Todos hablan de ${tema}, pero nadie entiende esto`
-  ];
+  const bloques = {
+    viral: [
+      `Nadie te cuenta esto sobre ${tema}`,
+      `La verdad oculta de ${tema}`,
+      `Probé ${tema} y esto pasó`,
+      `Todos hablan de ${tema} pero nadie lo entiende`
+    ],
+    dinero: [
+      `Cómo ganar dinero con ${tema}`,
+      `Ideas simples para monetizar ${tema}`,
+      `Convertir ${tema} en ingresos reales`
+    ],
+    educativo: [
+      `Guía rápida de ${tema}`,
+      `Aprende ${tema} desde cero`,
+      `Todo lo básico de ${tema}`
+    ],
+    futuro: [
+      `El futuro de ${tema}`,
+      `Cómo evolucionará ${tema}`,
+      `Tendencias de ${tema}`
+    ]
+  };
 
-  const dinero = [
-    `Cómo ganar dinero con ${tema}`,
-    `Ideas para monetizar ${tema}`,
-    `Cómo convertir ${tema} en ingresos`,
-    `Negocios digitales con ${tema}`
-  ];
+  const keys = Object.keys(bloques);
 
-  const futuro = [
-    `El futuro de ${tema}`,
-    `Cómo evolucionará ${tema}`,
-    `Lo que viene después en ${tema}`,
-    `Tendencias de ${tema}`
-  ];
+  const a = random(keys);
+  const b = random(keys);
+  const c = random(keys);
 
-  const shorts = [
-    `3 cosas que debes saber de ${tema}`,
-    `Resumen rápido de ${tema}`,
-    `Todo en 60 segundos sobre ${tema}`,
-    `Lo esencial de ${tema}`
-  ];
-
-  const ideas = `
+  let ideas = `
 🚀 IDEAS PIXELLAB45
 
-🔥 VIRAL:
-${random(viral)}
+━━━━━━━━━━━━━━
 
-💰 MONETIZACIÓN:
-${random(dinero)}
+🔥 ${a.toUpperCase()}
+${random(bloques[a])}
 
-🔮 FUTURO:
-${random(futuro)}
+━━━━━━━━━━━━━━
 
-🎬 SHORTS:
-${random(shorts)}
+💰 ${b.toUpperCase()}
+${random(bloques[b])}
+
+━━━━━━━━━━━━━━
+
+🔮 ${c.toUpperCase()}
+${random(bloques[c])}
 `;
 
   document.getElementById("resultadoIdeas").innerText = ideas;
@@ -268,7 +288,8 @@ ${random(shorts)}
 /* =========================
    COPIAR IDEAS
 ========================= */
-function copiarIdeas() {
+
+function copiarIdeas(){
 
   const texto = document.getElementById("resultadoIdeas").innerText;
 
@@ -283,33 +304,34 @@ function copiarIdeas() {
 }
 
 /* =========================
-   VISUALES (MEJORADOS)
+   VISUALES
 ========================= */
-function generarVisuales() {
+
+function generarVisuales(){
 
   const tema = document.getElementById("temaVisual").value;
 
   const estilos = [
     "cyberpunk ultra realista",
     "cinematic tech lighting",
-    "futuristic neon blue environment",
-    "AI generated sci-fi world"
+    "futuristic neon environment",
+    "AI sci-fi world"
   ];
 
-  const resultado = `
+  let resultado = `
 🖼️ PROMPTS VISUALES PIXELLAB45
 
-🎨 IMAGEN PRINCIPAL:
+🎨 IMAGEN:
 ${tema}, ${random(estilos)}, 8k ultra detailed
 
 📺 MINIATURA:
-${tema}, high contrast, youtube thumbnail style
+${tema}, youtube thumbnail, high contrast
 
 📱 TIKTOK:
-${tema}, vertical composition, viral style
+${tema}, vertical viral style
 
-🎥 VIDEO IA:
-${tema}, cinematic motion, futuristic camera
+🎥 VIDEO:
+${tema}, cinematic motion, futuristic
 `;
 
   document.getElementById("resultadoVisual").innerText = resultado;
@@ -318,11 +340,12 @@ ${tema}, cinematic motion, futuristic camera
 /* =========================
    COPIAR VISUALES
 ========================= */
-function copiarVisuales() {
+
+function copiarVisuales(){
 
   const texto = document.getElementById("resultadoVisual").innerText;
 
-  if (texto.trim() === "") return;
+  if(texto.trim() === "") return;
 
   navigator.clipboard.writeText(texto);
 
@@ -335,8 +358,9 @@ function copiarVisuales() {
 }
 
 /* =========================
-   GENERAR IMAGEN (SIN CAMBIOS FUNCIONALES)
+   GENERAR IMAGEN (SIN CAMBIOS)
 ========================= */
+
 async function generarImagen() {
 
   const prompt = document.getElementById("promptImagen").value;
@@ -378,4 +402,4 @@ async function generarImagen() {
   } catch (error) {
     resultado.innerHTML = `❌ ${error.message}`;
   }
-      }
+}
