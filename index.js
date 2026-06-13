@@ -2,12 +2,14 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // 🧪 TEST
+    // Respuesta de prueba para asegurarnos de que todo esté bien
     if (url.pathname === "/") {
-      return new Response("PIXELLAB45 OK");
+      return new Response("PIXELLAB45 OK", {
+        headers: { "Access-Control-Allow-Origin": "*" }
+      });
     }
 
-    // 🎨 GENERAR IMAGEN
+    // Generar imagen usando IA
     if (url.pathname === "/generate" && request.method === "POST") {
       const { prompt } = await request.json();
 
@@ -24,7 +26,7 @@ export default {
       });
     }
 
-    // 📤 UPLOAD A R2
+    // Subir imagen a R2
     if (url.pathname === "/upload" && request.method === "POST") {
       const formData = await request.formData();
       const file = formData.get("file");
@@ -35,20 +37,29 @@ export default {
         httpMetadata: { contentType: file.type }
       });
 
-      return Response.json({ ok: true, key });
+      return Response.json({ ok: true, key }, {
+        headers: { "Access-Control-Allow-Origin": "*" }
+      });
     }
 
-    // 🖼️ GALERÍA
+    // Listar imágenes en la galería
     if (url.pathname === "/gallery") {
       const list = await env.PIXELLAB45_BUCKET.list({ prefix: "gallery/" });
-
-      return Response.json(
-        list.objects.map(o => ({
-          key: o.key
-        }))
+      return new Response(
+        JSON.stringify(
+          list.objects.map(o => ({ key: o.key }))
+        ),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
+          }
+        }
       );
     }
 
-    return new Response("OK");
+    return new Response("OK PIXELLAB45", {
+      headers: { "Access-Control-Allow-Origin": "*" }
+    });
   }
 };
