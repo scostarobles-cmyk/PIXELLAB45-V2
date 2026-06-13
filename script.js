@@ -186,7 +186,25 @@ function copiarPrompt(){
   const texto =
     document.getElementById("resultadoPrompt").innerText;
 
-  navigator.clipboard.writeText(texto);
+  if(texto.trim() === ""){
+
+    document.getElementById("mensajeCopiado").innerText =
+      "⚠️ Primero genera un prompt";
+
+    return;
+  }
+
+  const area = document.createElement("textarea");
+  area.value = texto;
+
+  document.body.appendChild(area);
+
+  area.select();
+  area.setSelectionRange(0, 99999);
+
+  document.execCommand("copy");
+
+  document.body.removeChild(area);
 
   document.getElementById("mensajeCopiado").innerText =
     "✅ Prompt copiado correctamente";
@@ -194,7 +212,6 @@ function copiarPrompt(){
   setTimeout(() => {
     document.getElementById("mensajeCopiado").innerText = "";
   }, 3000);
-
 }
 function generarGuion(){
 
