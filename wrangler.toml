@@ -1,5 +1,6 @@
-name = 'pixellab45-v2'
-
-main = "index.js"
-
+name = "pixellab45-v2"
+main = "src/index.js"
 compatibility_date = "2026-06-11"
+
+[ai]
+binding = "AI"
