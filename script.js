@@ -14,36 +14,167 @@ function generarPrompt() {
 
     return;
   }
+let prompt = "";
 
-  let prompt = `
-🚀 PROMPT PIXELLAB45
+if(tipo === "TikTok"){
 
-Actúa como un experto en marketing digital,
-creación de contenido y redes sociales.
+prompt = `
+🚀 PROMPT PIXELLAB45 - TIKTOK VIRAL
 
-Crea contenido para ${tipo}
-sobre:
+Actúa como un creador experto en TikTok.
+
+Crea un video viral sobre:
 
 "${tema}"
 
-Debe incluir:
+Incluye:
 
-🔥 Un hook impactante para captar atención
-🎯 Un problema o necesidad del público
-💡 Una solución clara y práctica
-📖 Un ejemplo fácil de entender
-🚀 Un cierre memorable
-📢 Un llamado a la acción
+🔥 Hook de máximo 3 segundos
 
-Tono:
-Dinámico, profesional y fácil de comprender.
+🎯 Problema que identifique el público
 
-Objetivo:
-Generar interacción, retención y compartidos.
+💡 Solución clara y rápida
+
+📱 Ejemplo práctico
+
+🚀 Cierre impactante
+
+📢 CTA:
+"Sígueme para más contenido sobre IA y tecnología"
+
+Duración:
+30 segundos
+
+Estilo:
+Dinámico, viral y fácil de entender.
+`;
+
+}
+
+else if(tipo === "YouTube"){
+
+prompt = `
+🚀 PROMPT PIXELLAB45 - YOUTUBE
+
+Actúa como un experto en tecnología.
+
+Crea un guion de YouTube sobre:
+
+"${tema}"
+
+Incluye:
+
+🎬 Introducción atractiva
+
+📚 Explicación detallada
+
+🛠 Casos prácticos
+
+⚠️ Errores comunes
+
+🚀 Conclusión potente
+
+📢 CTA para suscribirse
+
+Duración:
+5 a 10 minutos
+
+Estilo:
+Educativo y entretenido.
+`;
+
+}
+
+else if(tipo === "Instagram"){
+
+prompt = `
+🚀 PROMPT PIXELLAB45 - INSTAGRAM
+
+Actúa como creador de contenido para Instagram.
+
+Crea una publicación sobre:
+
+"${tema}"
+
+Incluye:
+
+📸 Texto principal
+
+🔥 Hook inicial
+
+💡 Valor para la audiencia
+
+📢 Llamado a comentar
+
+#️⃣ Hashtags recomendados
+
+Estilo:
+Moderno, cercano y visual.
+`;
+
+}
+
+else if(tipo === "Blog"){
+
+prompt = `
+🚀 PROMPT PIXELLAB45 - BLOG SEO
+
+Actúa como redactor profesional.
+
+Escribe un artículo sobre:
+
+"${tema}"
+
+Incluye:
+
+📝 Título SEO
+
+📚 Introducción
+
+🎯 Desarrollo estructurado
+
+💡 Consejos prácticos
+
+❓ Preguntas frecuentes
+
+🚀 Conclusión
+
+Extensión:
+1000 a 1500 palabras.
+`;
+
+}
+
+else if(tipo === "Ebook"){
+
+prompt = `
+🚀 PROMPT PIXELLAB45 - EBOOK
+
+Actúa como autor profesional.
+
+Crea un ebook completo sobre:
+
+"${tema}"
+
+Incluye:
+
+📖 Índice
+
+📚 Capítulos
+
+🛠 Ejemplos prácticos
+
+💡 Consejos
+
+⚠️ Errores comunes
+
+🚀 Conclusión
 
 Formato:
-Optimizado para ${tipo}.
+Profesional y educativo.
 `;
+
+}
 
   document.getElementById(
     "resultadoPrompt"
