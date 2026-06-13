@@ -81,22 +81,7 @@ return json({
     output: image
   }
 });
-      return json({
-        ok: true,
-        data: {
-          output: result.image
-        }
-      });
-
-    } catch (err) {
-
-      return json({
-        ok: false,
-        error: err.message
-      }, 500);
-    }
-  }
-};
+      
 
 /* =========================
    🧠 PROMPT ENGINE (PIXELLAB45 STYLE)
