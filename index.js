@@ -45,32 +45,24 @@ export default {
 
 console.log("AI RESULT:", result);
 
-// 🔥 CLAVE REAL (Cloudflare SDXL)
 let image = result?.image;
 
-// fallback por seguridad
-if (!image && result?.result?.image) {
-  image = result.result.image;
+// 🔥 si viene binario (MUY IMPORTANTE)
+if (image instanceof Uint8Array) {
+  image = btoa(String.fromCharCode(...image));
 }
 
-// último fallback
-if (!image && result?.output) {
-  image = result.output;
+// fallback seguro
+if (!image && result?.result?.image) {
+  image = result.result.image;
 }
 
 if (!image) {
   return json({
     ok: false,
-    error: "Modelo no devolvió imagen",
+    error: "La IA generó pero no se pudo leer la imagen",
     debug: result
   }, 500);
-}
-
-// 🔥 convertir si es buffer (CASO COMÚN EN CLOUDFLARE)
-if (image instanceof Uint8Array) {
-  image = btoa(
-    String.fromCharCode(...image)
-  );
 }
 
 return json({
