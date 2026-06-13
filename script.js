@@ -365,13 +365,12 @@ async function generarImagen() {
   const prompt = document.getElementById("promptImagen").value;
 
   try {
-    // 🔥 1. VALIDACIÓN
     if (!prompt || prompt.trim() === "") {
       alert("Escribe un prompt");
       return;
     }
 
-    // 🎨 2. IA (CLOUDFARE WORKERS AI)
+    // 🎨 IA CORRECTA (WORKERS AI)
     const result = await env.AI.run(
       "@cf/stabilityai/stable-diffusion-xl-base-1.0",
       {
@@ -379,22 +378,17 @@ async function generarImagen() {
       }
     );
 
-    if (!result || !result.image) {
-      throw new Error("La IA no devolvió imagen");
+    // 🧠 CONVERTIR RESULTADO (CORRECTO EN CLOUDFLARE)
+    const imageBuffer = result;
+
+    if (!imageBuffer) {
+      throw new Error("IA no devolvió imagen");
     }
 
-    // 🖼️ 3. CONVERTIR BASE64 A BLOB
-    const byteCharacters = atob(result.image);
-    const byteNumbers = new Array(byteCharacters.length);
+    // 🖼️ BUFFER → BLOB
+    const blob = new Blob([imageBuffer], { type: "image/png" });
 
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-
-    const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: "image/png" });
-
-    // 📤 4. SUBIR A WORKER / R2
+    // 📤 SUBIR A TU WORKER
     const formData = new FormData();
     formData.append("file", blob, `pixellab45-${Date.now()}.png`);
 
@@ -412,13 +406,11 @@ async function generarImagen() {
       throw new Error("Error subiendo a R2");
     }
 
-    // 🧠 5. CONFIRMACIÓN
-    alert("Imagen generada y guardada en galería ✔");
-
-    console.log("RESULTADO FINAL:", uploadResult);
+    alert("Imagen generada y guardada ✔");
+    console.log(uploadResult);
 
   } catch (err) {
-    console.error("ERROR COMPLETO:", err);
-    alert("Error generando imagen: " + err.message);
+    console.error("ERROR GENERACIÓN:", err);
+    alert("Error: " + err.message);
   }
 }
