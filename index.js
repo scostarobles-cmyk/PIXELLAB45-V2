@@ -2,102 +2,81 @@ export default {
   async fetch(request, env) {
 
     if (request.method !== "POST") {
-      return json({ ok: false, error: "Solo POST permitido" }, 405);
+      return json({
+        ok: false,
+        error: "Solo POST permitido"
+      }, 405);
     }
 
     try {
 
-      return json({
-  ok: true,
-  prueba: "Worker funcionando"
-});
+      const contentType =
+        request.headers.get("content-type") || "";
+
+      let prompt = "";
+
+      if (contentType.includes("multipart/form-data")) {
+
+        const form =
+          await request.formData();
+
+        prompt = form.get("prompt");
       }
 
-      prompt = String(prompt || "");
+      else if (contentType.includes("application/json")) {
+
+        const body =
+          await request.json();
+
+        prompt = body.prompt;
+      }
 
       if (!prompt) {
-        return json({ ok: false, error: "Prompt requerido" }, 400);
-      }
 
-      // =========================
-      // 🎨 MODELO NUEVO
-      // =========================
-
-      const result = await env.AI.run(
-        "@cf/bytedance/stable-diffusion-xl-lightning",
-        {
-          prompt: enhancePrompt(prompt)
-        }
-      );
-
-      console.log("RAW RESULT:", result);
-
-      let image = null;
-
-      if (result?.image) {
-        image = result.image;
-      } else if (result?.result?.image) {
-        image = result.result.image;
-      } else if (result instanceof Uint8Array) {
-        image = result;
-      } else if (result?.result instanceof Uint8Array) {
-        image = result.result;
-      }
-
-      if (!image) {
         return json({
           ok: false,
-          error: "No se pudo extraer la imagen",
-          raw: result
-        }, 500);
+          error: "Prompt requerido"
+        }, 400);
       }
 
-      if (image instanceof Uint8Array) {
-        image = btoa(String.fromCharCode(...image));
-      }
+      // ==================================
+      // PRUEBA SIMPLE
+      // ==================================
 
       return json({
         ok: true,
-        data: {
-          output: `data:image/png;base64,${image}`
-        }
+        prueba: "Worker funcionando",
+        promptRecibido: prompt
       });
 
-    } catch (err) {
-  return json({
-    ok: false,
-    error: String(err),
-    message: err?.message,
-    stack: err?.stack
-  }, 500);
+    }
+
+    catch (err) {
+
+      return json({
+        ok: false,
+        error: String(err),
+        message: err?.message,
+        stack: err?.stack
+      }, 500);
     }
   }
 };
-
-/* =========================
-   PROMPT ENGINE
-========================= */
-
-function enhancePrompt(prompt) {
-  return `
-cinematic ultra realistic 8k,
-futuristic cyberpunk lighting,
-neon glow, ultra detailed, professional,
-
-${prompt}
-`;
-}
 
 /* =========================
    JSON HELPER
 ========================= */
 
 function json(obj, status = 200) {
-  return new Response(JSON.stringify(obj), {
-    status,
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*"
+
+  return new Response(
+    JSON.stringify(obj),
+    {
+      status,
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      }
     }
-  });
+  );
 }
