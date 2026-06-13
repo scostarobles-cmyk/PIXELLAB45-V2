@@ -362,70 +362,45 @@ function copiarVisuales(){
 ========================= */
 
 async function generarImagen() {
-
-  alert("FUNCION NUEVA CARGADA");
-
-  const prompt =
-    document.getElementById("promptImagen").value;
-
-  const resultado =
-    document.getElementById("resultadoImagen");
-
-  if (!prompt.trim()) {
-
-    resultado.innerHTML =
-      "⚠️ Escribe un prompt primero";
-
-    return;
-  }
+  const prompt = document.getElementById("promptImagen").value;
 
   try {
+    // 1. LLAMAR A TU IA (YA LO TIENES)
+    const respuesta = await fetch("TU_ENDPOINT_IA", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt })
+    });
 
-    resultado.innerHTML =
-      "🎨 Generando imagen...";
+    const data = await respuesta.json();
 
-    const respuesta = await fetch(
-      "https://pixellab45-v2.scostarobles.workers.dev/",
+    // 🔥 AQUÍ DEBE VENIR LA IMAGEN (URL o base64)
+    const imageUrl = data.image;
+
+    // 2. CONVERTIR A BLOB
+    const imgResponse = await fetch(imageUrl);
+    const blob = await imgResponse.blob();
+
+    // 3. SUBIR A R2
+    const formData = new FormData();
+    formData.append("file", blob, "pixellab45.png");
+
+    const upload = await fetch(
+      "https://pixellab45-v2.scostarobles.workers.dev/upload",
       {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          prompt
-        })
+        body: formData
       }
     );
 
-    if (!respuesta.ok) {
+    const result = await upload.json();
 
-      resultado.innerHTML =
-        `❌ Error HTTP ${respuesta.status}`;
+    console.log("SUBIDO A R2:", result);
 
-      return;
-    }
+    alert("Imagen guardada en galería ✔");
 
-    const blob =
-      await respuesta.blob();
-
-    const imageUrl =
-      URL.createObjectURL(blob);
-
-    resultado.innerHTML = `
-      <img
-        src="${imageUrl}"
-        alt="Imagen generada"
-        style="
-          width:100%;
-          max-width:600px;
-          border-radius:12px;
-          margin-top:10px;
-        ">
-    `;
-
-  } catch (error) {
-
-    resultado.innerHTML =
-      `❌ ${error.message}`;
+  } catch (err) {
+    console.error(err);
+    alert("Error generando imagen");
   }
 }
