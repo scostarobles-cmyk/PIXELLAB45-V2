@@ -1,24 +1,20 @@
 export default {
   async fetch(request, env) {
     try {
-
-      const imagen = await env.AI.run(
-        "black-forest-labs/flux-2-pro-preview",
+      const result = await env.AI.run(
+        "@cf/black-forest-labs/flux-2-klein-9b",
         {
-          prompt: "Robot futurista cyberpunk con luces azules, estilo cinematográfico, ultra detallado",
-          width: 1024,
-          height: 1024
+          prompt: "robot futurista azul"
         }
       );
 
-      return Response.json(imagen);
+      return Response.json(result);
 
     } catch (error) {
-
       return Response.json({
-        error: error.message
+        error: error.message,
+        details: String(error)
       });
-
     }
   }
 }
