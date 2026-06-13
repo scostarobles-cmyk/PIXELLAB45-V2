@@ -1,45 +1,99 @@
 export default {
   async fetch(request, env) {
-    try {
-      const url = new URL(request.url);
 
-      const prompt =
-        url.searchParams.get("prompt") ||
-        "Un robot futurista en una ciudad cyberpunk";
+    if (request.method !== "POST") {
+      return json({ ok: false, error: "Solo POST permitido" }, 405);
+    }
+
+    let prompt = "";
+
+    try {
+
+      const contentType = request.headers.get("content-type") || "";
+
+      // =========================
+      // 📦 INPUT (MULTIPART / JSON)
+      // =========================
+
+      if (contentType.includes("multipart/form-data")) {
+        const form = await request.formData();
+        prompt = form.get("prompt");
+      }
+
+      else if (contentType.includes("application/json")) {
+        const body = await request.json();
+        prompt = body.prompt;
+      }
+
+      if (!prompt) {
+        return json({
+          ok: false,
+          error: "Prompt requerido"
+        }, 400);
+      }
+
+      // =========================
+      // 🎨 CLOUDFARE AI IMAGE MODEL
+      // =========================
 
       const result = await env.AI.run(
         "@cf/stabilityai/stable-diffusion-xl-base-1.0",
-        { prompt }
+        {
+          prompt: enhancePrompt(prompt)
+        }
       );
 
-      let image = result.image || result;
-
-      if (typeof image === "string") {
-        image = Uint8Array.from(atob(image), c =>
-          c.charCodeAt(0)
-        );
+      if (!result || !result.image) {
+        return json({
+          ok: false,
+          error: "No se generó imagen",
+          raw: result
+        }, 500);
       }
 
-      return new Response(image, {
-        headers: {
-          "Content-Type": "image/png",
-          "Cache-Control": "no-store"
+      return json({
+        ok: true,
+        data: {
+          output: result.image
         }
       });
 
     } catch (err) {
-      return new Response(
-        JSON.stringify({
-          error: "PIXELLAB45_ERROR",
-          message: err.message
-        }),
-        {
-          status: 500,
-          headers: {
-            "Content-Type": "application/json"
-          }
-        }
-      );
+
+      return json({
+        ok: false,
+        error: err.message
+      }, 500);
     }
   }
 };
+
+/* =========================
+   🧠 PROMPT ENGINE (PIXELLAB45 STYLE)
+========================= */
+
+function enhancePrompt(prompt) {
+
+  return `
+cinematic ultra realistic 8k,
+futuristic cyberpunk lighting,
+neon blue glow, high detail,
+professional digital art,
+
+${prompt}
+`;
+}
+
+/* =========================
+   📦 JSON HELPER
+========================= */
+
+function json(obj, status = 200) {
+  return new Response(JSON.stringify(obj), {
+    status,
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*"
+    }
+  });
+    }
