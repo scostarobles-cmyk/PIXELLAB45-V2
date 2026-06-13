@@ -273,6 +273,108 @@ ${random(impactante)}
 
 ${random(dinero)}
 
+function generarIdeas(){
+
+  const tema =
+    document.getElementById("temaIdea").value;
+
+  if(tema.trim() === ""){
+
+    document.getElementById("resultadoIdeas").innerText =
+      "⚠️ Escribe un tema primero";
+
+    return;
+  }
+
+  function random(arr){
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
+
+  const viral = [
+    `Nadie te cuenta esto sobre ${tema}`,
+    `La verdad oculta de ${tema}`,
+    `Probé ${tema} y esto ocurrió`,
+    `Lo que descubrí usando ${tema}`,
+    `Todos hablan de ${tema}, pero ignoran esto`
+  ];
+
+  const impactante = [
+    `Probé ${tema} durante 30 días`,
+    `El experimento que hice con ${tema}`,
+    `Qué pasó cuando usé ${tema} todos los días`,
+    `Mi experiencia real usando ${tema}`,
+    `Los resultados inesperados de ${tema}`
+  ];
+
+  const dinero = [
+    `Cómo ganar dinero usando ${tema}`,
+    `5 formas de monetizar ${tema}`,
+    `Cómo convertir ${tema} en ingresos`,
+    `Cómo conseguir clientes con ${tema}`,
+    `Ideas de negocio usando ${tema}`
+  ];
+
+  const errores = [
+    `Errores que todos cometen con ${tema}`,
+    `Lo que nunca debes hacer con ${tema}`,
+    `Los fallos más comunes al usar ${tema}`,
+    `Por qué la mayoría fracasa con ${tema}`,
+    `Errores que te hacen perder tiempo con ${tema}`
+  ];
+
+  const educativo = [
+    `Guía rápida para dominar ${tema}`,
+    `Aprende ${tema} desde cero`,
+    `Todo lo básico sobre ${tema}`,
+    `Cómo empezar con ${tema}`,
+    `Curso express de ${tema}`
+  ];
+
+  const futuro = [
+    `El futuro de ${tema}`,
+    `Cómo cambiará ${tema} en los próximos años`,
+    `Las tendencias de ${tema} para 2027`,
+    `Qué viene después para ${tema}`,
+    `La evolución de ${tema}`
+  ];
+
+  const herramientas = [
+    `Las mejores herramientas para ${tema}`,
+    `Apps que potencian ${tema}`,
+    `Herramientas gratuitas para ${tema}`,
+    `Top recursos para trabajar con ${tema}`,
+    `Kit esencial para usar ${tema}`
+  ];
+
+  const shorts = [
+    `3 cosas que debes saber sobre ${tema}`,
+    `5 datos rápidos sobre ${tema}`,
+    `Todo sobre ${tema} en 60 segundos`,
+    `Lo más importante de ${tema}`,
+    `Resumen express de ${tema}`
+  ];
+
+  let ideas = `
+🚀 IDEAS PIXELLAB45
+
+━━━━━━━━━━━━━━━━━━
+
+🔥 IDEA VIRAL
+
+${random(viral)}
+
+━━━━━━━━━━━━━━━━━━
+
+🤯 IDEA IMPACTANTE
+
+${random(impactante)}
+
+━━━━━━━━━━━━━━━━━━
+
+💰 IDEA MONETIZACIÓN
+
+${random(dinero)}
+
 ━━━━━━━━━━━━━━━━━━
 
 ⚠️ IDEA ERROR COMÚN
@@ -307,7 +409,7 @@ ${random(shorts)}
   document.getElementById(
     "resultadoIdeas"
   ).innerText = ideas;
-    }
+}
 
 function copiarIdeas(){
 
