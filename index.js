@@ -11,10 +11,6 @@ export default {
 
       const contentType = request.headers.get("content-type") || "";
 
-      // =========================
-      // 📦 INPUT
-      // =========================
-
       if (contentType.includes("multipart/form-data")) {
         const form = await request.formData();
         prompt = form.get("prompt");
@@ -29,10 +25,6 @@ export default {
         return json({ ok: false, error: "Prompt requerido" }, 400);
       }
 
-      // =========================
-      // 🎨 IA MODEL
-      // =========================
-
       const result = await env.AI.run(
         "@cf/stabilityai/stable-diffusion-xl-base-1.0",
         {
@@ -40,51 +32,15 @@ export default {
         }
       );
 
-      console.log("AI RAW RESULT:", result);
+      console.log("RAW RESULT:", result);
 
-      let image = null;
-
-      // 🔥 CASO 1
-      if (result?.image) {
-        image = result.image;
-      }
-
-      // 🔥 CASO 2
-      else if (result instanceof Uint8Array) {
-        image = result;
-      }
-
-      // 🔥 CASO 3
-      else if (result?.result?.image) {
-        image = result.result.image;
-      }
-
-      // 🔥 CASO 4
-      else if (result?.result instanceof Uint8Array) {
-        image = result.result;
-      }
-
-      if (!image) {
-        return json({
-          ok: false,
-          error: "No se pudo extraer imagen del modelo",
-          debug: result
-        }, 500);
-      }
-
-      if (image instanceof Uint8Array) {
-        image = btoa(String.fromCharCode(...image));
-      }
-
+      // 🔥 SOLO DEBUG (NO IMAGEN)
       return json({
-        ok: true,
-        data: {
-          output: `data:image/png;base64,${image}`
-        }
+        ok: false,
+        debug: result
       });
 
     } catch (err) {
-
       return json({
         ok: false,
         error: err.message
@@ -94,23 +50,22 @@ export default {
 };
 
 /* =========================
-   🧠 PROMPT ENGINE
+   PROMPT
 ========================= */
 
 function enhancePrompt(prompt) {
   return `
 cinematic ultra realistic 8k,
 futuristic cyberpunk lighting,
-neon blue glow,
+neon glow,
 high detail,
-professional digital art,
 
 ${prompt}
 `;
 }
 
 /* =========================
-   📦 JSON HELPER
+   JSON
 ========================= */
 
 function json(obj, status = 200) {
@@ -121,4 +76,4 @@ function json(obj, status = 200) {
       "Access-Control-Allow-Origin": "*"
     }
   });
-          }
+}
