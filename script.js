@@ -1,4 +1,5 @@
 console.log("SCRIPT CARGADO OK");
+let imagenesGuardadas = [];
 function generarPrompt() {
 
   const tema =
@@ -771,6 +772,7 @@ if (
         border-radius:12px;
         margin-top:10px;
       ">
+      guardarImagen(imagen);
   `;
 
 } else {
@@ -789,4 +791,51 @@ resultado.innerHTML =
 
 }
 
+}
+function guardarImagen(url) {
+
+  imagenesGuardadas.push(url);
+
+  const contenedor = document.getElementById("galeriaImagenes");
+
+  const div = document.createElement("div");
+  div.className = "gallery-item";
+
+  div.innerHTML = `
+    <img src="${url}" />
+
+    <button class="download-btn" onclick="descargarImagen('${url}')">
+      ⬇️
+    </button>
+  `;
+
+  contenedor.prepend(div);
+}
+function guardarImagen(url) {
+
+  imagenesGuardadas.push(url);
+
+  const contenedor = document.getElementById("galeriaImagenes");
+
+  const div = document.createElement("div");
+  div.className = "gallery-item";
+
+  div.innerHTML = `
+    <img src="${url}" />
+
+    <button class="download-btn" onclick="descargarImagen('${url}')">
+      ⬇️
+    </button>
+  `;
+
+  contenedor.prepend(div);
+}
+function descargarImagen(url) {
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "pixellab45-image.jpg";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 }
