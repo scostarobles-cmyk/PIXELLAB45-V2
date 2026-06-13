@@ -1,93 +1,62 @@
 export default {
   async fetch(request, env) {
+    const url = new URL(request.url);
 
-    if (request.method === "OPTIONS") {
-      return new Response(null, {
-        status: 204,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST, OPTIONS",
-          "Access-Control-Allow-Headers": "*"
-        }
-      });
-    }
+    // 📤 UPLOAD
+    if (url.pathname === "/upload" && request.method === "POST") {
+      const formData = await request.formData();
+      const file = formData.get("file");
 
-    if (request.method !== "POST") {
-      return new Response(
-        JSON.stringify({
-          ok: false,
-          error: "Solo POST permitido"
-        }),
-        {
-          status: 405,
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*"
-          }
-        }
-      );
-    }
-
-    try {
-
-      const body = await request.json();
-      const prompt = body.prompt;
-
-      if (!prompt) {
-        return new Response(
-          JSON.stringify({
-            ok: false,
-            error: "Prompt requerido"
-          }),
-          {
-            status: 400,
-            headers: {
-              "Content-Type": "application/json",
-              "Access-Control-Allow-Origin": "*"
-            }
-          }
-        );
+      if (!file) {
+        return new Response("No file", { status: 400 });
       }
 
-      const image = await env.AI.run(
-        "@cf/stabilityai/stable-diffusion-xl-base-1.0",
-        {
-          prompt: `
-cinematic ultra realistic 8k,
-futuristic cyberpunk lighting,
-high detail,
-professional digital art,
+      const key = `gallery/${Date.now()}-${file.name}`;
 
-${prompt}
-`,
-          width: 1024,
-          height: 1024,
-          num_steps: 20
-        }
-      );
-
-      return new Response(image, {
-        headers: {
-          "Content-Type": "image/png",
-          "Access-Control-Allow-Origin": "*"
-        }
+      await env.PIXELLAB45_BUCKET.put(key, file.stream(), {
+        httpMetadata: {
+          contentType: file.type,
+        },
       });
 
-    } catch (err) {
-
-      return new Response(
-        JSON.stringify({
-          ok: false,
-          error: err.message
-        }),
-        {
-          status: 500,
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*"
-          }
-        }
-      );
+      return Response.json({
+        ok: true,
+        key,
+        url: `/image/${key}`
+      });
     }
+
+    // 🖼️ VER IMAGEN
+    if (url.pathname.startsWith("/image/")) {
+      const key = url.pathname.replace("/image/", "");
+      const object = await env.PIXELLAB45_BUCKET.get(key);
+
+      if (!object) {
+        return new Response("Not found", { status: 404 });
+      }
+
+      return new Response(object.body, {
+        headers: {
+          "Content-Type": object.httpMetadata?.contentType || "image/png",
+          "Cache-Control": "public, max-age=31536000"
+        },
+      });
+    }
+
+    // 📚 GALERÍA
+    if (url.pathname === "/gallery") {
+      const list = await env.PIXELLAB45_BUCKET.list({ prefix: "gallery/" });
+
+      const images = list.objects
+        .sort((a, b) => b.uploaded - a.uploaded)
+        .map(obj => ({
+          key: obj.key,
+          url: `/image/${obj.key}`
+        }));
+
+      return Response.json(images);
+    }
+
+    return new Response("PIXELLAB45 OK");
   }
 };
