@@ -1,8 +1,9 @@
 export default {
   async fetch(request, env) {
     try {
+
       const respuesta = await env.AI.run(
-        "@cf/meta/llama-3-8b-instruct",
+        "@cf/moonshotai/kimi-k2-instruct",
         {
           prompt: "Responde únicamente: PIXELLAB45 conectado correctamente"
         }
