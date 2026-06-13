@@ -2,9 +2,15 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // 🎨 IA → genera imagen
-    if (url.pathname === "/generate" && request.method === "POST") {
-      const { prompt } = await request.json();
+    // 🧠 TEST
+    if (url.pathname === "/") {
+      return new Response("PIXELLAB45 OK");
+    }
+
+    // 🎨 IA (TEST SIMPLE PRIMERO)
+    if (url.pathname === "/generate") {
+      const { searchParams } = url;
+      const prompt = searchParams.get("prompt") || "test";
 
       const result = await env.AI.run(
         "@cf/stabilityai/stable-diffusion-xl-base-1.0",
@@ -12,35 +18,13 @@ export default {
       );
 
       return new Response(result, {
-        headers: { "content-type": "application/octet-stream" }
+        headers: {
+          "Content-Type": "application/octet-stream",
+          "Access-Control-Allow-Origin": "*"
+        }
       });
     }
 
-    // 📤 UPLOAD A R2
-    if (url.pathname === "/upload" && request.method === "POST") {
-      const formData = await request.formData();
-      const file = formData.get("file");
-
-      const key = `gallery/${Date.now()}-${file.name}`;
-
-      await env.PIXELLAB45_BUCKET.put(key, file.stream(), {
-        httpMetadata: { contentType: file.type }
-      });
-
-      return Response.json({ ok: true, key });
-    }
-
-    // 🖼️ GALERÍA
-    if (url.pathname === "/gallery") {
-      const list = await env.PIXELLAB45_BUCKET.list({ prefix: "gallery/" });
-
-      return Response.json(
-        list.objects.map(o => ({
-          key: o.key
-        }))
-      );
-    }
-
-    return new Response("OK PIXELLAB45");
+    return new Response("OK");
   }
 };
