@@ -69,10 +69,12 @@ export default {
       });
 
     } catch (err) {
-      return json({
-        ok: false,
-        error: err.message
-      }, 500);
+  return json({
+    ok: false,
+    error: String(err),
+    message: err?.message,
+    stack: err?.stack
+  }, 500);
     }
   }
 };
