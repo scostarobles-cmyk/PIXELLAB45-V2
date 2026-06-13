@@ -1,31 +1,45 @@
 export default {
   async fetch(request, env) {
     try {
+      const url = new URL(request.url);
+
+      const prompt =
+        url.searchParams.get("prompt") ||
+        "Un robot futurista en una ciudad cyberpunk";
+
       const result = await env.AI.run(
-        "@cf/black-forest-labs/flux-2-klein-9b",
-        {
-          prompt: "Un robot futurista en una ciudad cyberpunk"
-        }
+        "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+        { prompt }
       );
 
-      // 🔥 FIX: convertir correctamente a bytes
-      const image = result.image
-        ? result.image
-        : result;
+      let image = result.image || result;
+
+      if (typeof image === "string") {
+        image = Uint8Array.from(atob(image), c =>
+          c.charCodeAt(0)
+        );
+      }
 
       return new Response(image, {
         headers: {
-          "Content-Type": "image/png"
+          "Content-Type": "image/png",
+          "Cache-Control": "no-store"
         }
       });
 
     } catch (err) {
-      console.log("ERROR AI:", err);
-
       return new Response(
-        JSON.stringify({ error: err.message }),
-        { status: 500 }
+        JSON.stringify({
+          error: "PIXELLAB45_ERROR",
+          message: err.message
+        }),
+        {
+          status: 500,
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
       );
     }
   }
-}
+};
