@@ -3,9 +3,14 @@ export default {
     try {
 
       const respuesta = await env.AI.run(
-        "@cf/moonshotai/kimi-k2-instruct",
+        "@cf/meta/llama-3.1-8b-instruct",
         {
-          prompt: "Responde únicamente: PIXELLAB45 conectado correctamente"
+          messages: [
+            {
+              role: "user",
+              content: "Responde únicamente: PIXELLAB45 conectado"
+            }
+          ]
         }
       );
 
