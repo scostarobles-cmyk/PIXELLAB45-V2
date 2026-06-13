@@ -556,8 +556,6 @@ function copiarIdeas(){
 
     });
 
-}
-
 }function generarVisuales(){
 
   const tema =
