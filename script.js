@@ -375,40 +375,33 @@ async function generarImagen() {
 
     resultado.innerHTML = "🎨 Generando imagen...";
 
-    // 🔥 IMPORTANTE: Cloudflare Worker AI = FormData
-    const formData = new FormData();
-    formData.append("prompt", prompt);
-
     const respuesta = await fetch(
       "https://pixellab45-v2.scostarobles.workers.dev/",
       {
         method: "POST",
-        body: formData
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ prompt })
       }
     );
 
     const datos = await respuesta.json();
 
-    console.log("WORKER RESPONSE:", datos);
+    console.log("RESPUESTA:", datos);
 
     if (!datos.ok) {
-      resultado.innerHTML = `❌ ${datos.error || "Error desconocido"}`;
+      resultado.innerHTML = `❌ ${datos.error || "Error generando imagen"}`;
       return;
     }
 
-    let imagen = datos.data.output;
-
-    if (Array.isArray(imagen)) {
-      imagen = imagen[0];
-    }
+    const imagen = datos.data.output;
 
     resultado.innerHTML = `
-      <img src="${imagen}"
-        style="width:100%;max-width:600px;border-radius:12px;margin-top:10px;">
+      <img src="${imagen}" style="width:100%;max-width:600px;border-radius:12px;margin-top:10px;">
     `;
 
   } catch (error) {
-    console.error(error);
     resultado.innerHTML = `❌ ${error.message}`;
   }
 }
