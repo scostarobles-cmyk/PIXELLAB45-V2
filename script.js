@@ -118,6 +118,7 @@ function copiarIdeas() {
 ========================= */
 
 async function generarImagen() {
+
   const prompt = document.getElementById("promptImagen").value;
   const resultado = document.getElementById("resultadoImagen");
 
@@ -127,37 +128,75 @@ async function generarImagen() {
   }
 
   try {
+
     resultado.innerHTML = "🎨 Generando imagen...";
 
     const respuesta = await fetch(
       "https://pixellab45-v2.scostarobles.workers.dev/",
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({ prompt })
       }
     );
 
     const datos = await respuesta.json();
 
+    console.log("Worker:", datos);
+
     if (!datos.ok) {
-      let msg = "❌ Error al generar imagen";
 
-      if (datos.error?.includes("credit")) {
-        msg = "⚠️ Sin créditos disponibles";
-      }
+      resultado.innerHTML = `
+        <div style="
+          background:#1a1a1a;
+          color:#fff;
+          padding:12px;
+          border-radius:10px;
+          border:1px solid #ff4d4d;
+          font-family: Arial;
+        ">
+          ${datos.error}
+        </div>
+      `;
 
-      resultado.innerHTML = msg;
       return;
     }
 
-    let imagen = datos.data.output;
-    if (Array.isArray(imagen)) imagen = imagen[0];
+    const prediction = datos.data;
+
+    if (prediction.status !== "succeeded") {
+      resultado.innerHTML = `⏳ Estado: ${prediction.status}`;
+      return;
+    }
+
+    let imagen = prediction.output;
+
+    if (Array.isArray(imagen)) {
+      imagen = imagen[0];
+    }
 
     resultado.innerHTML = `
-      <img src="${imagen}" style="width:100%;max-width:600px;border-radius:12px;">
+      <img
+        src="${imagen}"
+        style="
+          width:100%;
+          max-width:600px;
+          border-radius:12px;
+          margin-top:10px;
+        ">
     `;
 
+    guardarImagen(imagen);
+
+  } catch (error) {
+
+    console.error(error);
+
+    resultado.innerHTML = "❌ Error de conexión";
+  }
+}
     guardarImagen(imagen);
 
   } catch (e) {
