@@ -1,7 +1,7 @@
 console.log("SCRIPT CARGADO OK");
 
 /* =========================
-   PROMPT GENERADOR
+   PROMPT
 ========================= */
 function generarPrompt() {
 
@@ -61,7 +61,7 @@ function generarGuion() {
 
   if (!tema || tema.trim() === "") {
     document.getElementById("resultadoGuion").innerText =
-      "⚠️ Escribe un tema para el guion";
+      "⚠️ Escribe un tema";
     return;
   }
 
@@ -78,14 +78,13 @@ ${duracion}
 
 🎙️ INTRO
 
-¿Sabías que ${tema}
-está cambiando el mundo?
+¿Sabías que ${tema} está cambiando el mundo?
 
 ━━━━━━━━━━━━━━
 
 🎙️ DESARROLLO
 
-Explica beneficios, ejemplos y casos de uso.
+Explica beneficios, casos de uso y ejemplos.
 
 ━━━━━━━━━━━━━━
 
@@ -98,7 +97,7 @@ Sígueme para más contenido sobre IA y tecnología.
 }
 
 /* =========================
-   STORYBOARD
+   STORYBOARD (RESTO ORIGINAL)
 ========================= */
 function generarStoryboard() {
 
@@ -112,13 +111,13 @@ function generarStoryboard() {
 
   const lineas = guion
     .split("\n")
-    .filter(l => l.trim() !== "");
+    .filter(linea => linea.trim() !== "");
 
   let storyboard = "🎬 STORYBOARD PIXELLAB45\n\n";
 
-  lineas.forEach((linea, i) => {
+  lineas.forEach((linea, index) => {
 
-    storyboard += `ESCENA ${i + 1}\n`;
+    storyboard += `ESCENA ${index + 1}\n`;
     storyboard += `⏱️ Duración: 4 segundos\n\n`;
     storyboard += `🎙️ Narración:\n${linea}\n\n`;
     storyboard += `🎥 Visual:\nEscena futurista relacionada con el tema.\n\n`;
@@ -129,9 +128,9 @@ function generarStoryboard() {
 }
 
 /* =========================
-   IDEAS
+   IDEAS (ESTABLE + VARIADAS)
 ========================= */
-function generarIdeas() {
+function generarIdeas(){
 
   const tema = document.getElementById("temaIdea").value;
 
@@ -141,23 +140,32 @@ function generarIdeas() {
     return;
   }
 
-  const ideas = `
-💡 IDEAS PIXELLAB45
+  const ideas = [
+    `Cómo usar ${tema}`,
+    `Errores comunes en ${tema}`,
+    `Herramientas gratuitas de ${tema}`,
+    `Tendencias futuras de ${tema}`,
+    `Tutorial rápido sobre ${tema}`,
+    `Cómo ganar dinero con ${tema}`,
+    `Trucos avanzados de ${tema}`,
+    `Ideas virales usando ${tema}`,
+    `Guía completa de ${tema}`,
+    `Casos reales de ${tema}`
+  ];
 
-1. Cómo usar ${tema}
-2. Errores comunes en ${tema}
-3. Herramientas de ${tema}
-4. Tendencias de ${tema}
-5. Tutorial rápido de ${tema}
-`;
+  let salida = "💡 IDEAS PIXELLAB45\n\n";
 
-  document.getElementById("resultadoIdeas").innerText = ideas;
+  for (let i = 0; i < ideas.length; i++) {
+    salida += `${i + 1}. ${ideas[i]}\n`;
+  }
+
+  document.getElementById("resultadoIdeas").innerText = salida;
 }
 
 /* =========================
    VISUALES
 ========================= */
-function generarVisuales() {
+function generarVisuales(){
 
   const tema = document.getElementById("temaVisual").value;
 
@@ -170,81 +178,26 @@ function generarVisuales() {
   const resultado = `
 🖼️ PROMPTS VISUALES PIXELLAB45
 
-IMAGEN PRINCIPAL:
-${tema}, futuristic, cyberpunk, neon lights, cinematic, ultra detailed
+━━━━━━━━━━━━━━
 
-THUMBNAIL:
-${tema}, high contrast, youtube thumbnail, tech style
+🎨 IMAGEN PRINCIPAL
+${tema}, futuristic, cyberpunk, neon lights, cinematic
 
-TIKTOK:
-${tema}, vertical composition, modern, social media style
+━━━━━━━━━━━━━━
 
-VIDEO:
-${tema}, cinematic motion, futuristic environment, dynamic lighting
+📺 THUMBNAIL
+${tema}, youtube thumbnail, high contrast, tech style
+
+━━━━━━━━━━━━━━
+
+📱 TIKTOK
+${tema}, vertical format, modern, social media style
+
+━━━━━━━━━━━━━━
+
+🎥 VIDEO IA
+${tema}, cinematic motion, futuristic environment
 `;
 
   document.getElementById("resultadoVisual").innerText = resultado;
-}
-
-/* =========================
-   IMAGEN (CORREGIDO Y ROBUSTO)
-========================= */
-async function generarImagen() {
-
-  const prompt = document.getElementById("promptImagen").value;
-  const resultado = document.getElementById("resultadoImagen");
-
-  if (!prompt || prompt.trim() === "") {
-    resultado.innerHTML = "⚠️ Escribe un prompt para generar la imagen";
-    return;
-  }
-
-  try {
-
-    resultado.innerHTML = "🎨 Generando imagen...";
-
-    const respuesta = await fetch(
-      "https://pixellab45-v2.scostarobles.workers.dev/",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ prompt })
-      }
-    );
-
-    if (!respuesta.ok) {
-      resultado.innerHTML =
-        "❌ Error HTTP: " + respuesta.status;
-      return;
-    }
-
-    let datos;
-
-    try {
-      datos = await respuesta.json();
-    } catch (e) {
-      resultado.innerHTML =
-        "❌ El servidor no devolvió JSON válido";
-      return;
-    }
-
-    if (datos && datos.output) {
-
-      resultado.innerHTML = `
-        <img src="${datos.output}"
-          style="width:100%;max-width:600px;border-radius:12px;margin-top:10px;">
-      `;
-
-    } else {
-      resultado.innerHTML =
-        "❌ No se pudo generar la imagen (sin output)";
-    }
-
-  } catch (error) {
-
-    resultado.innerHTML =
-      "❌ Error de conexión: " + error.message;
-  }
 }
