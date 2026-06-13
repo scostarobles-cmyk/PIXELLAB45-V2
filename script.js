@@ -188,7 +188,6 @@ async function generarImagen() {
         ">
     `;
 
-}
     guardarImagen(imagen);
 
   } catch (e) {
