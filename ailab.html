@@ -9,8 +9,7 @@
 
   <link rel="stylesheet" href="styles.css">
 
-  <link
-    rel="stylesheet"
+  <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -31,56 +30,36 @@
 
   <!-- HERO -->
   <section class="ailab-hero">
-
     <h1>🚀 PIXELLAB45 AI LAB</h1>
-
-    <p>
-      Tu laboratorio de creación con Inteligencia Artificial.
-    </p>
-
+    <p>Tu laboratorio de creación con Inteligencia Artificial.</p>
   </section>
 
   <div class="section-divider"></div>
 
   <!-- CONTENIDO -->
   <section id="contenido" class="ai-section">
-
     <h2>✍️ Creador de Contenido</h2>
 
     <div class="ai-grid">
 
       <!-- IDEAS -->
       <div class="ai-card">
-
         <h3>💡 Generador de Ideas</h3>
 
-        <input
-          type="text"
-          id="temaIdea"
-          placeholder="Tema principal">
+        <input type="text" id="temaIdea" placeholder="Tema principal">
 
-        <button onclick="generarIdeas()">
-          Generar Ideas
-        </button>
-
-        <button onclick="copiarIdeas()">
-          📋 Copiar Ideas
-        </button>
+        <button onclick="generarIdeas()">Generar Ideas</button>
+        <button onclick="copiarIdeas()">📋 Copiar Ideas</button>
 
         <div id="mensajeIdeasCopiadas"></div>
         <div id="resultadoIdeas"></div>
-
       </div>
 
       <!-- PROMPTS -->
       <div class="ai-card">
-
         <h3>✍️ Generador de Prompts</h3>
 
-        <input
-          type="text"
-          id="temaPrompt"
-          placeholder="Tema del contenido">
+        <input type="text" id="temaPrompt" placeholder="Tema del contenido">
 
         <select id="tipoContenido">
           <option>TikTok</option>
@@ -90,28 +69,18 @@
           <option>Ebook</option>
         </select>
 
-        <button onclick="generarPrompt()">
-          Generar
-        </button>
-
-        <button onclick="copiarPrompt()">
-          📋 Copiar Prompt
-        </button>
+        <button onclick="generarPrompt()">Generar</button>
+        <button onclick="copiarPrompt()">📋 Copiar Prompt</button>
 
         <div id="mensajeCopiado"></div>
         <div id="resultadoPrompt"></div>
-
       </div>
 
       <!-- GUIONES -->
       <div class="ai-card">
-
         <h3>🎬 Generador de Guiones IA</h3>
 
-        <input
-          type="text"
-          id="temaGuion"
-          placeholder="Tema del video">
+        <input type="text" id="temaGuion" placeholder="Tema del video">
 
         <select id="duracionGuion">
           <option>15 segundos</option>
@@ -119,125 +88,89 @@
           <option>60 segundos</option>
         </select>
 
-        <button onclick="generarGuion()">
-          Generar Guion
-        </button>
-
-        <button onclick="copiarGuion()">
-          📋 Copiar Guion
-        </button>
+        <button onclick="generarGuion()">Generar Guion</button>
+        <button onclick="copiarGuion()">📋 Copiar Guion</button>
 
         <div id="mensajeGuionCopiado"></div>
         <div id="resultadoGuion"></div>
-
       </div>
-<div class="ai-card">
 
-  <h3>🎬 Storyboard Generator</h3>
+      <!-- STORYBOARD -->
+      <div class="ai-card">
+        <h3>🎬 Storyboard Generator</h3>
 
-  <textarea
-    id="textoStoryboard"
-    placeholder="Pega aquí el guion..."
-    rows="6">
-  </textarea>
+        <textarea id="textoStoryboard" placeholder="Pega aquí el guion..." rows="6"></textarea>
 
-  <button onclick="generarStoryboard()">
-    Generar Storyboard
-  </button>
+        <button onclick="generarStoryboard()">Generar Storyboard</button>
+        <button onclick="copiarStoryboard()">📋 Copiar Storyboard</button>
 
-  <button onclick="copiarStoryboard()">
-    📋 Copiar Storyboard
-  </button>
+        <div id="mensajeStoryboard"></div>
+        <div id="resultadoStoryboard"></div>
+      </div>
 
-  <div id="mensajeStoryboard"></div>
-
-  <div id="resultadoStoryboard"></div>
-
-</div>
     </div>
-
   </section>
 
   <div class="section-divider"></div>
 
   <!-- VISUAL -->
   <section id="visual" class="ai-section">
-
     <h2>🎨 Estudio Visual</h2>
 
     <div class="ai-grid">
 
       <div class="ai-card">
-
         <h3>🎨 PIXELLAB45 Image Studio</h3>
 
-        <input
-          type="text"
-          id="promptImagen"
-          placeholder="Describe la imagen">
+        <input type="text" id="promptImagen" placeholder="Describe la imagen">
 
-        <button onclick="generarImagen()">
-          Generar Imagen
-        </button>
+        <button onclick="generarImagen()">Generar Imagen</button>
 
         <div id="resultadoImagen"></div>
-<div class="gallery-section">
 
-  <h3>🖼️ Galería de Imágenes</h3>
+        <!-- GALERÍA -->
+        <div class="gallery-section">
+          <h3>🖼️ Galería de Imágenes</h3>
+          <p class="gallery-subtitle">
+            Tus imágenes generadas se guardan aquí automáticamente
+          </p>
 
-  <div id="galeriaImagenes" class="gallery-grid"></div>
+          <div id="galeriaImagenes" class="gallery-grid"></div>
+        </div>
 
-</div>
       </div>
 
     </div>
-
   </section>
 
   <div class="section-divider"></div>
 
   <!-- DR PIXEL -->
   <section id="drpixel" class="ai-section">
-
     <h2>🤖 Dr. Pixel</h2>
 
     <div class="ai-card">
-
       <h3>Próximamente</h3>
-
       <p>
         Asistente inteligente para generar ideas,
         prompts, guiones e imágenes con IA.
       </p>
-
     </div>
-
   </section>
 
   <div class="section-divider"></div>
 
   <!-- FOOTER -->
   <footer class="footer">
-
     <div class="footer-content">
-
       <h3>PIXELLAB45</h3>
-
-      <p>
-        Inteligencia Artificial • Tecnología • Innovación
-      </p>
-
-      <p class="footer-copy">
-        © 2026 Sergio Costa | Todos los derechos reservados
-      </p>
-
+      <p>Inteligencia Artificial • Tecnología • Innovación</p>
+      <p class="footer-copy">© 2026 Sergio Costa | Todos los derechos reservados</p>
     </div>
-
   </footer>
 
   <script src="https://js.puter.com/v2/"></script>
   <script src="script.js"></script>
 
 </body>
-
-    </html>
+</html>
