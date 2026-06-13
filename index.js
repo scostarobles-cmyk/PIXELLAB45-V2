@@ -1,15 +1,13 @@
 export default {
   async fetch(request, env) {
-    return new Response(
-      JSON.stringify({
-        ok: true,
-        tokenExiste: !!env.HF_API_TOKEN
-      }),
+
+    const respuesta = await env.AI.run(
+      "@cf/meta/llama-3-8b-instruct",
       {
-        headers: {
-          "Content-Type": "application/json"
-        }
+        prompt: "Responde únicamente: PIXELLAB45 conectado correctamente"
       }
     );
+
+    return Response.json(respuesta);
   }
 }
