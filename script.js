@@ -363,6 +363,8 @@ function copiarVisuales(){
 
 async function generarImagen() {
 
+  alert("FUNCION NUEVA CARGADA");
+
   const prompt =
     document.getElementById("promptImagen").value;
 
