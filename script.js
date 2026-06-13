@@ -360,37 +360,25 @@ function copiarVisuales(){
 /* =========================
    GENERAR IMAGEN (SIN CAMBIOS)
 ========================= */
-
 async function generarImagen() {
   const prompt = document.getElementById("promptImagen").value;
 
   try {
-    if (!prompt || prompt.trim() === "") {
-      alert("Escribe un prompt");
-      return;
-    }
-
-    // 🎨 IA CORRECTA (WORKERS AI)
-    const result = await env.AI.run(
-      "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+    // 🎨 1. pedir al Worker la imagen
+    const res = await fetch(
+      "https://pixellab45-v2.scostarobles.workers.dev/generate",
       {
-        prompt: prompt
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt })
       }
     );
 
-    // 🧠 CONVERTIR RESULTADO (CORRECTO EN CLOUDFLARE)
-    const imageBuffer = result;
+    const imageBlob = await res.blob();
 
-    if (!imageBuffer) {
-      throw new Error("IA no devolvió imagen");
-    }
-
-    // 🖼️ BUFFER → BLOB
-    const blob = new Blob([imageBuffer], { type: "image/png" });
-
-    // 📤 SUBIR A TU WORKER
+    // 📤 2. subir a R2
     const formData = new FormData();
-    formData.append("file", blob, `pixellab45-${Date.now()}.png`);
+    formData.append("file", imageBlob, "pixellab45.png");
 
     const upload = await fetch(
       "https://pixellab45-v2.scostarobles.workers.dev/upload",
@@ -400,17 +388,13 @@ async function generarImagen() {
       }
     );
 
-    const uploadResult = await upload.json();
+    const result = await upload.json();
 
-    if (!uploadResult.ok) {
-      throw new Error("Error subiendo a R2");
-    }
-
-    alert("Imagen generada y guardada ✔");
-    console.log(uploadResult);
+    alert("Imagen creada ✔");
+    console.log(result);
 
   } catch (err) {
-    console.error("ERROR GENERACIÓN:", err);
-    alert("Error: " + err.message);
+    console.error("ERROR:", err);
+    alert(err.message);
   }
 }
