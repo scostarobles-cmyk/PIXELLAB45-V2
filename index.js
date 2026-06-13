@@ -2,7 +2,7 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // Respuesta de prueba para asegurarnos de que todo esté bien
+    // Ruta principal de prueba
     if (url.pathname === "/") {
       return new Response("PIXELLAB45 OK", {
         headers: { "Access-Control-Allow-Origin": "*" }
@@ -42,24 +42,7 @@ export default {
       });
     }
 
-    // Listar imágenes en la galería
-    if (url.pathname === "/gallery") {
-      const list = await env.PIXELLAB45_BUCKET.list({ prefix: "gallery/" });
-      return new Response(
-        JSON.stringify(
-          list.objects.map(o => ({ key: o.key }))
-        ),
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*"
-          }
-        }
-      );
-    }
-
+    // Si no es ninguna ruta, responde OK genérico
     return new Response("OK PIXELLAB45", {
       headers: { "Access-Control-Allow-Origin": "*" }
     });
-  }
-};
