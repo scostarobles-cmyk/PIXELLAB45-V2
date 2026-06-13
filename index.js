@@ -37,41 +37,51 @@ export default {
       // =========================
 
       const result = await env.AI.run(
-  "@cf/stabilityai/stable-diffusion-xl-base-1.0",
-  {
-    prompt: enhancePrompt(prompt)
-  }
-);
+  "@cfconsole.log("AI RAW RESULT:", result);
 
-console.log("AI RESULT:", result);
+let image = null;
 
-let image = result?.image;
-
-// 🔥 si viene binario (MUY IMPORTANTE)
-if (image instanceof Uint8Array) {
-  image = btoa(String.fromCharCode(...image));
+// 🔥 CASO 1: directo (lo más común en Cloudflare)
+if (result?.image) {
+  image = result.image;
 }
 
-// fallback seguro
-if (!image && result?.result?.image) {
+// 🔥 CASO 2: respuesta directa binaria
+else if (result instanceof Uint8Array) {
+  image = result;
+}
+
+// 🔥 CASO 3: envuelto en result
+else if (result?.result?.image) {
   image = result.result.image;
 }
 
+// 🔥 CASO 4: result directo binario dentro de objeto
+else if (result?.result instanceof Uint8Array) {
+  image = result.result;
+}
+
+// ❌ si no hay nada
 if (!image) {
   return json({
     ok: false,
-    error: "La IA generó pero no se pudo leer la imagen",
+    error: "No se pudo extraer imagen del modelo",
     debug: result
   }, 500);
 }
 
+// 🔥 convertir a base64 SI es binario
+if (image instanceof Uint8Array) {
+  image = btoa(String.fromCharCode(...image));
+}
+
+// ✔ devolver lista para frontend
 return json({
   ok: true,
   data: {
     output: `data:image/png;base64,${image}`
   }
 });
-
       return json({
         ok: true,
         data: {
