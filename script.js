@@ -373,7 +373,7 @@ async function generarImagen() {
 
   try {
 
-    resultado.innerHTML = "🎨 Generando imagen...";
+    resultado.innerHTML = "🧪 Probando conexión...";
 
     const respuesta = await fetch(
       "https://pixellab45-v2.scostarobles.workers.dev/",
@@ -386,22 +386,20 @@ async function generarImagen() {
       }
     );
 
-    const datos = await respuesta.json();
-
-    console.log("RESPUESTA:", datos);
-
-    if (!datos.ok) {
-      resultado.innerHTML = `❌ ${datos.error || "Error generando imagen"}`;
-      return;
-    }
-
-    const imagen = datos.data.output;
+    const texto = await respuesta.text();
 
     resultado.innerHTML = `
-      <img src="${imagen}" style="width:100%;max-width:600px;border-radius:12px;margin-top:10px;">
+      <pre style="white-space:pre-wrap;text-align:left;">
+${texto}
+      </pre>
     `;
 
   } catch (error) {
-    resultado.innerHTML = `❌ ${error.message}`;
+
+    resultado.innerHTML = `
+      ❌ ERROR REAL:
+      <br><br>
+      ${error.message}
+    `;
   }
 }
