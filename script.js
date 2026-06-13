@@ -16,17 +16,33 @@ function generarPrompt() {
   }
 
   let prompt = `
+🚀 PROMPT PIXELLAB45
+
+Actúa como un experto en marketing digital,
+creación de contenido y redes sociales.
+
 Crea contenido para ${tipo}
 sobre:
 
-${tema}
+"${tema}"
 
-Incluye:
+Debe incluir:
 
-✅ Título atractivo
-✅ Introducción
-✅ Desarrollo
-✅ Llamado a la acción
+🔥 Un hook impactante para captar atención
+🎯 Un problema o necesidad del público
+💡 Una solución clara y práctica
+📖 Un ejemplo fácil de entender
+🚀 Un cierre memorable
+📢 Un llamado a la acción
+
+Tono:
+Dinámico, profesional y fácil de comprender.
+
+Objetivo:
+Generar interacción, retención y compartidos.
+
+Formato:
+Optimizado para ${tipo}.
 `;
 
   document.getElementById(
