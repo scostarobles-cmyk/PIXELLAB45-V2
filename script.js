@@ -1,4 +1,4 @@
-console.log("SCRIPT CARGADO OK");
+siconsole.log("SCRIPT CARGADO OK");
 let imagenesGuardadas = [];
 function generarPrompt() {
 
@@ -703,94 +703,91 @@ function copiarVisuales(){
 
 async function generarImagen() {
 
-const prompt =
-document.getElementById("promptImagen").value;
+  const prompt = document.getElementById("promptImagen").value;
+  const resultado = document.getElementById("resultadoImagen");
 
-const resultado =
-document.getElementById("resultadoImagen");
-
-if (!prompt.trim()) {
-
-resultado.innerHTML =
-  "⚠️ Escribe un prompt primero";
-
-return;
-
-}
-
-try {
-
-resultado.innerHTML =
-  "🎨 Generando imagen...";
-
-const respuesta = await fetch(
-  "https://pixellab45-v2.scostarobles.workers.dev/",
-  {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      prompt
-    })
-  }
-);
-
-const datos =
-  await respuesta.json();
-
-console.log("Respuesta Worker:", datos);
-
-if (!datos.ok) {
-
-  resultado.innerHTML =
-    `❌ ${datos.error || "Error desconocido"}`;
-
-  return;
-}
-
-const prediction =
-  datos.data;
-
-if (
-  prediction.status === "succeeded"
-) {
-
-  let imagen = prediction.output;
-
-  if (Array.isArray(imagen)) {
-    imagen = imagen[0];
+  if (!prompt.trim()) {
+    resultado.innerHTML = "⚠️ Escribe un prompt primero";
+    return;
   }
 
-  resultado.innerHTML = `
-    <img
-      src="${imagen}"
-      alt="Imagen generada"
-      style="
-        width:100%;
-        max-width:600px;
-        border-radius:12px;
-        margin-top:10px;
-      ">
-      guardarImagen(imagen);
-  `;
+  try {
 
-} else {
+    resultado.innerHTML = "🎨 Generando imagen...";
 
-  resultado.innerHTML =
-    `❌ Estado: ${prediction.status}`;
+    const respuesta = await fetch(
+      "https://pixellab45-v2.scostarobles.workers.dev/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ prompt })
+      }
+    );
 
-}
+    const datos = await respuesta.json();
 
-} catch(error) {
+    console.log("Respuesta Worker:", datos);
 
-console.error(error);
+    // ❌ Manejo de error del backend
+    if (!datos.ok) {
 
-resultado.innerHTML =
-  `❌ ${error.message}`;
+      let mensaje = "❌ Error al generar la imagen";
 
-}
+      if (datos.error?.includes("Insufficient credit")) {
+        mensaje = "⚠️ No hay créditos disponibles para generar imágenes. Recargá tu cuenta o intentá más tarde.";
+      }
 
+      else if (datos.error?.includes("rate")) {
+        mensaje = "⏳ Demasiadas solicitudes. Esperá unos segundos e intentá nuevamente.";
+      }
+
+      else if (datos.error?.includes("network")) {
+        mensaje = "🌐 Problema de conexión. Revisá tu internet.";
+      }
+
+      resultado.innerHTML = mensaje;
+      return;
+    }
+
+    const prediction = datos.data;
+
+    // ⏳ Estado de la generación
+    if (prediction.status !== "succeeded") {
+      resultado.innerHTML = `⏳ Estado: ${prediction.status}`;
+      return;
+    }
+
+    let imagen = prediction.output;
+
+    if (Array.isArray(imagen)) {
+      imagen = imagen[0];
+    }
+
+    resultado.innerHTML = `
+      <img
+        src="${imagen}"
+        alt="Imagen generada"
+        style="
+          width:100%;
+          max-width:600px;
+          border-radius:12px;
+          margin-top:10px;
+        "
+      >
+    `;
+
+    // 📌 Guardar en galería (FUERA del HTML, correcto)
+    guardarImagen(imagen);
+
+  } catch (error) {
+
+    console.error(error);
+
+    resultado.innerHTML =
+      "❌ Error inesperado. Revisá tu conexión o intentá nuevamente.";
+  }
 }
 function guardarImagen(url) {
 
