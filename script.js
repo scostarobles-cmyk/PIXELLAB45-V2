@@ -241,6 +241,30 @@ function generarGuion(){
     `Si usas ${tema}, mira esto primero`
   ];
 
+  const ejemplos = [
+    `Imagina que usas ${tema} para ahorrar horas de trabajo.`,
+    `Un creador de contenido utilizó ${tema} y duplicó su productividad.`,
+    `Muchos profesionales ya usan ${tema} diariamente.`,
+    `Con ${tema} puedes automatizar tareas repetitivas.`,
+    `Las empresas están adoptando ${tema} a gran velocidad.`
+  ];
+
+  const cierres = [
+    `El futuro de ${tema} recién comienza.`,
+    `Ahora sabes por qué ${tema} es tan importante.`,
+    `Este cambio está transformando la tecnología.`,
+    `Quien aprenda ${tema} tendrá ventaja.`,
+    `Estamos viendo solo el comienzo de esta revolución.`
+  ];
+
+  const ctas = [
+    `Sígueme para más contenido de IA y tecnología.`,
+    `Guarda este video para verlo después.`,
+    `Comparte esto con alguien que necesite conocerlo.`,
+    `Déjame tu opinión en los comentarios.`,
+    `¿Ya conocías este truco?`
+  ];
+
   let desarrollo = "";
 
   if(duracion === "15 segundos"){
@@ -249,9 +273,6 @@ function generarGuion(){
 🎯 Explica rápidamente qué es ${tema}
 
 💡 Muestra un beneficio clave
-
-📢 CTA:
-Sígueme para más contenido de IA.
 `;
 
   }
@@ -259,14 +280,11 @@ Sígueme para más contenido de IA.
   else if(duracion === "30 segundos"){
 
     desarrollo = `
-🎯 Presenta el problema
+🎯 Presenta un problema común
 
 💡 Explica cómo ${tema} puede ayudar
 
 📱 Da un ejemplo práctico
-
-📢 CTA:
-Sígueme para aprender más.
 `;
 
   }
@@ -281,11 +299,6 @@ Sígueme para aprender más.
 🛠️ Muestra un caso práctico
 
 ⚠️ Comenta un error común
-
-🚀 Conclusión
-
-📢 CTA:
-Sígueme para más contenido sobre tecnología e IA.
 `;
 
   }
@@ -313,9 +326,21 @@ ${desarrollo}
 
 ━━━━━━━━━━━━━━
 
+📱 EJEMPLO
+
+${random(ejemplos)}
+
+━━━━━━━━━━━━━━
+
 🚀 CIERRE
 
-¿Conocías esto sobre ${tema}?
+${random(cierres)}
+
+━━━━━━━━━━━━━━
+
+📢 CTA
+
+${random(ctas)}
 `;
 
   document.getElementById(
@@ -328,7 +353,27 @@ function copiarGuion(){
   const texto =
     document.getElementById("resultadoGuion").innerText;
 
-  navigator.clipboard.writeText(texto);
+  if(texto.trim() === ""){
+
+    document.getElementById("mensajeGuionCopiado").innerText =
+      "⚠️ Primero genera un guion";
+
+    return;
+  }
+
+  const area =
+    document.createElement("textarea");
+
+  area.value = texto;
+
+  document.body.appendChild(area);
+
+  area.select();
+  area.setSelectionRange(0, 99999);
+
+  document.execCommand("copy");
+
+  document.body.removeChild(area);
 
   document.getElementById("mensajeGuionCopiado").innerText =
     "✅ Guion copiado correctamente";
@@ -337,7 +382,9 @@ function copiarGuion(){
     document.getElementById("mensajeGuionCopiado").innerText = "";
   }, 3000);
 
-}function generarStoryboard() {
+
+}
+function generarStoryboard() {
 
   const guion =
     document.getElementById("textoStoryboard").value;
