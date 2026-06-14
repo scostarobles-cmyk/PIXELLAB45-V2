@@ -172,7 +172,7 @@ function copiarStoryboard() {
   }, 3000);
 }
 
-async function generarIdeas() {
+/*async function generarIdeas() {
 
   const tema = document.getElementById("tema").value;
 
@@ -217,6 +217,38 @@ async function generarIdeas() {
 
     document.getElementById("resultado").innerHTML =
       `<li>❌ ${error.message}</li>`;
+  }
+}*/
+async function generarIdeas() {
+
+  const tema = document.getElementById("tema").value;
+
+  try {
+
+    const res = await fetch(
+      "https://pixellab45-v2.scostarobles.workers.dev/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ tema })
+      }
+    );
+
+    document.getElementById("resultado").innerHTML =
+      "<li>STATUS: " + res.status + "</li>";
+
+    const data = await res.json();
+
+    document.getElementById("resultado").innerHTML +=
+      "<li>" + JSON.stringify(data) + "</li>";
+
+  } catch (error) {
+
+    document.getElementById("resultado").innerHTML =
+      "<li>ERROR: " + error.message + "</li>";
+
   }
 }
 function copiarIdeas(){
