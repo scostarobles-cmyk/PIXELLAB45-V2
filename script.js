@@ -173,7 +173,8 @@ function copiarStoryboard() {
 }
 //función crear ideas
 async function generarIdeas() {
-
+alert("BOTÓN FUNCIONA");
+}
   const tema = document.getElementById("tema").value;
 
   const res = await fetch("https://TU-WORKER.workers.dev", {
