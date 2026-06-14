@@ -39,31 +39,19 @@ export default {
 
     // 📤 UPLOAD A R2
 if (url.pathname === "/upload" && request.method === "POST") {
+if (url.pathname === "/upload" && request.method === "POST") {
 
   const formData = await request.formData();
-
   const file = formData.get("file");
 
-  const key =
-    `gallery/${Date.now()}-${file.name}`;
-
-  const buffer =
-    await file.arrayBuffer();
-
-  await env.PIXELLAB45_BUCKET.put(
-    key,
-    buffer,
-    {
-      httpMetadata: {
-        contentType: "image/png"
-      }
-    }
-  );
+  const buffer = await file.arrayBuffer();
 
   return Response.json(
     {
       ok: true,
-      key
+      size: buffer.byteLength,
+      type: file.type,
+      name: file.name
     },
     {
       headers: cors
