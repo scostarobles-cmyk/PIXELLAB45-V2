@@ -197,7 +197,7 @@ async function generarIdeas() {
 
     document.getElementById("resultado").innerHTML =
       data.ideas.map(i => `<li>${i}</li>`).join("");
-  } catch (error) {
+  } catch (console.log(error)) {
     console.error("Error:", error);
     alert("Hubo un error al obtener las ideas. Intenta de nuevo.");
   }
