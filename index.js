@@ -2,13 +2,9 @@ export default {
   async fetch(request, env) {
 
     try {
-      const prompt = "Genera 6 ideas virales sobre inteligencia artificial para TikTok";
-
       const result = await env.AI.run(
         "@cf/meta/llama-3.2-3b-instruct",
-        {
-          prompt
-        }
+        "Genera 6 ideas virales sobre inteligencia artificial para TikTok"
       );
 
       const text = typeof result === "string"
@@ -28,9 +24,7 @@ export default {
       });
 
     } catch (err) {
-      return new Response(JSON.stringify({
-        error: err.message
-      }), { status: 500 });
+      return new Response("ERROR: " + err.message, { status: 500 });
     }
   }
 };
