@@ -18,7 +18,7 @@ export default {
     ========================= */
 
     if (url.pathname === "/") {
-      return new Response("PIXELLAB45 OK", {
+      return new Response("PIXELLAB45 funcions ", {
         headers: cors
       });
     }
