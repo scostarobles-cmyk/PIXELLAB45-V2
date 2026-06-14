@@ -173,46 +173,54 @@ function copiarStoryboard() {
 }
 //función crear ideas
 
+7.getElementById("tema").value;
 async function generarIdeas() {
   alert("BOTÓN FUNCIONA");
 
   const tema = document.getElementById("tema").value;
 
   try {
-    const res = await fetch("https://pixellab45-v2.scostarobles.workers.dev/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ tema })
-    });
+    const res = await fetch(
+      "https://pixellab45-v2.scostarobles.workers.dev/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ tema })
+      }
+    );
 
-    if (!res.ok) {
-      throw new Error(`Error en la petición: ${res.status}`);
+    console.log("STATUS:", res.status);
+    console.log("RESPONSE:", res);
+
+    const texto = await res.text();
+
+    console.log("TEXTO RECIBIDO:", texto);
+
+    let data;
+
+    try {
+      data = JSON.parse(texto);
+    } catch {
+      throw new Error("El Worker no devolvió JSON válido: " + texto);
     }
 
-    const data = await res.json();
+    console.log("DATA:", data);
 
-    console.log("RESPUESTA:", data);
+    if (data.ideas && Array.isArray(data.ideas)) {
+      document.getElementById("resultado").innerHTML =
+        data.ideas.map(i => `<li>${i}</li>`).join("");
+    } else {
+      document.getElementById("resultado").innerHTML =
+        `<li>${JSON.stringify(data)}</li>`;
+    }
 
-    document.getElementById("resultado").innerHTML =
-      data.ideas.map(i => `<li>${i}</li>`).join("");
   } catch (error) {
-    console.error("Error:", error);
-    alert("Hubo un error al obtener las ideas.
-function copiarIdeas(){
-
-  const texto =
-    document.getElementById("resultadoIdeas").innerText;
-
-  navigator.clipboard.writeText(texto);
-
-  document.getElementById("mensajeIdeasCopiadas").innerText =
-    "✅ Ideas copiadas correctamente";
-
-  setTimeout(() => {
-    document.getElementById("mensajeIdeasCopiadas").innerText = "";
-  }, 3000);
+    console.error("ERROR COMPLETO:", error);
+    alert("Error: " + error.message);
+  }
+}
 
 }function generarVisuales(){
 
