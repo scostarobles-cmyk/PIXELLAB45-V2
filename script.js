@@ -267,7 +267,7 @@ function copiarIdeas(){
   }
 
 }
-}function generarVisuales(){
+}
 
 function copiarVisuales(){
 
