@@ -172,25 +172,35 @@ function copiarStoryboard() {
   }, 3000);
 }
 //función crear ideas
+
 async function generarIdeas() {
-alert("BOTÓN FUNCIONA");
-}
+  alert("BOTÓN FUNCIONA");
+
   const tema = document.getElementById("tema").value;
 
-  const res = await fetch("https://TU-WORKER.workers.dev", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ tema })
-  });
+  try {
+    const res = await fetch("https://pixellab45-v2.scostarobles.workers.dev/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ tema })
+    });
 
-  const data = await res.json();
+    if (!res.ok) {
+      throw new Error(`Error en la petición: ${res.status}`);
+    }
 
-  console.log("RESPUESTA:", data);
+    const data = await res.json();
 
-  document.getElementById("resultado").innerHTML =
-    data.ideas.map(i => `<li>${i}</li>`).join("");
+    console.log("RESPUESTA:", data);
+
+    document.getElementById("resultado").innerHTML =
+      data.ideas.map(i => `<li>${i}</li>`).join("");
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Hubo un error al obtener las ideas. Intenta de nuevo.");
+  }
 }
 function copiarIdeas(){
 
