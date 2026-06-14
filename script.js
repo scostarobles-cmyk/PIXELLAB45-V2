@@ -1,4 +1,5 @@
-console.log("🔥 PIXELLAB45 SCRIPT OK");
+alert("JS CARGA OK");
+console.log("JS CARGA OK");
 *//generae prompt 
 function generarPrompt() {
 
