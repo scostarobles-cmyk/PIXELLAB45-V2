@@ -1,6 +1,5 @@
 export default {
   async fetch(request, env) {
-
     const url = new URL(request.url);
 
     const cors = {
@@ -29,26 +28,27 @@ export default {
 
       const image = new Uint8Array(result);
 
-      return new Response(image, {
-        headers: {
-          ...cors,
-          "Content-Type": "image/png"
+      // 📤 SUBIR A R2
+      const key = `gallery/${Date.now()}-pixellab45.png`;
+
+      await env.PIXELLAB45_BUCKET.put(key, image, {
+        httpMetadata: {
+          contentType: "image/png"
         }
       });
-    }
 
-    // 📤 UPLOAD A R2
-    if (url.pathname === "/upload" && request.method === "POST") {
-      const formData = await request.formData();
-      const file = formData.get("file");
+      // Devolvemos la URL de la imagen
+      const imageUrl = `https://pixellab45-v2.scostarobles.workers.dev/image/${key}`;
 
-      const key = `gallery/${Date.now()}-${file.name}`;
-
-      await env.PIXELLAB45_BUCKET.put(key, file.stream(), {
-        httpMetadata: { contentType: file.type }
-      });
-
-      return Response.json({ ok: true, key }, { headers: cors });
+      return new Response(
+        JSON.stringify({ ok: true, imageUrl }),
+        {
+          headers: {
+            ...cors,
+            "Content-Type": "application/json"
+          }
+        }
+      );
     }
 
     // 🖼️ LISTAR GALERÍA
@@ -67,4 +67,30 @@ export default {
     // 📷 SERVIR IMAGEN
     if (url.pathname.startsWith("/image/")) {
       const key = decodeURIComponent(
-        url.pathname.
+        url.pathname.replace("/image/", "")
+      );
+
+      const object = await env.PIXELLAB45_BUCKET.get(key);
+
+      if (!object) {
+        return new Response(
+          "Imagen no encontrada",
+          { status: 404 }
+        );
+      }
+
+      return new Response(
+        object.body,
+        {
+          headers: {
+            ...cors,
+            "Content-Type":
+              object.httpMetadata?.contentType || "image/png"
+          }
+        }
+      );
+    }
+
+    return new Response("OK", { headers: cors });
+  }
+};
