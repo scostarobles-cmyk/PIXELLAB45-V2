@@ -13,7 +13,7 @@ function shuffle(arr){
 }
 
 /* =========================
-   PROMPT GENERADOR
+   PROMPT GENERADORk
 ========================= */
 
 function generarPrompt() {
@@ -418,3 +418,4 @@ async function generarImagen() {
     alert(err.message);
   }
 }
+ 
