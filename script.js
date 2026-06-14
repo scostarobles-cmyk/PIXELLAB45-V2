@@ -345,4 +345,4 @@ async function generarImagen() {
 
   }
 
-      }
+}
