@@ -23,7 +23,7 @@ export default {
       });
     }
 
-    //gwnerador de iseas 
+    //gwnerador de ideas 
     const respuesta = await env.AI.run(
   "@cf/openai/gpt-oss-20b",
   {
@@ -35,25 +35,7 @@ export default {
     ]
   }
 );
-
-const texto =
-  respuesta.choices?.[0]?.message?.content ||
-  respuesta.choices?.[0]?.message?.reasoning_content ||
-  "No se pudo generar contenido";
-
-return new Response(
-  JSON.stringify({
-    ok: true,
-    resultado: texto
-  }),
-  {
-    headers: {
-      ...cors,
-      "Content-Type": "application/json"
-    }
-  }
-);
-    
+ 
     /* =========================
        GENERAR IMAGEN
     ========================= */
