@@ -1,21 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>PIXELLAB45 AI LAB</title>
-
   <link rel="stylesheet" href="styles.css">
-
-  <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-
 <body>
 
-  <!-- NAVBAR -->
   <header class="navbar">
     <nav class="nav-links">
       <a href="index.html">🏠 Inicio</a>
@@ -28,7 +21,6 @@
   <div class="divider"></div>
   <div class="divider"></div>
 
-  <!-- HERO -->
   <section class="ailab-hero">
     <h1>🚀 PIXELLAB45 AI LAB</h1>
     <p>Tu laboratorio de creación con Inteligencia Artificial.</p>
@@ -36,10 +28,8 @@
 
   <div class="section-divider"></div>
 
-  <!-- CONTENIDO -->
   <section id="contenido" class="ai-section">
     <h2>✍️ Creador de Contenido</h2>
-
     <div class="ai-grid">
 
       <div class="ai-card">
@@ -54,7 +44,6 @@
       <div class="ai-card">
         <h3>✍️ Generador de Prompts</h3>
         <input type="text" id="temaPrompt" placeholder="Tema del contenido">
-
         <select id="tipoContenido">
           <option>TikTok</option>
           <option>YouTube</option>
@@ -62,10 +51,8 @@
           <option>Blog</option>
           <option>Ebook</option>
         </select>
-
         <button onclick="generarPrompt()">Generar</button>
         <button onclick="copiarPrompt()">📋 Copiar Prompt</button>
-
         <div id="mensajeCopiado"></div>
         <div id="resultadoPrompt"></div>
       </div>
@@ -73,16 +60,13 @@
       <div class="ai-card">
         <h3>🎬 Generador de Guiones IA</h3>
         <input type="text" id="temaGuion" placeholder="Tema del video">
-
         <select id="duracionGuion">
           <option>15 segundos</option>
           <option>30 segundos</option>
           <option>60 segundos</option>
         </select>
-
         <button onclick="generarGuion()">Generar Guion</button>
         <button onclick="copiarGuion()">📋 Copiar Guion</button>
-
         <div id="mensajeGuionCopiado"></div>
         <div id="resultadoGuion"></div>
       </div>
@@ -90,10 +74,8 @@
       <div class="ai-card">
         <h3>🎬 Storyboard Generator</h3>
         <textarea id="textoStoryboard" rows="6" placeholder="Pega aquí el guion..."></textarea>
-
         <button onclick="generarStoryboard()">Generar Storyboard</button>
         <button onclick="copiarStoryboard()">📋 Copiar Storyboard</button>
-
         <div id="mensajeStoryboard"></div>
         <div id="resultadoStoryboard"></div>
       </div>
@@ -103,36 +85,35 @@
 
   <div class="section-divider"></div>
 
-  <!-- VISUAL -->
   <section id="visual" class="ai-section">
     <h2>🎨 Estudio Visual</h2>
-
     <div class="ai-grid">
 
-      <!-- IMAGEN -->
       <div class="ai-card">
         <h3>🎨 PIXELLAB45 Image Studio</h3>
-
         <input type="text" id="promptImagen" placeholder="Describe la imagen">
         <button onclick="generarImagen()">Generar Imagen</button>
-
         <div id="resultadoImagen"></div>
 
-        <!-- GALERÍA -->
         <div class="gallery-section">
           <h3>🖼️ Galería de Imágenes</h3>
           <div id="galeriaImagenes" class="gallery-grid"></div>
         </div>
       </div>
 
-      <!-- 🎬 VIDEO (NUEVO) -->
+      <div class="ai-card">
+        <h3>🖼️ Prompts Visuales IA</h3>
+        <input type="text" id="temaVisual" placeholder="Tema visual">
+        <button onclick="generarVisuales()">Generar Prompts</button>
+        <button onclick="copiarVisuales()">📋 Copiar Prompts</button>
+        <div id="mensajeVisual"></div>
+        <div id="resultadoVisual"></div>
+      </div>
+
       <div class="ai-card">
         <h3>🎬 PIXELLAB45 Video Studio</h3>
-
         <input type="text" id="promptVideo" placeholder="Describe el video">
-
         <button onclick="generarVideo()">Generar Video</button>
-
         <div id="resultadoVideo"></div>
       </div>
 
@@ -141,10 +122,8 @@
 
   <div class="section-divider"></div>
 
-  <!-- DR PIXEL -->
   <section id="drpixel" class="ai-section">
     <h2>🤖 Dr. Pixel</h2>
-
     <div class="ai-card">
       <h3>Próximamente</h3>
       <p>Asistente inteligente para generar contenido con IA.</p>
@@ -153,13 +132,11 @@
 
   <div class="section-divider"></div>
 
-  <!-- FOOTER -->
   <footer class="footer">
     <h3>PIXELLAB45</h3>
     <p>Inteligencia Artificial • Tecnología • Innovación</p>
   </footer>
 
   <script src="script.js"></script>
-
 </body>
 </html>
