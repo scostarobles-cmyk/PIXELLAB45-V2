@@ -1,32 +1,10 @@
 //inico 
-export default {
-  async fetch(request, env) {
-    try {
-      const { searchParams } = new URL(request.url);
-
-      const prompt = searchParams.get("prompt") 
-        || "Genera 3 ideas virales sobre tecnología";
-
-      const result = await env.AI.run(
-        "@cf/meta/llama-3.1-8b-instruct",
-        { prompt }
-      );
-
-      return new Response(JSON.stringify(result), {
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*"
-        }
-      });
-
-    } catch (err) {
-      return new Response(
-        JSON.stringify({
-          error: "AI_ERROR",
-          message: err.message
-        }),
-        { status: 500 }
-      );
-    }
+const result = await env.AI.run(
+  "llama-3.2-3b-instruct",
+  {
+    prompt: `
+Genera 6 ideas virales sobre: ${tema}
+Estilo TikTok, corto, creativo, fácil de grabar
+`
   }
-};
+);
