@@ -253,7 +253,7 @@ function copiarStoryboard() {
       "⚠️ Primero genera un storyboard";
 
     return;
-  }
+  },
 
   navigator.clipboard.writeText(texto);
 
