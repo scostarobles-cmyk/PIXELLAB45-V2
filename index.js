@@ -1,34 +1,38 @@
-/*export default {
-  async fetch(request, env) {
-
-    const result = await env.AI.run(
-      "@cf/meta/llama-3.1-8b-instruct",
-      {
-        messages: [
-          {
-            role: "user",
-            content: "Genera 6 ideas virales sobre inteligencia artificial para TikTok"
-          }
-        ]
-      }
-    );
-
-    const text = result.response || "";
-
-    const ideas = text
-      .split("\n")
-      .map(i => i.replace(/^[-•0-9.\s]+/, "").trim())
-      .filter(Boolean);
-
-    return new Response(JSON.stringify({ ideas }), {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-  }
-};*/
 export default {
-  async fetch() {
-    return new Response("PIXELLAB45 está activo y funcionando.");
+  async fetch(request, env) {
+    try {
+
+      const result = await env.AI.run(
+        "@cf/meta/llama-3.2-3b-instruct",
+        {
+          prompt: "Genera 5 ideas virales sobre inteligencia artificial para TikTok"
+        }
+      );
+
+      return new Response(
+        JSON.stringify(result),
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      );
+
+    } catch (error) {
+
+      return new Response(
+        JSON.stringify({
+          error: error.message,
+          stack: error.stack
+        }),
+        {
+          status: 500,
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      );
+
+    }
   }
 };
