@@ -52,18 +52,45 @@ Cada prompt debe ser detallado, cinematográfico, futurista, profesional y en in
 `;
 
 } else if (tipo === "prompt") {
+else if (tipo === "prompt") {
 
   prompt = `
-Actúa como un experto en marketing digital.
+Actúa como un experto en creación de contenido.
 
-Crea un prompt profesional para generar contenido.
+Genera un prompt profesional para ${formato}.
 
 Tema: ${tema}
 
-Formato: ${formato}
+Si el formato es TikTok:
+- Gancho viral de 3 segundos
+- Duración 30 a 60 segundos
+- CTA para seguir la cuenta
 
-El resultado debe ser un prompt detallado, listo para usar en ChatGPT.
+Si el formato es YouTube:
+- Título SEO
+- Estructura completa del video
+- Retención de audiencia
+
+Si el formato es Instagram:
+- Texto para carrusel o reel
+- Hashtags
+- CTA para interacción
+
+Si el formato es Blog:
+- Título SEO
+- Introducción
+- Subtítulos H2 y H3
+- Conclusión
+
+Si el formato es Ebook:
+- Índice
+- Capítulos
+- Desarrollo detallado
+
+Devuelve únicamente el prompt final listo para usar.
 `;
+
+}
 
 } else {
 
