@@ -1,9 +1,5 @@
-export interface Env {
-  AI: Ai;
-}
-
 export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
+  async fetch(request, env) {
 
     const url = new URL(request.url);
 
@@ -32,7 +28,7 @@ export default {
 
         const ideas = text
           .split("\n")
-          .map((i: string) => i.replace(/^[-•]\s*/, "").trim())
+          .map(i => i.replace(/^[-•]\s*/, "").trim())
           .filter(Boolean);
 
         return new Response(JSON.stringify({ ideas }), {
@@ -42,7 +38,7 @@ export default {
           }
         });
 
-      } catch (err: any) {
+      } catch (err) {
         return new Response(JSON.stringify({
           error: err.message
         }), { status: 500 });
@@ -51,4 +47,4 @@ export default {
 
     return new Response("PIXELLAB45 AI OK");
   }
-} satisfies ExportedHandler<Env>;
+};
