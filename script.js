@@ -378,6 +378,11 @@ async function generarImagen() {
         body: JSON.stringify({ prompt })
       }
     );
+     alert("Status: " + res.status);
+
+const blob = await res.blob();
+
+alert("Blob size: " + blob.size);
 
     if (!res.ok) throw new Error("Error generando imagen");
 
