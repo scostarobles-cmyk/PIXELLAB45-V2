@@ -5,10 +5,3 @@ compatibility_date = "2026-06-11"
 [ai]
 binding = "AI"
 
-[[r2_buckets]]
-binding = "PIXELLAB45_BUCKET"
-bucket_name = "pixellab45-images"
-
-
-[env]
-CLOUDFLARE_ACCOUNT_ID = "ff9708482dedf87541cd7376f39a3864"
