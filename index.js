@@ -16,7 +16,7 @@ export default {
     if (request.method !== "POST") {
       return new Response(
         JSON.stringify({
-          message: "PIXELLAB45 Ideas API"
+          message: "PIXELLAB45 API"
         }),
         {
           headers: {
@@ -29,7 +29,38 @@ export default {
 
     try {
 
-      const { tema } = await request.json();
+      const { tema, tipo } = await request.json();
+
+      let prompt = "";
+
+      if (tipo === "visuales") {
+
+        prompt = `
+Genera prompts visuales cinematográficos para IA de imágenes y video.
+
+Tema: ${tema}
+
+Devuelve:
+
+🎨 IMAGEN PRINCIPAL
+
+📱 MINIATURA YOUTUBE
+
+🎬 VIDEO IA
+
+Cada prompt debe ser detallado, cinematográfico, futurista, profesional y en inglés.
+`;
+
+      } else {
+
+        prompt = `
+Genera 10 ideas virales sobre ${tema}.
+
+Devuelve únicamente una lista numerada de títulos cortos.
+No expliques las ideas.
+`;
+
+      }
 
       const result = await env.AI.run(
         "@cf/meta/llama-3.2-3b-instruct",
@@ -37,11 +68,27 @@ export default {
           messages: [
             {
               role: "user",
-              content: `Genera 10 ideas virales sobre ${tema}. Devuelve únicamente una lista numerada de títulos cortos. No expliques las ideas.`
+              content: prompt
             }
           ]
         }
       );
+
+      if (tipo === "visuales") {
+
+        return new Response(
+          JSON.stringify({
+            resultado: result.response
+          }),
+          {
+            headers: {
+              ...corsHeaders,
+              "Content-Type": "application/json"
+            }
+          }
+        );
+
+      }
 
       return new Response(
         JSON.stringify({
