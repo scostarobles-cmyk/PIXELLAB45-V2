@@ -13,14 +13,20 @@ export default {
 
     const url = new URL(request.url);
 
-    // TEST
+    /* =========================
+       TEST
+    ========================= */
+
     if (url.pathname === "/") {
       return new Response("PIXELLAB45 OK", {
         headers: cors
       });
     }
 
-    // GENERAR IMAGEN
+    /* =========================
+       GENERAR IMAGEN
+    ========================= */
+
     if (
       url.pathname === "/generate" &&
       request.method === "POST"
@@ -66,7 +72,10 @@ export default {
       );
     }
 
-    // MOSTRAR IMAGEN DESDE R2
+    /* =========================
+       SERVIR IMAGEN
+    ========================= */
+
     if (
       url.pathname.startsWith("/image/")
     ) {
@@ -107,6 +116,40 @@ export default {
         }
       );
     }
+
+    /* =========================
+       GALERÍA
+    ========================= */
+
+    if (url.pathname === "/gallery") {
+
+      const objects =
+        await env.PIXELLAB45_BUCKET.list({
+          prefix: "gallery/"
+        });
+
+      const files =
+        objects.objects.map(obj => ({
+          key: obj.key,
+          url:
+            `https://pixellab45-v2.scostarobles.workers.dev/image/${obj.key}`
+        }));
+
+      return new Response(
+        JSON.stringify(files),
+        {
+          headers: {
+            ...cors,
+            "Content-Type":
+              "application/json"
+          }
+        }
+      );
+    }
+
+    /* =========================
+       404
+    ========================= */
 
     return new Response(
       "Not Found",
