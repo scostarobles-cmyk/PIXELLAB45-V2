@@ -199,9 +199,7 @@ async function generarIdeas() {
       data.ideas.map(i => `<li>${i}</li>`).join("");
   } catch (error) {
     console.error("Error:", error);
-    alert("Hubo un error al obtener las ideas. Intenta de nuevo.");
-  }
-}
+    alert("Hubo un error al obtener las ideas.
 function copiarIdeas(){
 
   const texto =
