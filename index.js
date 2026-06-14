@@ -127,6 +127,41 @@ No expliques las ideas.
               "Content-Type": "application/json"
             }
           }
+          else if (tipo === "script") {
+
+  prompt = `
+Eres un creador experto de contenido viral para redes sociales (TikTok, Reels, Shorts).
+
+Convierte el tema en un guion corto altamente viral.
+
+Reglas:
+- Máximo 35 segundos de lectura
+- Estilo PIXELLAB45 (IA, futurista, tecnología, impacto emocional)
+- Lenguaje simple, directo y potente
+- No explicaciones adicionales
+- No emojis
+
+Estructura obligatoria:
+
+HOOK:
+(Frase que capture atención en 1-2 líneas)
+
+CONTEXTO:
+(Explicación rápida del tema)
+
+DESARROLLO:
+(Parte central con valor o historia)
+
+CIERRE:
+(Remate fuerte o reflexión)
+
+CTA:
+(Llamado a la acción corto)
+
+TEMA:
+${tema}
+`;
+      }
         );
 
       }
