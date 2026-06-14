@@ -8,16 +8,12 @@ export default {
     };
 
     if (request.method === "OPTIONS") {
-      return new Response(null, {
-        headers: corsHeaders
-      });
+      return new Response(null, { headers: corsHeaders });
     }
 
     if (request.method !== "POST") {
       return new Response(
-        JSON.stringify({
-          message: "PIXELLAB45 API"
-        }),
+        JSON.stringify({ message: "PIXELLAB45 API" }),
         {
           headers: {
             ...corsHeaders,
@@ -33,28 +29,28 @@ export default {
 
       let prompt = "";
 
+      // 🖼️ VISUALES
       if (tipo === "visuales") {
 
-  prompt = `
+        prompt = `
 Genera prompts visuales cinematográficos para IA de imágenes y video.
 
 Tema: ${tema}
 
 Devuelve:
-
 🎨 IMAGEN PRINCIPAL
-
 📱 MINIATURA YOUTUBE
-
 🎬 VIDEO IA
 
 Cada prompt debe ser detallado, cinematográfico, futurista, profesional y en inglés.
 `;
 
-} 
-else if (tipo === "prompt") {
+      }
 
-  prompt = `
+      // 🧾 PROMPT POR FORMATO
+      else if (tipo === "prompt") {
+
+        prompt = `
 Actúa como un experto en creación de contenido.
 
 Genera un prompt profesional para ${formato}.
@@ -62,114 +58,87 @@ Genera un prompt profesional para ${formato}.
 Tema: ${tema}
 
 Si el formato es TikTok:
-- Gancho viral de 3 segundos
+- Gancho viral
 - Duración 30 a 60 segundos
-- CTA para seguir la cuenta
+- CTA
 
 Si el formato es YouTube:
 - Título SEO
-- Estructura completa del video
-- Retención de audiencia
+- Estructura
+- Retención
 
 Si el formato es Instagram:
-- Texto para carrusel o reel
-- Hashtags
-- CTA para interacción
+- Copy + hashtags + CTA
 
 Si el formato es Blog:
-- Título SEO
-- Introducción
-- Subtítulos H2 y H3
-- Conclusión
+- SEO completo
 
 Si el formato es Ebook:
-- Índice
-- Capítulos
-- Desarrollo detallado
+- Estructura completa
 
-Devuelve únicamente el prompt final listo para usar.
+Devuelve únicamente el contenido final.
 `;
 
+      }
 
+      // 🎬 SCRIPT (NUEVO)
+      else if (tipo === "script") {
 
-} else {
-
-  prompt = `
-Genera 10 ideas virales sobre ${tema}.
-
-Devuelve únicamente una lista numerada de títulos cortos.
-No expliques las ideas.
-`;
-
-}
-      
-
-      const result = await env.AI.run(
-        "@cf/meta/llama-3.2-3b-instruct",
-        {
-          messages: [
-            {
-              role: "user",
-              content: prompt
-            }
-          ]
-        }
-      );
-
-      if (tipo === "visuales" || tipo === "prompt") {
-        return new Response(
-          JSON.stringify({
-            resultado: result.response
-          }),
-          {
-            headers: {
-              ...corsHeaders,
-              "Content-Type": "application/json"
-            }
-          }
-          else if (tipo === "script") {
-
-  prompt = `
+        prompt = `
 Eres un creador experto de contenido viral para redes sociales (TikTok, Reels, Shorts).
 
 Convierte el tema en un guion corto altamente viral.
 
 Reglas:
-- Máximo 35 segundos de lectura
+- Máximo 35 segundos
 - Estilo PIXELLAB45 (IA, futurista, tecnología, impacto emocional)
 - Lenguaje simple, directo y potente
-- No explicaciones adicionales
 - No emojis
+- No explicaciones
 
-Estructura obligatoria:
+Estructura:
 
 HOOK:
-(Frase que capture atención en 1-2 líneas)
-
 CONTEXTO:
-(Explicación rápida del tema)
-
 DESARROLLO:
-(Parte central con valor o historia)
-
 CIERRE:
-(Remate fuerte o reflexión)
-
 CTA:
-(Llamado a la acción corto)
 
 TEMA:
 ${tema}
 `;
-      }
-        );
 
+      }
+
+      // 🧠 IDEAS (default)
+      else {
+
+        prompt = `
+Genera 10 ideas virales sobre ${tema}.
+
+Devuelve solo una lista numerada.
+`;
+      }
+
+      const result = await env.AI.run(
+        "@cf/meta/llama-3.2-3b-instruct",
+        {
+          messages: [
+            { role: "user", content: prompt }
+          ]
+        }
+      );
+
+      let response;
+
+      if (tipo === "visuales" || tipo === "prompt" || tipo === "script") {
+        response = { resultado: result.response };
+      } else {
+        response = { ideas: result.response };
       }
 
       return new Response(
-        JSON.stringify({
-          ideas: result.response
-        }),
+        JSON.stringify(response),
         {
           headers: {
             ...corsHeaders,
@@ -181,9 +150,7 @@ ${tema}
     } catch (error) {
 
       return new Response(
-        JSON.stringify({
-          error: error.message
-        }),
+        JSON.stringify({ error: error.message }),
         {
           status: 500,
           headers: {
@@ -192,7 +159,6 @@ ${tema}
           }
         }
       );
-
     }
   }
 };
