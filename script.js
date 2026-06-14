@@ -265,41 +265,28 @@ function copiarStoryboard() {
   }, 3000);
 }
 async function generarIdeas() {
+  try {
+    const respuesta = await fetch(
+      "https://pixellab45-v2.scostarobles.workers.dev/text",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          prompt: "Genera 10 ideas virales sobre ChatGPT"
+        })
+      }
+    );
 
-  const tema =
-    document.getElementById("temaIdea").value;
+    const datos = await respuesta.json();
 
-  const prompt = `
-Genera 10 ideas virales para TikTok,
-YouTube Shorts e Instagram Reels
-sobre:
+    console.log(datos);
+    return datos;
 
-${tema}
-
-Devuelve solamente la lista.
-`;
-
-  const res = await fetch(
-    "https://pixellab45-v2.scostarobles.workers.dev/generate-text",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type":
-          "application/json"
-      },
-      body: JSON.stringify({
-        prompt
-      })
-    }
-  );
-
-  const datos =
-    await res.json();
-
-  document.getElementById(
-    "resultadoIdeas"
-  ).innerText =
-    datos.text;
+  } catch (error) {
+    console.error("Error generando ideas:", error);
+  }
 }
 
 function copiarIdeas(){
