@@ -1,4 +1,3 @@
-console.log("SCRIPT CARGADO OK");
 function generarPrompt() {
 
   const tema =
@@ -15,19 +14,113 @@ function generarPrompt() {
     return;
   }
 
-  let prompt = `
-Crea contenido para ${tipo}
-sobre:
+  let prompt = "";
 
+  switch(tipo){
+
+    case "TikTok":
+
+      prompt = `
+Actúa como un experto creador de contenido viral para TikTok.
+
+Tema:
 ${tema}
 
-Incluye:
+Genera:
 
-✅ Título atractivo
-✅ Introducción
-✅ Desarrollo
+✅ Hook de 3 segundos
+✅ Desarrollo dinámico
+✅ Dato sorprendente
 ✅ Llamado a la acción
+
+Tono:
+rápido, viral y entretenido.
+
+Duración:
+30 a 60 segundos.
 `;
+      break;
+
+    case "YouTube":
+
+      prompt = `
+Actúa como un creador de contenido profesional para YouTube.
+
+Tema:
+${tema}
+
+Genera:
+
+✅ Título optimizado para clics
+✅ Introducción atractiva
+✅ Desarrollo completo
+✅ Conclusión
+✅ CTA para suscribirse
+
+Tono:
+educativo y profesional.
+`;
+      break;
+
+    case "Instagram":
+
+      prompt = `
+Actúa como experto en Instagram.
+
+Tema:
+${tema}
+
+Genera:
+
+✅ Texto para Reel
+✅ Descripción optimizada
+✅ CTA para interacción
+✅ 10 hashtags relevantes
+
+Tono:
+moderno y atractivo.
+`;
+      break;
+
+    case "Blog":
+
+      prompt = `
+Actúa como redactor SEO profesional.
+
+Tema:
+${tema}
+
+Genera:
+
+✅ Título SEO
+✅ Introducción
+✅ Subtítulos H2
+✅ Desarrollo
+✅ Conclusión
+
+Optimizado para Google.
+`;
+      break;
+
+    case "Ebook":
+
+      prompt = `
+Actúa como escritor profesional.
+
+Tema:
+${tema}
+
+Genera:
+
+✅ Título del ebook
+✅ Índice completo
+✅ Capítulos principales
+✅ Conclusión
+
+Formato profesional y detallado.
+`;
+      break;
+  }
 
   document.getElementById(
     "resultadoPrompt"
