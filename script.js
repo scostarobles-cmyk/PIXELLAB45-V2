@@ -1,4 +1,4 @@
-//generar inagen 
+ //generar inagen 
 async function generarIdeas() {
 
   const resultado = document.getElementById("resultadoIdeas");
