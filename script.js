@@ -452,3 +452,18 @@ async function cargarGaleria() {
   }
 } 
 window.addEventListener("load", cargarGaleria);
+function generarVideo() {
+  fetch("https://pixellab45-v2.scostarobles.workers.dev/generate-video", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      prompt: document.getElementById("promptVideo").value
+    })
+  })
+  .then(r => r.json())
+  .then(data => {
+    document.getElementById("resultadoVideo").innerText =
+      JSON.stringify(data, null, 2);
+  })
+  .catch(err => console.error(err));
+}
