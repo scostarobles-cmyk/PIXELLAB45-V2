@@ -379,24 +379,36 @@ async function generarImagen() {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ prompt })
+        body: JSON.stringify({
+          prompt
+        })
       }
     );
 
-    const result = await res.json();
-
-    if (!result.ok) {
-      throw new Error("Error generando imagen");
+    if (!res.ok) {
+      throw new Error(
+        "Error generando imagen"
+      );
     }
 
-    document.getElementById("resultadoImagen").innerHTML = `
+    const blob =
+      await res.blob();
+
+    const imageUrl =
+      URL.createObjectURL(blob);
+
+    document.getElementById(
+      "resultadoImagen"
+    ).innerHTML = `
       <img
-        src="${result.imageUrl}"
-        style="width:100%;border-radius:15px;margin-top:10px;"
+        src="${imageUrl}"
+        style="
+          width:100%;
+          border-radius:15px;
+          margin-top:15px;
+        "
       >
     `;
-
-    alert("Imagen generada ✔");
 
   } catch (err) {
 
