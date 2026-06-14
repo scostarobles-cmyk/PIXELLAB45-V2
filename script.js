@@ -5,7 +5,7 @@ async function generarIdeas() {
 
   try {
 
-    resultado.innerText = "Generando ideas...";
+    resultado.innerText = "Conectando...";
 
     const respuesta = await fetch(
       "https://pixellab45-v2.scostarobles.workers.dev/text",
@@ -22,9 +22,13 @@ async function generarIdeas() {
 
     const texto = await respuesta.text();
 
+    console.log("STATUS:", respuesta.status);
+    console.log("RESPUESTA RAW:", texto);
+
     resultado.innerText = texto;
 
-  } catch (e) {
-    resultado.innerText = "Error: " + e.message;
+  } catch (error) {
+    console.error(error);
+    resultado.innerText = "❌ " + error.message;
   }
 }
