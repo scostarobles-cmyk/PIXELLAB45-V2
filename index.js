@@ -13,46 +13,107 @@ export default {
 
     const url = new URL(request.url);
 
+    // TEST
     if (url.pathname === "/") {
       return new Response("PIXELLAB45 OK", {
         headers: cors
       });
     }
 
-    if (url.pathname === "/generate" && request.method === "POST") {
-      const { prompt } = await request.json();
+    // GENERAR IMAGEN
+    if (
+      url.pathname === "/generate" &&
+      request.method === "POST"
+    ) {
 
-      const image = await env.AI.run(
-        "@cf/stabilityai/stable-diffusion-xl-base-1.0",
-        { prompt }
+      const { prompt } =
+        await request.json();
+
+      const image =
+        await env.AI.run(
+          "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+          { prompt }
+        );
+
+      const key =
+        `gallery/${Date.now()}-pixellab45.png`;
+
+      await env.PIXELLAB45_BUCKET.put(
+        key,
+        image,
+        {
+          httpMetadata: {
+            contentType: "image/png"
+          }
+        }
       );
 
-      // Subimos a R2
-      const key = `gallery/${Date.now()}-pixellab45.png`;
-
-      await env.PIXELLAB45_BUCKET.put(key, image, {
-        httpMetadata: {
-          contentType: "image/png"
-        }
-      });
-
-      // Devolvemos la URL de la imagen en R2
-      const imageUrl = `https://${env.CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com/${env.PIXELLAB45_BUCKET.name}/${key}`;
+      const imageUrl =
+        `https://pixellab45-v2.scostarobles.workers.dev/image/${key}`;
 
       return new Response(
-        JSON.stringify({ ok: true, imageUrl }),
+        JSON.stringify({
+          ok: true,
+          imageUrl
+        }),
         {
           headers: {
             ...cors,
-            "Content-Type": "application/json"
+            "Content-Type":
+              "application/json"
           }
         }
       );
     }
 
-    return new Response("Not Found", {
-      status: 404,
-      headers: cors
-    });
+    // MOSTRAR IMAGEN DESDE R2
+    if (
+      url.pathname.startsWith("/image/")
+    ) {
+
+      const key =
+        decodeURIComponent(
+          url.pathname.replace(
+            "/image/",
+            ""
+          )
+        );
+
+      const object =
+        await env.PIXELLAB45_BUCKET.get(
+          key
+        );
+
+      if (!object) {
+
+        return new Response(
+          "Imagen no encontrada",
+          {
+            status: 404,
+            headers: cors
+          }
+        );
+      }
+
+      return new Response(
+        object.body,
+        {
+          headers: {
+            ...cors,
+            "Content-Type":
+              object.httpMetadata?.contentType ||
+              "image/png"
+          }
+        }
+      );
+    }
+
+    return new Response(
+      "Not Found",
+      {
+        status: 404,
+        headers: cors
+      }
+    );
   }
 };
