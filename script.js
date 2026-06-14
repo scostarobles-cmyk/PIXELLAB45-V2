@@ -480,11 +480,13 @@ async function generarVideo() {
 
   } catch (err) {
 
-    console.error("ERROR VIDEO:", err);
+  console.error(err);
 
-    document.getElementById("resultadoVideo").innerText =
-      "❌ Error generando video (ver consola)";
+  alert(
+    "ERROR REAL:\n\n" +
+    err.message
+  );
+
   }
-}
 window.addEventListener("load", cargarGaleria);
 
