@@ -379,29 +379,25 @@ async function generarImagen() {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          prompt
-        })
+        body: JSON.stringify({ prompt })
       }
     );
 
-    if (!res.ok) {
+    const result = await res.json();
+
+    console.log(result);
+
+    if (!result.ok) {
       throw new Error(
         "Error generando imagen"
       );
     }
 
-    const blob =
-      await res.blob();
-
-    const imageUrl =
-      URL.createObjectURL(blob);
-
     document.getElementById(
       "resultadoImagen"
     ).innerHTML = `
       <img
-        src="${imageUrl}"
+        src="${result.imageUrl}"
         style="
           width:100%;
           border-radius:15px;
