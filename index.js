@@ -1,4 +1,4 @@
-export default {
+/*export default {
   async fetch(request, env) {
 
     const result = await env.AI.run(
@@ -25,5 +25,10 @@ export default {
         "Content-Type": "application/json"
       }
     });
+  }
+};*/
+export default {
+  async fetch() {
+    return new Response("PIXELLAB45 está activo y funcionando.");
   }
 };
