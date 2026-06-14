@@ -175,8 +175,6 @@ function copiarStoryboard() {
 
 7.getElementById("tema").value;
 async function generarIdeas() {
-  alert("BOTÓN FUNCIONA");
-
   const tema = document.getElementById("tema").value;
 
   try {
@@ -192,36 +190,22 @@ async function generarIdeas() {
     );
 
     console.log("STATUS:", res.status);
-    console.log("RESPONSE:", res);
 
-    const texto = await res.text();
-
-    console.log("TEXTO RECIBIDO:", texto);
-
-    let data;
-
-    try {
-      data = JSON.parse(texto);
-    } catch {
-      throw new Error("El Worker no devolvió JSON válido: " + texto);
-    }
+    const data = await res.json();
 
     console.log("DATA:", data);
 
-    if (data.ideas && Array.isArray(data.ideas)) {
-      document.getElementById("resultado").innerHTML =
-        data.ideas.map(i => `<li>${i}</li>`).join("");
-    } else {
-      document.getElementById("resultado").innerHTML =
-        `<li>${JSON.stringify(data)}</li>`;
-    }
+    const ideas = data.ideas
+      .split("\n")
+      .filter(i => i.trim());
+
+    document.getElementById("resultado").innerHTML =
+      ideas.map(i => `<li>${i}</li>`).join("");
 
   } catch (error) {
-    console.error("ERROR COMPLETO:", error);
-    alert("Error: " + error.message);
+    console.error(error);
   }
 }
-
 }function generarVisuales(){
 
   const tema =
