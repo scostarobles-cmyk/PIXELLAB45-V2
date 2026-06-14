@@ -1,5 +1,5 @@
 console.log("SCRIPT CARGADO OK");
-function generarPrompt() {
+async function generarPrompt() {
 
   const tema =
     document.getElementById("temaPrompt").value;
@@ -7,7 +7,7 @@ function generarPrompt() {
   const tipo =
     document.getElementById("tipoContenido").value;
 
-  if (tema.trim() === "") {
+  if (!tema.trim()) {
 
     document.getElementById("resultadoPrompt").innerText =
       "⚠️ Escribe un tema primero";
@@ -15,23 +15,38 @@ function generarPrompt() {
     return;
   }
 
-  let prompt = `
-Crea contenido para ${tipo}
-sobre:
+  try {
 
-${tema}
+    document.getElementById("resultadoPrompt").innerText =
+      "✍️ Generando prompt...";
 
-Incluye:
+    const res = await fetch(
+      "https://pixellab45-v2.scostarobles.workers.dev/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          tipo: "prompt",
+          tema,
+          formato: tipo
+        })
+      }
+    );
 
-✅ Título atractivo
-✅ Introducción
-✅ Desarrollo
-✅ Llamado a la acción
-`;
+    const data = await res.json();
 
-  document.getElementById(
-    "resultadoPrompt"
-  ).innerText = prompt;
+    document.getElementById("resultadoPrompt").innerText =
+      data.resultado;
+
+  } catch (error) {
+
+    document.getElementById("resultadoPrompt").innerText =
+      "❌ " + error.message;
+
+  }
+
 }
 
 function copiarPrompt(){
