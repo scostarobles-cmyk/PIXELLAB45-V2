@@ -265,61 +265,52 @@ function copiarIdeas(){
     document.getElementById("mensajeIdeasCopiadas").innerText = "";
   }, 3000);
 
-}function generarVisuales(){
+  async function generarVisuales() {
 
   const tema =
     document.getElementById("temaVisual").value;
 
-  let resultado = `
-🖼️ PROMPTS VISUALES PIXELLAB45
+  if (!tema.trim()) {
 
-━━━━━━━━━━━━━━━━━━
+    document.getElementById("resultadoVisual").innerHTML =
+      "⚠️ Escribe un tema primero";
 
-🎨 IMAGEN PRINCIPAL
+    return;
+  }
 
-${tema},
-futuristic technology,
-cyberpunk style,
-blue neon lights,
-ultra realistic,
-cinematic lighting,
-8k detail.
+  try {
 
-━━━━━━━━━━━━━━━━━━
+    document.getElementById("resultadoVisual").innerHTML =
+      "🎨 Generando prompts visuales...";
 
-📺 MINIATURA YOUTUBE
+    const res = await fetch(
+      "https://pixellab45-v2.scostarobles.workers.dev/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          tipo: "visuales",
+          tema
+        })
+      }
+    );
 
-Professional YouTube thumbnail,
-${tema},
-technology background,
-blue neon glow,
-high contrast.
+    const data = await res.json();
 
-━━━━━━━━━━━━━━━━━━
+    document.getElementById("resultadoVisual").innerHTML =
+      `<div style="white-space: pre-wrap;">${data.resultado}</div>`;
 
-📱 PORTADA TIKTOK
+  } catch (error) {
 
-${tema},
-vertical composition,
-social media style,
-modern futuristic design.
+    document.getElementById("resultadoVisual").innerHTML =
+      `❌ ${error.message}`;
 
-━━━━━━━━━━━━━━━━━━
+  }
 
-🎥 VIDEO IA
-
-${tema},
-cinematic camera movement,
-futuristic environment,
-dynamic motion,
-blue neon lighting,
-technology atmosphere.
-`;
-
-  document.getElementById(
-    "resultadoVisual"
-  ).innerText = resultado;
 }
+}function generarVisuales(){
 
 function copiarVisuales(){
 
