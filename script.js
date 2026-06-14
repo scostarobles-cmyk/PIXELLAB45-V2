@@ -170,28 +170,21 @@ function copiarStoryboard() {
   setTimeout(() => {
     document.getElementById("mensajeStoryboard").innerText = "";
   }, 3000);
-}function generarIdeas(){
+}
+//función crear ideas
+async function generarIdeas() {
+  const tema = document.getElementById("tema").value;
 
-  const tema =
-    document.getElementById("temaIdea").value;
+  const res = await fetch("https://TU-WORKER.workers.dev/api/ideas", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ tema })
+  });
 
-  let ideas = `
-💡 IDEAS PIXELLAB45
-
-1. Cómo usar ${tema}
-
-2. Errores comunes en ${tema}
-
-3. Herramientas gratuitas de ${tema}
-
-4. Tendencias futuras de ${tema}
-
-5. Tutorial rápido sobre ${tema}
-`;
-
-  document.getElementById(
-    "resultadoIdeas"
-  ).innerText = ideas;
+  const data = await res.json();
+  console.log(data.ideas);
 }
 
 function copiarIdeas(){
