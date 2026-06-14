@@ -171,7 +171,7 @@ function copiarStoryboard() {
     document.getElementById("mensajeStoryboard").innerText = "";
   }, 3000);
 }
-function generarIdeas(){
+
 async function generarIdeas() {
 
   const tema = document.getElementById("tema").value;
