@@ -3,24 +3,27 @@ export default {
 
     const { tema } = await request.json();
 
+    const input = `Genera 6 ideas virales sobre: ${tema}`;
+
     const result = await env.AI.run(
       "@cf/meta/llama-3.2-3b-instruct",
-      {
-        messages: [
-          {
-            role: "system",
-            content: "Eres un generador de ideas virales para redes sociales"
-          },
-          {
-            role: "user",
-            content: "Genera 6 ideas virales sobre: " + tema
-          }
-        ]
-      }
+      input
     );
 
-    return new Response(JSON.stringify(result), {
-      headers: { "Content-Type": "application/json" }
+    const text = typeof result === "string"
+      ? result
+      : result.response || result.result || "";
+
+    const ideas = text
+      .split("\n")
+      .map(i => i.replace(/^[-•]\s*/, "").trim())
+      .filter(Boolean);
+
+    return new Response(JSON.stringify({ ideas }), {
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      }
     });
   }
 };
