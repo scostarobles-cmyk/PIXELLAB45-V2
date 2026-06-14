@@ -172,53 +172,7 @@ function copiarStoryboard() {
   }, 3000);
 }
 
-/*async function generarIdeas() {
 
-  const tema = document.getElementById("tema").value;
-
-  if (!tema.trim()) {
-    document.getElementById("resultado").innerHTML =
-      "<li>⚠️ Escribe un tema primero</li>";
-    return;
-  }
-
-  try {
-
-    const res = await fetch(
-      "https://pixellab45-v2.scostarobles.workers.dev/",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ tema })
-      }
-    );
-
-    const data = await res.json();
-
-    console.log("DATA:", data);
-
-    const texto =
-      data.ideas ||
-      data.response ||
-      "No se recibieron ideas";
-
-    const ideas = texto
-      .split("\n")
-      .filter(i => i.trim());
-
-    document.getElementById("resultado").innerHTML =
-      ideas.map(i => `<li>${i}</li>`).join("");
-
-  } catch (error) {
-
-    console.error("ERROR:", error);
-
-    document.getElementById("resultado").innerHTML =
-      `<li>❌ ${error.message}</li>`;
-  }
-}*/
 async function generarIdeas() {
 
   const tema = document.getElementById("tema").value;
@@ -232,13 +186,16 @@ async function generarIdeas() {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ tema })
+        body: JSON.stringify({
+          tema,
+          tipo: "ideas"
+        })
       }
     );
 
     const data = await res.json();
 
-document.getElementById("resultado").innerHTML = `
+    document.getElementById("resultado").innerHTML = `
 <div style="white-space: pre-wrap;">
 ${data.ideas}
 </div>
