@@ -1,5 +1,6 @@
 export default {
   async fetch(request, env) {
+
     const url = new URL(request.url);
 
     const cors = {
@@ -14,97 +15,133 @@ export default {
 
     // 🧪 TEST
     if (url.pathname === "/") {
-      return new Response("PIXELLAB45 OK", { headers: cors });
-    }
-
-    // 🎨 GENERAR IMAGEN (CORRECTO REAL)
-    if (url.pathname === "/generate" && request.method === "POST") {
-      const { prompt } = await request.json();
-
-      const result = await env.AI.run(
-        "@cf/stabilityai/stable-diffusion-xl-base-1.0",
-        { prompt }
+      return new Response(
+        "PIXELLAB45 OK",
+        { headers: cors }
       );
+    }
 
-      // 👉 ESTE ES EL PUNTO CLAVE
-      const image = new Uint8Array(result);
+    // 🎨 GENERAR IMAGEN
+    if (
+      url.pathname === "/generate" &&
+      request.method === "POST"
+    ) {
 
-      return new Response(image, {
-        headers: {
-          ...cors,
-          "Content-Type": "image/png"
+      const { prompt } =
+        await request.json();
+
+      const result =
+        await env.AI.run(
+          "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+          { prompt }
+        );
+
+      const image =
+        new Uint8Array(result);
+
+      return new Response(
+        image,
+        {
+          headers: {
+            ...cors,
+            "Content-Type": "image/png"
+          }
         }
-      });
+      );
     }
 
-    // 📤 UPLOAD A R2
-if (url.pathname === "/upload" && request.method === "POST") {
-if (url.pathname === "/upload" && request.method === "POST") {
+    // 📤 TEST UPLOAD
+    if (
+      url.pathname === "/upload" &&
+      request.method === "POST"
+    ) {
 
-  const formData = await request.formData();
-  const file = formData.get("file");
+      const formData =
+        await request.formData();
 
-  const buffer = await file.arrayBuffer();
+      const file =
+        formData.get("file");
 
-  return Response.json(
-    {
-      ok: true,
-      size: buffer.byteLength,
-      type: file.type,
-      name: file.name
-    },
-    {
-      headers: cors
+      const buffer =
+        await file.arrayBuffer();
+
+      return Response.json(
+        {
+          ok: true,
+          size: buffer.byteLength,
+          type: file.type,
+          name: file.name
+        },
+        {
+          headers: cors
+        }
+      );
     }
-  );
-}
-// 🖼️ LISTAR GALERÍA
-if (url.pathname === "/gallery") {
 
-  const objects = await env.PIXELLAB45_BUCKET.list({
-    prefix: "gallery/"
-  });
+    // 🖼️ LISTAR GALERÍA
+    if (url.pathname === "/gallery") {
 
-  const files = objects.objects.map(obj => ({
-    key: obj.key,
-    size: obj.size
-  }));
+      const objects =
+        await env.PIXELLAB45_BUCKET.list({
+          prefix: "gallery/"
+        });
 
-  return Response.json(files, {
-    headers: cors
-  });
-}
+      const files =
+        objects.objects.map(obj => ({
+          key: obj.key,
+          size: obj.size
+        }));
 
-// 📷 SERVIR IMAGEN
-if (url.pathname.startsWith("/image/")) {
+      return Response.json(
+        files,
+        {
+          headers: cors
+        }
+      );
+    }
 
-  const key =
-    decodeURIComponent(
-      url.pathname.replace("/image/", "")
-    );
+    // 📷 SERVIR IMAGEN
+    if (
+      url.pathname.startsWith("/image/")
+    ) {
 
-  const object =
-    await env.PIXELLAB45_BUCKET.get(key);
+      const key =
+        decodeURIComponent(
+          url.pathname.replace(
+            "/image/",
+            ""
+          )
+        );
 
-  if (!object) {
-    return new Response(
-      "Imagen no encontrada",
-      { status: 404 }
-    );
-  }
+      const object =
+        await env.PIXELLAB45_BUCKET.get(
+          key
+        );
 
-  return new Response(
-    object.body,
-    {
-      headers: {
-        ...cors,
-        "Content-Type":
-          object.httpMetadata?.contentType
-          || "image/png"
+      if (!object) {
+        return new Response(
+          "Imagen no encontrada",
+          { status: 404 }
+        );
       }
+
+      return new Response(
+        object.body,
+        {
+          headers: {
+            ...cors,
+            "Content-Type":
+              object.httpMetadata
+                ?.contentType ||
+              "image/png"
+          }
+        }
+      );
     }
-  );
-}
-    return new Response("OK", { headers: cors });
+
+    return new Response(
+      "OK",
+      { headers: cors }
+    );
   }
 };
