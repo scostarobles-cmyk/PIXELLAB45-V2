@@ -187,7 +187,7 @@ sobre IA y tecnología.
 
 function copiarGuion(){
 
-  const texto =
+  con dosst texto =
     document.getElementById("resultadoGuion").innerText;
 
   navigator.clipboard.writeText(texto);
@@ -266,6 +266,8 @@ function copiarStoryboard() {
 }
 async function generarIdeas() {
   try {
+    console.log("🔥 generarIdeas ejecutada");
+alert("función ejecutada");
     const respuesta = await fetch(
       "https://pixellab45-v2.scostarobles.workers.dev/text",
       {
