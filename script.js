@@ -173,9 +173,10 @@ function copiarStoryboard() {
 }
 //función crear ideas
 async function generarIdeas() {
+
   const tema = document.getElementById("tema").value;
 
-  const res = await fetch("https://TU-WORKER.workers.dev/api/ideas", {
+  const res = await fetch("https://TU-WORKER.workers.dev", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -184,9 +185,12 @@ async function generarIdeas() {
   });
 
   const data = await res.json();
-  console.log(data.ideas);
-}
 
+  console.log("RESPUESTA:", data);
+
+  document.getElementById("resultado").innerHTML =
+    data.ideas.map(i => `<li>${i}</li>`).join("");
+}
 function copiarIdeas(){
 
   const texto =
