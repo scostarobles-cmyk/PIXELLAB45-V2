@@ -418,4 +418,35 @@ async function generarImagen() {
     alert(err.message);
   }
 }
- 
+async function cargarGaleria() {
+
+  try {
+
+    const res = await fetch(
+      "https://pixellab45-v2.scostarobles.workers.dev/gallery"
+    );
+
+    const data = await res.json();
+
+    const contenedor =
+      document.getElementById("galeriaImagenes");
+
+    contenedor.innerHTML = "";
+
+    data.reverse().forEach(img => {
+
+      contenedor.innerHTML += `
+        <img src="${img.url}"
+          style="
+            width:100%;
+            border-radius:10px;
+            margin-bottom:10px;
+          "
+        >
+      `;
+    });
+
+  } catch (err) {
+    console.error("Error galería:", err);
+  }
+} 
