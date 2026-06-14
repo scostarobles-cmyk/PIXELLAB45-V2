@@ -15,56 +15,41 @@ export default {
 
     // 🧪 TEST
     if (url.pathname === "/") {
-      return new Response(
-        "PIXELLAB45 OK",
-        { headers: cors }
-      );
+      return new Response("PIXELLAB45 OK", { headers: cors });
     }
 
     // 🎨 GENERAR IMAGEN
-    if (
-      url.pathname === "/generate" &&
-      request.method === "POST"
-    ) {
+    if (url.pathname === "/generate" && request.method === "POST") {
+      const { prompt } = await request.json();
 
-      const { prompt } =
-        await request.json();
-
-      const result =
-        await env.AI.run(
-          "@cf/stabilityai/stable-diffusion-xl-base-1.0",
-          { prompt }
-        );
-
-      const image =
-        new Uint8Array(result);
-
-      return new Response(
-        image,
-        {
-          headers: {
-            ...cors,
-            "Content-Type": "image/png"
-          }
-        }
+      const result = await env.AI.run(
+        "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+        { prompt }
       );
+
+      const image = new Uint8Array(result);
+
+      return new Response(image, {
+        headers: {
+          ...cors,
+          "Content-Type": "image/png"
+        }
+      });
     }
 
     // 📤 TEST UPLOAD
-    if (
-      url.pathname === "/upload" &&
-      request.method === "POST"
-    ) {
+    if (url.pathname === "/upload" && request.method === "POST") {
 
-      const formData =
-        await request.formData();
+      const formData = await request.formData();
+      const file = formData.get("file");
 
-      const file =
-        formData.get("file");
+      // Aquí extraemos el buffer del archivo
+      const buffer = await file.arrayBuffer();
+      
+      // Logueamos el tamaño para ver si llega vacío o con datos
+      console.log("Buffer size:", buffer.byteLength);
 
-      const buffer =
-        await file.arrayBuffer();
-
+      // Mostramos una respuesta de diagnóstico y no subimos nada todavía
       return Response.json(
         {
           ok: true,
@@ -80,43 +65,26 @@ export default {
 
     // 🖼️ LISTAR GALERÍA
     if (url.pathname === "/gallery") {
+      const objects = await env.PIXELLAB45_BUCKET.list({
+        prefix: "gallery/"
+      });
 
-      const objects =
-        await env.PIXELLAB45_BUCKET.list({
-          prefix: "gallery/"
-        });
+      const files = objects.objects.map(obj => ({
+        key: obj.key,
+        size: obj.size
+      }));
 
-      const files =
-        objects.objects.map(obj => ({
-          key: obj.key,
-          size: obj.size
-        }));
-
-      return Response.json(
-        files,
-        {
-          headers: cors
-        }
-      );
+      return Response.json(files, { headers: cors });
     }
 
     // 📷 SERVIR IMAGEN
-    if (
-      url.pathname.startsWith("/image/")
-    ) {
+    if (url.pathname.startsWith("/image/")) {
 
-      const key =
-        decodeURIComponent(
-          url.pathname.replace(
-            "/image/",
-            ""
-          )
-        );
+      const key = decodeURIComponent(
+        url.pathname.replace("/image/", "")
+      );
 
-      const object =
-        await env.PIXELLAB45_BUCKET.get(
-          key
-        );
+      const object = await env.PIXELLAB45_BUCKET.get(key);
 
       if (!object) {
         return new Response(
@@ -130,18 +98,14 @@ export default {
         {
           headers: {
             ...cors,
-            "Content-Type":
-              object.httpMetadata
-                ?.contentType ||
+            "Content-Type": 
+              object.httpMetadata?.contentType ||
               "image/png"
           }
         }
       );
     }
 
-    return new Response(
-      "OK",
-      { headers: cors }
-    );
+    return new Response("OK", { headers: cors });
   }
 };
