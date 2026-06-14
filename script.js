@@ -363,7 +363,9 @@ function copiarVisuales(){
 async function generarImagen() {
 
   const prompt =
-    document.getElementById("promptImagen").value;
+    document.getElementById(
+      "promptImagen"
+    ).value;
 
   try {
 
@@ -372,20 +374,23 @@ async function generarImagen() {
       return;
     }
 
-    const res = await fetch(
-      "https://pixellab45-v2.scostarobles.workers.dev/generate",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ prompt })
-      }
-    );
+    const res =
+      await fetch(
+        "https://pixellab45-v2.scostarobles.workers.dev/generate",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+          body: JSON.stringify({
+            prompt
+          })
+        }
+      );
 
-    const result = await res.json();
-alert(result.imageUrl);
-    console.log(result);
+    const result =
+      await res.json();
 
     if (!result.ok) {
       throw new Error(
