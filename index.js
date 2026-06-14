@@ -1,56 +1,28 @@
-lexport default {
+export default {
   async fetch(request, env) {
 
-    const url = new URL(request.url);
-
-    // Endpoint de prueba simple (primero aseguramos deploy)
-    if (url.pathname === "/") {
-      return new Response("PIXELLAB45 OK - WORKER ACTIVO");
-    }
-
-    // Endpoint ideas IA
-    if (url.pathname === "/api/ideas" && request.method === "POST") {
-
-      try {
-        const { tema } = await request.json();
-
-        const result = await env.AI.run(
-          "llama-3.2-3b-instruct",
-          {
-            messages: [
-              {
-                role: "system",
-                content: "Eres un creador experto de ideas virales para redes sociales."
-              },
-              {
-                role: "user",
-                content: "Genera 6 ideas virales sobre: " + tema
-              }
-            ]
-          }
-        );
-
-        const text = result.response || "";
-
-        const ideas = text
-          .split("\n")
-          .map(line => line.replace(/^[-•]\s*/, "").trim())
-          .filter(Boolean);
-
-        return new Response(JSON.stringify({ ideas }), {
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*"
-          }
-        });
-
-      } catch (err) {
-        return new Response(JSON.stringify({
-          error: err.message
-        }), { status: 500 });
+    const messages = [
+      {
+        role: "system",
+        content: "Eres un asistente que genera ideas virales para redes sociales."
+      },
+      {
+        role: "user",
+        content: "Genera 6 ideas virales sobre: inteligencia artificial"
       }
-    }
+    ];
 
-    return new Response("OK");
+    const result = await env.AI.run(
+      "@cf/meta/llama-3.1-8b-instruct",
+      {
+        messages
+      }
+    );
+
+    return new Response(JSON.stringify(result), {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
   }
 };
