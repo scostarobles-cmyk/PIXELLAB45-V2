@@ -190,6 +190,44 @@ export default {
       );
     }
 
+    if (
+  url.pathname === "/generate-text" &&
+  request.method === "POST"
+) {
+
+  const { prompt } =
+    await request.json();
+
+  const respuesta =
+    await env.AI.run(
+      "@cf/openai/gpt-oss-20b",
+      {
+        messages: [
+          {
+            role: "user",
+            content: prompt
+          }
+        ]
+      }
+    );
+
+  return new Response(
+    JSON.stringify({
+      ok: true,
+      text:
+        respuesta.response ||
+        respuesta.result ||
+        JSON.stringify(respuesta)
+    }),
+    {
+      headers: {
+        ...cors,
+        "Content-Type":
+          "application/json"
+      }
+    }
+  );
+    }
     /* =========================
        404
     ========================= */
