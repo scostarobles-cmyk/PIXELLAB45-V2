@@ -451,19 +451,40 @@ async function cargarGaleria() {
     console.error("Error galería:", err);
   }
 } 
-window.addEventListener("load", cargarGaleria);
-function generarVideo() {
-  fetch("https://pixellab45-v2.scostarobles.workers.dev/generate-video", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      prompt: document.getElementById("promptVideo").value
-    })
-  })
-  .then(r => r.json())
-  .then(data => {
+async function generarVideo() {
+
+  const prompt = document.getElementById("promptVideo").value;
+
+  console.log("PROMPT VIDEO:", prompt);
+
+  try {
+
+    const res = await fetch(
+      "https://pixellab45-v2.scostarobles.workers.dev/generate-video",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ prompt })
+      }
+    );
+
+    console.log("STATUS:", res.status);
+
+    const data = await res.text();
+
+    console.log("RESPUESTA RAW:", data);
+
+    document.getElementById("resultadoVideo").innerText = data;
+
+  } catch (err) {
+
+    console.error("ERROR VIDEO:", err);
+
     document.getElementById("resultadoVideo").innerText =
-      JSON.stringify(data, null, 2);
-  })
-  .catch(err => console.error(err));
+      "❌ Error generando video (ver consola)";
+  }
 }
+window.addEventListener("load", cargarGaleria);
+
