@@ -382,7 +382,10 @@ async function generarImagen() {
     if (!res.ok) throw new Error("Error generando imagen");
 
     const blob = await res.blob();
+const blob = await res.blob();
 
+console.log("Blob size:", blob.size);
+alert("Blob size: " + blob.size);
     // 📤 2. SUBIR A R2
     const formData = new FormData();
     formData.append("file", blob, `pixellab45-${Date.now()}.png`);
