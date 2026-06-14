@@ -236,13 +236,13 @@ async function generarIdeas() {
       }
     );
 
-    document.getElementById("resultado").innerHTML =
-      "<li>STATUS: " + res.status + "</li>";
-
     const data = await res.json();
 
-    document.getElementById("resultado").innerHTML +=
-      "<li>" + JSON.stringify(data) + "</li>";
+document.getElementById("resultado").innerHTML = `
+<div style="white-space: pre-wrap;">
+${data.ideas}
+</div>
+`;
 
   } catch (error) {
 
