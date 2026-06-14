@@ -82,7 +82,7 @@ Devuelve únicamente el contenido final.
       }
 
       // 🎬 SCRIPT (NUEVO)
-      else if (tipo === "script") {
+     /* else if (tipo === "script") {
 
         prompt = `
 Eres un creador experto de contenido viral para redes sociales (TikTok, Reels, Shorts).
@@ -106,7 +106,7 @@ CTA:
 
 TEMA:
 ${tema}
-`;
+`;*/
 
       }
 
