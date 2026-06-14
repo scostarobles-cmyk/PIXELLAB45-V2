@@ -53,13 +53,13 @@ export default {
 // 🖼️ LISTAR GALERÍA
 if (url.pathname === "/gallery") {
 
-  const objects =
-    await env.PIXELLAB45_BUCKET.list({
-      prefix: "gallery/"
-    });
+  const objects = await env.PIXELLAB45_BUCKET.list({
+    prefix: "gallery/"
+  });
 
   const files = objects.objects.map(obj => ({
-    key: obj.key
+    key: obj.key,
+    size: obj.size
   }));
 
   return Response.json(files, {
