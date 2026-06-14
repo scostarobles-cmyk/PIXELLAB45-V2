@@ -124,7 +124,7 @@ Formato profesional y detallado.
 
   document.getElementById(
     "resultadoPrompt"
-  ).innerText = prompt;
+  ).innerText = prompt;,
 }
 
 function copiarPrompt(){
@@ -287,7 +287,6 @@ async function generarIdeas() {
   } catch (error) {
     console.error("Error generando ideas:", error);
   }
-}
 
 function copiarIdeas(){
 
