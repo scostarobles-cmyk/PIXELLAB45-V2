@@ -1,4 +1,4 @@
- //generar inagen 
+, //generar inagen 
 async function generarIdeas() {
 
   const resultado = document.getElementById("resultadoIdeas");
@@ -8,7 +8,7 @@ async function generarIdeas() {
     resultado.innerText = "Conectando...";
 
     const respuesta = await fetch(
-      "https://pixellab45-v2.scostarobles.workers.dev/text",
+      "https://pixellab45-v2.scostarobles.workers.dev/generate-text",
       {
         method: "POST",
         headers: {
