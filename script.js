@@ -222,7 +222,9 @@ function copiarIdeas(){
     document.getElementById("mensajeIdeasCopiadas").innerText = "";
   }, 3000);
 
-  async function generarVisuales() {
+}
+
+async function generarVisuales() {
 
   const tema =
     document.getElementById("temaVisual").value;
@@ -248,8 +250,8 @@ function copiarIdeas(){
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          tipo: "visuales",
-          tema
+          tema,
+          tipo: "visuales"
         })
       }
     );
@@ -267,8 +269,6 @@ function copiarIdeas(){
   }
 
 }
-}
-
 function copiarVisuales(){
 
   const texto =
