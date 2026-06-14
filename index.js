@@ -13,11 +13,11 @@ export default {
           messages: [
             {
               role: "system",
-              content: "Eres generador de ideas virales"
+              content: "Eres generador de ideas virales para redes sociales"
             },
             {
               role: "user",
-              content: `Genera 6 ideas sobre: ${tema}`
+              content: `Genera 6 ideas virales sobre: ${tema}`
             }
           ]
         }
