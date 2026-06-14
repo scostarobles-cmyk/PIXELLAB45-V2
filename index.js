@@ -80,6 +80,34 @@ Devuelve únicamente el contenido final.
 `;
 
       }
+        // 🎬 GUIONES IA
+else if (tipo === "script") {
+
+  prompt = `
+Actúa como un guionista experto en videos cortos sobre tecnología e inteligencia artificial.
+
+Tema: ${tema}
+
+Genera un guion de narración para TikTok, Reels o Shorts.
+
+Estructura obligatoria:
+
+🎯 GANCHO
+
+🎬 DESARROLLO
+
+🔥 CIERRE
+
+📢 CTA
+
+Duración aproximada: 60 segundos.
+
+No incluyas escenas.
+No incluyas instrucciones visuales.
+Solo la narración lista para voz en off.
+`;
+
+}
 
       // 🧠 IDEAS (default)
       else {
@@ -102,11 +130,15 @@ Devuelve solo una lista numerada.
 
       let response;
 
-      if (tipo === "visuales" || tipo === "prompt") {
-        response = { resultado: result.response };
-      } else {
-        response = { ideas: result.response };
-      }
+      if (
+  tipo === "visuales" ||
+  tipo === "prompt" ||
+  tipo === "script"
+) {
+  response = { resultado: result.response };
+} else {
+  response = { ideas: result.response };
+}
 
       return new Response(
         JSON.stringify(response),
