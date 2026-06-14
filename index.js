@@ -37,30 +37,18 @@ export default {
       });
     }
 
-    // 📤 TEST UPLOAD
+    // 📤 UPLOAD A R2
     if (url.pathname === "/upload" && request.method === "POST") {
-
       const formData = await request.formData();
       const file = formData.get("file");
 
-      // Aquí extraemos el buffer del archivo
-      const buffer = await file.arrayBuffer();
-      
-      // Logueamos el tamaño para ver si llega vacío o con datos
-      console.log("Buffer size:", buffer.byteLength);
+      const key = `gallery/${Date.now()}-${file.name}`;
 
-      // Mostramos una respuesta de diagnóstico y no subimos nada todavía
-      return Response.json(
-        {
-          ok: true,
-          size: buffer.byteLength,
-          type: file.type,
-          name: file.name
-        },
-        {
-          headers: cors
-        }
-      );
+      await env.PIXELLAB45_BUCKET.put(key, file.stream(), {
+        httpMetadata: { contentType: file.type }
+      });
+
+      return Response.json({ ok: true, key }, { headers: cors });
     }
 
     // 🖼️ LISTAR GALERÍA
@@ -70,8 +58,7 @@ export default {
       });
 
       const files = objects.objects.map(obj => ({
-        key: obj.key,
-        size: obj.size
+        key: obj.key
       }));
 
       return Response.json(files, { headers: cors });
@@ -79,33 +66,5 @@ export default {
 
     // 📷 SERVIR IMAGEN
     if (url.pathname.startsWith("/image/")) {
-
       const key = decodeURIComponent(
-        url.pathname.replace("/image/", "")
-      );
-
-      const object = await env.PIXELLAB45_BUCKET.get(key);
-
-      if (!object) {
-        return new Response(
-          "Imagen no encontrada",
-          { status: 404 }
-        );
-      }
-
-      return new Response(
-        object.body,
-        {
-          headers: {
-            ...cors,
-            "Content-Type": 
-              object.httpMetadata?.contentType ||
-              "image/png"
-          }
-        }
-      );
-    }
-
-    return new Response("OK", { headers: cors });
-  }
-};
+        url.pathname.
