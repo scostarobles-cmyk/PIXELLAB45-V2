@@ -4,7 +4,7 @@ export default {
     try {
       const result = await env.AI.run(
         "@cf/meta/llama-3.2-3b-instruct",
-        "Genera SOLO 6 ideas virales para TikTok sobre inteligencia artificial. Solo lista, sin explicación, una idea por línea, máximo 12 palabras por idea."
+        "Genera 6 ideas virales sobre inteligencia artificial para TikTok"
       );
 
       const text = typeof result === "string"
@@ -13,8 +13,8 @@ export default {
 
       const ideas = text
         .split("\n")
-        .map(i => i.replace(/^[-•0-9.\s]+/, "").trim())
-        .filter(i => i.length > 0);
+        .map(i => i.replace(/^[-•]\s*/, "").trim())
+        .filter(Boolean);
 
       return new Response(JSON.stringify({ ideas }), {
         headers: {
