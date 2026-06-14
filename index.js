@@ -81,35 +81,6 @@ Devuelve únicamente el contenido final.
 
       }
 
-      // 🎬 SCRIPT (NUEVO)
-     /* else if (tipo === "script") {
-
-        prompt = `
-Eres un creador experto de contenido viral para redes sociales (TikTok, Reels, Shorts).
-
-Convierte el tema en un guion corto altamente viral.
-
-Reglas:
-- Máximo 35 segundos
-- Estilo PIXELLAB45 (IA, futurista, tecnología, impacto emocional)
-- Lenguaje simple, directo y potente
-- No emojis
-- No explicaciones
-
-Estructura:
-
-HOOK:
-CONTEXTO:
-DESARROLLO:
-CIERRE:
-CTA:
-
-TEMA:
-${tema}
-`;*/
-
-      }
-
       // 🧠 IDEAS (default)
       else {
 
@@ -131,7 +102,7 @@ Devuelve solo una lista numerada.
 
       let response;
 
-      if (tipo === "visuales" || tipo === "prompt" || tipo === "script") {
+      if (tipo === "visuales" || tipo === "prompt") {
         response = { resultado: result.response };
       } else {
         response = { ideas: result.response };
