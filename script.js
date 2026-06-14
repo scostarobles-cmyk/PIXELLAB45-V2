@@ -384,7 +384,7 @@ async function generarImagen() {
     );
 
     const result = await res.json();
-
+alert(result.imageUrl);
     console.log(result);
 
     if (!result.ok) {
