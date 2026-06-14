@@ -3,7 +3,7 @@ export default {
 
     const cors = {
       "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type"
     };
 
@@ -11,246 +11,54 @@ export default {
       return new Response(null, { headers: cors });
     }
 
-    const url = new URL(request.url);
-
-    /* =========================
-       TEST
-    ========================= */
-
-    if (url.pathname === "/") {
-      return new Response("PIXELLAB45 funcions ", {
-        headers: cors
+    if (request.method !== "POST") {
+      return Response.json({
+        ok: true,
+        mensaje: "PIXELLAB45 Image Generator"
       });
     }
 
-    //gwnerador de ideas 
-    const respuesta = await env.AI.run(
-  "@cf/openai/gpt-oss-20b",
-  {
-    messages: [
-      {
-        role: "user",
-        content: prompt
-      }
-    ]
-  }
-);
- 
-    /* =========================
-       GENERAR IMAGEN
-    ========================= */
+    try {
 
-    if (
-      url.pathname === "/generate" &&
-      request.method === "POST"
-    ) {
+      const { prompt } = await request.json();
 
-      const { prompt } =
-        await request.json();
-
-      const image =
-        await env.AI.run(
-          "@cf/stabilityai/stable-diffusion-xl-base-1.0",
-          { prompt }
-        );
-
-      const key =
-        `gallery/${Date.now()}-pixellab45.png`;
-
-      await env.PIXELLAB45_BUCKET.put(
-        key,
-        image,
+      const replicateResponse = await fetch(
+        "https://api.replicate.com/v1/models/black-forest-labs/flux-1.1-pro/predictions",
         {
-          httpMetadata: {
-            contentType: "image/png"
-          }
+          method: "POST",
+          headers: {
+            "Authorization": `Token ${env.REPLICATE_API_TOKEN}`,
+            "Content-Type": "application/json",
+            "Prefer": "wait"
+          },
+          body: JSON.stringify({
+            input: {
+              prompt: prompt
+            }
+          })
         }
       );
 
-      const imageUrl =
-        `https://pixellab45-v2.scostarobles.workers.dev/image/${key}`;
+      const data = await replicateResponse.json();
 
       return new Response(
-        JSON.stringify({
-          ok: true,
-          imageUrl
-        }),
+        JSON.stringify(data),
         {
           headers: {
             ...cors,
-            "Content-Type":
-              "application/json"
+            "Content-Type": "application/json"
           }
         }
       );
-    }
-    // video 
-    if (
-  url.pathname === "/generate-video" &&
-  request.method === "POST"
-) {
 
-  const { prompt } = await request.json();
+    } catch (error) {
 
-  // 🎥 VIDEO AI (elige el modelo)
-  const video = await env.AI.run(
-    "@cf/bytedance/seedance-2.0-fast",
-    {
-      prompt,
-      // algunos modelos aceptan duración
-      duration: 5
-    }
-  );
+      return Response.json({
+        ok: false,
+        error: error.message
+      });
 
-  // Cloudflare devuelve binario (video)
-  const key = `videos/${Date.now()}-pixellab45.mp4`;
-
-  await env.PIXELLAB45_BUCKET.put(key, video, {
-    httpMetadata: {
-      contentType: "video/mp4"
-    }
-  });
-
-  const videoUrl =
-    `https://pixellab45-v2.scostarobles.workers.dev/video/${key}`;
-
-  return new Response(
-    JSON.stringify({
-      ok: true,
-      videoUrl
-    }),
-    {
-      headers: {
-        ...cors,
-        "Content-Type": "application/json"
-      }
-    }
-  );
     }
 
-    /* =========================
-       SERVIR IMAGEN
-    ========================= */
-
-    if (
-      url.pathname.startsWith("/image/")
-    ) {
-
-      const key =
-        decodeURIComponent(
-          url.pathname.replace(
-            "/image/",
-            ""
-          )
-        );
-
-      const object =
-        await env.PIXELLAB45_BUCKET.get(
-          key
-        );
-
-      if (!object) {
-
-        return new Response(
-          "Imagen no encontrada",
-          {
-            status: 404,
-            headers: cors
-          }
-        );
-      }
-
-      return new Response(
-        object.body,
-        {
-          headers: {
-            ...cors,
-            "Content-Type":
-              object.httpMetadata?.contentType ||
-              "image/png"
-          }
-        }
-      );
-    }
-
-    /* =========================
-       GALERÍA
-    ========================= */
-
-    if (url.pathname === "/gallery") {
-
-      const objects =
-        await env.PIXELLAB45_BUCKET.list({
-          prefix: "gallery/"
-        });
-
-      const files =
-        objects.objects.map(obj => ({
-          key: obj.key,
-          url:
-            `https://pixellab45-v2.scostarobles.workers.dev/image/${obj.key}`
-        }));
-
-      return new Response(
-        JSON.stringify(files),
-        {
-          headers: {
-            ...cors,
-            "Content-Type":
-              "application/json"
-          }
-        }
-      );
-    }
-
-    if (
-  url.pathname === "/generate-text" &&
-  request.method === "POST"
-) {
-
-  const { prompt } =
-    await request.json();
-
-  const respuesta =
-    await env.AI.run(
-      "@cf/openai/gpt-oss-20b",
-      {
-        messages: [
-          {
-            role: "user",
-            content: prompt
-          }
-        ]
-      }
-    );
-
-  return new Response(
-    JSON.stringify({
-      ok: true,
-      text:
-        respuesta.response ||
-        respuesta.result ||
-        JSON.stringify(respuesta)
-    }),
-    {
-      headers: {
-        ...cors,
-        "Content-Type":
-          "application/json"
-      }
-    }
-  );
-    }
-    /* =========================
-       404
-    ========================= */
-
-    return new Response(
-      "Not Found",
-      {
-        status: 404,
-        headers: cors
-      }
-    );
   }
 };
