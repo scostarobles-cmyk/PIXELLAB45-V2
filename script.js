@@ -263,28 +263,43 @@ function copiarStoryboard() {
   setTimeout(() => {
     document.getElementById("mensajeStoryboard").innerText = "";
   }, 3000);
-}function generarIdeas(){
+}
+async function generarIdeas() {
 
   const tema =
     document.getElementById("temaIdea").value;
 
-  let ideas = `
-💡 IDEAS PIXELLAB45
+  const prompt = `
+Genera 10 ideas virales para TikTok,
+YouTube Shorts e Instagram Reels
+sobre:
 
-1. Cómo usar ${tema}
+${tema}
 
-2. Errores comunes en ${tema}
-
-3. Herramientas gratuitas de ${tema}
-
-4. Tendencias futuras de ${tema}
-
-5. Tutorial rápido sobre ${tema}
+Devuelve solamente la lista.
 `;
+
+  const res = await fetch(
+    "https://pixellab45-v2.scostarobles.workers.dev/generate-text",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type":
+          "application/json"
+      },
+      body: JSON.stringify({
+        prompt
+      })
+    }
+  );
+
+  const datos =
+    await res.json();
 
   document.getElementById(
     "resultadoIdeas"
-  ).innerText = ideas;
+  ).innerText =
+    datos.text;
 }
 
 function copiarIdeas(){
