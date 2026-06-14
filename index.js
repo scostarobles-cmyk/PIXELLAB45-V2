@@ -92,7 +92,7 @@ Devuelve solo una lista numerada.
       }
 
       const result = await env.AI.run(
-        "@cf/openai/gpt-oss-20b",
+        "@cf/meta/llama-3.1-8b-instruct-fp8",
         {
           messages: [
             { role: "user", content: prompt }
