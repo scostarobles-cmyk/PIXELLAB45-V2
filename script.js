@@ -1,594 +1,348 @@
-html {
-  scroll-behavior: smooth;
-}
+console.log("SCRIPT CARGADO OK");
+function generarPrompt() {
 
-/* =========================
-   RESET BASE
-   ========================= */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+  const tema =
+    document.getElementById("temaPrompt").value;
 
-body {
-  background: #05070d;
-  color: #e6f7ff;
-  font-family: Arial, sans-serif;
-  overflow-x: hidden;
-}
+  const tipo =
+    document.getElementById("tipoContenido").value;
 
-/* =========================
-   NAVBAR
-   ========================= */
-section {
-  scroll-margin-top: 140px;
-}
+  if (tema.trim() === "") {
 
-.navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 15px 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: rgba(5, 7, 13, 0.9);
-  backdrop-filter: blur(10px);
-  z-index: 1000;
-}
+    document.getElementById("resultadoPrompt").innerText =
+      "⚠️ Escribe un tema primero";
 
-/* LINKS */
-.nav-links {
-  display: flex;
-  gap: 30px;
-}
-
-.nav-links a {
-  color: #ffffff;
-  text-decoration: none;
-  padding: 10px 20px;
-  border: 1px solid rgba(0,217,255,0.4);
-  border-radius: 8px;
-  background: rgba(255,255,255,0.03);
-  backdrop-filter: blur(5px);
-  transition: all 0.3s ease;
-}
-
-.nav-links a:hover {
-  color: #00d9ff;
-  border-color: #00d9ff;
-  box-shadow: 0 0 10px #00d9ff, 0 0 20px rgba(0,217,255,0.4);
-  transform: translateY(-2px);
-}
-
-/* =========================
-   DIVISORIA NEON
-   ========================= */
-.divider {
-  position: fixed;
-  top: 70px;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #00d9ff, #ffffff, #00d9ff, transparent);
-  box-shadow: 0 0 12px #00d9ff;
-  overflow: hidden;
-  z-index: 999;
-}
-
-.divider::after {
-  content: "";
-  position: absolute;
-  width: 25%;
-  height: 100%;
-  background: rgba(255,255,255,0.5);
-  filter: blur(6px);
-  animation: scan 2s linear infinite;
-}
-
-@keyframes scan {
-  0% { transform: translateX(-120%); }
-  100% { transform: translateX(420%); }
-}
-
-/* =========================
-   HERO
-   ========================= */
-.hero {
-  min-height: 100vh;
-  padding: 120px 60px 60px;
-  display: flex;
-  flex-direction: column;
-  background: linear-gradient(rgba(5, 7, 13, 0.80), rgba(5, 7, 13, 0.90)), url("assets/img/tunnel.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-}
-
-.hero-logo {
-  width: 280px;
-  height: auto;
-  margin-bottom: 40px;
-  filter: drop-shadow(0 0 12px #00d9ff);
-}
-
-.hero-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 50px;
-  position: relative;
-  z-index: 2;
-}
-
-.hero-logo {
-  position: relative;
-  z-index: 2;
-}
-
-.hero-text {
-  flex: 1;
-}
-
-.hero-text h1 {
-  font-size: 4rem;
-  color: #00d9ff;
-  text-shadow: 0 0 15px #00d9ff;
-  margin-bottom: 20px;
-}
-
-.hero-text p {
-  font-size: 1.2rem;
-  color: #cccccc;
-  line-height: 1.6;
-  max-width: 650px;
-}
-
-.hero-right {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.avatar {
-  width: 380px;
-  height: auto;
-  border: none;
-  border-radius: 0;
-  box-shadow: none;
-}
-
-.section-divider {
-  height: 2px;
-  width: 100%;
-  margin: 60px 0;
-  background: linear-gradient(90deg, transparent, #00d9ff, #ffffff, #00d9ff, transparent);
-  box-shadow: 0 0 12px #00d9ff;
-  position: relative;
-  overflow: hidden;
-}
-
-.section-divider::after {
-  content: "";
-  position: absolute;
-  width: 25%;
-  height: 100%;
-  background: rgba(255,255,255,0.4);
-  filter: blur(6px);
-  animation: scan 2s linear infinite;
-}
-
-/* =========================
-   ABOUT
-   ========================= */
-.about {
-  padding: 80px 60px;
-}
-
-.about h2 {
-  text-align: center;
-  color: #00d9ff;
-  font-size: 2.5rem;
-  margin-bottom: 50px;
-  text-shadow: 0 0 15px #00d9ff;
-}
-
-.about-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  max-width: 900px;
-  margin: auto;
-  padding: 40px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(0,217,255,0.25);
-  border-radius: 20px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 0 25px rgba(0,217,255,0.15);
-}
-
-.about-avatar {
-  width: 220px;
-  height: auto;
-  margin: 0 auto 25px auto;
-  display: block;
-}
-
-.about-text {
-  flex: 1;
-}
-
-.about-text p {
-  font-size: 1.1rem;
-  line-height: 1.8;
-  color: #d9eaf5;
-  margin-bottom: 15px;
-}
-
-/* =========================
-   GALERÍA Y PROYECTOS
-   ========================= */
-.gallery {
-  padding: 80px 60px;
-}
-
-.gallery h2 {
-  text-align: center;
-  font-size: 2.5rem;
-  color: #00d9ff;
-  margin-bottom: 50px;
-  text-shadow: 0 0 15px #00d9ff;
-}
-
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.gallery-item {
-  position: relative;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.gallery-item img {
-  width: 100%;
-  display: block;
-  border-radius: 10px;
-}
-
-.download-btn {
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
-  background: black;
-  color: white;
-  border: none;
-  padding: 5px;
-  font-size: 12px;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.project-card {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(0,217,255,0.25);
-  border-radius: 20px;
-  overflow: hidden;
-  transition: 0.3s;
-  box-shadow: 0 0 15px rgba(0,217,255,0.1);
-}
-
-.project-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 20px rgba(0,217,255,0.3), 0 0 40px rgba(0,217,255,0.2);
-}
-
-.project-card img {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-}
-
-.project-card h3 {
-  color: #00d9ff;
-  padding: 15px 20px 10px;
-}
-
-.project-card p {
-  padding: 0 20px 20px;
-  color: #d9eaf5;
-}
-
-/* =========================
-   CONTACTO
-   ========================= */
-.contact {
-  padding: 80px 20px;
-  text-align: center;
-}
-
-.contact h2 {
-  font-size: 2.5rem;
-  color: #00d9ff;
-  margin-bottom: 20px;
-  text-shadow: 0 0 15px #00d9ff;
-}
-
-.contact p {
-  max-width: 700px;
-  margin: auto;
-  margin-bottom: 40px;
-  color: #d9eaf5;
-}
-
-.contact-buttons {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.contact-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 12px 24px;
-  min-width: 160px;
-  white-space: nowrap;
-  text-decoration: none;
-  color: #ffffff;
-  border: 1px solid #00d9ff;
-  border-radius: 12px;
-  background: rgba(0,217,255,0.05);
-  transition: all .3s ease;
-}
-
-.contact-btn:hover {
-  color: #00d9ff;
-  border-color: #00d9ff;
-  box-shadow: 0 0 10px #00d9ff, 0 0 20px rgba(0,217,255,.5), 0 0 30px rgba(0,217,255,.3);
-  transform: translateY(-3px);
-}
-
-/* =========================
-   FOOTER
-   ========================= */
-.footer {
-  padding: 50px 20px;
-  text-align: center;
-  border-top: 1px solid rgba(0,217,255,0.2);
-  background: rgba(255,255,255,0.03);
-  margin-top: 0;
-}
-
-.footer-content h3 {
-  color: #00d9ff;
-  margin-bottom: 15px;
-  text-shadow: 0 0 10px #00d9ff;
-}
-
-.footer-content p {
-  color: #b8d6e3;
-  margin: 8px 0;
-}
-
-.footer-copy {
-  margin-top: 20px;
-  font-size: 0.9rem;
-  color: #7f9aa5;
-}
-
-/* =========================
-   EBOOKS
-   ========================= */
-.ebooks {
-  padding: 80px 20px;
-  text-align: center;
-}
-
-.ebooks h2 {
-  margin-bottom: 40px;
-  color: #00d9ff;
-  text-shadow: 0 0 15px #00d9ff;
-}
-
-.ebook-card {
-  max-width: 380px;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid rgba(0,217,255,.3);
-  border-radius: 20px;
-  background: rgba(255,255,255,.03);
-  transition: .3s;
-}
-
-.ebook-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 15px rgba(0,217,255,.3), 0 0 30px rgba(0,217,255,.15);
-}
-
-.ebook-cover {
-  width: 100%;
-  border-radius: 12px;
-  margin-bottom: 20px;
-}
-
-.ebook-card h3 {
-  margin-bottom: 10px;
-}
-
-.coming-soon {
-  display: inline-block;
-  margin-top: 15px;
-  padding: 8px 18px;
-  border: 1px solid #00d9ff;
-  border-radius: 30px;
-  color: #00d9ff;
-}
-
-/* =========================
-   AI LAB SECTIONS
-   ========================= */
-.ailab-hero {
-  text-align: center;
-  padding: 60px 20px;
-}
-
-.ai-section {
-  margin: 40px auto;
-  width: 90%;
-}
-
-.ai-section h2 {
-  text-align: center;
-  margin-bottom: 25px;
-}
-
-.ai-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 25px;
-}
-
-.ai-card {
-  padding: 30px;
-  border-radius: 20px;
-  background: rgba(255,255,255,.03);
-  border: 1px solid rgba(0,217,255,.25);
-  transition: .3s;
-}
-
-.ai-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 15px rgba(0,217,255,.3), 0 0 30px rgba(0,217,255,.15);
-}
-
-.ai-card h3 {
-  color: #00d9ff;
-  margin-bottom: 15px;
-}
-
-.ai-card p {
-  color: #d9eaf5;
-}
-
-.ai-card input,
-.ai-card select,
-.ai-card textarea {
-  width: 100%;
-  margin: 10px 0;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid rgba(0,217,255,.3);
-  background: #0d1117;
-  color: white;
-}
-
-.ai-card textarea {
-  resize: vertical;
-}
-
-.ai-card button {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  background: #00d9ff;
-  color: #05070d;
-  font-weight: bold;
-  margin-top: 10px;
-}
-
-.ai-card button:hover {
-  box-shadow: 0 0 10px #00d9ff, 0 0 20px rgba(0,217,255,.4);
-}
-
-#resultadoPrompt,
-#resultadoGuion,
-#resultadoIdeas,
-#resultadoStoryboard,
-#resultadoVisual,
-#resultadoImagen {
-  margin-top: 20px;
-  text-align: left;
-  white-space: pre-wrap;
-  color: #d9eaf5;
-}
-
-#resultadoImagen img {
-  width: 100%;
-  border-radius: 15px;
-  margin-top: 10px;
-}
-
-#mensajeCopiado,
-#mensajeGuionCopiado,
-#mensajeIdeasCopiadas,
-#mensajeStoryboard,
-#mensajeVisual {
-  margin-top: 10px;
-  color: #00d9ff;
-  font-weight: bold;
-  text-align: center;
-}
-
-/* =========================
-   RESPONSIVE GENERAL
-   ========================= */
-@media (max-width: 768px) {
-  .hero {
-    padding: 100px 20px 40px;
+    return;
   }
 
-  .hero-logo {
-    width: 180px;
-    margin-bottom: 25px;
-  }
+  let prompt = `
+Crea contenido para ${tipo}
+sobre:
 
-  .hero-content {
-    gap: 20px;
-  }
+${tema}
 
-  .hero-text h1 {
-    font-size: 2rem;
-  }
+Incluye:
 
-  .hero-text p {
-    font-size: 0.95rem;
-  }
+✅ Título atractivo
+✅ Introducción
+✅ Desarrollo
+✅ Llamado a la acción
+`;
 
-  .avatar {
-    width: 180px;
-  }
-
-  .navbar {
-    padding: 10px;
-  }
-
-  .nav-links {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-    max-width: 320px;
-    margin: auto;
-  }
-
-  .nav-links a {
-    font-size: 0.8rem;
-    padding: 6px 10px;
-  }
-
-  .divider {
-    top: 110px;
-  }
+  document.getElementById(
+    "resultadoPrompt"
+  ).innerText = prompt;
 }
+
+function copiarPrompt(){
+
+  const texto =
+    document.getElementById("resultadoPrompt").innerText;
+
+  navigator.clipboard.writeText(texto);
+
+  document.getElementById("mensajeCopiado").innerText =
+    "✅ Prompt copiado correctamente";
+
+  setTimeout(() => {
+    document.getElementById("mensajeCopiado").innerText = "";
+  }, 3000);
+
+}function generarGuion(){
+
+  const tema =
+    document.getElementById("temaGuion").value;
+
+  const duracion =
+    document.getElementById("duracionGuion").value;
+
+  let guion = `
+🎬 GUION PIXELLAB45
+
+Tema:
+${tema}
+
+Duración:
+${duracion}
+
+━━━━━━━━━━━━━━
+
+🎙️ INTRO
+
+¿Sabías que ${tema}
+está cambiando el mundo?
+
+━━━━━━━━━━━━━━
+
+🎙️ DESARROLLO
+
+Explica los beneficios,
+casos de uso y ejemplos.
+
+━━━━━━━━━━━━━━
+
+🎙️ CTA
+
+Sígueme para más contenido
+sobre IA y tecnología.
+`;
+
+  document.getElementById(
+    "resultadoGuion"
+  ).innerText = guion;
+}
+
+function copiarGuion(){
+
+  const texto =
+    document.getElementById("resultadoGuion").innerText;
+
+  navigator.clipboard.writeText(texto);
+
+  document.getElementById("mensajeGuionCopiado").innerText =
+    "✅ Guion copiado correctamente";
+
+  setTimeout(() => {
+    document.getElementById("mensajeGuionCopiado").innerText = "";
+  }, 3000);
+
+}function generarStoryboard() {
+
+  const guion =
+    document.getElementById("textoStoryboard").value;
+
+  if (guion.trim() === "") {
+
+    document.getElementById("mensajeStoryboard").innerText =
+      "⚠️ Primero pega un guion";
+
+    return;
+  }
+
+  const lineas =
+    guion.split("\n")
+    .filter(linea => linea.trim() !== "");
+
+  let storyboard =
+    "🎬 STORYBOARD PIXELLAB45\n\n";
+
+  lineas.forEach((linea, index) => {
+
+    storyboard +=
+      `ESCENA ${index + 1}\n`;
+
+    storyboard +=
+      `⏱️ Duración: 4 segundos\n\n`;
+
+    storyboard +=
+      `🎙️ Narración:\n${linea}\n\n`;
+
+    storyboard +=
+      `🎥 Visual:\nEscena futurista relacionada con el tema.\n\n`;
+
+    storyboard +=
+      `──────────────────\n\n`;
+  });
+
+  document.getElementById(
+    "resultadoStoryboard"
+  ).innerText = storyboard;
+}
+
+function copiarStoryboard() {
+
+  const texto =
+    document.getElementById("resultadoStoryboard").innerText;
+
+  if (texto.trim() === "") {
+
+    document.getElementById("mensajeStoryboard").innerText =
+      "⚠️ Primero genera un storyboard";
+
+    return;
+  }
+
+  navigator.clipboard.writeText(texto);
+
+  document.getElementById("mensajeStoryboard").innerText =
+    "✅ Storyboard copiado correctamente";
+
+  setTimeout(() => {
+    document.getElementById("mensajeStoryboard").innerText = "";
+  }, 3000);
+}function generarIdeas(){
+
+  const tema =
+    document.getElementById("temaIdea").value;
+
+  let ideas = `
+💡 IDEAS PIXELLAB45
+
+1. Cómo usar ${tema}
+
+2. Errores comunes en ${tema}
+
+3. Herramientas gratuitas de ${tema}
+
+4. Tendencias futuras de ${tema}
+
+5. Tutorial rápido sobre ${tema}
+`;
+
+  document.getElementById(
+    "resultadoIdeas"
+  ).innerText = ideas;
+}
+
+function copiarIdeas(){
+
+  const texto =
+    document.getElementById("resultadoIdeas").innerText;
+
+  navigator.clipboard.writeText(texto);
+
+  document.getElementById("mensajeIdeasCopiadas").innerText =
+    "✅ Ideas copiadas correctamente";
+
+  setTimeout(() => {
+    document.getElementById("mensajeIdeasCopiadas").innerText = "";
+  }, 3000);
+
+}function generarVisuales(){
+
+  const tema =
+    document.getElementById("temaVisual").value;
+
+  let resultado = `
+🖼️ PROMPTS VISUALES PIXELLAB45
+
+━━━━━━━━━━━━━━━━━━
+
+🎨 IMAGEN PRINCIPAL
+
+${tema},
+futuristic technology,
+cyberpunk style,
+blue neon lights,
+ultra realistic,
+cinematic lighting,
+8k detail.
+
+━━━━━━━━━━━━━━━━━━
+
+📺 MINIATURA YOUTUBE
+
+Professional YouTube thumbnail,
+${tema},
+technology background,
+blue neon glow,
+high contrast.
+
+━━━━━━━━━━━━━━━━━━
+
+📱 PORTADA TIKTOK
+
+${tema},
+vertical composition,
+social media style,
+modern futuristic design.
+
+━━━━━━━━━━━━━━━━━━
+
+🎥 VIDEO IA
+
+${tema},
+cinematic camera movement,
+futuristic environment,
+dynamic motion,
+blue neon lighting,
+technology atmosphere.
+`;
+
+  document.getElementById(
+    "resultadoVisual"
+  ).innerText = resultado;
+}
+
+function copiarVisuales(){
+
+  const texto =
+    document.getElementById("resultadoVisual").innerText;
+
+  if(texto.trim() === ""){
+
+    document.getElementById("mensajeVisual").innerText =
+      "⚠️ Primero genera prompts";
+
+    return;
+  }
+
+  navigator.clipboard.writeText(texto);
+
+  document.getElementById("mensajeVisual").innerText =
+    "✅ Prompts copiados correctamente";
+
+  setTimeout(() => {
+    document.getElementById("mensajeVisual").innerText = "";
+  }, 3000);
+}
+
+async function generarImagen() {
+
+  const prompt =
+    document.getElementById("promptImagen").value;
+
+  const resultado =
+    document.getElementById("resultadoImagen");
+
+  try {
+
+    resultado.innerHTML = "🎨 Generando imagen...";
+
+    const respuesta = await fetch(
+      "https://pixellab45-v2.scostarobles.workers.dev/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          prompt
+        })
+      }
+    );
+
+    const datos = await respuesta.json();
+
+    if (
+      datos.status === "succeeded" &&
+      datos.output
+    ) {
+
+      resultado.innerHTML = `
+        <img
+          src="${datos.output}"
+          alt="Imagen generada"
+          style="
+            width:100%;
+            max-width:600px;
+            border-radius:12px;
+            margin-top:10px;
+          ">
+      `;
+
+    } else {
+
+      resultado.innerHTML =
+        "❌ Error generando imagen";
+
+    }
+
+  } catch(error) {
+
+    resultado.innerHTML =
+      "❌ " + error.message;
+
+  }
+
+      }
