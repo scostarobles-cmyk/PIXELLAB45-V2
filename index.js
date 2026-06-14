@@ -51,7 +51,7 @@ Devuelve:
 Cada prompt debe ser detallado, cinematográfico, futurista, profesional y en inglés.
 `;
 
-} else if (tipo === "prompt") {
+} 
 else if (tipo === "prompt") {
 
   prompt = `
