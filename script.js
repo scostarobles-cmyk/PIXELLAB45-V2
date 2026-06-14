@@ -63,48 +63,44 @@ function copiarPrompt(){
     document.getElementById("mensajeCopiado").innerText = "";
   }, 3000);
 
-}function generarGuion(){
+}async function generarGuion(){
 
   const tema =
     document.getElementById("temaGuion").value;
 
-  const duracion =
-    document.getElementById("duracionGuion").value;
+  const resultado =
+    document.getElementById("resultadoGuion");
 
-  let guion = `
-🎬 GUION PIXELLAB45
+  if (!tema.trim()) {
+    resultado.innerText = "⚠️ Escribe un tema primero";
+    return;
+  }
 
-Tema:
-${tema}
+  try {
 
-Duración:
-${duracion}
+    resultado.innerText = "🎬 Generando guion...";
 
-━━━━━━━━━━━━━━
+    const res = await fetch(
+      "https://pixellab45-v2.scostarobles.workers.dev/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          tema,
+          tipo: "script"
+        })
+      }
+    );
 
-🎙️ INTRO
+    const data = await res.json();
 
-¿Sabías que ${tema}
-está cambiando el mundo?
+    resultado.innerText = data.resultado;
 
-━━━━━━━━━━━━━━
-
-🎙️ DESARROLLO
-
-Explica los beneficios,
-casos de uso y ejemplos.
-
-━━━━━━━━━━━━━━
-
-🎙️ CTA
-
-Sígueme para más contenido
-sobre IA y tecnología.
-`;
-
-  document.getElementById(
-    "resultadoGuion"
-  ).innerText = guion;
+  } catch (error) {
+    resultado.innerText = "❌ " + error.message;
+  }
 }
 
 function copiarGuion(){
@@ -210,10 +206,11 @@ async function generarIdeas() {
 
     const data = await res.json();
 
-    document.getElementById("resultado").innerHTML = `
+    document.getElementById("resultadoIdeas").innerHTML = `
 <div style="white-space: pre-wrap;">
 ${data.ideas}
 </div>
+`;
 `;
 
   } catch (error) {
