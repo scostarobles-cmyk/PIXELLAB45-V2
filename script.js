@@ -279,14 +279,18 @@ async function generarIdeas() {
       }
     );
 
-    const datos = await respuesta.json();
+    const datos = await respuesta.text();
 
-    console.log(datos);
-    return datos;
+    console.log("IDEAS:", datos);
+
+    document.getElementById("resultadoIdeas").innerText = datos;
 
   } catch (error) {
     console.error("Error generando ideas:", error);
+    document.getElementById("resultadoIdeas").innerText =
+      "❌ Error generando ideas";
   }
+}
 
 function copiarIdeas(){
 
