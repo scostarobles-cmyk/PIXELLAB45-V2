@@ -1,3 +1,4 @@
 , //generar inagen 
-alert("SCRIPT CARGADO");
-á
+function generarIdeas() {
+  alert("BOTÓN FUNCIONA");
+}
