@@ -172,7 +172,7 @@ function copiarStoryboard() {
   }, 3000);
 }
 
-async function generarIdeas() {
+/*async function generarIdeas() {
 
   const tema = document.getElementById("tema").value;
 
@@ -218,8 +218,10 @@ async function generarIdeas() {
     document.getElementById("resultado").innerHTML =
       `<li>❌ ${error.message}</li>`;
   }
+}*/
+function generarIdeas() {
+  alert("GENERAR IDEAS FUNCIONA");
 }
-
 function copiarIdeas(){
 
   const texto =
