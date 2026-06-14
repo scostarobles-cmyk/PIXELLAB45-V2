@@ -211,13 +211,11 @@ async function generarIdeas() {
 ${data.ideas}
 </div>
 `;
-`;
 
   } catch (error) {
 
-    document.getElementById("resultado").innerHTML =
-      "<li>ERROR: " + error.message + "</li>";
-
+    document.getElementById("resultadoIdeas").innerHTML =
+  "<div>ERROR: " + error.message + "</div>";
   }
 }
 function copiarIdeas(){
