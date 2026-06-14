@@ -325,7 +325,7 @@ async function generarImagen() {
         })
       }
     );
-
+console.log(await res.text());
     const datos = await respuesta.json();
 
     if (
