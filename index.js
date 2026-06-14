@@ -71,6 +71,49 @@ export default {
         }
       );
     }
+    // video 
+    if (
+  url.pathname === "/generate-video" &&
+  request.method === "POST"
+) {
+
+  const { prompt } = await request.json();
+
+  // 🎥 VIDEO AI (elige el modelo)
+  const video = await env.AI.run(
+    "@cf/bytedance/seedance-2.0-fast",
+    {
+      prompt,
+      // algunos modelos aceptan duración
+      duration: 5
+    }
+  );
+
+  // Cloudflare devuelve binario (video)
+  const key = `videos/${Date.now()}-pixellab45.mp4`;
+
+  await env.PIXELLAB45_BUCKET.put(key, video, {
+    httpMetadata: {
+      contentType: "video/mp4"
+    }
+  });
+
+  const videoUrl =
+    `https://pixellab45-v2.scostarobles.workers.dev/video/${key}`;
+
+  return new Response(
+    JSON.stringify({
+      ok: true,
+      videoUrl
+    }),
+    {
+      headers: {
+        ...cors,
+        "Content-Type": "application/json"
+      }
+    }
+  );
+    }
 
     /* =========================
        SERVIR IMAGEN
