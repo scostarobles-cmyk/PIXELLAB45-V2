@@ -50,7 +50,53 @@ export default {
 
       return Response.json({ ok: true, key }, { headers: cors });
     }
+// 🖼️ LISTAR GALERÍA
+if (url.pathname === "/gallery") {
 
+  const objects =
+    await env.PIXELLAB45_BUCKET.list({
+      prefix: "gallery/"
+    });
+
+  const files = objects.objects.map(obj => ({
+    key: obj.key
+  }));
+
+  return Response.json(files, {
+    headers: cors
+  });
+}
+
+// 📷 SERVIR IMAGEN
+if (url.pathname.startsWith("/image/")) {
+
+  const key =
+    decodeURIComponent(
+      url.pathname.replace("/image/", "")
+    );
+
+  const object =
+    await env.PIXELLAB45_BUCKET.get(key);
+
+  if (!object) {
+    return new Response(
+      "Imagen no encontrada",
+      { status: 404 }
+    );
+  }
+
+  return new Response(
+    object.body,
+    {
+      headers: {
+        ...cors,
+        "Content-Type":
+          object.httpMetadata?.contentType
+          || "image/png"
+      }
+    }
+  );
+}
     return new Response("OK", { headers: cors });
   }
 };
