@@ -29,13 +29,13 @@ export default {
 
     try {
 
-      const { tema, tipo } = await request.json();
+      const { tema, tipo, formato } = await request.json();
 
       let prompt = "";
 
       if (tipo === "visuales") {
 
-        prompt = `
+  prompt = `
 Genera prompts visuales cinematográficos para IA de imágenes y video.
 
 Tema: ${tema}
@@ -51,16 +51,31 @@ Devuelve:
 Cada prompt debe ser detallado, cinematográfico, futurista, profesional y en inglés.
 `;
 
-      } else {
+} else if (tipo === "prompt") {
 
-        prompt = `
+  prompt = `
+Actúa como un experto en marketing digital.
+
+Crea un prompt profesional para generar contenido.
+
+Tema: ${tema}
+
+Formato: ${formato}
+
+El resultado debe ser un prompt detallado, listo para usar en ChatGPT.
+`;
+
+} else {
+
+  prompt = `
 Genera 10 ideas virales sobre ${tema}.
 
 Devuelve únicamente una lista numerada de títulos cortos.
 No expliques las ideas.
 `;
 
-      }
+}
+      
 
       const result = await env.AI.run(
         "@cf/meta/llama-3.2-3b-instruct",
@@ -74,8 +89,7 @@ No expliques las ideas.
         }
       );
 
-      if (tipo === "visuales") {
-
+      if (tipo === "visuales" || tipo === "prompt") {
         return new Response(
           JSON.stringify({
             resultado: result.response
