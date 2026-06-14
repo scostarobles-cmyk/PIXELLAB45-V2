@@ -383,41 +383,20 @@ async function generarImagen() {
       }
     );
 
-    alert("Status: " + res.status);
+    const result = await res.json();
 
-    if (!res.ok) {
+    if (!result.ok) {
       throw new Error("Error generando imagen");
     }
 
-    const blob = await res.blob();
+    document.getElementById("resultadoImagen").innerHTML = `
+      <img
+        src="${result.imageUrl}"
+        style="width:100%;border-radius:15px;margin-top:10px;"
+      >
+    `;
 
-    alert("Blob size: " + blob.size);
-
-    const formData = new FormData();
-
-    formData.append(
-      "file",
-      blob,
-      `pixellab45-${Date.now()}.png`
-    );
-
-    const upload = await fetch(
-      "https://pixellab45-v2.scostarobles.workers.dev/upload",
-      {
-        method: "POST",
-        body: formData
-      }
-    );
-
-    const result = await upload.json();
-
-    if (!result.ok) {
-      throw new Error("Error subiendo imagen");
-    }
-
-    alert("Imagen guardada en galería ✔");
-
-    console.log(result);
+    alert("Imagen generada ✔");
 
   } catch (err) {
 
