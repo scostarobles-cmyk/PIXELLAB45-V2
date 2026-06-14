@@ -1,4 +1,4 @@
-console.log("SCRIPT CARGADO OK"); 
+console.log("SCRIPT CARGADO OK");
 function generarPrompt() {
 
   const tema =
@@ -171,13 +171,19 @@ function copiarStoryboard() {
     document.getElementById("mensajeStoryboard").innerText = "";
   }, 3000);
 }
-//función crear ideas
-
-7.getElementById("tema").value;
+function generarIdeas(){
 async function generarIdeas() {
+
   const tema = document.getElementById("tema").value;
 
+  if (!tema.trim()) {
+    document.getElementById("resultado").innerHTML =
+      "<li>⚠️ Escribe un tema primero</li>";
+    return;
+  }
+
   try {
+
     const res = await fetch(
       "https://pixellab45-v2.scostarobles.workers.dev/",
       {
@@ -189,13 +195,16 @@ async function generarIdeas() {
       }
     );
 
-    console.log("STATUS:", res.status);
-
     const data = await res.json();
 
     console.log("DATA:", data);
 
-    const ideas = data.ideas
+    const texto =
+      data.ideas ||
+      data.response ||
+      "No se recibieron ideas";
+
+    const ideas = texto
       .split("\n")
       .filter(i => i.trim());
 
@@ -203,9 +212,28 @@ async function generarIdeas() {
       ideas.map(i => `<li>${i}</li>`).join("");
 
   } catch (error) {
-    console.error(error);
+
+    console.error("ERROR:", error);
+
+    document.getElementById("resultado").innerHTML =
+      `<li>❌ ${error.message}</li>`;
   }
 }
+
+function copiarIdeas(){
+
+  const texto =
+    document.getElementById("resultadoIdeas").innerText;
+
+  navigator.clipboard.writeText(texto);
+
+  document.getElementById("mensajeIdeasCopiadas").innerText =
+    "✅ Ideas copiadas correctamente";
+
+  setTimeout(() => {
+    document.getElementById("mensajeIdeasCopiadas").innerText = "";
+  }, 3000);
+
 }function generarVisuales(){
 
   const tema =
@@ -309,7 +337,7 @@ async function generarImagen() {
         })
       }
     );
-console.log(await res.text());
+
     const datos = await respuesta.json();
 
     if (
@@ -343,4 +371,4 @@ console.log(await res.text());
 
   }
 
-}
+  }
