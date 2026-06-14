@@ -356,7 +356,7 @@ function copiarVisuales(){
     document.getElementById("mensajeVisual").innerText = "";
   }, 3000);
 }
-
+window.addEventListener("load", cargarGaleria);
 /* =========================
    GENERAR IMAGEN (SIN CAMBIOS)
 ========================= */
@@ -417,6 +417,7 @@ async function generarImagen() {
 
     alert(err.message);
   }
+   cargarGaleria();
 }
 async function cargarGaleria() {
 
@@ -450,3 +451,4 @@ async function cargarGaleria() {
     console.error("Error galería:", err);
   }
 } 
+window.addEventListener("load", cargarGaleria);
