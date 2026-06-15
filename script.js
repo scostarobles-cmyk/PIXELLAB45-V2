@@ -387,6 +387,12 @@ function toggleMenu(){
     .querySelector(".nav-links")
     .classList
     .toggle("active");
+  //Agregamos event listeners a las opciones
+document.querySelectorAll('.nav-link').forEach(item => {
+  item.addEventListener('click', () => {
+    document.querySelector(".nav-links")
+      .classList.remove("active");
+  });
 
 }
 
