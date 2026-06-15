@@ -9,9 +9,7 @@ export default {
 
       if (request.url.includes("/test-r2")) {
 
-  await env.IMAGES.put(
-    "test/hola.txt",
-    "PIXELLAB45 R2 OK"
+  
   );
 
   return new Response(
