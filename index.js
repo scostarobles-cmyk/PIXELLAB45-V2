@@ -188,15 +188,15 @@ depth of field,
 
   const { nombre, imagenBase64 } = await request.json();
 
-  const bytes = Uint8Array.from(
-    atob(imagenBase64),
-    c => c.charCodeAt(0)
-  );
+const nombreFinal = `img-${Date.now()}-${Math.random().toString(36).substring(2, 8)}.png`;
 
-  await env.GALERIA.put(nombre, bytes, {
-    httpMetadata: {
-      contentType: "image/png"
-    }
+const base64 = imagenBase64.replace(/^data:image\/\w+;base64,/, "");
+
+const bytes = Uint8Array.from(atob(base64), c =>
+  c.charCodeAt(0)
+);
+
+  await env.GALERIA.put(nombreFinal, bytes, {
   });
 
   return new Response(
