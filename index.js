@@ -109,6 +109,47 @@ Solo la narración lista para voz en off.
 
 }
 
+     // 🎬 STORYBOARD IA
+else if (tipo === "storyboard") {
+
+  prompt = `
+Convierte el siguiente guion en un storyboard cinematográfico.
+
+Guion:
+${guion}
+
+Cantidad de escenas: ${escenas}
+
+Estilo visual: ${estilo}
+
+Reglas:
+
+- Genera exactamente ${escenas} escenas.
+- Distribuye el contenido del guion entre las escenas.
+- Cada escena debe incluir:
+
+🎬 ESCENA X
+
+🎙️ Narración
+
+🎥 Visual
+
+📷 Cámara
+
+🎨 Estilo
+
+⏱️ Duración
+
+- El estilo visual debe respetar:
+${estilo}
+
+- Compatible con Kling, Veo, Runway, Pika y Minimax.
+- Formato profesional cinematográfico.
+`;
+
+}
+
+  
       // 🧠 IDEAS (default)
       else {
 
@@ -133,7 +174,8 @@ Devuelve solo una lista numerada.
       if (
   tipo === "visuales" ||
   tipo === "prompt" ||
-  tipo === "script"
+  tipo === "script" ||
+  tipo === "storyboard"
 ) {
   response = { resultado: result.response };
 } else {
