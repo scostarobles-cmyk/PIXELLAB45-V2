@@ -318,20 +318,19 @@ async function generarImagen() {
     resultado.innerHTML = "🎨 Generando imagen...";
 
     const respuesta = await fetch(
-      "https://pixellab45-v2.scostarobles.workers.dev/",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-  tipo: "imagen",
-  tema: prompt,
-  categoria: categoria
-})
-        })
-      }
-    );
+  "https://pixellab45-v2.scostarobles.workers.dev/",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      tipo: "imagen",
+      tema: prompt,
+      categoria: categoria
+    })
+  }
+);
 
     const blob = await respuesta.blob();
     const url = URL.createObjectURL(blob);
