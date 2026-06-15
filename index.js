@@ -25,7 +25,14 @@ export default {
 
     try {
 
-      const { tema, tipo, formato } = await request.json();
+      const {
+  tema,
+  tipo,
+  formato,
+  guion,
+  escenas,
+  estilo
+} = await request.json(); = await request.json();
 
       let prompt = "";
 
