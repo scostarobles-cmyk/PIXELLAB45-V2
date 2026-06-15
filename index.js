@@ -156,8 +156,26 @@ ${estilo}
 
 }
 
-  
-      // 🧠 IDEAS (default)
+  🖼️ GENERADOR DE IMAGEN
+else if (tipo === "imagen") {
+
+  const result = await env.AI.run(
+    "@cf/lykon/dreamshaper-8-lcm",
+    {
+      prompt: `
+${tema},
+cinematic lighting, ultra detailed, highly realistic, sharp focus, depth of field, 8k
+      `
+    }
+  );
+
+  return new Response(result, {
+    headers: {
+      ...corsHeaders,
+      "Content-Type": "image/png"
+    }
+  });
+}// 🧠 IDEAS (default)
       else {
 
         prompt = `
