@@ -157,6 +157,7 @@ ${estilo}
 
 // 🖼️ GENERADOR DE IMAGEN
 else if (tipo === "imagen") {
+else if (tipo === "imagen") {
 
   const imagen = await env.AI.run(
     "@cf/lykon/dreamshaper-8-lcm",
@@ -173,27 +174,12 @@ depth of field,
     }
   );
 
-  const nombreArchivo =
-    `${Date.now()}.png`;
-
-  const ruta =
-    `${categoria}/${nombreArchivo}`;
-
-  await env.IMAGES.put(
-    ruta,
-    imagen
-  );
-
-  return new Response(
-    imagen,
-    {
-      headers: {
-        ...corsHeaders,
-        "Content-Type": "image/png"
-      }
+  return new Response(imagen, {
+    headers: {
+      ...corsHeaders,
+      "Content-Type": "image/png"
     }
-  );
-
+  });
 }
 // 🧠 IDEAS (default)
       else {
