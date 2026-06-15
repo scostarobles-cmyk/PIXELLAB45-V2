@@ -339,13 +339,50 @@ async function generarImagen() {
       <img src="${url}"
         style="width:100%;max-width:600px;border-radius:12px;">
     `;
+    const reader = new FileReader();
+
+reader.onloadend = async () => {
+
+  const imagenBase64 =
+    reader.result.split(",")[1];
+
+  const nombreArchivo =
+    `${categoria}/${Date.now()}.png`;
+
+  try {
+
+    await fetch(
+      "https://pixellab45-v2.scostarobles.workers.dev/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          tipo: "guardar-imagen",
+          nombre: nombreArchivo,
+          imagenBase64
+        })
+      }
+    );
+
+    console.log("✅ Imagen guardada en R2:", nombreArchivo);
+
+  } catch (error) {
+
+    console.error("❌ Error guardando imagen:", error);
+
+  }
+};
+
+reader.readAsDataURL(blob);
 
   } catch (error) {
     resultado.innerHTML = "❌ " + error.message;
   }
 }
 function toggleMenu(){
-alert("MENU OK");
+
   document
     .querySelector(".nav-links")
     .classList
@@ -353,4 +390,3 @@ alert("MENU OK");
 
 }
 
-alert("SCRIPT COMPLETO CARGADO");
