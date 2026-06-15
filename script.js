@@ -376,3 +376,11 @@ async function generarImagen() {
   }
 
   }
+function toggleMenu(){
+
+  document
+    .querySelector(".nav-links")
+    .classList
+    .toggle("active");
+
+}
