@@ -159,20 +159,45 @@ ${estilo}
 else if (tipo === "imagen") {
 
   const result = await env.AI.run(
+  // 🖼️ GENERADOR DE IMAGEN + R2
+else if (tipo === "imagen") {
+
+  const imagen = await env.AI.run(
     "@cf/lykon/dreamshaper-8-lcm",
     {
       prompt: `
 ${tema},
-cinematic lighting, ultra detailed, highly realistic, sharp focus, depth of field, 8k
+cinematic lighting,
+ultra detailed,
+highly realistic,
+sharp focus,
+depth of field,
+8k
       `
     }
   );
 
-  return new Response(result, {
-    headers: {
-      ...corsHeaders,
-      "Content-Type": "image/png"
+  const nombreArchivo =
+    `${Date.now()}.png`;
+
+  const ruta =
+    `${categoria}/${nombreArchivo}`;
+
+  await env.IMAGES.put(
+    ruta,
+    imagen
+  );
+
+  return new Response(
+    imagen,
+    {
+      headers: {
+        ...corsHeaders,
+        "Content-Type": "image/png"
+      }
     }
+  );
+}
   });
 }// 🧠 IDEAS (default)
       else {
