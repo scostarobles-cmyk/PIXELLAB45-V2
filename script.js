@@ -340,3 +340,11 @@ async function generarImagen() {
     resultado.innerHTML = "❌ " + error.message;
   }
 }
+function toggleMenu(){
+
+  document
+    .querySelector(".nav-links")
+    .classList
+    .toggle("active");
+
+}
