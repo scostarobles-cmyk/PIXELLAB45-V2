@@ -172,7 +172,9 @@ depth of field,
       `
     }
   );
-
+console.log("IMAGEN GENERADA");
+console.log(imagen);
+console.log("CATEGORIA:", categoria);
   return new Response(
     imagen,
     {
