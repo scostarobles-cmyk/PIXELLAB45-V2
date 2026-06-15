@@ -154,7 +154,7 @@ ${estilo}
 - Formato profesional cinematográfico.
 `;
 
-}
+
 
   🖼️ GENERADOR DE IMAGEN
 else if (tipo === "imagen") {
