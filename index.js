@@ -184,6 +184,31 @@ depth of field,
   );
 
 }
+  else if (tipo === "guardar-imagen") {
+
+  const { nombre, imagenBase64 } = await request.json();
+
+  const bytes = Uint8Array.from(
+    atob(imagenBase64),
+    c => c.charCodeAt(0)
+  );
+
+  await env.GALERIA.put(nombre, bytes, {
+    httpMetadata: {
+      contentType: "image/png"
+    }
+  });
+
+  return new Response(
+    JSON.stringify({ success: true }),
+    {
+      headers: {
+        ...corsHeaders,
+        "Content-Type": "application/json"
+      }
+    }
+  );
+  }
 // 🧠 IDEAS (default)
       else {
 
