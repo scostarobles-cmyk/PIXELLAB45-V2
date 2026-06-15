@@ -181,6 +181,7 @@ depth of field,
     }
   });
 }
+    }
 // 🧠 IDEAS (default)
       else {
 
