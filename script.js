@@ -117,22 +117,12 @@ function copiarGuion(){
     document.getElementById("mensajeGuionCopiado").innerText = "";
   }, 3000);
 
-}
-async function generarStoryboard() {
+}function generarStoryboard() {
 
   const guion =
     document.getElementById("textoStoryboard").value;
 
-  const escenas =
-    document.getElementById("cantidadEscenas").value;
-
-  const estilo =
-    document.getElementById("estiloStoryboard").value;
-
-  const resultado =
-    document.getElementById("resultadoStoryboard");
-
-  if (!guion.trim()) {
+  if (guion.trim() === "") {
 
     document.getElementById("mensajeStoryboard").innerText =
       "⚠️ Primero pega un guion";
@@ -140,39 +130,34 @@ async function generarStoryboard() {
     return;
   }
 
-  try {
+  const lineas =
+    guion.split("\n")
+    .filter(linea => linea.trim() !== "");
 
-    resultado.innerText =
-      "🎬 Generando storyboard...";
+  let storyboard =
+    "🎬 STORYBOARD PIXELLAB45\n\n";
 
-    const res = await fetch(
-      "https://pixellab45-v2.scostarobles.workers.dev/",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          tipo: "storyboard",
-          guion,
-          escenas,
-          estilo
-        })
-      }
-    );
+  lineas.forEach((linea, index) => {
 
-    const data = await res.json();
+    storyboard +=
+      `ESCENA ${index + 1}\n`;
 
-    resultado.innerText =
-      data.resultado;
+    storyboard +=
+      `⏱️ Duración: 4 segundos\n\n`;
 
-  } catch (error) {
+    storyboard +=
+      `🎙️ Narración:\n${linea}\n\n`;
 
-    resultado.innerText =
-      "❌ " + error.message;
+    storyboard +=
+      `🎥 Visual:\nEscena futurista relacionada con el tema.\n\n`;
 
-  }
+    storyboard +=
+      `──────────────────\n\n`;
+  });
 
+  document.getElementById(
+    "resultadoStoryboard"
+  ).innerText = storyboard;
 }
 
 function copiarStoryboard() {
@@ -319,26 +304,47 @@ function copiarVisuales(){
 
 async function generarImagen() {
 
-  const respuesta = await fetch(
-  "https://pixellab45-v2.scostarobles.workers.dev/",
-  {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      tipo: "imagen",
-      tema: prompt
-    })
-  }
-);
+  const prompt =
+    document.getElementById("promptImagen").value;
 
-const blob = await respuesta.blob();
-const url = URL.createObjectURL(blob);
+  const resultado =
+    document.getElementById("resultadoImagen");
 
-resultado.innerHTML = `
-  <img src="${url}" style="width:100%;max-width:600px;border-radius:12px;">
-`;
+  try {
+
+    resultado.innerHTML = "🎨 Generando imagen...";
+
+    const respuesta = await fetch(
+      "https://pixellab45-v2.scostarobles.workers.dev/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          prompt
+        })
+      }
+    );
+
+    const datos = await respuesta.json();
+
+    if (
+      datos.status === "succeeded" &&
+      datos.output
+    ) {
+
+      resultado.innerHTML = `
+        <img
+          src="${datos.output}"
+          alt="Imagen generada"
+          style="
+            width:100%;
+            max-width:600px;
+            border-radius:12px;
+            margin-top:10px;
+          ">
+      `;
 
     } else {
 
@@ -355,23 +361,3 @@ resultado.innerHTML = `
   }
 
   }
-function toggleMenu(){
-
-  document
-    .querySelector(".nav-links")
-    .classList
-    .toggle("active");
-
-}
-document.querySelectorAll(".nav-links a")
-.forEach(link => {
-
-  link.addEventListener("click", () => {
-
-    document
-      .querySelector(".nav-links")
-      .classList.remove("active");
-
-  });
-
-});
