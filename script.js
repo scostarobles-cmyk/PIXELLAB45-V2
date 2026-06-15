@@ -118,7 +118,6 @@ function copiarGuion(){
   }, 3000);
 
 }
-async function generarStoryboard(){
 async function generarStoryboard() {
 
   const guion =
