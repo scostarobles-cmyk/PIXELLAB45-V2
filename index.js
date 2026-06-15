@@ -6,13 +6,15 @@ export default {
       "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type"
     };
+
     if (request.method === "OPTIONS") {
       return new Response(null, { headers: corsHeaders });
     }
 
+    // 🧠 GET simple
     if (request.method !== "POST") {
       return new Response(
-        JSON.stringify({ message: "PIXELLAB45 API" }),
+        JSON.stringify({ message: "PIXELLAB45 API OK" }),
         {
           headers: {
             ...corsHeaders,
@@ -24,14 +26,19 @@ export default {
 
     try {
 
+      const body = await request.json();
+
       const {
-  tema,
-  tipo,
-  formato,
-  guion,
-  escenas,
-  estilo
-} = await request.json();
+        tipo,
+        tema,
+        formato,
+        guion,
+        escenas,
+        estilo,
+        nombre,
+        imagenBase64,
+        categoria
+      } = body;
 
       let prompt = "";
 
@@ -39,186 +46,134 @@ export default {
       if (tipo === "visuales") {
 
         prompt = `
-Genera prompts visuales cinematográficos para IA de imágenes y video.
+Genera prompts visuales cinematográficos.
 
 Tema: ${tema}
 
 Devuelve:
-🎨 IMAGEN PRINCIPAL
-📱 MINIATURA YOUTUBE
-🎬 VIDEO IA
+IMAGEN PRINCIPAL
+MINIATURA YOUTUBE
+VIDEO IA
 
-Cada prompt debe ser detallado, cinematográfico, futurista, profesional y en inglés.
-`;
-
+En inglés, estilo cinematográfico y futurista.
+        `;
       }
 
-      // 🧾 PROMPT POR FORMATO
+      // 🧾 PROMPTS
       else if (tipo === "prompt") {
 
         prompt = `
-Actúa como un experto en creación de contenido.
+Actúa como experto en contenido.
 
-Genera un prompt profesional para ${formato}.
+Genera prompt para ${formato}.
 
 Tema: ${tema}
-
-Si el formato es TikTok:
-- Gancho viral
-- Duración 30 a 60 segundos
-- CTA
-
-Si el formato es YouTube:
-- Título SEO
-- Estructura
-- Retención
-
-Si el formato es Instagram:
-- Copy + hashtags + CTA
-
-Si el formato es Blog:
-- SEO completo
-
-Si el formato es Ebook:
-- Estructura completa
-
-Devuelve únicamente el contenido final.
-`;
-
+        `;
       }
-        // 🎬 GUIONES IA
-else if (tipo === "script") {
 
-  prompt = `
-Actúa como un guionista experto en videos cortos sobre tecnología e inteligencia artificial.
+      // 🎬 SCRIPT
+      else if (tipo === "script") {
+
+        prompt = `
+Guion para video corto de IA.
 
 Tema: ${tema}
 
-Genera un guion de narración para TikTok, Reels o Shorts.
+Estructura:
+GANCHO
+DESARROLLO
+CIERRE
+CTA
+        `;
+      }
 
-Estructura obligatoria:
+      // 🎬 STORYBOARD
+      else if (tipo === "storyboard") {
 
-🎯 GANCHO
-
-🎬 DESARROLLO
-
-🔥 CIERRE
-
-📢 CTA
-
-Duración aproximada: 60 segundos.
-
-No incluyas escenas.
-No incluyas instrucciones visuales.
-Solo la narración lista para voz en off.
-`;
-
-}
-
-     // 🎬 STORYBOARD IA
-else if (tipo === "storyboard") {
-
-  prompt = `
-Convierte el siguiente guion en un storyboard cinematográfico.
+        prompt = `
+Convierte guion en storyboard.
 
 Guion:
 ${guion}
 
-Cantidad de escenas: ${escenas}
+Escenas: ${escenas}
 
-Estilo visual: ${estilo}
+Estilo: ${estilo}
+        `;
+      }
 
-Reglas:
+      // 🖼️ GENERAR IMAGEN
+      else if (tipo === "imagen") {
 
-- Genera exactamente ${escenas} escenas.
-- Distribuye el contenido del guion entre las escenas.
-- Cada escena debe incluir:
-
-🎬 ESCENA X
-
-🎙️ Narración
-
-🎥 Visual
-
-📷 Cámara
-
-🎨 Estilo
-
-⏱️ Duración
-
-- El estilo visual debe respetar:
-${estilo}
-
-- Compatible con Kling, Veo, Runway, Pika y Minimax.
-- Formato profesional cinematográfico.
-`;
-
-}
-
-// 🖼️ GENERADOR DE IMAGEN
-else if (tipo === "imagen") {
-
-  const imagen = await env.AI.run(
-    "@cf/lykon/dreamshaper-8-lcm",
-    {
-      prompt: `
+        const imagen = await env.AI.run(
+          "@cf/lykon/dreamshaper-8-lcm",
+          {
+            prompt: `
 ${tema},
 cinematic lighting,
 ultra detailed,
-highly realistic,
-sharp focus,
-depth of field,
-8k
-      `
-    }
-  );
+8k, realistic
+            `
+          }
+        );
 
-  return new Response(
-    imagen,
-    {
-      headers: {
-        ...corsHeaders,
-        "Content-Type": "image/png"
+        return new Response(imagen, {
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "image/png"
+          }
+        });
       }
-    }
-  );
 
-}
-  else if (tipo === "guardar-imagen") {
+      // 💾 GUARDAR IMAGEN EN R2
+      else if (tipo === "guardar-imagen") {
 
-  const { nombre, imagenBase64 } = await request.json();
+        if (!imagenBase64) {
+          return new Response(
+            JSON.stringify({ error: "imagenBase64 faltante" }),
+            { headers: corsHeaders }
+          );
+        }
 
-const nombreFinal = `img-${Date.now()}-${Math.random().toString(36).substring(2, 8)}.png`;
+        // 🔥 limpiar base64 si viene con prefijo
+        const base64 = imagenBase64.replace(/^data:image\/\w+;base64,/, "");
 
-const base64 = imagenBase64.replace(/^data:image\/\w+;base64,/, "");
+        const bytes = Uint8Array.from(atob(base64), c =>
+          c.charCodeAt(0)
+        );
 
-const bytes = Uint8Array.from(atob(base64), c =>
-  c.charCodeAt(0)
-);
+        // 🔥 nombre seguro (SIN carpetas)
+        const nombreFinal = `img-${categoria || "general"}-${Date.now()}-${Math.random().toString(36).substring(2, 8)}.png`;
 
-  await env.GALERIA.put(nombreFinal, bytes, {
-  });
+        await env.GALERIA.put(nombreFinal, bytes, {
+          httpMetadata: {
+            contentType: "image/png"
+          }
+        });
 
-  return new Response(
-    JSON.stringify({ success: true }),
-    {
-      headers: {
-        ...corsHeaders,
-        "Content-Type": "application/json"
+        return new Response(
+          JSON.stringify({
+            success: true,
+            nombre: nombreFinal
+          }),
+          {
+            headers: {
+              ...corsHeaders,
+              "Content-Type": "application/json"
+            }
+          }
+        );
       }
-    }
-  );
-  }
-// 🧠 IDEAS (default)
+
+      // 🧠 IDEAS (default)
       else {
 
         prompt = `
 Genera 10 ideas virales sobre ${tema}.
-
-Devuelve solo una lista numerada.
-`;
+        `;
       }
 
+      // 🤖 IA TEXT
       const result = await env.AI.run(
         "@cf/meta/llama-3.1-8b-instruct-fp8",
         {
@@ -228,18 +183,15 @@ Devuelve solo una lista numerada.
         }
       );
 
-      let response;
+      const isTextType =
+        tipo === "visuales" ||
+        tipo === "prompt" ||
+        tipo === "script" ||
+        tipo === "storyboard";
 
-      if (
-  tipo === "visuales" ||
-  tipo === "prompt" ||
-  tipo === "script" ||
-  tipo === "storyboard"
-) {
-  response = { resultado: result.response };
-} else {
-  response = { ideas: result.response };
-}
+      const response = isTextType
+        ? { resultado: result.response }
+        : { ideas: result.response };
 
       return new Response(
         JSON.stringify(response),
@@ -254,7 +206,9 @@ Devuelve solo una lista numerada.
     } catch (error) {
 
       return new Response(
-        JSON.stringify({ error: error.message }),
+        JSON.stringify({
+          error: error.message
+        }),
         {
           status: 500,
           headers: {
