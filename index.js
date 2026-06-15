@@ -30,8 +30,7 @@ export default {
   formato,
   guion,
   escenas,
-  estilo,
-        categoria
+  estilo
 } = await request.json();
 
       let prompt = "";
@@ -173,9 +172,7 @@ depth of field,
       `
     }
   );
-console.log("IMAGEN GENERADA");
-console.log(imagen);
-console.log("CATEGORIA:", categoria);
+
   return new Response(
     imagen,
     {
