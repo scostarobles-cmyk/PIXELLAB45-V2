@@ -154,9 +154,9 @@ ${estilo}
 - Formato profesional cinematográfico.
 `;
 
+}
 
-
-  🖼️ GENERADOR DE IMAGEN
+//  🖼️ GENERADOR DE IMAGEN
 else if (tipo === "imagen") {
 
   const result = await env.AI.run(
