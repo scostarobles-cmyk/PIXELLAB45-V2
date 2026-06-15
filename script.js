@@ -365,7 +365,7 @@ reader.onloadend = async () => {
         })
       }
     );
-
+    resultado.innerHTML = "✅ Imagen guardada en R2:", nombreArchivo;
     console.log("✅ Imagen guardada en R2:", nombreArchivo);
 
   } catch (error) {
