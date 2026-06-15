@@ -345,7 +345,7 @@ async function generarImagen() {
   }
 }
 function toggleMenu(){
-
+alert("MENU OK");
   document
     .querySelector(".nav-links")
     .classList
