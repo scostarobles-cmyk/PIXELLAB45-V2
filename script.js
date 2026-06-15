@@ -117,8 +117,8 @@ function copiarGuion(){
     document.getElementById("mensajeGuionCopiado").innerText = "";
   }, 3000);
 
-}function generarStoryboard() {
-
+}
+async function generarStoryboard(){
   const guion =
     document.getElementById("textoStoryboard").value;
 
