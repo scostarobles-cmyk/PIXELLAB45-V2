@@ -119,10 +119,21 @@ function copiarGuion(){
 
 }
 async function generarStoryboard(){
+async function generarStoryboard() {
+
   const guion =
     document.getElementById("textoStoryboard").value;
 
-  if (guion.trim() === "") {
+  const escenas =
+    document.getElementById("cantidadEscenas").value;
+
+  const estilo =
+    document.getElementById("estiloStoryboard").value;
+
+  const resultado =
+    document.getElementById("resultadoStoryboard");
+
+  if (!guion.trim()) {
 
     document.getElementById("mensajeStoryboard").innerText =
       "⚠️ Primero pega un guion";
@@ -130,34 +141,39 @@ async function generarStoryboard(){
     return;
   }
 
-  const lineas =
-    guion.split("\n")
-    .filter(linea => linea.trim() !== "");
+  try {
 
-  let storyboard =
-    "🎬 STORYBOARD PIXELLAB45\n\n";
+    resultado.innerText =
+      "🎬 Generando storyboard...";
 
-  lineas.forEach((linea, index) => {
+    const res = await fetch(
+      "https://pixellab45-v2.scostarobles.workers.dev/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          tipo: "storyboard",
+          guion,
+          escenas,
+          estilo
+        })
+      }
+    );
 
-    storyboard +=
-      `ESCENA ${index + 1}\n`;
+    const data = await res.json();
 
-    storyboard +=
-      `⏱️ Duración: 4 segundos\n\n`;
+    resultado.innerText =
+      data.resultado;
 
-    storyboard +=
-      `🎙️ Narración:\n${linea}\n\n`;
+  } catch (error) {
 
-    storyboard +=
-      `🎥 Visual:\nEscena futurista relacionada con el tema.\n\n`;
+    resultado.innerText =
+      "❌ " + error.message;
 
-    storyboard +=
-      `──────────────────\n\n`;
-  });
+  }
 
-  document.getElementById(
-    "resultadoStoryboard"
-  ).innerText = storyboard;
 }
 
 function copiarStoryboard() {
