@@ -7,6 +7,20 @@ export default {
       "Access-Control-Allow-Headers": "Content-Type"
     };
 
+      if (request.url.includes("/test-r2")) {
+
+  await env.IMAGES.put(
+    "test/hola.txt",
+    "PIXELLAB45 R2 OK"
+  );
+
+  return new Response(
+    "Archivo guardado en R2"
+  );
+
+      }
+    
+
     if (request.method === "OPTIONS") {
       return new Response(null, { headers: corsHeaders });
     }
