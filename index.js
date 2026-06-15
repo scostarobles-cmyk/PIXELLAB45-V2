@@ -195,7 +195,7 @@ depth of field,
   );
 
 }
-}// 🧠 IDEAS (default)
+// 🧠 IDEAS (default)
       else {
 
         prompt = `
