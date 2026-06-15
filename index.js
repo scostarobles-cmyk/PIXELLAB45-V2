@@ -155,11 +155,7 @@ ${estilo}
 
 }
 
-//  🖼️ GENERADOR DE IMAGEN
-else if (tipo === "imagen") {
-
-  const result = await env.AI.run(
-  // 🖼️ GENERADOR DE IMAGEN + R2
+// 🖼️ GENERADOR DE IMAGEN
 else if (tipo === "imagen") {
 
   const imagen = await env.AI.run(
@@ -196,8 +192,9 @@ depth of field,
         "Content-Type": "image/png"
       }
     }
-  ); 
-  });
+  );
+
+}
 }// 🧠 IDEAS (default)
       else {
 
