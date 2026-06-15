@@ -307,6 +307,9 @@ async function generarImagen() {
   const prompt =
     document.getElementById("promptImagen").value;
 
+  const categoria =
+  document.getElementById("categoriaImagen").value;
+  
   const resultado =
     document.getElementById("resultadoImagen");
 
@@ -322,8 +325,10 @@ async function generarImagen() {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          tipo: "imagen",
-          tema: prompt
+  tipo: "imagen",
+  tema: prompt,
+  categoria: categoria
+})
         })
       }
     );
