@@ -32,7 +32,7 @@ export default {
   guion,
   escenas,
   estilo
-} = await request.json(); = await request.json();
+} = await request.json();
 
       let prompt = "";
 
