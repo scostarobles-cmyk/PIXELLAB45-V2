@@ -198,6 +198,7 @@ depth of field,
     }
   );
 }
+    }//aqui o borrar estaby la anterior 
   });
 }// 🧠 IDEAS (default)
       else {
