@@ -180,8 +180,6 @@ depth of field,
       "Content-Type": "image/png"
     }
   });
-}
-    }
 // 🧠 IDEAS (default)
       else {
 
