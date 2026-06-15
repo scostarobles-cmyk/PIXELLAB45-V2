@@ -7,14 +7,8 @@ export default {
       "Access-Control-Allow-Headers": "Content-Type"
     };
 
-      if (request.url.includes("/test-r2")) {
-
   
-  );
 
-  return new Response(
-    "Archivo guardado en R2"
-  );
 
       }
     
