@@ -308,40 +308,102 @@ async function generarImagen() {
     document.getElementById("promptImagen").value;
 
   const categoria =
-  document.getElementById("categoriaImagen").value;
-  
+    document.getElementById("categoriaImagen").value;
+
   const resultado =
     document.getElementById("resultadoImagen");
 
   try {
 
-    resultado.innerHTML = "🎨 Generando imagen...";
+    resultado.innerHTML =
+      "🎨 Generando imagen...";
 
     const respuesta = await fetch(
-  "https://pixellab45-v2.scostarobles.workers.dev/",
-  {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      tipo: "imagen",
-      tema: prompt,
-      categoria: categoria
-    })
-  }
-);
+      "https://pixellab45-v2.scostarobles.workers.dev/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          tipo: "imagen",
+          tema: prompt,
+          categoria
+        })
+      }
+    );
 
     const blob = await respuesta.blob();
-    const url = URL.createObjectURL(blob);
+
+    const url =
+      URL.createObjectURL(blob);
 
     resultado.innerHTML = `
-      <img src="${url}"
+      <img
+        src="${url}"
         style="width:100%;max-width:600px;border-radius:12px;">
+      <p>💾 Guardando imagen...</p>
     `;
 
+    const reader = new FileReader();
+
+    reader.onloadend = async () => {
+
+      try {
+
+        const guardar =
+          await fetch(
+            "https://pixellab45-v2.scostarobles.workers.dev/",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                tipo: "guardar-imagen",
+                imagenBase64: reader.result,
+                categoria
+              })
+            }
+          );
+
+        const data =
+          await guardar.json();
+
+        if (data.success) {
+
+          resultado.innerHTML += `
+            <p>
+              ✅ Guardada:
+              ${data.nombre}
+            </p>
+          `;
+
+        } else {
+
+          resultado.innerHTML += `
+            <p>
+              ❌ Error al guardar
+            </p>
+          `;
+        }
+
+      } catch (error) {
+
+        resultado.innerHTML += `
+          <p>
+            ❌ ${error.message}
+          </p>
+        `;
+      }
+    };
+
+    reader.readAsDataURL(blob);
+
   } catch (error) {
-    resultado.innerHTML = "❌ " + error.message;
+
+    resultado.innerHTML =
+      `❌ ${error.message}`;
   }
 }
 function toggleMenu(){
