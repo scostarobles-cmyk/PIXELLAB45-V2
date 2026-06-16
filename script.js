@@ -538,7 +538,7 @@ async function generarVideo() {
   try {
     resultado.innerHTML = "⏳ Enviando datos al Worker...";
 
-    const res = await fetch('TU_URL_DEL_WORKER', {
+    const res = await fetch('https://pixellab45-v2.scostarobles.workers.dev/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
