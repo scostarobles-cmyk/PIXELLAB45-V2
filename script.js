@@ -522,28 +522,43 @@ async function cargarGaleriaCompleta() {
 
   }
 }
-function generarVideo() {
+async function generarVideo() {
+  const modo = document.getElementById("modoVideo").value;
+  const contenido = document.getElementById("promptVideo").value;
+  const duracion = document.getElementById("duracionVideo").value;
 
-  const modo =
-    document.getElementById("modoVideo").value;
-
-  const contenido =
-    document.getElementById("promptVideo").value;
-
-  const duracion =
-    document.getElementById("duracionVideo").value;
-
-  const resultado =
-    document.getElementById("resultadoVideo");
+  const resultado = document.getElementById("resultadoVideo");
 
   if (!contenido.trim()) {
-
-    resultado.innerHTML =
-      "⚠️ Escribe un prompt o storyboard";
-
+    resultado.innerHTML = "⚠️ Escribe un prompt o storyboard";
     return;
-
   }
+
+  // Enviar datos al Worker
+  try {
+    resultado.innerHTML = "⏳ Enviando datos al Worker...";
+
+    const res = await fetch('TU_URL_DEL_WORKER', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        tipo: 'video',
+        modo: modo,
+        contenido: contenido,
+        duracion: duracion
+      })
+    });
+
+    const data = await res.json();
+
+    // Mostrar la respuesta del Worker
+    resultado.innerHTML = `🎥 Respuesta del Worker: ${data.mensaje}`;
+  } catch (error) {
+    resultado.innerHTML = `❌ Error al comunicarse con el Worker: ${error.message}`;
+  }
+}
 
   resultado.innerHTML = `
     <div style="white-space:pre-wrap;">
