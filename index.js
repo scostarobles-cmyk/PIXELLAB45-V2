@@ -157,7 +157,7 @@ ${estilo}
 `;
 
 }
-  else if (tipo ==== "video"){
+  else if (tipo === "video"){
     addEventListener('fetch', event => {
   event.respondWith(handleRequest(event.request))
 })
