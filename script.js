@@ -522,4 +522,40 @@ async function cargarGaleriaCompleta() {
 
   }
 }
+function generarVideo() {
 
+  const modo =
+    document.getElementById("modoVideo").value;
+
+  const contenido =
+    document.getElementById("promptVideo").value;
+
+  const duracion =
+    document.getElementById("duracionVideo").value;
+
+  const resultado =
+    document.getElementById("resultadoVideo");
+
+  if (!contenido.trim()) {
+
+    resultado.innerHTML =
+      "⚠️ Escribe un prompt o storyboard";
+
+    return;
+
+  }
+
+  resultado.innerHTML = `
+    <div style="white-space:pre-wrap;">
+🎥 Generador de Video IA
+
+Modo: ${modo}
+
+Duración: ${duracion} segundos
+
+Contenido recibido correctamente.
+
+🚧 Motor de video pendiente de conexión.
+    </div>
+  `;
+}
