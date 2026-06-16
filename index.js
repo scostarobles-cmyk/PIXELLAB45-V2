@@ -30,7 +30,9 @@ export default {
   formato,
   guion,
   escenas,
-  estilo
+  estilo,
+        categoria
+        
 } = await request.json();
 
       let prompt = "";
@@ -153,6 +155,45 @@ ${estilo}
 - Formato profesional cinematográfico.
 `;
 
+}
+  // ☁️ GUARDAR IMAGEN EN R2
+else if (tipo === "guardar-imagen") {
+
+  const base64 = imagenBase64.replace(
+    /^data:image\/\w+;base64,/,
+    ""
+  );
+
+  const bytes = Uint8Array.from(
+    atob(base64),
+    c => c.charCodeAt(0)
+  );
+
+  const nombreFinal =
+    `img-${categoria || "general"}-${Date.now()}.png`;
+
+  await env.IMAGES.put(
+    nombreFinal,
+    bytes,
+    {
+      httpMetadata: {
+        contentType: "image/png"
+      }
+    }
+  );
+
+  return new Response(
+    JSON.stringify({
+      success: true,
+      nombre: nombreFinal
+    }),
+    {
+      headers: {
+        ...corsHeaders,
+        "Content-Type": "application/json"
+      }
+    }
+  );
 }
 
 // 🖼️ GENERADOR DE IMAGEN
