@@ -994,3 +994,23 @@ section{
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 12px;
 }
+/* GALERÍA GENERAL */
+#galeriaCompleta {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  overflow-x: auto;
+  gap: 12px;
+  padding: 10px 0;
+}
+
+#galeriaCompleta .project-card {
+  flex: 0 0 250px !important;
+  width: 250px !important;
+}
+
+#galeriaCompleta img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
