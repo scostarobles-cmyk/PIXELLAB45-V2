@@ -202,6 +202,45 @@
 <div id="resultadoGuion"></div>
 
 </div>
+  <div class="ai-card">
+
+  <h3>🎬 Storyboard Generator</h3>
+
+  <textarea
+    id="textoStoryboard"
+    placeholder="Pega aquí el guion..."
+    rows="6">
+  </textarea>
+      <select id="cantidadEscenas">
+  <option value="4">4 escenas</option>
+  <option value="6">6 escenas</option>
+  <option value="8" selected>8 escenas</option>
+  <option value="10">10 escenas</option>
+  <option value="12">12 escenas</option>
+</select>
+
+<select id="estiloStoryboard">
+  <option value="PIXELLAB45">Futurista PIXELLAB45</option>
+  <option value="cinematografico">Cinematográfico</option>
+  <option value="tiktok">Dinámico TikTok</option>
+  <option value="youtube">YouTube Documental</option>
+  <option value="scifi">Ciencia Ficción</option>
+</select>
+
+      
+  <button onclick="generarStoryboard()">
+    Generar Storyboard
+  </button>
+
+  <button class="copy-btn" onclick="copiarStoryboard()">
+    📋 Copiar Storyboard
+  </button>
+
+  <div id="mensajeStoryboard"></div>
+
+  <div id="resultadoStoryboard"></div>
+
+  </div>
 <div class="section-divider"></div>
 
 <footer class="footer">
