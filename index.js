@@ -32,7 +32,8 @@ export default {
   escenas,
   estilo,
         categoria,
-        imagenBase64
+        imagenBase64,
+        video
         
 } = await request.json();
 
@@ -157,31 +158,20 @@ ${estilo}
 `;
 
 }
-  else if (tipo === "video"){
-    addEventListener('fetch', event => {
-  event.respondWith(handleRequest(event.request))
-})
-
-async function handleRequest(request) {
-  if (request.method === 'POST') {
-    const body = await request.json();
-
-    if (body.tipo === 'video') {
-      return new Response(
-        JSON.stringify({
-          success: true,
-          mensaje: `Recibido el video en modo: ${body.modo}, duración: ${body.duracion} segundos`
-        }),
-        {
-          headers: { 'Content-Type': 'application/json' }
-        }
-      );
+  else if (tipo === "video") {
+  return new Response(
+    JSON.stringify({
+      success: true,
+      mensaje: `Recibido el video en modo: ${tipo}, duración: ${env.duracion}`
+    }),
+    {
+      headers: {
+        ...corsHeaders,
+        "Content-Type": "application/json"
+      }
     }
-  }
-
-  return new Response('No se procesó la petición', { status: 400 });
+  );
 }
-  }
   // ☁️ GUARDAR IMAGEN EN R2
 else if (tipo === "guardar-imagen") {
 
