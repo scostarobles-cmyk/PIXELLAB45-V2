@@ -171,7 +171,7 @@ else if (tipo === "guardar-imagen") {
   );
 
   const nombreFinal =
-    `img-${categoria || "general"}-${Date.now()}.png`;
+  `${categoria || "general"}/${Date.now()}-pixellab45.png`;
 
   await env.IMAGES.put(
     nombreFinal,
