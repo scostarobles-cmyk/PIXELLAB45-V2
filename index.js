@@ -196,6 +196,26 @@ else if (tipo === "guardar-imagen") {
     }
   );
 }
+  // 📂 LISTAR IMÁGENES
+else if (tipo === "listar-imagenes") {
+
+  const objetos = await env.IMAGES.list();
+
+  const imagenes = objetos.objects.map(obj => ({
+    nombre: obj.key,
+    url: `https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev/${obj.key}`
+  }));
+
+  return new Response(
+    JSON.stringify(imagenes),
+    {
+      headers: {
+        ...corsHeaders,
+        "Content-Type": "application/json"
+      }
+    }
+  );
+    }
 
 // 🖼️ GENERADOR DE IMAGEN
 else if (tipo === "imagen") {
