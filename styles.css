@@ -971,3 +971,26 @@ section{
 #galeriaDinamica{
   margin-top:30px;
 }
+#galeriaCompleta {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 10px 0;
+  scroll-behavior: smooth;
+}
+
+#galeriaCompleta .project-card {
+  flex: 0 0 auto;
+  width: 250px;
+}#galeriaCompleta img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+#galeriaCompleta {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
