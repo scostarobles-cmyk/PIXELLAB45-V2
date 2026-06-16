@@ -279,6 +279,54 @@
   <div id="resultadoImagen"></div>
 
   </div>
+  <div class="ai-card" id="generador-video">
+
+  <h3>🎥 Generador de Video IA</h3>
+
+  <select id="modoVideo">
+
+    <option value="texto">
+      Texto → Video
+    </option>
+
+    <option value="storyboard">
+      Storyboard → Video
+    </option>
+
+  </select>
+
+  <textarea
+    id="promptVideo"
+    placeholder="Describe el video o pega un storyboard..."
+    rows="5"></textarea>
+
+  <select id="duracionVideo">
+
+    <option value="5">
+      5 segundos
+    </option>
+
+    <option value="10">
+      10 segundos
+    </option>
+
+    <option value="15">
+      15 segundos
+    </option>
+
+    <option value="30">
+      30 segundos
+    </option>
+
+  </select>
+
+  <button onclick="generarVideo()">
+    🎥 Generar Video
+  </button>
+
+  <div id="resultadoVideo"></div>
+
+  </div>
 <div class="section-divider"></div>
 
 <footer class="footer">
