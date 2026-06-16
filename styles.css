@@ -1014,3 +1014,11 @@ section{
   object-fit: cover;
   display: block;
 }
+#galeriaCompleta .project-card {
+  flex: 0 0 140px;
+  width: 140px;
+}
+
+#galeriaCompleta img {
+  height: 100px;
+}
