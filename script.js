@@ -372,21 +372,16 @@ async function generarImagen() {
 
         if (data.success) {
 
-          resultado.innerHTML += `
-            <p>
-              ✅ Guardada:
-              ${data.nombre}
-            </p>
-          `;
+  resultado.innerHTML += `
+    <p>✅ Guardada: ${data.nombre}</p>
+  `;
 
-        } else {
+} else {
 
-          resultado.innerHTML += `
-            <p>
-              ❌ Error al guardar
-            </p>
-          `;
-        }
+  resultado.innerHTML += `
+    <p>❌ ${data.error || JSON.stringify(data)}</p>
+  `;
+}
 
       } catch (error) {
 
