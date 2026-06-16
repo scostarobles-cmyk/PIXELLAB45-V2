@@ -560,17 +560,4 @@ async function generarVideo() {
   }
 }
 
-  resultado.innerHTML = `
-    <div style="white-space:pre-wrap;">
-🎥 Generador de Video IA
-
-Modo: ${modo}
-
-Duración: ${duracion} segundos
-
-Contenido recibido correctamente.
-
-🚧 Motor de video pendiente de conexión.
-    </div>
-  `;
-}
+  
