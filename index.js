@@ -31,7 +31,8 @@ export default {
   guion,
   escenas,
   estilo,
-        categoria
+        categoria,
+        imagenBase64
         
 } = await request.json();
 
