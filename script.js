@@ -421,3 +421,56 @@ document.querySelectorAll(".nav-links a").forEach(link => {
   });
 
 });
+async function cargarCategoria(categoria) {
+
+  const contenedor =
+    document.getElementById("galeriaDinamica");
+
+  contenedor.innerHTML =
+    "⏳ Cargando imágenes...";
+
+  try {
+
+    const res = await fetch(
+      "https://pixellab45-v2.scostarobles.workers.dev/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          tipo: "listar-imagenes"
+        })
+      }
+    );
+
+    const imagenes = await res.json();
+
+    const filtradas =
+      imagenes.filter(img =>
+        img.nombre.startsWith(categoria + "/")
+      );
+
+    contenedor.innerHTML = "";
+
+    filtradas.forEach(img => {
+
+      contenedor.innerHTML += `
+        <div class="project-card">
+          <img src="${img.url}">
+          <p>${img.nombre}</p>
+        </div>
+      `;
+
+    });
+
+  } catch(error) {
+
+    contenedor.innerHTML =
+      "❌ Error cargando imágenes";
+
+  }
+}
+window.addEventListener("load", () => {
+  cargarCategoria("avatares");
+});
