@@ -548,7 +548,7 @@ async function generarVideo() {
   try {
 
     const res = await fetch(
-      "TU_URL_DEL_WORKER",
+      "https://pixellab45-v2.scostarobles.workers.dev/",
       {
         method: "POST",
         headers: {
