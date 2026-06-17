@@ -33,7 +33,8 @@ export default {
   estilo,
         categoria,
         imagenBase64,
-        video
+        video,
+        contenido
         
 } = await request.json();
 
