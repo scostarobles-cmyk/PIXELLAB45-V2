@@ -161,7 +161,7 @@ ${estilo}
 
 }
   else if (tipo === "video") {
-
+ 
   return new Response(
     JSON.stringify({
       success: true,
