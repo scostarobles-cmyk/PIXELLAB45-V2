@@ -164,7 +164,7 @@ ${estilo}
   return new Response(
     JSON.stringify({
       success: true,
-      mensaje: `Recibido el video en modo: ${env.tipo}, contenido: ${env.contenido}, duración: ${env.duracion}`
+      mensaje: `Recibido el video en modo: ${env.modo}, tipo: ${env.video}, contenido: ${env.contenido}, duración: ${env.duracion}`
     }),
     {
       headers: {
