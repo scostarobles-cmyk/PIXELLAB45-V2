@@ -165,12 +165,10 @@ ${estilo}
   return new Response(
     JSON.stringify({
       success: true,
-      debug: {
-        tipo,
-        modo,
-        contenido,
-        duracion
-      }
+      tipo,
+      modo,
+      contenido,
+      duracion
     }),
     {
       headers: {
