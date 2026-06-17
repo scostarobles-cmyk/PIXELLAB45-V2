@@ -35,7 +35,8 @@ export default {
         imagenBase64,
         video,
         contenido,
-        modo
+        modo,
+        duracion
         
 } = await request.json();
 
