@@ -536,7 +536,16 @@ async function generarVideo() {
 
   // Enviar datos al Worker
   try {
-    resultado.innerHTML = "⏳ Enviando datos al Worker...";
+    resultado.innerHTML = `
+📤 DATOS ENVIADOS
+
+Tipo: video
+Modo: ${modo}
+Contenido: ${contenido}
+Duración: ${duracion}
+
+⏳ Enviando datos al Worker...
+`;
 
     const res = await fetch('https://pixellab45-v2.scostarobles.workers.dev/', {
       method: 'POST',
