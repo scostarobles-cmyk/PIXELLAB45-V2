@@ -161,10 +161,16 @@ ${estilo}
 
 }
   else if (tipo === "video") {
+
   return new Response(
     JSON.stringify({
       success: true,
-      mensaje: `Recibido el video en modo: ${modo}, tipo: ${video}, contenido: ${contenido}, duración: ${duracion}`
+      debug: {
+        tipo,
+        modo,
+        contenido,
+        duracion
+      }
     }),
     {
       headers: {
@@ -173,6 +179,7 @@ ${estilo}
       }
     }
   );
+
 }
   // ☁️ GUARDAR IMAGEN EN R2
 else if (tipo === "guardar-imagen") {
