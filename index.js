@@ -221,22 +221,38 @@ Reglas importantes:
       }
     );
 
-    return Response.json({
-      success: true,
-      resultado
-    });
+    return new Response(
+      JSON.stringify({
+        success: true,
+        resultado
+      }),
+      {
+        headers: {
+          ...corsHeaders,
+          "Content-Type": "application/json"
+        }
+      }
+    );
 
   } catch (error) {
 
-    return Response.json({
-      success: false,
-      error: error.message,
-      stack: String(error)
-    });
+    return new Response(
+      JSON.stringify({
+        success: false,
+        error: error.message,
+        stack: String(error)
+      }),
+      {
+        headers: {
+          ...corsHeaders,
+          "Content-Type": "application/json"
+        }
+      }
+    );
 
   }
 
-}
+  }
   // ☁️ GUARDAR IMAGEN EN R2
 else if (tipo === "guardar-imagen") {
 
