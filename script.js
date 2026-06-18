@@ -565,10 +565,14 @@ async function generarVideo() {
 
     const data = await res.json();
 
-    resultado.innerHTML =
-      "<pre>" +
-      JSON.stringify(data, null, 2) +
-      "</pre>";
+    if (data.success && data.project) {
+
+  resultado.innerHTML =
+    "⏳ Generando video...";
+
+  consultarVideo(data.project);
+
+    }
 
   } catch (error) {
 
@@ -576,4 +580,49 @@ async function generarVideo() {
       "❌ Error: " + error.message;
 
   }
+}
+async function consultarVideo(project) {
+
+  const estado =
+    document.getElementById("estadoVideo");
+
+  const preview =
+    document.getElementById("previewVideo");
+
+  const intervalo = setInterval(async () => {
+
+    const res = await fetch(
+      "https://pixellab45-v2.scostarobles.workers.dev/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          tipo: "estado-video",
+          project
+        })
+      }
+    );
+
+    const data = await res.json();
+
+    estado.innerHTML =
+      "Estado: " + data.movie?.status;
+
+    if (data.movie?.status === "done") {
+
+      clearInterval(intervalo);
+
+      preview.innerHTML = `
+        <video controls width="100%">
+          <source
+            src="${data.movie.url}"
+            type="video/mp4">
+        </video>
+      `;
+    }
+
+  }, 5000);
+
 }
