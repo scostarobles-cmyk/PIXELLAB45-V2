@@ -1022,3 +1022,40 @@ section{
 #galeriaCompleta img {
   height: 100px;
 }
+.hidden-file{
+  display:none;
+}
+
+.pixellab-button{
+  display:inline-block;
+
+  width:100%;
+
+  padding:12px;
+
+  margin-top:10px;
+
+  border-radius:10px;
+
+  cursor:pointer;
+
+  text-align:center;
+
+  background:#00d9ff;
+
+  color:#05070d;
+
+  font-weight:bold;
+}
+
+.pixellab-button:hover{
+  box-shadow:
+    0 0 10px #00d9ff,
+    0 0 20px rgba(0,217,255,.4);
+}
+
+#previewImagenVideo img{
+  width:100%;
+  margin-top:15px;
+  border-radius:12px;
+}
