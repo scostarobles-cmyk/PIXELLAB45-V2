@@ -250,7 +250,7 @@ Reglas importantes:
     const res = await fetch("https://api.json2video.com/v2/movies", {
       method: "POST",
       headers: {
-        "x-api-key": env.JSON2VIDEO_API_KEY,
+        "x-api-key": env.JSON2VIDEO_API,
         "Content-Type": "application/json"
       },
       body: JSON.stringify(payload)
