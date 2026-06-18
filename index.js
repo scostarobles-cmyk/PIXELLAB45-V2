@@ -208,22 +208,33 @@ Reglas importantes:
 
 }
   else if (tipo === "video") {
- 
-  return new Response(
-    JSON.stringify({
-      success: true,
-      tipo,
-      modo,
-      contenido,
-      duracion
-    }),
-    {
-      headers: {
-        ...corsHeaders,
-        "Content-Type": "application/json"
+
+  try {
+
+    const resultado = await env.AI.run(
+      "xai/grok-imagine-video",
+      {
+        prompt: contenido,
+        aspect_ratio: "16:9",
+        duration: 5,
+        resolution: "720p"
       }
-    }
-  );
+    );
+
+    return Response.json({
+      success: true,
+      resultado
+    });
+
+  } catch (error) {
+
+    return Response.json({
+      success: false,
+      error: error.message,
+      stack: String(error)
+    });
+
+  }
 
 }
   // ☁️ GUARDAR IMAGEN EN R2
