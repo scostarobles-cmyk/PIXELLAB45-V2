@@ -1,21 +1,22 @@
 //duncion json2video 
 async function crearVideoJSON2Video(env, payload) {
 
-  const res = await fetch("https://api.json2video.com/v2/render", {
+  const res = await fetch("https://api.json2video.com/v2/movies", {
     method: "POST",
     headers: {
-      "Authorization": `Bearer ${env.JSON2VIDEO_API_KEY}`,
+      "x-api-key": env.JSON2VIDEO_API_KEY,
       "Content-Type": "application/json"
     },
     body: JSON.stringify(payload)
   });
 
+  const data = await res.json();
+
   if (!res.ok) {
-    const error = await res.text();
-    throw new Error(error);
+    throw new Error(JSON.stringify(data));
   }
 
-  return await res.json();
+  return data;
 }
 //estebes es el correcro
 export default {
