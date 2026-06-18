@@ -57,7 +57,8 @@ export default {
         video,
         contenido,
         modo,
-        duracion
+        duracion,
+        project
         
 } = await request.json();
 
@@ -281,6 +282,29 @@ Reglas importantes:
     });
   }
   }
+    else if (tipo === "estado-video") {
+
+  const res = await fetch(
+    `https://api.json2video.com/v2/movies?project=${project}`,
+    {
+      headers: {
+        "x-api-key": env.JSON2VIDEO_API
+      }
+    }
+  );
+
+  const data = await res.json();
+
+  return new Response(
+    JSON.stringify(data),
+    {
+      headers: {
+        ...corsHeaders,
+        "Content-Type": "application/json"
+      }
+    }
+  );
+    }
   // ☁️ GUARDAR IMAGEN EN R2
 else if (tipo === "guardar-imagen") {
 
