@@ -212,18 +212,17 @@ Reglas importantes:
   try {
 
     const resultado = await env.AI.run(
-      "xai/grok-imagine-video",
+      "alibaba/wan-2.7-i2v",
       {
-        prompt: contenido,
-        aspect_ratio: "16:9",
-        duration: 5,
-        resolution: "720p"
+        image: "https://help-static-aliyun-doc.aliyuncs.com/file-manage-files/zh-CN/20250925/wpimhv/rap.png",
+        prompt: contenido || "A gentle camera push-in on the scene with soft ambient lighting"
       }
     );
 
     return new Response(
       JSON.stringify({
         success: true,
+        modelo: "alibaba/wan-2.7-i2v",
         resultado
       }),
       {
