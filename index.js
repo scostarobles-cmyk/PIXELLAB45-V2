@@ -1,3 +1,22 @@
+//duncion json2video
+async function crearVideoJSON2Video(env, payload) {
+
+  const res = await fetch("https://api.json2video.com/v2/render", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${env.JSON2VIDEO_API_KEY}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
+  });
+
+  if (!res.ok) {
+    const error = await res.text();
+    throw new Error(error);
+  }
+
+  return await res.json();
+}
 //estebes es el correcro
 export default {
   async fetch(request, env) {
@@ -212,19 +231,21 @@ Reglas importantes:
 
   try {
 
-    const resultado = await env.AI.run(
-      "alibaba/wan-2.7-i2v",
-      {
-        image: "https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev/personajes/1781750593334-pixellab45.png",
-        prompt: contenido || "A gentle camera push-in on the scene with soft ambient lighting"
+    const payload = {
+      template: "default",
+      inputs: {
+        prompt: contenido,
+        duration: duracion || 5,
+        mode: modo
       }
-    );
+    };
+
+    const video = await crearVideoJSON2Video(env, payload);
 
     return new Response(
       JSON.stringify({
         success: true,
-        modelo: "alibaba/wan-2.7-i2v",
-        resultado
+        video
       }),
       {
         headers: {
@@ -239,8 +260,7 @@ Reglas importantes:
     return new Response(
       JSON.stringify({
         success: false,
-        error: error.message,
-        stack: String(error)
+        error: error.message
       }),
       {
         headers: {
@@ -249,10 +269,8 @@ Reglas importantes:
         }
       }
     );
-
   }
-
-  }
+}
   // ☁️ GUARDAR IMAGEN EN R2
 else if (tipo === "guardar-imagen") {
 
