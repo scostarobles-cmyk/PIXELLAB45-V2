@@ -214,7 +214,7 @@ Reglas importantes:
     const resultado = await env.AI.run(
       "alibaba/wan-2.7-i2v",
       {
-        image: "https://help-static-aliyun-doc.aliyuncs.com/file-manage-files/zh-CN/20250925/wpimhv/rap.png",
+        image: "https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev/personajes/1781750593334-pixellab45.png",
         prompt: contenido || "A gentle camera push-in on the scene with soft ambient lighting"
       }
     );
