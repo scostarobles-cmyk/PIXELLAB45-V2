@@ -340,7 +340,7 @@ Devuelve solo una lista numerada.
   tipo === "visuales" ||
   tipo === "prompt" ||
   tipo === "script" ||
-  tipo === "storyboard"||
+  tipo === "storyboard"|| 
   tipo === "ebooks"
 ) {
   response = { resultado: result.response };
