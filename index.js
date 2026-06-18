@@ -161,6 +161,52 @@ ${estilo}
 `;
 
 }
+
+  // 📚 EBOOK IA
+else if (tipo === "ebook") {
+
+  prompt = `
+Actúa como un autor profesional especializado en crear ebooks educativos.
+
+Tema: ${tema}
+
+Genera un ebook completo con la siguiente estructura:
+
+# TÍTULO
+
+## INTRODUCCIÓN
+
+Explica por qué el tema es importante y qué aprenderá el lector.
+
+## CAPÍTULO 1
+
+Desarrolla los conceptos fundamentales.
+
+## CAPÍTULO 2
+
+Profundiza en aplicaciones prácticas, ejemplos y casos de uso.
+
+## CAPÍTULO 3
+
+Explica estrategias, recomendaciones y buenas prácticas.
+
+## CONCLUSIÓN
+
+Resume los puntos principales y propone próximos pasos para el lector.
+
+Reglas importantes:
+
+- Escribe en español neutro.
+- Utiliza subtítulos cuando sea necesario.
+- Usa párrafos completos.
+- Aporta ejemplos concretos.
+- Mantén un tono profesional y didáctico.
+- Evita listas excesivas.
+- No expliques que eres una IA.
+- Devuelve únicamente el ebook terminado.
+`;
+
+}
   else if (tipo === "video") {
  
   return new Response(
@@ -294,7 +340,8 @@ Devuelve solo una lista numerada.
   tipo === "visuales" ||
   tipo === "prompt" ||
   tipo === "script" ||
-  tipo === "storyboard"
+  tipo === "storyboard"||
+  tipo === "ebooks"
 ) {
   response = { resultado: result.response };
 } else {
