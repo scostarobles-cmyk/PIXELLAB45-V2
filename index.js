@@ -1,4 +1,4 @@
-IA//duncion json2video 2
+//duncion json2video 2
 async function crearVideoJSON2Video(env, payload) {
 
   const res = await fetch("https://api.json2video.com/v2/movies", {
