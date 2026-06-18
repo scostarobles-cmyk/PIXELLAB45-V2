@@ -1,4 +1,4 @@
-//duncion json2video 
+IA//duncion json2video 
 async function crearVideoJSON2Video(env, payload) {
 
   const res = await fetch("https://api.json2video.com/v2/movies", {
@@ -233,45 +233,54 @@ Reglas importantes:
   try {
 
     const payload = {
-      template: "default",
-      inputs: {
-        prompt: contenido,
-        duration: duracion || 5,
-        mode: modo
-      }
+      resolution: "full-hd",
+      scenes: [
+        {
+          elements: [
+            {
+              type: "text",
+              text: contenido,
+              duration: parseInt(duracion || 5)
+            }
+          ]
+        }
+      ]
     };
 
-    const video = await crearVideoJSON2Video(env, payload);
+    const res = await fetch("https://api.json2video.com/v2/movies", {
+      method: "POST",
+      headers: {
+        "x-api-key": env.JSON2VIDEO_API_KEY,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        video
-      }),
-      {
-        headers: {
-          ...corsHeaders,
-          "Content-Type": "application/json"
-        }
+    const data = await res.json();
+
+    return new Response(JSON.stringify({
+      success: true,
+      project: data.project
+    }), {
+      headers: {
+        "Content-Type": "application/json",
+        ...corsHeaders
       }
-    );
+    });
 
   } catch (error) {
 
-    return new Response(
-      JSON.stringify({
-        success: false,
-        error: error.message
-      }),
-      {
-        headers: {
-          ...corsHeaders,
-          "Content-Type": "application/json"
-        }
+    return new Response(JSON.stringify({
+      success: false,
+      error: error.message
+    }), {
+      headers: {
+        "Content-Type": "application/json",
+        ...corsHeaders
       }
-    );
+    });
   }
-}
+  }
   // ☁️ GUARDAR IMAGEN EN R2
 else if (tipo === "guardar-imagen") {
 
