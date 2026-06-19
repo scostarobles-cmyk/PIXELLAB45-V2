@@ -626,3 +626,26 @@ async function consultarVideo(project) {
   }, 5000);
 
 }
+function reloadKling() {
+  const frame = document.getElementById("klingFrame");
+  frame.src = frame.src;
+}
+function openFullscreenKling() {
+  const frame = document.getElementById("klingFrame");
+  if (frame.requestFullscreen) {
+    frame.requestFullscreen();
+  }
+}
+function previewKlingVideo() {
+  const input = document.querySelector("#generador-video input");
+  const url = input.value;
+
+  const preview = document.getElementById("klingPreview");
+
+  preview.innerHTML = `
+    <iframe src="${url}" style="width:100%;height:300px;border:0;border-radius:10px;"></iframe>
+  `;
+}
+function guardarVideoKling() {
+  alert("🔥 Próximo paso: conexión con R2 + metadata PIXELLAB45");
+}
