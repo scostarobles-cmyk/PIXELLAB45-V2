@@ -122,36 +122,38 @@ Cada idea debe ser completamente diferente.
       case "prompt": {
 
   const r = await ai(`
-Eres un generador profesional de PROMPTS CINEMATOGRÁFICOS para IA de video.
+Eres un generador profesional de PROMPTS PARA IA DE VIDEO (Kling / Runway / Pika).
 
 A partir del tema:
 
 "${tema}"
 
-Debes generar un SOLO PROMPT FINAL LISTO PARA IA.
+🔥 REGLAS ABSOLUTAS (NO SE PUEDEN VIOLAR):
+- Describe UNA SOLA ESCENA fija
+- NO narración
+- NO historia
+- NO transformación
+- NO secuencia temporal
+- NO palabras como: luego, después, de repente, al final
+- NO storytelling
+- NO guion
+- NO títulos
+- NO explicaciones
 
-⚠️ REGLAS OBLIGATORIAS:
-- NO escribir como guion
-- NO incluir narrador
-- NO incluir títulos
-- NO explicar nada
-- NO usar formato de artículo
-- NO usar storytelling
-- NO separar por secciones con encabezados
-- NO agregar notas
+🎯 OBJETIVO:
+Un solo párrafo continuo como prompt técnico para IA de video.
 
-🔥 FORMATO FINAL OBLIGATORIO:
-
-Un solo bloque de texto continuo describiendo:
-- escena
-- cámara
+📌 DEBE INCLUIR:
+- sujeto principal
+- entorno
+- acción única congelada o mínima
+- cámara (ángulo y lente si aplica)
 - iluminación
-- ambiente
-- acción visual
+- estilo visual
 
-Debe parecer un prompt para Runway / Kling / Pika.
-
-Estilo: cinematográfico, hiper detallado, realista o futurista según el tema.
+🎬 ESTILO:
+Cinematográfico hiper realista o futurista según el tema.
+Texto directo tipo instrucción de generación de video.
 `);
 
   return new Response(
