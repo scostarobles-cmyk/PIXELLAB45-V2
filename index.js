@@ -121,29 +121,41 @@ Cada idea debe ser completamente diferente.
       // ✍️ PROMPTS
       case "prompt": {
 
-  const resultado = await ai(
-    `Crea un prompt cinematográfico profesional sobre: ${tema}.
+  const { titulo, gancho, descripcion } = data;
 
-    Debe incluir:
-    - Estilo visual detallado
-    - Cámara y ángulos
-    - Iluminación
-    - Ambiente y tono
-    - Colores predominantes
-    - Referencias visuales claras
+  const secciones = [
+    "GANCHO",
+    "DESCRIPCIÓN VISUAL",
+    "CÁMARA Y ÁNGULOS",
+    "ILUMINACIÓN",
+    "AMBIENTE Y TONO"
+  ];
 
-    Hazlo extenso, descriptivo y listo para generación de imagen o video.`
-  );
+  const partes = [];
+
+  for (const sec of secciones) {
+
+    const r = await ai(
+      `Basado en:
+TÍTULO: ${titulo}
+GANCHO: ${gancho}
+DESCRIPCIÓN: ${descripcion}
+
+Genera SOLO la sección: ${sec}
+Máximo claridad, sin texto extra.`
+    );
+
+    partes.push(`**${sec}**\n${r}`);
+  }
+
+  const resultado = partes.join("\n\n");
 
   return new Response(
-    JSON.stringify({
-      resultado
-    }),
-    {
-      headers: corsHeaders
-    }
+    JSON.stringify({ resultado }),
+    { headers: corsHeaders }
   );
       }
+
 
       // 🎬 GUIONES
       case "script": {
