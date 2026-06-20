@@ -500,11 +500,12 @@ async function cargarGaleriaCompleta() {
       }
     );
 
-    const imagenes =
-      await res.json();
+    const texto = await res.text();
 
-    contenedor.innerHTML = "";
+contenedor.innerHTML =
+  "<pre>" + texto + "</pre>";
 
+return;
     imagenes.forEach(img => {
 
       contenedor.innerHTML += `
