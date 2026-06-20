@@ -70,7 +70,7 @@ Produce la respuesta más extensa posible.
 
     switch (tipo) {
 
-      // 🎯 IDEAS VIRALMENTE DIFERENTES
+/*      // 🎯 IDEAS VIRALMENTE DIFERENTES
      case "ideas": {
 
   const ideas = [];
@@ -104,8 +104,19 @@ Produce la respuesta más extensa posible.
     }
   );
 
-}
-        
+}*/
+      case "ideas": {
+
+  return new Response(
+    JSON.stringify({
+      ideas: "HOLA DESDE IDEAS"
+    }),
+    {
+      headers: corsHeaders
+    }
+  );
+
+      }  
 
       // ✍️ PROMPTS
       case "prompt": {
