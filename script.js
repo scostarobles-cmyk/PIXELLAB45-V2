@@ -432,21 +432,20 @@ async function cargarCategoria(categoria) {
   try {
 
     const res = await fetch(
-      "https://pixellab45-v2.scostarobles.workers.dev/",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          tipo: "listar-imagenes"
-        })
-      }
-    alert(
-  "STATUS: " + res.status +
-  "\nOK: " + res.ok +
-  "\nCONTENT-TYPE: " + res.headers.get("content-type")
+  "https://pixellab45-v2.scostarobles.workers.dev/",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      tipo: "listar-imagenes"
+    })
+  }
 );
+
+alert(await res.text());
+return;
     
 
     const imagenes = await res.json();
@@ -493,23 +492,20 @@ async function cargarGaleriaCompleta() {
   try {
 
     const res = await fetch(
-      "https://pixellab45-v2.scostarobles.workers.dev/",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          tipo: "listar-imagenes"
-        })
-      }
-      alert(
-  "STATUS: " + res.status +
-  "\nOK: " + res.ok +
-  "\nCONTENT-TYPE: " + res.headers.get("content-type")
-)
-    
-    );
+  "https://pixellab45-v2.scostarobles.workers.dev/",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      tipo: "listar-imagenes"
+    })
+  }
+);
+
+alert(await res.text());
+return;
     
     const imagenes =
       await res.json();
