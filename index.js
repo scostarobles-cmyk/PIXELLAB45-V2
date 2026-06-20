@@ -94,19 +94,9 @@ async fetch(request, env) {
     }
 
     switch (tipo) {
+case "listar-imagenes": {
 
-      case "listar-imagenes": {
   try {
-    if (!env.IMAGES) {
-      const errorMsg = "Bucket IMAGES no configurado";
-      console.log("Error:", errorMsg);
-      alert(errorMsg);
-      return new Response(JSON.stringify({ success: false, error: errorMsg }), {
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
-    }
 
     const objetos = await env.IMAGES.list();
 
@@ -115,28 +105,29 @@ async fetch(request, env) {
       url: `https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev/${obj.key}`
     }));
 
-    console.log("Imágenes recibidas:", imagenes);
-    alert("Imágenes recibidas: " + JSON.stringify(imagenes, null, 2));
-
     return new Response(
       JSON.stringify(imagenes),
       {
         headers: {
+          "Access-Control-Allow-Origin": "*",
           "Content-Type": "application/json"
         }
       }
     );
 
   } catch (error) {
-    console.log("Error en listar imágenes:", error);
-    alert("Error en listar imágenes: " + error.message);
+
     return new Response(
-      JSON.stringify({ success: false, error: error.message || "Error al listar imágenes" }),
+      JSON.stringify([]),
       {
         headers: {
+          "Access-Control-Allow-Origin": "*",
           "Content-Type": "application/json"
         }
       }
     );
+
   }
-          }
+
+}
+      
