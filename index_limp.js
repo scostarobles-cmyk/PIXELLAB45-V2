@@ -40,186 +40,106 @@ async function consultarIA(env, promptUsuario) {
 
   return resultado.response;
 }
+async fetch(request, env) {
+  try {
 
-export default {
-  async fetch(request, env) {
-    try {
+    const contentType = request.headers.get("content-type") || "";
 
-      const contentType = request.headers.get("content-type") || "";
-      if (!contentType.includes("application/json")) {
-        return new Response(JSON.stringify({
-          error: "Content-Type inválido"
-        }), {
-          headers: { "Content-Type": "application/json" }
-        });
-      }
-
-      const text = await request.text();
-
-      let data = {};
-      if (text && text.trim().length > 0) {
-        if (text.trim().startsWith("{")) {
-          data = JSON.parse(text);
-        }
-      }
-
-      const {
-        tipo,
-        tema,
-        formato,
-        guion,
-        escenas,
-        estilo,
-        imagenBase64,
-        categoria
-      } = data;
-
-      if (!tipo) {
-        return new Response(JSON.stringify({
-          error: "Payload inválido: se requiere 'tipo'"
-        }), {
-          headers: { "Content-Type": "application/json" }
-        });
-      }
-
-      // ============================
-      // SWITCH PRINCIPAL
-      // ============================
-      switch (tipo) {
-
-        case "ideas": {
-          const prompt = `Genera 10 ideas sobre: ${tema}`;
-          const respuesta = await consultarIA(env, prompt);
-
-          return new Response(JSON.stringify({
-            ideas: respuesta
-          }), {
-            headers: { "Content-Type": "application/json" }
-          });
-        }
-
-        case "prompt": {
-          const prompt = `Genera un prompt para: ${tema} en formato ${formato}`;
-          const respuesta = await consultarIA(env, prompt);
-
-          return new Response(JSON.stringify({
-            resultado: respuesta
-          }), {
-            headers: { "Content-Type": "application/json" }
-          });
-        }
-
-        case "script": {
-          const prompt = `Guion sobre: ${tema}`;
-          const respuesta = await consultarIA(env, prompt);
-
-          return new Response(JSON.stringify({
-            resultado: respuesta
-          }), {
-            headers: { "Content-Type": "application/json" }
-          });
-        }
-
-        case "visuales": {
-          const prompt = `Prompts visuales cinematográficos sobre: ${tema}`;
-          const respuesta = await consultarIA(env, prompt);
-
-          return new Response(JSON.stringify({
-            resultado: respuesta
-          }), {
-            headers: { "Content-Type": "application/json" }
-          });
-        }
-
-        case "storyboard": {
-          const prompt = `Storyboard: ${guion}`;
-          const respuesta = await consultarIA(env, prompt);
-
-          return new Response(JSON.stringify({
-            resultado: respuesta
-          }), {
-            headers: { "Content-Type": "application/json" }
-          });
-        }
-
-        case "guardar-imagen": {
-          if (!env.IMAGES) {
-            return new Response(JSON.stringify({
-              success: false,
-              error: "Bucket IMAGES no configurado"
-            }), {
-              headers: { "Content-Type": "application/json" }
-            });
-          }
-
-          const base64 = imagenBase64.replace(/^data:image\/\w+;base64,/, "");
-          const bytes = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
-
-          const nombre = `${categoria || "general"}/${Date.now()}.png`;
-
-          await env.IMAGES.put(nombre, bytes, {
-            httpMetadata: { contentType: "image/png" }
-          });
-
-          return new Response(JSON.stringify({
-            success: true,
-            nombre
-          }), {
-            headers: { "Content-Type": "application/json" }
-          });
-        }
-
-        case "listar-imagenes": {
-          if (!env.IMAGES) {
-            return new Response(JSON.stringify({
-              success: false,
-              error: "Bucket IMAGES no configurado"
-            }), {
-              headers: { "Content-Type": "application/json" }
-            });
-          }
-
-          try {
-            const objetos = await env.IMAGES.list({ limit: 1000 });
-
-            const imagenes = objetos.objects.map(obj => ({
-              nombre: obj.key,
-              url: `https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev/${obj.key}`
-            }));
-
-            return new Response(JSON.stringify({
-              success: true,
-              imagenes
-            }), {
-              headers: { "Content-Type": "application/json" }
-            });
-
-          } catch (error) {
-            return new Response(JSON.stringify({
-              success: false,
-              error: error.message
-            }), {
-              headers: { "Content-Type": "application/json" }
-            });
-          }
-        }
-
-        default: {
-          return new Response(JSON.stringify({
-            error: "Tipo no válido"
-          }), {
-            headers: { "Content-Type": "application/json" }
-          });
-        }
-      }
-
-    } catch (error) {
+    if (!contentType.includes("application/json")) {
       return new Response(JSON.stringify({
-        error: error.message
+        error: "Content-Type inválido"
       }), {
-        status: 500,
         headers: { "Content-Type": "application/json" }
       });
     }
+
+    const text = await request.text();
+
+    let data = {};
+
+    if (text && text.trim().length > 0) {
+      if (text.trim().startsWith("{")) {
+        data = JSON.parse(text);
+      }
+    }
+
+    // ============================
+    // VARIABLES DEL FRONTEND
+    // ============================
+
+    const {
+      tipo,
+      tema,
+      formato,
+      guion,
+      escenas,
+      estilo,
+      imagenBase64,
+      categoria,
+      contenido,
+      duracion,
+      project,
+      modo
+    } = data;
+
+    if (!tipo) {
+      return new Response(JSON.stringify({
+        error: "Payload inválido: se requiere 'tipo'"
+      }), {
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+
+    // ============================
+    // SWITCH PRINCIPAL (AQUÍ SIGUE TODO)
+    // ============================
+
+    switch (tipo) {
+      // acá empezamos módulo por módulo
+        case "listar-imagenes": {
+  try {
+
+    if (!env.IMAGES) {
+      return new Response(JSON.stringify({
+        success: false,
+        error: "Bucket IMAGES no configurado"
+      }), {
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+
+    const objetos = await env.IMAGES.list({
+      limit: 1000
+    });
+
+    const imagenes = objetos.objects.map(obj => ({
+      nombre: obj.key,
+      url: `https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev/${obj.key}`,
+      size: obj.size || null,
+      fecha: obj.uploaded || null
+    }));
+
+    // orden más reciente primero
+    imagenes.sort((a, b) => b.nombre.localeCompare(a.nombre));
+
+    return new Response(JSON.stringify({
+      success: true,
+      total: imagenes.length,
+      imagenes
+    }), {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+
+  } catch (error) {
+    return new Response(JSON.stringify({
+      success: false,
+      error: error.message || "Error al listar imágenes"
+    }), {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
   }
-};
+  }
