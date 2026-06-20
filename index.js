@@ -72,12 +72,27 @@ Produce la respuesta más extensa posible.
 
       // 🎯 IDEAS VIRALMENTE DIFERENTES
       case "ideas": {
-        const r = await ai(
-          `Genera 5 ideas COMPLETAMENTE distintas entre sí sobre: ${tema}. 
-           Cada una debe tener un enfoque diferente (educativo, viral, storytelling, emocional, técnico).`
-        );
+        const ideas = [];
 
-        return new Response(JSON.stringify({ ideas: r }), { headers: corsHeaders });
+const enfoques = [
+  "educativo",
+  "viral",
+  "storytelling",
+  "emocional",
+  "técnico"
+];
+
+for (const enfoque of enfoques) {
+
+  const idea = await ai(
+    `Genera UNA sola idea sobre ${tema}.
+     Enfoque: ${enfoque}`
+  );
+
+  ideas.push(idea);
+}
+
+const resultado = ideas.join("\n\n");
       }
 
       // ✍️ PROMPTS
