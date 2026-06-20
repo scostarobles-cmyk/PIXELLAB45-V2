@@ -191,13 +191,63 @@ Reglas:
 
       // 🎨 VISUALES
       case "visuales": {
-        const r = await ai(
-          `Genera prompts visuales cinematográficos ultra detallados sobre: ${tema}. 
-           Estilo cyberpunk, futurista o realista según convenga.`
-        );
 
-        return new Response(JSON.stringify({ resultado: r }), { headers: corsHeaders });
+  const r = await ai(`
+
+Eres un experto en prompts para generación de imágenes IA.
+
+Tema:
+${tema}
+
+Genera EXACTAMENTE 5 prompts.
+
+Reglas:
+
+- Solo devuelve prompts.
+- No expliques nada.
+- No agregues títulos.
+- No agregues introducciones.
+- No agregues numeración.
+- No agregues texto fuera de los prompts.
+
+Cada prompt debe incluir:
+
+- sujeto principal
+- entorno
+- iluminación
+- cámara
+- composición
+- estilo visual
+- nivel de detalle
+- calidad cinematográfica
+
+Formato:
+
+PROMPT 1:
+...
+
+PROMPT 2:
+...
+
+PROMPT 3:
+...
+
+PROMPT 4:
+...
+
+PROMPT 5:
+...
+
+Los prompts deben estar listos para Midjourney, Flux, SDXL o Imagen.
+
+`);
+
+  return new Response(
+    JSON.stringify({ resultado: r }),
+    { headers: corsHeaders }
+  );
       }
+      
 
       // 🎬 STORYBOARD
       case "storyboard": {
