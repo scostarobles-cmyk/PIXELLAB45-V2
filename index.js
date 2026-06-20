@@ -73,41 +73,50 @@ Produce la respuesta más extensa posible.
       // 🎯 IDEAS VIRALMENTE DIFERENTES
   case "ideas": {
 
-  let cantidad = tema.match(/\d+/)
-    ? parseInt(tema.match(/\d+/)[0])
-    : 5;
+  const match = tema.match(/\d+/);
+  let cantidad = match ? parseInt(match[0]) : 5;
 
-  if (cantidad > 30) cantidad = 30;
+  if (cantidad > 20) cantidad = 20;
 
-  const bloques = Math.ceil(cantidad / 5);
-  let resultado = [];
+  const resultado = await ai(`
+Eres un generador de ideas estructurado.
 
-  for (let i = 0; i < bloques; i++) {
+Genera EXACTAMENTE ${cantidad} ideas sobre: ${tema}
 
-    const desde = i * 5 + 1;
-    const hasta = Math.min((i + 1) * 5, cantidad);
+REGLAS OBLIGATORIAS:
+- No repitas ideas
+- No mezcles numeración
+- No hagas bloques separados
+- No reinicies la cuenta
+- No agregues texto fuera de las ideas
 
-    const parte = await ai(`
-Genera ideas numeradas del ${desde} al ${hasta} sobre: ${tema}
+FORMATO ESTRICTO:
 
-Cada idea debe incluir:
-- Título
-- Gancho
-- Desarrollo breve
+Idea 1:
+Título:
+Gancho:
+Desarrollo:
 
-No repitas ideas anteriores.
+Idea 2:
+Título:
+Gancho:
+Desarrollo:
+
+(continuar así hasta Idea ${cantidad})
+
+Cada idea debe ser completamente diferente.
 `);
-
-    resultado.push(parte);
-  }
 
   return new Response(
     JSON.stringify({
-      ideas: resultado.join("\n\n")
+      ideas: resultado
     }),
-    { headers: corsHeaders }
+    {
+      headers: corsHeaders
+    }
   );
-}
+
+  }
 
       // ✍️ PROMPTS
       case "prompt": {
