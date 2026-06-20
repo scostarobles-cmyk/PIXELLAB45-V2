@@ -544,41 +544,6 @@ Entrega únicamente el storyboard final.
     }
   });
     }
-        case "listar-imagenes": {
-
-  if (!env.IMAGES) {
-    return new Response(JSON.stringify({
-      success: false,
-      error: "Bucket IMAGES no configurado"
-    }), {
-      headers: { "Content-Type": "application/json" }
-    });
-  }
-
-  const objetos = await env.IMAGES.list({
-    limit: 1000
-  });
-
-  const imagenes = objetos.objects.map(obj => ({
-    nombre: obj.key,
-    url: `https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev/${obj.key}`,
-    size: obj.size,
-    fecha: obj.uploaded
-  }));
-
-  // ordenar por más recientes primero (por nombre timestamp)
-  imagenes.sort((a, b) => b.nombre.localeCompare(a.nombre));
-
-  return new Response(JSON.stringify({
-    success: true,
-    total: imagenes.length,
-    imagenes
-  }), {
-    headers: {
-      "Content-Type": "application/json"
-    }
-  });
-        }
       default:
 
   return new Response(
