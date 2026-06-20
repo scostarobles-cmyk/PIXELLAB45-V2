@@ -442,12 +442,12 @@ async function cargarCategoria(categoria) {
           tipo: "listar-imagenes"
         })
       }
-    );
     alert(
   "STATUS: " + res.status +
   "\nOK: " + res.ok +
   "\nCONTENT-TYPE: " + res.headers.get("content-type")
 );
+    
 
     const imagenes = await res.json();
 
