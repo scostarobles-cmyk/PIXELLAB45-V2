@@ -489,16 +489,24 @@ async function cargarGaleriaCompleta() {
 
     const res = await fetch(
       "https://pixellab45-v2.scostarobles.workers.dev/",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          tipo: "listar-imagenes"
-        })
-      }
-    );
+    const res = await fetch(
+  "https://pixellab45-v2.scostarobles.workers.dev/",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      tipo: "listar-imagenes"
+    })
+  }
+);
+
+const texto = await res.text();
+
+alert(texto);
+
+return;
 
     const texto = await res.text();
 
