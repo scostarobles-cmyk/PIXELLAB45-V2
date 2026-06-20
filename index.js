@@ -164,6 +164,16 @@ const {
   imagenBase64,
   categoria
 } = data;
+  if (!data || !data.tipo) {
+  return new Response(
+    JSON.stringify({
+      error: "Payload inválido: se requiere 'tipo'"
+    }),
+    {
+      headers: { "Content-Type": "application/json" }
+    }
+  );
+  }
   
     switch (tipo) {
 
