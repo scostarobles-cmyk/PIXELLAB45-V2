@@ -67,7 +67,6 @@ Produce la respuesta más extensa posible.
   return res.response;
 };
     const safe = (v) => v?.trim() || "No especificado";
-    switch (tipo) {
 
     switch (tipo) {
 
@@ -160,10 +159,26 @@ Máximo claridad, sin texto extra.`
 
       // 🎬 GUIONES
       case "script": {
-        const r = await ai(
-          `Escribe un guion viral corto sobre: ${tema}. 
-           Debe tener gancho inicial, desarrollo rápido y cierre impactante.`
-        );
+        const r = await ai(`
+TÍTULO: ${safe(titulo)}
+GANCHO: ${safe(gancho)}
+DESCRIPCIÓN: ${safe(descripcion)}
+
+IMPORTANTE:
+- Nunca pidas información
+- Nunca digas “no hay datos”
+- Si algo está vacío, INFIERE contenido cinematográfico futurista
+- No expliques teoría
+- No definas conceptos
+
+Genera SOLO esta sección: ${sec}
+
+Reglas:
+- Es contenido para video viral
+- No texto educativo
+- No introducciones
+- No conclusiones
+`);
 
         return new Response(JSON.stringify({ resultado: r }), { headers: corsHeaders });
       }
