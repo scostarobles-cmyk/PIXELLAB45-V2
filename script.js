@@ -489,31 +489,22 @@ async function cargarGaleriaCompleta() {
 
     const res = await fetch(
       "https://pixellab45-v2.scostarobles.workers.dev/",
-    const res = await fetch(
-  "https://pixellab45-v2.scostarobles.workers.dev/",
-  {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      tipo: "listar-imagenes"
-    })
-  }
-);
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          tipo: "listar-imagenes"
+        })
+      }
+    );
 
-const texto = await res.text();
+    const imagenes =
+      await res.json();
 
-alert(texto);
+    contenedor.innerHTML = "";
 
-return;
-
-    const texto = await res.text();
-
-contenedor.innerHTML =
-  "<pre>" + texto + "</pre>";
-
-return;
     imagenes.forEach(img => {
 
       contenedor.innerHTML += `
@@ -634,4 +625,4 @@ async function consultarVideo(project) {
 
   }, 5000);
 
-        }
+}
