@@ -1,5 +1,3 @@
-alert("SCRIPT CARGADO OK"););
-
 console.log("SCRIPT CARGADO OK");
 async function generarPrompt() {
 
@@ -627,5 +625,4 @@ async function consultarVideo(project) {
 
   }, 5000);
 
-  }
-
+}
