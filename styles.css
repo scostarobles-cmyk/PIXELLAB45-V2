@@ -1059,3 +1059,21 @@ section{
   margin-top:15px;
   border-radius:12px;
 }
+.project-card {
+  height: auto;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-card img {
+  width: 100%;
+  height: auto;
+}
+
+.project-card p {
+  margin-top: 8px;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
