@@ -89,58 +89,45 @@ async fetch(request, env) {
     switch (tipo) {
 
       case "listar-imagenes": {
-        try {
-
-          if (!env.IMAGES) {
-            return new Response(JSON.stringify({
-              success: false,
-              error: "Bucket IMAGES no configurado"
-            }), {
-              headers: { "Content-Type": "application/json" }
-            });
-          }
-
-          const objetos = await env.IMAGES.list({
-            limit: 1000
-          });
-
-          const imagenes = (objetos.objects || []).map(obj => ({
-            nombre: obj.key,
-            url: `https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev/${obj.key}`,
-            size: obj.size || null,
-            fecha: obj.uploaded || null
-          }));
-
-          imagenes.sort((a, b) => b.nombre.localeCompare(a.nombre));
-
-          return new Response(JSON.stringify({
-            success: true,
-            total: imagenes.length,
-            imagenes
-          }), {
-            headers: {
-              "Content-Type": "application/json"
-            }
-          });
-
-        } catch (error) {
-          return new Response(JSON.stringify({
-            success: false,
-            error: error.message || "Error al listar imágenes"
-          }), {
-            headers: { "Content-Type": "application/json" }
-          });
-        }
-      }
-
+  try {
+    if (!env.IMAGES) {
+      return new Response(JSON.stringify({
+        success: false,
+        error: "Bucket IMAGES no configurado"
+      }), {
+        headers: { "Content-Type": "application/json" }
+      });
     }
+
+    const objetos = await env.IMAGES.list({
+      limit: 1000
+    });
+
+    const imagenes = (objetos.objects || []).map(obj => ({
+      nombre: obj.key,
+      url: `https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev/${obj.key}`
+    }));
+
+    imagenes.sort((a, b) => b.nombre.localeCompare(a.nombre));
+
+    return new Response(JSON.stringify({
+      success: true,
+      total: imagenes.length,
+      imagenes
+    }), {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
 
   } catch (error) {
     return new Response(JSON.stringify({
       success: false,
-      error: error.message || "Error general en worker"
+      error: error.message || "Error al listar imágenes"
     }), {
-      headers: { "Content-Type": "application/json" }
+      headers: {
+        "Content-Type": "application/json"
+      }
     });
   }
-        }
+      }
