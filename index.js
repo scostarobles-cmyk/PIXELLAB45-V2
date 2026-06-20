@@ -152,7 +152,6 @@ const resultado = ideas.join("\n\n");
 
       // 🖼️ GALERÍA R2
       case "listar-imagenes": {
-      case "listar-imagenes": {
   try {
 
     if (!env.IMAGES) {
