@@ -120,12 +120,29 @@ Cada idea debe ser completamente diferente.
 
       // ✍️ PROMPTS
       case "prompt": {
-        const r = await ai(
-          `Crea un prompt profesional cinematográfico sobre: ${tema}. 
-           Incluye estilo visual, cámara, iluminación y ambiente único.`
-        );
 
-        return new Response(JSON.stringify({ resultado: r }), { headers: corsHeaders });
+  const resultado = await ai(
+    `Crea un prompt cinematográfico profesional sobre: ${tema}.
+
+    Debe incluir:
+    - Estilo visual detallado
+    - Cámara y ángulos
+    - Iluminación
+    - Ambiente y tono
+    - Colores predominantes
+    - Referencias visuales claras
+
+    Hazlo extenso, descriptivo y listo para generación de imagen o video.`
+  );
+
+  return new Response(
+    JSON.stringify({
+      resultado
+    }),
+    {
+      headers: corsHeaders
+    }
+  );
       }
 
       // 🎬 GUIONES
