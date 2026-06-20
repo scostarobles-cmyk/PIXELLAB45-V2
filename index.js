@@ -1,3 +1,10 @@
+//corse
+return new Response(JSON.stringify(imagenes), {
+  headers: {
+    ...corsHeaders,
+    "Content-Type": "application/json"
+  }
+});
 // ============================
 // PIXELLAB45 WORKER LIMPIO (CORREGIDO)
 // ============================
@@ -91,14 +98,15 @@ async fetch(request, env) {
       case "listar-imagenes": {
   try {
     if (!env.IMAGES) {
-      return new Response(
-        JSON.stringify({
-          error: "Bucket IMAGES no configurado"
-        }),
-        {
-          headers: { "Content-Type": "application/json" }
+      return new Response(JSON.stringify({
+        success: false,
+        error: "Bucket IMAGES no configurado"
+      }), {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json"
         }
-      );
+      });
     }
 
     const objetos = await env.IMAGES.list();
@@ -108,20 +116,28 @@ async fetch(request, env) {
       url: `https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev/${obj.key}`
     }));
 
-    // Devolvemos solo el array, sin envolver en un objeto
     return new Response(
       JSON.stringify(imagenes),
       {
-        headers: { "Content-Type": "application/json" }
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json"
+        }
       }
     );
 
   } catch (error) {
     return new Response(
-      JSON.stringify({ error: error.message || "Error al listar imágenes" }),
+      JSON.stringify({
+        success: false,
+        error: error.message || "Error al listar imágenes"
+      }),
       {
-        headers: { "Content-Type": "application/json" }
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json"
+        }
       }
     );
   }
-      }
+        }
