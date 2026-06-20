@@ -199,25 +199,289 @@ Formato:
 
 }
     
-      case "prompt":
+    case "prompt": {
 
-        // código prompt
+  const variacion =
+    Math.floor(Math.random() * 100000);
 
-        break;
+  const prompt = `
+Variación creativa: ${variacion}
 
-      case "script":
+Genera un prompt profesional para crear contenido.
 
-        // código guion
+Tema:
+${tema}
 
-        break;
+Formato:
+${formato}
 
+IMPORTANTE:
+
+- Genera una versión diferente cada vez.
+- Evita reutilizar estructuras idénticas.
+- Busca enfoques nuevos.
+- Cambia ángulos, ejemplos y estrategias.
+- Mantén alta calidad profesional.
+- El resultado debe ser listo para usar.
+
+Incluye:
+
+- Objetivo
+- Público objetivo
+- Estructura recomendada
+- Estilo de comunicación
+- CTA
+- Consejos de ejecución
+
+Entrega únicamente el prompt final.
+`;
+
+  const respuesta =
+    await consultarIA(env, prompt);
+
+  return new Response(
+    JSON.stringify({
+      resultado: respuesta
+    }),
+    {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }
+  );
+
+    }
+
+      case "script": {
+
+  const variacion =
+    Math.floor(Math.random() * 100000);
+
+  const prompt = `
+Variación creativa: ${variacion}
+
+Crea un guion profesional sobre:
+
+${tema}
+
+REQUISITOS:
+
+- Genera una versión diferente cada vez.
+- Evita estructuras repetidas.
+- Usa un gancho potente en los primeros segundos.
+- Mantén ritmo dinámico.
+- Aporta valor real.
+- Utiliza lenguaje natural.
+- Diseñado para contenido viral.
+
+ESTRUCTURA:
+
+🎯 GANCHO
+
+Captar atención inmediatamente.
+
+📚 DESARROLLO
+
+Explicar el tema paso a paso.
+
+💡 DATO IMPACTANTE
+
+Agregar una curiosidad,
+estadística o hecho sorprendente.
+
+🚀 CIERRE
+
+Resumen breve.
+
+📢 CTA
+
+Invitación a comentar,
+seguir o compartir.
+
+IMPORTANTE:
+
+- Listo para narrar.
+- Sin explicaciones adicionales.
+- Entrega únicamente el guion final.
+`;
+
+  const respuesta =
+    await consultarIA(env, prompt);
+
+  return new Response(
+    JSON.stringify({
+      resultado: respuesta
+    }),
+    {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }
+  );
+
+    }
+case "visuales": {
+
+  const variacion =
+    Math.floor(Math.random() * 100000);
+
+  const prompt = `
+Variación creativa: ${variacion}
+
+Tema:
+
+${tema}
+
+Genera 3 prompts visuales profesionales.
+
+PROMPT 1:
+Imagen IA
+
+PROMPT 2:
+Thumbnail YouTube
+
+PROMPT 3:
+Video IA
+
+REQUISITOS:
+
+- Todos los prompts deben estar en inglés.
+- Calidad cinematográfica.
+- Ultra detallados.
+- Diferentes entre sí.
+- Evitar repeticiones.
+- Incluir composición visual.
+- Incluir iluminación.
+- Incluir lente o cámara.
+- Incluir profundidad de campo.
+- Incluir estilo visual.
+- Incluir ambiente.
+- Incluir nivel de detalle profesional.
+
+Compatibles con:
+
+- Kling
+- Veo
+- Runway
+- Pika
+- Minimax
+- Midjourney
+- Flux
+- Stable Diffusion
+
+FORMATO:
+
+🎨 IMAGEN IA
+
+[prompt]
+
+────────────────
+
+📺 THUMBNAIL
+
+[prompt]
+
+────────────────
+
+🎬 VIDEO IA
+
+[prompt]
+
+Entrega únicamente los prompts.
+`;
+
+  const respuesta =
+    await consultarIA(env, prompt);
+
+  return new Response(
+    JSON.stringify({
+      resultado: respuesta
+    }),
+    {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }
+  );
+
+      }
+        case "storyboard": {
+
+  const variacion =
+    Math.floor(Math.random() * 100000);
+
+  const prompt = `
+Variación creativa: ${variacion}
+
+Convierte el siguiente guion en un storyboard cinematográfico profesional.
+
+GUION:
+
+${guion}
+
+REQUISITOS:
+
+- Genera una versión diferente cada vez.
+- Crea escenas claras y visuales.
+- Divide el contenido en secuencias lógicas.
+- Mantén coherencia narrativa.
+- Piensa en videos para IA.
+
+Para cada escena incluye:
+
+🎬 ESCENA X
+
+⏱️ Duración
+
+🎙️ Narración
+
+🎥 Descripción visual
+
+📷 Movimiento de cámara
+
+💡 Iluminación
+
+🎨 Estilo visual
+
+📝 Prompt Kling
+
+IMPORTANTE:
+
+- Calidad cinematográfica.
+- Descripciones detalladas.
+- Pensado para Kling, Veo y Runway.
+- No agregues explicaciones fuera del storyboard.
+
+Entrega únicamente el storyboard final.
+`;
+
+  const respuesta =
+    await consultarIA(env, prompt);
+
+  return new Response(
+    JSON.stringify({
+      resultado: respuesta
+    }),
+    {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }
+  );
+
+        }
       default:
 
-        return new Response(
-          JSON.stringify({
-            error: "Tipo no válido"
-          })
-        );
+  return new Response(
+    JSON.stringify({
+      error: "Tipo no válido"
+    }),
+    {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }
+  );
 
     }
 
