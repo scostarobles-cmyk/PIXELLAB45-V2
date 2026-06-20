@@ -122,29 +122,36 @@ Cada idea debe ser completamente diferente.
       case "prompt": {
 
   const r = await ai(`
-Eres un generador de prompts cinematográficos profesionales.
+Eres un generador profesional de PROMPTS CINEMATOGRÁFICOS para IA de video.
 
-A partir del siguiente TEMA:
+A partir del tema:
 
 "${tema}"
 
-Debes generar:
+Debes generar un SOLO PROMPT FINAL LISTO PARA IA.
 
-1. GANCHO potente
-2. DESCRIPCIÓN VISUAL detallada
-3. CÁMARA Y ÁNGULOS cinematográficos
-4. ILUMINACIÓN profesional
-5. AMBIENTE Y TONO
+⚠️ REGLAS OBLIGATORIAS:
+- NO escribir como guion
+- NO incluir narrador
+- NO incluir títulos
+- NO explicar nada
+- NO usar formato de artículo
+- NO usar storytelling
+- NO separar por secciones con encabezados
+- NO agregar notas
 
-REGLAS:
-- NO inventes datos faltantes, usa SOLO el tema
-- NO digas que falta información
-- NO expliques teoría
-- NO hagas definiciones
-- SOLO contenido aplicable a video
-- FORMATO limpio y directo
+🔥 FORMATO FINAL OBLIGATORIO:
 
-Hazlo como un prompt listo para IA de video.
+Un solo bloque de texto continuo describiendo:
+- escena
+- cámara
+- iluminación
+- ambiente
+- acción visual
+
+Debe parecer un prompt para Runway / Kling / Pika.
+
+Estilo: cinematográfico, hiper detallado, realista o futurista según el tema.
 `);
 
   return new Response(
