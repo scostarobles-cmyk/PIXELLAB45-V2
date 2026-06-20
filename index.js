@@ -60,40 +60,60 @@ Produce la respuesta más extensa posible.
         }
       ],
 
-      max_tokens: 4000
+      max_tokens: 1500
     }
   );
 
   return res.response;
 };
+    async function aiLargo(prompt, bloques = 3) {
+
+  let resultado = "";
+
+  for (let i = 1; i <= bloques; i++) {
+
+    const parte = await ai(`
+${prompt}
+
+PARTE ${i} DE ${bloques}
+
+Continúa desarrollando contenido.
+No repitas contenido anterior.
+`);
+
+    resultado += "\n\n" + parte;
+  }
+
+  return resultado;
+    }
     
 
     switch (tipo) {
 
-/*      // 🎯 IDEAS VIRALMENTE DIFERENTES
+      // 🎯 IDEAS VIRALMENTE DIFERENTES
      case "ideas": {
 
-  const ideas = [];
+  const match = tema.match(/\d+/);
 
-  const enfoques = [
-    "educativo",
-    "viral",
-    "storytelling",
-    "emocional",
-    "técnico"
-  ];
+  let cantidad = match
+    ? parseInt(match[0])
+    : 5;
 
-  for (const enfoque of enfoques) {
+  const resultado = await aiLargo(
+`
+Genera ${cantidad} ideas completamente diferentes sobre:
 
-    const idea = await ai(
-      `Genera UNA sola idea sobre ${tema}.
-       Enfoque: ${enfoque}`
-    );
+${tema}
 
-    ideas.push(idea);
-  }
+Cada idea debe incluir:
 
-  const resultado = ideas.join("\n\n");
+- Título
+- Gancho
+- Desarrollo
+- Público objetivo
+`,
+3
+);
 
   return new Response(
     JSON.stringify({
@@ -104,19 +124,7 @@ Produce la respuesta más extensa posible.
     }
   );
 
-}*/
-      case "ideas": {
-
-  return new Response(
-    JSON.stringify({
-      ideas: "HOLA DESDE IDEAS"
-    }),
-    {
-      headers: corsHeaders
-    }
-  );
-
-      }  
+     }
 
       // ✍️ PROMPTS
       case "prompt": {
