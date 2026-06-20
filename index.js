@@ -1,36 +1,12 @@
-//corse
-return new Response(JSON.stringify(imagenes), {
-  headers: {
-    ...corsHeaders,
-    "Content-Type": "application/json"
-  }
-});
 // ============================
-// PIXELLAB45 WORKER LIMPIO (CORREGIDO)
+// PIXELLAB45 WORKER
 // ============================
 
 function crearPromptSistema() {
   return `
 Eres PIXELLAB45 AI.
-
-Actúas como un equipo completo formado por:
-- Experto en Inteligencia Artificial
-- Experto en Tecnología
-- Guionista profesional
-- Copywriter de marketing digital
-- Especialista en contenido viral
-- Consultor SEO
-- Diseñador de prompts para IA
-- Productor audiovisual
-
-OBJETIVO:
-Crear contenido de máxima calidad para creadores digitales, emprendedores y entusiastas de la tecnología.
-
-REGLAS:
-- Evita respuestas genéricas.
-- Evita relleno innecesario.
-- Sé específico y práctico.
-- Entrega contenido listo para usar.
+Actúas como un sistema experto en IA, marketing y contenido viral.
+Respuestas claras, útiles y accionables.
 `;
 }
 
@@ -47,100 +23,107 @@ async function consultarIA(env, promptUsuario) {
 
   return resultado.response;
 }
-async fetch(request, env) {
-  try {
 
-    const contentType = request.headers.get("content-type") || "";
+// ============================
+// EXPORT DEFAULT (WORKER)
+// ============================
 
-    if (!contentType.includes("application/json")) {
-      return new Response(JSON.stringify({
-        error: "Content-Type inválido"
-      }), {
-        headers: { "Content-Type": "application/json" }
+export default {
+  async fetch(request, env) {
+
+    // ✅ CORS SIEMPRE AQUÍ (UNA SOLA VEZ)
+    const corsHeaders = {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "Content-Type",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      "Content-Type": "application/json"
+    };
+
+    // ✅ PRE-FLIGHT (OBLIGATORIO)
+    if (request.method === "OPTIONS") {
+      return new Response(null, {
+        headers: corsHeaders
       });
     }
 
-    const text = await request.text();
+    try {
 
-    let data = {};
-
-    if (text && text.trim().length > 0) {
-      if (text.trim().startsWith("{")) {
-        data = JSON.parse(text);
-      }
-    }
-
-    const {
-      tipo,
-      tema,
-      formato,
-      guion,
-      escenas,
-      estilo,
-      imagenBase64,
-      categoria,
-      contenido,
-      duracion,
-      project,
-      modo
-    } = data;
-
-    if (!tipo) {
-      return new Response(JSON.stringify({
-        error: "Payload inválido: se requiere 'tipo'"
-      }), {
-        headers: { "Content-Type": "application/json" }
-      });
-    }
-
-    switch (tipo) {
-/*case "listar-imagenes": {
-
-  try {
-
-    const objetos = await env.IMAGES.list();
-
-    const imagenes = objetos.objects.map(obj => ({
-      nombre: obj.key,
-      url: `https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev/${obj.key}`
-    }));
-
-    return new Response(
-      JSON.stringify(imagenes),
-      {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json"
-        }
-      }
-    );
-
-  } catch (error) {
-
-    return new Response(
-      JSON.stringify([]),
-      {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json"
-        }
-      }
-    );
-
-  }
-
-}*/
-        case "listar-imagenes": {
-
-  return new Response(
-    '[{"nombre":"test.png","url":"https://placehold.co/600x400"}]',
-    {
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/json"
-      }
-    }
-  );
-
-        }
+      // ⚠️ SOLO JSON POST
+      let data = {};
       
+      if (request.method === "POST") {
+        try {
+          data = await request.json();
+        } catch (e) {
+          return new Response(
+            JSON.stringify({ error: "JSON inválido" }),
+            { headers: corsHeaders }
+          );
+        }
+      }
+
+      const { tipo } = data;
+
+      if (!tipo) {
+        return new Response(
+          JSON.stringify({ error: "Falta tipo" }),
+          { headers: corsHeaders }
+        );
+      }
+
+      // ============================
+      // ROUTER
+      // ============================
+      switch (tipo) {
+
+        case "ping":
+          return new Response(
+            JSON.stringify({ ok: true }),
+            { headers: corsHeaders }
+          );
+
+        case "ideas": {
+          const ideas = await consultarIA(env, `Dame ideas sobre: ${data.tema}`);
+          return new Response(
+            JSON.stringify({ ideas }),
+            { headers: corsHeaders }
+          );
+        }
+
+        case "prompt": {
+          const resultado = await consultarIA(env, data.tema);
+          return new Response(
+            JSON.stringify({ resultado }),
+            { headers: corsHeaders }
+          );
+        }
+
+        case "listar-imagenes": {
+          const objetos = await env.IMAGES.list();
+
+          const imagenes = objetos.objects.map(obj => ({
+            nombre: obj.key,
+            url: `https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev/${obj.key}`
+          }));
+
+          return new Response(
+            JSON.stringify(imagenes),
+            { headers: corsHeaders }
+          );
+        }
+
+        default:
+          return new Response(
+            JSON.stringify({ error: "Tipo no válido" }),
+            { headers: corsHeaders }
+          );
+      }
+
+    } catch (err) {
+      return new Response(
+        JSON.stringify({ error: err.message }),
+        { status: 500, headers: corsHeaders }
+      );
+    }
+  }
+};
