@@ -479,6 +479,12 @@ window.addEventListener("load", () => {
 });
 async function cargarGaleriaCompleta() {
 
+  const contenedor =
+    document.getElementById("galeriaCompleta");
+
+  contenedor.innerHTML =
+    "⏳ Cargando galería completa...";
+
   try {
 
     const res = await fetch(
@@ -494,19 +500,27 @@ async function cargarGaleriaCompleta() {
       }
     );
 
-    alert("STATUS: " + res.status);
+    const imagenes =
+      await res.json();
+
+    contenedor.innerHTML = "";
+
+    imagenes.forEach(img => {
+
+      contenedor.innerHTML += `
+        <div class="project-card">
+          <img src="${img.url}">
+        </div>
+      `;
+
+    });
 
   } catch(error) {
 
-    alert(
-      "ERROR: " +
-      error.name +
-      " - " +
-      error.message
-    );
+    contenedor.innerHTML =
+      "❌ Error cargando galería";
 
   }
-
 }
 async function generarVideo() {
 
