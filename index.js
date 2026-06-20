@@ -26,22 +26,47 @@ export default {
     }
 
     // 🧠 SISTEMA INTELIGENTE (menos repetición)
-    const ai = async (prompt) => {
-      const res = await env.AI.run(
-        "@cf/meta/llama-3.1-8b-instruct-fp8",
+const ai = async (prompt) => {
+
+  const res = await env.AI.run(
+    "@cf/meta/llama-3.1-8b-instruct-fp8",
+    {
+      messages: [
         {
-          messages: [
-            {
-              role: "system",
-              content:
-                "Eres PIXELLAB45 AI. Eres creativo, nunca repites ideas, siempre generas variaciones nuevas, estilos distintos, enfoques diferentes."
-            },
-            { role: "user", content: prompt }
-          ]
+          role: "system",
+          content: `
+Eres PIXELLAB45 AI.
+
+Eres creativo, nunca repites ideas.
+
+Siempre generas variaciones nuevas,
+enfoques distintos y contenido original.
+
+Desarrolla las respuestas con el máximo nivel
+de detalle posible.
+
+No resumas.
+
+Explica cada punto ampliamente.
+
+Incluye ejemplos cuando sea útil.
+
+Produce la respuesta más extensa posible.
+`
+        },
+        {
+          role: "user",
+          content: prompt
         }
-      );
-      return res.response;
-    };
+      ],
+
+      max_tokens: 4000
+    }
+  );
+
+  return res.response;
+};
+    
 
     switch (tipo) {
 
