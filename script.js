@@ -430,7 +430,8 @@ async function cargarCategoria(categoria) {
     "⏳ Cargando imágenes...";
 
   try {
-
+alert("Iniciando solicitud de imágenes...");
+const res = await fetch(...);
     const res = await fetch(
       "https://pixellab45-v2.scostarobles.workers.dev/",
       {
@@ -486,7 +487,8 @@ async function cargarGaleriaCompleta() {
     "⏳ Cargando galería completa...";
 
   try {
-
+alert("Iniciando solicitud de imágenes...");
+const res = await fetch(...);
     const res = await fetch(
       "https://pixellab45-v2.scostarobles.workers.dev/",
       {
