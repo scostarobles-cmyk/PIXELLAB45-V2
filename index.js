@@ -193,40 +193,36 @@ Reglas:
       case "visuales": {
 
   const r = await ai(`
-Eres un director de cine, director de fotografía y experto en prompts para IA visual.
+Actúas como un director de cine, director de fotografía y experto en prompts para IA visual.
 
-Tema:
+TEMA:
 ${tema}
 
-Genera EXACTAMENTE 5 prompts visuales.
+OBJETIVO:
 
-REGLAS:
+Generar EXACTAMENTE 5 prompts visuales cinematográficos profesionales relacionados directamente con el tema proporcionado.
 
-- No expliques nada.
-- No uses títulos creativos.
-- No uses "imagina".
-- No uses "crea una imagen".
-- No uses narrativa.
-- No cuentes historias.
-- No agregues comentarios.
-- Devuelve únicamente los prompts.
+REGLAS OBLIGATORIAS:
 
-Cada prompt debe describir:
+- Todos los prompts deben estar relacionados con el tema.
+- Cada prompt debe mostrar una escena completamente diferente.
+- No repetir personajes.
+- No repetir escenarios.
+- No repetir iluminación.
+- No repetir ángulos de cámara.
+- No repetir composición.
+- No usar títulos creativos.
+- No usar explicaciones.
+- No usar comentarios.
+- No usar listas.
+- No usar viñetas.
+- No usar "imagina".
+- No usar "crea una imagen".
+- No usar narrativa.
+- No contar historias.
+- No escribir introducciones.
 
-- personaje o sujeto principal
-- vestimenta y apariencia
-- entorno
-- iluminación
-- cámara
-- lente
-- composición
-- atmósfera
-- estilo visual
-- calidad cinematográfica
-
-Los prompts deben parecer escenas reales de cine.
-
-Formato:
+FORMATO OBLIGATORIO:
 
 PROMPT 1:
 ...
@@ -243,18 +239,25 @@ PROMPT 4:
 PROMPT 5:
 ...
 
-Todos los prompts deben finalizar con:
+Cada prompt debe incluir naturalmente:
 
-ultra detailed,
-cinematic lighting,
-professional cinematography,
-depth of field,
-volumetric lighting,
-photorealistic,
-highly detailed,
-8k,
-masterpiece
+sujeto principal,
+apariencia,
+entorno,
+iluminación,
+cámara,
+lente,
+composición,
+atmósfera,
+estilo visual,
+nivel de detalle,
+calidad cinematográfica.
 
+Cada prompt debe terminar exactamente con:
+
+ultra detailed, cinematic lighting, professional cinematography, depth of field, volumetric lighting, photorealistic, highly detailed, 8k, masterpiece
+
+Devuelve únicamente los 5 prompts.
 `);
 
   return new Response(
@@ -262,6 +265,7 @@ masterpiece
     { headers: corsHeaders }
   );
       }
+
       
 
       // 🎬 STORYBOARD
