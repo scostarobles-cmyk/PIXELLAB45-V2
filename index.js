@@ -71,7 +71,7 @@ Produce la respuesta más extensa posible.
     switch (tipo) {
 
       // 🎯 IDEAS VIRALMENTE DIFERENTES
-  /*    case "ideas": {
+     case "ideas": {
         const ideas = [];
 
 const enfoques = [
@@ -93,22 +93,8 @@ for (const enfoque of enfoques) {
 }
 
 const resultado = ideas.join("\n\n");
-      }*/
-        case "ideas": {
-
-  return new Response(
-    JSON.stringify({
-      ideas: "DEPLOY-TEST-20260620"
-    }),
-    {
-      headers: {
-        ...corsHeaders,
-        "Content-Type": "application/json"
       }
-    }
-  );
-
-        }
+        
 
       // ✍️ PROMPTS
       case "prompt": {
