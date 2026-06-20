@@ -90,9 +90,15 @@ async fetch(request, env) {
 
       case "listar-imagenes": {
   try {
-
     if (!env.IMAGES) {
-      throw new Error("Bucket IMAGES no configurado");
+      return new Response(
+        JSON.stringify({
+          error: "Bucket IMAGES no configurado"
+        }),
+        {
+          headers: { "Content-Type": "application/json" }
+        }
+      );
     }
 
     const objetos = await env.IMAGES.list();
@@ -102,28 +108,20 @@ async fetch(request, env) {
       url: `https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev/${obj.key}`
     }));
 
+    // Devolvemos solo el array, sin envolver en un objeto
     return new Response(
       JSON.stringify(imagenes),
       {
-        headers: {
-          "Content-Type": "application/json"
-        }
+        headers: { "Content-Type": "application/json" }
       }
     );
 
   } catch (error) {
-
     return new Response(
-      JSON.stringify({
-        error: error.message
-      }),
+      JSON.stringify({ error: error.message || "Error al listar imágenes" }),
       {
-        status: 500,
-        headers: {
-          "Content-Type": "application/json"
-        }
+        headers: { "Content-Type": "application/json" }
       }
     );
-
   }
       }
