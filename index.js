@@ -90,7 +90,6 @@ async fetch(request, env) {
 
       case "listar-imagenes": {
   try {
-
     if (!env.IMAGES) {
       return new Response(JSON.stringify({
         success: false,
@@ -102,7 +101,10 @@ async fetch(request, env) {
 
     const objetos = await env.IMAGES.list();
 
-    const imagenes = objetos.objects.map(obj => ({
+    // Logueamos lo que se está recibiendo
+    console.log("Objetos recibidos del bucket:", objetos);
+
+    const imagenes = (objetos.objects || []).map(obj => ({
       nombre: obj.key,
       url: `https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev/${obj.key}`
     }));
@@ -111,7 +113,8 @@ async fetch(request, env) {
 
     return new Response(JSON.stringify({
       success: true,
-      imagenes
+      imagenes,
+      debug: objetos // Devolvemos los objetos para ver qué nos llega
     }), {
       headers: {
         "Content-Type": "application/json"
@@ -121,9 +124,12 @@ async fetch(request, env) {
   } catch (error) {
     return new Response(JSON.stringify({
       success: false,
-      error: error.message || "Error al listar imágenes"
+      error: error.message || "Error al listar imágenes",
+      debug: error // Devolvemos el error recibido
     }), {
-      headers: { "Content-Type": "application/json" }
+      headers: {
+        "Content-Type": "application/json"
+      }
     });
   }
       }
