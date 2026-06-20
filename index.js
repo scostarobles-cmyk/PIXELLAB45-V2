@@ -193,33 +193,38 @@ Reglas:
       case "visuales": {
 
   const r = await ai(`
-
-Eres un experto en prompts para generación de imágenes IA.
+Eres un director de cine, director de fotografía y experto en prompts para IA visual.
 
 Tema:
 ${tema}
 
-Genera EXACTAMENTE 5 prompts.
+Genera EXACTAMENTE 5 prompts visuales.
 
-Reglas:
+REGLAS:
 
-- Solo devuelve prompts.
 - No expliques nada.
-- No agregues títulos.
-- No agregues introducciones.
-- No agregues numeración.
-- No agregues texto fuera de los prompts.
+- No uses títulos creativos.
+- No uses "imagina".
+- No uses "crea una imagen".
+- No uses narrativa.
+- No cuentes historias.
+- No agregues comentarios.
+- Devuelve únicamente los prompts.
 
-Cada prompt debe incluir:
+Cada prompt debe describir:
 
-- sujeto principal
+- personaje o sujeto principal
+- vestimenta y apariencia
 - entorno
 - iluminación
 - cámara
+- lente
 - composición
+- atmósfera
 - estilo visual
-- nivel de detalle
 - calidad cinematográfica
+
+Los prompts deben parecer escenas reales de cine.
 
 Formato:
 
@@ -238,7 +243,17 @@ PROMPT 4:
 PROMPT 5:
 ...
 
-Los prompts deben estar listos para Midjourney, Flux, SDXL o Imagen.
+Todos los prompts deben finalizar con:
+
+ultra detailed,
+cinematic lighting,
+professional cinematography,
+depth of field,
+volumetric lighting,
+photorealistic,
+highly detailed,
+8k,
+masterpiece
 
 `);
 
