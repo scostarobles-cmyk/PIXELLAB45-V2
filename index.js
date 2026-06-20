@@ -71,39 +71,42 @@ Produce la respuesta más extensa posible.
     switch (tipo) {
 
       // 🎯 IDEAS VIRALMENTE DIFERENTES
-     case "ideas": {
+  case "ideas": {
 
-  const match = tema.match(/\d+/);
-
-  let cantidad = match
-    ? parseInt(match[0])
+  let cantidad = tema.match(/\d+/)
+    ? parseInt(tema.match(/\d+/)[0])
     : 5;
 
-  if (cantidad > 10) cantidad = 10;
+  if (cantidad > 30) cantidad = 30;
 
-  const resultado = await ai(`
-Genera ${cantidad} ideas completamente diferentes sobre:
+  const bloques = Math.ceil(cantidad / 5);
+  let resultado = [];
 
-${tema}
+  for (let i = 0; i < bloques; i++) {
 
-Para cada idea incluye:
+    const desde = i * 5 + 1;
+    const hasta = Math.min((i + 1) * 5, cantidad);
 
+    const parte = await ai(`
+Genera ideas numeradas del ${desde} al ${hasta} sobre: ${tema}
+
+Cada idea debe incluir:
 - Título
 - Gancho
-- Descripción breve
+- Desarrollo breve
 
-Las ideas deben ser distintas entre sí.
+No repitas ideas anteriores.
 `);
+
+    resultado.push(parte);
+  }
 
   return new Response(
     JSON.stringify({
-      ideas: resultado
+      ideas: resultado.join("\n\n")
     }),
-    {
-      headers: corsHeaders
-    }
+    { headers: corsHeaders }
   );
-
 }
 
       // ✍️ PROMPTS
