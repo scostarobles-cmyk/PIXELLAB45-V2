@@ -183,8 +183,6 @@ function copiarStoryboard() {
   }, 3000);
 }
 
-
-async function generarIdeas() {
 async function generarIdeas() {
 
   const tema = document.getElementById("tema").value;
