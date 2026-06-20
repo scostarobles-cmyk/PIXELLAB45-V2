@@ -189,7 +189,8 @@ async function generarIdeas() {
   const tema = document.getElementById("tema").value;
 
   try {
-
+document.getElementById("resultadoIdeas").innerHTML =
+  "🧠 Generando ideas...";
     const res = await fetch(
       "https://pixellab45-v2.scostarobles.workers.dev/",
       {
