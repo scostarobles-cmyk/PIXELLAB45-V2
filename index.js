@@ -60,32 +60,12 @@ Produce la respuesta más extensa posible.
         }
       ],
 
-      max_tokens: 1500
+      max_tokens: 1000
     }
   );
 
   return res.response;
 };
-    async function aiLargo(prompt, bloques = 3) {
-
-  let resultado = "";
-
-  for (let i = 1; i <= bloques; i++) {
-
-    const parte = await ai(`
-${prompt}
-
-PARTE ${i} DE ${bloques}
-
-Continúa desarrollando contenido.
-No repitas contenido anterior.
-`);
-
-    resultado += "\n\n" + parte;
-  }
-
-  return resultado;
-    }
     
 
     switch (tipo) {
@@ -99,21 +79,21 @@ No repitas contenido anterior.
     ? parseInt(match[0])
     : 5;
 
-  const resultado = await aiLargo(
-`
+  if (cantidad > 10) cantidad = 10;
+
+  const resultado = await ai(`
 Genera ${cantidad} ideas completamente diferentes sobre:
 
 ${tema}
 
-Cada idea debe incluir:
+Para cada idea incluye:
 
 - Título
 - Gancho
-- Desarrollo
-- Público objetivo
-`,
-3
-);
+- Descripción breve
+
+Las ideas deben ser distintas entre sí.
+`);
 
   return new Response(
     JSON.stringify({
@@ -124,7 +104,7 @@ Cada idea debe incluir:
     }
   );
 
-     }
+}
 
       // ✍️ PROMPTS
       case "prompt": {
