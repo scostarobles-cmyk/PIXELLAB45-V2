@@ -94,7 +94,7 @@ async fetch(request, env) {
     }
 
     switch (tipo) {
-case "listar-imagenes": {
+/*case "listar-imagenes": {
 
   try {
 
@@ -129,5 +129,18 @@ case "listar-imagenes": {
 
   }
 
-}
+}*/
+        case "listar-imagenes": {
+
+  return new Response(
+    '[{"nombre":"test.png","url":"https://placehold.co/600x400"}]',
+    {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json"
+      }
+    }
+  );
+
+        }
       
