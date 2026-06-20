@@ -72,28 +72,39 @@ Produce la respuesta más extensa posible.
 
       // 🎯 IDEAS VIRALMENTE DIFERENTES
      case "ideas": {
-        const ideas = [];
 
-const enfoques = [
-  "educativo",
-  "viral",
-  "storytelling",
-  "emocional",
-  "técnico"
-];
+  const ideas = [];
 
-for (const enfoque of enfoques) {
+  const enfoques = [
+    "educativo",
+    "viral",
+    "storytelling",
+    "emocional",
+    "técnico"
+  ];
 
-  const idea = await ai(
-    `Genera UNA sola idea sobre ${tema}.
-     Enfoque: ${enfoque}`
+  for (const enfoque of enfoques) {
+
+    const idea = await ai(
+      `Genera UNA sola idea sobre ${tema}.
+       Enfoque: ${enfoque}`
+    );
+
+    ideas.push(idea);
+  }
+
+  const resultado = ideas.join("\n\n");
+
+  return new Response(
+    JSON.stringify({
+      ideas: resultado
+    }),
+    {
+      headers: corsHeaders
+    }
   );
 
-  ideas.push(idea);
 }
-
-const resultado = ideas.join("\n\n");
-      }
         
 
       // ✍️ PROMPTS
