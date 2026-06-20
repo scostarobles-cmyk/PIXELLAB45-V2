@@ -92,48 +92,38 @@ async fetch(request, env) {
   try {
 
     if (!env.IMAGES) {
-      return new Response(JSON.stringify({
-        success: false,
-        step: "env.IMAGES",
-        error: "Bucket IMAGES no configurado"
-      }), {
-        headers: { "Content-Type": "application/json" }
-      });
+      throw new Error("Bucket IMAGES no configurado");
     }
 
     const objetos = await env.IMAGES.list();
 
-    // 🔥 DEBUG REAL (esto es lo importante)
-    const debugInfo = {
-      count: objetos?.objects?.length || 0,
-      raw: objetos,
-      keys: objetos?.objects?.map(o => o.key) || []
-    };
-
-    const imagenes = (objetos.objects || []).map(obj => ({
+    const imagenes = objetos.objects.map(obj => ({
       nombre: obj.key,
       url: `https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev/${obj.key}`
     }));
 
-    return new Response(JSON.stringify({
-      success: true,
-      imagenes,
-      debug: debugInfo
-    }), {
-      headers: {
-        "Content-Type": "application/json"
+    return new Response(
+      JSON.stringify(imagenes),
+      {
+        headers: {
+          "Content-Type": "application/json"
+        }
       }
-    });
+    );
 
   } catch (error) {
 
-    return new Response(JSON.stringify({
-      success: false,
-      step: "catch_listar_imagenes",
-      error: error?.message,
-      stack: error?.stack
-    }), {
-      headers: { "Content-Type": "application/json" }
-    });
+    return new Response(
+      JSON.stringify({
+        error: error.message
+      }),
+      {
+        status: 500,
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+    );
+
   }
       }
