@@ -521,7 +521,9 @@ return;
   } catch(error) {
 
     contenedor.innerHTML =
-      "❌ Error cargando galería";
+  "❌ Error cargando galería: " + error.message;
+
+alert(error.message);
 
   }
 }
