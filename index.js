@@ -174,6 +174,14 @@ const {
     }
   );
   }
+  return new Response(
+  JSON.stringify({
+    debugData: data
+  }),
+  {
+    headers: { "Content-Type": "application/json" }
+  }
+);
   
     switch (tipo) {
 
