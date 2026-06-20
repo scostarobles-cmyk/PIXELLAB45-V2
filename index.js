@@ -121,40 +121,37 @@ Cada idea debe ser completamente diferente.
       // ✍️ PROMPTS
       case "prompt": {
 
-  const { titulo, gancho, descripcion } = data;
+  const r = await ai(`
+Eres un generador de prompts cinematográficos profesionales.
 
-  const secciones = [
-    "GANCHO",
-    "DESCRIPCIÓN VISUAL",
-    "CÁMARA Y ÁNGULOS",
-    "ILUMINACIÓN",
-    "AMBIENTE Y TONO"
-  ];
+A partir del siguiente TEMA:
 
-  const partes = [];
+"${tema}"
 
-  for (const sec of secciones) {
+Debes generar:
 
-    const r = await ai(
-      `Basado en:
-TÍTULO: ${safe(titulo)}
-GANCHO: ${safe(gancho)}
-DESCRIPCIÓN: ${safe(descripcion)}
+1. GANCHO potente
+2. DESCRIPCIÓN VISUAL detallada
+3. CÁMARA Y ÁNGULOS cinematográficos
+4. ILUMINACIÓN profesional
+5. AMBIENTE Y TONO
 
-Genera SOLO la sección: ${sec}
-Máximo claridad, sin texto extra.`
-    );
+REGLAS:
+- NO inventes datos faltantes, usa SOLO el tema
+- NO digas que falta información
+- NO expliques teoría
+- NO hagas definiciones
+- SOLO contenido aplicable a video
+- FORMATO limpio y directo
 
-    partes.push(`**${sec}**\n${r}`);
-  }
-
-  const resultado = partes.join("\n\n");
+Hazlo como un prompt listo para IA de video.
+`);
 
   return new Response(
-    JSON.stringify({ resultado }),
+    JSON.stringify({ resultado: r }),
     { headers: corsHeaders }
   );
-      }
+}
 
 
       // 🎬 GUIONES
