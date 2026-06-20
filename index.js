@@ -130,50 +130,44 @@ async function consultarIA(env, promptUsuario) {
 // ============================
 
 export default {
+  async fetch(request, env) {
+    try {
+      const contentType = request.headers.get("content-type") || "";
+      if (!contentType.includes("application/json")) {
+        return new Response(JSON.stringify({
+          error: "Content-Type inválido"
+        }), {
+          headers: { "Content-Type": "application/json" }
+        });
+      }
 
-  
-async fetch(request, env) {
+      const text = await request.text();
+      let data = {};
 
-  const contentType = request.headers.get("content-type") || "";
+      if (text && text.trim().length > 0) {
+        if (text.trim().startsWith("{")) {
+          data = JSON.parse(text);
+        }
+      }
 
-  if (!contentType.includes("application/json")) {
-    return new Response(JSON.stringify({
-      error: "Content-Type inválido"
-    }), {
-      headers: { "Content-Type": "application/json" }
-    });
-  }
+      const {
+        tipo,
+        tema,
+        formato,
+        guion,
+        escenas,
+        estilo,
+        imagenBase64,
+        categoria
+      } = data;
 
-  const text = await request.text();
-
-let data = {};
-
-if (text && text.trim().length > 0) {
-  if (text.trim().startsWith("{")) {
-    data = JSON.parse(text);
-  }
-}
-
-const {
-  tipo,
-  tema,
-  formato,
-  guion,
-  escenas,
-  estilo,
-  imagenBase64,
-  categoria
-} = data;
-  if (!data || !data.tipo) {
-  return new Response(
-    JSON.stringify({
-      error: "Payload inválido: se requiere 'tipo'"
-    }),
-    {
-      headers: { "Content-Type": "application/json" }
-    }
-  );
-  }
+      if (!data || !data.tipo) {
+        return new Response(
+          JSON.stringify({
+            error: "Payload inválido: se requiere 'tipo'"
+          }),
+          {
+            headers: { "Content-Type": "application/json"
   
   
     switch (tipo) {
