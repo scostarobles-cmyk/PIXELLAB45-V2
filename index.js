@@ -90,9 +90,11 @@ async fetch(request, env) {
 
       case "listar-imagenes": {
   try {
+
     if (!env.IMAGES) {
       return new Response(JSON.stringify({
         success: false,
+        step: "env.IMAGES",
         error: "Bucket IMAGES no configurado"
       }), {
         headers: { "Content-Type": "application/json" }
@@ -101,20 +103,22 @@ async fetch(request, env) {
 
     const objetos = await env.IMAGES.list();
 
-    // Logueamos lo que se está recibiendo
-    console.log("Objetos recibidos del bucket:", objetos);
+    // 🔥 DEBUG REAL (esto es lo importante)
+    const debugInfo = {
+      count: objetos?.objects?.length || 0,
+      raw: objetos,
+      keys: objetos?.objects?.map(o => o.key) || []
+    };
 
     const imagenes = (objetos.objects || []).map(obj => ({
       nombre: obj.key,
       url: `https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev/${obj.key}`
     }));
 
-    imagenes.sort((a, b) => b.nombre.localeCompare(a.nombre));
-
     return new Response(JSON.stringify({
       success: true,
       imagenes,
-      debug: objetos // Devolvemos los objetos para ver qué nos llega
+      debug: debugInfo
     }), {
       headers: {
         "Content-Type": "application/json"
@@ -122,14 +126,14 @@ async fetch(request, env) {
     });
 
   } catch (error) {
+
     return new Response(JSON.stringify({
       success: false,
-      error: error.message || "Error al listar imágenes",
-      debug: error // Devolvemos el error recibido
+      step: "catch_listar_imagenes",
+      error: error?.message,
+      stack: error?.stack
     }), {
-      headers: {
-        "Content-Type": "application/json"
-      }
+      headers: { "Content-Type": "application/json" }
     });
   }
       }
