@@ -60,13 +60,14 @@ Produce la respuesta más extensa posible.
         }
       ],
 
-      max_tokens: 1000
+      max_tokens: 3000
     }
   );
 
   return res.response;
 };
-    
+    const safe = (v) => v?.trim() || "No especificado";
+    switch (tipo) {
 
     switch (tipo) {
 
@@ -137,9 +138,9 @@ Cada idea debe ser completamente diferente.
 
     const r = await ai(
       `Basado en:
-TÍTULO: ${titulo}
-GANCHO: ${gancho}
-DESCRIPCIÓN: ${descripcion}
+TÍTULO: ${safe(titulo)}
+GANCHO: ${safe(gancho)}
+DESCRIPCIÓN: ${safe(descripcion)}
 
 Genera SOLO la sección: ${sec}
 Máximo claridad, sin texto extra.`
