@@ -1,4 +1,4 @@
-console.log("SCRIPT CARGADO OK");
+alert("SCRIPT CARGADO OK"););
 async function generarPrompt() {
 
   const tema =
