@@ -443,6 +443,11 @@ async function cargarCategoria(categoria) {
         })
       }
     );
+    alert(
+  "STATUS: " + res.status +
+  "\nOK: " + res.ok +
+  "\nCONTENT-TYPE: " + res.headers.get("content-type")
+);
 
     const imagenes = await res.json();
 
@@ -499,6 +504,11 @@ async function cargarGaleriaCompleta() {
         })
       }
     );
+    alert(
+  "STATUS: " + res.status +
+  "\nOK: " + res.ok +
+  "\nCONTENT-TYPE: " + res.headers.get("content-type")
+);
 
     const imagenes =
       await res.json();
