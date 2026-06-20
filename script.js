@@ -430,8 +430,7 @@ async function cargarCategoria(categoria) {
     "⏳ Cargando imágenes...";
 
   try {
-alert("Iniciando solicitud de imágenes...");
-const res = await fetch(...);
+
     const res = await fetch(
       "https://pixellab45-v2.scostarobles.workers.dev/",
       {
@@ -487,8 +486,7 @@ async function cargarGaleriaCompleta() {
     "⏳ Cargando galería completa...";
 
   try {
-alert("Iniciando solicitud de imágenes...");
-const res = await fetch(...);
+
     const res = await fetch(
       "https://pixellab45-v2.scostarobles.workers.dev/",
       {
@@ -627,23 +625,4 @@ async function consultarVideo(project) {
 
   }, 5000);
 
-}
-function reloadKling() {
-  const frame = document.getElementById("klingFrame");
-  if (!frame) return;
-
-  frame.src = frame.src;
-}
-function openFullscreenKling() {
-  const frame = document.getElementById("klingFrame");
-  if (!frame) return;
-
-  // activa fullscreen del iframe
-  if (frame.requestFullscreen) {
-    frame.requestFullscreen();
-  } else if (frame.webkitRequestFullscreen) {
-    frame.webkitRequestFullscreen();
-  } else if (frame.msRequestFullscreen) {
-    frame.msRequestFullscreen();
-  }
-}
+      }
