@@ -269,6 +269,41 @@ Devuelve únicamente los 5 prompts.
     { headers: corsHeaders }
   );
       }
+        // generasor de imagen 
+        case "imagen": {
+
+  const promptImagen = `
+${tema},
+
+ultra detailed,
+cinematic lighting,
+professional cinematography,
+depth of field,
+volumetric lighting,
+photorealistic,
+highly detailed,
+8k,
+masterpiece
+`;
+
+  const imagen = await env.AI.run(
+    "@cf/lykon/dreamshaper-8-lcm",
+    {
+      prompt: promptImagen
+    }
+  );
+
+  return new Response(
+    imagen,
+    {
+      headers: {
+        ...corsHeaders,
+        "Content-Type": "image/png",
+        "Cache-Control": "no-cache"
+      }
+    }
+  );
+        }
 
       // 🎬 STORYBOARD
       case "storyboard": {
