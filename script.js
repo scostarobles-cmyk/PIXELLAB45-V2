@@ -152,8 +152,14 @@ function copiarGuion(){
       }
     );
 
-    const data = await res.json();
+    const texto = await res.text();
 
+resultado.innerHTML =
+  `<pre style="white-space:pre-wrap">${texto}</pre>`;
+
+mensaje.innerText = "Respuesta recibida";
+
+return;
     resultado.innerHTML =
       `<div style="white-space:pre-wrap">${data.storyboard}</div>`;
 
