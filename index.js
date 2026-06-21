@@ -60,14 +60,14 @@ Produce la respuesta más extensa posible.
         }
       ],
 
-      max_tokens: 3000
+      max_tokens: 4000
     }
   );
 
   return res.response;
 };
     const safe = (v) => v?.trim() || "No especificado";
-
+const { tipo, tema, formato, categoria, imagenBase64, guion, escenas, estilo } = data;
     switch (tipo) {
 
       // 🎯 IDEAS VIRALMENTE DIFERENTES
