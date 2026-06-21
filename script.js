@@ -113,47 +113,50 @@ function copiarGuion(){
     document.getElementById("mensajeGuionCopiado").innerText = "";
   }, 3000);
 
-}function generarStoryboard() {
+}async function generarStoryboard() {
 
-  const guion =
-    document.getElementById("textoStoryboard").value;
+  const guion = document.getElementById("textoStoryboard").value;
+  const escenas = document.getElementById("cantidadEscenas").value;
+  const estilo = document.getElementById("estiloStoryboard").value;
 
-  if (guion.trim() === "") {
+  const resultado = document.getElementById("resultadoStoryboard");
+  const mensaje = document.getElementById("mensajeStoryboard");
 
-    document.getElementById("mensajeStoryboard").innerText =
-      "⚠️ Primero pega un guion";
-
+  if (!guion.trim()) {
+    mensaje.innerText = "⚠️ Primero pega un guion";
     return;
   }
 
-  const lineas =
-    guion.split("\n")
-    .filter(linea => linea.trim() !== "");
+  resultado.innerText = "🎬 Generando storyboard con IA...";
+  mensaje.innerText = "";
 
-  let storyboard =
-    "🎬 STORYBOARD PIXELLAB45\n\n";
+  try {
 
-  lineas.forEach((linea, index) => {
+    const res = await fetch(
+      "https://pixellab45-v2.scostarobles.workers.dev/",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          tipo: "storyboard",
+          guion,
+          escenas,
+          estilo
+        })
+      }
+    );
 
-    storyboard +=
-      `ESCENA ${index + 1}\n`;
+    const data = await res.json();
 
-    storyboard +=
-      `⏱️ Duración: 4 segundos\n\n`;
+    resultado.innerHTML =
+      `<div style="white-space:pre-wrap">${data.storyboard}</div>`;
 
-    storyboard +=
-      `🎙️ Narración:\n${linea}\n\n`;
+    mensaje.innerText = "✅ Storyboard generado correctamente";
 
-    storyboard +=
-      `🎥 Visual:\nEscena futurista relacionada con el tema.\n\n`;
+  } catch (error) {
 
-    storyboard +=
-      `──────────────────\n\n`;
-  });
-
-  document.getElementById(
-    "resultadoStoryboard"
-  ).innerText = storyboard;
+    resultado.innerText = "❌ Error: " + error.message;
+  }
 }
 
 function copiarStoryboard() {
