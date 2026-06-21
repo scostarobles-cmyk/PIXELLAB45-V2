@@ -334,23 +334,9 @@ case "storyboard": {
   const estilo = safe(data.estilo);
 
   const r = await ai(`
-Convierte el siguiente guion en un storyboard ESTRUCTURADO EN JSON.
+Devuelve SOLO JSON válido.
 
-GUION:
-${guion}
-
-CANTIDAD DE ESCENAS:
-${escenas}
-
-ESTILO:
-${estilo}
-
-REGLAS:
-- Devuelve SOLO JSON válido
-- No texto extra
-- No explicaciones
-- No markdown
-- No emojis
+Convierte el guion en escenas estructuradas.
 
 FORMATO:
 
@@ -365,6 +351,17 @@ FORMATO:
     }
   ]
 }
+
+GUION:
+${guion}
+
+CANTIDAD:
+${escenas}
+
+ESTILO:
+${estilo}
+
+NO agregues texto extra.
 `);
   return new Response(
     JSON.stringify({ storyboard: r }),
