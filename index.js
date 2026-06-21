@@ -327,12 +327,16 @@ unwanted reflections
       }
 
       // 🎬 STORYBOARD
-      case "storyboard": {
+case "storyboard": {
+
+  const guion = safe(data.guion);
+  const escenas = parseInt(data.escenas || 8);
+  const estilo = safe(data.estilo);
 
   const r = await ai(`
 Actúa como un director cinematográfico profesional.
 
-Convierte el siguiente guion en un storyboard cinematográfico profesional.
+Convierte este guion en storyboard:
 
 GUION:
 ${guion}
@@ -343,52 +347,37 @@ ${escenas}
 ESTILO VISUAL:
 ${estilo}
 
-REGLAS OBLIGATORIAS:
+REGLAS:
+- Genera exactamente ${escenas} escenas
+- No omitir partes del guion
+- Cada escena debe avanzar la historia
+- No resumas
+- Compatible con Kling, Runway, Pika
 
-- Genera exactamente ${escenas} escenas.
-- No generes menos escenas.
-- No resumas el guion.
-- Distribuye el contenido completo del guion entre todas las escenas.
-- Cada escena debe avanzar la historia.
-- Cada escena debe ser diferente.
-- Compatible con Kling, Veo, Runway, Pika y Minimax.
-
-FORMATO OBLIGATORIO:
+FORMATO:
 
 🎬 ESCENA 1
 
 🎙️ Narración:
-(texto)
+...
 
 🎥 Prompt Visual:
-(descripción cinematográfica completa)
+...
 
 📷 Cámara:
-(movimiento de cámara)
-
-🎨 Estilo:
-${estilo}
+...
 
 ⏱️ Duración:
-(segundos)
+...
 
---------------------------------
-
-Repetir hasta completar las ${escenas} escenas.
-
-No agregues explicaciones.
-No agregues introducciones.
-Devuelve únicamente el storyboard completo.
+(repetir hasta completar)
 `);
 
   return new Response(
-    JSON.stringify({ resultado: r }),
-    {
-      headers: corsHeaders
-    }
+    JSON.stringify({ storyboard: r }),
+    { headers: corsHeaders }
   );
-      }
-
+}
       // 🖼️ GALERÍA R2
       case "listar-imagenes": {
   try {
