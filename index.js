@@ -193,69 +193,76 @@ Reglas:
       case "visuales": {
 
   const r = await ai(`
-Actúas como un director de cine, director de fotografía y experto en prompts para IA visual.
+Actúas como un experto mundial en prompts para IA visual.
 
 TEMA:
 ${tema}
 
-OBJETIVO:
-
-Generar EXACTAMENTE 5 prompts visuales cinematográficos profesionales relacionados directamente con el tema proporcionado.
+Genera EXACTAMENTE 5 prompts visuales profesionales.
 
 REGLAS OBLIGATORIAS:
 
 - Todos los prompts deben estar relacionados con el tema.
-- Cada prompt debe mostrar una escena completamente diferente.
-- No repetir personajes.
-- No repetir escenarios.
-- No repetir iluminación.
-- No repetir ángulos de cámara.
-- No repetir composición.
-- No usar títulos creativos.
-- No usar explicaciones.
-- No usar comentarios.
-- No usar listas.
-- No usar viñetas.
-- No usar "imagina".
-- No usar "crea una imagen".
+- Cada prompt debe representar una escena completamente diferente.
+- No escribir párrafos.
+- No escribir oraciones completas.
 - No usar narrativa.
 - No contar historias.
-- No escribir introducciones.
+- No usar verbos como:
+  "imagina",
+  "crea",
+  "muestra",
+  "observa",
+  "capturada",
+  "iluminada",
+  "ubicada",
+  "posicionada".
+- No usar frases como:
+  "la cámara está",
+  "la iluminación proviene",
+  "la composición es",
+  "el sujeto principal es".
+- No explicar nada.
+- No agregar comentarios.
 
 FORMATO OBLIGATORIO:
 
 PROMPT 1:
-...
+[elementos visuales separados por comas]
 
 PROMPT 2:
-...
+[elementos visuales separados por comas]
 
 PROMPT 3:
-...
+[elementos visuales separados por comas]
 
 PROMPT 4:
-...
+[elementos visuales separados por comas]
 
 PROMPT 5:
-...
+[elementos visuales separados por comas]
 
-Cada prompt debe incluir naturalmente:
+Cada prompt debe incluir:
 
-sujeto principal,
-apariencia,
-entorno,
-iluminación,
-cámara,
-lente,
-composición,
-atmósfera,
-estilo visual,
-nivel de detalle,
-calidad cinematográfica.
+- sujeto principal
+- apariencia
+- vestimenta
+- entorno
+- iluminación
+- cámara
+- lente
+- composición
+- atmósfera
+- estilo visual
 
-Cada prompt debe terminar exactamente con:
+Todos los prompts deben terminar exactamente con:
 
 ultra detailed, cinematic lighting, professional cinematography, depth of field, volumetric lighting, photorealistic, highly detailed, 8k, masterpiece
+
+EJEMPLO DE FORMATO:
+
+PROMPT 1:
+futuristic AI humanoid, glowing blue circuitry, cyberpunk laboratory, holographic screens, dramatic rim lighting, 50mm lens, medium shot, cinematic composition, sci-fi atmosphere, ultra detailed, cinematic lighting, professional cinematography, depth of field, volumetric lighting, photorealistic, highly detailed, 8k, masterpiece
 
 Devuelve únicamente los 5 prompts.
 `);
