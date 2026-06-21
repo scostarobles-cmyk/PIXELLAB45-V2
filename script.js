@@ -541,9 +541,15 @@ async function cargarGaleriaCompleta() {
         })
       }
     );
+    
 
     const imagenes =
       await res.json();
+    if (Array.isArray(imagenes)) {
+    imagenes.forEach(...);
+} else {
+    contenedor.innerHTML = "❌ Respuesta inesperada: " + JSON.stringify(imagenes);
+    }
 
     contenedor.innerHTML = "";
 
