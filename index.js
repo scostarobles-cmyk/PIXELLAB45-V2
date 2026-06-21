@@ -19,7 +19,7 @@ export default {
       return new Response(JSON.stringify({ error: "JSON inválido" }), { headers: corsHeaders });
     }
 
-    const { tipo, tema, formato, categoria, imagenBase64 } = data;
+//    const { tipo, tema, formato, categoria, imagenBase64 } = data;
 
     if (!tipo) {
       return new Response(JSON.stringify({ error: "Falta tipo" }), { headers: corsHeaders });
