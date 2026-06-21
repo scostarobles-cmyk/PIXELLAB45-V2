@@ -362,16 +362,22 @@ ${estilo}
 }
 
 // 📚 GUARDAR IDEA
-case "guardar-idea": {
+case "guardar-ideas": {
 
-  try {
+  const bloques = contenido
+    .split(/\n(?=\d+\.)/)
+    .filter(x => x.trim());
 
-    const nombreArchivo =
-      `ideas/${Date.now()}-${crypto.randomUUID()}.txt`;
+  let guardadas = 0;
+
+  for (const idea of bloques) {
+
+    const nombre =
+      `ideas/${Date.now()}-${guardadas}.txt`;
 
     await env.IMAGES.put(
-      nombreArchivo,
-      contenido,
+      nombre,
+      idea,
       {
         httpMetadata: {
           contentType: "text/plain"
@@ -379,29 +385,22 @@ case "guardar-idea": {
       }
     );
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        nombre: nombreArchivo
-      }),
-      {
-        headers: corsHeaders
-      }
-    );
-
-  } catch (error) {
-
-    return new Response(
-      JSON.stringify({
-        success: false,
-        error: error.message
-      }),
-      {
-        headers: corsHeaders
-      }
-    );
+    guardadas++;
 
   }
+
+  return new Response(
+    JSON.stringify({
+      success: true,
+      guardadas
+    }),
+    {
+      headers: {
+        ...corsHeaders,
+        "Content-Type": "application/json"
+      }
+    }
+  );
 
 }
       
