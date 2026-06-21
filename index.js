@@ -160,20 +160,16 @@ No resumes.
     switch (tipo) {
 
       // =====================================================
-// GALERÍA COMPLETA
-// Obtiene todos los archivos almacenados en R2
+// LISTAR IMÁGENES
+// Devuelve todas las imágenes almacenadas en R2
 // =====================================================
 
-case "galeria-completa": {
+case "listar-imagenes": {
 
   try {
 
     if (!env.IMAGES) {
-
-      return fail(
-        "Bucket IMAGES no configurado"
-      );
-
+      return fail("Bucket IMAGES no configurado");
     }
 
     const objetos =
@@ -193,9 +189,7 @@ case "galeria-completa": {
 
   } catch (error) {
 
-    return fail(
-      error.message
-    );
+    return fail(error.message);
 
   }
 
