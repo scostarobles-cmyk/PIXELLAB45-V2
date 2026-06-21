@@ -70,14 +70,6 @@ async function listarImagenes(env, json) {
   try {
     const objs = await env.IMAGES.list();
 
-    // Asegúrate de que hay objetos y construye la lista
-    if (!objs.objects || objs.objects.length === 0) {
-      return json({
-        success: true,
-        images: [],
-      });
-    }
-
     const images = objs.objects.map((obj) => ({
       nombre: obj.key,
       url: `https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev/${obj.key}`
@@ -85,7 +77,8 @@ async function listarImagenes(env, json) {
 
     return json({
       success: true,
-      images: images,
+      images: images, // Aseguramos que se envía un objeto con images
+      total: images.length, // opcional, solo si quieres
     });
 
   } catch (error) {
