@@ -149,16 +149,36 @@ async function generarIdeas(data, ai, json) {
   if (match) cantidad = Math.min(parseInt(match[0]), 20);
 
   const r = await ai(`
-Genera ${cantidad} ideas virales sobre: ${data.tema}
+Eres un generador técnico de ideas para contenido viral.
 
-Cada idea debe incluir:
-- título
-- gancho
-- desarrollo
+REGLAS ESTRICTAS:
+- NO introducciones
+- NO explicaciones
+- NO texto fuera de las ideas
+- NO frases como "aquí tienes", "espero que te sirva"
+- NO conclusiones
+- NO narrativa humana
+
+FORMATO OBLIGATORIO:
+
+Idea 1:
+Título:
+Gancho:
+Desarrollo:
+
+Idea 2:
+Título:
+Gancho:
+Desarrollo:
+
+Idea 3:
+Título:
+Gancho:
+Desarrollo:
+
+Genera EXACTAMENTE ${cantidad} ideas sobre:
+${data.tema}
 `);
-
-  return json({ ideas: r });
-}
 async function guardarIdea(data, env, json) {
 
   if (!data.contenido) {
