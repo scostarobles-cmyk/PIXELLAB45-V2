@@ -270,18 +270,14 @@ Devuelve únicamente los 5 prompts.
   );
       }
         // generasor de imagen 
-        case "imagen": {
+      case "imagen": {
 
-  const promptImagen = `
-${tema}
-`;
+  const promptImagen = `${tema}`;
 
   const imagen = await env.AI.run(
     "@cf/stabilityai/stable-diffusion-xl-base-1.0",
     {
       prompt: promptImagen,
-
-      guidance: 12,
 
       negative_prompt: `
 extra objects,
@@ -290,11 +286,8 @@ multiple subjects,
 blurry,
 low quality,
 distorted,
-cropped,
 bad anatomy,
-extra limbs,
-unwanted reflections,
-unwanted background elements
+unwanted reflections
 `
     }
   );
@@ -304,12 +297,11 @@ unwanted background elements
     {
       headers: {
         ...corsHeaders,
-        "Content-Type": "image/png",
-        "Cache-Control": "no-cache"
+        "Content-Type": "image/png"
       }
     }
   );
-        }
+      }
 
       // 🎬 STORYBOARD
       case "storyboard": {
