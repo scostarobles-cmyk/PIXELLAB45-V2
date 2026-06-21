@@ -165,29 +165,47 @@ Texto directo tipo instrucción de generación de video.
 
       // 🎬 GUIONES
       case "script": {
-        const r = await ai(`
-TÍTULO: ${safe(titulo)}
-GANCHO: ${safe(gancho)}
-DESCRIPCIÓN: ${safe(descripcion)}
 
-IMPORTANTE:
-- Nunca pidas información
-- Nunca digas “no hay datos”
-- Si algo está vacío, INFIERE contenido cinematográfico futurista
-- No expliques teoría
-- No definas conceptos
+  const r = await ai(`
+Actúa como un guionista profesional experto en videos virales de tecnología e inteligencia artificial.
 
-Genera SOLO esta sección: ${sec}
+Tema:
+${tema}
+
+Genera un guion completo.
+
+Estructura obligatoria:
+
+🎯 GANCHO
+
+🎬 DESARROLLO
+
+🔥 CIERRE
+
+📢 CTA
 
 Reglas:
-- Es contenido para video viral
-- No texto educativo
-- No introducciones
-- No conclusiones
+
+- Duración aproximada 60 segundos.
+- Escribir en español.
+- No pedir información adicional.
+- No explicar teoría.
+- No escribir instrucciones para cámara.
+- No escribir escenas.
+- No escribir storyboard.
+- Solo narración lista para voz en off.
+- El contenido debe ser dinámico y viral.
+
+Devuelve únicamente el guion.
 `);
 
-        return new Response(JSON.stringify({ resultado: r }), { headers: corsHeaders });
-      }
+  return new Response(
+    JSON.stringify({ resultado: r }),
+    {
+      headers: corsHeaders
+    }
+  );
+}
 
       // 🎨 VISUALES
       case "visuales": {
