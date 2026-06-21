@@ -64,30 +64,27 @@ export default {
 };
 async function listarImagenes(env, json) {
 
-  if (!env.IMAGES) {
-    return json({ error: "R2 IMAGES no configurado" }, 500);
-  }
-
   try {
+
+    if (!env.IMAGES) {
+      return json({ error: "Bucket IMAGES no configurado" }, 500);
+    }
+
     const objs = await env.IMAGES.list();
 
-    const list = objs?.objects || [];
-
-    const images = list.map(obj => ({
+    const imagenes = objs.objects.map(obj => ({
       nombre: obj.key,
       url: `https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev/${obj.key}`
     }));
 
     return json({
       success: true,
-      total: images.length,
-      images
+      images: imagenes
     });
 
-  } catch (err) {
+  } catch (error) {
     return json({
-      error: "Error leyendo R2",
-      detail: err?.message || "unknown"
+      error: error.message
     }, 500);
   }
 }
