@@ -39,7 +39,8 @@ export default {
       tema,
       formato,
       categoria,
-      imagenBase64
+      imagenBase64,
+      contenido
     } = data;
 
     if (!tipo) {
@@ -357,6 +358,50 @@ ${estilo}
       headers: corsHeaders
     }
   );
+
+}
+
+// 📚 GUARDAR IDEA
+case "guardar-idea": {
+
+  try {
+
+    const nombreArchivo =
+      `ideas/${Date.now()}-${crypto.randomUUID()}.txt`;
+
+    await env.IMAGES.put(
+      nombreArchivo,
+      contenido,
+      {
+        httpMetadata: {
+          contentType: "text/plain"
+        }
+      }
+    );
+
+    return new Response(
+      JSON.stringify({
+        success: true,
+        nombre: nombreArchivo
+      }),
+      {
+        headers: corsHeaders
+      }
+    );
+
+  } catch (error) {
+
+    return new Response(
+      JSON.stringify({
+        success: false,
+        error: error.message
+      }),
+      {
+        headers: corsHeaders
+      }
+    );
+
+  }
 
 }
       
