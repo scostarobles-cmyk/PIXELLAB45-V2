@@ -277,7 +277,7 @@ ${tema}
 `;
 
   const imagen = await env.AI.run(
-    "@cf/lykon/dreamshaper-8-lcm",
+    "@cf/stabilityai/stable-diffusion-xl-base-1.0",
     {
       prompt: promptImagen,
 
