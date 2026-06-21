@@ -222,6 +222,27 @@ Cada idea debe ser completamente diferente.
         );
 
       }
+      // ========================================
+// 🎬 GENERADOR DE GUIONES
+// ========================================
+
+case "script": {
+
+  const r = await ai(
+    `Escribe un guion viral corto sobre: ${tema}. 
+     Debe tener gancho inicial, desarrollo rápido y cierre impactante.`
+  );
+
+  return new Response(
+    JSON.stringify({
+      resultado: r
+    }),
+    {
+      headers: corsHeaders
+    }
+  );
+
+}
       
       //CIERRE DEL WORKER 
       default:
