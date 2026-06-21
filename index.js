@@ -305,12 +305,65 @@ unwanted reflections
 
       // 🎬 STORYBOARD
       case "storyboard": {
-        const r = await ai(
-          `Crea un storyboard escena por escena sobre: ${tema}. 
-           Cada escena debe ser diferente y progresiva.`
-        );
 
-        return new Response(JSON.stringify({ resultado: r }), { headers: corsHeaders });
+  const r = await ai(`
+Actúa como un director cinematográfico profesional.
+
+Convierte el siguiente guion en un storyboard cinematográfico profesional.
+
+GUION:
+${guion}
+
+CANTIDAD DE ESCENAS:
+${escenas}
+
+ESTILO VISUAL:
+${estilo}
+
+REGLAS OBLIGATORIAS:
+
+- Genera exactamente ${escenas} escenas.
+- No generes menos escenas.
+- No resumas el guion.
+- Distribuye el contenido completo del guion entre todas las escenas.
+- Cada escena debe avanzar la historia.
+- Cada escena debe ser diferente.
+- Compatible con Kling, Veo, Runway, Pika y Minimax.
+
+FORMATO OBLIGATORIO:
+
+🎬 ESCENA 1
+
+🎙️ Narración:
+(texto)
+
+🎥 Prompt Visual:
+(descripción cinematográfica completa)
+
+📷 Cámara:
+(movimiento de cámara)
+
+🎨 Estilo:
+${estilo}
+
+⏱️ Duración:
+(segundos)
+
+--------------------------------
+
+Repetir hasta completar las ${escenas} escenas.
+
+No agregues explicaciones.
+No agregues introducciones.
+Devuelve únicamente el storyboard completo.
+`);
+
+  return new Response(
+    JSON.stringify({ resultado: r }),
+    {
+      headers: corsHeaders
+    }
+  );
       }
 
       // 🖼️ GALERÍA R2
