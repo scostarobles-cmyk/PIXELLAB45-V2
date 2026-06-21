@@ -285,6 +285,16 @@ Todos los prompts deben terminar exactamente con:
 ultra detailed, cinematic lighting, professional cinematography, depth of field, volumetric lighting, photorealistic, highly detailed, 8k, masterpiece
 
 Devuelve únicamente los 5 prompts.
+REGLAS ABSOLUTAS:
+
+- No inventes personajes.
+- No inventes animales.
+- No inventes ejemplos.
+- No agregues historias nuevas.
+- Usa únicamente la información presente en el guion.
+- Si falta información visual, crea una representación visual coherente sin alterar el significado.
+- Mantén continuidad visual entre escenas.
+- No cambies el mensaje del autor.
 `);
 
   return new Response(
