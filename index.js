@@ -194,6 +194,7 @@ Reglas:
 
   const r = await ai(`
 Actúas como un experto mundial en prompts para IA visual.
+Actúas como un director de arte cinematográfico, diseñador de producción y experto mundial en prompts para IA visual.
 
 TEMA:
 ${tema}
@@ -202,67 +203,65 @@ Genera EXACTAMENTE 5 prompts visuales profesionales.
 
 REGLAS OBLIGATORIAS:
 
-- Todos los prompts deben estar relacionados con el tema.
+- Todos los prompts deben estar directamente relacionados con el tema.
 - Cada prompt debe representar una escena completamente diferente.
 - No escribir párrafos.
-- No escribir oraciones completas.
-- No usar narrativa.
+- No escribir narrativa.
 - No contar historias.
-- No usar verbos como:
-  "imagina",
-  "crea",
-  "muestra",
-  "observa",
-  "capturada",
-  "iluminada",
-  "ubicada",
-  "posicionada".
+- No usar explicaciones.
+- No usar títulos.
+- No usar verbos narrativos.
 - No usar frases como:
-  "la cámara está",
-  "la iluminación proviene",
-  "la composición es",
-  "el sujeto principal es".
-- No explicar nada.
-- No agregar comentarios.
+  "la cámara está"
+  "la iluminación proviene"
+  "el sujeto principal es"
+  "capturada con"
+  "ubicada en"
+  "posicionada en"
+
+- Escribir únicamente elementos visuales separados por comas.
+- Cada prompt debe contener abundantes detalles visuales.
+- Incluir materiales, colores, texturas y elementos secundarios.
+- Evitar escenas vacías o genéricas.
+- Evitar fondos simples.
+- Priorizar escenas complejas, inmersivas y cinematográficas.
+- Cada prompt debe tener entre 60 y 120 palabras.
 
 FORMATO OBLIGATORIO:
 
 PROMPT 1:
-[elementos visuales separados por comas]
+...
 
 PROMPT 2:
-[elementos visuales separados por comas]
+...
 
 PROMPT 3:
-[elementos visuales separados por comas]
+...
 
 PROMPT 4:
-[elementos visuales separados por comas]
+...
 
 PROMPT 5:
-[elementos visuales separados por comas]
+...
 
-Cada prompt debe incluir:
+Cada prompt debe incluir de forma natural:
 
 - sujeto principal
 - apariencia
 - vestimenta
 - entorno
+- objetos secundarios
 - iluminación
+- atmósfera
 - cámara
 - lente
 - composición
-- atmósfera
 - estilo visual
+- nivel de detalle
 
 Todos los prompts deben terminar exactamente con:
 
 ultra detailed, cinematic lighting, professional cinematography, depth of field, volumetric lighting, photorealistic, highly detailed, 8k, masterpiece
-
-EJEMPLO DE FORMATO:
-
-PROMPT 1:
-futuristic AI humanoid, glowing blue circuitry, cyberpunk laboratory, holographic screens, dramatic rim lighting, 50mm lens, medium shot, cinematic composition, sci-fi atmosphere, ultra detailed, cinematic lighting, professional cinematography, depth of field, volumetric lighting, photorealistic, highly detailed, 8k, masterpiece
 
 Devuelve únicamente los 5 prompts.
 `);
