@@ -364,10 +364,19 @@ ${estilo}
 // 📚 GUARDAR IDEA
 case "guardar-ideas": {
 
+  await env.IMAGES.put(
+    `ideas/test-${Date.now()}.txt`,
+    contenido || "VACIO",
+    {
+      httpMetadata: {
+        contentType: "text/plain"
+      }
+    }
+  );
+
   return new Response(
     JSON.stringify({
-      success: true,
-      contenidoRecibido: contenido
+      success: true
     }),
     {
       headers: {
