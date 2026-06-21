@@ -193,71 +193,69 @@ Reglas:
       case "visuales": {
 
   const r = await ai(`
-Actúas como un experto mundial en prompts para IA visual.
-Actúas como un director de arte cinematográfico, diseñador de producción y experto mundial en prompts para IA visual.
+Eres un experto en prompts para Midjourney, Flux, Stable Diffusion, Ideogram y Kling.
 
 TEMA:
 ${tema}
 
-Genera EXACTAMENTE 5 prompts visuales profesionales.
+Genera EXACTAMENTE 5 prompts visuales.
 
 REGLAS OBLIGATORIAS:
 
-- Todos los prompts deben estar directamente relacionados con el tema.
-- Cada prompt debe representar una escena completamente diferente.
+- Cada prompt debe ser completamente diferente.
+- Todos los prompts deben estar relacionados con el tema.
+- No escribir historias.
 - No escribir párrafos.
-- No escribir narrativa.
-- No contar historias.
-- No usar explicaciones.
-- No usar títulos.
+- No escribir explicaciones.
+- No escribir instrucciones.
+- No usar numeración interna.
+- No usar frases completas.
+- No usar puntos.
 - No usar verbos narrativos.
-- No usar frases como:
-  "la cámara está"
-  "la iluminación proviene"
-  "el sujeto principal es"
+- No usar:
+  "una escena"
+  "una imagen"
+  "la cámara"
+  "la iluminación"
   "capturada con"
   "ubicada en"
-  "posicionada en"
+  "se encuentra"
 
 - Escribir únicamente elementos visuales separados por comas.
-- Cada prompt debe contener abundantes detalles visuales.
-- Incluir materiales, colores, texturas y elementos secundarios.
-- Evitar escenas vacías o genéricas.
-- Evitar fondos simples.
-- Priorizar escenas complejas, inmersivas y cinematográficas.
-- Cada prompt debe tener entre 60 y 120 palabras.
+
+- Incluir de forma natural:
+  personaje o sujeto,
+  entorno,
+  objetos,
+  materiales,
+  colores,
+  iluminación,
+  atmósfera,
+  composición cinematográfica,
+  lente,
+  profundidad de campo.
+
+- Priorizar escenas cinematográficas complejas.
+- Evitar fondos vacíos.
+- Evitar prompts genéricos.
+- Evitar repetir estructuras.
 
 FORMATO OBLIGATORIO:
 
 PROMPT 1:
-...
+contenido
 
 PROMPT 2:
-...
+contenido
 
 PROMPT 3:
-...
+contenido
 
 PROMPT 4:
-...
+contenido
 
 PROMPT 5:
-...
-
-Cada prompt debe incluir de forma natural:
-
-- sujeto principal
-- apariencia
-- vestimenta
-- entorno
-- objetos secundarios
-- iluminación
-- atmósfera
-- cámara
-- lente
-- composición
-- estilo visual
-- nivel de detalle
+contenido
 
 Todos los prompts deben terminar exactamente con:
 
@@ -271,8 +269,6 @@ Devuelve únicamente los 5 prompts.
     { headers: corsHeaders }
   );
       }
-
-      
 
       // 🎬 STORYBOARD
       case "storyboard": {
