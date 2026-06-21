@@ -260,6 +260,52 @@ case "script": {
   );
 
 }
+// 🖼️ GUARDAR IMAGEN
+case "guardar-imagen": {
+  try {
+    const base64 = imagenBase64.split(",")[1];
+    const bin = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
+    const key = `${categoria}/${Date.now()}.png`;
+    await env.IMAGES.put(key, bin, {
+      httpMetadata: { contentType: "image/png" }
+    });
+    return new Response(JSON.stringify({ success: true, nombre: key }), { headers: corsHeaders });
+  } catch (e) {
+    return new Response(JSON.stringify({ success: false, error: e.message }), { headers: corsHeaders });
+  }
+}
+// ========================================
+      // 🖼️ GENERADOR DE IMAGEN
+      // ========================================
+
+      case "imagen": {
+
+        const imagen = await env.AI.run(
+          "@cf/lykon/dreamshaper-8-lcm",
+          {
+            prompt: `
+${tema},
+cinematic lighting,
+ultra detailed,
+highly realistic,
+sharp focus,
+depth of field,
+8k
+            `
+          }
+        );
+
+        return new Response(
+          imagen,
+          {
+            headers: {
+              ...corsHeaders,
+              "Content-Type": "image/png"
+            }
+          }
+        );
+
+      }
       
       //CIERRE DEL WORKER 
       default:
