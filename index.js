@@ -364,9 +364,12 @@ ${estilo}
 // 📚 GUARDAR IDEA
 case "guardar-ideas": {
 
+  const nombreArchivo =
+    `ideas/${Date.now()}.txt`;
+
   await env.IMAGES.put(
-    `ideas/test-${Date.now()}.txt`,
-    contenido || "VACIO",
+    nombreArchivo,
+    contenido,
     {
       httpMetadata: {
         contentType: "text/plain"
@@ -376,7 +379,8 @@ case "guardar-ideas": {
 
   return new Response(
     JSON.stringify({
-      success: true
+      success: true,
+      nombre: nombreArchivo
     }),
     {
       headers: {
