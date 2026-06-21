@@ -334,9 +334,7 @@ case "storyboard": {
   const estilo = safe(data.estilo);
 
   const r = await ai(`
-Actúa como un director cinematográfico profesional.
-
-Convierte este guion en storyboard:
+Convierte el siguiente guion en un storyboard ESTRUCTURADO EN JSON.
 
 GUION:
 ${guion}
@@ -344,35 +342,30 @@ ${guion}
 CANTIDAD DE ESCENAS:
 ${escenas}
 
-ESTILO VISUAL:
+ESTILO:
 ${estilo}
 
 REGLAS:
-- Genera exactamente ${escenas} escenas
-- No omitir partes del guion
-- Cada escena debe avanzar la historia
-- No resumas
-- Compatible con Kling, Runway, Pika
+- Devuelve SOLO JSON válido
+- No texto extra
+- No explicaciones
+- No markdown
+- No emojis
 
 FORMATO:
 
-🎬 ESCENA 1
-
-🎙️ Narración:
-...
-
-🎥 Prompt Visual:
-...
-
-📷 Cámara:
-...
-
-⏱️ Duración:
-...
-
-(repetir hasta completar)
+{
+  "escenas": [
+    {
+      "numero": 1,
+      "narracion": "",
+      "visual": "",
+      "camara": "",
+      "duracion": 0
+    }
+  ]
+}
 `);
-
   return new Response(
     JSON.stringify({ storyboard: r }),
     { headers: corsHeaders }
