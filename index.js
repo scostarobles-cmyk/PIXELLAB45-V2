@@ -1,11 +1,9 @@
 export default {
-
   async fetch(request, env) {
 
-    // =====================================================
-    // CORS GLOBAL
-    // =====================================================
-
+    // ============================
+    // CORS
+    // ============================
     const corsHeaders = {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Headers": "*",
@@ -13,44 +11,23 @@ export default {
       "Content-Type": "application/json"
     };
 
-    // =====================================================
-    // PREFLIGHT CORS
-    // =====================================================
-
+    // ============================
+    // PREFLIGHT
+    // ============================
     if (request.method === "OPTIONS") {
-
-      return new Response(null, {
-        headers: corsHeaders
-      });
-
+      return new Response(null, { headers: corsHeaders });
     }
 
-    // =====================================================
-    // LECTURA REQUEST JSON
-    // =====================================================
-
+    // ============================
+    // PARSEO REQUEST
+    // ============================
     let data;
 
     try {
-
       data = await request.json();
-
     } catch {
-
-      return new Response(
-        JSON.stringify({
-          error: "JSON inválido"
-        }),
-        {
-          headers: corsHeaders
-        }
-      );
-
+      return json({ error: "JSON inválido" }, corsHeaders);
     }
-
-    // =====================================================
-    // VARIABLES GLOBALES REQUEST
-    // =====================================================
 
     const {
       tipo,
@@ -60,354 +37,260 @@ export default {
       imagenBase64,
       guion,
       escenas,
-      estilo
+      estilo,
+      contenido
     } = data;
 
-    // =====================================================
-    // VALIDACIÓN GENERAL
-    // =====================================================
-
     if (!tipo) {
-
-      return new Response(
-        JSON.stringify({
-          error: "Falta tipo"
-        }),
-        {
-          headers: corsHeaders
-        }
-      );
-
+      return json({ error: "Falta tipo" }, corsHeaders);
     }
 
-    // =====================================================
-    // HELPERS GLOBALES
-    // =====================================================
+    // ============================
+    // JSON HELPER
+    // ============================
+    const json = (obj, headers = corsHeaders) =>
+      new Response(JSON.stringify(obj), { headers });
 
-    const safe = (v) =>
-      v?.trim() || "No especificado";
-
-    // =====================================================
-    // RESPUESTAS JSON
-    // =====================================================
-
-    const ok = (data) =>
-      new Response(
-        JSON.stringify(data),
-        {
-          headers: corsHeaders
-        }
-      );
-
-    const fail = (error) =>
-      new Response(
-        JSON.stringify({
-          error
-        }),
-        {
-          headers: corsHeaders
-        }
-      );
-
-    // =====================================================
-    // IA GLOBAL PIXELLAB45
-    // =====================================================
-
+    // ============================
+    // IA CORE
+    // ============================
     const ai = async (prompt) => {
-
       const res = await env.AI.run(
         "@cf/meta/llama-3.1-8b-instruct-fp8",
         {
           messages: [
-
             {
               role: "system",
               content: `
-Eres PIXELLAB45 AI.
+PIXELLAB45 AI CORE
 
-Eres creativo.
-
-No repites ideas.
-
-Generas contenido original.
-
-Desarrollas respuestas extensas.
-
-No resumes.
+- creativo
+- no repetitivo
+- estructurado
+- detallado
+- estilo profesional
 `
             },
-
             {
               role: "user",
               content: prompt
             }
-
           ],
-
           max_tokens: 4000
-
         }
       );
 
       return res.response;
-
     };
 
-    // =====================================================
-    // ROUTER PRINCIPAL PIXELLAB45
-    // =====================================================
-
+    // ============================
+    // ROUTER
+    // ============================
     switch (tipo) {
 
-      // =====================================================
-// LISTAR IMÁGENES
-// Devuelve todas las imágenes almacenadas en R2
-// =====================================================
-
-case "listar-imagenes": {
-
-  try {
-
-    if (!env.IMAGES) {
-      return fail("Bucket IMAGES no configurado");
-    }
-
-    const objetos =
-      await env.IMAGES.list();
-
-    const imagenes =
-      objetos.objects.map(obj => ({
-
-        nombre: obj.key,
-
-        url:
-          `https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev/${obj.key}`
-
-      }));
-
-    return ok(imagenes);
-
-  } catch (error) {
-
-    return fail(error.message);
-
-  }
-
-}
-
-   // =====================================================
-// GUARDAR IMAGEN
-// Guarda una imagen PNG en R2
-// =====================================================
-
-case "guardar-imagen": {
-
-  try {
-
-    if (!env.IMAGES) {
-
-      return fail(
-        "Bucket IMAGES no configurado"
-      );
-
-    }
-
-    if (!imagenBase64) {
-
-      return fail(
-        "No se recibió imagenBase64"
-      );
-
-    }
-
-    if (!categoria) {
-
-      return fail(
-        "No se recibió categoría"
-      );
-
-    }
-
-    const base64 =
-      imagenBase64.split(",")[1];
-
-    const binario =
-      Uint8Array.from(
-        atob(base64),
-        c => c.charCodeAt(0)
-      );
-
-    const nombreArchivo =
-      `${categoria}/${Date.now()}.png`;
-
-    await env.IMAGES.put(
-      nombreArchivo,
-      binario,
-      {
-        httpMetadata: {
-          contentType: "image/png"
-        }
-      }
-    );
-
-    return ok({
-      success: true,
-      nombre: nombreArchivo
-    });
-
-  } catch (error) {
-
-    return fail(
-      error.message
-    );
-
-  }
-
-}
-      // =====================================================
-// IDEAS DE CONTENIDO
-// Genera ideas virales para redes sociales
-// =====================================================
-
-case "ideas": {
-
-  try {
-
-    const match =
-      tema?.match(/\d+/);
-
-    let cantidad =
-      match
-        ? parseInt(match[0])
-        : 5;
-
-    if (cantidad > 20) {
-      cantidad = 20;
-    }
-
-    const resultado =
-      await ai(`
-Eres un generador profesional de ideas virales.
-
-Genera EXACTAMENTE ${cantidad} ideas sobre:
-
-${tema}
-
-REGLAS:
-
-- No repetir ideas.
-- Cada idea debe ser diferente.
-- No agregar texto fuera de las ideas.
-- Pensar como creador de contenido viral.
-
-FORMATO:
-
-Idea 1:
-Título:
-Gancho:
-Desarrollo:
-
-Idea 2:
-Título:
-Gancho:
-Desarrollo:
-
-Continúa hasta completar ${cantidad} ideas.
-`);
-
-    return ok({
-      ideas: resultado
-    });
-
-  } catch (error) {
-
-    return fail(
-      error.message
-    );
-
-  }
-
-}
-      // =====================================================
-      // PROMPTS VIDEO
-      // =====================================================
-
-      case "prompt": {
-
-        break;
-
-      }
-
-      // =====================================================
-      // PROMPTS VISUALES
-      // =====================================================
-
-      case "visuales": {
-
-        break;
-
-      }
-
-      // =====================================================
-      // GUIONES
-      // =====================================================
-
-      case "script": {
-
-        break;
-
-      }
-
-      // =====================================================
-      // STORYBOARD
-      // =====================================================
-
-      case "storyboard": {
-
-        break;
-
-      }
-
-      // =====================================================
-      // GENERADOR DE IMÁGENES
-      // =====================================================
-
-      case "imagen": {
-
-        break;
-
-      }
-
-      // =====================================================
-      // EBOOKS
-      // =====================================================
-
-      case "ebook": {
-
-        break;
-
-      }
-
-      // =====================================================
-      // KLING
-      // =====================================================
-
-      case "kling": {
-
-        break;
-
-      }
-
-      // =====================================================
-      // DEFAULT
-      // =====================================================
+      // ============================
+      // 📁 GALERÍA
+      // ============================
+      case "listar-imagenes":
+        return listarImagenes(env, json);
+
+      case "galeria-categoria":
+        return galeriaCategoria(data, env, json);
+
+      // ============================
+      // 💡 IDEAS
+      // ============================
+      case "ideas":
+        return generarIdeas(data, ai, json);
+
+      case "guardar-idea":
+        return guardarIdea(data, env, json);
+
+      case "listar-ideas":
+        return listarIdeas(env, json);
+
+      // ============================
+      // ✍️ GUIONES
+      // ============================
+      case "script":
+        return generarGuion(data, ai, json);
+
+      // ============================
+      // 🎬 STORYBOARD
+      // ============================
+      case "storyboard":
+        return generarStoryboard(data, ai, json);
+
+      // ============================
+      // 🎨 PROMPTS
+      // ============================
+      case "prompt":
+        return generarPrompt(data, ai, json);
+
+      case "visuales":
+        return generarVisuales(data, ai, json);
+
+      // ============================
+      // 🖼️ IMAGEN
+      // ============================
+      case "imagen":
+        return generarImagen(data, env, corsHeaders);
 
       default:
-
-        return fail("Tipo no válido");
-
+        return json({ error: "Tipo no válido" }, corsHeaders);
     }
+  }
+};
+async function generarIdeas(data, ai, json) {
 
+  let cantidad = 5;
+
+  const match = data.tema?.match(/\d+/);
+  if (match) cantidad = Math.min(parseInt(match[0]), 20);
+
+  const r = await ai(`
+Genera ${cantidad} ideas virales sobre: ${data.tema}
+
+Cada idea debe incluir:
+- título
+- gancho
+- desarrollo
+`);
+
+  return json({ ideas: r });
+}
+async function guardarIdea(data, env, json) {
+
+  if (!data.contenido) {
+    return json({ error: "Falta contenido" });
   }
 
-};
+  const idea = {
+    id: Date.now(),
+    fecha: new Date().toISOString(),
+    contenido: data.contenido
+  };
+
+  const key = `ideas/idea-${idea.id}.json`;
+
+  await env.IMAGES.put(key, JSON.stringify(idea), {
+    httpMetadata: { contentType: "application/json" }
+  });
+
+  return json({ success: true, key });
+}
+async function listarIdeas(env, json) {
+
+  const objs = await env.IMAGES.list({ prefix: "ideas/" });
+
+  const ideas = await Promise.all(
+    objs.objects.map(async (obj) => {
+
+      const file = await env.IMAGES.get(obj.key);
+      const text = await file.text();
+
+      try {
+        return JSON.parse(text);
+      } catch {
+        return { contenido: text };
+      }
+    })
+  );
+
+  return json({
+    success: true,
+    ideas: ideas.filter(Boolean)
+  });
+}
+async function generarGuion(data, ai, json) {
+
+  const r = await ai(`
+Crea un guion viral para TikTok:
+
+Tema: ${data.tema}
+
+Formato:
+- Gancho
+- Desarrollo
+- Cierre
+- CTA
+`);
+
+  return json({ resultado: r });
+}
+async function generarStoryboard(data, ai, json) {
+
+  const r = await ai(`
+Convierte este guion en storyboard JSON:
+
+${data.guion}
+
+Escenas: ${data.escenas}
+Estilo: ${data.estilo}
+
+Devuelve SOLO JSON válido.
+`);
+
+  return json({ storyboard: r });
+}
+async function generarPrompt(data, ai, json) {
+
+  const r = await ai(`
+Crea un prompt cinematográfico de video:
+
+Tema: ${data.tema}
+`);
+
+  return json({ resultado: r });
+}
+async function generarVisuales(data, ai, json) {
+
+  const r = await ai(`
+Genera 5 prompts visuales sobre:
+
+${data.tema}
+`);
+
+  return json({ resultado: r });
+}
+async function generarImagen(data, env, corsHeaders) {
+
+  const img = await env.AI.run(
+    "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+    {
+      prompt: data.tema,
+      negative_prompt: "blurry, low quality, distorted"
+    }
+  );
+
+  return new Response(img, {
+    headers: {
+      ...corsHeaders,
+      "Content-Type": "image/png"
+    }
+  });
+}async function listarImagenes(env, json) {
+
+  const objs = await env.IMAGES.list();
+
+  return json(
+    objs.objects.map(obj => ({
+      nombre: obj.key,
+      url: `https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev/${obj.key}`
+    }))
+  );
+}
+async function galeriaCategoria(data, env, json) {
+
+  const objs = await env.IMAGES.list({
+    prefix: data.categoria + "/"
+  });
+
+  return json(
+    objs.objects.map(obj => ({
+      nombre: obj.key,
+      url: `https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev/${obj.key}`
+    }))
+  );
+}
+
