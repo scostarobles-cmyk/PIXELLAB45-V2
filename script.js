@@ -122,40 +122,65 @@ function copiarGuion(){
   const resultado = document.getElementById("resultadoStoryboard");
   const mensaje = document.getElementById("mensajeStoryboard");
 
+  // limpiar UI
+  resultado.innerHTML = "";
+  mensaje.innerText = "";
+
   if (!guion.trim()) {
     mensaje.innerText = "⚠️ Primero pega un guion";
     return;
   }
 
-  resultado.innerText = "🎬 Generando storyboard con IA...";
-  mensaje.innerText = "";
+  mensaje.innerText = "⏳ Generando storyboard IA...";
 
   try {
 
-    const res = await fetch(
-      "https://pixellab45-v2.scostarobles.workers.dev/",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          tipo: "storyboard",
-          guion,
-          escenas,
-          estilo
-        })
-      }
-    );
+    const res = await fetch("https://pixellab45-v2.scostarobles.workers.dev/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        tipo: "storyboard",
+        guion,
+        escenas,
+        estilo
+      })
+    });
 
     const data = await res.json();
 
-    resultado.innerHTML =
-      `<div style="white-space:pre-wrap">${data.storyboard}</div>`;
+    // 🔥 IMPORTANTE: parse seguro
+    let storyboard;
 
-    mensaje.innerText = "✅ Storyboard generado correctamente";
+    try {
+      storyboard = JSON.parse(data.storyboard);
+    } catch (e) {
+      mensaje.innerText = "❌ Error en formato JSON del backend";
+      console.log(data.storyboard);
+      return;
+    }
+
+    let html = "";
+
+    storyboard.escenas.forEach(e => {
+
+      html += `
+        <div class="storyboard-card">
+          <h3>Escena ${e.numero}</h3>
+          <p><b>Narración:</b> ${e.narracion}</p>
+          <p><b>Visual:</b> ${e.visual}</p>
+          <p><b>Cámara:</b> ${e.camara}</p>
+          <p><b>Duración:</b> ${e.duracion}s</p>
+        </div>
+      `;
+    });
+
+    resultado.innerHTML = html;
+
+    mensaje.innerText = "✅ Storyboard generado";
 
   } catch (error) {
 
-    resultado.innerText = "❌ Error: " + error.message;
+    mensaje.innerText = "❌ " + error.message;
   }
 }
 
