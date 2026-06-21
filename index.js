@@ -362,10 +362,8 @@ ${estilo}
 }
 
 // 📚 GUARDAR IDEA
-case "guardar-ideas": {
-
-  const nombreArchivo =
-    `ideas/${Date.now()}.txt`;
+case "copiar-ideas": {
+  const nombreArchivo = `ideas/${Date.now()}.txt`;
 
   await env.IMAGES.put(
     nombreArchivo,
@@ -389,9 +387,7 @@ case "guardar-ideas": {
       }
     }
   );
-
 }
-      
       //CIERRE DEL WORKER 
       default:
         return new Response(
