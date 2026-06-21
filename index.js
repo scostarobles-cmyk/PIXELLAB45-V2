@@ -306,6 +306,59 @@ depth of field,
         );
 
       }
+      // ========================================
+// 🎬 STORYBOARD IA
+// ========================================
+
+case "storyboard": {
+
+  const r = await ai(
+    `
+Convierte el siguiente guion en un storyboard cinematográfico.
+
+Guion:
+${guion}
+
+Cantidad de escenas: ${escenas}
+
+Estilo visual: ${estilo}
+
+Reglas:
+
+- Genera exactamente ${escenas} escenas.
+- Distribuye el contenido del guion entre las escenas.
+- Cada escena debe incluir:
+
+🎬 ESCENA X
+
+🎙️ Narración
+
+🎥 Visual
+
+📷 Cámara
+
+🎨 Estilo
+
+⏱️ Duración
+
+- El estilo visual debe respetar:
+${estilo}
+
+- Compatible con Kling, Veo, Runway, Pika y Minimax.
+- Formato profesional cinematográfico.
+`
+  );
+
+  return new Response(
+    JSON.stringify({
+      resultado: r
+    }),
+    {
+      headers: corsHeaders
+    }
+  );
+
+}
       
       //CIERRE DEL WORKER 
       default:
