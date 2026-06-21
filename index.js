@@ -339,44 +339,16 @@ unwanted reflections
       // 🎬 STORYBOARD
 case "storyboard": {
 
-  const guion = safe(data.guion);
-  const escenas = parseInt(data.escenas || 8);
-  const estilo = safe(data.estilo);
-
-  const r = await ai(`
-Devuelve SOLO JSON válido.
-
-Convierte el guion en escenas estructuradas.
-
-FORMATO:
-
-{
-  "escenas": [
-    {
-      "numero": 1,
-      "narracion": "",
-      "visual": "",
-      "camara": "",
-      "duracion": 0
-    }
-  ]
-}
-
-GUION:
-${guion}
-
-CANTIDAD:
-${escenas}
-
-ESTILO:
-${estilo}
-
-NO agregues texto extra.
-`);
   return new Response(
-    JSON.stringify({ storyboard: r }),
-    { headers: corsHeaders }
+    JSON.stringify({
+      ok: true,
+      storyboard: "TEST STORYBOARD"
+    }),
+    {
+      headers: corsHeaders
+    }
   );
+
 }
       // 🖼️ GALERÍA R2
       case "listar-imagenes": {
