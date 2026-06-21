@@ -559,8 +559,9 @@ async function cargarGaleriaCompleta() {
 
   } catch(error) {
 
-    contenedor.innerHTML =
-      "❌ Error cargando galería";
+   /* contenedor.innerHTML =
+      "❌ Error cargando galería";*/
+    contenedor.innerHTML = "❌ Error: " + error.message + "\nRespuesta: " + JSON.stringify(error);
 
   }
 }
