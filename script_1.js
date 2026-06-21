@@ -1,28 +1,32 @@
 console.log("SCRIPT CARGADO OK");
 async function generarPrompt() {
 
-  const tema = document.getElementById("temaPrompt").value;
-  const tipo = document.getElementById("tipoContenido").value;
+  const tema =
+    document.getElementById("temaPrompt").value;
+
+  const tipo =
+    document.getElementById("tipoContenido").value;
 
   if (!tema.trim()) {
+
     document.getElementById("resultadoPrompt").innerText =
       "⚠️ Escribe un tema primero";
+
     return;
   }
 
-  const loading = document.getElementById("loadingPrompt");
-  const resultado = document.getElementById("resultadoPrompt");
-
   try {
 
-    loading.style.display = "block";
-    resultado.innerText = "";
+    document.getElementById("resultadoPrompt").innerText =
+      "✍️ Generando prompt...";
 
     const res = await fetch(
       "https://pixellab45-v2.scostarobles.workers.dev/",
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({
           tipo: "prompt",
           tema,
@@ -33,16 +37,16 @@ async function generarPrompt() {
 
     const data = await res.json();
 
-    loading.style.display = "none";
-
-    resultado.innerHTML =
-      `<div style="white-space:pre-wrap">${data.resultado}</div>`;
+    document.getElementById("resultadoPrompt").innerText =
+      data.resultado;
 
   } catch (error) {
 
-    loading.style.display = "none";
-    resultado.innerText = "❌ " + error.message;
+    document.getElementById("resultadoPrompt").innerText =
+      "❌ " + error.message;
+
   }
+
 }
 
 function copiarPrompt(){
@@ -113,65 +117,47 @@ function copiarGuion(){
     document.getElementById("mensajeGuionCopiado").innerText = "";
   }, 3000);
 
-}async function generarStoryboard() {
+}function generarStoryboard() {
 
-  const guion = document.getElementById("textoStoryboard").value;
-  const escenas = document.getElementById("cantidadEscenas").value;
-  const estilo = document.getElementById("estiloStoryboard").value;
+  const guion =
+    document.getElementById("textoStoryboard").value;
 
-  const resultado = document.getElementById("resultadoStoryboard");
-  const mensaje = document.getElementById("mensajeStoryboard");
+  if (guion.trim() === "") {
 
-  resultado.innerHTML = "";
-  mensaje.innerText = "";
+    document.getElementById("mensajeStoryboard").innerText =
+      "⚠️ Primero pega un guion";
 
-  if (!guion.trim()) {
-
-    mensaje.innerText = "⚠️ Primero pega un guion";
     return;
-
   }
 
-  mensaje.innerText = "⏳ Generando storyboard IA...";
+  const lineas =
+    guion.split("\n")
+    .filter(linea => linea.trim() !== "");
 
-  try {
+  let storyboard =
+    "🎬 STORYBOARD PIXELLAB45\n\n";
 
-    const res = await fetch(
-      "https://pixellab45-v2.scostarobles.workers.dev/",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          tipo: "storyboard",
-          guion,
-          escenas,
-          estilo
-        })
-      }
-    );
+  lineas.forEach((linea, index) => {
 
-    const texto = await res.text();
+    storyboard +=
+      `ESCENA ${index + 1}\n`;
 
-resultado.innerHTML =
-  `<pre style="white-space:pre-wrap">${texto}</pre>`;
+    storyboard +=
+      `⏱️ Duración: 4 segundos\n\n`;
 
-mensaje.innerText = "Respuesta recibida";
+    storyboard +=
+      `🎙️ Narración:\n${linea}\n\n`;
 
-return;
-    resultado.innerHTML =
-      `<div style="white-space:pre-wrap">${data.storyboard}</div>`;
+    storyboard +=
+      `🎥 Visual:\nEscena futurista relacionada con el tema.\n\n`;
 
-    mensaje.innerText =
-      "✅ Storyboard generado correctamente";
+    storyboard +=
+      `──────────────────\n\n`;
+  });
 
-  } catch (error) {
-
-    mensaje.innerText =
-      "❌ " + error.message;
-
-  }
+  document.getElementById(
+    "resultadoStoryboard"
+  ).innerText = storyboard;
 }
 
 function copiarStoryboard() {
