@@ -71,7 +71,9 @@ async function listarImagenes(env, json) {
   try {
     const objs = await env.IMAGES.list();
 
-    const images = objs.objects.map(obj => ({
+    const list = objs?.objects || [];
+
+    const images = list.map(obj => ({
       nombre: obj.key,
       url: `https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev/${obj.key}`
     }));
@@ -85,7 +87,7 @@ async function listarImagenes(env, json) {
   } catch (err) {
     return json({
       error: "Error leyendo R2",
-      detail: err.message
+      detail: err?.message || "unknown"
     }, 500);
   }
 }
