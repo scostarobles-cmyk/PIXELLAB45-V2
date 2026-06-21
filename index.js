@@ -364,35 +364,10 @@ ${estilo}
 // 📚 GUARDAR IDEA
 case "guardar-ideas": {
 
-  const bloques = contenido
-    .split(/\n(?=\d+\.)/)
-    .filter(x => x.trim());
-
-  let guardadas = 0;
-
-  for (const idea of bloques) {
-
-    const nombre =
-      `ideas/${Date.now()}-${guardadas}.txt`;
-
-    await env.IMAGES.put(
-      nombre,
-      idea,
-      {
-        httpMetadata: {
-          contentType: "text/plain"
-        }
-      }
-    );
-
-    guardadas++;
-
-  }
-
   return new Response(
     JSON.stringify({
       success: true,
-      guardadas
+      contenidoRecibido: contenido
     }),
     {
       headers: {
