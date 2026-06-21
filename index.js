@@ -63,28 +63,35 @@ export default {
   }
 };
 async function listarImagenes(env, json) {
+  if (!env.IMAGES) {
+    return json({ error: "Bucket IMAGES no configurado" }, 500);
+  }
 
   try {
-
-    if (!env.IMAGES) {
-      return json({ error: "Bucket IMAGES no configurado" }, 500);
-    }
-
     const objs = await env.IMAGES.list();
 
-    const imagenes = objs.objects.map(obj => ({
+    // Asegúrate de que hay objetos y construye la lista
+    if (!objs.objects || objs.objects.length === 0) {
+      return json({
+        success: true,
+        images: [],
+      });
+    }
+
+    const images = objs.objects.map((obj) => ({
       nombre: obj.key,
       url: `https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev/${obj.key}`
     }));
 
     return json({
       success: true,
-      images: imagenes
+      images: images,
     });
 
   } catch (error) {
     return json({
-      error: error.message
+      error: "Error al leer IMAGES",
+      detail: error.message,
     }, 500);
   }
 }
