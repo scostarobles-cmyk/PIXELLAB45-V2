@@ -151,6 +151,56 @@ Produce la respuesta más extensa posible.
         }
 
       }
+      // ========================================
+      // 🎯 GENERADOR DE IDEAS
+      // ========================================
+
+      case "ideas": {
+
+        const match = tema.match(/\d+/);
+        let cantidad = match ? parseInt(match[0]) : 5;
+
+        if (cantidad > 20) cantidad = 20;
+
+        const resultado = await ai(`
+Eres un generador de ideas estructurado.
+
+Genera EXACTAMENTE ${cantidad} ideas sobre: ${tema}
+
+REGLAS OBLIGATORIAS:
+- No repitas ideas
+- No mezcles numeración
+- No hagas bloques separados
+- No reinicies la cuenta
+- No agregues texto fuera de las ideas
+
+FORMATO ESTRICTO:
+
+Idea 1:
+Título:
+Gancho:
+Desarrollo:
+
+Idea 2:
+Título:
+Gancho:
+Desarrollo:
+
+(continuar así hasta Idea ${cantidad})
+
+Cada idea debe ser completamente diferente.
+`);
+
+        return new Response(
+          JSON.stringify({
+            ideas: resultado
+          }),
+          {
+            headers: corsHeaders
+          }
+        );
+
+      }
       
       //CIERRE DEL WORKER 
       default:
