@@ -223,6 +223,23 @@ Cada idea debe ser completamente diferente.
 
       }
       // ========================================
+// 🎨 VISUALES
+// ========================================
+
+case "visuales": {
+  const r = await ai(
+    `Genera prompts visuales cinematográficos ultra detallados sobre: ${tema}. 
+     Estilo cyberpunk, futurista o realista según convenga.`
+  );
+
+  return new Response(
+    JSON.stringify({ resultado: r }),
+    {
+      headers: corsHeaders
+    }
+  );
+}
+      // ========================================
 // 🎬 GENERADOR DE GUIONES
 // ========================================
 
