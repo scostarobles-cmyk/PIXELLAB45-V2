@@ -165,36 +165,41 @@ Texto directo tipo instrucción de generación de video.
 
       // 🎬 GUIONES
       case "script": {
+        const r = await ai(`
+Eres un guionista experto en contenido viral para TikTok, Reels y Shorts.
 
-  const r = await ai(`
-Actúa como un guionista profesional experto en videos virales de tecnología e inteligencia artificial.
-
-Tema:
+TEMA:
 ${tema}
 
-Genera un guion completo.
+Genera un guion viral.
 
-Estructura obligatoria:
+FORMATO OBLIGATORIO:
 
 🎯 GANCHO
+(frase impactante de máximo 2 líneas)
 
 🎬 DESARROLLO
+(contenido dinámico y entretenido)
 
 🔥 CIERRE
+(remate potente)
 
 📢 CTA
+(llamada a la acción)
 
-Reglas:
+REGLAS:
 
+- Hablar directamente al espectador.
+- Crear curiosidad.
+- Crear emoción.
+- Evitar tono académico.
+- Evitar explicaciones largas.
+- Evitar frases motivacionales genéricas.
+- No decir "bienvenidos".
+- No decir "hola a todos".
+- No escribir como un profesor.
+- Escribir como creador de contenido viral.
 - Duración aproximada 60 segundos.
-- Escribir en español.
-- No pedir información adicional.
-- No explicar teoría.
-- No escribir instrucciones para cámara.
-- No escribir escenas.
-- No escribir storyboard.
-- Solo narración lista para voz en off.
-- El contenido debe ser dinámico y viral.
 
 Devuelve únicamente el guion.
 `);
