@@ -201,6 +201,27 @@ Cada idea debe ser completamente diferente.
         );
 
       }
+      // ========================================
+      // ✍️ GENERADOR DE PROMPTS
+      // ========================================
+
+      case "prompt": {
+
+        const r = await ai(
+          `Crea un prompt profesional cinematográfico sobre: ${tema}. 
+           Incluye estilo visual, cámara, iluminación y ambiente único.`
+        );
+
+        return new Response(
+          JSON.stringify({
+            resultado: r
+          }),
+          {
+            headers: corsHeaders
+          }
+        );
+
+      }
       
       //CIERRE DEL WORKER 
       default:
