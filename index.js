@@ -273,23 +273,29 @@ Devuelve únicamente los 5 prompts.
         case "imagen": {
 
   const promptImagen = `
-${tema},
-
-ultra detailed,
-cinematic lighting,
-professional cinematography,
-depth of field,
-volumetric lighting,
-photorealistic,
-highly detailed,
-8k,
-masterpiece
+${tema}
 `;
 
   const imagen = await env.AI.run(
     "@cf/lykon/dreamshaper-8-lcm",
     {
-      prompt: promptImagen
+      prompt: promptImagen,
+
+      guidance: 12,
+
+      negative_prompt: `
+extra objects,
+duplicate objects,
+multiple subjects,
+blurry,
+low quality,
+distorted,
+cropped,
+bad anatomy,
+extra limbs,
+unwanted reflections,
+unwanted background elements
+`
     }
   );
 
