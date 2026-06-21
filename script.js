@@ -540,6 +540,10 @@ async function cargarGaleriaCompleta() {
           tipo: "listar-imagenes"
         })
       }
+      if (!Array.isArray(imagenes)) {
+    contenedor.innerHTML = "❌ Error: Respuesta no es un array. " + JSON.stringify(imagenes);
+    return; // No seguimos con el forEach
+    }
     );
     
 
