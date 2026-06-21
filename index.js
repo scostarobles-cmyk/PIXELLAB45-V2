@@ -195,26 +195,139 @@ case "listar-imagenes": {
 
 }
 
-      // =====================================================
-      // GALERÍA POR CATEGORÍA
-      // =====================================================
+   // =====================================================
+// GUARDAR IMAGEN
+// Guarda una imagen PNG en R2
+// =====================================================
 
-      case "galeria-categoria": {
+case "guardar-imagen": {
 
-        break;
+  try {
 
+    if (!env.IMAGES) {
+
+      return fail(
+        "Bucket IMAGES no configurado"
+      );
+
+    }
+
+    if (!imagenBase64) {
+
+      return fail(
+        "No se recibió imagenBase64"
+      );
+
+    }
+
+    if (!categoria) {
+
+      return fail(
+        "No se recibió categoría"
+      );
+
+    }
+
+    const base64 =
+      imagenBase64.split(",")[1];
+
+    const binario =
+      Uint8Array.from(
+        atob(base64),
+        c => c.charCodeAt(0)
+      );
+
+    const nombreArchivo =
+      `${categoria}/${Date.now()}.png`;
+
+    await env.IMAGES.put(
+      nombreArchivo,
+      binario,
+      {
+        httpMetadata: {
+          contentType: "image/png"
+        }
       }
+    );
 
+    return ok({
+      success: true,
+      nombre: nombreArchivo
+    });
+
+  } catch (error) {
+
+    return fail(
+      error.message
+    );
+
+  }
+
+}
       // =====================================================
-      // IDEAS DE CONTENIDO
-      // =====================================================
+// IDEAS DE CONTENIDO
+// Genera ideas virales para redes sociales
+// =====================================================
 
-      case "ideas": {
+case "ideas": {
 
-        break;
+  try {
 
-      }
+    const match =
+      tema?.match(/\d+/);
 
+    let cantidad =
+      match
+        ? parseInt(match[0])
+        : 5;
+
+    if (cantidad > 20) {
+      cantidad = 20;
+    }
+
+    const resultado =
+      await ai(`
+Eres un generador profesional de ideas virales.
+
+Genera EXACTAMENTE ${cantidad} ideas sobre:
+
+${tema}
+
+REGLAS:
+
+- No repetir ideas.
+- Cada idea debe ser diferente.
+- No agregar texto fuera de las ideas.
+- Pensar como creador de contenido viral.
+
+FORMATO:
+
+Idea 1:
+Título:
+Gancho:
+Desarrollo:
+
+Idea 2:
+Título:
+Gancho:
+Desarrollo:
+
+Continúa hasta completar ${cantidad} ideas.
+`);
+
+    return ok({
+      ideas: resultado
+    });
+
+  } catch (error) {
+
+    return fail(
+      error.message
+    );
+
+  }
+
+}
       // =====================================================
       // PROMPTS VIDEO
       // =====================================================
