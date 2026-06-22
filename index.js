@@ -390,6 +390,33 @@ case "copiar-ideas": {
     }
   );
 }
+
+// Copiar promt
+case "copiar-prompts": {
+
+  const nombreArchivo =
+    `prompts/${Date.now()}.txt`;
+
+  await env.IMAGES.put(
+    nombreArchivo,
+    contenido,
+    {
+      httpMetadata: {
+        contentType: "text/plain"
+      }
+    }
+  );
+
+  return new Response(
+    JSON.stringify({
+      success: true,
+      nombre: nombreArchivo
+    }),
+    {
+      headers: corsHeaders
+    }
+  );
+}
       //CIERRE DEL WORKER 
       default:
         return new Response(

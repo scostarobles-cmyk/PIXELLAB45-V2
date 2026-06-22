@@ -339,7 +339,7 @@ resultado.innerText =
 async function copiarPrompts() {
 
   const texto =
-    document.getElementById("resultadoPrompt").innerText || "";
+    document.getElementById("resultadoPrompt").innerText;
 
   const mensaje =
     document.getElementById("mensajeCopiado");
@@ -349,59 +349,59 @@ async function copiarPrompts() {
     return;
   }
 
-  mensaje.innerText = "⏳ Guardando prompts...";
+  // COPIAR AL PORTAPAPELES
+  copiarTexto(
+    texto,
+    "mensajeCopiado",
+    "✅ Prompts copiados correctamente"
+  );
 
   try {
 
-    // =========================
-    // 1. EXTRACCIÓN ROBUSTA
-    // =========================
     const prompts = texto
       .split("\n")
       .map(l => l.trim())
-      .filter(l => l.toLowerCase().includes("prompt"))
+      .filter(l => /^prompt\s*\d+\s*:/i.test(l))
       .map(l =>
         l.replace(/^prompt\s*\d+\s*:\s*/i, "").trim()
       )
       .filter(l => l.length > 0);
 
-    // =========================
-    // 2. LIMITE FIJO 5
-    // =========================
-    const limited = prompts.slice(0, 5);
-
-    // =========================
-    // 3. GUARDADO EN R2
-    // =========================
     let guardados = 0;
 
-    for (const prompt of limited) {
+    for (const prompt of prompts) {
 
-      const res = await fetch(WORKER_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          tipo: "copiar-prompts",
-          contenido: prompt
-        })
-      });
+      const res = await fetch(
+        WORKER_URL,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            tipo: "copiar-prompts",
+            contenido: prompt
+          })
+        }
+      );
 
       const data = await res.json();
 
-      if (data.success) guardados++;
+      if (data.success) {
+        guardados++;
+      }
     }
 
     mensaje.innerText =
       `✅ ${guardados} prompts guardados`;
 
   } catch (error) {
-    mensaje.innerText = `❌ ${error.message}`;
+
+    mensaje.innerText =
+      `❌ ${error.message}`;
+
   }
 }
-
-
 // ========================================
 // GUIONES
 // ========================================
