@@ -264,77 +264,55 @@ async function copiarIdeas() {
 // ========================================
 
 async function generarPrompt() {
-
-  const tema =
-    document.getElementById("temaPrompt").value;
-
-  const tipo =
-    document.getElementById("tipoContenido").value;
+  const tema = document.getElementById("temaPrompt").value;
+  const tipo = document.getElementById("tipoContenido").value;
 
   if (!tema.trim()) {
-
-    document.getElementById("resultadoPrompt").innerText =
-      "⚠️ Escribe un tema primero";
-
+    document.getElementById("resultadoPrompt").innerText = "⚠️ Escribe un tema primero";
     return;
   }
 
-  const loading =
-    document.getElementById("loadingPrompt");
-
-  const resultado =
-    document.getElementById("resultadoPrompt");
+  const loading = document.getElementById("loadingPrompt");
+  const resultado = document.getElementById("resultadoPrompt");
 
   try {
-
     if (loading) {
       loading.style.display = "block";
     }
 
-    resultado.innerText =
-  "✍️ Generando prompt...";
+    resultado.innerText = "✍️ Generando prompt...";
 
-    const res = await fetch(
-      WORKER_URL,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          tipo: "prompt",
-          tema,
-          formato: tipo
-        })
-      }
-    );
-resultado.innerText =
-  "⚡ Formateando respuesta...";
-    const data =
-      await res.json();
+    const res = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        tipo: "prompt",
+        tema: tema,
+        formato: tipo
+      })
+    });
+
+    resultado.innerText = "⚡ Formateando respuesta...";
+
+    const data = await res.json();
 
     if (loading) {
       loading.style.display = "none";
     }
 
-    resultado.innerHTML =
-  `<div style="white-space:pre-wrap">${data.resultado}</div>`;
+    resultado.innerHTML = `<div style="white-space: pre-wrap">${data.resultado}</div>`;
 
   } catch (error) {
-
-    if (loading) {
-      loading.style.display = "none";
+      if (loading) {
+        loading.style.display = "none";
+      }
+      resultado.innerText = "❌ " + error.message;
+      console.error(error);
     }
-
-    resultado.innerText =
-      "❌ " + error.message;
-
-    console.error(error);
-
-  }
-
 }
-
+  
 
 async function copiarPrompts() {
 
