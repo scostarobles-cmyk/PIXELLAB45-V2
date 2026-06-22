@@ -208,21 +208,45 @@ Cada idea debe ser completamente diferente.
 
       case "prompt": {
 
-        const r = await ai(
-          `Crea un prompt profesional cinematográfico sobre: ${tema}. 
-           Incluye estilo visual, cámara, iluminación y ambiente único.`
-        );
+  const r = await ai(
+`Eres un generador profesional de PROMPTS PARA IA DE IMAGEN.
 
-        return new Response(
-          JSON.stringify({
-            resultado: r
-          }),
-          {
-            headers: corsHeaders
-          }
-        );
+REGLAS ESTRICTAS:
+- NO escribas historias
+- NO escribas sinopsis
+- NO escribas guiones
+- NO expliques nada
+- NO desarrolles narrativa
+- SOLO prompts listos para generar imágenes
 
-      }
+Cada prompt debe ser independiente y reutilizable.
+
+FORMATO OBLIGATORIO (SIN EXCEPCIÓN):
+
+Prompt 1: descripción visual directa
+Prompt 2: descripción visual directa
+Prompt 3: descripción visual directa
+Prompt 4: descripción visual directa
+Prompt 5: descripción visual directa
+
+ESTILO:
+cinematográfico, ultra detallado, realista, 8k
+
+TEMA:
+${tema}
+`
+  );
+
+  return new Response(
+    JSON.stringify({
+      resultado: r
+    }),
+    {
+      headers: corsHeaders
+    }
+  );
+
+}
       // ========================================
 // 🎨 VISUALES
 // ========================================
