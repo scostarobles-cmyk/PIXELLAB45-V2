@@ -389,6 +389,7 @@ async function copiarPrompts() {
 
       if (data.success) {
         guardados++;
+        document.getElementById("feedbackPrompt").innerText += `\nGuardando prompt: ${prompt}`;
       }
     }
 
