@@ -197,24 +197,34 @@ TEMA: ${tema}
   const r = await ai(`
 IMPORTANT:
 
-Respond ONLY in English.
+YOU MUST RESPOND ONLY IN ENGLISH.
 
 Generate EXACTLY 5 image generation prompts.
 
-Do not explain anything.
-Do not write introductions.
-Do not write conclusions.
+Rules:
 
-Format:
+- English only.
+- One line per prompt.
+- No explanations.
+- No descriptions outside the prompts.
+- No introduction.
+- No conclusion.
 
-Prompt 1: ...
-Prompt 2: ...
-Prompt 3: ...
-Prompt 4: ...
-Prompt 5: ...
+Format exactly:
+
+Prompt 1: [prompt]
+
+Prompt 2: [prompt]
+
+Prompt 3: [prompt]
+
+Prompt 4: [prompt]
+
+Prompt 5: [prompt]
 
 Topic: ${tema}
-Visual Style: ${formato}
+
+Visual style: ${formato}
 `);
 
   return new Response(
