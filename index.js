@@ -195,24 +195,26 @@ TEMA: ${tema}
       case "prompt": {
 
   const r = await ai(`
-Genera prompts para IA de imágenes.
+IMPORTANT:
 
-REGLAS OBLIGATORIAS:
-- Escribir SOLO en inglés
-- Cada prompt debe ser independiente
-- No explicar nada
-- No agregar títulos, solo prompts
-- No agregar introducción ni cierre
+Respond ONLY in English.
 
-FORMATO:
+Generate EXACTLY 5 image generation prompts.
+
+Do not explain anything.
+Do not write introductions.
+Do not write conclusions.
+
+Format:
+
 Prompt 1: ...
 Prompt 2: ...
 Prompt 3: ...
 Prompt 4: ...
 Prompt 5: ...
 
-TEMA: ${tema}
-FORMATO VISUAL: ${formato}
+Topic: ${tema}
+Visual Style: ${formato}
 `);
 
   return new Response(
@@ -391,7 +393,7 @@ case "copiar-ideas": {
   );
 }
 
-// Copiar promt
+/// 📚 GUARDAR PROMPT
 case "copiar-prompts": {
 
   const nombreArchivo =
@@ -413,21 +415,11 @@ case "copiar-prompts": {
       nombre: nombreArchivo
     }),
     {
-      headers: corsHeaders
+      headers: {
+        ...corsHeaders,
+        "Content-Type": "application/json"
+      }
     }
   );
 }
-      //CIERRE DEL WORKER 
-      default:
-        return new Response(
-          JSON.stringify({
-            error: "Tipo no válido"
-          }),
-          {
-            headers: corsHeaders
-          }
-        );
-    }
-  }
-};
       
