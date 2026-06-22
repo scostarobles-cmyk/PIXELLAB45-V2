@@ -598,9 +598,14 @@ async function copiarVisuales() {
   const texto =
     document.getElementById("resultadoVisual").innerText;
 
-  if (texto.trim() === "") {
-    document.getElementById("mensajeVisual").innerText =
+  const mensaje =
+    document.getElementById("mensajeVisual");
+
+  if (!texto.trim()) {
+
+    mensaje.innerText =
       "⚠️ Primero genera visuales";
+
     return;
   }
 
@@ -610,24 +615,52 @@ async function copiarVisuales() {
     "✅ Visuales copiados correctamente"
   );
 
-  const visuales =
-    texto
-      .split(/Prompt\s+\d+:/i)
-      .filter(v => v.trim() !== "");
+  try {
 
-  for (let i = 0; i < visuales.length; i++) {
+    const visuales = texto
+      .split("\n")
+      .map(l => l.trim())
+      .filter(l => /^prompt\s*\d+\s*:/i.test(l))
+      .map(l =>
+        l.replace(/^prompt\s*\d+\s*:\s*/i, "").trim()
+      )
+      .filter(l => l.length > 0);
 
-    await fetch(API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        tipo: "guardar-visuales",
-        contenido: visuales[i].trim(),
-        indice: i + 1
-      })
-    });
+    let guardados = 0;
+
+    for (const visual of visuales) {
+
+      const res = await fetch(
+        WORKER_URL,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            tipo: "guardar-visuales",
+            contenido: visual
+          })
+        }
+      );
+
+      const data = await res.json();
+
+      if (data.success) {
+        guardados++;
+      }
+
+    }
+
+    mensaje.innerText =
+      `✅ ${guardados} visuales guardados en R2`;
+
+  } catch (error) {
+
+    mensaje.innerText =
+      `❌ ${error.message}`;
+
+    console.error(error);
 
   }
 
