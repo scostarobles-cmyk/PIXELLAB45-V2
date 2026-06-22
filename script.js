@@ -215,22 +215,38 @@ async function copiarIdeas() {
 
   try {
 
-    const res = await fetch(
-      WORKER_URL,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          tipo: "copiar-ideas",
-          contenido: texto
-        }) 
-      }
-    );
+    const ideas = texto
+  .split(/(?=Idea\s+\d+:)/gi)
+  .filter(idea => idea.trim());
 
-    const data =
-      await res.json();
+let guardadas = 0;
+
+for (const idea of ideas) {
+
+  const res = await fetch(
+    WORKER_URL,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        tipo: "copiar-ideas",
+        contenido: idea.trim()
+      })
+    }
+  );
+
+  const data = await res.json();
+
+  if (data.success) {
+    guardadas++;
+  }
+
+}
+
+document.getElementById("mensajeIdeasCopiadas").innerText =
+  `✅ ${guardadas} ideas guardadas`;
 
     if (data.success) {
 
