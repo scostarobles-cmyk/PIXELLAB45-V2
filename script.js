@@ -216,26 +216,44 @@ async function copiarIdeas() {
   try {
 
     const ideas = texto
-  .split(/(?=Idea\s+\d+:)/gi)
-  .filter(idea => idea.trim());
+      .split(/(?=Idea\s+\d+:)/gi)
+      .filter(idea => idea.trim());
 
-let guardadas = 0;
+    let guardadas = 0;
 
-for (const idea of ideas) {
+    for (const idea of ideas) {
 
-  const res = await fetch(
-    WORKER_URL,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        tipo: "copiar-ideas",
-        contenido: idea.trim()
-      })
+      const res = await fetch(
+        WORKER_URL,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            tipo: "copiar-ideas",
+            contenido: idea.trim()
+          })
+        }
+      );
+
+      const data = await res.json();
+
+      if (data.success) {
+        guardadas++;
+      }
+
     }
-  );
+
+    document.getElementById("mensajeIdeasCopiadas").innerText =
+      `✅ ${guardadas} ideas guardadas`;
+
+  } catch (error) {
+
+    document.getElementById("mensajeIdeasCopiadas").innerText =
+      `❌ ${error.message}`;
+
+  }
 
 }
 // ========================================
