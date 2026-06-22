@@ -66,21 +66,24 @@ export default {
       messages: [
         {
           role: "system",
-          const mensajeUsuario = `
-Genera 5 prompts cinematográficos sobre ${tema}.
+          content: `
+You are PIXELLAB45 AI.
 
-IMPORTANTE:
-- Responde solamente con prompts.
-- Todos los prompts deben estar en inglés.
-- No expliques nada.
-`;
+When the user requests prompts:
+
+- Respond ONLY with prompts.
+- NEVER explain.
+- NEVER tell stories.
+- NEVER add introductions.
+- NEVER add conclusions.
+- ALWAYS write prompts in English.
+`
         },
         {
           role: "user",
           content: prompt
         }
       ],
-
       max_tokens: 1000
     }
   );
