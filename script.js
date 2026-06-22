@@ -260,7 +260,7 @@ async function copiarIdeas() {
 // PROMPTS
 // ========================================
 
-/*async function generarPrompt() {
+async function generarPrompt() {
 
   const tema =
     document.getElementById("temaPrompt").value;
@@ -288,7 +288,8 @@ async function copiarIdeas() {
       loading.style.display = "block";
     }
 
-    resultado.innerText = "";
+    resultado.innerText =
+  "✍️ Generando prompt...";
 
     const res = await fetch(
       WORKER_URL,
@@ -304,7 +305,8 @@ async function copiarIdeas() {
         })
       }
     );
-
+resultado.innerText =
+  "⚡ Formateando respuesta...";
     const data =
       await res.json();
 
@@ -313,7 +315,7 @@ async function copiarIdeas() {
     }
 
     resultado.innerHTML =
-      `<div style="white-space:pre-wrap">${data.resultado}</div>`;
+  `<div style="white-space:pre-wrap">${data.resultado}</div>`;
 
   } catch (error) {
 
@@ -328,12 +330,8 @@ async function copiarIdeas() {
 
   }
 
-}*/
-async function generarPrompt() {
-
-  alert("GENERAR PROMPT FUNCIONA");
-
 }
+
 
 function copiarPrompt() {
 
