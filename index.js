@@ -158,14 +158,24 @@ Produce la respuesta más extensa posible.
 
       case "ideas": {
 
+  const cantidad = body.cantidad || 5; // 👈 IMPORTANTE
+
   const r = await ai(`
-Genera entre 5 y 10 ideas de contenido sobre: ${tema}
+Genera EXACTAMENTE ${cantidad} ideas de contenido.
 
-Cada línea debe empezar con:
-Idea:
+REGLAS OBLIGATORIAS:
+- Devuelve SOLO ${cantidad} líneas
+- Cada línea debe empezar con: Idea N:
+- No agregues explicaciones
+- No agregues títulos extras
+- No agregues más ni menos ideas
 
-No escribas historias ni explicaciones largas.
-Solo ideas cortas.
+FORMATO:
+Idea 1: ...
+Idea 2: ...
+Idea 3: ...
+...
+Idea ${cantidad}: ...
 `);
 
   return new Response(
@@ -177,6 +187,7 @@ Solo ideas cortas.
     }
   );
 
+}
 }
    // ========================================
       // ✍️ GENERADOR DE PROMPTS
