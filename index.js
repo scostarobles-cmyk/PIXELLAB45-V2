@@ -158,28 +158,30 @@ Produce la respuesta más extensa posible.
 
       case "ideas": {
 
-  // 🔥 extrae número del texto (ej: "10 ideas virales")
   const match = tema.match(/\d+/);
   const cantidad = match ? parseInt(match[0]) : 5;
 
   const r = await ai(`
 Genera EXACTAMENTE ${cantidad} ideas de contenido para TikTok.
 
-TEMA: ${tema}
+REGLAS OBLIGATORIAS (MUY IMPORTANTE):
+- NO uses categorías
+- NO agrupes por temas
+- NO hagas secciones
+- NO escribas títulos como "Categoría 1"
+- NO escribas introducciones
+- NO escribas explicaciones
 
-REGLAS OBLIGATORIAS:
-- Devuelve SOLO ${cantidad} líneas
-- Cada línea debe empezar con: Idea N:
-- No agregues explicaciones
-- No agregues texto adicional
-- No agregues más ni menos ideas
+SOLO devuelve una lista plana.
 
-FORMATO:
+FORMATO OBLIGATORIO:
 Idea 1: ...
 Idea 2: ...
 Idea 3: ...
 ...
 Idea ${cantidad}: ...
+
+TEMA: ${tema}
 `);
 
   return new Response(
