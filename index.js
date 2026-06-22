@@ -456,11 +456,11 @@ case "copiar-prompts": {
     }
   );
 }
-// 📚 GUARDAR VISUALES
+/// 📚 GUARDAR VISUAL
 case "guardar-visuales": {
 
   const nombreArchivo =
-    `visuales/${Date.now()}.txt`;
+    `visuales/visual-${Date.now()}.txt`;
 
   await env.IMAGES.put(
     nombreArchivo,
@@ -486,6 +486,7 @@ case "guardar-visuales": {
   );
 
 }
+
 
 //CIERRE FINAL 
       default:
