@@ -60,45 +60,58 @@ export default {
 
     const ai = async (prompt) => {
 
-      const res = await env.AI.run(
-        "@cf/meta/llama-3.1-8b-instruct-fp8",
+  const res = await env.AI.run(
+    "@cf/meta/llama-3.1-8b-instruct-fp8",
+    {
+      messages: [
         {
-          messages: [
-            {
-              role: "system",
-              content: `
+          role: "system",
+          content: `
 Eres PIXELLAB45 AI.
 
-Eres creativo, nunca repites ideas.
+Eres creativo y original.
 
-Siempre generas variaciones nuevas,
-enfoques distintos y contenido original.
+Nunca repites ideas.
 
-Desarrolla las respuestas con el máximo nivel
-de detalle posible.
+Sigue SIEMPRE exactamente el formato solicitado.
 
-No resumas.
+Si el usuario pide:
 
-Explica cada punto ampliamente.
+- prompts
+- ideas
+- listas
+- títulos
+- respuestas cortas
 
-Incluye ejemplos cuando sea útil.
+NO agregues explicaciones.
 
-Produce la respuesta más extensa posible.
+NO agregues introducciones.
+
+NO agregues conclusiones.
+
+Devuelve únicamente el formato solicitado.
+
+Si el usuario pide contenido largo,
+desarróllalo ampliamente.
+
+Si el usuario pide contenido corto,
+respeta la longitud solicitada.
+
+La prioridad máxima es obedecer el formato solicitado.
 `
-            },
-            {
-              role: "user",
-              content: prompt
-            }
-          ],
-
-          max_tokens: 1000
+        },
+        {
+          role: "user",
+          content: prompt
         }
-      );
+      ],
 
-      return res.response;
-    };
+      max_tokens: 1000
+    }
+  );
 
+  return res.response;
+};
     switch (tipo) {
     	
     // ========================================
