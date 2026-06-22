@@ -158,16 +158,20 @@ Produce la respuesta más extensa posible.
 
       case "ideas": {
 
-  const cantidad = body.cantidad || 5; // 👈 IMPORTANTE
+  // 🔥 extrae número del texto (ej: "10 ideas virales")
+  const match = tema.match(/\d+/);
+  const cantidad = match ? parseInt(match[0]) : 5;
 
   const r = await ai(`
-Genera EXACTAMENTE ${cantidad} ideas de contenido.
+Genera EXACTAMENTE ${cantidad} ideas de contenido para TikTok.
+
+TEMA: ${tema}
 
 REGLAS OBLIGATORIAS:
 - Devuelve SOLO ${cantidad} líneas
 - Cada línea debe empezar con: Idea N:
 - No agregues explicaciones
-- No agregues títulos extras
+- No agregues texto adicional
 - No agregues más ni menos ideas
 
 FORMATO:
@@ -187,7 +191,6 @@ Idea ${cantidad}: ...
     }
   );
 
-}
 }
    // ========================================
       // ✍️ GENERADOR DE PROMPTS
