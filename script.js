@@ -212,35 +212,33 @@ async function copiarIdeas() {
   try {
 
     // =========================
-    // 1. LIMPIEZA BASE
+    // 1. SPLIT + FILTRO ESTRICTO
     // =========================
-    const lineas = texto
+    const ideasRaw = texto
       .split("\n")
       .map(l => l.trim())
-      .filter(Boolean);
+      .filter(l => /^idea\s*\d+\s*:/i.test(l));
 
     // =========================
-    // 2. FILTRAR IDEAS
+    // 2. LIMPIEZA DE TEXTO
     // =========================
-    const ideas = lineas.filter(l =>
-      /idea\s*[:\-]/i.test(l)
-    );
+    const clean = ideasRaw.map(l =>
+      l.replace(/^idea\s*\d+\s*:\s*/i, "").trim()
+    ).filter(l => l.length > 0);
 
     // =========================
-    // 3. LIMPIAR TEXTO
+    // 3. CANTIDAD EXACTA
     // =========================
-    const clean = ideas.map(l =>
-      l
-        .replace(/idea\s*\d*\s*[:\-]?\s*/i, "")
-        .replace(/^["']|["']$/g, "")
-    );
+    const cantidadDeseada = 5; // podés cambiarlo o hacerlo dinámico
+
+    const limited = clean.slice(0, cantidadDeseada);
 
     // =========================
-    // 4. GUARDAR EN R2 (1 POR 1)
+    // 4. GUARDADO EN R2
     // =========================
     let guardadas = 0;
 
-    for (const idea of clean) {
+    for (let i = 0; i < limited.length; i++) {
 
       const res = await fetch(WORKER_URL, {
         method: "POST",
@@ -249,7 +247,7 @@ async function copiarIdeas() {
         },
         body: JSON.stringify({
           tipo: "copiar-ideas",
-          contenido: idea
+          contenido: `Idea ${i + 1}: ${limited[i]}`
         })
       });
 
@@ -269,7 +267,7 @@ async function copiarIdeas() {
   } catch (error) {
 
     mensaje.innerText =
-      "❌ " + error.message;
+      `❌ ${error.message}`;
 
   }
 }
