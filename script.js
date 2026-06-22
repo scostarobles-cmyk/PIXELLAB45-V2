@@ -238,25 +238,24 @@ async function copiarIdeas() {
     // =========================
     let guardadas = 0;
 
-    for (let i = 0; i < limited.length; i++) {
+for (const idea of limited) {
 
-      const res = await fetch(WORKER_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          tipo: "copiar-ideas",
-          contenido: `Idea ${i + 1}: ${limited[i]}`
-        })
-      });
+  const res = await fetch(WORKER_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      tipo: "copiar-ideas",
+      contenido: idea.trim()
+    })
+  });
 
-      const data = await res.json();
+  const data = await res.json();
 
-      if (data.success) {
-        guardadas++;
-      }
-    }
+  if (data.success) guardadas++;
+}
+    
 
     // =========================
     // 5. FEEDBACK FINAL
