@@ -159,12 +159,13 @@ Produce la respuesta más extensa posible.
       case "ideas": {
 
   const r = await ai(`
-Genera ideas de contenido sobre: ${tema}
-
-Devuelve entre 5 y 10 líneas.
+Genera entre 5 y 10 ideas de contenido sobre: ${tema}
 
 Cada línea debe empezar con:
 Idea:
+
+No escribas historias ni explicaciones largas.
+Solo ideas cortas.
 `);
 
   return new Response(
@@ -177,7 +178,7 @@ Idea:
   );
 
 }
-      // ========================================
+   // ========================================
       // ✍️ GENERADOR DE PROMPTS
       // ========================================
 

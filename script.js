@@ -211,23 +211,33 @@ async function copiarIdeas() {
 
   try {
 
-    // 🔥 Separar líneas
+    // =========================
+    // 1. LIMPIEZA BASE
+    // =========================
     const lineas = texto
       .split("\n")
       .map(l => l.trim())
-      .filter(l => l.length > 0);
+      .filter(Boolean);
 
-    // 🔥 Filtrar solo ideas válidas
+    // =========================
+    // 2. FILTRAR IDEAS
+    // =========================
     const ideas = lineas.filter(l =>
-      l.toLowerCase().includes("idea")
+      /idea\s*[:\-]/i.test(l)
     );
 
-    // 🔥 Limpiar texto
+    // =========================
+    // 3. LIMPIAR TEXTO
+    // =========================
     const clean = ideas.map(l =>
-      l.replace(/^idea\s*\d*[:\-]?\s*/i, "")
+      l
+        .replace(/idea\s*\d*\s*[:\-]?\s*/i, "")
+        .replace(/^["']|["']$/g, "")
     );
 
-    // 🔥 Guardar cada idea en R2
+    // =========================
+    // 4. GUARDAR EN R2 (1 POR 1)
+    // =========================
     let guardadas = 0;
 
     for (const idea of clean) {
@@ -250,6 +260,9 @@ async function copiarIdeas() {
       }
     }
 
+    // =========================
+    // 5. FEEDBACK FINAL
+    // =========================
     mensaje.innerText =
       `✅ ${guardadas} ideas guardadas`;
 
