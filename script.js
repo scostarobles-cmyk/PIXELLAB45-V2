@@ -381,73 +381,68 @@ async function copiarPrompts() {
 
   }
 }
-// ========================================
+//=======================================
 // GUIONES
-// ========================================
-
+//========================================
 async function generarGuion() {
+  const tema = document.getElementById("temaGuion").value.trim();
+  const resultado = document.getElementById("resultadoGuion");
+  const mensaje = document.getElementById("mensajeGuion");
+  const loading = document.getElementById("loadingGuion"); // Indicador de carga
 
-  const tema =
-    document.getElementById("temaGuion").value;
-
-  const resultado =
-    document.getElementById("resultadoGuion");
-
-  if (!tema.trim()) {
-
-    resultado.innerText =
-      "⚠️ Escribe un tema primero";
-
+  if (!tema) {
+    resultado.innerText = "⚠️ Escribe un tema primero";
     return;
   }
 
   try {
-
-    resultado.innerText =
-      "🎬 Generando guion...";
+    loading.style.display = "block"; // Mostramos carga
+    mensaje.innerText = "🎬 Generando guion profesional...";
+    resultado.innerText = "";
 
     const res = await fetch(
-      WORKER_URL,
+ WORKER_URL,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          tema,
-          tipo: "script"
+          tipo: "script",
+          tema: tema
         })
       }
     );
 
-    const data =
-      await res.json();
+    if (!res.ok) {
+      // Si no es OK, mostramos el error exacto del servidor
+      const errorText = await res.text();
+      throw new Error(`Error del servidor: ${errorText}`);
+    }
 
-    resultado.innerText =
-      data.resultado;
+    const data = await res.json();
 
+    // Mostramos el guion estructurado
+    resultado.innerHTML = `
+      <h2>Tema: ${tema}</h2>
+      <h3>Gancho Inicial</h3>
+      <p>${data.gancho || 'Sin contenido'}</p>
+
+      <h3>Desarrollo</h3>
+      <p>${data.desarrollo || 'Sin contenido'}</p>
+
+      <h3>Cierre Impactante</h3>
+      <p>${data.cierre || 'Sin contenido'}</p>
+    `;
+
+    mensaje.innerText = "✅ Guion listo";
   } catch (error) {
-
-    resultado.innerText =
-      "❌ " + error.message;
-
+    mensaje.innerText = `❌ Error: ${error.message}`;
+    console.error("Error en la generación de guion:", error);
+  } finally {
+    loading.style.display = "none"; // Ocultamos la carga al final
   }
-
 }
-
-function copiarGuion() {
-
-  const texto =
-    document.getElementById("resultadoGuion").innerText;
-
-  copiarTexto(
-    texto,
-    "mensajeGuionCopiado",
-    "✅ Guion copiado correctamente"
-  );
-
-}
-
 // ========================================
 // STORYBOARD
 // ========================================
@@ -666,68 +661,7 @@ async function copiarVisuales() {
 
 }
 
-//=======================================
-// GUIONES
-//========================================
-async function generarGuion() {
-  const tema = document.getElementById("temaGuion").value.trim();
-  const resultado = document.getElementById("resultadoGuion");
-  const mensaje = document.getElementById("mensajeGuion");
-  const loading = document.getElementById("loadingGuion"); // Indicador de carga
 
-  if (!tema) {
-    resultado.innerText = "⚠️ Escribe un tema primero";
-    return;
-  }
-
-  try {
-    loading.style.display = "block"; // Mostramos carga
-    mensaje.innerText = "🎬 Generando guion profesional...";
-    resultado.innerText = "";
-
-    const res = await fetch(
- WORKER_URL,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          tipo: "script",
-          tema: tema
-        })
-      }
-    );
-
-    if (!res.ok) {
-      // Si no es OK, mostramos el error exacto del servidor
-      const errorText = await res.text();
-      throw new Error(`Error del servidor: ${errorText}`);
-    }
-
-    const data = await res.json();
-
-    // Mostramos el guion estructurado
-    resultado.innerHTML = `
-      <h2>Tema: ${tema}</h2>
-      <h3>Gancho Inicial</h3>
-      <p>${data.gancho || 'Sin contenido'}</p>
-
-      <h3>Desarrollo</h3>
-      <p>${data.desarrollo || 'Sin contenido'}</p>
-
-      <h3>Cierre Impactante</h3>
-      <p>${data.cierre || 'Sin contenido'}</p>
-    `;
-
-    mensaje.innerText = "✅ Guion listo";
-  } catch (error) {
-    mensaje.innerText = `❌ Error: ${error.message}`;
-    console.error("Error en la generación de guion:", error);
-  } finally {
-    loading.style.display = "none"; // Ocultamos la carga al final
-  }
-}
 // ========================================
 // IMÁGENES IA
 // ========================================
