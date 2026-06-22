@@ -456,4 +456,18 @@ case "copiar-prompts": {
     }
   );
 }
-      
+      default:
+  return new Response(
+    JSON.stringify({
+      error: "Tipo no válido"
+    }),
+    {
+      headers: corsHeaders
+    }
+  );
+
+    } // fin switch
+
+  } // fin fetch
+
+}; // fin export default
