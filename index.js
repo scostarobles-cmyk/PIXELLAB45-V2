@@ -242,17 +242,50 @@ Visual style: ${formato}
 // ========================================
 
 case "visuales": {
-  const r = await ai(
-    `Genera prompts visuales cinematográficos ultra detallados sobre: ${tema}. 
-     Estilo cyberpunk, futurista o realista según convenga.`
-  );
+
+  const match = tema.match(/\d+/);
+  const cantidad = match ? parseInt(match[0]) : 5;
+
+  const r = await ai(`
+IMPORTANT:
+
+YOU MUST RESPOND ONLY IN ENGLISH.
+
+Generate EXACTLY ${cantidad} cinematic visual prompts.
+
+Rules:
+
+- English only.
+- Each prompt must be on a single line.
+- Do not explain anything.
+- Do not add introductions.
+- Do not add conclusions.
+- Do not add notes.
+
+Format exactly:
+
+Prompt 1: ...
+
+Prompt 2: ...
+
+Prompt 3: ...
+
+Prompt 4: ...
+
+Prompt 5: ...
+
+Topic: ${tema}
+`);
 
   return new Response(
-    JSON.stringify({ resultado: r }),
+    JSON.stringify({
+      resultado: r
+    }),
     {
       headers: corsHeaders
     }
   );
+
 }
       // ========================================
 // 🎬 GENERADOR DE GUIONES
