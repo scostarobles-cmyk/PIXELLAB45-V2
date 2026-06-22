@@ -347,17 +347,75 @@ resultado.innerText =
 }
 
 
-function copiarPrompt() {
+async function copiarPrompts() {
 
   const texto =
     document.getElementById("resultadoPrompt").innerText;
 
-  copiarTexto(
-    texto,
-    "mensajeCopiado",
-    "✅ Prompt copiado correctamente"
-  );
+  const mensaje =
+    document.getElementById("mensajeCopiado");
 
+  if (!texto.trim()) {
+    mensaje.innerText = "⚠️ Primero genera prompts";
+    return;
+  }
+
+  mensaje.innerText = "⏳ Guardando prompts...";
+
+  try {
+
+    // =========================
+    // 1. PARSEAR PROMPTS
+    // =========================
+    const prompts = texto
+      .split("\n")
+      .map(l => l.trim())
+      .filter(l => /^prompt\s*\d+\s*:/i.test(l))
+      .map(l =>
+        l.replace(/^prompt\s*\d+\s*:\s*/i, "").trim()
+      );
+
+    // =========================
+    // 2. LIMITAR A 5
+    // =========================
+    const limited = prompts.slice(0, 5);
+
+    // =========================
+    // 3. GUARDAR EN R2
+    // =========================
+    let guardados = 0;
+
+    for (let i = 0; i < limited.length; i++) {
+
+      const res = await fetch(WORKER_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          tipo: "copiar-prompts",
+          contenido: limited[i]
+        })
+      });
+
+      const data = await res.json();
+
+      if (data.success) guardados++;
+    }
+
+    // =========================
+    // 4. FEEDBACK
+    // =========================
+    mensaje.innerText =
+      `✅ ${guardados} prompts guardados`;
+
+  } catch (error) {
+
+    mensaje.innerText =
+      `❌ ${error.message}`;
+
+  }
+}
 }
 
 // ========================================
