@@ -284,7 +284,9 @@ async function generarPrompt() {
 
   try {
 
-    loading.style.display = "block";
+    if (loading) {
+      loading.style.display = "block";
+    }
 
     resultado.innerText = "";
 
@@ -306,19 +308,23 @@ async function generarPrompt() {
     const data =
       await res.json();
 
-    loading.style.display =
-      "none";
+    if (loading) {
+      loading.style.display = "none";
+    }
 
     resultado.innerHTML =
       `<div style="white-space:pre-wrap">${data.resultado}</div>`;
 
   } catch (error) {
 
-    loading.style.display =
-      "none";
+    if (loading) {
+      loading.style.display = "none";
+    }
 
     resultado.innerText =
       "❌ " + error.message;
+
+    console.error(error);
 
   }
 
