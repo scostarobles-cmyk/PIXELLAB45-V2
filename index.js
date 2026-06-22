@@ -40,7 +40,9 @@ export default {
       formato,
       categoria,
       imagenBase64,
-      contenido
+      contenido,
+      indice
+      
     } = data;
 
     if (!tipo) {
