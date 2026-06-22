@@ -194,32 +194,26 @@ TEMA: ${tema}
 
       case "prompt": {
 
-  const r = await ai(
-`Eres un generador de prompts para IA de imágenes.
+  const r = await ai(`
+Genera prompts para IA de imágenes.
 
-Convierte el tema en una lista de prompts listos para generar imágenes.
-
-REGLAS:
-- No historias
-- No explicaciones
-- No sinopsis
-- No texto extra
-- Solo prompts de imagen
-
-Devuelve una lista numerada clara (entre 5 y 7 prompts).
+REGLAS OBLIGATORIAS:
+- Escribir SOLO en inglés
+- Cada prompt debe ser independiente
+- No explicar nada
+- No agregar títulos, solo prompts
+- No agregar introducción ni cierre
 
 FORMATO:
+Prompt 1: ...
+Prompt 2: ...
+Prompt 3: ...
+Prompt 4: ...
+Prompt 5: ...
 
-Prompt 1: descripción visual cinematográfica
-Prompt 2: descripción visual cinematográfica
-Prompt 3: descripción visual cinematográfica
-Prompt 4: descripción visual cinematográfica
-Prompt 5: descripción visual cinematográfica
-
-TEMA:
-${tema}
-`
-  );
+TEMA: ${tema}
+FORMATO VISUAL: ${formato}
+`);
 
   return new Response(
     JSON.stringify({
