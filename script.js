@@ -212,21 +212,21 @@ async function copiarIdeas() {
   try {
 
     // =========================
-    // 1. EXTRACCIÓN ROBUSTA
+    // 1. SOLO LÍNEAS IDEA N:
     // =========================
     const ideas = texto
       .split("\n")
       .map(l => l.trim())
-      .filter(l => l.toLowerCase().includes("idea"))
+      .filter(l => /^idea\s*\d+\s*:/i.test(l))
       .map(l =>
         l.replace(/^idea\s*\d+\s*:\s*/i, "").trim()
       )
       .filter(l => l.length > 0);
 
     // =========================
-    // 2. LIMITE DINÁMICO
+    // 2. LIMITAR (SIN INVENTAR)
     // =========================
-    const limited = ideas.slice(0, ideas.length || 5);
+    const limited = ideas.slice(0, 10); // seguro para tu sistema actual
 
     // =========================
     // 3. GUARDADO EN R2
@@ -255,7 +255,8 @@ async function copiarIdeas() {
       `✅ ${guardadas} ideas guardadas`;
 
   } catch (error) {
-    mensaje.innerText = `❌ ${error.message}`;
+    mensaje.innerText =
+      `❌ ${error.message}`;
   }
 }
 // ========================================
