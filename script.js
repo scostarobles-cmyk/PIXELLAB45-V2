@@ -239,33 +239,7 @@ for (const idea of ideas) {
 
   const data = await res.json();
 
-  if (data.success) {
-    guardadas++;
-  }
-
-}
-
-document.getElementById("mensajeIdeasCopiadas").innerText =
-  `✅ ${guardadas} ideas guardadas`;
-
-    if (data.success) {
-
-      document.getElementById("mensajeIdeasCopiadas").innerText =
-        `✅ Guardadas: ${data.nombre}`;
-
-    } else {
-
-      document.getElementById("mensajeIdeasCopiadas").innerText =
-        `❌ ${data.error || "Error guardando"}`;
-
-    }
-
-  } catch (error) {
-
-    document.getElementById("mensajeIdeasCopiadas").innerText =
-      `❌ ${error.message}`;
-
-  }
+ 
 
 }
 // ========================================
