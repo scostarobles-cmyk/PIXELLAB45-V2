@@ -158,50 +158,25 @@ Produce la respuesta más extensa posible.
 
       case "ideas": {
 
-        const match = tema.match(/\d+/);
-        let cantidad = match ? parseInt(match[0]) : 5;
+  const r = await ai(`
+Genera ideas de contenido sobre: ${tema}
 
-        if (cantidad > 20) cantidad = 20;
+Devuelve entre 5 y 10 líneas.
 
-        const resultado = await ai(`
-Eres un generador de ideas estructurado.
-
-Genera EXACTAMENTE ${cantidad} ideas sobre: ${tema}
-
-REGLAS OBLIGATORIAS:
-- No repitas ideas
-- No mezcles numeración
-- No hagas bloques separados
-- No reinicies la cuenta
-- No agregues texto fuera de las ideas
-
-FORMATO ESTRICTO:
-
-Idea 1:
-Título:
-Gancho:
-Desarrollo:
-
-Idea 2:
-Título:
-Gancho:
-Desarrollo:
-
-(continuar así hasta Idea ${cantidad})
-
-Cada idea debe ser completamente diferente.
+Cada línea debe empezar con:
+Idea:
 `);
 
-        return new Response(
-          JSON.stringify({
-            ideas: resultado
-          }),
-          {
-            headers: corsHeaders
-          }
-        );
+  return new Response(
+    JSON.stringify({
+      ideas: r
+    }),
+    {
+      headers: corsHeaders
+    }
+  );
 
-      }
+}
       // ========================================
       // ✍️ GENERADOR DE PROMPTS
       // ========================================
@@ -209,28 +184,26 @@ Cada idea debe ser completamente diferente.
       case "prompt": {
 
   const r = await ai(
-`Eres un generador profesional de PROMPTS PARA IA DE IMAGEN.
+`Eres un generador de prompts para IA de imágenes.
 
-REGLAS ESTRICTAS:
-- NO escribas historias
-- NO escribas sinopsis
-- NO escribas guiones
-- NO expliques nada
-- NO desarrolles narrativa
-- SOLO prompts listos para generar imágenes
+Convierte el tema en una lista de prompts listos para generar imágenes.
 
-Cada prompt debe ser independiente y reutilizable.
+REGLAS:
+- No historias
+- No explicaciones
+- No sinopsis
+- No texto extra
+- Solo prompts de imagen
 
-FORMATO OBLIGATORIO (SIN EXCEPCIÓN):
+Devuelve una lista numerada clara (entre 5 y 7 prompts).
 
-Prompt 1: descripción visual directa
-Prompt 2: descripción visual directa
-Prompt 3: descripción visual directa
-Prompt 4: descripción visual directa
-Prompt 5: descripción visual directa
+FORMATO:
 
-ESTILO:
-cinematográfico, ultra detallado, realista, 8k
+Prompt 1: descripción visual cinematográfica
+Prompt 2: descripción visual cinematográfica
+Prompt 3: descripción visual cinematográfica
+Prompt 4: descripción visual cinematográfica
+Prompt 5: descripción visual cinematográfica
 
 TEMA:
 ${tema}

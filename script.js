@@ -199,62 +199,66 @@ async function copiarIdeas() {
   const texto =
     document.getElementById("resultadoIdeas").innerText;
 
+  const mensaje =
+    document.getElementById("mensajeIdeasCopiadas");
+
   if (!texto.trim()) {
-
-    document.getElementById("mensajeIdeasCopiadas").innerText =
-      "⚠️ Primero genera ideas";
-
+    mensaje.innerText = "⚠️ Primero genera ideas";
     return;
-
   }
 
-  navigator.clipboard.writeText(texto);
-
-  document.getElementById("mensajeIdeasCopiadas").innerText =
-    "⏳ Guardando ideas...";
+  mensaje.innerText = "⏳ Procesando ideas...";
 
   try {
 
-    const ideas = texto
-      .split(/(?=Idea\s+\d+:)/gi)
-      .filter(idea => idea.trim());
+    // 🔥 Separar líneas
+    const lineas = texto
+      .split("\n")
+      .map(l => l.trim())
+      .filter(l => l.length > 0);
 
+    // 🔥 Filtrar solo ideas válidas
+    const ideas = lineas.filter(l =>
+      l.toLowerCase().includes("idea")
+    );
+
+    // 🔥 Limpiar texto
+    const clean = ideas.map(l =>
+      l.replace(/^idea\s*\d*[:\-]?\s*/i, "")
+    );
+
+    // 🔥 Guardar cada idea en R2
     let guardadas = 0;
 
-    for (const idea of ideas) {
+    for (const idea of clean) {
 
-      const res = await fetch(
-        WORKER_URL,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            tipo: "copiar-ideas",
-            contenido: idea.trim()
-          })
-        }
-      );
+      const res = await fetch(WORKER_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          tipo: "copiar-ideas",
+          contenido: idea
+        })
+      });
 
       const data = await res.json();
 
       if (data.success) {
         guardadas++;
       }
-
     }
 
-    document.getElementById("mensajeIdeasCopiadas").innerText =
+    mensaje.innerText =
       `✅ ${guardadas} ideas guardadas`;
 
   } catch (error) {
 
-    document.getElementById("mensajeIdeasCopiadas").innerText =
-      `❌ ${error.message}`;
+    mensaje.innerText =
+      "❌ " + error.message;
 
   }
-
 }
 // ========================================
 // PROMPTS
