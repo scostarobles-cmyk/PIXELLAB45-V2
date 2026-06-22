@@ -459,10 +459,10 @@ case "copiar-prompts": {
   );
 }
 /// 📚 GUARDAR VISUAL
-case "guardar-visuales": {
+case "copiar-visuales": {
 
   const nombreArchivo =
-    `visuales/visual-${Date.now()}.txt`;
+    `visuales/${Date.now()}.txt`;
 
   await env.IMAGES.put(
     nombreArchivo,
@@ -486,9 +486,8 @@ case "guardar-visuales": {
       }
     }
   );
-
 }
-
+  
 
 //CIERRE FINAL 
       default:

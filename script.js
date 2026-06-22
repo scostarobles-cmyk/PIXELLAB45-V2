@@ -638,7 +638,7 @@ async function copiarVisuales() {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            tipo: "guardar-visuales",
+            tipo: "copiar-visuales",
             contenido: visual
           })
         }
