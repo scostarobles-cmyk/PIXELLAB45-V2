@@ -197,7 +197,7 @@ async function generarIdeas() {
 async function copiarIdeas() {
 
   const texto =
-    document.getElementById("resultadoIdeas").innerText;
+    document.getElementById("resultadoIdeas").innerText || "";
 
   const mensaje =
     document.getElementById("mensajeIdeasCopiadas");
@@ -212,62 +212,50 @@ async function copiarIdeas() {
   try {
 
     // =========================
-    // 1. SPLIT + FILTRO ESTRICTO
+    // 1. EXTRACCIÓN ROBUSTA
     // =========================
-    const ideasRaw = texto
+    const ideas = texto
       .split("\n")
       .map(l => l.trim())
-      .filter(l => /^idea\s*\d+\s*:/i.test(l));
+      .filter(l => l.toLowerCase().includes("idea"))
+      .map(l =>
+        l.replace(/^idea\s*\d+\s*:\s*/i, "").trim()
+      )
+      .filter(l => l.length > 0);
 
     // =========================
-    // 2. LIMPIEZA DE TEXTO
+    // 2. LIMITE DINÁMICO
     // =========================
-    const clean = ideasRaw.map(l =>
-      l.replace(/^idea\s*\d+\s*:\s*/i, "").trim()
-    ).filter(l => l.length > 0);
+    const limited = ideas.slice(0, ideas.length || 5);
 
     // =========================
-    // 3. CANTIDAD EXACTA
-    // =========================
-    const cantidadDeseada = 5; // podés cambiarlo o hacerlo dinámico
-
-    const limited = clean.slice(0, cantidadDeseada);
-
-    // =========================
-    // 4. GUARDADO EN R2
+    // 3. GUARDADO EN R2
     // =========================
     let guardadas = 0;
 
-for (const idea of limited) {
+    for (const idea of limited) {
 
-  const res = await fetch(WORKER_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      tipo: "copiar-ideas",
-      contenido: idea.trim()
-    })
-  });
+      const res = await fetch(WORKER_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          tipo: "copiar-ideas",
+          contenido: idea
+        })
+      });
 
-  const data = await res.json();
+      const data = await res.json();
 
-  if (data.success) guardadas++;
-}
-    
+      if (data.success) guardadas++;
+    }
 
-    // =========================
-    // 5. FEEDBACK FINAL
-    // =========================
     mensaje.innerText =
       `✅ ${guardadas} ideas guardadas`;
 
   } catch (error) {
-
-    mensaje.innerText =
-      `❌ ${error.message}`;
-
+    mensaje.innerText = `❌ ${error.message}`;
   }
 }
 // ========================================
@@ -350,7 +338,7 @@ resultado.innerText =
 async function copiarPrompts() {
 
   const texto =
-    document.getElementById("resultadoPrompt").innerText;
+    document.getElementById("resultadoPrompt").innerText || "";
 
   const mensaje =
     document.getElementById("mensajeCopiado");
@@ -365,27 +353,28 @@ async function copiarPrompts() {
   try {
 
     // =========================
-    // 1. PARSEAR PROMPTS
+    // 1. EXTRACCIÓN ROBUSTA
     // =========================
     const prompts = texto
       .split("\n")
       .map(l => l.trim())
-      .filter(l => /^prompt\s*\d+\s*:/i.test(l))
+      .filter(l => l.toLowerCase().includes("prompt"))
       .map(l =>
         l.replace(/^prompt\s*\d+\s*:\s*/i, "").trim()
-      );
+      )
+      .filter(l => l.length > 0);
 
     // =========================
-    // 2. LIMITAR A 5
+    // 2. LIMITE FIJO 5
     // =========================
     const limited = prompts.slice(0, 5);
 
     // =========================
-    // 3. GUARDAR EN R2
+    // 3. GUARDADO EN R2
     // =========================
     let guardados = 0;
 
-    for (let i = 0; i < limited.length; i++) {
+    for (const prompt of limited) {
 
       const res = await fetch(WORKER_URL, {
         method: "POST",
@@ -394,7 +383,7 @@ async function copiarPrompts() {
         },
         body: JSON.stringify({
           tipo: "copiar-prompts",
-          contenido: limited[i]
+          contenido: prompt
         })
       });
 
@@ -403,17 +392,11 @@ async function copiarPrompts() {
       if (data.success) guardados++;
     }
 
-    // =========================
-    // 4. FEEDBACK
-    // =========================
     mensaje.innerText =
       `✅ ${guardados} prompts guardados`;
 
   } catch (error) {
-
-    mensaje.innerText =
-      `❌ ${error.message}`;
-
+    mensaje.innerText = `❌ ${error.message}`;
   }
 }
 
