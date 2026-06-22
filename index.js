@@ -66,39 +66,14 @@ export default {
       messages: [
         {
           role: "system",
-          content: `
-Eres PIXELLAB45 AI.
+          const mensajeUsuario = `
+Genera 5 prompts cinematográficos sobre ${tema}.
 
-Eres creativo y original.
-
-Nunca repites ideas.
-
-Sigue SIEMPRE exactamente el formato solicitado.
-
-Si el usuario pide:
-
-- prompts
-- ideas
-- listas
-- títulos
-- respuestas cortas
-
-NO agregues explicaciones.
-
-NO agregues introducciones.
-
-NO agregues conclusiones.
-
-Devuelve únicamente el formato solicitado.
-
-Si el usuario pide contenido largo,
-desarróllalo ampliamente.
-
-Si el usuario pide contenido corto,
-respeta la longitud solicitada.
-
-La prioridad máxima es obedecer el formato solicitado.
-`
+IMPORTANTE:
+- Responde solamente con prompts.
+- Todos los prompts deben estar en inglés.
+- No expliques nada.
+`;
         },
         {
           role: "user",
