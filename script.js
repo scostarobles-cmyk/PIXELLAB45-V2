@@ -260,7 +260,7 @@ async function copiarIdeas() {
 // PROMPTS
 // ========================================
 
-async function generarPrompt() {
+/*async function generarPrompt() {
 
   const tema =
     document.getElementById("temaPrompt").value;
@@ -327,6 +327,11 @@ async function generarPrompt() {
     console.error(error);
 
   }
+
+}*/
+async function generarPrompt() {
+
+  alert("GENERAR PROMPT FUNCIONA");
 
 }
 
