@@ -456,6 +456,38 @@ case "copiar-prompts": {
     }
   );
 }
+// 📚 GUARDAR VISUALES
+case "guardar-visuales": {
+
+  const nombreArchivo =
+    `visuales/${Date.now()}.txt`;
+
+  await env.IMAGES.put(
+    nombreArchivo,
+    contenido,
+    {
+      httpMetadata: {
+        contentType: "text/plain"
+      }
+    }
+  );
+
+  return new Response(
+    JSON.stringify({
+      success: true,
+      nombre: nombreArchivo
+    }),
+    {
+      headers: {
+        ...corsHeaders,
+        "Content-Type": "application/json"
+      }
+    }
+  );
+
+}
+
+//CIERRE FINAL 
       default:
   return new Response(
     JSON.stringify({

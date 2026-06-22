@@ -593,24 +593,43 @@ async function generarVisuales() {
 
 }
 
-function copiarVisuales() {
+async function copiarVisuales() {
 
   const texto =
     document.getElementById("resultadoVisual").innerText;
 
   if (texto.trim() === "") {
-
     document.getElementById("mensajeVisual").innerText =
-      "⚠️ Primero genera prompts";
-
+      "⚠️ Primero genera visuales";
     return;
   }
 
   copiarTexto(
     texto,
     "mensajeVisual",
-    "✅ Prompts copiados correctamente"
+    "✅ Visuales copiados correctamente"
   );
+
+  const visuales =
+    texto
+      .split(/Prompt\s+\d+:/i)
+      .filter(v => v.trim() !== "");
+
+  for (let i = 0; i < visuales.length; i++) {
+
+    await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        tipo: "guardar-visuales",
+        contenido: visuales[i].trim(),
+        indice: i + 1
+      })
+    });
+
+  }
 
 }
 
