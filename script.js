@@ -237,10 +237,6 @@ for (const idea of ideas) {
     }
   );
 
-  const data = await res.json();
-
- 
-
 }
 // ========================================
 // PROMPTS
