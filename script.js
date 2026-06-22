@@ -673,6 +673,7 @@ async function generarGuion() {
   const tema = document.getElementById("temaGuion").value.trim();
   const resultado = document.getElementById("resultadoGuion");
   const mensaje = document.getElementById("mensajeGuion");
+  const loading = document.getElementById("loadingGuion"); // Indicador de carga
 
   if (!tema) {
     resultado.innerText = "⚠️ Escribe un tema primero";
@@ -680,11 +681,12 @@ async function generarGuion() {
   }
 
   try {
+    loading.style.display = "block"; // Mostramos carga
     mensaje.innerText = "🎬 Generando guion profesional...";
     resultado.innerText = "";
 
     const res = await fetch(
-      WORKER_URL,
+ WORKER_URL,
       {
         method: "POST",
         headers: {
@@ -697,25 +699,33 @@ async function generarGuion() {
       }
     );
 
+    if (!res.ok) {
+      // Si no es OK, mostramos el error exacto del servidor
+      const errorText = await res.text();
+      throw new Error(`Error del servidor: ${errorText}`);
+    }
+
     const data = await res.json();
 
-    // Estructuramos el guion de manera profesional
+    // Mostramos el guion estructurado
     resultado.innerHTML = `
       <h2>Tema: ${tema}</h2>
       <h3>Gancho Inicial</h3>
-      <p>${data.gancho || '...'}</p>
+      <p>${data.gancho || 'Sin contenido'}</p>
 
       <h3>Desarrollo</h3>
-      <p>${data.desarrollo || '...'}</p>
+      <p>${data.desarrollo || 'Sin contenido'}</p>
 
       <h3>Cierre Impactante</h3>
-      <p>${data.cierre || '...'}</p>
+      <p>${data.cierre || 'Sin contenido'}</p>
     `;
 
     mensaje.innerText = "✅ Guion listo";
   } catch (error) {
-    mensaje.innerText = "❌ Error generando guion";
-    console.error(error);
+    mensaje.innerText = `❌ Error: ${error.message}`;
+    console.error("Error en la generación de guion:", error);
+  } finally {
+    loading.style.display = "none"; // Ocultamos la carga al final
   }
 }
 // ========================================
