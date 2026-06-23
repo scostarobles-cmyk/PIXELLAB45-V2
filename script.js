@@ -628,12 +628,12 @@ async function generarGuion() {
 
   } catch (error) {
 
-    console.error(error);
+  console.error(error);
 
-    mensaje.innerText =
-      "❌ Error al generar guion";
+  mensaje.innerText =
+    `❌ ${error.message}`;
 
-  }
+}
 
 }
 // ========================================
