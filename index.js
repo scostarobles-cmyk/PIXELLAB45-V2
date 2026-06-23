@@ -432,10 +432,11 @@ case "copiar-ideas": {
 
 /// 📚 GUARDAR PROMPT
 case 'copiar-prompts': {
+case 'copiar-prompts': {
   const contenido = data.contenido;
   const categoria = data.categoria;
   const tema = data.tema;
-  
+
   const nombreArchivo = `prompts/${categoria}/${Date.now()}.txt`;
 
   await env.IMAGES.put(
@@ -446,6 +447,8 @@ case 'copiar-prompts': {
         contentType: "text/plain"
       }
     }
+  );
+}
 /// 📚 GUARDAR VISUAL
 case "copiar-visuales": {
 
