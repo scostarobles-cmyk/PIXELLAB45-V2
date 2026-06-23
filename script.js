@@ -555,78 +555,48 @@ async function copiarPrompts() {
 // ========================================
 
 async function generarGuion() {
+  const tema = document.getElementById("temaGuion").value.trim();
+  const duracion = document.getElementById("duracionGuion").value;
 
-  const tema =
-    document.getElementById("temaGuion")
-      .value
-      .trim();
-
-  const duracion =
-    document.getElementById("duracionGuion")
-      .value;
-
-  const resultado =
-    document.getElementById("resultadoGuion");
-
-  const mensaje =
-    document.getElementById("mensajeGuionCopiado");
+  const resultado = document.getElementById("resultadoGuion");
+  const mensaje = document.getElementById("mensajeGuionCopiado");
 
   if (!tema) {
-
-    resultado.innerHTML =
-      "⚠️ Escribe un tema";
-
+    mensaje.innerText = "⚠️ Ingresa un tema";
     return;
-
   }
 
   resultado.innerHTML = "";
-
-  mensaje.innerText =
-    "⏳ Generando guion profesional...";
+  mensaje.innerText = "⏳ Generando guion...";
 
   try {
+    const res = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        tipo: "guion",
+        tema: tema,
+        plataforma: "TikTok",
+        duracion: duracion,
+        estilo: "viral"
+      })
+    });
 
-    const res = await fetch(
-      WORKER_URL,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type":
-            "application/json"
-        },
-        body: JSON.stringify({
-          tipo: "guion",
-          tema,
-          plataforma: "TikTok",
-          duracion,
-          estilo: "viral"
-        })
-      }
-    );
+    const data = await res.json();
 
-    const data =
-      await res.json();
-
-    resultado.innerHTML =
-      `<div style="white-space:pre-wrap;">${
-        data.resultado ||
-        data.guion ||
-        "No se recibió respuesta"
-      }</div>`;
-
-    mensaje.innerText =
-      "✅ Guion generado";
-
+    if (data.resultado) {
+      resultado.innerHTML = `<div style="white-space:pre-wrap;">${data.resultado}</div>`;
+      mensaje.innerText = "✅ Guion generado";
+    } else {
+      resultado.innerHTML = "❌ No se recibió un guion válido.";
+      mensaje.innerText = "❌ Error: No se recibió respuesta válida";
+    }
   } catch (error) {
-
     console.error(error);
-
-    mensaje.innerText =
-      `❌ ${error.message}`;
-
+    mensaje.innerText = `❌ ${error.message}`;
   }
-
 }
 
 
