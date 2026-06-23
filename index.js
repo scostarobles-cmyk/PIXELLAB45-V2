@@ -454,13 +454,14 @@ case "copiar-ideas": {
   );
 }
 
-/// 📚 GUARDAR PROMPT
-case 'copiar-prompts': {
+case "copiar-prompts": {
+
   const contenido = data.contenido;
   const categoria = data.categoria;
   const tema = data.tema;
-  
-  const nombreArchivo = `prompts/${categoria}/${Date.now()}.txt`;
+
+  const nombreArchivo =
+    `prompts/${categoria}/${Date.now()}.txt`;
 
   await env.IMAGES.put(
     nombreArchivo,
@@ -470,8 +471,28 @@ case 'copiar-prompts': {
         contentType: "text/plain"
       }
     }
-/// 📚 GUARDAR VISUAL
+  );
+
+  return new Response(
+    JSON.stringify({
+      success: true,
+      nombre: nombreArchivo
+    }),
+    {
+      headers: {
+        ...corsHeaders,
+        "Content-Type": "application/json"
+      }
+    }
+  );
+}
+
+// 📚 GUARDAR VISUAL
+
 case "copiar-visuales": {
+
+  const contenido =
+    data.contenido;
 
   const nombreArchivo =
     `visuales/${Date.now()}.txt`;
@@ -498,10 +519,7 @@ case "copiar-visuales": {
       }
     }
   );
-}
-
-
-  
+}  
 
 //CIERRE FINAL 
       default:
