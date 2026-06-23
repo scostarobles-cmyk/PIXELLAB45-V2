@@ -126,6 +126,169 @@ contenedor.innerHTML =
 }
 
 // ========================================
+// IDEAS
+// ========================================
+
+async function generarIdeas() {
+
+  const tema =
+    document.getElementById("tema").value;
+
+  const resultado =
+    document.getElementById("resultadoIdeas");
+
+  const loading =
+    document.getElementById("loadingIdeas");
+
+  const barra =
+    document.getElementById("barraIdeas");
+
+  const porcentaje =
+    document.getElementById("porcentajeIdeas");
+
+  const estado =
+    document.getElementById("estadoIdeas");
+
+  if (!tema.trim()) {
+
+    resultado.innerHTML =
+      "⚠️ Escribe un tema primero";
+
+    return;
+  }
+
+  resultado.innerHTML = "";
+
+  loading.style.display = "block";
+
+  barra.style.width = "0%";
+
+  porcentaje.innerText = "0%";
+
+  estado.innerText =
+    "🧠 Analizando tema...";
+
+  let progreso = 0;
+
+  const fakeProgress = setInterval(() => {
+
+    if (progreso < 90) {
+
+      progreso += Math.floor(Math.random() * 8) + 2;
+
+      if (progreso > 90) {
+        progreso = 90;
+      }
+
+      barra.style.width =
+        progreso + "%";
+
+      porcentaje.innerText =
+        progreso + "%";
+
+      if (progreso < 30) {
+
+        estado.innerText =
+          "💡 Generando ideas...";
+
+      } else if (progreso < 60) {
+
+        estado.innerText =
+          "🎯 Organizando contenido...";
+
+      } else {
+
+        estado.innerText =
+          "⚡ Finalizando respuesta...";
+
+      }
+
+    }
+
+  }, 400);
+
+  try {
+
+    const res = await fetch(
+      WORKER_URL,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          tipo: "ideas",
+          tema
+        })
+      }
+    );
+
+    const data =
+      await res.json();
+
+    clearInterval(fakeProgress);
+
+    barra.style.width = "100%";
+
+    porcentaje.innerText = "100%";
+
+    estado.innerText =
+      "✅ Ideas generadas";
+
+    setTimeout(() => {
+
+      loading.style.display = "none";
+
+      resultado.innerHTML =
+        `<div style="white-space:pre-wrap;">${data.ideas}</div>`;
+
+    }, 500);
+
+  } catch (error) {
+
+    clearInterval(fakeProgress);
+
+    loading.style.display = "none";
+
+    resultado.innerHTML =
+      `❌ ${error.message}`;
+
+    console.error(error);
+
+  }
+
+}
+
+function copiarIdeas() {
+
+  const texto =
+    document.getElementById("resultadoIdeas").innerText;
+
+  const mensaje =
+    document.getElementById("mensajeIdeasCopiadas");
+
+  if (!texto.trim()) {
+
+    mensaje.innerText =
+      "⚠️ Primero genera ideas";
+
+    return;
+  }
+
+  navigator.clipboard.writeText(texto);
+
+  mensaje.innerText =
+    "✅ Ideas copiadas correctamente";
+
+  setTimeout(() => {
+
+    mensaje.innerText = "";
+
+  }, 3000);
+
+}
+
+// ========================================
 // MENÚ HAMBURGUESA
 // ========================================
 
