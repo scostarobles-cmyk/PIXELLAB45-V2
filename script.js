@@ -560,15 +560,23 @@ async function generarGuion() {
       .value
       .trim();
 
+  const tipo =
+    document.getElementById("tipoContenidoGuion")
+      .value;
+
   const duracion =
     document.getElementById("duracionGuion")
+      .value;
+
+  const estilo =
+    document.getElementById("estiloGuion")
       .value;
 
   const resultado =
     document.getElementById("resultadoGuion");
 
   const mensaje =
-    document.getElementById("mensajeGuionCopiado");
+    document.getElementById("mensajeGuion");
 
   if (!tema) {
 
@@ -576,13 +584,16 @@ async function generarGuion() {
       "⚠️ Ingresa un tema";
 
     return;
-
   }
 
-  resultado.innerHTML = "";
+  resultado.innerText = "";
 
-  mensaje.innerText =
-    "⏳ Generando guion...";
+  mensaje.innerHTML = `
+    ⏳ Generando guion...
+    <div class="barra-progreso">
+      <div class="progreso"></div>
+    </div>
+  `;
 
   try {
 
@@ -597,9 +608,9 @@ async function generarGuion() {
         body: JSON.stringify({
           tipo: "guion",
           tema,
-          plataforma: "tiktok",
+          plataforma: tipo,
           duracion,
-          estilo: "viral"
+          estilo
         })
       }
     );
@@ -607,22 +618,25 @@ async function generarGuion() {
     const data =
       await res.json();
 
-    resultado.innerHTML =
-      `<div style="white-space:pre-wrap;">${
-        data.resultado || data.guion
-      }</div>`;
+    resultado.innerText =
+      data.resultado ||
+      data.guion ||
+      "No se recibió respuesta";
 
     mensaje.innerText =
       "✅ Guion generado";
 
   } catch (error) {
 
+    console.error(error);
+
     mensaje.innerText =
-      `❌ ${error.message}`;
+      "❌ Error al generar guion";
 
   }
 
 }
+
 // ========================================
 // GUIONES 
 // ========================================
