@@ -433,30 +433,36 @@ case "copiar-ideas": {
 /// 📚 GUARDAR PROMPT
 case "copiar-prompts": {
 
-  const contenido =
-    data.contenido;
-
-  const categoria =
-    data.categoria || "general";
-
   const tema =
-    (data.tema || "sin-tema")
-      .toLowerCase()
-      .replace(/[^a-z0-9áéíóúñ]/gi, "-")
-      .replace(/-+/g, "-");
+  document.getElementById("temaPrompt").value;
 
-  const nombreArchivo =
-    `prompts/${categoria}/${tema}-${Date.now()}.txt`;
+const categoria =
+  document.getElementById("tipoContenido").value;
 
-  await env.IMAGENES.put(
-    nombreArchivo,
-    contenido
+for (const prompt of prompts) {
+
+  const res = await fetch(
+    WORKER_URL,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        tipo: "copiar-prompts",
+        contenido: prompt,
+        categoria,
+        tema
+      })
+    }
   );
 
-  return Response.json({
-    success: true,
-    archivo: nombreArchivo
-  });
+  const data = await res.json();
+
+  if (data.success) {
+    guardados++;
+    console.log("Guardado:", data.archivo);
+  }
 
 }
 /// 📚 GUARDAR VISUAL
