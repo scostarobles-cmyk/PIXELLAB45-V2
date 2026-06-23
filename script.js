@@ -258,9 +258,85 @@ async function generarIdeas() {
   }
 
 }
+// ========================================
+// COPIAR IDEAS
+// ========================================
+async function copiarIdeas() {
 
+  const texto =
+    document.getElementById("resultadoIdeas").innerText;
 
+  const mensaje =
+    document.getElementById("mensajeIdeasCopiadas");
 
+  if (!texto.trim()) {
+
+    mensaje.innerText =
+      "⚠️ Primero genera ideas";
+
+    return;
+  }
+
+  navigator.clipboard.writeText(texto);
+
+  mensaje.innerText =
+    "⏳ Guardando ideas...";
+
+  try {
+
+    const ideas = texto
+      .split("\n")
+      .map(l => l.trim())
+      .filter(l =>
+        /^idea\s*\d+\s*:/i.test(l)
+      )
+      .map(l =>
+        l.replace(
+          /^idea\s*\d+\s*:\s*/i,
+          ""
+        ).trim()
+      );
+
+    let guardadas = 0;
+
+    for (const idea of ideas) {
+
+      const res = await fetch(
+        WORKER_URL,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            tipo: "copiar-ideas",
+            contenido: idea
+          })
+        }
+      );
+
+      const data =
+        await res.json();
+
+      if (data.success) {
+        guardadas++;
+      }
+
+    }
+
+    mensaje.innerText =
+      `✅ ${guardadas} ideas guardadas`;
+
+  } catch (error) {
+
+    mensaje.innerText =
+      `❌ ${error.message}`;
+
+    console.error(error);
+
+  }
+
+}
 
 
 // ========================================
