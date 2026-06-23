@@ -432,7 +432,6 @@ case "copiar-ideas": {
 
 /// 📚 GUARDAR PROMPT
 case 'copiar-prompts': {
-case 'copiar-prompts': {
   const contenido = data.contenido;
   const categoria = data.categoria;
   const tema = data.tema;
