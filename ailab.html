@@ -218,6 +218,131 @@
 
 </section>
 <div class="section-divider"></div>
+<!-- ========================= -->
+<!-- MÓDULO PROMPTS PIXELLAB45 -->
+<!-- ========================= -->
+
+<section id="moduloPrompts" class="ai-lab">
+
+  <div class="ai-card">
+
+    <h3>🧠 Generador de Prompts IA</h3>
+
+    <p class="ai-subtitle">
+      Genera prompts profesionales para IA de texto, imagen, video, marketing y contenido.
+    </p>
+
+    <input
+      type="text"
+      id="temaPrompt"
+      placeholder="Escribe un tema">
+
+    <select id="categoriaPrompt">
+
+      <option value="general">
+        General
+      </option>
+
+      <option value="youtube">
+        YouTube
+      </option>
+
+      <option value="tiktok">
+        TikTok
+      </option>
+
+      <option value="imagen">
+        Imagen IA
+      </option>
+
+      <option value="video">
+        Video IA
+      </option>
+
+      <option value="marketing">
+        Marketing
+      </option>
+
+      <option value="seo">
+        SEO
+      </option>
+
+    </select>
+
+    <input
+      type="number"
+      id="cantidadPrompts"
+      value="10"
+      min="1"
+      max="50">
+
+    <div class="button-group">
+
+      <button onclick="generarPrompts()">
+        🚀 Generar Prompts
+      </button>
+
+      <button onclick="copiarPrompts()">
+        📋 Copiar Prompts
+      </button>
+
+    </div>
+
+    <div id="mensajePromptsCopiados"></div>
+
+    <!-- BARRA DE CARGA -->
+
+    <div
+      id="loadingPrompts"
+      style="display:none; margin-top:15px;">
+
+      <p id="estadoPrompts">
+        🧠 Generando prompts...
+      </p>
+
+      <div style="
+        width:100%;
+        height:12px;
+        background:#222;
+        border-radius:20px;
+        overflow:hidden;
+        margin-top:10px;
+      ">
+
+        <div
+          id="barraPrompts"
+          style="
+            width:0%;
+            height:100%;
+            transition:width .4s ease;
+          ">
+        </div>
+
+      </div>
+
+      <p
+        id="porcentajePrompts"
+        style="
+          margin-top:10px;
+          text-align:center;
+          font-weight:bold;
+        ">
+        0%
+      </p>
+
+    </div>
+
+    <!-- RESULTADO -->
+
+    <div
+      id="resultadoPrompts"
+      class="scroll-box">
+    </div>
+
+  </div>
+
+</section>
+<div class="section-divider"></div>
 
 <footer class="footer">
 
