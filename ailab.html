@@ -280,74 +280,52 @@
 
 <div class="section-divider"></div>
 <!-- ===================================== -->
-<!-- SECCIÓN GUIONES PIXELLAB45 -->
+<!-- SECCIÓN GUIONES -->
 <!-- ===================================== -->
 
-<section id="guiones" class="ai-lab">
+<section id="guiones">
 
   <h2>📝 Generador de Guiones</h2>
 
-  <div class="grupo-formulario">
+  <label>Plataforma</label>
 
-    <label>Plataforma</label>
+  <select id="tipoContenidoGuion">
+    <option value="tiktok">TikTok</option>
+    <option value="youtube">YouTube</option>
+    <option value="facebook">Facebook</option>
+    <option value="instagram">Instagram</option>
+    <option value="shorts">YouTube Shorts</option>
+    <option value="reels">Instagram Reels</option>
+  </select>
 
-    <select id="tipoContenidoGuion">
+  <label>Tema</label>
 
-      <option value="tiktok">TikTok</option>
-      <option value="youtube">YouTube</option>
-      <option value="facebook">Facebook</option>
-      <option value="instagram">Instagram</option>
-      <option value="shorts">YouTube Shorts</option>
-      <option value="reels">Instagram Reels</option>
+  <input
+    type="text"
+    id="temaGuion"
+    placeholder="Ej: Trucos ocultos de ChatGPT"
+  >
 
-    </select>
+  <label>Duración</label>
 
-  </div>
+  <select id="duracionGuion">
+    <option value="30 segundos">30 segundos</option>
+    <option value="60 segundos">60 segundos</option>
+    <option value="90 segundos">90 segundos</option>
+    <option value="3 minutos">3 minutos</option>
+    <option value="5 minutos">5 minutos</option>
+  </select>
 
-  <div class="grupo-formulario">
+  <label>Estilo</label>
 
-    <label>Tema</label>
-
-    <input
-      type="text"
-      id="temaGuion"
-      placeholder="Ej: Trucos ocultos de ChatGPT"
-    >
-
-  </div>
-
-  <div class="grupo-formulario">
-
-    <label>Duración</label>
-
-    <select id="duracionGuion">
-
-      <option value="30 segundos">30 segundos</option>
-      <option value="60 segundos">60 segundos</option>
-      <option value="90 segundos">90 segundos</option>
-      <option value="3 minutos">3 minutos</option>
-      <option value="5 minutos">5 minutos</option>
-
-    </select>
-
-  </div>
-
-  <div class="grupo-formulario">
-
-    <label>Estilo</label>
-
-    <select id="estiloGuion">
-
-      <option value="viral">Viral</option>
-      <option value="educativo">Educativo</option>
-      <option value="storytelling">Storytelling</option>
-      <option value="marketing">Marketing</option>
-      <option value="noticias">Noticias</option>
-      <option value="cinematografico">Cinematográfico</option>
-
-    </select>
-
-  </div>
+  <select id="estiloGuion">
+    <option value="viral">Viral</option>
+    <option value="educativo">Educativo</option>
+    <option value="storytelling">Storytelling</option>
+    <option value="marketing">Marketing</option>
+    <option value="noticias">Noticias</option>
+    <option value="cinematografico">Cinematográfico</option>
+  </select>
 
   <button onclick="generarGuion()">
     🎬 Generar Guion
@@ -357,10 +335,7 @@
     📋 Copiar y Guardar
   </button>
 
-  <div
-    id="mensajeGuion"
-    class="mensaje"
-  ></div>
+  <div id="mensajeGuion"></div>
 
   <pre id="resultadoGuion"></pre>
 
