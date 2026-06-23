@@ -41,7 +41,10 @@ export default {
       categoria,
       imagenBase64,
       contenido,
-      indice
+      indice,
+      duracion,
+      plataforma,
+      estilo
       
     } = data;
 
