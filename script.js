@@ -457,7 +457,7 @@ async function generarPrompt() {
 // ========================================
 // COPIAR PROMPTS
 // ========================================
-
+/*
 async function copiarPrompts() {
 
   const texto =
@@ -502,10 +502,10 @@ async function copiarPrompts() {
         l.replace(
           /^prompt\s*\d+\s*:\s*/i,
           ""
-        ).trim()
+  /*      ).trim()
       )
-      .filter(l => l.length > 0);
-
+      .filter(l => l.length > 0);*/
+/*
     let guardados = 0;
 
     for (const prompt of prompts) {
@@ -547,7 +547,7 @@ async function copiarPrompts() {
     console.error(error);
 
   }
-  
+  */
 
 // ========================================
 // MENÚ HAMBURGUESA
