@@ -551,8 +551,9 @@ async function copiarPrompts() {
 }
 
 // ========================================
-// GUIONES 
+// GUIONES
 // ========================================
+
 async function generarGuion() {
 
   const tema =
@@ -560,40 +561,29 @@ async function generarGuion() {
       .value
       .trim();
 
-  const tipo =
-    document.getElementById("tipoContenidoGuion")
-      .value;
-
   const duracion =
     document.getElementById("duracionGuion")
-      .value;
-
-  const estilo =
-    document.getElementById("estiloGuion")
       .value;
 
   const resultado =
     document.getElementById("resultadoGuion");
 
   const mensaje =
-    document.getElementById("mensajeGuion");
+    document.getElementById("mensajeGuionCopiado");
 
   if (!tema) {
 
-    mensaje.innerText =
-      "⚠️ Ingresa un tema";
+    resultado.innerHTML =
+      "⚠️ Escribe un tema";
 
     return;
+
   }
 
-  resultado.innerText = "";
+  resultado.innerHTML = "";
 
-  mensaje.innerHTML = `
-    ⏳ Generando guion...
-    <div class="barra-progreso">
-      <div class="progreso"></div>
-    </div>
-  `;
+  mensaje.innerText =
+    "⏳ Generando guion profesional...";
 
   try {
 
@@ -608,9 +598,9 @@ async function generarGuion() {
         body: JSON.stringify({
           tipo: "guion",
           tema,
-          plataforma: tipo,
+          plataforma: "TikTok",
           duracion,
-          estilo
+          estilo: "viral"
         })
       }
     );
@@ -618,10 +608,12 @@ async function generarGuion() {
     const data =
       await res.json();
 
-    resultado.innerText =
-      data.resultado ||
-      data.guion ||
-      "No se recibió respuesta";
+    resultado.innerHTML =
+      `<div style="white-space:pre-wrap;">${
+        data.resultado ||
+        data.guion ||
+        "No se recibió respuesta"
+      }</div>`;
 
     mensaje.innerText =
       "✅ Guion generado";
@@ -631,11 +623,12 @@ async function generarGuion() {
     console.error(error);
 
     mensaje.innerText =
-      "❌ Error al generar guion";
+      `❌ ${error.message}`;
 
   }
 
 }
+
 
 // ========================================
 // GUIONES 

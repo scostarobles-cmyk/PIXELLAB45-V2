@@ -299,7 +299,9 @@ case "guion": {
     data.estilo || "";
 
   const prompt = `
-Crea un guion completo para ${plataforma}.
+Actúa como un guionista profesional especializado en contenido viral para redes sociales.
+
+Genera un guion completo para ${plataforma}.
 
 Tema: ${tema}
 
@@ -307,14 +309,23 @@ Duración: ${duracion}
 
 Estilo: ${estilo}
 
-Incluye:
+Estructura obligatoria:
 
-- Gancho inicial
-- Desarrollo
-- Llamada a la acción
-- Formato optimizado para redes sociales
+🎯 GANCHO (primeros 3 segundos)
 
-Devuelve únicamente el guion.
+📝 DESARROLLO
+
+🔥 MOMENTO DE MAYOR IMPACTO
+
+📢 LLAMADA A LA ACCIÓN
+
+Reglas:
+
+- Lenguaje natural.
+- Ritmo dinámico.
+- Optimizado para retención.
+- Sin explicaciones externas.
+- Devuelve únicamente el guion final.
 `;
 
   const respuesta =
