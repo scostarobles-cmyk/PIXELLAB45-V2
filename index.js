@@ -451,14 +451,24 @@ case "copiar-prompts": {
 
 }
 
-  const data = await res.json();
-
-  if (data.success) {
-    guardados++;
-    console.log("Guardado:", data.archivo);
-  }
-
-}
+case 'copiar-prompts':
+  const contenido = data.contenido;
+  const categoria = data.categoria;
+  
+  fetch('https://tu-servidor.com/api/prompts', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ contenido, categoria })
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Guardado exitoso:', data);
+  })
+  .catch(error => {
+    console.error('Error al guardar:', error);
+  });
 /// 📚 GUARDAR VISUAL
 case "copiar-visuales": {
 
