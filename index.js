@@ -431,8 +431,12 @@ case "copiar-ideas": {
 }
 
 /// 📚 GUARDAR PROMPT
-case "copiar-prompts": {
-  const nombreArchivo = `prompts/${Date.now()}.txt`;
+case 'copiar-prompts': {
+  const contenido = data.contenido;
+  const categoria = data.categoria;
+  const tema = data.tema;
+
+  const nombreArchivo = `${categoria}/${Date.now()}.txt`;
 
   await env.IMAGES.put(
     nombreArchivo,
