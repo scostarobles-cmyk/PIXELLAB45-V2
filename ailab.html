@@ -132,7 +132,91 @@
 </section>
 
 <div class="section-divider"></div>
+<!-- ===================================== -->
+<!-- MÓDULO IDEAS -->
+<!-- ===================================== -->
 
+<section id="ideas" class="ai-lab">
+
+  <div class="ai-card">
+
+    <h3>💡 Generador de Ideas IA</h3>
+
+    <p class="ai-subtitle">
+      Genera ideas de contenido para redes sociales, IA, tecnología y marketing.
+    </p>
+
+    <input
+      type="text"
+      id="tema"
+      placeholder="Escribe un tema">
+
+    <div class="button-group">
+
+      <button onclick="generarIdeas()">
+        🚀 Generar Ideas
+      </button>
+
+      <button onclick="copiarIdeas()">
+        📋 Copiar Ideas
+      </button>
+
+    </div>
+
+    <div id="mensajeIdeasCopiadas"></div>
+
+    <!-- BARRA DE PROGRESO -->
+
+    <div
+      id="loadingIdeas"
+      style="display:none; margin-top:15px;">
+
+      <p id="estadoIdeas">
+        🧠 Analizando tema...
+      </p>
+
+      <div style="
+        width:100%;
+        height:12px;
+        background:#222;
+        border-radius:20px;
+        overflow:hidden;
+        margin-top:10px;
+      ">
+
+        <div
+          id="barraIdeas"
+          style="
+            width:0%;
+            height:100%;
+            transition:width .4s ease;
+          ">
+        </div>
+
+      </div>
+
+      <p
+        id="porcentajeIdeas"
+        style="
+          margin-top:10px;
+          text-align:center;
+          font-weight:bold;
+        ">
+        0%
+      </p>
+
+    </div>
+
+    <!-- RESULTADO -->
+
+    <div
+      id="resultadoIdeas"
+      class="scroll-box">
+    </div>
+
+  </div>
+
+</section>
 <div class="section-divider"></div>
 
 <footer class="footer">
