@@ -474,13 +474,63 @@ async function copiarPrompts() {
   navigator.clipboard.writeText(texto);
 
   mensaje.innerText =
-    "✅ Prompts copiados";
+    "⏳ Guardando prompts...";
 
-  setTimeout(() => {
+  try {
 
-    mensaje.innerText = "";
+    const prompts = texto
+      .split("\n")
+      .map(l => l.trim())
+      .filter(l =>
+        /^prompt\s*\d+\s*:/i.test(l)
+      )
+      .map(l =>
+        l.replace(
+          /^prompt\s*\d+\s*:\s*/i,
+          ""
+        ).trim()
+      )
+      .filter(l => l.length > 0);
 
-  }, 3000);
+    let guardados = 0;
+
+    for (const prompt of prompts) {
+
+      const res = await fetch(
+        WORKER_URL,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+          body: JSON.stringify({
+            tipo: "copiar-prompts",
+            contenido: prompt
+          })
+        }
+      );
+
+      const data =
+        await res.json();
+
+      if (data.success) {
+        guardados++;
+      }
+
+    }
+
+    mensaje.innerText =
+      `✅ ${guardados} prompts guardados`;
+
+  } catch (error) {
+
+    mensaje.innerText =
+      `❌ ${error.message}`;
+
+    console.error(error);
+
+  }
 
 }
 
