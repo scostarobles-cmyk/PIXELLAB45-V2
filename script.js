@@ -455,8 +455,100 @@ async function generarPrompt() {
   }
 
 }
+// ========================================
+// COPIAR PROMPTS
+// ========================================
+async function copiarPrompts() {
 
+  const texto =
+    document.getElementById("resultadoPrompt")
+      .innerText;
 
+  const mensaje =
+    document.getElementById("mensajeCopiado");
+
+  const categoria =
+    document.getElementById("tipoContenido")
+      .value
+      .toLowerCase();
+
+  const tema =
+    document.getElementById("temaPrompt")
+      .value
+      .trim();
+
+  if (!texto.trim()) {
+
+    mensaje.innerText =
+      "⚠️ Primero genera prompts";
+
+    return;
+  }
+
+  navigator.clipboard.writeText(texto);
+
+  mensaje.innerText =
+    "⏳ Guardando prompts...";
+
+  try {
+
+    const prompts = texto
+      .split("\n")
+      .map(l => l.trim())
+      .filter(l =>
+        /^prompt\s*\d+\s*:/i.test(l)
+      )
+      .map(l =>
+        l.replace(
+          /^prompt\s*\d+\s*:\s*/i,
+          ""
+        ).trim()
+      )
+      .filter(l => l.length > 0);
+
+    let guardados = 0;
+
+    for (const prompt of prompts) {
+
+      const res = await fetch(
+        WORKER_URL,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+          body: JSON.stringify({
+            tipo: "copiar-prompts",
+            contenido: prompt,
+            categoria,
+            tema
+          })
+        }
+      );
+
+      const data =
+        await res.json();
+
+      if (data.success) {
+        guardados++;
+      }
+
+    }
+
+    mensaje.innerText =
+      `✅ ${guardados} prompts guardados`;
+
+  } catch (error) {
+
+    mensaje.innerText =
+      `❌ ${error.message}`;
+
+    console.error(error);
+
+  }
+
+}
 // ========================================
 // MENÚ HAMBURGUESA
 // ========================================
