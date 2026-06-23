@@ -433,31 +433,31 @@ case "copiar-ideas": {
 /// 📚 GUARDAR PROMPT
 case "copiar-prompts": {
 
+  const contenido =
+    data.contenido;
+
+  const categoria =
+    data.categoria || "general";
+
+  const tema =
+    (data.tema || "sin-tema")
+      .toLowerCase()
+      .replace(/[^a-z0-9áéíóúñ]/gi, "-")
+      .replace(/-+/g, "-");
+
   const nombreArchivo =
-    `prompts/${Date.now()}.txt`;
+    `prompts/${categoria}/${tema}-${Date.now()}.txt`;
 
-  await env.IMAGES.put(
+  await env.IMAGENES.put(
     nombreArchivo,
-    contenido,
-    {
-      httpMetadata: {
-        contentType: "text/plain"
-      }
-    }
+    contenido
   );
 
-  return new Response(
-    JSON.stringify({
-      success: true,
-      nombre: nombreArchivo
-    }),
-    {
-      headers: {
-        ...corsHeaders,
-        "Content-Type": "application/json"
-      }
-    }
-  );
+  return Response.json({
+    success: true,
+    archivo: nombreArchivo
+  });
+
 }
 /// 📚 GUARDAR VISUAL
 case "copiar-visuales": {

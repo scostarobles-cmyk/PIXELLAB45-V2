@@ -463,6 +463,16 @@ async function copiarPrompts() {
   const mensaje =
     document.getElementById("mensajeCopiado");
 
+  const categoria =
+    document.getElementById("tipoContenido")
+      .value
+      .toLowerCase();
+
+  const tema =
+    document.getElementById("temaPrompt")
+      .value
+      .trim();
+
   if (!texto.trim()) {
 
     mensaje.innerText =
@@ -506,7 +516,9 @@ async function copiarPrompts() {
           },
           body: JSON.stringify({
             tipo: "copiar-prompts",
-            contenido: prompt
+            contenido: prompt,
+            categoria,
+            tema
           })
         }
       );
