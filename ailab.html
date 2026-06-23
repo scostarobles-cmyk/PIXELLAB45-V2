@@ -27,14 +27,11 @@
   </button>
 
 <nav class="nav-links">
- <a href="index.html">
-    🏠 Inicio 
-  </a>
-  
+  <a href="index.html">🏠 Inicio</a>
   <a href="#galeria">🖼️ Galería</a>
-<a href="#ideas">💡 Ideas</a>
-<a href="#prompts">✍️ Prompts</a>
-
+  <a href="#ideas">💡 Ideas</a>
+  <a href="#prompts">✍️ Prompts</a>
+  <a href="#guiones">📝 Guiones</a>
 </nav>
 
 </header>
@@ -282,7 +279,93 @@
 </section>
 
 <div class="section-divider"></div>
+<!-- ===================================== -->
+<!-- SECCIÓN GUIONES PIXELLAB45 -->
+<!-- ===================================== -->
 
+<section id="guiones" class="modulo">
+
+  <h2>📝 Generador de Guiones</h2>
+
+  <div class="grupo-formulario">
+
+    <label>Plataforma</label>
+
+    <select id="tipoContenidoGuion">
+
+      <option value="tiktok">TikTok</option>
+      <option value="youtube">YouTube</option>
+      <option value="facebook">Facebook</option>
+      <option value="instagram">Instagram</option>
+      <option value="shorts">YouTube Shorts</option>
+      <option value="reels">Instagram Reels</option>
+
+    </select>
+
+  </div>
+
+  <div class="grupo-formulario">
+
+    <label>Tema</label>
+
+    <input
+      type="text"
+      id="temaGuion"
+      placeholder="Ej: Trucos ocultos de ChatGPT"
+    >
+
+  </div>
+
+  <div class="grupo-formulario">
+
+    <label>Duración</label>
+
+    <select id="duracionGuion">
+
+      <option value="30 segundos">30 segundos</option>
+      <option value="60 segundos">60 segundos</option>
+      <option value="90 segundos">90 segundos</option>
+      <option value="3 minutos">3 minutos</option>
+      <option value="5 minutos">5 minutos</option>
+
+    </select>
+
+  </div>
+
+  <div class="grupo-formulario">
+
+    <label>Estilo</label>
+
+    <select id="estiloGuion">
+
+      <option value="viral">Viral</option>
+      <option value="educativo">Educativo</option>
+      <option value="storytelling">Storytelling</option>
+      <option value="marketing">Marketing</option>
+      <option value="noticias">Noticias</option>
+      <option value="cinematografico">Cinematográfico</option>
+
+    </select>
+
+  </div>
+
+  <button onclick="generarGuion()">
+    🎬 Generar Guion
+  </button>
+
+  <button onclick="copiarGuion()">
+    📋 Copiar y Guardar
+  </button>
+
+  <div
+    id="mensajeGuion"
+    class="mensaje"
+  ></div>
+
+  <pre id="resultadoGuion"></pre>
+
+</section>
+<div class="section-divider"></div>
 <footer class="footer">
 
   <h3>PIXELLAB45</h3>
