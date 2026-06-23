@@ -549,6 +549,98 @@ async function copiarPrompts() {
   }
 
 }
+
+// ========================================
+// GUIONES 
+// ========================================
+async function generarGuion() {
+
+  const tema =
+    document.getElementById("temaGuion")
+      .value
+      .trim();
+
+  const tipo =
+    document.getElementById("tipoContenidoGuion")
+      .value;
+
+  const duracion =
+    document.getElementById("duracionGuion")
+      .value;
+
+  const estilo =
+    document.getElementById("estiloGuion")
+      .value;
+
+  const resultado =
+    document.getElementById("resultadoGuion");
+
+  const mensaje =
+    document.getElementById("mensajeGuion");
+
+  if (!tema) {
+
+    mensaje.innerText =
+      "⚠️ Ingresa un tema";
+
+    return;
+  }
+
+  resultado.innerText = "";
+
+  mensaje.innerHTML = `
+    ⏳ Generando guion...
+    <div class="barra-progreso">
+      <div class="progreso"></div>
+    </div>
+  `;
+
+  try {
+
+    const res = await fetch(
+      WORKER_URL,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+        body: JSON.stringify({
+          tipo: "guion",
+          tema,
+          plataforma: tipo,
+          duracion,
+          estilo
+        })
+      }
+    );
+
+    const data =
+      await res.json();
+
+    resultado.innerText =
+      data.resultado ||
+      data.guion ||
+      "No se recibió respuesta";
+
+    mensaje.innerText =
+      "✅ Guion generado";
+
+  } catch (error) {
+
+    console.error(error);
+
+    mensaje.innerText =
+      "❌ Error al generar guion";
+
+  }
+
+}
+// ========================================
+// GUIONES 
+// ========================================
+
+
 // ========================================
 // MENÚ HAMBURGUESA
 // ========================================
