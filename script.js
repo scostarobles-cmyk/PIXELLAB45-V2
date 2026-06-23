@@ -335,6 +335,156 @@ async function copiarIdeas() {
   }
 
 }
+
+// ========================================
+// PROMPTS
+// ========================================
+
+async function generarPrompt() {
+
+  const tema =
+    document.getElementById("temaPrompt").value;
+
+  const tipo =
+    document.getElementById("tipoContenido").value;
+
+  const resultado =
+    document.getElementById("resultadoPrompt");
+
+  const loading =
+    document.getElementById("loadingPrompt");
+
+  const barra =
+    document.getElementById("barraPrompt");
+
+  const estado =
+    document.getElementById("estadoPrompt");
+
+  if (!tema.trim()) {
+
+    resultado.innerHTML =
+      "⚠️ Escribe un tema";
+
+    return;
+  }
+
+  loading.style.display = "block";
+
+  barra.style.width = "10%";
+
+  estado.innerText =
+    "✍️ Analizando tema...";
+
+  let progreso = 10;
+
+  const fakeProgress = setInterval(() => {
+
+    if (progreso < 90) {
+
+      progreso += Math.random() * 10;
+
+      barra.style.width =
+        progreso + "%";
+
+      if (progreso < 30)
+        estado.innerText =
+          "🧠 Creando prompt...";
+
+      else if (progreso < 60)
+        estado.innerText =
+          "⚡ Optimizando prompt...";
+
+      else
+        estado.innerText =
+          "🚀 Finalizando...";
+
+    }
+
+  }, 400);
+
+  try {
+
+    const res = await fetch(
+      WORKER_URL,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+        body: JSON.stringify({
+          tipo: "prompt",
+          tema,
+          formato: tipo
+        })
+      }
+    );
+
+    const data =
+      await res.json();
+
+    clearInterval(fakeProgress);
+
+    barra.style.width = "100%";
+
+    estado.innerText =
+      "✅ Listo";
+
+    setTimeout(() => {
+
+      loading.style.display =
+        "none";
+
+      resultado.innerHTML =
+        `<div style="white-space:pre-wrap;">${data.resultado}</div>`;
+
+    }, 300);
+
+  } catch (error) {
+
+    clearInterval(fakeProgress);
+
+    estado.innerText =
+      "❌ Error";
+
+    resultado.innerHTML =
+      `❌ ${error.message}`;
+
+  }
+
+}
+
+async function copiarPrompts() {
+
+  const texto =
+    document.getElementById("resultadoPrompt")
+      .innerText;
+
+  const mensaje =
+    document.getElementById("mensajeCopiado");
+
+  if (!texto.trim()) {
+
+    mensaje.innerText =
+      "⚠️ Primero genera prompts";
+
+    return;
+  }
+
+  navigator.clipboard.writeText(texto);
+
+  mensaje.innerText =
+    "✅ Prompts copiados";
+
+  setTimeout(() => {
+
+    mensaje.innerText = "";
+
+  }, 3000);
+
+}
+
+
 // ========================================
 // MENÚ HAMBURGUESA
 // ========================================

@@ -26,21 +26,13 @@
     ☰
   </button>
 
-  <nav class="nav-links">
+<nav class="nav-links">
 
-    <a href="index.html">
-      🏠 Inicio
-    </a>
+  <a href="#galeria">🖼️ Galería</a>
+<a href="#ideas">💡 Ideas</a>
+<a href="#prompts">✍️ Prompts</a>
 
-    <a href="#galeriaCompletaSection">
-      🖼️ Galería Completa
-    </a>
-
-    <a href="#galeriaCategorias">
-      📂 Categorías
-    </a>
-
-  </nav>
+</nav>
 
 </header>
 
@@ -133,7 +125,7 @@
 </section>
 <div class="section-divider"></div>
 
-<section class="ai-lab">
+<section id="ideas" class="ai-lab">
 
   <div class="ai-card">
 
@@ -213,6 +205,77 @@
 
   </div>
 
+</section>
+
+<div class="section-divider"></div>
+
+<section id="prompts" class="ai-lab">
+<div class="ai-card">
+
+  <h3>✍️ Generador de Prompts</h3>
+
+  <input
+    type="text"
+    id="temaPrompt"
+    placeholder="Tema del contenido">
+
+  <select id="tipoContenido">
+
+    <option value="TikTok">TikTok</option>
+
+    <option value="YouTube">YouTube</option>
+
+    <option value="Instagram">Instagram</option>
+
+    <option value="Blog">Blog</option>
+
+    <option value="Ebook">Ebook</option>
+
+  </select>
+
+  <button onclick="generarPrompt()">
+    Generar Prompt
+  </button>
+
+  <button onclick="copiarPrompts()">
+    📋 Copiar Prompt
+  </button>
+
+  <div id="mensajeCopiado"></div>
+
+  <div id="loadingPrompt" style="display:none;">
+
+    <p id="estadoPrompt">
+      ✍️ Generando prompt...
+    </p>
+
+    <div style="
+      width:100%;
+      height:10px;
+      background:#333;
+      border-radius:5px;
+      overflow:hidden;
+      margin-top:10px;
+    ">
+
+      <div id="barraPrompt" style="
+        width:0%;
+        height:100%;
+        background:#00ffcc;
+        transition:width .3s;
+      ">
+      </div>
+
+    </div>
+
+  </div>
+
+  <div
+    id="resultadoPrompt"
+    class="scroll-box">
+  </div>
+
+</div>
 </section>
 
 <div class="section-divider"></div>
