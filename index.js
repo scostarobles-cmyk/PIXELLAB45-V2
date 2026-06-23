@@ -288,29 +288,17 @@ Topic: ${tema}
 // ========================================
 
 case "guion": {
-
-  const tema =
-    data.tema || "";
-
-  const plataforma =
-    data.plataforma || "";
-
-  const duracion =
-    data.duracion || "";
-
-  const estilo =
-    data.estilo || "";
+  const tema = data.tema || "";
+  const duracion = data.duracion || "";
 
   const prompt = `
 Actúa como un guionista profesional especializado en contenido viral para redes sociales.
 
-Genera un guion completo para ${plataforma}.
+Genera un guion completo basado en el tema proporcionado.
 
 Tema: ${tema}
 
 Duración: ${duracion}
-
-Estilo: ${estilo}
 
 Estructura obligatoria:
 
@@ -331,14 +319,18 @@ Reglas:
 - Devuelve únicamente el guion final.
 `;
 
-  const respuesta =
-    await ai(prompt);
+  const respuesta = await ai(prompt);
 
-  return Response.json({
-    success: true,
-    resultado: respuesta
-  });
-
+  return new Response(
+    JSON.stringify({
+      success: true,
+      resultado: respuesta
+    }),
+    {
+      headers: corsHeaders
+    }
+  );
+}
 }
 // 🖼️ GUARDAR IMAGEN
 case "guardar-imagen": {

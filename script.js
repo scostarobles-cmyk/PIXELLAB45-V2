@@ -559,15 +559,15 @@ async function generarGuion() {
   const duracion = document.getElementById("duracionGuion").value;
 
   const resultado = document.getElementById("resultadoGuion");
-  const mensaje = document.getElementById("mensajeGuionCopiado");
+  const mensaje = document.getElementById("mensajeGuion");
 
   if (!tema) {
     mensaje.innerText = "⚠️ Ingresa un tema";
     return;
   }
 
-  resultado.innerHTML = "";
-  mensaje.innerText = "⏳ Generando guion...";
+  resultado.innerText = "";
+  mensaje.innerHTML = "⏳ Generando guion...";
 
   try {
     const res = await fetch(WORKER_URL, {
@@ -578,27 +578,20 @@ async function generarGuion() {
       body: JSON.stringify({
         tipo: "guion",
         tema: tema,
-        plataforma: "TikTok",
-        duracion: duracion,
-        estilo: "viral"
+        duracion: duracion
       })
     });
 
     const data = await res.json();
 
-    if (data.resultado) {
-      resultado.innerHTML = `<div style="white-space:pre-wrap;">${data.resultado}</div>`;
-      mensaje.innerText = "✅ Guion generado";
-    } else {
-      resultado.innerHTML = "❌ No se recibió un guion válido.";
-      mensaje.innerText = "❌ Error: No se recibió respuesta válida";
-    }
+    resultado.innerText = data.resultado || "No se recibió respuesta";
+    mensaje.innerText = "✅ Guion generado";
+
   } catch (error) {
     console.error(error);
-    mensaje.innerText = `❌ ${error.message}`;
+    mensaje.innerText = "❌ Error al generar guion";
   }
 }
-
 
 // ========================================
 // GUIONES 
