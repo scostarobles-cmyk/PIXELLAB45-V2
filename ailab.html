@@ -330,103 +330,34 @@
 
 <section id="guiones" class="ai-lab">
 
-  <div class="ai-card">
+<div class="ai-card">
 
-    <h3>🎬 Generador de Guiones IA</h3>
+  <h3>🎬 Generador de Guiones IA</h3>
 
-    <p class="ai-subtitle">
-      Genera guiones optimizados para redes sociales.
-    </p>
+  <input
+    type="text"
+    id="temaGuion"
+    placeholder="Tema del video">
 
-    <input
-      type="text"
-      id="temaGuion"
-      placeholder="Escribe el tema del guion">
+  <select id="duracionGuion">
+    <option>15 segundos</option>
+    <option>30 segundos</option>
+    <option>60 segundos</option>
+  </select>
 
-    <select id="tipoContenidoGuion">
+<button onclick="generarGuion()">
+  Generar Guion
+</button>
 
-      <option value="tiktok">
-        TikTok
-      </option>
+<button onclick="copiarGuion()">
+  📋 Copiar Guion
+</button>
 
-      <option value="youtube">
-        YouTube
-      </option>
+<div id="mensajeGuionCopiado"></div>
 
-      <option value="shorts">
-        YouTube Shorts
-      </option>
+<div id="resultadoGuion" class="scroll-box"></div>
 
-      <option value="reels">
-        Instagram Reels
-      </option>
-
-    </select>
-
-    <select id="duracionGuion">
-
-      <option value="30 segundos">
-        30 segundos
-      </option>
-
-      <option value="60 segundos">
-        60 segundos
-      </option>
-
-      <option value="90 segundos">
-        90 segundos
-      </option>
-
-      <option value="3 minutos">
-        3 minutos
-      </option>
-
-      <option value="5 minutos">
-        5 minutos
-      </option>
-
-    </select>
-
-    <select id="estiloGuion">
-
-      <option value="viral">
-        Viral
-      </option>
-
-      <option value="educativo">
-        Educativo
-      </option>
-
-      <option value="cinematografico">
-        Cinematográfico
-      </option>
-
-      <option value="storytelling">
-        Storytelling
-      </option>
-
-      <option value="marketing">
-        Marketing
-      </option>
-
-    </select>
-
-    <div class="button-group">
-
-      <button onclick="generarGuion()">
-        🚀 Generar Guion
-      </button>
-
-    </div>
-
-    <div id="mensajeGuion"></div>
-
-    <div
-      id="resultadoGuion"
-      class="scroll-box">
-    </div>
-
-  </div>
+</div>
 
 </section>
 <div class="section-divider"></div>
