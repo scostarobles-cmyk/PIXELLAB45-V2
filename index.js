@@ -433,29 +433,23 @@ case "copiar-ideas": {
 /// 📚 GUARDAR PROMPT
 case "copiar-prompts": {
 
-  const tema =
-  document.getElementById("temaPrompt").value;
+  const contenido =
+    data.contenido;
 
-const categoria =
-  document.getElementById("tipoContenido").value;
+  const nombreArchivo =
+    `prompts/${Date.now()}.txt`;
 
-for (const prompt of prompts) {
-
-  const res = await fetch(
-    WORKER_URL,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        tipo: "copiar-prompts",
-        contenido: prompt,
-        categoria,
-        tema
-      })
-    }
+  await env.FILES.put(
+    nombreArchivo,
+    contenido
   );
+
+  return Response.json({
+    success: true,
+    archivo: nombreArchivo
+  });
+
+}
 
   const data = await res.json();
 
