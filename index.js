@@ -284,23 +284,47 @@ Topic: ${tema}
 // 🎬 GENERADOR DE GUIONES
 // ========================================
 
-case "script": {
-  const r = await ai(`
-    Escribe un guion profesional corto basado en este tema.
-    Debe incluir tres secciones:
-    1. Gancho inicial
-    2. Desarrollo rápido
-    3. Cierre impactante
-    No agregues explicaciones ni historia. Sé conciso y directo.
-    Tema: ${tema}
-  `);
+case "guion": {
 
-  return new Response(
-    JSON.stringify({ resultado: r }),
-    {
-      headers: corsHeaders
-    }
-  );
+  const tema =
+    data.tema || "";
+
+  const plataforma =
+    data.plataforma || "";
+
+  const duracion =
+    data.duracion || "";
+
+  const estilo =
+    data.estilo || "";
+
+  const prompt = `
+Crea un guion completo para ${plataforma}.
+
+Tema: ${tema}
+
+Duración: ${duracion}
+
+Estilo: ${estilo}
+
+Incluye:
+
+- Gancho inicial
+- Desarrollo
+- Llamada a la acción
+- Formato optimizado para redes sociales
+
+Devuelve únicamente el guion.
+`;
+
+  const respuesta =
+    await ai(prompt);
+
+  return Response.json({
+    success: true,
+    resultado: respuesta
+  });
+
 }
 // 🖼️ GUARDAR IMAGEN
 case "guardar-imagen": {
@@ -435,7 +459,7 @@ case 'copiar-prompts': {
   const contenido = data.contenido;
   const categoria = data.categoria;
   const tema = data.tema;
-
+  
   const nombreArchivo = `prompts/${categoria}/${Date.now()}.txt`;
 
   await env.IMAGES.put(
@@ -446,8 +470,6 @@ case 'copiar-prompts': {
         contentType: "text/plain"
       }
     }
-  );
-}
 /// 📚 GUARDAR VISUAL
 case "copiar-visuales": {
 
@@ -477,6 +499,8 @@ case "copiar-visuales": {
     }
   );
 }
+
+
   
 
 //CIERRE FINAL 
