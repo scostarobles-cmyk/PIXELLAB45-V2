@@ -109,7 +109,19 @@ export default {
                                                                                                                                                                                   return new Response(
                                                                                                                                                                                         JSON.stringify({
                                                                                                                                                                                                 mensaje:
-      }
+                                                                                                                                                                                                
+      } catch (error) {
+  return new Response(
+    JSON.stringify({
+      mensaje: "Error al cargar imágenes",
+      error: error.message
+    }),
+    {
+      headers: corsHeaders
+    }
+  );
+}
+      
 
       default:
         return new Response(
