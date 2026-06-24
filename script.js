@@ -15,35 +15,45 @@ async function cargarGaleriaCompleta() {
     document.getElementById("galeriaCompleta");
 
   contenedor.innerHTML =
-    "⏳ Probando Worker...";
+    "⏳ Cargando galería...";
 
   try {
 
-    const res = await fetch(
-  WORKER_URL,
-  {
-    ...FETCH_CONFIG,
-    body: JSON.stringify({
-      tipo: "listar-imagenes"
-    })
-  }
-);
-    const data =
-      await res.json();
+    const res = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        tipo: "listar-imagenes"
+      })
+    });
+
+    const data = await res.json();
+
+    contenedor.innerHTML = "";
+
+    data.images.forEach(img => {
+
+      contenedor.innerHTML += `
+        <div class="project-card">
+          <img
+            src="${img.url}"
+            alt="${img.nombre}">
+        </div>
+      `;
+
+    });
+
+  } catch (error) {
+
+    console.error(error);
 
     contenedor.innerHTML =
-      `<h2>${data.mensaje}</h2>`;
-
-  } catch(error) {
-
-    contenedor.innerHTML =
-      `❌ ${error.message}`;
-
+      "❌ Error cargando galería";
   }
-
 }
-
-window.addEventListener(
+document.addEventListener(
   "DOMContentLoaded",
   cargarGaleriaCompleta
 );
