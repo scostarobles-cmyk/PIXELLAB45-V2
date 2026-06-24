@@ -2,7 +2,8 @@ console.log("SCRIPT CARGADO OK");
 
 const WORKER_URL =
 "https://pixellab45-v2.scostarobles.workers.dev/";
-
+const R2_PUBLIC_URL =
+"https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev";
 // ========================================
 // GALERÍA COMPLETA
 // ========================================
