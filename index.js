@@ -331,7 +331,7 @@ Reglas:
     }
   );
 }
-}
+} 
 // 🖼️ GUARDAR IMAGEN
 case "guardar-imagen": {
   try {
