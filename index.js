@@ -129,4 +129,8 @@ export default {
         headers: corsHeaders
       }
     );
-}
+    }
+
+  }
+
+};
