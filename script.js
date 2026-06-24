@@ -90,7 +90,7 @@ link.addEventListener("click", () => {
 
 window.addEventListener("load", () => {
 
-cargarGaleriaCompleta();
+cargarCategoria();
 
 
 });
