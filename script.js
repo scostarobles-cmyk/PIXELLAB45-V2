@@ -52,12 +52,10 @@ imagenes.forEach(img => {
 
 });
 
-} catch (error) {
+}  catch (error) {
 
-console.error(error);
-
-contenedor.innerHTML =
-  "❌ Error cargando galería";
+  contenedor.innerHTML =
+    `❌ ${error.message}`;
 
 }
 
