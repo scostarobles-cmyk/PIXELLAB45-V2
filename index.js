@@ -77,65 +77,8 @@ export default {
 
     switch (tipo) {
   case "listar-imagenes": {
-    try {
-      if (!env.IMAGES) {
-        return new Response(
-          JSON.stringify({
-            mensaje: "Bucket IMAGES no configurado",
-            error: "Falta bucket"
-          }),
-          {
-            headers: corsHeaders
-          }
-        );
-      }
-
-      const objs = await env.IMAGES.list();
-      const imagenes = objs.objects.map(obj => ({
-        nombre: obj.key,
-        url: `${R2_PUBLIC_URL}/${obj.key}`
-      }));
-
-      return new Response(
-        JSON.stringify({
-          mensaje: "Galería cargada con éxito",
-          datos: imagenes
-        }),
-        {
-          headers: corsHeaders
-        }
-      );
-    } catch (error) {
-      return new Response(
-        JSON.stringify({
-          mensaje: "Error al cargar imágenes",
-          error: error.message
-        }),
-        {
-          headers: corsHeaders
-        }
-      );
-    }
-  }
-  /*case "listar-imagenes-categoria": {
 
   try {
-
-    const categoria =
-      data.categoria;
-
-    if (!categoria) {
-
-      return new Response(
-        JSON.stringify({
-          error: "Falta categoría"
-        }),
-        {
-          headers: corsHeaders
-        }
-      );
-
-    }
 
     if (!env.IMAGES) {
 
@@ -150,25 +93,31 @@ export default {
 
     }
 
+    const categoria =
+      data.categoria || null;
+
     const objs =
       await env.IMAGES.list();
 
-    const imagenes =
-      objs.objects
-        .filter(obj =>
-          obj.key.startsWith(
+    let imagenes =
+      objs.objects.map(obj => ({
+        nombre: obj.key,
+        url: `${R2_PUBLIC_URL}/${obj.key}`
+      }));
+
+    if (categoria) {
+
+      imagenes =
+        imagenes.filter(img =>
+          img.nombre.startsWith(
             categoria + "/"
           )
-        )
-        .map(obj => ({
-          nombre: obj.key,
-          url: `${R2_PUBLIC_URL}/${obj.key}`
-        }));
+        );
+
+    }
 
     return new Response(
       JSON.stringify({
-        mensaje: "Categoría cargada",
-        categoria,
         datos: imagenes
       }),
       {
@@ -180,7 +129,6 @@ export default {
 
     return new Response(
       JSON.stringify({
-        mensaje: "Error al cargar categoría",
         error: error.message
       }),
       {
@@ -190,8 +138,7 @@ export default {
 
   }
 
-}*/
-
+}
   default:
     return new Response(
       JSON.stringify({
