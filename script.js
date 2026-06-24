@@ -92,9 +92,9 @@ async function cargarCategoria(categoria) {
             src="${img.url}"
             alt="${img.nombre}">
         </div>
-      `;*/
+      `;
 
-    });
+    });*/
 
   } catch (error) {
 
