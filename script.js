@@ -35,7 +35,7 @@ const res = await fetch(
 const imagenes =
   await res.json();
 
-contenedor.innerHTML = "";
+contenedor.innerHTML = JSON.stringify(imagenes, null, 2);
 
 imagenes.forEach(img => {
 
