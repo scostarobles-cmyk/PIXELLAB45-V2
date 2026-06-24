@@ -4,59 +4,71 @@ const WORKER_URL =
 "https://pixellab45-v2.scostarobles.workers.dev/";
 const R2_PUBLIC_URL =
 "https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev";
+/// ========================================
+// GALERÍA POR CATEGORÍA
 // ========================================
-// GALERÍA COMPLETA
-// ========================================
 
-async function cargarGaleriaCompleta() {
+async function cargarCategoria(categoria) {
 
-const contenedor =
-document.getElementById("galeriaCompleta");
+  const contenedor =
+    document.getElementById("galeriaDinamica");
 
-if (!contenedor) return;
-
-contenedor.innerHTML =
-"⏳ Cargando galería completa...";
-
-try {
-
-const res = await fetch(
-  WORKER_URL,
-  {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      tipo: "listar-imagenes"
-    })
-  }
-);
-
-const respuesta = await res.json();
-
-const imagenes = respuesta.datos;
-
-contenedor.innerHTML = "";
-
-imagenes.forEach(img => {
-
-  contenedor.innerHTML += `
-      <div class="project-card">
-            <img
-                    src="${img.url}"
-                            alt="${img.nombre}">
-                                </div>
-                                  `;
-
-                                  });
-
-}  catch (error) {
+  if (!contenedor) return;
 
   contenedor.innerHTML =
-    `❌ ${error.message}`;
+    "⏳ Cargando imágenes...";
 
-}
+  try {
+
+    const res = await fetch(
+      WORKER_URL,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          tipo: "listar-imagenes-categoria",
+          categoria: categoria
+        })
+      }
+    );
+
+    const respuesta =
+      await res.json();
+
+    const imagenes =
+      respuesta.datos || [];
+
+    contenedor.innerHTML = "";
+
+    if (imagenes.length === 0) {
+
+      contenedor.innerHTML =
+        "⚠️ No hay imágenes en esta categoría";
+
+      return;
+
+    }
+
+    imagenes.forEach(img => {
+
+      contenedor.innerHTML += `
+        <div class="project-card">
+          <img
+            src="${img.url}"
+            alt="${img.nombre}">
+        </div>
+      `;
+
+    });
+
+  } catch (error) {
+
+    contenedor.innerHTML =
+      `❌ ${error.message}`;
+
+  }
 
 }
 // ========================================
