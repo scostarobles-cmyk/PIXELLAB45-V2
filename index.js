@@ -1,4 +1,4 @@
-export default { 
+export default {
   async fetch(request, env) {
 
     const corsHeaders = {
@@ -33,10 +33,10 @@ export default {
     switch (data.tipo) {
 
       case "listar-imagenes":
-        return json({
-          success: true,
-          mensaje: "Funcionó"
-        });
+  return json({
+    success: true,
+    mensaje: "CAMBIO-24-06-2026"
+  });
 
       default:
         return json({
