@@ -49,4 +49,4 @@ export default {
       error: "Tipo no válido"
     }, 400);
 
-}
+};
