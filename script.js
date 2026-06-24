@@ -36,10 +36,7 @@ const res = await fetch(
 const respuesta =
   await res.json();
 
-  contenedor.innerHTML =
-    `<pre>${JSON.stringify(respuesta, null, 2)}</pre>`;
-
-    return;
+  contenedor.innerHTML ="";
 
 imagenes.forEach(img => {
 
