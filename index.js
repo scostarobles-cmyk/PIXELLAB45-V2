@@ -15,38 +15,35 @@ export default {
     }
 
     const json = (obj, status = 200) =>
-      new Response(
-        JSON.stringify(obj),
-        {
-          status,
-          headers: corsHeaders
-        }
-      );
+      new Response(JSON.stringify(obj), {
+        status,
+        headers: corsHeaders
+      });
 
     let data = {};
 
     try {
-
       if (request.method === "POST") {
         data = await request.json();
       }
-
     } catch {
-
-      return json({
-        error: "JSON inválido"
-      }, 400);
-
+      return json({ error: "JSON inválido" }, 400);
     }
 
     switch (data.tipo) {
 
-  case "listar-imagenes":
-    return listarImagenes(env, json);
+      case "listar-imagenes":
+        return json({
+          success: true,
+          mensaje: "Funcionó"
+        });
 
-  default:
-    return json({
-      error: "Tipo no válido"
-    }, 400);
+      default:
+        return json({
+          error: "Tipo no válido"
+        }, 400);
 
+    }
+
+  }
 };
