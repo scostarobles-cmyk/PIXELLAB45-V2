@@ -76,6 +76,40 @@ export default {
     // ========================================
 
     switch (tipo) {
+      case "listar-imagenes": {
+          try {
+              if (!env.IMAGES) {
+                    return new Response(
+                            JSON.stringify({
+                                      mensaje: "Bucket IMAGES no configurado",
+                                                error: "Falta bucket"
+                                                        }),
+                                                                {
+                                                                          headers: corsHeaders
+                                                                                  }
+                                                                                        );
+                                                                                            }
+
+                                                                                                const objs = await env.IMAGES.list();
+                                                                                                    const imagenes = objs.objects.map(obj => ({
+                                                                                                          nombre: obj.key,
+                                                                                                                url: `${R2_PUBLIC_URL}/${obj.key}`
+                                                                                                                    }));
+
+                                                                                                                        return new Response(
+                                                                                                                              JSON.stringify({
+                                                                                                                                      mensaje: "Galería cargada con éxito",
+                                                                                                                                              datos: imagenes
+                                                                                                                                                    }),
+                                                                                                                                                          {
+                                                                                                                                                                  headers: corsHeaders
+                                                                                                                                                                        }
+                                                                                                                                                                            );
+                                                                                                                                                                              } catch (error) {
+                                                                                                                                                                                  return new Response(
+                                                                                                                                                                                        JSON.stringify({
+                                                                                                                                                                                                mensaje:
+      }
 
       default:
         return new Response(
