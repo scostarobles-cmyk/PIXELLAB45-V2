@@ -45,7 +45,7 @@ export default {
 
         return json({
           success: true,
-          mensaje: "Funcionó"
+          return listarImagenes(env, json);
         });
 
       default:
