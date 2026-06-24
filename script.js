@@ -1,7 +1,28 @@
 console.log("SCRIPT CARGADO OK");
 
+
+
 const WORKER_URL = "https://pixellab45-v2.scostarobles.workers.dev/";
 const R2_PUBLIC_URL = "https://pub-e46137551fb4e40868180dc485c5fd4r.r2.dev/";
+
+
+// Esperar a que todo el DOM esté cargado
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Seleccionar el botón hamburguesa y el contenedor del menú
+    // (Asegurate de que estas clases coincidan con tu HTML)
+    const menuBtn = document.querySelector('.menu-btn'); 
+    const navLinks = document.querySelector('.nav-links');
+
+    // 2. Escuchar el clic en el botón
+    if (menuBtn && navLinks) {
+        menuBtn.addEventListener('click', () => {
+            // Alterna la clase 'active' en el menú
+            navLinks.classList.toggle('active');
+        });
+    }
+});
+
+
 
 // 1. CARGA INICIAL: Muestra todas las imágenes al abrir la página
 async function cargarGaleriaCompleta() {
