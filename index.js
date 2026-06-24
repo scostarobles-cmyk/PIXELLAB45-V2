@@ -1,7 +1,3 @@
-const R2_PUBLIC_URL =
-"https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev";
-const WORKER_URL =
-"https://pixellab45-v2.scostarobles.workers.dev/";
 // ========================================
 // PIXELLAB45 WORKER BASE
 // ========================================
@@ -121,6 +117,80 @@ export default {
       );
     }
   }
+  case "listar-imagenes-categoria": {
+
+  try {
+
+    const categoria =
+      data.categoria;
+
+    if (!categoria) {
+
+      return new Response(
+        JSON.stringify({
+          error: "Falta categoría"
+        }),
+        {
+          headers: corsHeaders
+        }
+      );
+
+    }
+
+    if (!env.IMAGES) {
+
+      return new Response(
+        JSON.stringify({
+          error: "Bucket IMAGES no configurado"
+        }),
+        {
+          headers: corsHeaders
+        }
+      );
+
+    }
+
+    const objs =
+      await env.IMAGES.list();
+
+    const imagenes =
+      objs.objects
+        .filter(obj =>
+          obj.key.startsWith(
+            categoria + "/"
+          )
+        )
+        .map(obj => ({
+          nombre: obj.key,
+          url: `${R2_PUBLIC_URL}/${obj.key}`
+        }));
+
+    return new Response(
+      JSON.stringify({
+        mensaje: "Categoría cargada",
+        categoria,
+        datos: imagenes
+      }),
+      {
+        headers: corsHeaders
+      }
+    );
+
+  } catch (error) {
+
+    return new Response(
+      JSON.stringify({
+        mensaje: "Error al cargar categoría",
+        error: error.message
+      }),
+      {
+        headers: corsHeaders
+      }
+    );
+
+  }
+
+}
 
   default:
     return new Response(
