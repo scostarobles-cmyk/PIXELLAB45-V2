@@ -1,106 +1,51 @@
-console.log("SCRIPT CARGADO OK");
-
-
-
-const WORKER_URL = "https://pixellab45-v2.scostarobles.workers.dev/";
-const R2_PUBLIC_URL = "https://pub-e46137551fb4e40868180dc485c5fd4r.r2.dev/";
-
-
-// Esperar a que todo el DOM esté cargado
-document.addEventListener('DOMContentLoaded', () => {
-    // 1. Seleccionar el botón hamburguesa y el contenedor del menú
-    // (Asegurate de que estas clases coincidan con tu HTML)
-    const menuBtn = document.querySelector('.menu-btn'); 
-    const navLinks = document.querySelector('.nav-links');
-
-    // 2. Escuchar el clic en el botón
-    if (menuBtn && navLinks) {
-        menuBtn.addEventListener('click', () => {
-            // Alterna la clase 'active' en el menú
-            navLinks.classList.toggle('active');
-        });
-    }
-});
-
-
-
-// 1. CARGA INICIAL: Muestra todas las imágenes al abrir la página
 async function cargarGaleriaCompleta() {
-    const contenedor = document.getElementById("galeriaCompleta");
-    if (!contenedor) return;
 
-    contenedor.innerHTML = "<p>Cargando galería completa...</p>";
+  const contenedor =
+    document.getElementById("galeriaCompleta");
 
-    try {
-        const res = await fetch(WORKER_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ tipo: "listar-imagenes" })
-        });
+  contenedor.innerHTML =
+    "⏳ Probando Worker...";
 
-        const data = await res.json();
-        alert(json.stringidy(data));
+  try {
 
-        if (data.success && data.images.length > 0) {
-            renderizarImagenes(contenedor, data.images);
-        } else {
-            contenedor.innerHTML = "<p>No se encontraron imágenes en el laboratorio.</p>";
-        }
-    } catch (error) {
-        console.error("Error:", error);
-        contenedor.innerHTML = "<p>Error al conectar con el servidor.</p>";
-    }
+    const res = await fetch(
+      "https://TU-WORKER.workers.dev/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          tipo: "listar-imagenes"
+        })
+      }
+    );
+
+    const data =
+      await res.json();
+
+    contenedor.innerHTML =
+      `<h2>${data.mensaje}</h2>`;
+
+  } catch(error) {
+
+    contenedor.innerHTML =
+      `❌ ${error.message}`;
+
+  }
+
 }
 
-// 2. BOTONERA: Filtra las imágenes dinámicamente al presionar un botón
-async function cargarCategoria(categoria) {
-    const contenedor = document.getElementById("galeriaCompleta") || document.querySelector(".gallery-grid");
-    if (!contenedor) return;
+window.addEventListener(
+  "DOMContentLoaded",
+  cargarGaleriaCompleta
+);
 
-    contenedor.innerHTML = `<p>Cargando sección: ${categoria.toUpperCase()}...</p>`;
+function toggleMenu(){
 
-    try {
-        const res = await fetch(WORKER_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                tipo: "filtrar-categoria", 
-                categoria: categoria 
-            })
-        });
+  document
+    .querySelector(".nav-links")
+    .classList
+    .toggle("active");
 
-        const data = await res.json();
-
-        if (data.success && data.images.length > 0) {
-            renderizarImagenes(contenedor, data.images);
-        } else {
-            contenedor.innerHTML = `<p>No hay imágenes disponibles para la categoría: ${categoria}.</p>`;
-        }
-    } catch (error) {
-        console.error("Error al filtrar:", error);
-        contenedor.innerHTML = "<p>Error al cargar la categoría.</p>";
-    }
 }
-
-// Función auxiliar para pintar las imágenes en el HTML
-function renderizarImagenes(contenedor, listaImagenes) {
-    contenedor.innerHTML = ""; 
-    
-    listaImagenes.forEach(img => {
-        const card = document.createElement("div");
-        card.className = "project-card";
-
-        card.innerHTML = `
-            <img src="${img.url}" alt="${img.nombre}" class="gallery-img">
-            <h3>${img.nombre.split('.')[0]}</h3>
-        `;
-        contenedor.appendChild(card);
-    });
-}
-
-// Ejecutar la carga completa de inicio si el contenedor existe en pantalla
-document.addEventListener("DOMContentLoaded", () => {
-    if (document.getElementById("galeriaCompleta")) {
-        cargarGaleriaCompleta();
-    }
-});
