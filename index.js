@@ -9,9 +9,7 @@ export default {
     };
 
     if (request.method === "OPTIONS") {
-      return new Response(null, {
-        headers: corsHeaders
-      });
+      return new Response(null, { headers: corsHeaders });
     }
 
     const json = (obj, status = 200) =>
@@ -33,8 +31,7 @@ export default {
     switch (data.tipo) {
 
       case "listar-imagenes":
-  return listarImagenes(env, json);
-  
+        return listarImagenes(env, json);
 
       default:
         return json({
@@ -42,6 +39,17 @@ export default {
         }, 400);
 
     }
-
   }
 };
+
+async function listarImagenes(env, json) {
+
+  const lista = await env.IMAGES.list();
+
+  const imagenes = lista.objects.map(obj => ({
+    nombre: obj.key,
+    url: `https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev/${obj.key}`
+  }));
+
+  return json(imagenes);
+}
