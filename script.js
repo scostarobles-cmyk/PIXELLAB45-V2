@@ -33,22 +33,23 @@ const res = await fetch(
   }
 );
 
-const respuesta =
-  await res.json();
+const respuesta = await res.json();
 
-  contenedor.innerHTML ="";
+const imagenes = respuesta.datos;
+
+contenedor.innerHTML = "";
 
 imagenes.forEach(img => {
 
   contenedor.innerHTML += `
-    <div class="project-card">
-      <img
-        src="${img.url}"
-        alt="${img.nombre}">
-    </div>
-  `;
+      <div class="project-card">
+            <img
+                    src="${img.url}"
+                            alt="${img.nombre}">
+                                </div>
+                                  `;
 
-});
+                                  });
 
 }  catch (error) {
 
