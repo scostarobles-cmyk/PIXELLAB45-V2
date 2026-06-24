@@ -50,14 +50,3 @@ export default {
     }, 400);
 
 }
-
-      default:
-
-        return json({
-          error: "Tipo no válido"
-        }, 400);
-
-    }
-
-  }
-};
