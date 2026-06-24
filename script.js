@@ -53,8 +53,9 @@ imagenes.forEach(img => {
 
 console.error(error);
 
-contenedor.innerHTML =
-  "❌ Error cargando galería";
+      contenedor.innerHTML = `❌ Error cargando galería: ${error.message}`;
+      }
+}
 
 }
 
