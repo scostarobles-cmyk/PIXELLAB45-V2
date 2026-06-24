@@ -59,7 +59,70 @@ imagenes.forEach(img => {
 }
 
 }
+// ========================================
+// GALERÍA POR CATEGORÍA 
+// ========================================
+async function cargarCategoria(categoria) {
 
+  const contenedor =
+    document.getElementById("galeriaDinamica");
+
+  if (!contenedor) return;
+
+  contenedor.innerHTML =
+    "⏳ Cargando imágenes...";
+
+  try {
+
+    const res = await fetch(
+      WORKER_URL,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          tipo: "listar-imagenes"
+        })
+      }
+    );
+
+    const respuesta =
+      await res.json();
+
+    const imagenes =
+      respuesta.datos;
+
+    const filtradas =
+      imagenes.filter(img =>
+        img.nombre.startsWith(
+          categoria + "/"
+        )
+      );
+
+    contenedor.innerHTML = "";
+
+    filtradas.forEach(img => {
+
+      contenedor.innerHTML += `
+        <div class="project-card">
+          <img
+            src="${img.url}"
+            alt="${img.nombre}">
+          <p>${img.nombre}</p>
+        </div>
+      `;
+
+    });
+
+  } catch (error) {
+
+    contenedor.innerHTML =
+      `❌ ${error.message}`;
+
+  }
+
+}
 
 
 // ========================================
