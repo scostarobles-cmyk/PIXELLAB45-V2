@@ -117,7 +117,7 @@ export default {
       );
     }
   }
-  case "listar-imagenes-categoria": {
+  /*case "listar-imagenes-categoria": {
 
   try {
 
@@ -190,7 +190,7 @@ export default {
 
   }
 
-}
+}*/
 
   default:
     return new Response(
