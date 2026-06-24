@@ -7,33 +7,31 @@ const R2_PUBLIC_URL =
 /// ========================================
 // GALERÍA POR CATEGORÍA
 // ========================================
-
-async function cargarCategoria(categoria) {
+async function cargarGaleriaCompleta() {
 
   const contenedor =
-    document.getElementById("galeriaDinamica");
+    document.getElementById("galeriaCompleta");
+
+  contenedor.innerHTML =
+    "⏳ Cargando galería completa...";
 
   try {
 
     const res = await fetch(
-      WORKER_URL,
+      "https://pixellab45-v2.scostarobles.workers.dev/",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          tipo: "listar-imagenes",
-          categoria: categoria
+          tipo: "listar-imagenes"
         })
       }
     );
 
-    const respuesta =
-      await res.json();
-
     const imagenes =
-      respuesta.datos || [];
+      await res.json();
 
     contenedor.innerHTML = "";
 
@@ -41,19 +39,18 @@ async function cargarCategoria(categoria) {
 
       contenedor.innerHTML += `
         <div class="project-card">
-          <img src="${img.url}" alt="${img.nombre}">
+          <img src="${img.url}">
         </div>
       `;
 
     });
 
-  } catch (error) {
+  } catch(error) {
 
     contenedor.innerHTML =
-      `❌ ${error.message}`;
+      "❌ Error cargando galería";
 
   }
-
 }
 
 // ========================================
@@ -90,7 +87,7 @@ link.addEventListener("click", () => {
 
 window.addEventListener("load", () => {
 
-cargarCategoria();
+  cargarGaleriaCompleta();
 
-
+  cargarCategoria("avatares");
 });

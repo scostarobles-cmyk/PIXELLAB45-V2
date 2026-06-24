@@ -76,68 +76,39 @@ export default {
     // ========================================
 
     switch (tipo) {
-  case "listar-imagenes": {
+  case "listar-imagenes":
+        return listarImagenes(env, json);
 
-  try {
-
-    if (!env.IMAGES) {
-
-      return new Response(
-        JSON.stringify({
-          error: "Bucket IMAGES no configurado"
-        }),
-        {
-          headers: corsHeaders
-        }
-      );
-
+      default:
+        return json({ error: "Tipo no válido" }, 400);
     }
-
-    const categoria =
-      data.categoria || null;
-
-    const objs =
-      await env.IMAGES.list();
-
-    let imagenes =
-      objs.objects.map(obj => ({
-        nombre: obj.key,
-        url: `${R2_PUBLIC_URL}/${obj.key}`
-      }));
-
-    if (categoria) {
-
-      imagenes =
-        imagenes.filter(img =>
-          img.nombre.startsWith(
-            categoria + "/"
-          )
-        );
-
-    }
-
-    return new Response(
-      JSON.stringify({
-        datos: imagenes
-      }),
-      {
-        headers: corsHeaders
-      }
-    );
-
-  } catch (error) {
-
-    return new Response(
-      JSON.stringify({
-        error: error.message
-      }),
-      {
-        headers: corsHeaders
-      }
-    );
-
+  }
+};
+async function listarImagenes(env, json) {
+  if (!env.IMAGES) {
+    return json({ error: "Bucket IMAGES no configurado" }, 500);
   }
 
+  try {
+    const objs = await env.IMAGES.list();
+
+    const images = objs.objects.map((obj) => ({
+      nombre: obj.key,
+      url: `https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev/${obj.key}`
+    }));
+
+    return json({
+      success: true,
+      images: images, // Aseguramos que se envía un objeto con images
+      total: images.length, // opcional, solo si quieres
+    });
+
+  } catch (error) {
+    return json({
+      error: "Error al leer IMAGES",
+      detail: error.message,
+    }, 500);
+  }
 }
   default:
     return new Response(
