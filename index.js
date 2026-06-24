@@ -76,66 +76,57 @@ export default {
     // ========================================
 
     switch (tipo) {
-      case "listar-imagenes": {
-          try {
-              if (!env.IMAGES) {
-                    return new Response(
-                            JSON.stringify({
-                                      mensaje: "Bucket IMAGES no configurado",
-                                                error: "Falta bucket"
-                                                        }),
-                                                                {
-                                                                          headers: corsHeaders
-                                                                                  }
-                                                                                        );
-                                                                                            }
-
-                                                                                                const objs = await env.IMAGES.list();
-                                                                                                    const imagenes = objs.objects.map(obj => ({
-                                                                                                          nombre: obj.key,
-                                                                                                                url: `${R2_PUBLIC_URL}/${obj.key}`
-                                                                                                                    }));
-
-                                                                                                                        return new Response(
-                                                                                                                              JSON.stringify({
-                                                                                                                                      mensaje: "Galería cargada con éxito",
-                                                                                                                                              datos: imagenes
-                                                                                                                                                    }),
-                                                                                                                                                          {
-                                                                                                                                                                  headers: corsHeaders
-                                                                                                                                                                        }
-                                                                                                                                                                            );
-                                                                                                                                                                              } catch (error) {
-                                                                                                                                                                                  return new Response(
-                                                                                                                                                                                        JSON.stringify({
-                                                                                                                                                                                                mensaje:
-                                                                                                                                                                                                
-      } catch (error) {
-  return new Response(
-    JSON.stringify({
-      mensaje: "Error al cargar imágenes",
-      error: error.message
-    }),
-    {
-      headers: corsHeaders
-    }
-  );
-}
-      
-
-      default:
+  case "listar-imagenes": {
+    try {
+      if (!env.IMAGES) {
         return new Response(
           JSON.stringify({
-            success: false,
-            error: "Tipo no válido",
-            recibido: tipo
+            mensaje: "Bucket IMAGES no configurado",
+            error: "Falta bucket"
           }),
           {
             headers: corsHeaders
           }
         );
+      }
 
+      const objs = await env.IMAGES.list();
+      const imagenes = objs.objects.map(obj => ({
+        nombre: obj.key,
+        url: `${R2_PUBLIC_URL}/${obj.key}`
+      }));
+
+      return new Response(
+        JSON.stringify({
+          mensaje: "Galería cargada con éxito",
+          datos: imagenes
+        }),
+        {
+          headers: corsHeaders
+        }
+      );
+    } catch (error) {
+      return new Response(
+        JSON.stringify({
+          mensaje: "Error al cargar imágenes",
+          error: error.message
+        }),
+        {
+          headers: corsHeaders
+        }
+      );
     }
-
   }
-};
+
+  default:
+    return new Response(
+      JSON.stringify({
+        success: false,
+        error: "Tipo no válido",
+        recibido: tipo
+      }),
+      {
+        headers: corsHeaders
+      }
+    );
+}
