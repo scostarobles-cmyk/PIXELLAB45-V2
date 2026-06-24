@@ -18,6 +18,7 @@ async function cargarGaleriaCompleta() {
         });
 
         const data = await res.json();
+        alert(json.stringidy(data));
 
         if (data.success && data.images.length > 0) {
             renderizarImagenes(contenedor, data.images);
