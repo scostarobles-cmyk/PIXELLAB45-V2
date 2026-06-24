@@ -1,3 +1,14 @@
+console.log("SCRIPT CARGADO OK");
+
+const WORKER_URL =
+  "https://pixellab45-v2.scostarobles.workers.dev/";
+
+const FETCH_CONFIG = {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  }
+};
 async function cargarGaleriaCompleta() {
 
   const contenedor =
@@ -9,18 +20,14 @@ async function cargarGaleriaCompleta() {
   try {
 
     const res = await fetch(
-      "https://TU-WORKER.workers.dev/",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          tipo: "listar-imagenes"
-        })
-      }
-    );
-
+  WORKER_URL,
+  {
+    ...FETCH_CONFIG,
+    body: JSON.stringify({
+      tipo: "listar-imagenes"
+    })
+  }
+);
     const data =
       await res.json();
 
