@@ -41,12 +41,15 @@ export default {
 
     switch (data.tipo) {
 
-      case "listar-imagenes":
+  case "listar-imagenes":
+    return listarImagenes(env, json);
 
-        return json({
-          success: true,
-          return listarImagenes(env, json);
-        });
+  default:
+    return json({
+      error: "Tipo no válido"
+    }, 400);
+
+}
 
       default:
 
