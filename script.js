@@ -54,19 +54,7 @@ async function cargarGaleriaCompleta() {
       "❌ Error cargando galería";
   }
 }
-document.addEventListener(
-  "DOMContentLoaded",
-  cargarGaleriaCompleta
-);
 
-function toggleMenu(){
-
-  document
-    .querySelector(".nav-links")
-    .classList
-    .toggle("active");
-
-}
 //Galería por categoría 
 async function cargarCategoria(categoria) {
 
@@ -91,9 +79,12 @@ async function cargarCategoria(categoria) {
 
     const data = await res.json();
 
-    contenedor.innerHTML = "";
+    contenedor.innerHTML = `
+<p>Categoría: ${categoria}</p>
+<p>Total: ${data.total}</p>
+`;
 
-    data.images.forEach(img => {
+  /*  data.images.forEach(img => {
 
       contenedor.innerHTML += `
         <div class="project-card">
@@ -101,7 +92,7 @@ async function cargarCategoria(categoria) {
             src="${img.url}"
             alt="${img.nombre}">
         </div>
-      `;
+      `;*/
 
     });
 
@@ -113,5 +104,19 @@ async function cargarCategoria(categoria) {
     console.error(error);
 
   }
+
+}
+//Inicio y Menú 
+document.addEventListener(
+  "DOMContentLoaded",
+  cargarGaleriaCompleta
+);
+
+function toggleMenu(){
+
+  document
+    .querySelector(".nav-links")
+    .classList
+    .toggle("active");
 
 }
