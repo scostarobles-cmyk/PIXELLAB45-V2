@@ -33,10 +33,8 @@ export default {
     switch (data.tipo) {
 
       case "listar-imagenes":
-  return json({
-    success: true,
-    mensaje: "CAMBIO-24-06-2026"
-  });
+  return listarImagenes(env, json);
+  
 
       default:
         return json({
