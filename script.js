@@ -59,7 +59,7 @@ async function cargarGaleriaCompleta() {
 async function cargarCategoria(categoria) {
 
   const contenedor =
-    document.getElementById("galeriaCompleta");
+  document.getElementById("galeriaCategoria");
 
   contenedor.innerHTML =
     "⏳ Cargando categoría...";
@@ -79,12 +79,9 @@ async function cargarCategoria(categoria) {
 
     const data = await res.json();
 
-    contenedor.innerHTML = `
-<p>Categoría: ${categoria}</p>
-<p>Total: ${data.total}</p>
-`;
+    contenedor.innerHTML = "";
 
-  /*  data.images.forEach(img => {
+  data.images.forEach(img => {
 
       contenedor.innerHTML += `
         <div class="project-card">
@@ -94,7 +91,7 @@ async function cargarCategoria(categoria) {
         </div>
       `;
 
-    });*/
+    });
 
   } catch (error) {
 
