@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>
+    PIXELLAB45 AI LAB
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="styles.css?v=1">
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</head>
+
+<body>
+
+<!-- ===================================== -->
+<!-- NAVBAR -->
+<!-- ===================================== -->
+
+<header class="navbar">
+
+  <button
+    class="menu-toggle"
+    onclick="toggleMenu()">
+    ☰
+  </button>
+
+  <nav class="nav-links">
+
+    <a href="index.html">
+      🏠 Inicio
+    </a>
+
+    <a href="#galeriaCompletaSection">
+      🖼️ Galería Completa
+    </a>
+
+    <a href="#ideas">
+      💡 Ideas
+    </a>
+
+    <a href="#prompts">
+      🧠 Prompts
+    </a>
+
+    <a href="#visuales">
+      🎨 Visuales
+    </a>
+
+    <a href="#guiones">
+      🎬 Guiones
+    </a>
+
+    <a href="#storyboard">
+      📖 Storyboard
+    </a>
+
+    <a href="#imagenes">
+      🖼️ Generador Imagen
+    </a>
+
+    <a href="#kling">
+      🎥 Video Kling
+    </a>
+
+    <a href="#galeriaCategorias">
+      📂 Galería Categorías
+    </a>
+
+  </nav>
+
+</header>
+
+<div class="divider"></div>
+
+<!-- ===================================== -->
+<!-- HERO -->
+<!-- ===================================== -->
+
+<section class="ailab-hero">
+
+  <h1>
+    🚀 PIXELLAB45 AI LAB
+  </h1>
+
+  <p>
+    Herramientas de Inteligencia Artificial y Galería Multimedia.
+  </p>
+
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ===================================== -->
+<!-- GALERÍA COMPLETA -->
+<!-- ===================================== -->
+
+<section
+  id="galeriaCompletaSection"
+  class="ai-gallery">
+
+  <h2>
+    🖼️ Galería Completa
+  </h2>
+
+  <p class="ai-subtitle">
+    Todo el contenido almacenado en PIXELLAB45.
+  </p>
+
+  <div
+    id="galeriaCompleta"
+    class="gallery-grid">
+  </div>
+
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ===================================== -->
+<!-- GALERÍA POR CATEGORÍAS -->
+<!-- ===================================== -->
+
+<section
+  id="galeriaCategorias"
+  class="ai-gallery">
+
+  <h2>
+    📂 Galería por Categorías
+  </h2>
+
+  <p class="ai-subtitle">
+    Explora el contenido organizado por secciones.
+  </p>
+
+  <div class="gallery-filters">
+
+    <button onclick="cargarCategoria('imagenes')">
+      🖼️ Imágenes
+    </button>
+
+    <button onclick="cargarCategoria('ideas')">
+      💡 Ideas
+    </button>
+
+    <button onclick="cargarCategoria('prompts')">
+      🧠 Prompts
+    </button>
+
+    <button onclick="cargarCategoria('visuales')">
+      🎨 Visuales
+    </button>
+
+    <button onclick="cargarCategoria('guiones')">
+      🎬 Guiones
+    </button>
+
+    <button onclick="cargarCategoria('storyboards')">
+      📖 Storyboards
+    </button>
+
+    <button onclick="cargarCategoria('videos')">
+      🎥 Videos
+    </button>
+
+  </div>
+
+  <div
+    id="galeriaDinamica"
+    class="gallery-grid">
+  </div>
+
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ===================================== -->
+<!-- FOOTER -->
+<!-- ===================================== -->
+
+<footer class="footer">
+
+  <h3>
+    PIXELLAB45
+  </h3>
+
+  <p>
+    Inteligencia Artificial • Tecnología • Automatización • Innovación
+  </p>
+
+</footer>
+
+<script src="script.js?v=1"></script>
+
+</body>
+</html>
