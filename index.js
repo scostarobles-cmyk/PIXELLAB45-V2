@@ -1,98 +1,196 @@
+const R2_BASE_URL =
+  "https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev";
+
+const CORS_HEADERS = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "*",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Content-Type": "application/json"
+};
+
 export default {
   async fetch(request, env) {
 
-    const corsHeaders = {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Headers": "*",
-      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-      "Content-Type": "application/json"
-    };
-
     if (request.method === "OPTIONS") {
-      return new Response(null, { headers: corsHeaders });
+      return new Response(null, {
+        headers: CORS_HEADERS
+      });
     }
 
     const json = (obj, status = 200) =>
-      new Response(JSON.stringify(obj), {
-        status,
-        headers: corsHeaders
-      });
+      new Response(
+        JSON.stringify(obj),
+        {
+          status,
+          headers: CORS_HEADERS
+        }
+      );
 
     let data = {};
 
     try {
+
       if (request.method === "POST") {
         data = await request.json();
       }
+
     } catch {
-      return json({ error: "JSON inválido" }, 400);
+
+      return json({
+        error: "JSON inválido"
+      }, 400);
+
     }
 
-    switch (data.tipo) {
+    const tipo =
+      data.tipo || "";
+
+    switch (tipo) {
 
       case "listar-imagenes":
-          return listarImagenes(env, json);
+        return listarImagenes(
+          env,
+          json
+        );
+
       case "listar-categoria":
-          return listarCategoria(data.categoria,env,json);
-        case "ideas": {
+        return listarCategoria(
+          data.categoria,
+          env,
+          json
+        );
 
-  const match = tema.match(/\d+/);
-  let cantidad = match ? parseInt(match[0]) : 5;
+      case "ideas":
+        return generarIdeas(
+          data,
+          env,
+          json
+        );
 
-  if (cantidad > 20) cantidad = 20;
-
-  const resultado = await ai(`
-Eres un generador de ideas estructurado.
-
-Genera EXACTAMENTE ${cantidad} ideas sobre: ${tema}
-
-REGLAS OBLIGATORIAS:
-- No repitas ideas
-- No mezcles numeración
-- No hagas bloques separados
-- No reinicies la cuenta
-- No agregues texto fuera de las ideas
-
-FORMATO ESTRICTO:
-
-Idea 1:
-Título
-
-Idea 2:
-Título:
-
-(continuar así hasta Idea ${cantidad})
-
-Cada idea debe ser completamente diferente.
-`);
-
-  return new Response(
-    JSON.stringify({
-      ideas: resultado
-    }),
-    {
-      headers: corsHeaders
-    }
-  );
-
-  }  
       default:
         return json({
           error: "Tipo no válido"
         }, 400);
 
     }
+
   }
 };
-//Galería completa 
-async function listarImagenes(env, json) {
 
-  const lista = await env.IMAGES.list();
-//está es la corrección 
-  const imagenes = lista.objects.map(obj => ({
-    nombre: obj.key,
-    url: `https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev/${obj.key}`
-  }));
+// =====================================
+// CEREBRO IA
+// =====================================
+
+async function ai(env, prompt) {
+
+  const res = await env.AI.run(
+    "@cf/meta/llama-3.1-8b-instruct-fp8",
+    {
+      messages: [
+        {
+          role: "system",
+          content: `
+Eres PIXELLAB45 AI.
+
+REGLAS ABSOLUTAS:
+
+- Haz exactamente lo que pide el usuario.
+- No inventes tareas extras.
+- No agregues introducciones.
+- No agregues explicaciones.
+- No agregues conclusiones.
+- No cambies el formato solicitado.
+- Si pide 3 ideas, entregas 3 ideas.
+- Si pide prompts, entregas prompts.
+- Si pide storyboard, entregas storyboard.
+- Si pide guion, entregas guion.
+- Sé claro, preciso y directo.
+`
+        },
+        {
+          role: "user",
+          content: prompt
+        }
+      ],
+      max_tokens: 4000
+    }
+  );
+
+  return res.response;
+
+}
+
+// =====================================
+// IDEAS
+// =====================================
+
+async function generarIdeas(
+  data,
+  env,
+  json
+) {
+
+  const tema =
+    data.tema || "";
+
+  const match =
+    tema.match(/\d+/);
+
+  let cantidad =
+    match
+      ? parseInt(match[0])
+      : 20;
+
+  if (cantidad > 20)
+    cantidad = 20;
+
+  const resultado =
+    await ai(
+      env,
+      `
+Genera EXACTAMENTE ${cantidad} ideas.
+
+Tema:
+${tema}
+
+REGLAS:
+
+- Una idea por línea.
+- Sin numeración.
+- Sin viñetas.
+- Sin títulos.
+- Sin explicaciones.
+- Sin repetir ideas.
+- Todas relacionadas con el tema.
+
+Devuelve únicamente las ideas.
+`
+    );
+
+  return json({
+    success: true,
+    ideas: resultado
+  });
+
+}
+
+// =====================================
+// GALERÍA COMPLETA
+// =====================================
+
+async function listarImagenes(
+  env,
+  json
+) {
+
+  const lista =
+    await env.IMAGES.list();
+
+  const imagenes =
+    lista.objects.map(obj => ({
+      nombre: obj.key,
+      url: `${R2_BASE_URL}/${obj.key}`
+    }));
 
   return json({
     success: true,
@@ -102,7 +200,10 @@ async function listarImagenes(env, json) {
 
 }
 
-//Galería por categoría 
+// =====================================
+// GALERÍA CATEGORÍA
+// =====================================
+
 async function listarCategoria(
   categoria,
   env,
@@ -117,8 +218,7 @@ async function listarCategoria(
   const imagenes =
     lista.objects.map(obj => ({
       nombre: obj.key,
-      url:
-        `https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev/${obj.key}`
+      url: `${R2_BASE_URL}/${obj.key}`
     }));
 
   return json({
@@ -128,4 +228,3 @@ async function listarCategoria(
   });
 
 }
-
