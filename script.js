@@ -117,3 +117,17 @@ async function generarIdeas() {
     "FUNCION IDEAS EJECUTADA";
 
 }
+//Inicio y Menú 
+document.addEventListener(
+  "DOMContentLoaded",
+  cargarGaleriaCompleta
+);
+
+function toggleMenu(){
+
+  document
+    .querySelector(".nav-links")
+    .classList
+    .toggle("active");
+
+}
