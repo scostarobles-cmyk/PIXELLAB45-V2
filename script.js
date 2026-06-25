@@ -78,8 +78,8 @@ async function cargarCategoria(categoria) {
     });
 
     const data = await res.json();
-
-    contenedor.innerHTML = "";
+contenedor.innerHTML = "'<pre>' + JSON.stringify(data, null, 2) + '</pre>'";
+  /*  contenedor.innerHTML = "";
 
   data.images.forEach(img => {
 
@@ -91,7 +91,7 @@ async function cargarCategoria(categoria) {
         </div>
       `;
 
-    });
+    });*/
 
   } catch (error) {
 
