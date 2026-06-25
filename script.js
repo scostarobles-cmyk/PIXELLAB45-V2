@@ -173,7 +173,7 @@ async function generarIdeas() {
   }
 
   try {
-    alert("enviando ideas");
+  
     const res = await fetch(WORKER_URL, {
       method: "POST",
       headers: {
@@ -187,15 +187,38 @@ async function generarIdeas() {
 
     const data = await res.json();
 
-    alert(data.mensaje || "✅ Ideas guardadas");
-    contenedor.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+document.getElementById(
+  "mensajeIdeasCopiadas"
+).innerText =
+  data.mensaje || "✅ Ideas guardadas";
+
+setTimeout(() => {
+
+  document.getElementById(
+    "mensajeIdeasCopiadas"
+  ).innerText = "";
+
+}, 3000);
+    
 
   } catch (error) {
 
-    console.error(error);
- alert("❌ Error al guardar");
-//contenedor.innerHTML = "<pre>" + error + "</pre>";
-  }
+  console.error(error);
+
+  document.getElementById(
+    "mensajeIdeasCopiadas"
+  ).innerText =
+    "❌ Error al guardar";
+
+  setTimeout(() => {
+
+    document.getElementById(
+      "mensajeIdeasCopiadas"
+    ).innerText = "";
+
+  }, 3000);
+
+}
 
 }
 
