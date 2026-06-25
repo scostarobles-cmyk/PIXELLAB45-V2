@@ -187,7 +187,8 @@ async function generarIdeas() {
 
     const data = await res.json();
 
-    alert(data.mensaje || "✅ Ideas guardadas");
+    //alert(data.mensaje || "✅ Ideas guardadas");
+    contenedor.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
 
   } catch (error) {
 
