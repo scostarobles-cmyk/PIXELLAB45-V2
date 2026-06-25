@@ -161,6 +161,42 @@ async function generarIdeas() {
     console.error(error);
   }
   }
+  
+  async function guardarIdeas() {
+
+  const texto =
+    document.getElementById("resultadoIdeas").innerText;
+
+  if (!texto.trim()) {
+    alert("No hay ideas para guardar");
+    return;
+  }
+
+  try {
+
+    const res = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        tipo: "guardar-ideas",
+        contenido: texto
+      })
+    });
+
+    const data = await res.json();
+
+    alert(data.mensaje || "✅ Ideas guardadas");
+
+  } catch (error) {
+
+    console.error(error);
+    alert("❌ Error al guardar");
+
+  }
+
+}
 
 //Inicio y Menú 
 document.addEventListener(

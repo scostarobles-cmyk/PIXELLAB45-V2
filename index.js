@@ -67,6 +67,12 @@ export default {
           env,
           json
         );
+        case "guardar-ideas":
+  return guardarIdeas(
+    data,
+    env,
+    json
+  );
 
       default:
         return json({
@@ -178,6 +184,46 @@ ${tema}
   return json({
     success: true,
     ideas: resultado
+  });
+
+}
+// =====================================
+// GUARDAR IDEAS
+// =====================================
+async function guardarIdeas(
+  data,
+  env,
+  json
+) {
+
+  const contenido =
+    data.contenido || "";
+
+  const ideas = contenido
+    .split("\n")
+    .map(i => i.trim())
+    .filter(i => i);
+
+  let guardadas = 0;
+
+  for (const idea of ideas) {
+
+    const nombre =
+      `ideas/${Date.now()}-${crypto.randomUUID()}.txt`;
+
+    await env.IMAGES.put(
+      nombre,
+      idea
+    );
+
+    guardadas++;
+
+  }
+
+  return json({
+    ok: true,
+    mensaje:
+      `✅ ${guardadas} ideas guardadas`
   });
 
 }
