@@ -1,4 +1,4 @@
-tconsole.log("SCRIPT CARGADO OK");
+console.log("SCRIPT CARGADO OK");
 //Variable global worker 
 const WORKER_URL =
   "https://pixellab45-v2.scostarobles.workers.dev/";
@@ -32,9 +32,9 @@ async function cargarGaleriaCompleta() {
 
     const data = await res.json();
 
-    contenedor.innerHTML = "";
+    contenedor.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
 
-  data.images.forEach(img => {
+  /*data.images.forEach(img => {
 
       contenedor.innerHTML += `
         <div class="project-card">
@@ -44,7 +44,7 @@ async function cargarGaleriaCompleta() {
         </div>
       `;
 
-    });
+    });*/
 
   } catch (error) {
 
@@ -105,7 +105,7 @@ async function cargarCategoria(categoria) {
 }
 //GENERADOR DE IDEAS 
 async function generarIdeas() {
-if (!tema.trim()) {
+i/*f (!tema.trim()) {
   alert("Escribe un tema");
   return;
 }
@@ -168,7 +168,13 @@ if (!tema.trim()) {
     estado.innerText = "❌ Error";
     console.log(error);
 
-  }
+  }*/
+  async function generarIdeas() {
+
+  document.body.innerHTML =
+    "<h1>FUNCION EJECUTADA</h1>";
+
+}
 }
 
 //Inicio y Menú 
