@@ -26,6 +26,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Inject version
+        run: |
+          sed -i "s/__VERSION__/${GITHUB_SHA}/g" index.html
+          sed -i "s/__VERSION__/${GITHUB_SHA}/g" ailab.html
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
