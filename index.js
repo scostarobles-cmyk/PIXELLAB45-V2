@@ -148,23 +148,30 @@ async function generarIdeas(
     await ai(
       env,
       `
-Genera EXACTAMENTE ${cantidad} ideas.
+Genera exactamente la cantidad de ideas solicitadas.
 
+Las ideas deben:
+- Estar relacionadas directamente con el tema.
+- Ser originales.
+- No repetirse.
+- Ser concretas y útiles.
+
+Formato obligatorio:
+
+1 - Idea 1
+
+2 - Idea 2
+
+3 - Idea 3
+
+No agregues introducciones.
+No agregues explicaciones.
+No agregues conclusiones.
+Devuelve únicamente la lista numerada.
 Tema:
 ${tema}
 
-REGLAS:
 
-- Una idea por línea.
-- Sin numeración.
-- Sin títulos.
-- Sin ganchos.
-- Sin desarrollo.
-- Sin explicaciones.
-- No repetir ideas.
-- Todas relacionadas con el tema.
-
-Devuelve únicamente las ideas.
 `
     );
 
