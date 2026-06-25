@@ -103,6 +103,64 @@ async function cargarCategoria(categoria) {
   }
 
 }
+
+async function generarIdeas() {
+  const tema = document.getElementById("tema").value;
+
+  if (!tema.trim()) {
+    alert("Escribe un tema");
+    return;
+  }
+
+  const loading = document.getElementById("loadingIdeas");
+  const barra = document.getElementById("barraIdeas");
+  const estado = document.getElementById("estadoIdeas");
+
+  loading.style.display = "block";
+  barra.style.width = "10%";
+  estado.innerText = "🧠 Analizando tema...";
+
+  let progreso = 10;
+
+  const fakeProgress = setInterval(() => {
+    if (progreso < 90) {
+      progreso += Math.random() * 10;
+      barra.style.width = progreso + "%";
+
+      if (progreso < 30) estado.innerText = "💡 Generando ideas...";
+      else if (progreso < 60) estado.innerText = "🎯 Estructurando contenido...";
+      else estado.innerText = "⚡ Finalizando respuesta...";
+    }
+  }, 400);
+
+  try {
+    const res = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        tipo: "ideas",
+        tema: tema
+      })
+    });
+
+    const data = await res.json();
+
+    clearInterval(fakeProgress);
+    barra.style.width = "100%";
+    estado.innerText = "✅ Listo";
+
+    setTimeout(() => {
+      loading.style.display = "none";
+      document.getElementById("resultadoIdeas").innerHTML =
+        `<div style="white-space: pre-wrap;">${data.ideas}</div>`;
+    }, 300);
+
+  } catch (error) {
+    clearInterval(fakeProgress);
+    estado.innerText = "❌ Error";
+    console.error(error);
+  }
+
 //Inicio y Menú 
 document.addEventListener(
   "DOMContentLoaded",
@@ -116,4 +174,4 @@ function toggleMenu(){
     .classList
     .toggle("active");
 
-                            }
+}
