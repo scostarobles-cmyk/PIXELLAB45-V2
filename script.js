@@ -78,7 +78,9 @@ async function cargarCategoria(categoria) {
     });
 
     const data = await res.json();
-contenedor.innerHTML = "'<pre>' + JSON.stringify(data, null, 2) + '</pre>'";
+contenedor.innerHTML = `
+<pre>${JSON.stringify(data, null, 2)}</pre>
+`;
   /*  contenedor.innerHTML = "";
 
   data.images.forEach(img => {
@@ -103,6 +105,7 @@ contenedor.innerHTML = "'<pre>' + JSON.stringify(data, null, 2) + '</pre>'";
   }
 
 }
+
 
 async function generarIdeas() {
   const tema = document.getElementById("tema").value;
@@ -159,6 +162,7 @@ async function generarIdeas() {
     clearInterval(fakeProgress);
     estado.innerText = "❌ Error";
     console.error(error);
+  }
   }
 
 //Inicio y Menú 
