@@ -173,7 +173,7 @@ async function generarIdeas() {
   }
 
   try {
-
+    alert("enviando ideas");
     const res = await fetch(WORKER_URL, {
       method: "POST",
       headers: {
