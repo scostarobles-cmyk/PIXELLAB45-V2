@@ -60,3 +60,31 @@ async function listarImagenes(env, json) {
   });
 
 }
+
+//Galería por categoría 
+async function listarCategoria(
+  categoria,
+  env,
+  json
+) {
+
+  const lista =
+    await env.IMAGES.list({
+      prefix: categoria + "/"
+    });
+
+  const imagenes =
+    lista.objects.map(obj => ({
+      nombre: obj.key,
+      url:
+        `https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev/${obj.key}`
+    }));
+
+  return json({
+    success: true,
+    images: imagenes,
+    total: imagenes.length
+  });
+
+}
+
