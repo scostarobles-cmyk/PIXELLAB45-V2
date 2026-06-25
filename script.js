@@ -193,8 +193,8 @@ async function generarIdeas() {
   } catch (error) {
 
     console.error(error);
-    alert("❌ Error al guardar");
-
+ //   alert("❌ Error al guardar");
+contenedor.innerHTML = "<pre>" + error + "</pre>";
   }
 
 }
