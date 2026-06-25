@@ -1059,3 +1059,56 @@ section{
   margin-top:15px;
   border-radius:12px;
 }
+ /* =========================
+   AI DASHBOARD GRID (FIX)
+========================= */
+
+.ai-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 25px;
+  align-items: stretch;
+  padding: 20px;
+}
+
+/* asegura cards iguales */
+.ai-grid .ai-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  /* override suave sin romper tu estilo */
+  min-height: 520px;
+}
+
+/* contenido interno flexible */
+.ai-lab {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+/* resultados con scroll interno limpio */
+#resultadoIdeas,
+#resultadoPrompt {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 280px;
+
+  padding: 10px;
+  border-radius: 10px;
+
+  background: rgba(0,0,0,0.2);
+}
+
+/* MOBILE: una sola columna */
+@media (max-width: 768px) {
+  .ai-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ai-grid .ai-card {
+    min-height: auto;
+  }
+}
