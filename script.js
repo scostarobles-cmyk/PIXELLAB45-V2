@@ -77,23 +77,7 @@ async function cargarCategoria(categoria) {
       })
     });
 
-    const data = await res.json();
-contenedor.innerHTML = `
-<pre>${JSON.stringify(data, null, 2)}</pre>
-`;
-  /*  contenedor.innerHTML = "";
-
-  data.images.forEach(img => {
-
-      contenedor.innerHTML += `
-        <div class="project-card">
-          <img
-            src="${img.url}"
-            alt="${img.nombre}">
-        </div>
-      `;
-
-    });*/
+    
 
   } catch (error) {
 
