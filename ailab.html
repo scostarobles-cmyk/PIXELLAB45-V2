@@ -165,6 +165,57 @@
   </div>
 <div class="section-divider"></div>
 <!-- ===================================== -->
+<!-- GENERADOR DE PROMPT -->
+<!-- ===================================== -->
+<div class="ai-card">
+<section class="ai-lab">
+<div class="ai-card">
+
+  <h3>✍️ Generador de Prompts</h3>
+
+  <input
+    type="text"
+    id="temaPrompt"
+    placeholder="Tema del contenido">
+
+  <select id="tipoContenido">
+    <option value="TikTok">TikTok</option>
+    <option value="YouTube">YouTube</option>
+    <option value="Instagram">Instagram</option>
+    <option value="Blog">Blog</option>
+    <option value="Ebook">Ebook</option>
+  </select>
+
+  <button onclick="generarPrompt()">
+    Generar
+  </button>
+
+  <button onclick="copiarPrompt()">
+    📋 Copiar Prompt
+  </button>
+
+  <div id="mensajeCopiado"></div>
+
+  <!-- 🔥 LOADING PROMPT PROPIO -->
+  <div id="loadingPrompt" style="display:none;">
+    ✍️ Generando prompt...
+    
+    <div style="width:100%;background:#333;height:10px;border-radius:5px;margin-top:10px;">
+      <div id="barraPrompt"
+           style="width:0%;height:10px;background:#00ffcc;border-radius:5px;transition:width 0.3s;">
+      </div>
+    </div>
+
+    <div id="estadoPrompt">Iniciando...</div>
+  </div>
+
+  <div id="resultadoPrompt" class="scroll-box"></div>
+
+</div>
+</section>
+</div>
+<div class="section-divider"></div>
+<!-- ===================================== -->
 <!-- FOOTER -->
 <!-- ===================================== -->
 
