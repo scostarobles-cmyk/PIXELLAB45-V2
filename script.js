@@ -1,4 +1,4 @@
-console.log("SCRIPT CARGADO OK");
+tconsole.log("SCRIPT CARGADO OK");
 //Variable global worker 
 const WORKER_URL =
   "https://pixellab45-v2.scostarobles.workers.dev/";
