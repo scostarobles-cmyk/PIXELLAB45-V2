@@ -121,9 +121,8 @@ REGLAS ABSOLUTAS:
 }
 
 // =====================================
-// IDEAS
+// GENERADOR DE IDEAS 
 // =====================================
-
 async function generarIdeas(
   data,
   env,
@@ -157,10 +156,11 @@ REGLAS:
 
 - Una idea por línea.
 - Sin numeración.
-- Sin viñetas.
 - Sin títulos.
+- Sin ganchos.
+- Sin desarrollo.
 - Sin explicaciones.
-- Sin repetir ideas.
+- No repetir ideas.
 - Todas relacionadas con el tema.
 
 Devuelve únicamente las ideas.
@@ -173,7 +173,6 @@ Devuelve únicamente las ideas.
   });
 
 }
-
 // =====================================
 // GALERÍA COMPLETA
 // =====================================
@@ -226,5 +225,6 @@ async function listarCategoria(
     images: imagenes,
     total: imagenes.length
   });
+  
 
 }

@@ -105,89 +105,10 @@ async function cargarCategoria(categoria) {
 }
 //GENERADOR DE IDEAS 
 async function generarIdeas() {
-i/*f (!tema.trim()) {
-  alert("Escribe un tema");
-  return;
-}
-  const tema = document.getElementById("tema").value;
 
-  const loading = document.getElementById("loadingIdeas");
-  const barra = document.getElementById("barraIdeas");
-  const estado = document.getElementById("estadoIdeas");
-
-  loading.style.display = "block";
-  barra.style.width = "10%";
-  estado.innerText = "🧠 Analizando tema...";
-
-  let progreso = 10;
-
-  const fakeProgress = setInterval(() => {
-
-    if (progreso < 90) {
-      progreso += Math.random() * 10;
-      barra.style.width = progreso + "%";
-
-      if (progreso < 30) estado.innerText = "💡 Generando ideas...";
-      else if (progreso < 60) estado.innerText = "🎯 Estructurando contenido...";
-      else estado.innerText = "⚡ Finalizando respuesta...";
-    }
-
-  }, 400);
-
-  try {
-
-    const res = await fetch(
-      "https://pixellab45-v2.scostarobles.workers.dev/",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          tipo: "ideas",
-          tema
-        })
-      }
-    );
-
-    const data = await res.json();
-
-    clearInterval(fakeProgress);
-
-    barra.style.width = "100%";
-    estado.innerText = "✅ Listo";
-
-    setTimeout(() => {
-      loading.style.display = "none";
-      document.getElementById("resultadoIdeas").innerHTML =
-        `<div style="white-space: pre-wrap;">${data.ideas}</div>`;
-    }, 300);
-
-  } catch (error) {
-
-    clearInterval(fakeProgress);
-
-    estado.innerText = "❌ Error";
-    console.log(error);
-
-  }*/
-  async function generarIdeas() {
-
-  document.body.innerHTML =
-    "<h1>FUNCION EJECUTADA</h1>";
-
-}
-}
-
-//Inicio y Menú 
-document.addEventListener(
-  "DOMContentLoaded",
-  cargarGaleriaCompleta
-);
-
-function toggleMenu(){
-
-  document
-    .querySelector(".nav-links")
-    .classList
-    .toggle("active");
+  document.getElementById(
+    "resultadoIdeas"
+  ).innerHTML =
+    "FUNCION IDEAS EJECUTADA";
 
 }
