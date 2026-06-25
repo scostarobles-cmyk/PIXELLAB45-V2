@@ -116,19 +116,71 @@
 
 </section>
 
+<!-- ===================================== -->
+<!-- GENERADOR DE IDEAS 
+<!-- ===================================== -->
+<div class="ai-card">
+<section class="ai-lab">
+  <div class="ai-card">
+
+  <h3>💡 Generador de Ideas</h3>
+
+  <input
+    type="text"
+    id="tema"
+    placeholder="Escribe un tema">
+
+  <button onclick="generarIdeas()">
+    Generar Ideas
+  </button>
+
+  <button onclick="copiarIdeas()">
+    📋 Copiar Ideas
+  </button>
+
+  <div id="mensajeIdeasCopiadas"></div>
+
+  <div id="resultadoIdeas" class="scroll-box">
+    <div id="loadingIdeas" style="display:none;">
+  <p id="estadoIdeas">🧠 Iniciando...</p>
+
+  <div style="
+    width: 100%;
+    height: 10px;
+    background: #222;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 10px;
+  ">
+    <div id="barraIdeas" style="
+      height: 100%;
+      width: 0%;
+      background: #00ffcc;
+      transition: width 0.4s ease;
+    "></div>
+  </div>
+    </div>
+  </div>
+
+  </div>
 <div class="section-divider"></div>
+<!-- ===================================== -->
+<!-- FOOTER -->
+<!-- ===================================== -->
 
 <footer class="footer">
 
-  <h3>PIXELLAB45</h3>
+  <h3>
+    PIXELLAB45
+  </h3>
 
   <p>
-    Inteligencia Artificial • Tecnología • Innovación
+    Inteligencia Artificial • Tecnología • Automatización • Innovación
   </p>
 
 </footer>
 
 <script src="script.js?v=${Date.now()}"></script>
-
+ 
 </body>
 </html>
