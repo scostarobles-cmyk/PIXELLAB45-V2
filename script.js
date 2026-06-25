@@ -33,8 +33,8 @@ async function cargarGaleriaCompleta() {
     const data = await res.json();
 
     contenedor.innerHTML = "";
-
-    data.images.forEach(img => {
+contenedor.innerHTML = JSON.stringify(data);
+/*    data.images.forEach(img => {
 
       contenedor.innerHTML += `
         <div class="project-card">
@@ -44,7 +44,7 @@ async function cargarGaleriaCompleta() {
         </div>
       `;
 
-    });
+    });*/
 
   } catch (error) {
 
