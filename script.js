@@ -59,7 +59,7 @@ async function cargarGaleriaCompleta() {
 async function cargarCategoria(categoria) {
 
   const contenedor =
-  document.getElementById("galeriaCategoria");
+    document.getElementById("galeriaCategoria");
 
   contenedor.innerHTML =
     "⏳ Cargando categoría...";
@@ -77,7 +77,21 @@ async function cargarCategoria(categoria) {
       })
     });
 
-    
+    const data = await res.json();
+
+    contenedor.innerHTML = "";
+
+    data.images.forEach(img => {
+
+      contenedor.innerHTML += `
+        <div class="project-card">
+          <img
+            src="${img.url}"
+            alt="${img.nombre}">
+        </div>
+      `;
+
+    });
 
   } catch (error) {
 
@@ -89,7 +103,6 @@ async function cargarCategoria(categoria) {
   }
 
 }
-
 
 async function generarIdeas() {
   const tema = document.getElementById("tema").value;
