@@ -792,6 +792,112 @@ async function generarStoryboard() {
       error.message;
   }
 }
+//GENERAR Imagen 
+async function generarImagen() {
+
+  const prompt =
+    document.getElementById("promptImagen").value;
+
+  const categoria =
+    document.getElementById("categoriaImagen").value;
+
+  const resultado =
+    document.getElementById("resultadoImagen");
+
+  if (!prompt.trim()) {
+    resultado.innerHTML = "⚠️ Escribe un prompt";
+    return;
+  }
+
+  const btn =
+    document.querySelector("button[onclick='generarImagen()']");
+
+  btn.disabled = true;
+
+  try {
+
+    resultado.innerHTML =
+      "🎨 Generando imagen...";
+
+    const respuesta = await fetch(
+      "https://pixellab45-v2.scostarobles.workers.dev/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          tipo: "imagen",
+          tema: prompt,
+          categoria
+        })
+      }
+    );
+
+    const blob = await respuesta.blob();
+
+    const url =
+      URL.createObjectURL(blob);
+
+    resultado.innerHTML = `
+      <img src="${url}"
+        style="width:100%;max-width:600px;border-radius:12px;">
+      <p>💾 Guardando imagen...</p>
+    `;
+
+    const reader = new FileReader();
+
+    reader.onloadend = async () => {
+
+      try {
+
+        const guardar =
+          await fetch(
+            "https://pixellab45-v2.scostarobles.workers.dev/",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                tipo: "guardar-imagen",
+                imagenBase64: reader.result,
+                categoria
+              })
+            }
+          );
+
+        const data = await guardar.json();
+
+        if (data.success) {
+          resultado.innerHTML += `
+            <p>✅ Guardada: ${data.nombre}</p>
+          `;
+        } else {
+          resultado.innerHTML += `
+            <p>❌ ${data.error || JSON.stringify(data)}</p>
+          `;
+        }
+
+      } catch (error) {
+        resultado.innerHTML += `
+          <p>❌ ${error.message}</p>
+        `;
+      }
+
+      btn.disabled = false;
+    };
+
+    reader.readAsDataURL(blob);
+
+  } catch (error) {
+
+    resultado.innerHTML =
+      `❌ ${error.message}`;
+
+    btn.disabled = false;
+  }
+}
 
 // MENÚ MÓVIL
 function toggleMenu() {

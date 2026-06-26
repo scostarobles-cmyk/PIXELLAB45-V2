@@ -117,6 +117,11 @@ case "script":
     env,
     json
   );
+  case "imagen":
+  return await generarImagen(data, env);
+
+case "guardar-imagen":
+  return await guardarImagen(data, env);
       default:
         return json({
           error: "Tipo no válido"
@@ -684,4 +689,69 @@ ESCENA X
     .replace(/no puedo[^.]*\./gi, "");
 
   return json({ resultado: output });
+}
+//Generar imagen 
+async function generarImagen(data, env) {
+
+  const { tema, categoria } = data;
+
+  if (!tema) {
+    return Response.json(
+      { error: "Falta prompt" },
+      { status: 400 }
+    );
+  }
+
+  const promptFinal =
+    `Estilo ${categoria}. ${tema}. Cinematográfico, alta calidad, iluminación profesional, ultra detallado`;
+
+  // 👉 AQUÍ ESTÁ EL MODELO REAL
+  const result = await env.AI.run(
+    "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+    {
+      prompt: promptFinal
+    }
+  );
+
+  return new Response(result, {
+    headers: {
+      "Content-Type": "image/png"
+    }
+  });
+}
+//guardar imagen 
+async function guardarImagen(data, env) {
+
+  const { imagenBase64, categoria } = data;
+
+  if (!imagenBase64) {
+    return Response.json(
+      { error: "Falta imagen" },
+      { status: 400 }
+    );
+  }
+
+  const base64 =
+    imagenBase64.split(",")[1];
+
+  const buffer =
+    Uint8Array.from(atob(base64), c =>
+      c.charCodeAt(0)
+    );
+
+  const nombre =
+    `${Date.now()}.png`;
+
+  await env.IMAGES_BUCKET.put(
+    `${categoria}/${nombre}`,
+    buffer,
+    {
+      contentType: "image/png"
+    }
+  );
+
+  return Response.json({
+    success: true,
+    nombre
+  });
 }

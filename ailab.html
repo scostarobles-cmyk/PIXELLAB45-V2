@@ -450,23 +450,78 @@
     id="promptImagen"
     placeholder="Describe la imagen">
 
-      <select id="categoriaImagen">
-  <option value="avatares">Avatares</option>
-  <option value="fondos">Fondos</option>
-  <option value="miniaturas">Miniaturas</option>
-  <option value="storyboards">Storyboards</option>
-  <option value="personajes">Personajes</option>
-  <option value="logos">Logos</option>
-  <option value="experimentos">Experimentos</option>
-        <option value="videos">Videos</option>
-      </select>
+  <select id="categoriaImagen">
+    <option value="avatares">Avatares</option>
+    <option value="fondos">Fondos</option>
+    <option value="miniaturas">Miniaturas</option>
+    <option value="storyboards">Storyboards</option>
+    <option value="personajes">Personajes</option>
+    <option value="logos">Logos</option>
+    <option value="experimentos">Experimentos</option>
+    <option value="videos">Videos</option>
+  </select>
+
   <button onclick="generarImagen()">
     Generar Imagen
   </button>
 
-  <div id="resultadoImagen"></div>
-
+  <div id="loadingImagen" style="display:none;">
+    ⏳ Generando imagen...
   </div>
+
+  <div id="resultadoImagen" class="scroll-box"></div>
+
+</div>
+<div class="section-divider"></div>
+  <div class="ai-card" id="generador-video">
+
+  <h3>🎬 Generador de Video IA (Kling)</h3>
+
+  <p class="ai-subtitle">
+    Genera videos con IA directamente dentro de PIXELLAB45
+  </p>
+
+  <!-- ACCIONES -->
+  <div class="frame-actions">
+    <button onclick="openFullscreenKling()">⛶PANTALLA COMPLETA</button>
+<button onclick="reloadKling()">🔄RECARGAR</button>
+  </div>
+
+  <!-- IFRAME -->
+  <iframe
+    id="klingFrame"
+    src="https://kling.ai/app"
+    style="width:100%; height:520px; border:0; border-radius:12px;">
+  </iframe>
+
+  <!-- AYUDA -->
+  <div class="kling-help">
+    ⚠️ Flujo de uso:
+    <br>1. Generá el video en Kling
+    <br>2. Esperá el render
+    <br>3. Copiá el link o resultado
+    <br>4. Importalo en PIXELLAB45
+  </div>
+
+  <!-- IMPORTACIÓN VISUAL (sin lógica aún) -->
+  <h4>📥 Importar video</h4>
+
+  <input
+    type="text"
+    placeholder="Pegá la URL del video"
+  />
+
+  <button>
+    🎬 Previsualizar
+  </button>
+
+  <button>
+    ☁️ Guardar en PIXELLAB45
+  </button>
+
+  <div id="klingPreview"></div>
+
+</div>
 </div>
 <div class="section-divider"></div>
 <!-- ===================================== -->
