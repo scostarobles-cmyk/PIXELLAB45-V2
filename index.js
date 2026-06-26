@@ -571,20 +571,32 @@ async function generarGuion(data, env, json) {
         {
           role: "system",
           content: `
-You are an expert script writer.
+You are a professional screenwriter.
 
-Generate only the final script.
+Generate ONLY the requested script.
 
-No introductions.
-No explanations.
-No titles.
+Rules:
+
+- Write in the same language as the user's request.
+- Adapt the script to the requested duration.
+- No explanations.
+- No notes.
+- No markdown.
+- Start directly with the script.
+- Include dialogue when appropriate.
+- Include scene descriptions only if they improve the script.
+- Return only the final script.
 `
         },
         {
           role: "user",
-          content: `Write a script about:
+          content: `
+Topic:
+${data.tema}
 
-${data.tema}`
+Duration:
+${data.duracion}
+`
         }
       ]
     }
