@@ -265,8 +265,13 @@ async function generarPrompt() {
 
   } catch (error) {
 
-    document.getElementById("resultadoPrompt").innerText =
-      "❌ " + error.message;
+  /*  document.getElementById("resultadoPrompt").innerText =
+      "❌ " + error.message;*/
+      document.getElementById("resultadoPrompt").innerHTML = `
+<b>ERROR</b><br><br>
+${error.name}<br>
+${error.message}
+`;
 
   }
 
