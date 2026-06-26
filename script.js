@@ -650,12 +650,15 @@ async function generarGuion() {
 // MENÚ MÓVIL
 function toggleMenu() {
 
-  document
-    .querySelector(".nav-links")
-    .classList
-    .toggle("active");
+  alert("MENU");
+
+  const menu =
+    document.querySelector(".nav-links");
+
+  menu.classList.toggle("active");
 
 }
+
 
 // INICIO
 window.onload = () => {
