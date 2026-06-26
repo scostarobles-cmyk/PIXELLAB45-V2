@@ -299,6 +299,34 @@
 
   </section>
 </div>
+<div class="ai-card">
+
+  <h3>🎬 Generador de Guiones IA</h3>
+
+  <input
+    type="text"
+    id="temaGuion"
+    placeholder="Tema del video">
+
+  <select id="duracionGuion">
+    <option>15 segundos</option>
+    <option>30 segundos</option>
+    <option>60 segundos</option>
+  </select>
+
+<button onclick="generarGuion()">
+  Generar Guion
+</button>
+
+<button onclick="copiarGuion()">
+  📋 Copiar Guion
+</button>
+
+<div id="mensajeGuionCopiado"></div>
+
+<div id="resultadoGuion" class="scroll-box"></div>
+
+</div>
 </div>
 <div class="section-divider"></div>
 <!-- ===================================== -->
