@@ -742,7 +742,7 @@ async function guardarImagen(data, env) {
   const nombre =
     `${Date.now()}.png`;
 
-  await env.IMAGES_BUCKET.put(
+  await env.IMAGES.put(
     `${categoria}/${nombre}`,
     buffer,
     {
