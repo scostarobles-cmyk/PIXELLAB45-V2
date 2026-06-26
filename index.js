@@ -302,7 +302,7 @@ async function listarCategoria(
 
 async function generarPrompts(tema, formato, env) {
 
-  const ai = await env.AI.run(
+ /* const ai = await env.AI.run(
     "@cf/meta/llama-3.1-8b-instruct-fp8",
     {
       messages: [
@@ -347,5 +347,6 @@ ${tema}
     }
   );
 
-  return ai.response;
+  return ai.response;*/
+  return "PRUEBA OK";
 }
