@@ -681,6 +681,36 @@ async function guardarGuion() {
   }, 2000);
 
 }
+//Copiar guión 
+async function copiarGuion() {
+
+  const contenido =
+    document.getElementById("resultadoGuion").innerText;
+
+  if (!contenido.trim()) {
+    alert("No hay ningún guion para copiar.");
+    return;
+  }
+
+  try {
+
+    await navigator.clipboard.writeText(contenido);
+
+    document.getElementById("mensajeGuionCopiado").innerText =
+      "✅ Guion copiado";
+
+    setTimeout(() => {
+      document.getElementById("mensajeGuionCopiado").innerText = "";
+    }, 2000);
+
+  } catch (error) {
+
+    document.getElementById("mensajeGuionCopiado").innerText =
+      "❌ Error al copiar";
+
+  }
+
+}
 
 // MENÚ MÓVIL
 function toggleMenu() {
