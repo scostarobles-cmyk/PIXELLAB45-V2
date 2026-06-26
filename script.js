@@ -546,55 +546,103 @@ async function generarGuion() {
 
   const duracion =
     document.getElementById("duracionGuion").value;
-    
-    const formato =
-  document.getElementById("formatoGuion").value;
- 
+
+  const formato =
+    document.getElementById("formatoGuion").value;
+
+  const loading =
+    document.getElementById("loadingGuion");
+
+  const barra =
+    document.getElementById("barraGuion");
+
+  const estado =
+    document.getElementById("estadoGuion");
+
+  const resultado =
+    document.getElementById("resultadoGuion");
 
   if (!tema.trim()) {
 
-    document.getElementById("resultadoGuion").innerText =
+    resultado.innerText =
       "⚠️ Escribe un tema primero";
 
     return;
 
   }
 
-  const res = await fetch(
-    WORKER_URL,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-  tipo: "script",
-  tema,
-  duracion,
-  formato
-})
-      })
+  loading.style.display = "block";
+  barra.style.width = "10%";
+  estado.innerText = "🎬 Analizando idea...";
+
+  let progreso = 10;
+
+  const fakeProgress = setInterval(() => {
+
+    if (progreso < 90) {
+
+      progreso += Math.random() * 10;
+
+      barra.style.width = progreso + "%";
+
+      if (progreso < 30)
+        estado.innerText = "🧠 Analizando tema...";
+
+      else if (progreso < 60)
+        estado.innerText = "✍️ Escribiendo guion...";
+
+      else
+        estado.innerText = "⚡ Finalizando...";
+
     }
-  );
 
-  const data = await res.json();
+  }, 400);
 
-  document.getElementById("resultadoGuion").innerText =
-    data.resultado;
+  try {
 
-}
+    const res = await fetch(
+      WORKER_URL,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          tipo: "script",
+          tema,
+          duracion,
+          formato
+        })
+      }
+    );
 
-//Inicio y Menú 
-document.addEventListener(
-  "DOMContentLoaded",
-  cargarGaleriaCompleta
-);
+    const data = await res.json();
 
-function toggleMenu(){
+    clearInterval(fakeProgress);
 
-  document
-    .querySelector(".nav-links")
-    .classList
-    .toggle("active");
+    barra.style.width = "100%";
+    estado.innerText = "✅ Listo";
+
+    setTimeout(() => {
+
+      loading.style.display = "none";
+
+      resultado.innerText =
+        data.resultado;
+
+    }, 300);
+
+  } catch (error) {
+
+    clearInterval(fakeProgress);
+
+    estado.innerText = "❌ Error";
+
+    loading.style.display = "none";
+
+    resultado.innerText =
+      error.message;
+
+  }
 
 }
