@@ -647,6 +647,41 @@ async function generarGuion() {
 
 }
 
+async function guardarGuion() {
+
+  const contenido =
+    document.getElementById("resultadoGuion").innerText;
+
+  if (!contenido.trim()) {
+    alert("No hay ningún guion para guardar.");
+    return;
+  }
+
+  const res = await fetch(
+    WORKER_URL,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        tipo: "guardar-guion",
+        contenido
+      })
+    }
+  );
+
+  const data = await res.json();
+
+  document.getElementById("mensajeGuionCopiado").innerText =
+    data.mensaje;
+
+  setTimeout(() => {
+    document.getElementById("mensajeGuionCopiado").innerText = "";
+  }, 2000);
+
+}
+
 // MENÚ MÓVIL
 function toggleMenu() {
 

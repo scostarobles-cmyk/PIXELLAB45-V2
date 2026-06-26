@@ -105,6 +105,12 @@ case "script":
     env,
     json
   );
+  case "guardar-guion":
+  return guardarGuion(
+    data,
+    env,
+    json
+  );
       default:
         return json({
           error: "Tipo no válido"
@@ -614,6 +620,25 @@ ${data.formato}
 
   return json({
     resultado: ai.response
+  });
+
+}
+//Guardar guion 
+async function guardarGuion(data, env, json) {
+
+  const contenido =
+    data.contenido || "";
+
+  const nombre =
+    `scripts/${Date.now()}.txt`;
+
+  await env.IMAGES.put(
+    nombre,
+    contenido
+  );
+
+  return json({
+    mensaje: "✅ Guion guardado correctamente"
   });
 
 }
