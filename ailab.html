@@ -122,46 +122,57 @@
 <div class="ai-grid">
 
   <!-- 💡 IDEAS -->
-  <div class="ai-card">
-    <section class="ai-lab">
+<div class="ai-card">
+  <section class="ai-lab">
 
-      <h3>💡 Generador de Ideas</h3>
+    <h3>💡 Generador de Ideas</h3>
 
-      <input type="text" id="tema" placeholder="Escribe un tema">
+    <input
+      type="text"
+      id="tema"
+      placeholder="Escribe un tema">
 
-      <button onclick="generarIdeas()">Generar Ideas</button>
+    <button onclick="generarIdeas()">
+      Generar Ideas
+    </button>
 
-      <button onclick="guardarIdeas()">💾 Guardar Ideas</button>
+    <button onclick="guardarIdeas()">
+      💾 Guardar Ideas
+    </button>
 
-      <div id="mensajeIdeasCopiadas"></div>
+    <div id="mensajeIdeasCopiadas"></div>
 
-<div id="loadingIdeas" style="display:none;">
+    <div id="loadingIdeas" style="display:none;">
 
-  <p id="estadoIdeas">🧠 Iniciando...</p>
+      <p id="estadoIdeas">🧠 Iniciando...</p>
 
-  <div style="
-    width:100%;
-    height:10px;
-    background:#222;
-    border-radius:5px;
-    overflow:hidden;
-    margin-top:10px;
-  ">
+      <div style="
+        width:100%;
+        height:10px;
+        background:#222;
+        border-radius:5px;
+        overflow:hidden;
+        margin-top:10px;
+      ">
 
-    <div id="barraIdeas" style="
-      width:0%;
-      height:100%;
-      background:#00ffcc;
-      transition:width .4s ease;
-    ">
+        <div
+          id="barraIdeas"
+          style="
+            width:0%;
+            height:100%;
+            background:#00ffcc;
+            transition:width .4s ease;
+          ">
+        </div>
+
+      </div>
+
     </div>
 
-  </div>
+    <div id="resultadoIdeas" class="scroll-box"></div>
 
+  </section>
 </div>
-
-    </section>
-  </div>
   <div class="section-divider"></div>
   <!-- ===================================== -->
 <!-- GENERADOR DE PROMPT 
