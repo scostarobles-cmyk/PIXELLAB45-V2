@@ -497,6 +497,47 @@ async function generarVisuales() {
   }
 
 }
+//Guardar Visuales 
+async function guardarVisuales() {
+
+  const texto =
+    document.getElementById("resultadoVisual").innerText;
+
+  if (!texto.trim()) {
+
+    document.getElementById("mensajeVisual").innerText =
+      "⚠️ No hay visuales para guardar";
+
+    return;
+
+  }
+
+  try {
+
+    const res = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        tipo: "guardar-visuales",
+        contenido: texto
+      })
+    });
+
+    const data = await res.json();
+
+    document.getElementById("mensajeVisual").innerText =
+      data.mensaje;
+
+  } catch (error) {
+
+    document.getElementById("mensajeVisual").innerText =
+      "❌ Error al guardar";
+
+  }
+
+}
 
 //Inicio y Menú 
 document.addEventListener(

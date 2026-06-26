@@ -93,6 +93,12 @@ export default {
     env,
     json
   );
+  case "guardar-visuales":
+  return guardarVisuales(
+    data,
+    env,
+    json
+  );
 
       default:
         return json({
@@ -422,6 +428,38 @@ ${tema}
 
   return json({
     resultado: ai.response
+  });
+
+}
+//GUARDAR Visuales 
+async function guardarVisuales(data, env, json) {
+
+  const contenido =
+    data.contenido || "";
+
+  const items = contenido
+    .split(/\n(?=\d+-)/)
+    .map(i => i.trim())
+    .filter(Boolean);
+
+  let guardados = 0;
+
+  for (const item of items) {
+
+    const nombre =
+      `visuals/${Date.now()}-${guardados + 1}.txt`;
+
+    await env.IMAGES.put(
+      nombre,
+      item
+    );
+
+    guardados++;
+
+  }
+
+  return json({
+    mensaje: `✅ ${guardados} visual prompts guardados`
   });
 
 }
