@@ -646,3 +646,20 @@ async function generarGuion() {
   }
 
 }
+
+// MENÚ MÓVIL
+function toggleMenu() {
+
+  document
+    .querySelector(".nav-links")
+    .classList
+    .toggle("active");
+
+}
+
+// INICIO
+window.onload = () => {
+
+  cargarGaleria();
+
+};
