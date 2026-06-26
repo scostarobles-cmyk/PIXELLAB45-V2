@@ -651,29 +651,34 @@ async function guardarGuion(data, env, json) {
 //Generar Storyboard 
 async function generarStoryboard(data, env, json) {
 
-  const ai = await env.AI.run(
-    "@cf/meta/llama-3.1-8b-instruct-fp8",
-    {
-      messages: [
-        {
-          role: "system",
-          content: `
+  const escenas =
+    parseInt(data.escenas) || 8;
+
+  let storyboard = "";
+
+  for (let i = 1; i <= escenas; i++) {
+
+    const ai = await env.AI.run(
+      "@cf/meta/llama-3.1-8b-instruct-fp8",
+      {
+        messages: [
+          {
+            role: "system",
+            content: `
 You are a professional storyboard artist.
 
-Generate ONLY the storyboard.
+Generate ONLY ONE storyboard scene.
 
 Rules:
 
 - Write in the same language as the script.
-- Generate EXACTLY the requested number of scenes.
-- Respect the requested visual style.
-- Do not explain anything.
-- Do not use markdown.
-- Number every scene.
+- Do not generate any other scene.
+- Do not introduce or conclude.
+- Return only this scene.
 
-Each scene MUST contain exactly:
+Format exactly:
 
-ESCENA X
+ESCENA ${i}
 
 ⏱️ Duración
 
@@ -685,31 +690,33 @@ ESCENA X
 
 💡 Iluminación
 
-🎨 Prompt visual (English, cinematic and highly detailed)
-
-Return only the storyboard.
+🎨 Prompt visual (English, cinematic, highly detailed)
 `
-        },
-        {
-          role: "user",
-          content: `
-Script:
+          },
+          {
+            role: "user",
+            content: `
+Complete script:
 
 ${data.guion}
 
-Scenes:
-${data.escenas}
-
-Style:
+Storyboard style:
 ${data.estilo}
+
+This is scene ${i} of ${escenas}.
+
+Generate ONLY scene ${i}.
 `
-        }
-      ]
-    }
-  );
+          }
+        ]
+      }
+    );
+
+    storyboard += ai.response + "\n\n";
+  }
 
   return json({
-    resultado: ai.response
+    resultado: storyboard
   });
 
 }
