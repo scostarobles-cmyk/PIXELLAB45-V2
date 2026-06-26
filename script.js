@@ -650,7 +650,6 @@ async function generarGuion() {
 // MENÚ MÓVIL
 function toggleMenu() {
 
-  alert("MENU");
 
   const menu =
     document.querySelector(".nav-links");
@@ -663,6 +662,6 @@ function toggleMenu() {
 // INICIO
 window.onload = () => {
 
-  cargarGaleria();
+  cargarGaleriaCompleta();
 
 };
