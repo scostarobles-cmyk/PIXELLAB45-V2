@@ -74,18 +74,10 @@ export default {
     json
   );
   case "prompt": {
-
-  const resultado =
-    await generarPrompts(
-      data.tema,
-      data.formato,
-      env
-    );
-
   return Response.json({
-    resultado
+    ok: true,
+    mensaje: "Entró al case prompt"
   });
-
 };
 
       default:
