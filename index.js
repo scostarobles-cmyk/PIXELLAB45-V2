@@ -87,6 +87,12 @@ export default {
     env,
     json
   );
+  case "visual":
+  return generarVisualesPrompts(
+    data.tema,
+    env,
+    json
+  );
 
       default:
         return json({
@@ -370,6 +376,52 @@ async function guardarPrompts(data, env, json) {
 
   return json({
     mensaje: `✅ ${guardados} prompts guardados`
+  });
+
+}
+
+//Generar Visuales 
+async function generarVisualesPrompts(tema, env, json) {
+
+  const ai = await env.AI.run(
+    "@cf/meta/llama-3.1-8b-instruct-fp8",
+    {
+      messages: [
+        {
+          role: "system",
+          content: `
+You are a visual prompt expert.
+
+Generate ONLY cinematic AI visual prompts in English.
+
+Rules:
+- No explanations
+- No titles
+- No storytelling
+- No introductions
+- One scene per line
+- Very descriptive cinematic style
+
+Output format:
+1- ...
+2- ...
+3- ...
+`
+        },
+        {
+          role: "user",
+          content: `
+Create visual AI prompts about:
+
+${tema}
+`
+        }
+      ]
+    }
+  );
+
+  return json({
+    resultado: ai.response
   });
 
 }

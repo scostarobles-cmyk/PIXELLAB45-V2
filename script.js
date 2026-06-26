@@ -403,6 +403,101 @@ async function guardarPrompts() {
 
 }
 
+//Generar Visuales
+async function generarVisuales() {
+
+  const tema =
+    document.getElementById("temaVisual").value;
+
+  if (!tema.trim()) {
+
+    document.getElementById("resultadoVisual").innerText =
+      "⚠️ Escribe un tema primero";
+
+    return;
+
+  }
+
+  const loading =
+    document.getElementById("loadingVisual");
+
+  const barra =
+    document.getElementById("barraVisual");
+
+  const estado =
+    document.getElementById("estadoVisual");
+
+  loading.style.display = "block";
+  barra.style.width = "10%";
+  estado.innerText = "🎨 Generando prompts visuales...";
+
+  let progreso = 10;
+
+  const fakeProgress = setInterval(() => {
+
+    if (progreso < 90) {
+
+      progreso += Math.random() * 10;
+
+      barra.style.width = progreso + "%";
+
+      if (progreso < 30)
+        estado.innerText = "🧠 Analizando escena...";
+
+      else if (progreso < 60)
+        estado.innerText = "🎬 Creando visual prompts...";
+
+      else
+        estado.innerText = "⚡ Finalizando...";
+
+    }
+
+  }, 400);
+
+  try {
+
+    const res = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        tipo: "visual",
+        tema
+      })
+    });
+
+    const data = await res.json();
+
+    clearInterval(fakeProgress);
+
+    barra.style.width = "100%";
+    estado.innerText = "✅ Listo";
+
+    setTimeout(() => {
+
+      loading.style.display = "none";
+
+      document.getElementById("resultadoVisual").innerText =
+        data.resultado;
+
+    }, 300);
+
+  } catch (error) {
+
+    clearInterval(fakeProgress);
+
+    estado.innerText = "❌ Error";
+
+    loading.style.display = "none";
+
+    document.getElementById("resultadoVisual").innerText =
+      error.message;
+
+  }
+
+}
+
 //Inicio y Menú 
 document.addEventListener(
   "DOMContentLoaded",
