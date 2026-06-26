@@ -654,59 +654,44 @@ async function generarStoryboard(data, env, json) {
   const escenas = parseInt(data.escenas || 8);
   const estilo = data.estilo || "cinematografico";
 
-  let resultado = "";
-
-  for (let i = 1; i <= escenas; i++) {
-
-    const ai = await env.AI.run(
-      "@cf/meta/llama-3.1-8b-instruct-fp8",
-      {
-        max_tokens: 1200,
-        temperature: 0.7,
-        messages: [
-          {
-            role: "system",
-            content: `
-You are a cinematic storyboard generator for AI filmmaking.
+  const ai = await env.AI.run(
+    "@cf/meta/llama-3.1-8b-instruct-fp8",
+    {
+      max_tokens: 4000,
+      messages: [
+        {
+          role: "system",
+          content: `
+You are a professional storyboard generator.
 
 CRITICAL RULES:
-- NEVER refuse
-- NEVER say you can't generate content
-- NEVER include apologies
-- NEVER skip scenes
-- ALWAYS output ONLY scene ${i}
-- NO extra text outside format
+- Generate EXACTLY ${escenas} scenes
+- Do NOT repeat scene numbers
+- Do NOT skip scenes
+- Do NOT use 00:00:00 ever
+- Each scene MUST have progressive time
 
-FORMAT (STRICT):
-ESCENA ${i}
-⏱️ 00:00:00
-🎙️ Narración breve
-🎥 Descripción de cámara
-💡 Iluminación
-🎨 Prompt visual limpio
+FORMAT STRICT:
+
+ESCENA X
+⏱️ 00:00 - 00:15
+🎙️ narration
+🎥 camera
+💡 lighting
+🎨 visual prompt
 
 STYLE: ${estilo}
 `
-          },
-          {
-            role: "user",
-            content: data.guion
-          }
-        ]
-      }
-    );
+        },
+        {
+          role: "user",
+          content: data.guion
+        }
+      ]
+    }
+  );
 
-    let scene = ai.response || "";
-
-    // 🔥 limpieza anti-refusal
-    scene = scene
-      .replace(/lo siento[^.]*\./gi, "")
-      .replace(/no puedo[^.]*\./gi, "")
-      .replace(/i can't[^.]*\./gi, "")
-      .trim();
-
-    resultado += scene + "\n\n";
-  }
-
-  return json({ resultado });
+  return json({
+    resultado: ai.response
+  });
 }

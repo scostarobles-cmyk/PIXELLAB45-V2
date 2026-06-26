@@ -724,80 +724,53 @@ async function generarStoryboard() {
     document.getElementById("estiloStoryboard").value;
 
   if (!guion.trim()) {
-
     document.getElementById("resultadoStoryboard").innerText =
       "⚠️ Primero pega un guion";
-
     return;
-
   }
 
-  const loading =
-    document.getElementById("loadingStoryboard");
-
-  const barra =
-    document.getElementById("barraStoryboard");
-
-  const estado =
-    document.getElementById("estadoStoryboard");
+  const loading = document.getElementById("loadingStoryboard");
+  const barra = document.getElementById("barraStoryboard");
+  const estado = document.getElementById("estadoStoryboard");
 
   loading.style.display = "block";
-
   barra.style.width = "10%";
-
-  estado.innerText =
-    "🎬 Generando storyboard...";
+  estado.innerText = "🎬 Generando storyboard...";
 
   let progreso = 10;
 
   const fakeProgress = setInterval(() => {
-
     if (progreso < 90) {
-
       progreso += Math.random() * 10;
-
       barra.style.width = progreso + "%";
 
       if (progreso < 30)
-        estado.innerText =
-          "🧠 Analizando guion...";
-
+        estado.innerText = "🧠 Analizando guion...";
       else if (progreso < 60)
-        estado.innerText =
-          "🎥 Creando escenas...";
-
+        estado.innerText = "🎥 Creando escenas...";
       else
-        estado.innerText =
-          "⚡ Finalizando storyboard...";
-
+        estado.innerText = "⚡ Finalizando storyboard...";
     }
-
   }, 400);
 
   try {
 
-    const res = await fetch(
-      WORKER_URL,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          tipo: "storyboard",
-          guion,
-          escenas,
-          estilo
-        })
-      }
-    );
+    const res = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        tipo: "storyboard",
+        guion,
+        escenas,
+        estilo
+      })
+    });
 
     const data = await res.json();
 
     clearInterval(fakeProgress);
 
     barra.style.width = "100%";
-
     estado.innerText = "✅ Listo";
 
     setTimeout(() => {
@@ -812,16 +785,12 @@ async function generarStoryboard() {
   } catch (error) {
 
     clearInterval(fakeProgress);
-
     estado.innerText = "❌ Error";
-
     loading.style.display = "none";
 
     document.getElementById("resultadoStoryboard").innerText =
       error.message;
-
   }
-
 }
 
 // MENÚ MÓVIL
