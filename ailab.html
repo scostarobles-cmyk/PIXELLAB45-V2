@@ -154,30 +154,67 @@
 
   <!-- ✍️ PROMPTS (SOLO DISEÑO) -->
   <div class="ai-card">
-    <section class="ai-lab">
+  <section class="ai-lab">
 
-      <h3>✍️ Generador de Prompts</h3>
+    <h3>✍️ Generador de Prompts</h3>
 
-      <input type="text" id="temaPrompt" placeholder="Tema del contenido">
+    <input
+      type="text"
+      id="temaPrompt"
+      placeholder="Tema del contenido">
 
-      <select id="tipoContenido">
-        <option value="TikTok">TikTok</option>
-        <option value="YouTube">YouTube</option>
-        <option value="Instagram">Instagram</option>
-        <option value="Blog">Blog</option>
-        <option value="Ebook">Ebook</option>
-      </select>
+    <select id="tipoContenido">
+      <option value="TikTok">TikTok</option>
+      <option value="YouTube">YouTube</option>
+      <option value="Instagram">Instagram</option>
+      <option value="Blog">Blog</option>
+      <option value="Ebook">Ebook</option>
+    </select>
 
-      <button onclick="generarPrompt()">Generar</button>
+    <button onclick="generarPrompt()">
+      Generar
+    </button>
 
-      <button onclick="copiarPrompt()">📋 Copiar Prompt</button>
+    <button onclick="copiarPrompt()">
+      📋 Guardar Prompt
+    </button>
 
-      <div id="mensajeCopiado"></div>
+    <div id="mensajeCopiado"></div>
 
-      <div id="resultadoPrompt" class="scroll-box"></div>
+    <!-- LOADING PROMPTS -->
+    <div id="loadingPrompt" style="display:none;">
 
-    </section>
-  </div>
+      <p id="estadoPrompt">
+        ✍️ Iniciando...
+      </p>
+
+      <div style="
+        width:100%;
+        height:10px;
+        background:#222;
+        border-radius:5px;
+        overflow:hidden;
+        margin-top:10px;
+      ">
+
+        <div
+          id="barraPrompt"
+          style="
+            width:0%;
+            height:100%;
+            background:#00ffcc;
+            transition:width .4s ease;
+          ">
+        </div>
+
+      </div>
+
+    </div>
+
+    <div id="resultadoPrompt" class="scroll-box"></div>
+
+  </section>
+</div>
 
 </div>
 <div class="section-divider"></div>
