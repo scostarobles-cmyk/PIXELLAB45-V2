@@ -538,6 +538,101 @@ async function guardarVisuales() {
   }
 
 }
+//Generar guión 
+async function generarGuion() {
+
+  const tema =
+    document.getElementById("temaGuion").value;
+
+  const resultado =
+    document.getElementById("resultadoGuion");
+
+  const loading =
+    document.getElementById("loadingGuion");
+
+  const barra =
+    document.getElementById("barraGuion");
+
+  const estado =
+    document.getElementById("estadoGuion");
+
+  if (!tema.trim()) {
+
+    resultado.innerText =
+      "⚠️ Escribe un tema primero";
+
+    return;
+
+  }
+
+  loading.style.display = "block";
+  barra.style.width = "10%";
+  estado.innerText = "🎬 Iniciando...";
+
+  let progreso = 10;
+
+  const fakeProgress = setInterval(() => {
+
+    if (progreso < 90) {
+
+      progreso += Math.random() * 10;
+
+      barra.style.width = progreso + "%";
+
+      if (progreso < 30)
+        estado.innerText = "🧠 Analizando tema...";
+
+      else if (progreso < 60)
+        estado.innerText = "✍️ Escribiendo guion...";
+
+      else
+        estado.innerText = "⚡ Finalizando...";
+
+    }
+
+  }, 400);
+
+  try {
+
+    const res = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        tipo: "script",
+        tema
+      })
+    });
+
+    const data = await res.json();
+
+    clearInterval(fakeProgress);
+
+    barra.style.width = "100%";
+    estado.innerText = "✅ Listo";
+
+    setTimeout(() => {
+
+      loading.style.display = "none";
+
+      resultado.innerText = data.resultado;
+
+    }, 300);
+
+  } catch (error) {
+
+    clearInterval(fakeProgress);
+
+    estado.innerText = "❌ Error";
+
+    loading.style.display = "none";
+
+    resultado.innerText = error.message;
+
+  }
+
+}
 
 //Inicio y Menú 
 document.addEventListener(

@@ -99,7 +99,12 @@ export default {
     env,
     json
   );
-
+case "script":
+  return generarGuion(
+    data,
+    env,
+    json
+  );
       default:
         return json({
           error: "Tipo no válido"
@@ -460,6 +465,40 @@ async function guardarVisuales(data, env, json) {
 
   return json({
     mensaje: `✅ ${guardados} visual prompts guardados`
+  });
+
+}
+//Generar guión 
+async function generarGuion(data, env, json) {
+
+  const ai = await env.AI.run(
+    "@cf/meta/llama-3.1-8b-instruct-fp8",
+    {
+      messages: [
+        {
+          role: "system",
+          content: `
+You are an expert script writer.
+
+Generate only the final script.
+
+No introductions.
+No explanations.
+No titles.
+`
+        },
+        {
+          role: "user",
+          content: `Write a script about:
+
+${data.tema}`
+        }
+      ]
+    }
+  );
+
+  return json({
+    resultado: ai.response
   });
 
 }
