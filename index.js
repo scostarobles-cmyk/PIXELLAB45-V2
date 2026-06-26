@@ -361,7 +361,7 @@ async function guardarPrompts(data, env, json) {
     const nombre =
       `prompts/${Date.now()}-${guardados + 1}.txt`;
 
-    await env.PIXELLAB45.put(
+    await env.IMAGES.put(
       nombre,
       prompt
     );
