@@ -651,57 +651,48 @@ async function guardarGuion(data, env, json) {
 //Generar Storyboard 
 async function generarStoryboard(data, env, json) {
 
-  const ai = await env.AI.run(
-    "@cf/meta/llama-3.1-8b-instruct-fp8",
-    {
-      messages: [
-        {
-          role: "system",
-          content: `
-You are a professional storyboard artist.
+  const escenas = parseInt(data.escenas || 8);
+  const estilo = data.estilo || "cinematografico";
 
-Generate ONLY the storyboard.
+  let resultado = "";
+
+  for (let i = 1; i <= escenas; i++) {
+
+    const ai = await env.AI.run(
+      "@cf/meta/llama-3.1-8b-instruct-fp8",
+      {
+        messages: [
+          {
+            role: "system",
+            content: `
+You are a cinematic storyboard generator.
 
 Rules:
+- Generate ONLY scene ${i}
+- Do NOT continue to next scenes
+- Follow requested style: ${estilo}
+- Output format:
 
-- Write in the same language as the script.
-- Create exactly the requested number of scenes.
-- Do NOT invent timestamps or durations.
-- For each scene include:
-
-ESCENA X
-
-🎙️ Narración
-
-🎥 Descripción visual
-
-💡 Iluminación
-
-🎨 Prompt visual cinematográfico muy detallado
-
-Return ONLY the storyboard.
+ESCENA ${i}
+⏱️ ...
+🎙️ ...
+🎥 ...
+💡 ...
+🎨 ...
 `
-        },
-        {
-          role: "user",
-          content: `
-Script:
+          },
+          {
+            role: "user",
+            content: data.guion
+          }
+        ]
+      }
+    );
 
-${data.guion}
-
-Number of scenes:
-${data.escenas}
-
-Style:
-${data.estilo}
-`
-        }
-      ]
-    }
-  );
+    resultado += ai.response + "\n\n";
+  }
 
   return json({
-    resultado: ai.response
+    resultado
   });
-
 }
