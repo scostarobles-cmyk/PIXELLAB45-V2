@@ -309,24 +309,22 @@ async function generarPrompts(tema, formato, env) {
         {
           role: "system",
           content: `
-You are an expert prompt engineer.
+You are an expert AI prompt generator.
 
-Generate 5 professional AI prompts in English.
-
-Rules:
-- English only.
-- No dialogue.
-- No text inside the image.
-- No speech.
-- No captions.
-- No titles.
+CRITICAL RULES:
+- Generate as many prompts as needed (no fixed number).
+- Only return prompts.
+- No introductions.
 - No explanations.
-- No numbering except 1- 2- 3- 4- 5-.
-- One complete scene per prompt.
-- Highly detailed.
-- Cinematic.
-- Photorealistic.
-- Ready for AI image/video generation.
+- No titles.
+- No extra text.
+- One idea per line.
+- Strict format:
+
+1- prompt
+2- prompt
+3- prompt
+...
 `
         },
         {
