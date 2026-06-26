@@ -651,87 +651,57 @@ async function guardarGuion(data, env, json) {
 //Generar Storyboard 
 async function generarStoryboard(data, env, json) {
 
-  const escenas =
-    parseInt(data.escenas) || 8;
+  const ai = await env.AI.run(
+    "@cf/meta/llama-3.1-8b-instruct-fp8",
+    {
+      messages: [
+        {
+          role: "system",
+          content: `
+You are a professional storyboard artist.
 
-  let storyboard = "";
-
-  for (let i = 1; i <= escenas; i++) {
-
-    const ai = await env.AI.run(
-      "@cf/meta/llama-3.1-8b-instruct-fp8",
-      {
-        messages: [
-          {
-            role: "system",
-            content: `
-You are a professional cinematic storyboard artist.
-
-Generate EXACTLY ONE storyboard scene.
+Generate ONLY the storyboard.
 
 Rules:
 
 - Write in the same language as the script.
-- Continue the story naturally.
-- NEVER restart the story.
-- NEVER repeat previous scenes.
-- Keep the same characters, locations and atmosphere.
-- Divide the total duration evenly across all scenes.
-- Make each scene cinematic.
-- Keep the visual prompt under 80 words.
-- No explanations.
-- No markdown.
-
-Return ONLY:
+- Create exactly the requested number of scenes.
+- Do NOT invent timestamps or durations.
+- For each scene include:
 
 ESCENA X
-
-⏱️ Duración
 
 🎙️ Narración
 
 🎥 Descripción visual
 
-📷 Plano de cámara
-
 💡 Iluminación
 
-🎨 Prompt visual (English, cinematic, highly detailed)
+🎨 Prompt visual cinematográfico muy detallado
+
+Return ONLY the storyboard.
 `
-          },
-          {
-            role: "user",
-            content: `
-Complete script:
+        },
+        {
+          role: "user",
+          content: `
+Script:
 
 ${data.guion}
 
-Storyboard style:
+Number of scenes:
+${data.escenas}
+
+Style:
 ${data.estilo}
-
-Total scenes:
-${escenas}
-
-Scenes already generated:
-
-${storyboard}
-
-Now generate ONLY scene ${i} of ${escenas}.
-
-Continue from the previous scene.
-Do not restart the story.
-Do not repeat previous content.
 `
-          }
-        ]
-      }
-    );
-
-    storyboard += ai.response.trim() + "\n\n";
-  }
+        }
+      ]
+    }
+  );
 
   return json({
-    resultado: storyboard.trim()
+    resultado: ai.response
   });
 
 }
