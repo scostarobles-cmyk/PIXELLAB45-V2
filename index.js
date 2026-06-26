@@ -73,20 +73,14 @@ export default {
     env,
     json
   );
-  case "prompt": {
-
-  const resultado =
-    await generarPrompts(
+  case "prompt":
+  return json({
+    resultado: await generarPrompts(
       data.tema,
       data.formato,
       env
-    );
-
-  return Response.json({
-    resultado
+    )
   });
-
-};
 
       default:
         return json({
@@ -302,7 +296,7 @@ async function listarCategoria(
 
 async function generarPrompts(tema, formato, env) {
 
- /* const ai = await env.AI.run(
+  const ai = await env.AI.run(
     "@cf/meta/llama-3.1-8b-instruct-fp8",
     {
       messages: [
@@ -347,6 +341,6 @@ ${tema}
     }
   );
 
-  return ai.response;*/
-  return "PRUEBA OK";
+  return ai.response;
+  
 }
