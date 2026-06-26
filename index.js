@@ -111,6 +111,12 @@ case "script":
     env,
     json
   );
+  case "storyboard":
+  return generarStoryboard(
+    data,
+    env,
+    json
+  );
       default:
         return json({
           error: "Tipo no válido"
@@ -639,6 +645,71 @@ async function guardarGuion(data, env, json) {
 
   return json({
     mensaje: "✅ Guion guardado correctamente"
+  });
+
+}
+//Generar Storyboard 
+async function generarStoryboard(data, env, json) {
+
+  const ai = await env.AI.run(
+    "@cf/meta/llama-3.1-8b-instruct-fp8",
+    {
+      messages: [
+        {
+          role: "system",
+          content: `
+You are a professional storyboard artist.
+
+Generate ONLY the storyboard.
+
+Rules:
+
+- Write in the same language as the script.
+- Generate EXACTLY the requested number of scenes.
+- Respect the requested visual style.
+- Do not explain anything.
+- Do not use markdown.
+- Number every scene.
+
+Each scene MUST contain exactly:
+
+ESCENA X
+
+⏱️ Duración
+
+🎙️ Narración
+
+🎥 Descripción visual
+
+📷 Plano de cámara
+
+💡 Iluminación
+
+🎨 Prompt visual (English, cinematic and highly detailed)
+
+Return only the storyboard.
+`
+        },
+        {
+          role: "user",
+          content: `
+Script:
+
+${data.guion}
+
+Scenes:
+${data.escenas}
+
+Style:
+${data.estilo}
+`
+        }
+      ]
+    }
+  );
+
+  return json({
+    resultado: ai.response
   });
 
 }

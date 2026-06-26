@@ -381,36 +381,65 @@
     placeholder="Pega aquí el guion..."
     rows="6">
   </textarea>
-      <select id="cantidadEscenas">
-  <option value="4">4 escenas</option>
-  <option value="6">6 escenas</option>
-  <option value="8" selected>8 escenas</option>
-  <option value="10">10 escenas</option>
-  <option value="12">12 escenas</option>
-</select>
 
-<select id="estiloStoryboard">
-  <option value="PIXELLAB45">Futurista PIXELLAB45</option>
-  <option value="cinematografico">Cinematográfico</option>
-  <option value="tiktok">Dinámico TikTok</option>
-  <option value="youtube">YouTube Documental</option>
-  <option value="scifi">Ciencia Ficción</option>
-</select>
+  <select id="cantidadEscenas">
+    <option value="4">4 escenas</option>
+    <option value="6">6 escenas</option>
+    <option value="8" selected>8 escenas</option>
+    <option value="10">10 escenas</option>
+    <option value="12">12 escenas</option>
+  </select>
 
-      
+  <select id="estiloStoryboard">
+    <option value="PIXELLAB45">Futurista PIXELLAB45</option>
+    <option value="cinematografico">Cinematográfico</option>
+    <option value="tiktok">Dinámico TikTok</option>
+    <option value="youtube">YouTube Documental</option>
+    <option value="scifi">Ciencia Ficción</option>
+  </select>
+
   <button onclick="generarStoryboard()">
-    Generar Storyboard
+    🎬 Generar Storyboard
   </button>
 
-  <button class="copy-btn" onclick="copiarStoryboard()">
+  <button onclick="guardarStoryboard()">
+    💾 Guardar Storyboard
+  </button>
+
+  <button onclick="copiarStoryboard()">
     📋 Copiar Storyboard
   </button>
 
   <div id="mensajeStoryboard"></div>
 
-  <div id="resultadoStoryboard" class="scroll-box"></div>
+  <div id="loadingStoryboard" style="display:none;">
+
+    <p id="estadoStoryboard">🎬 Iniciando...</p>
+
+    <div style="
+      width:100%;
+      height:10px;
+      background:#222;
+      border-radius:5px;
+      overflow:hidden;
+      margin-top:10px;
+    ">
+
+      <div id="barraStoryboard" style="
+        width:0%;
+        height:100%;
+        background:#00ffcc;
+        transition:width .4s ease;
+      ">
+      </div>
+
+    </div>
 
   </div>
+
+  <div id="resultadoStoryboard" class="scroll-box"></div>
+
+</div>
 </div>
 <div class="section-divider"></div>
 <!-- ===================================== -->
