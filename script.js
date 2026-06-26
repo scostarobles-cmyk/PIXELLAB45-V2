@@ -221,6 +221,56 @@ setTimeout(() => {
 }
 
 }
+//Generador de prompts 
+async function generarPrompt() {
+
+  const tema =
+    document.getElementById("temaPrompt").value;
+
+  const tipo =
+    document.getElementById("tipoContenido").value;
+
+  if (!tema.trim()) {
+
+    document.getElementById("resultadoPrompt").innerText =
+      "⚠️ Escribe un tema primero";
+
+    return;
+  }
+
+  try {
+
+    document.getElementById("resultadoPrompt").innerText =
+      "✍️ Generando prompt...";
+
+    const res = await fetch(
+      "https://pixellab45-v2.scostarobles.workers.dev/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          tipo: "prompt",
+          tema,
+          formato: tipo
+        })
+      }
+    );
+
+    const data = await res.json();
+
+    document.getElementById("resultadoPrompt").innerText =
+      data.resultado;
+
+  } catch (error) {
+
+    document.getElementById("resultadoPrompt").innerText =
+      "❌ " + error.message;
+
+  }
+
+}
 
 //Inicio y Menú 
 document.addEventListener(

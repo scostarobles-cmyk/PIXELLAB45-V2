@@ -73,6 +73,20 @@ export default {
     env,
     json
   );
+  case "prompt": {
+
+  const resultado =
+    await generarPrompts(
+      data.tema,
+      data.formato,
+      env
+    );
+
+  return Response.json({
+    resultado
+  });
+
+};
 
       default:
         return json({
@@ -281,4 +295,57 @@ async function listarCategoria(
   });
   
 
+}
+// =====================================
+// GENERAR PROMT
+// =====================================
+
+async function generarPrompts(tema, formato, env) {
+
+  const ai = await env.AI.run(
+    "@cf/meta/llama-3.1-8b-instruct-fp8",
+    {
+      messages: [
+        {
+          role: "system",
+          content: `
+You are an expert AI prompt engineer.
+
+Generate only AI image or video prompts in English.
+
+Rules:
+
+- Return only the prompts.
+- No introductions.
+- No explanations.
+- No titles.
+- No hooks.
+- No storytelling.
+- No endings.
+- One scene per prompt.
+- Each prompt must be unique.
+- Each prompt must be between 20 and 60 words.
+
+Output format:
+
+1-
+2-
+3-
+4-
+5-
+`
+        },
+        {
+          role: "user",
+          content: `
+Generate 5 ${formato} prompts about:
+
+${tema}
+`
+        }
+      ]
+    }
+  );
+
+  return ai.response;
 }
