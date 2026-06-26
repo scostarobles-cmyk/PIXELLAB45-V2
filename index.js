@@ -344,3 +344,34 @@ ${tema}
   return ai.response;
   
 }
+async function guardarPrompts(data, env, json) {
+
+  const contenido =
+    data.contenido || "";
+
+  const prompts = contenido
+    .split(/\n(?=\d+-)/)
+    .map(p => p.trim())
+    .filter(Boolean);
+
+  let guardados = 0;
+
+  for (const prompt of prompts) {
+
+    const nombre =
+      `prompts/${Date.now()}-${guardados + 1}.txt`;
+
+    await env.PIXELLAB45.put(
+      nombre,
+      prompt
+    );
+
+    guardados++;
+
+  }
+
+  return json({
+    mensaje: `✅ ${guardados} prompts guardados`
+  });
+
+}
