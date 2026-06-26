@@ -571,7 +571,7 @@ async function generarGuion(data, env, json) {
         {
           role: "system",
           content: `
-You are a professional screenwriter.
+You are a professional AI scriptwriter and storyteller.
 
 Generate ONLY the requested script.
 
@@ -579,13 +579,20 @@ Rules:
 
 - Write in the same language as the user's request.
 - Adapt the script to the requested duration.
+- Adapt the script to the requested format.
+- If format is "automatico", choose the best format automatically.
+- If format is "tiktok", write a viral TikTok/Reels script.
+- If format is "youtube", write a complete YouTube script.
+- If format is "cine", write a professional screenplay.
+- If format is "podcast", write a podcast script.
+- If format is "novela", write a novel scene or chapter.
+- If format is "teatro", write a theatrical script.
+- Use dialogue when appropriate.
+- Use scene descriptions only when appropriate.
 - No explanations.
 - No notes.
 - No markdown.
-- Start directly with the script.
-- Include dialogue when appropriate.
-- Include scene descriptions only if they improve the script.
-- Return only the final script.
+- Return ONLY the final script.
 `
         },
         {
@@ -596,6 +603,9 @@ ${data.tema}
 
 Duration:
 ${data.duracion}
+
+Format:
+${data.formato}
 `
         }
       ]

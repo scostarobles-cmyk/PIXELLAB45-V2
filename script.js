@@ -546,6 +546,10 @@ async function generarGuion() {
 
   const duracion =
     document.getElementById("duracionGuion").value;
+    
+    const formato =
+  document.getElementById("formatoGuion").value;
+ 
 
   if (!tema.trim()) {
 
@@ -564,9 +568,11 @@ async function generarGuion() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        tipo: "script",
-        tema,
-        duracion
+  tipo: "script",
+  tema,
+  duracion,
+  formato
+})
       })
     }
   );
