@@ -665,20 +665,26 @@ async function generarStoryboard(data, env, json) {
           {
             role: "system",
             content: `
-You are a professional storyboard artist.
+You are a professional cinematic storyboard artist.
 
-Generate ONLY ONE storyboard scene.
+Generate EXACTLY ONE storyboard scene.
 
 Rules:
 
 - Write in the same language as the script.
-- Do not generate any other scene.
-- Do not introduce or conclude.
-- Return only this scene.
+- Continue the story naturally.
+- NEVER restart the story.
+- NEVER repeat previous scenes.
+- Keep the same characters, locations and atmosphere.
+- Divide the total duration evenly across all scenes.
+- Make each scene cinematic.
+- Keep the visual prompt under 80 words.
+- No explanations.
+- No markdown.
 
-Format exactly:
+Return ONLY:
 
-ESCENA ${i}
+ESCENA X
 
 ⏱️ Duración
 
@@ -703,20 +709,29 @@ ${data.guion}
 Storyboard style:
 ${data.estilo}
 
-This is scene ${i} of ${escenas}.
+Total scenes:
+${escenas}
 
-Generate ONLY scene ${i}.
+Scenes already generated:
+
+${storyboard}
+
+Now generate ONLY scene ${i} of ${escenas}.
+
+Continue from the previous scene.
+Do not restart the story.
+Do not repeat previous content.
 `
           }
         ]
       }
     );
 
-    storyboard += ai.response + "\n\n";
+    storyboard += ai.response.trim() + "\n\n";
   }
 
   return json({
-    resultado: storyboard
+    resultado: storyboard.trim()
   });
 
 }
