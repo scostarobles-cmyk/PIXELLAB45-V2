@@ -103,7 +103,7 @@ async function cargarCategoria(categoria) {
   }
 
 }
-
+//Generar ideas
 async function generarIdeas() {
 
   const loading =
@@ -201,7 +201,7 @@ async function generarIdeas() {
   }
 
 }
-  
+  //Guardar ideas 
   async function guardarIdeas() {
 
   const texto =
@@ -356,6 +356,48 @@ loading.style.display = "none";
 
 document.getElementById("resultadoPrompt").innerText =
   error.message;
+
+  }
+
+}
+
+//Guardar Prompt 
+async function guardarPrompts() {
+
+  const texto =
+    document.getElementById("resultadoPrompt").innerText;
+
+  if (!texto.trim()) {
+
+    document.getElementById("mensajeCopiado").innerText =
+      "⚠️ No hay prompts para guardar";
+
+    return;
+
+  }
+
+  try {
+
+    const res = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        tipo: "guardar-prompts",
+        contenido: texto
+      })
+    });
+
+    const data = await res.json();
+
+    document.getElementById("mensajeCopiado").innerText =
+      data.mensaje;
+
+  } catch (error) {
+
+    document.getElementById("mensajeCopiado").innerText =
+      "❌ Error al guardar";
 
   }
 

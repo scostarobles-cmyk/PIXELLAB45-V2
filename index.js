@@ -81,6 +81,12 @@ export default {
       env
     )
   });
+  case "guardar-prompts":
+  return guardarPrompts(
+    data,
+    env,
+    json
+  );
 
       default:
         return json({
