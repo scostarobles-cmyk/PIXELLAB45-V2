@@ -106,18 +106,6 @@ async function cargarCategoria(categoria) {
 
 async function generarIdeas() {
 
-  const tema =
-    document.getElementById("tema").value;
-
-  if (!tema.trim()) {
-
-    document.getElementById("resultadoIdeas").innerText =
-      "⚠️ Escribe un tema primero";
-
-    return;
-
-  }
-
   const loading =
     document.getElementById("loadingIdeas");
 
@@ -129,7 +117,7 @@ async function generarIdeas() {
 
   loading.style.display = "block";
   barra.style.width = "10%";
-  estado.innerText = "🧠 Analizando tema...";
+  estado.innerText = "🧠 Generando ideas...";
 
   let progreso = 10;
 
@@ -142,19 +130,34 @@ async function generarIdeas() {
       barra.style.width = progreso + "%";
 
       if (progreso < 30)
-        estado.innerText = "💡 Generando ideas...";
+        estado.innerText = "🧠 Analizando tema...";
 
       else if (progreso < 60)
-        estado.innerText = "🎯 Estructurando contenido...";
+        estado.innerText = "💡 Generando ideas...";
 
       else
-        estado.innerText = "⚡ Finalizando respuesta...";
+        estado.innerText = "⚡ Finalizando...";
 
     }
 
   }, 400);
 
+  const tema =
+    document.getElementById("tema").value;
+
+  if (!tema.trim()) {
+
+    document.getElementById("resultadoIdeas").innerText =
+      "⚠️ Escribe un tema primero";
+
+    return;
+
+  }
+
   try {
+
+    document.getElementById("resultadoIdeas").innerText =
+      "🧠 Generando ideas...";
 
     const res = await fetch(WORKER_URL, {
       method: "POST",
@@ -179,8 +182,8 @@ async function generarIdeas() {
 
       loading.style.display = "none";
 
-      document.getElementById("resultadoIdeas").innerHTML =
-        `<div style="white-space: pre-wrap;">${data.ideas}</div>`;
+      document.getElementById("resultadoIdeas").innerText =
+        data.ideas;
 
     }, 300);
 
@@ -190,7 +193,7 @@ async function generarIdeas() {
 
     estado.innerText = "❌ Error";
 
-    console.error(error);
+    loading.style.display = "none";
 
     document.getElementById("resultadoIdeas").innerText =
       error.message;
@@ -341,8 +344,7 @@ setTimeout(() => {
 
 }, 300);
 
-    document.getElementById("resultadoPrompt").innerText =
-      data.resultado;
+    
 
   } catch (error) {
 
