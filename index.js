@@ -692,90 +692,19 @@ ESCENA X
 }
 //Generar imagen 
 async function generarImagen(data, env) {
-
   try {
 
-    // 1. Optimizar el prompt con Llama
-    const promptOptimizado = await ai(
-      env,
-      `
+    // 1. Optimizar prompt
+    const promptOptimizado = await ai(env, `
 Convert the user's request into a professional AI image prompt.
 
-FIRST determine the image type.
-
-Possible image types:
-
-- logo
-- icon
-- mascot
-- portrait
-- character
-- animal
-- product
-- vehicle
-- architecture
-- landscape
-- object
-- illustration
-
-Never change the detected type.
-
-GENERAL RULES
-
-- Preserve exactly what the user asks.
-- Never invent subjects.
-- Never replace the subject.
-- Never add extra characters.
-- Never change the requested action.
-- Never ignore requested text.
-- High quality.
-- Ultra detailed.
-- Photorealistic unless another style is requested.
-
-IF THE USER ASKS FOR A LOGO
-
-- Generate ONLY a logo.
-- The logo must be the main subject.
-- Place the requested letters exactly as written.
-- Center the letters.
-- Clean composition.
-- Minimal background.
-- Symmetrical design.
-- High contrast.
-- Professional branding style.
-- Do NOT generate cities.
-- Do NOT generate landscapes.
-- Do NOT generate people.
-- Do NOT generate animals.
-- Do NOT generate scenes.
-
-IF THE USER ASKS FOR AN ANIMAL
-
-- Keep the animal realistic.
-- Keep four legs.
-- Never humanize it.
-- Never make it stand on two legs unless requested.
-- Preserve the original anatomy.
-- Accessories must be worn correctly.
-- One accessory per requested body part.
-- Keep accessories proportional.
-
-IF THE USER ASKS FOR TEXT
-
-- Preserve the text exactly.
-- Do not change spelling.
-- Do not invent letters.
-- Do not remove letters.
+User request:
+${data.tema}
 
 Return ONLY the final prompt in English.
+`);
 
-User request:
-
-${data.tema}
-`
-    );
-
-    // 2. Generar la imagen
+    // 2. Generar imagen
     const result = await env.AI.run(
       "@cf/stabilityai/stable-diffusion-xl-base-1.0",
       {
@@ -783,26 +712,40 @@ ${data.tema}
       }
     );
 
-    return new Response(result, {
+    // 3. Convertir imagen a buffer
+    const imageBuffer = await result.arrayBuffer();
+
+    // 4. Nombre único
+    const fileName = `images/${Date.now()}-${crypto.randomUUID()}.png`;
+
+    // 5. SUBIR A R2
+    await env.IMAGES.put(fileName, imageBuffer, {
+      httpMetadata: {
+        contentType: "image/png"
+      }
+    });
+
+    // 6. URL pública (R2)
+    const imageUrl = `https://pub-${env.CLOUDFLARE_ACCOUNT_ID}.r2.dev/${fileName}`;
+
+    // 7. RESPUESTA
+    return new Response(JSON.stringify({
+      ok: true,
+      url: imageUrl,
+      path: fileName
+    }), {
       headers: {
-        "Content-Type": "image/png",
+        "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*"
       }
     });
 
   } catch (err) {
-
-    return new Response(
-      err.stack || err.message,
-      {
-        status: 500,
-        headers: {
-          "Content-Type": "text/plain",
-          "Access-Control-Allow-Origin": "*"
-        }
+    return new Response(err.stack || err.message, {
+      status: 500,
+      headers: {
+        "Content-Type": "text/plain"
       }
-    );
-
+    });
   }
-
 }
