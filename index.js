@@ -695,23 +695,29 @@ async function generarImagen(data, env) {
   try {
     const prompt = data.prompt || data.tema || "";
 
-    if (!prompt) {
-      return new Response(JSON.stringify({
-        ok: false,
-        error: "Sin prompt"
-      }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" }
-      });
-    }
+if (!prompt) {
+  return new Response(JSON.stringify({
+    ok: false,
+    error: "Sin prompt"
+  }), {
+    status: 400,
+    headers: { "Content-Type": "application/json" }
+  });
+}
 
-    // 🔥 generar imagen
-    const result = await env.AI.run(
-      "@cf/stabilityai/stable-diffusion-xl-base-1.0",
-      {
-        prompt
-      }
-    );
+// 👇 AGREGALO AQUÍ
+const STRICT_STYLE = "photorealistic, realistic lighting, natural camera photo";
+const STRICT_NEGATIVE = "text, watermark, logo, cartoon, anime, extra objects, deformed, blurry";
+
+const safePrompt = `${STRICT_STYLE}, ${prompt}, ${STRICT_NEGATIVE}`;
+
+// 👇 Y USÁ safePrompt
+const result = await env.AI.run(
+  "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+  {
+    prompt: safePrompt
+  }
+);
 
     // 🚨 CLAVE REAL: en Workers esto YA es Uint8Array
     const imageBytes = result;
