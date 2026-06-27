@@ -225,7 +225,7 @@ async function generarIdeas(data, env, json) {
 
   let cantidad = match
     ? parseInt(match[0])
-    : 5;
+    : 1;
 
   if (cantidad > 20)
     cantidad = 20;
