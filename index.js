@@ -228,16 +228,41 @@ async function generarIdeas(data, env, json) {
   const resultado = await ai(
     env,
     `
-Genera exactamente ${cantidad} ideas concretas y detalladas relacionadas con el tema.
-Cada idea debe ser específica, describiendo elementos visuales, contextos, y detalles. 
-No generes ideas abstractas ni vagas. Usa un formato numerado:
-1 - Idea 1: [detalle específico]
-2 - Idea 2: [detalle específico]
+Generate EXACTLY the number of ideas requested by the user.
+
+CRITICAL RULES:
+
+- Return ONLY ideas.
+- An idea is a short concept.
+- NOT a story.
+- NOT a paragraph.
+- NOT a description.
+- Each idea must contain between 3 and 8 words.
+- Be specific.
+- Be creative.
+- Do not repeat ideas.
+- Do not invent names.
+- Do not add explanations.
+- Do not add numbering other than the requested list.
+
+If the user asks for 5 ideas, return exactly 5.
+If the user asks for 10 ideas, return exactly 10.
+If the user asks for 20 ideas, return exactly 20.
+
+Format:
+
+1 - Idea
+
+2 - Idea
+
+3 - Idea
+
 ...
-No agregues introducciones, explicaciones ni conclusiones.
-Tema:
+
+Return only the numbered list.
+
+Topic:
 ${tema}
-`
   );
 
   return json({
