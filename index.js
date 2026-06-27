@@ -691,42 +691,34 @@ ESCENA X
   return json({ resultado: output });
 }
 //Generar imagen 
+
+
 async function generarImagen(data, env) {
   try {
+    const prompt = data.prompt || data.tema || "";
 
-    const input = data.prompt || data.tema || "";
-
-    if (!input) {
-      return new Response("Sin prompt", { status: 400 });
+    if (!prompt) {
+      return new Response(JSON.stringify({
+        ok: false,
+        error: "Sin prompt"
+      }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" }
+      });
     }
 
-    // 🧠 1. PROMPT ENGINE (CLAVE)
-    const promptLimpio = await ai(env, `
-You are a professional prompt engineer for AI image generation.
-
-Transform the user request into ONE optimized Stable Diffusion prompt.
-
-RULES:
-- English only
-- No explanations
-- No quotes
-- No extra text
-- Highly detailed cinematic style
-- Add lighting, environment, camera, quality
-
-User request:
-${input}
-`);
-
-    // 🧨 2. GENERAR IMAGEN REAL
+    // 🔥 generar imagen
     const result = await env.AI.run(
       "@cf/stabilityai/stable-diffusion-xl-base-1.0",
       {
-        prompt: promptLimpio
+        prompt
       }
     );
 
-    return new Response(result, {
+    // 🚨 CLAVE REAL: en Workers esto YA es Uint8Array
+    const imageBytes = result;
+
+    return new Response(imageBytes, {
       headers: {
         "Content-Type": "image/png",
         "Access-Control-Allow-Origin": "*"
@@ -734,6 +726,12 @@ ${input}
     });
 
   } catch (err) {
-    return new Response(err.message, { status: 500 });
+    return new Response(JSON.stringify({
+      ok: false,
+      error: err.message
+    }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
   }
 }
