@@ -696,42 +696,45 @@ async function generarImagen(data, env) {
     const prompt = data.prompt || data.tema || "";
 
     if (!prompt) {
-      return new Response(
-        JSON.stringify({ ok: false, error: "Sin prompt" }),
-        {
-          headers: { "Content-Type": "application/json" },
-          status: 400
+      return new Response(JSON.stringify({
+        ok: false,
+        error: "Sin prompt"
+      }), {
+        status: 400,
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
         }
-      );
+      });
     }
 
-    // 1. Generar imagen directamente
-    const image = await env.AI.run(
+    // IA genera imagen
+    const result = await env.AI.run(
       "@cf/stabilityai/stable-diffusion-xl-base-1.0",
       {
         prompt
       }
     );
 
-    // 2. IMPORTANTE: devolver binario directo
-    return new Response(image, {
+    const arrayBuffer = await result.arrayBuffer();
+
+    return new Response(arrayBuffer, {
       headers: {
-        "Content-Type": "image/png"
+        "Content-Type": "image/png",
+        "Access-Control-Allow-Origin": "*"
       }
     });
 
   } catch (err) {
-    return new Response(
-      JSON.stringify({
-        ok: false,
-        error: err.message
-      }),
-      {
-        status: 500,
-        headers: {
-          "Content-Type": "application/json"
-        }
+    return new Response(JSON.stringify({
+      ok: false,
+      error: err.message
+    }), {
+      status: 500,
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
       }
-    );
+    });
   }
 }

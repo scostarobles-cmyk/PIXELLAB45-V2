@@ -817,7 +817,14 @@ async function generarImagen() {
       })
     });
 
-    // 🔥 CLAVE: convertir a blob
+    // 🔥 si algo falla, leemos texto primero
+    const contentType = res.headers.get("content-type");
+
+    if (contentType && contentType.includes("application/json")) {
+      const errorData = await res.json();
+      throw new Error(errorData.error || "Error IA");
+    }
+
     const blob = await res.blob();
     const url = URL.createObjectURL(blob);
 
@@ -826,7 +833,8 @@ async function generarImagen() {
     `;
 
   } catch (error) {
-    resultado.innerHTML = "❌ Error de conexión";
+    console.error(error);
+    resultado.innerHTML = "❌ Error de conexión: " + error.message;
   }
 }
 // MENÚ MÓVIL
