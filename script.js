@@ -817,12 +817,6 @@ async function generarImagen() {
       })
     });
 
-    if (!res.ok) {
-      resultado.innerHTML = `Error HTTP: ${res.status}`;
-      return;
-    }
-
-    // 🔥 CAMBIO CLAVE: ahora es JSON, no blob
     const data = await res.json();
 
     if (!data.ok) {
@@ -830,13 +824,11 @@ async function generarImagen() {
       return;
     }
 
-    // 🔥 construir URL real de la imagen
+    // 🔥 IMPORTANTE: URL completa al Worker
     const imageUrl = WORKER_URL + data.url;
 
     resultado.innerHTML = `
-      <img
-        src="${imageUrl}"
-        style="width:100%;border-radius:12px;">
+      <img src="${imageUrl}" style="width:100%;border-radius:12px;">
     `;
 
   } catch (error) {
