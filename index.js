@@ -178,62 +178,33 @@ REGLAS ABSOLUTAS:
 // =====================================
 // GENERADOR DE IDEAS 
 // =====================================
-async function generarIdeas(
-  data,
-  env,
-  json
-) {
+async function generarIdeas(data, env, json) {
+  const tema = data.tema || "";
 
-  const tema =
-    data.tema || "";
+  const match = tema.match(/\d+/);
+  let cantidad = match ? parseInt(match[0]) : 5; // Por defecto, 5 ideas.
 
-  const match =
-    tema.match(/\d+/);
+  if (cantidad > 10) cantidad = 10; // Limitar a un máximo razonable.
 
-  let cantidad =
-    match
-      ? parseInt(match[0])
-      : 20;
-
-  if (cantidad > 20)
-    cantidad = 20;
-
-  const resultado =
-    await ai(
-      env,
-      `
-Genera exactamente la cantidad de ideas solicitadas.
-
-Las ideas deben:
-- Estar relacionadas directamente con el tema.
-- Ser originales.
-- No repetirse.
-- Ser concretas y útiles.
-
-Formato obligatorio:
-
-1 - Idea 1
-
-2 - Idea 2
-
-3 - Idea 3
-
-No agregues introducciones.
-No agregues explicaciones.
-No agregues conclusiones.
-Devuelve únicamente la lista numerada.
+  const resultado = await ai(
+    env,
+    `
+Genera exactamente ${cantidad} ideas concretas y detalladas relacionadas con el tema.
+Cada idea debe ser específica, describiendo elementos visuales, contextos, y detalles. 
+No generes ideas abstractas ni vagas. Usa un formato numerado:
+1 - Idea 1: [detalle específico]
+2 - Idea 2: [detalle específico]
+...
+No agregues introducciones, explicaciones ni conclusiones.
 Tema:
 ${tema}
-
-
 `
-    );
+  );
 
   return json({
     success: true,
     ideas: resultado
   });
-
 }
 // =====================================
 // GUARDAR IDEAS
