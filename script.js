@@ -820,9 +820,9 @@ async function generarImagen() {
       else estado.innerText = "💾 Finalizando...";
     }
   }, 400);
-
+resultado.innerHTML = `Enviando a: ${WORKER_URL} con tema = "${prompt}" y categoría = "${categoria}"`;
   try {
-  	resultado.innerHTML = `Enviando datos: tema = "${prompt}", categoría = "${categoria}"`;
+  	
     const res = await fetch(WORKER_URL, {
       method: "POST",
       headers: {
