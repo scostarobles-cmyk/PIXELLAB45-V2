@@ -792,64 +792,49 @@ async function generarStoryboard() {
       error.message;
   }
 }
-const imageCache = new Map();
+async function generarImagen() {
+  const prompt = document.getElementById("promptImagen").value;
+  const resultado = document.getElementById("resultadoImagen");
 
-async function generarImagen(data, env) {
+  if (!prompt.trim()) {
+    resultado.innerHTML = "⚠️ Escribe un prompt";
+    return;
+  }
+
+  resultado.innerHTML = "🎨 Generando imagen...";
+
   try {
-
-    const input = data.prompt || data.tema || "";
-
-    if (!input) {
-      return new Response("Sin prompt", { status: 400 });
-    }
-
-    // 🧠 1. PROMPT ENGINE (CLAVE)
-    const promptLimpio = await ai(env, `
-You are a professional prompt engineer for AI image generation.
-
-Transform the user request into ONE optimized Stable Diffusion prompt.
-
-RULES:
-- English only
-- No explanations
-- No quotes
-- No extra text
-- Highly detailed cinematic style
-- Add lighting, environment, camera, quality
-
-User request:
-${input}
-`);
-
-    // 🧨 2. GENERAR IMAGEN REAL
-    const result = await env.AI.run(
-      "@cf/stabilityai/stable-diffusion-xl-base-1.0",
-      {
-        prompt: promptLimpio
-      }
-    );
-
-    return new Response(result, {
+    const res = await fetch(WORKER_URL, {
+      method: "POST",
       headers: {
-        "Content-Type": "image/png",
-        "Access-Control-Allow-Origin": "*"
-      }
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        tipo: "imagen",
+        prompt
+      })
     });
 
-  } catch (err) {
-    return new Response(err.message, { status: 500 });
+    // 🚨 si falla el worker, puede venir JSON de error
+    const contentType = res.headers.get("content-type");
+
+    if (contentType && contentType.includes("application/json")) {
+      const err = await res.json();
+      throw new Error(err.error);
+    }
+
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+
+    resultado.innerHTML = `
+      <img src="${url}" style="width:100%;border-radius:12px;">
+    `;
+
+  } catch (error) {
+    resultado.innerHTML = "❌ Error: " + error.message;
   }
 }
-// MENÚ MÓVIL
-function toggleMenu() {
 
-
-  const menu =
-    document.querySelector(".nav-links");
-
-  menu.classList.toggle("active");
-
-}
 
 
 // INICIO

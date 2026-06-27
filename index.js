@@ -691,8 +691,6 @@ ESCENA X
   return json({ resultado: output });
 }
 //Generar imagen 
-
-
 async function generarImagen(data, env) {
   try {
     const prompt = data.prompt || data.tema || "";
@@ -735,3 +733,4 @@ async function generarImagen(data, env) {
     });
   }
 }
+
