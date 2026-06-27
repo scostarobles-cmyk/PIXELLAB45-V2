@@ -693,22 +693,19 @@ ESCENA X
 //Generar imagen 
 async function generarImagen(data, env) {
   try {
-
-    const prompt = data.tema || data.prompt;
+    const prompt = data.prompt || data.tema || "";
 
     if (!prompt) {
-      return new Response(JSON.stringify({
-        ok: false,
-        error: "Falta prompt"
-      }), {
-        status: 400,
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*"
+      return new Response(
+        JSON.stringify({ ok: false, error: "Sin prompt" }),
+        {
+          headers: { "Content-Type": "application/json" },
+          status: 400
         }
-      });
+      );
     }
 
+    // 1. Generar imagen directamente
     const image = await env.AI.run(
       "@cf/stabilityai/stable-diffusion-xl-base-1.0",
       {
@@ -716,25 +713,25 @@ async function generarImagen(data, env) {
       }
     );
 
-    // 👇 FIX CLAVE: convertir a ArrayBuffer si hace falta
-    const buffer =
-      image instanceof ArrayBuffer
-        ? image
-        : await image.arrayBuffer();
-
-    return new Response(buffer, {
+    // 2. IMPORTANTE: devolver binario directo
+    return new Response(image, {
       headers: {
-        "Content-Type": "image/png",
-        "Access-Control-Allow-Origin": "*"
+        "Content-Type": "image/png"
       }
     });
 
   } catch (err) {
-    return new Response(err.message || "Error", {
-      status: 500,
-      headers: {
-        "Access-Control-Allow-Origin": "*"
+    return new Response(
+      JSON.stringify({
+        ok: false,
+        error: err.message
+      }),
+      {
+        status: 500,
+        headers: {
+          "Content-Type": "application/json"
+        }
       }
-    });
+    );
   }
 }

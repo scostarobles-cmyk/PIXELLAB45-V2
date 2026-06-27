@@ -795,7 +795,6 @@ async function generarStoryboard() {
 const imageCache = new Map();
 
 async function generarImagen() {
-
   const prompt = document.getElementById("promptImagen").value;
   const resultado = document.getElementById("resultadoImagen");
 
@@ -807,7 +806,6 @@ async function generarImagen() {
   resultado.innerHTML = "🎨 Generando imagen...";
 
   try {
-
     const res = await fetch(WORKER_URL, {
       method: "POST",
       headers: {
@@ -815,15 +813,11 @@ async function generarImagen() {
       },
       body: JSON.stringify({
         tipo: "imagen",
-        tema: prompt
+        prompt
       })
     });
 
-    if (!res.ok) {
-      resultado.innerHTML = "❌ Error generando imagen";
-      return;
-    }
-
+    // 🔥 CLAVE: convertir a blob
     const blob = await res.blob();
     const url = URL.createObjectURL(blob);
 
@@ -831,7 +825,7 @@ async function generarImagen() {
       <img src="${url}" style="width:100%;border-radius:12px;">
     `;
 
-  } catch (err) {
+  } catch (error) {
     resultado.innerHTML = "❌ Error de conexión";
   }
 }
