@@ -822,6 +822,7 @@ async function generarImagen() {
   }, 400);
 
   try {
+  	resultado.innerHTML = `Enviando datos: tema = "${prompt}", categoría = "${categoria}"`;
     const res = await fetch(WORKER_URL, {
       method: "POST",
       headers: {
