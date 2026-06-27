@@ -120,12 +120,12 @@ case "script":
   case "imagen":
   return generarImagen(data, env);
 
-case "guardar-imagen":
+/*case "guardar-imagen":
   return guardarImagen(data, env);
       default:
         return json({
           error: "Tipo no válido"
-        }, 400);
+        }, 400);*/
 
     }
 
@@ -508,6 +508,10 @@ ${tema}
   return json({
     resultado: ai.response
   });
+}
+
+return ai.response;
+
 }
 //GUARDAR Visuales 
 async function guardarVisuales(data, env, json) {
