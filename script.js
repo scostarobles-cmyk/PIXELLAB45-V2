@@ -756,22 +756,16 @@ async function generarStoryboard() {
   try {
 
     const res = await fetch(WORKER_URL, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    tipo: "imagen",
-    tema: prompt
-  })
-});
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        tipo: "storyboard",
+        guion,
+        escenas,
+        estilo
+      })
+    });
 
-const blob = await res.blob();
-
-const url = URL.createObjectURL(blob);
-
-resultado.innerHTML =
-  `<img src="${url}" style="width:100%;border-radius:12px;">`;
     const data = await res.json();
 
     clearInterval(fakeProgress);
@@ -799,7 +793,6 @@ resultado.innerHTML =
   }
 }
 async function generarImagen() {
-
   const prompt = document.getElementById("promptImagen").value;
   const resultado = document.getElementById("resultadoImagen");
 
@@ -811,7 +804,6 @@ async function generarImagen() {
   resultado.innerHTML = "🎨 Generando imagen...";
 
   try {
-
     const res = await fetch(WORKER_URL, {
       method: "POST",
       headers: {
@@ -824,20 +816,23 @@ async function generarImagen() {
     });
 
     if (!res.ok) {
-      resultado.innerHTML =
-        `Error HTTP: ${res.status} ${res.statusText}`;
+      resultado.innerHTML = `Error HTTP: ${res.status} ${res.statusText}`;
       return;
     }
 
-    
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+
+    resultado.innerHTML = `
+      <img
+        src="${url}"
+        style="width:100%; border-radius:12px;">
+      <p>✅ Imagen generada</p>
+    `;
 
   } catch (error) {
-
-    resultado.innerHTML =
-      `<pre>${error.message}</pre>`;
-
+    resultado.innerHTML = `❌ Error: ${error.message}`;
   }
-
 }
       
 async function guardarImagenAuto(imagen, categoria) {
