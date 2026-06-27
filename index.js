@@ -693,10 +693,9 @@ ESCENA X
 //Generar imagen 
 async function generarImagen(data, env) {
   try {
+    const prompt = (data.prompt || data.tema || "").trim();
 
-    const userPrompt = (data.prompt || data.tema || "").trim();
-
-    if (!userPrompt) {
+    if (!prompt) {
       return new Response(JSON.stringify({
         ok: false,
         error: "Sin prompt"
@@ -707,22 +706,16 @@ async function generarImagen(data, env) {
     }
 
     const finalPrompt = `
-Create exactly what the user requests.
+Eres un generador de imágenes realistas. 
+Instrucciones estrictas:
+- Crea exactamente lo que el usuario solicita, sin añadir elementos extra.
+- Si el usuario describe un sujeto, colócalo en un ambiente realista, bien detallado.
+- No agregues personas, edificios, texto ni objetos no solicitados.
+- Usa iluminación natural y un enfoque fotográfico nítido.
 
-Rules:
-- Follow the request literally.
-- Do not add extra subjects.
-- Do not invent scenery unless requested.
-- Do not add people unless requested.
-- Do not add buildings unless requested.
-- Use a realistic style by default.
-- High quality.
-- Sharp details.
-- Clean composition.
-
-User request:
-${userPrompt}
-`;
+Solicitud del usuario:
+${prompt}
+    `;
 
     const result = await env.AI.run(
       "@cf/stabilityai/stable-diffusion-xl-base-1.0",
@@ -731,7 +724,9 @@ ${userPrompt}
       }
     );
 
-    return new Response(result, {
+    const imageBytes = result;
+
+    return new Response(imageBytes, {
       headers: {
         "Content-Type": "image/png",
         "Access-Control-Allow-Origin": "*"
@@ -739,7 +734,6 @@ ${userPrompt}
     });
 
   } catch (err) {
-
     return new Response(JSON.stringify({
       ok: false,
       error: err.message
@@ -749,6 +743,5 @@ ${userPrompt}
         "Content-Type": "application/json"
       }
     });
-
   }
 }
