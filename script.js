@@ -855,7 +855,8 @@ async function generarImagen() {
     clearInterval(fakeProgress);
     loading.style.display = "none";
     estado.innerText = "❌ Error";
-    resultado.innerHTML = `❌ ${error.message}`;
+ //   resultado.innerHTML = `❌ ${error.message}`;
+ resultado.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
   }
 }
 
