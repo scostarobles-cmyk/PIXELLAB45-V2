@@ -693,11 +693,38 @@ ESCENA X
 //Generar imagen 
 async function generarImagen(data, env) {
 
-  return new Response("LLEGO AL WORKER", {
-    headers: {
-      "Content-Type": "text/plain",
-      "Access-Control-Allow-Origin": "*"
-    }
-  });
+  try {
+
+    const result = await env.AI.run(
+      "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+      {
+        prompt: data.tema
+      }
+    );
+
+    return new Response(
+      JSON.stringify(result, null, 2),
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        }
+      }
+    );
+
+  } catch (err) {
+
+    return new Response(
+      err.stack || err.message,
+      {
+        status: 500,
+        headers: {
+          "Content-Type": "text/plain",
+          "Access-Control-Allow-Origin": "*"
+        }
+      }
+    );
+
+  }
 
 }

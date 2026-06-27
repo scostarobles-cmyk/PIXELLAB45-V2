@@ -823,15 +823,8 @@ async function generarImagen() {
       return;
     }
 
-    const blob = await res.blob();
-
-    const url = URL.createObjectURL(blob);
-
-    resultado.innerHTML = `
-      <img
-        src="${url}"
-        style="width:100%;border-radius:12px;">
-    `;
+    const data = await res.text();
+resultado.innerHTML = `<pre>${data}</pre>`;
 
   } catch (error) {
 
