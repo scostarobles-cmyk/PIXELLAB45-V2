@@ -68,25 +68,25 @@ export default {
           json
         );
         case "guardar-ideas":
-  return guardarIdeas(
-    data,
-    env,
-    json
-  );
-  case "prompt":
-  return json({
-    resultado: await generarPrompts(
-      data.tema,
-      data.formato,
-      env
-    )
-  });
-  case "guardar-prompts":
-  return guardarPrompts(
-    data,
-    env,
-    json
-  );
+              return guardarIdeas(
+                 data,
+                 env,
+                json
+            );
+      case "prompt":
+          return json({
+               resultado: await generarPrompts(
+               data.tema,
+               data.formato,
+               env
+               )
+            });
+      case "guardar-prompts":
+           return guardarPrompts(
+          data,
+          env,
+         json
+         );
   case "visual":
   return generarVisualesPrompts(
     data.tema,
@@ -218,17 +218,22 @@ Always be literal.
 // GENERADOR DE IDEAS 
 // =====================================
 async function generarIdeas(data, env, json) {
+
   const tema = data.tema || "";
 
   const match = tema.match(/\d+/);
-  let cantidad = match ? parseInt(match[0]) : 5; // Por defecto, 5 ideas.
 
-  if (cantidad > 10) cantidad = 10; // Limitar a un máximo razonable.
+  let cantidad = match
+    ? parseInt(match[0])
+    : 5;
+
+  if (cantidad > 20)
+    cantidad = 20;
 
   const resultado = await ai(
     env,
-    `
-Generate EXACTLY the number of ideas requested by the user.
+`
+Generate EXACTLY ${cantidad} ideas.
 
 CRITICAL RULES:
 
@@ -243,11 +248,6 @@ CRITICAL RULES:
 - Do not repeat ideas.
 - Do not invent names.
 - Do not add explanations.
-- Do not add numbering other than the requested list.
-
-If the user asks for 5 ideas, return exactly 5.
-If the user asks for 10 ideas, return exactly 10.
-If the user asks for 20 ideas, return exactly 20.
 
 Format:
 
@@ -257,18 +257,18 @@ Format:
 
 3 - Idea
 
-...
-
-Return only the numbered list.
+Return ONLY the numbered list.
 
 Topic:
 ${tema}
+`
   );
 
   return json({
     success: true,
     ideas: resultado
   });
+
 }
 // =====================================
 // GUARDAR IDEAS
@@ -491,102 +491,8 @@ ${tema}
 //GUARDAR Visuales 
 async function guardarVisuales(data, env, json) {
 
-  const contenido =
-    data.contenido || "";
-//Generar Visuales
-async function generarVisuales() {
+  const contenido = data.contenido || "";
 
-  const tema =
-    document.getElementById("temaVisual").value;
-
-  if (!tema.trim()) {
-
-    document.getElementById("resultadoVisual").innerText =
-      "⚠️ Escribe un tema primero";
-
-    return;
-
-  }
-
-  const loading =
-    document.getElementById("loadingVisual");
-
-  const barra =
-    document.getElementById("barraVisual");
-
-  const estado =
-    document.getElementById("estadoVisual");
-
-  loading.style.display = "block";
-  barra.style.width = "10%";
-  estado.innerText = "🎨 Generando prompts visuales...";
-
-  let progreso = 10;
-
-  const fakeProgress = setInterval(() => {
-
-    if (progreso < 90) {
-
-      progreso += Math.random() * 10;
-
-      barra.style.width = progreso + "%";
-
-      if (progreso < 30)
-        estado.innerText = "🧠 Analizando escena...";
-
-      else if (progreso < 60)
-        estado.innerText = "🎬 Creando visual prompts...";
-
-      else
-        estado.innerText = "⚡ Finalizando...";
-
-    }
-
-  }, 400);
-
-  try {
-
-    const res = await fetch(WORKER_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        tipo: "visual",
-        tema
-      })
-    });
-
-    const data = await res.json();
-
-    clearInterval(fakeProgress);
-
-    barra.style.width = "100%";
-    estado.innerText = "✅ Listo";
-
-    setTimeout(() => {
-
-      loading.style.display = "none";
-
-      document.getElementById("resultadoVisual").innerText =
-        data.resultado;
-
-    }, 300);
-
-  } catch (error) {
-
-    clearInterval(fakeProgress);
-
-    estado.innerText = "❌ Error";
-
-    loading.style.display = "none";
-
-    document.getElementById("resultadoVisual").innerText =
-      error.message;
-
-  }
-
-}
   const items = contenido
     .split(/\n(?=\d+-)/)
     .map(i => i.trim())
@@ -596,16 +502,11 @@ async function generarVisuales() {
 
   for (const item of items) {
 
-    const nombre =
-      `visuals/${Date.now()}-${guardados + 1}.txt`;
+    const nombre = `visuals/${Date.now()}-${guardados + 1}.txt`;
 
-    await env.IMAGES.put(
-      nombre,
-      item
-    );
+    await env.IMAGES.put(nombre, item);
 
     guardados++;
-
   }
 
   return json({
