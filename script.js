@@ -756,16 +756,22 @@ async function generarStoryboard() {
   try {
 
     const res = await fetch(WORKER_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        tipo: "storyboard",
-        guion,
-        escenas,
-        estilo
-      })
-    });
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    tipo: "imagen",
+    tema: prompt
+  })
+});
 
+const blob = await res.blob();
+
+const url = URL.createObjectURL(blob);
+
+resultado.innerHTML =
+  `<img src="${url}" style="width:100%;border-radius:12px;">`;
     const data = await res.json();
 
     clearInterval(fakeProgress);
@@ -823,8 +829,7 @@ async function generarImagen() {
       return;
     }
 
-    const data = await res.text();
-resultado.innerHTML = `<pre>${data}</pre>`;
+    
 
   } catch (error) {
 

@@ -702,15 +702,12 @@ async function generarImagen(data, env) {
       }
     );
 
-    return new Response(
-      JSON.stringify(result, null, 2),
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*"
-        }
+    return new Response(result, {
+      headers: {
+        "Content-Type": "image/png",
+        "Access-Control-Allow-Origin": "*"
       }
-    );
+    });
 
   } catch (err) {
 
@@ -727,4 +724,4 @@ async function generarImagen(data, env) {
 
   }
 
-}
+} 
