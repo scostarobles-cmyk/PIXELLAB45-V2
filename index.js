@@ -374,9 +374,10 @@ async function listarCategoria(
 // GENERAR PROMT
 // =====================================
 
-async function generarPrompts(tema, formato, env) {
+async function generarPrompts(data, env) {
 
   const tema = data.tema || "";
+  const formato = data.formato || "General";
 
   const match = tema.match(/\d+/);
 
@@ -384,24 +385,35 @@ async function generarPrompts(tema, formato, env) {
     ? parseInt(match[0])
     : 1;
 
-  if (cantidad > 20)
-    cantidad = 20;
+  if (cantidad > 20) cantidad = 20;
 
   const resultado = await ai(
     env,
-`
-Generate EXACTLY ${cantidad} ideas. Be strict: if I request one idea, return only one. If I request three, return exactly three. Do not add more or fewer. Each idea must be a short concept, between 3 and 8 words. Return ONLY the numbered list.
+    {
+      messages: [
+        {
+          role: "system",
+          content: `
 You are an expert AI prompt generator.
 
+Generate EXACTLY ${cantidad} prompts.
+
 CRITICAL RULES:
-- Generate as many prompts as needed (no fixed number).
-- Only return prompts.
+
+- If the user requests 1 prompt, return EXACTLY 1 prompt.
+- If the user requests 5 prompts, return EXACTLY 5 prompts.
+- If the user requests 10 prompts, return EXACTLY 10 prompts.
+- Never return more prompts than requested.
+- Never return fewer prompts than requested.
+
+- Return ONLY prompts.
 - No introductions.
 - No explanations.
 - No titles.
 - No extra text.
-- One idea per line.
-- Strict format:
+- One prompt per line.
+
+Strict format:
 
 1- prompt
 2- prompt
@@ -412,7 +424,7 @@ CRITICAL RULES:
         {
           role: "user",
           content: `
-Generate 5 ${formato} prompts about:
+Generate exactly ${cantidad} ${formato} prompts about:
 
 ${tema}
 `
@@ -421,8 +433,8 @@ ${tema}
     }
   );
 
-  return ai.response;
-  
+  return resultado.response;
+
 }
 async function guardarPrompts(data, env, json) {
 
