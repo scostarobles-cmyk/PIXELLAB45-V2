@@ -263,11 +263,16 @@ Topic:
 ${tema}
 `
   );
+const ideas = resultado.split("\n").map(i => i.trim()).filter(i => i);
 
-  return json({
-    success: true,
-    ideas: resultado
-  });
+// Limitar al número de ideas solicitadas
+const ideasLimitadas = ideas.slice(0, cantidad);
+
+return json({
+  success: true,
+  ideas: ideasLimitadas.join("\n")
+});
+  
 
 }
 // =====================================
