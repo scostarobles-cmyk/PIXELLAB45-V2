@@ -813,7 +813,7 @@ async function generarImagen() {
       },
       body: JSON.stringify({
         tipo: "imagen",
-        tema: prompt
+        prompt: prompt
       })
     });
 
@@ -824,15 +824,16 @@ async function generarImagen() {
       return;
     }
 
-    // 🔥 IMPORTANTE: URL completa al Worker
-    const imageUrl = WORKER_URL + data.url;
+    // 🔥 FIX CLAVE: usar URL directa del worker
+    const imageUrl = data.url;
 
     resultado.innerHTML = `
       <img src="${imageUrl}" style="width:100%;border-radius:12px;">
     `;
 
   } catch (error) {
-    resultado.innerHTML = `<pre>${error.message}</pre>`;
+    console.error(error);
+    resultado.innerHTML = "❌ Error de conexión";
   }
 }
 
