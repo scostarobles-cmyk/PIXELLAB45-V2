@@ -844,7 +844,7 @@ async function generarImagen() {
     clearInterval(fakeProgress);
     barra.style.width = "100%";
     estado.innerText = "✅ Imagen generada";
-
+resultado.innerHTML ="<pre>" + JSON.stringify(data, null, 2) + "</pre>";
     const imgUrl = `data:image/png;base64,${data.image}`;
 
     setTimeout(() => {
@@ -860,7 +860,7 @@ async function generarImagen() {
     clearInterval(fakeProgress);
     loading.style.display = "none";
     estado.innerText = "❌ Error";
-    resultado.innerHTML ="<pre>" + JSON.stringify(data, null, 2) + "</pre>";
+    resultado.innerHTML ="❌ Error"+$(mensaje.error);
   }
 }
       
