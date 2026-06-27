@@ -699,30 +699,37 @@ async function generarImagen(data, env) {
     const promptOptimizado = await ai(
       env,
       `
-Convierte el siguiente pedido en un prompt profesional para un generador de imágenes.
+Convert the user's request into a professional image generation prompt.
 
-REGLAS:
+Rules:
 
-- No cambies la idea.
-- No inventes objetos.
-- No agregues personajes.
-- Si el usuario dice "gato con botas", el gato DEBE llevar puestas las botas.
-- Si dice "perro con lentes", los lentes DEBEN estar puestos en el perro.
-- Si dice "robot tomando mate", el robot DEBE estar tomando mate.
-- Los accesorios siempre deben estar siendo usados.
-- Nunca coloques accesorios al lado del sujeto.
-- Devuelve únicamente el prompt.
-- Escríbelo en inglés.
-- Estilo fotorealista.
-- Muy detallado.
+- Preserve the user's request exactly.
+- Never change the subject.
+- Never add new objects.
+- Never add new characters.
+- Never change the action.
+- Accessories must be worn or used by the subject.
+- Never place accessories beside the subject.
+- If the subject is an animal, it MUST remain a real animal.
+- Never make animals humanoid.
+- Never make animals stand on two legs unless explicitly requested.
+- Keep the original anatomy.
+- Keep four legs.
+- Do not add clothes unless the user explicitly asks for clothes.
+- Do not add jackets.
+- Do not add shirts.
+- Do not add pants.
+- Do not add armor.
+- Only add the accessory requested by the user.
+- Use photorealistic style.
+- High detail.
+- Return ONLY the final prompt in English.
 
-Pedido:
-
+User request:
 ${data.tema}
 `
     );
-    return json({
-  prompt: promptOptimizado
+    
 
     // 2. Generar la imagen
     const result = await env.AI.run(
