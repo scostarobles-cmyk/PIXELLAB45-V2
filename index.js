@@ -389,11 +389,7 @@ async function generarPrompts(data, env) {
 
   const resultado = await ai(
     env,
-    {
-      messages: [
-        {
-          role: "system",
-          content: `
+`
 You are an expert AI prompt generator.
 
 Generate EXACTLY ${cantidad} prompts.
@@ -419,21 +415,14 @@ Strict format:
 2- prompt
 3- prompt
 ...
-`
-        },
-        {
-          role: "user",
-          content: `
+
 Generate exactly ${cantidad} ${formato} prompts about:
 
 ${tema}
 `
-        }
-      ]
-    }
   );
 
-  return resultado.response;
+  return resultado;
 
 }
 async function guardarPrompts(data, env, json) {
