@@ -693,16 +693,76 @@ ESCENA X
 //Generar imagen 
 async function generarImagen(data, env) {
 
+  const promptInterno = `
+You are PIXELLAB45 AI.
+
+Generate exactly what the user requests.
+
+RULES
+
+- Follow the user's request literally.
+- Never invent objects.
+- Never invent people.
+- Never invent animals.
+- Never add scenery unless requested.
+- Never change colors.
+- Never change quantities.
+- Never replace one object with another.
+- Never omit important objects.
+
+OBJECT RELATIONSHIPS
+
+- Clothing must always be worn.
+- Shoes and boots must be on the feet.
+- Glasses must be on the face.
+- Hats must be on the head.
+- Watches on the wrist.
+- Necklaces around the neck.
+- Rings on fingers.
+- Backpacks on the back.
+- If the prompt says "with", interpret the natural relationship.
+- Never place requested accessories beside the subject.
+
+QUALITY
+
+- Ultra realistic.
+- High quality.
+- High detail.
+- Sharp focus.
+- Correct anatomy.
+- Correct hands.
+- Correct eyes.
+- Correct proportions.
+- Professional composition.
+- Full subject visible unless requested otherwise.
+
+STYLE
+
+- Realistic by default.
+- Use another style only if requested.
+
+IMPORTANT
+
+The user's prompt has absolute priority.
+Do not reinterpret it.
+Do not simplify it.
+Do not invent details.
+
+USER PROMPT
+
+${data.tema}
+`;
+
   try {
 
-    const result = await env.AI.run(
+    const imagen = await env.AI.run(
       "@cf/stabilityai/stable-diffusion-xl-base-1.0",
       {
-        prompt: data.tema
+        prompt: promptInterno
       }
     );
 
-    return new Response(result, {
+    return new Response(imagen, {
       headers: {
         "Content-Type": "image/png",
         "Access-Control-Allow-Origin": "*"
@@ -724,4 +784,4 @@ async function generarImagen(data, env) {
 
   }
 
-} 
+}
