@@ -692,24 +692,50 @@ ESCENA X
 }
 //Generar imagen 
 async function generarImagen(data, env) {
+  try {
+    const { tema, categoria } = data;
 
-  const { tema, categoria } = data;
+    const promptFinal =
+      `Estilo ${categoria}. ${tema}. cinematográfico, alta calidad`;
 
-  const promptFinal =
-    `Estilo ${categoria}. ${tema}. cinematográfico, alta calidad`;
+    const result = await env.AI.run(
+      "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+      {
+        prompt: promptFinal
+      }
+    );
 
-  const result = await env.AI.run(
-    "@cf/stabilityai/stable-diffusion-xl-base-1.0",
-    {
-      prompt: promptFinal
+    if (!result?.image) {
+      return new Response(
+        JSON.stringify(result),
+        {
+          status: 500,
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      );
     }
-  );
 
-  return new Response(result.image, {
-    headers: {
-      "Content-Type": "image/png"
-    }
-  });
+    return new Response(result.image, {
+      headers: {
+        "Content-Type": "image/png"
+      }
+    });
+
+  } catch (err) {
+    return new Response(
+      JSON.stringify({
+        error: err.message
+      }),
+      {
+        status: 500,
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+    );
+  }
 }
 //guardar imagen 
 async function guardarImagen(data, env) {
