@@ -692,56 +692,45 @@ ESCENA X
 }
 //Generar imagen 
 async function generarImagen(data, env) {
-
   try {
 
-    const prompt = data.prompt || data.tema;
+    const prompt = data.tema || data.prompt;
 
     if (!prompt) {
-      return new Response("Sin prompt", { status: 400 });
+      return new Response(JSON.stringify({
+        ok: false,
+        error: "Falta prompt"
+      }), {
+        status: 400,
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        }
+      });
     }
 
-    // 🔥 optimizador de prompt (opcional pero recomendado)
-    const optimized = await env.AI.run(
-      "@cf/meta/llama-3.1-8b-instruct-fp8",
-      {
-        messages: [
-          {
-            role: "system",
-            content: "Convierte a prompt profesional en inglés para Stable Diffusion."
-          },
-          {
-            role: "user",
-            content: prompt
-          }
-        ],
-        max_tokens: 300
-      }
-    );
-
-    const finalPrompt = optimized.response;
-
-    // 🔥 generación de imagen
-    const img = await env.AI.run(
+    const image = await env.AI.run(
       "@cf/stabilityai/stable-diffusion-xl-base-1.0",
       {
-        prompt: finalPrompt
+        prompt
       }
     );
 
-    const buffer = await img.arrayBuffer();
+    // 👇 FIX CLAVE: convertir a ArrayBuffer si hace falta
+    const buffer =
+      image instanceof ArrayBuffer
+        ? image
+        : await image.arrayBuffer();
 
-    // 🔥 devolver imagen directa (NO JSON)
     return new Response(buffer, {
       headers: {
         "Content-Type": "image/png",
-        "Access-Control-Allow-Origin": "*",
-        "Cache-Control": "no-cache"
+        "Access-Control-Allow-Origin": "*"
       }
     });
 
   } catch (err) {
-    return new Response(err.message, {
+    return new Response(err.message || "Error", {
       status: 500,
       headers: {
         "Access-Control-Allow-Origin": "*"
