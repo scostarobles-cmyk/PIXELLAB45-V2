@@ -792,49 +792,100 @@ async function generarStoryboard() {
       error.message;
   }
 }
-async function generarImagen() {
-  const prompt = document.getElementById("promptImagen").value;
-  const resultado = document.getElementById("resultadoImagen");
+async function generarImagen(data, env) {
 
-  if (!prompt.trim()) {
-    resultado.innerHTML = "⚠️ Escribe un prompt";
-    return;
-  }
+  const promptInterno = `
+You are PIXELLAB45 AI.
 
-  resultado.innerHTML = "🎨 Generando imagen...";
+Generate exactly what the user requests.
+
+RULES
+
+- Follow the user's request literally.
+- Never invent objects.
+- Never invent people.
+- Never invent animals.
+- Never add scenery unless requested.
+- Never change colors.
+- Never change quantities.
+- Never replace one object with another.
+- Never omit important objects.
+
+OBJECT RELATIONSHIPS
+
+- Clothing must always be worn.
+- Shoes and boots must be on the feet.
+- Glasses must be on the face.
+- Hats must be on the head.
+- Watches on the wrist.
+- Necklaces around the neck.
+- Rings on fingers.
+- Backpacks on the back.
+- If the prompt says "with", interpret the natural relationship.
+- Never place requested accessories beside the subject.
+
+QUALITY
+
+- Ultra realistic.
+- High quality.
+- High detail.
+- Sharp focus.
+- Correct anatomy.
+- Correct hands.
+- Correct eyes.
+- Correct proportions.
+- Professional composition.
+- Full subject visible unless requested otherwise.
+
+STYLE
+
+- Realistic by default.
+- Use another style only if requested.
+
+IMPORTANT
+
+The user's prompt has absolute priority.
+Do not reinterpret it.
+Do not simplify it.
+Do not invent details.
+
+USER PROMPT
+
+${data.tema}
+`;
 
   try {
-    const res = await fetch(WORKER_URL, {
-      method: "POST",
+
+    const imagen = await env.AI.run(
+      "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+      {
+        prompt: promptInterno
+      }
+    );
+
+    return new Response(imagen, {
       headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        tipo: "imagen",
-        tema: prompt
-      })
+        "Content-Type": "image/png",
+        "Access-Control-Allow-Origin": "*"
+      }
     });
 
-    if (!res.ok) {
-      resultado.innerHTML = `Error HTTP: ${res.status} ${res.statusText}`;
-      return;
-    }
+  } catch (err) {
 
-    const blob = await res.blob();
-    const url = URL.createObjectURL(blob);
+    return new Response(
+      err.stack || err.message,
+      {
+        status: 500,
+        headers: {
+          "Content-Type": "text/plain",
+          "Access-Control-Allow-Origin": "*"
+        }
+      }
+    );
 
-    resultado.innerHTML = `
-      <img
-        src="${url}"
-        style="width:100%; border-radius:12px;">
-      <p>✅ Imagen generada</p>
-    `;
-
-  } catch (error) {
-    resultado.innerHTML = `❌ Error: ${error.message}`;
   }
-}
-      
+
+}      
 async function guardarImagenAuto(imagen, categoria) {
   try {
     const res = await fetch(WORKER_URL, {
