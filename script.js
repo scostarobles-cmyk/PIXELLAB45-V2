@@ -793,8 +793,8 @@ async function generarStoryboard() {
   }
 }
 async function generarImagen() {
+
   const prompt = document.getElementById("promptImagen").value;
-  const categoria = document.getElementById("categoriaImagen").value;
   const resultado = document.getElementById("resultadoImagen");
 
   if (!prompt.trim()) {
@@ -802,27 +802,10 @@ async function generarImagen() {
     return;
   }
 
-  const loading = document.getElementById("loadingImagen");
-  const barra = document.getElementById("barraImagen");
-  const estado = document.getElementById("estadoImagen");
-
-  loading.style.display = "block";
-  barra.style.width = "10%";
-  estado.innerText = "🎨 Generando imagen...";
-
-  let progreso = 10;
-  const fakeProgress = setInterval(() => {
-    if (progreso < 90) {
-      progreso += Math.random() * 10;
-      barra.style.width = progreso + "%";
-      if (progreso < 30) estado.innerText = "🧠 Analizando prompt...";
-      else if (progreso < 60) estado.innerText = "🎨 Creando imagen...";
-      else estado.innerText = "💾 Finalizando...";
-    }
-  }, 400);
+  resultado.innerHTML = "🎨 Generando imagen...";
 
   try {
-  	
+
     const res = await fetch(WORKER_URL, {
       method: "POST",
       headers: {
@@ -830,38 +813,33 @@ async function generarImagen() {
       },
       body: JSON.stringify({
         tipo: "imagen",
-        tema: prompt,
-        categoria: categoria
+        tema: prompt
       })
     });
 
-    // Intento de parseo del JSON
-    const data = await res.json();
-    if (!data.image) {
-      throw new Error("No se generó la imagen correctamente");
+    if (!res.ok) {
+      resultado.innerHTML =
+        `Error HTTP: ${res.status} ${res.statusText}`;
+      return;
     }
 
-    clearInterval(fakeProgress);
-    barra.style.width = "100%";
-    estado.innerText = "✅ Imagen generada";
-resultado.innerHTML ="<pre>" + JSON.stringify(data, null, 2) + "</pre>";
-    const imgUrl = `data:image/png;base64,${data.image}`;
+    const blob = await res.blob();
 
-    setTimeout(() => {
-      loading.style.display = "none";
-      resultado.innerHTML = `<img src="${imgUrl}" style="width:100%; border-radius:12px;">`;
+    const url = URL.createObjectURL(blob);
 
-      // Ahora guardar automáticamente
-      guardarImagenAuto(data.image, categoria);
-
-    }, 300);
+    resultado.innerHTML = `
+      <img
+        src="${url}"
+        style="width:100%;border-radius:12px;">
+    `;
 
   } catch (error) {
-    clearInterval(fakeProgress);
-    loading.style.display = "none";
-    estado.innerText = "❌ Error";
-    resultado.innerHTML ="❌ Error"+$(mensaje.error);
+
+    resultado.innerHTML =
+      `<pre>${error.message}</pre>`;
+
   }
+
 }
       
 async function guardarImagenAuto(imagen, categoria) {
