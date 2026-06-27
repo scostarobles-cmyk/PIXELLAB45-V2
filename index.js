@@ -694,7 +694,7 @@ ESCENA X
 async function generarImagen(data, env) {
   try {
 
-    // 1. Optimizar prompt
+    // 1. Prompt optimizado
     const promptOptimizado = await ai(env, `
 Convert the user's request into a professional AI image prompt.
 
@@ -712,26 +712,23 @@ Return ONLY the final prompt in English.
       }
     );
 
-    // 3. Convertir imagen a buffer
+    // 3. Buffer de imagen
     const imageBuffer = await result.arrayBuffer();
 
     // 4. Nombre único
     const fileName = `images/${Date.now()}-${crypto.randomUUID()}.png`;
 
-    // 5. SUBIR A R2
+    // 5. Guardar en R2
     await env.IMAGES.put(fileName, imageBuffer, {
       httpMetadata: {
         contentType: "image/png"
       }
     });
 
-    // 6. URL pública (R2)
-    const imageUrl = `https://pub-${env.CLOUDFLARE_ACCOUNT_ID}.r2.dev/${fileName}`;
-
-    // 7. RESPUESTA
+    // 6. IMPORTANTE: devolver URL interna del Worker
     return new Response(JSON.stringify({
       ok: true,
-      url: imageUrl,
+      url: `/image/${fileName}`,
       path: fileName
     }), {
       headers: {
@@ -742,10 +739,7 @@ Return ONLY the final prompt in English.
 
   } catch (err) {
     return new Response(err.stack || err.message, {
-      status: 500,
-      headers: {
-        "Content-Type": "text/plain"
-      }
+      status: 500
     });
   }
 }
