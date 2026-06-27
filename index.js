@@ -233,7 +233,7 @@ async function generarIdeas(data, env, json) {
   const resultado = await ai(
     env,
 `
-Generate EXACTLY ${cantidad} ideas.
+Generate EXACTLY ${cantidad} ideas. Be strict: if I request one idea, return only one. If I request three, return exactly three. Do not add more or fewer. Each idea must be a short concept, between 3 and 8 words. Return ONLY the numbered list.
 
 CRITICAL RULES:
 
