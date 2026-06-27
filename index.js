@@ -374,10 +374,7 @@ async function listarCategoria(
 // GENERAR PROMT
 // =====================================
 
-async function generarPrompts(data, env) {
-
-  const tema = data.tema || "";
-  const formato = data.formato || "General";
+async function generarPrompts(tema, formato, env) {
 
   const match = tema.match(/\d+/);
 
@@ -401,7 +398,6 @@ CRITICAL RULES:
 - If the user requests 10 prompts, return EXACTLY 10 prompts.
 - Never return more prompts than requested.
 - Never return fewer prompts than requested.
-
 - Return ONLY prompts.
 - No introductions.
 - No explanations.
@@ -423,7 +419,6 @@ ${tema}
   );
 
   return resultado;
-
 }
 async function guardarPrompts(data, env, json) {
 
