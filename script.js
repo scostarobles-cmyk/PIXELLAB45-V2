@@ -820,7 +820,7 @@ async function generarImagen() {
       else estado.innerText = "💾 Finalizando...";
     }
   }, 400);
-resultado.innerHTML = `Enviando a: ${WORKER_URL} con tema = "${prompt}" y categoría = "${categoria}"`;
+
   try {
   	
     const res = await fetch(WORKER_URL, {
@@ -860,7 +860,7 @@ resultado.innerHTML = `Enviando a: ${WORKER_URL} con tema = "${prompt}" y catego
     clearInterval(fakeProgress);
     loading.style.display = "none";
     estado.innerText = "❌ Error";
-    resultado.innerHTML = `<pre>${error.message}</pre>`;
+    resultado.innerHTML ="<pre>" + JSON.stringify(data, null, 2) + "</pre>";
   }
 }
       
