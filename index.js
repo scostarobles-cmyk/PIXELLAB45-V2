@@ -693,36 +693,45 @@ ESCENA X
 //Generar imagen 
 async function generarImagen(data, env) {
   try {
-    const prompt = data.prompt || data.tema || "";
 
-if (!prompt) {
-  return new Response(JSON.stringify({
-    ok: false,
-    error: "Sin prompt"
-  }), {
-    status: 400,
-    headers: { "Content-Type": "application/json" }
-  });
-}
+    const userPrompt = (data.prompt || data.tema || "").trim();
 
-// 👇 AGREGALO AQUÍ
-const STRICT_STYLE = "photorealistic, realistic lighting, natural camera photo";
-const STRICT_NEGATIVE = "text, watermark, logo, cartoon, anime, extra objects, deformed, blurry";
+    if (!userPrompt) {
+      return new Response(JSON.stringify({
+        ok: false,
+        error: "Sin prompt"
+      }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
 
-const safePrompt = `${STRICT_STYLE}, ${prompt}, ${STRICT_NEGATIVE}`;
+    const finalPrompt = `
+Create exactly what the user requests.
 
-// 👇 Y USÁ safePrompt
-const result = await env.AI.run(
-  "@cf/stabilityai/stable-diffusion-xl-base-1.0",
-  {
-    prompt: safePrompt
-  }
-);
+Rules:
+- Follow the request literally.
+- Do not add extra subjects.
+- Do not invent scenery unless requested.
+- Do not add people unless requested.
+- Do not add buildings unless requested.
+- Use a realistic style by default.
+- High quality.
+- Sharp details.
+- Clean composition.
 
-    // 🚨 CLAVE REAL: en Workers esto YA es Uint8Array
-    const imageBytes = result;
+User request:
+${userPrompt}
+`;
 
-    return new Response(imageBytes, {
+    const result = await env.AI.run(
+      "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+      {
+        prompt: finalPrompt
+      }
+    );
+
+    return new Response(result, {
       headers: {
         "Content-Type": "image/png",
         "Access-Control-Allow-Origin": "*"
@@ -730,13 +739,16 @@ const result = await env.AI.run(
     });
 
   } catch (err) {
+
     return new Response(JSON.stringify({
       ok: false,
       error: err.message
     }), {
       status: 500,
-      headers: { "Content-Type": "application/json" }
+      headers: {
+        "Content-Type": "application/json"
+      }
     });
+
   }
 }
-
