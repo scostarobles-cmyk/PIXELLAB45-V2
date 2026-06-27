@@ -834,7 +834,11 @@ async function generarImagen() {
       })
     });
 
+    // Intento de parseo del JSON
     const data = await res.json();
+    if (!data.image) {
+      throw new Error("No se generó la imagen correctamente");
+    }
 
     clearInterval(fakeProgress);
     barra.style.width = "100%";
@@ -855,11 +859,10 @@ async function generarImagen() {
     clearInterval(fakeProgress);
     loading.style.display = "none";
     estado.innerText = "❌ Error";
- //   resultado.innerHTML = `❌ ${error.message}`;
- resultado.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+    resultado.innerHTML = `<pre>${error.message}</pre>`;
   }
 }
-
+      
 async function guardarImagenAuto(imagen, categoria) {
   try {
     const res = await fetch(WORKER_URL, {

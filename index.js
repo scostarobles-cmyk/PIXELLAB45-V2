@@ -738,26 +738,46 @@ async function generarImagen(data, env) {
   }
 }
 //guardar imagen 
-async function guardarImagen(data, env) {
-  const { imagen, categoria } = data;
+async function generarImagen(data, env) {
+  try {
+    const { tema, categoria } = data;
 
-  // Convertimos la base64 a un buffer
-  const buffer = new Uint8Array(
-    atob(imagen).split("").map(c => c.charCodeAt(0))
-  );
+    const promptFinal = `Estilo ${categoria}. ${tema}. cinematográfico, alta calidad`;
 
-  const nombre = `${Date.now()}.png`;
+    const result = await env.AI.run(
+      "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+      {
+        prompt: promptFinal
+      }
+    );
 
-  await env.IMAGES.put(
-    `${categoria}/${nombre}`,
-    buffer,
-    {
-      contentType: "image/png"
+    if (!result?.image) {
+      return new Response(
+        JSON.stringify({ error: "No se generó imagen" }),
+        {
+          status: 500,
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      );
     }
-  );
 
-  return Response.json({
-    success: true,
-    nombre
-  });
+    return new Response(result.image, {
+      headers: {
+        "Content-Type": "image/png"
+      }
+    });
+
+  } catch (err) {
+    return new Response(
+      JSON.stringify({ error: err.message }),
+      {
+        status: 500,
+        headers: {
+          "Content-Type": "application/json"
+          }
+      }
+    );
+  }
 }
