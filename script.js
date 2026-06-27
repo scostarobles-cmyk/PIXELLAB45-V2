@@ -793,17 +793,46 @@ async function generarStoryboard() {
   }
 }
 async function generarImagen() {
+
   const prompt = document.getElementById("promptImagen").value;
-  const resultado = document.getElementById("resultadoImagen");
 
   if (!prompt.trim()) {
-    resultado.innerHTML = "⚠️ Escribe un prompt";
+    document.getElementById("resultadoImagen").innerHTML =
+      "⚠️ Escribe un prompt";
     return;
   }
 
-  resultado.innerHTML = "🎨 Generando imagen...";
+  const loading = document.getElementById("loadingImagen");
+  const barra = document.getElementById("barraImagen");
+  const estado = document.getElementById("estadoImagen");
+
+  loading.style.display = "block";
+  barra.style.width = "10%";
+  estado.innerText = "🧠 Mejorando prompt...";
+
+  let progreso = 10;
+
+  const fakeProgress = setInterval(() => {
+
+    if (progreso < 90) {
+
+      progreso += Math.random() * 10;
+
+      barra.style.width = progreso + "%";
+
+      if (progreso < 30)
+        estado.innerText = "🧠 Mejorando prompt...";
+      else if (progreso < 60)
+        estado.innerText = "🎨 Generando imagen...";
+      else
+        estado.innerText = "⚡ Finalizando...";
+
+    }
+
+  }, 400);
 
   try {
+
     const res = await fetch(WORKER_URL, {
       method: "POST",
       headers: {
@@ -815,24 +844,46 @@ async function generarImagen() {
       })
     });
 
-    // 🚨 si falla el worker, puede venir JSON de error
     const contentType = res.headers.get("content-type");
 
-    if (contentType && contentType.includes("application/json")) {
+    if (contentType &&
+        contentType.includes("application/json")) {
+
       const err = await res.json();
+
       throw new Error(err.error);
+
     }
 
     const blob = await res.blob();
+
+    clearInterval(fakeProgress);
+
+    barra.style.width = "100%";
+    estado.innerText = "✅ Imagen lista";
+
     const url = URL.createObjectURL(blob);
 
-    resultado.innerHTML = `
-      <img src="${url}" style="width:100%;border-radius:12px;">
-    `;
+    setTimeout(() => {
+
+      loading.style.display = "none";
+
+      document.getElementById("resultadoImagen").innerHTML =
+        `<img src="${url}" style="width:100%;border-radius:12px;">`;
+
+    }, 300);
 
   } catch (error) {
-    resultado.innerHTML = "❌ Error: " + error.message;
+
+    clearInterval(fakeProgress);
+
+    loading.style.display = "none";
+
+    document.getElementById("resultadoImagen").innerHTML =
+      "❌ Error: " + error.message;
+
   }
+
 }
 // MENÚ MÓVIL
 function toggleMenu() {
