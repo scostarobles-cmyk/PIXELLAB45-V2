@@ -805,22 +805,61 @@ async function generarImagen() {
     document.getElementById("resultadoImagen");
 
   if (!prompt.trim()) {
-    resultado.innerHTML = "⚠️ Escribe un prompt";
+
+    resultado.innerHTML =
+      "⚠️ Escribe un prompt";
+
     return;
+
   }
 
-  const btn =
-    document.querySelector("button[onclick='generarImagen()']");
+  const loading =
+    document.getElementById("loadingImagen");
 
-  btn.disabled = true;
+  const barra =
+    document.getElementById("barraImagen");
+
+  const estado =
+    document.getElementById("estadoImagen");
+
+  loading.style.display = "block";
+
+  barra.style.width = "10%";
+
+  estado.innerText =
+    "🎨 Generando imagen...";
+
+  let progreso = 10;
+
+  const fakeProgress = setInterval(() => {
+
+    if (progreso < 90) {
+
+      progreso += Math.random() * 10;
+
+      barra.style.width =
+        progreso + "%";
+
+      if (progreso < 30)
+        estado.innerText =
+          "🧠 Analizando prompt...";
+
+      else if (progreso < 60)
+        estado.innerText =
+          "🎨 Creando imagen...";
+
+      else
+        estado.innerText =
+          "💾 Finalizando...";
+
+    }
+
+  }, 400);
 
   try {
 
-    resultado.innerHTML =
-      "🎨 Generando imagen...";
-
-    const respuesta = await fetch(
-      "https://pixellab45-v2.scostarobles.workers.dev/",
+    const res = await fetch(
+      WORKER_URL,
       {
         method: "POST",
         headers: {
@@ -834,69 +873,42 @@ async function generarImagen() {
       }
     );
 
-    const blob = await respuesta.blob();
+    const blob =
+      await res.blob();
+
+    clearInterval(fakeProgress);
+
+    barra.style.width = "100%";
+
+    estado.innerText =
+      "✅ Imagen generada";
 
     const url =
       URL.createObjectURL(blob);
 
-    resultado.innerHTML = `
-      <img src="${url}"
-        style="width:100%;max-width:600px;border-radius:12px;">
-      <p>💾 Guardando imagen...</p>
-    `;
+    setTimeout(() => {
 
-    const reader = new FileReader();
+      loading.style.display = "none";
 
-    reader.onloadend = async () => {
+      resultado.innerHTML = `
+        <img
+          src="${url}"
+          style="width:100%;border-radius:12px;">
+      `;
 
-      try {
-
-        const guardar =
-          await fetch(
-            "https://pixellab45-v2.scostarobles.workers.dev/",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json"
-              },
-              body: JSON.stringify({
-                tipo: "guardar-imagen",
-                imagenBase64: reader.result,
-                categoria
-              })
-            }
-          );
-
-        const data = await guardar.json();
-
-        if (data.success) {
-          resultado.innerHTML += `
-            <p>✅ Guardada: ${data.nombre}</p>
-          `;
-        } else {
-          resultado.innerHTML += `
-            <p>❌ ${data.error || JSON.stringify(data)}</p>
-          `;
-        }
-
-      } catch (error) {
-        resultado.innerHTML += `
-          <p>❌ ${error.message}</p>
-        `;
-      }
-
-      btn.disabled = false;
-    };
-
-    reader.readAsDataURL(blob);
+    }, 300);
 
   } catch (error) {
+
+    clearInterval(fakeProgress);
+
+    loading.style.display = "none";
 
     resultado.innerHTML =
       `❌ ${error.message}`;
 
-    btn.disabled = false;
   }
+
 }
 
 // MENÚ MÓVIL

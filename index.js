@@ -118,10 +118,10 @@ case "script":
     json
   );
   case "imagen":
-  return await generarImagen(data, env);
+  return generarImagen(data, env);
 
 case "guardar-imagen":
-  return await guardarImagen(data, env);
+  return guardarImagen(data, env);
       default:
         return json({
           error: "Tipo no válido"
@@ -695,17 +695,9 @@ async function generarImagen(data, env) {
 
   const { tema, categoria } = data;
 
-  if (!tema) {
-    return Response.json(
-      { error: "Falta prompt" },
-      { status: 400 }
-    );
-  }
-
   const promptFinal =
-    `Estilo ${categoria}. ${tema}. Cinematográfico, alta calidad, iluminación profesional, ultra detallado`;
+    `Estilo ${categoria}. ${tema}. cinematográfico, alta calidad`;
 
-  // 👉 AQUÍ ESTÁ EL MODELO REAL
   const result = await env.AI.run(
     "@cf/stabilityai/stable-diffusion-xl-base-1.0",
     {
@@ -713,7 +705,7 @@ async function generarImagen(data, env) {
     }
   );
 
-  return new Response(result, {
+  return new Response(result.image, {
     headers: {
       "Content-Type": "image/png"
     }
@@ -722,25 +714,11 @@ async function generarImagen(data, env) {
 //guardar imagen 
 async function guardarImagen(data, env) {
 
-  const { imagenBase64, categoria } = data;
+  const { imagen, categoria } = data;
 
-  if (!imagenBase64) {
-    return Response.json(
-      { error: "Falta imagen" },
-      { status: 400 }
-    );
-  }
+  const buffer = new Uint8Array(imagen);
 
-  const base64 =
-    imagenBase64.split(",")[1];
-
-  const buffer =
-    Uint8Array.from(atob(base64), c =>
-      c.charCodeAt(0)
-    );
-
-  const nombre =
-    `${Date.now()}.png`;
+  const nombre = `${Date.now()}.png`;
 
   await env.IMAGES.put(
     `${categoria}/${nombre}`,
