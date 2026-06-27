@@ -453,7 +453,7 @@ async function guardarPrompts(data, env, json) {
 }
 
 //Generar Visuales 
-async function generarVisualesPrompts(tema, env, json) {
+async function generarVisualesPrompts(tema, env, json = null) {
 
   const ai = await env.AI.run(
     "@cf/meta/llama-3.1-8b-instruct-fp8",
@@ -504,10 +504,10 @@ ${tema}
     }
   );
 
+  if (json) {
   return json({
     resultado: ai.response
   });
-
 }
 //GUARDAR Visuales 
 async function guardarVisuales(data, env, json) {
@@ -652,9 +652,11 @@ async function generarImagen(data, env) {
 
   try {
 
-    const promptUsuario = (data.prompt || data.tema || "").trim();
+    const promptUsuario =
+      (data.prompt || data.tema || "").trim();
 
     if (!promptUsuario) {
+
       return new Response(JSON.stringify({
         ok: false,
         error: "Sin prompt"
@@ -664,39 +666,37 @@ async function generarImagen(data, env) {
           "Content-Type": "application/json"
         }
       });
+
     }
 
-    // Mejorar el prompt con Llama
-    const promptMejorado = await ai(
-      env,
-`
-You are an expert AI image prompt engineer.
+    // Obtener el prompt profesional desde Visuales
+    const promptVisual =
+      await generarVisualesPrompts(
+        promptUsuario,
+        env
+      );
 
-Convert the user's request into a professional Stable Diffusion XL prompt.
+    // Reglas específicas para Stable Diffusion
+    const promptFinal = `
+Generate exactly what is described below.
 
 CRITICAL RULES:
 
-- Return ONLY the prompt.
-- English only.
-- Do not explain anything.
-- Do not add numbering.
-- Do not use quotes.
-- Keep the user's original request.
-- Add only details that improve image quality.
-- If the user specifies a style, preserve it.
-- If no style is specified, create a photorealistic image.
+- Do not change the subject.
+- Do not invent new objects.
+- Preserve any text, letters, numbers or symbols exactly as requested.
+- High quality.
+- Highly detailed.
+- Sharp focus.
+- Natural lighting unless another style is requested.
 
-User request:
+${promptVisual}
+`;
 
-${promptUsuario}
-`
-    );
-
-    // Generar imagen
     const imageBytes = await env.AI.run(
       "@cf/stabilityai/stable-diffusion-xl-base-1.0",
       {
-        prompt: promptMejorado
+        prompt: promptFinal
       }
     );
 
