@@ -721,6 +721,8 @@ Pedido:
 ${data.tema}
 `
     );
+    return json({
+  prompt: promptOptimizado
 
     // 2. Generar la imagen
     const result = await env.AI.run(
