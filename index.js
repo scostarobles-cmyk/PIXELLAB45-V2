@@ -692,26 +692,41 @@ ESCENA X
 }
 //Generar imagen 
 async function generarImagen(data, env) {
-  const promptInterno = `
-    Eres PIXELLAB45 AI.
-
-    Reglas absolutas:
-    - Genera exactamente lo que el usuario pide.
-    - No inventes objetos, personas, animales ni escenarios.
-    - Si el usuario dice "gato con botas", genera un gato con botas.
-    - Si dice "perro con lentes", genera un perro con lentes.
-    - No interpretes ni cambies colores, accesorios o relaciones.
-    - Calidad ultra realista, alto detalle, enfoque nítido.
-
-    Prompt del usuario:
-    ${data.tema}
-  `;
 
   try {
+
+    // 1. Optimizar el prompt con Llama
+    const promptOptimizado = await ai(
+      env,
+      `
+Convierte el siguiente pedido en un prompt profesional para un generador de imágenes.
+
+REGLAS:
+
+- No cambies la idea.
+- No inventes objetos.
+- No agregues personajes.
+- Si el usuario dice "gato con botas", el gato DEBE llevar puestas las botas.
+- Si dice "perro con lentes", los lentes DEBEN estar puestos en el perro.
+- Si dice "robot tomando mate", el robot DEBE estar tomando mate.
+- Los accesorios siempre deben estar siendo usados.
+- Nunca coloques accesorios al lado del sujeto.
+- Devuelve únicamente el prompt.
+- Escríbelo en inglés.
+- Estilo fotorealista.
+- Muy detallado.
+
+Pedido:
+
+${data.tema}
+`
+    );
+
+    // 2. Generar la imagen
     const result = await env.AI.run(
       "@cf/stabilityai/stable-diffusion-xl-base-1.0",
       {
-        prompt: promptInterno
+        prompt: promptOptimizado
       }
     );
 
@@ -723,6 +738,7 @@ async function generarImagen(data, env) {
     });
 
   } catch (err) {
+
     return new Response(
       err.stack || err.message,
       {
@@ -733,5 +749,7 @@ async function generarImagen(data, env) {
         }
       }
     );
+
   }
+
 }
