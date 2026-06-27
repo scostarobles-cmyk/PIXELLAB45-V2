@@ -699,37 +699,81 @@ async function generarImagen(data, env) {
     const promptOptimizado = await ai(
       env,
       `
-Convert the user's request into a professional image generation prompt.
+Convert the user's request into a professional AI image prompt.
 
-Rules:
+FIRST determine the image type.
 
-- Preserve the user's request exactly.
-- Never change the subject.
-- Never add new objects.
-- Never add new characters.
-- Never change the action.
-- Accessories must be worn or used by the subject.
-- Never place accessories beside the subject.
-- If the subject is an animal, it MUST remain a real animal.
-- Never make animals humanoid.
-- Never make animals stand on two legs unless explicitly requested.
-- Keep the original anatomy.
+Possible image types:
+
+- logo
+- icon
+- mascot
+- portrait
+- character
+- animal
+- product
+- vehicle
+- architecture
+- landscape
+- object
+- illustration
+
+Never change the detected type.
+
+GENERAL RULES
+
+- Preserve exactly what the user asks.
+- Never invent subjects.
+- Never replace the subject.
+- Never add extra characters.
+- Never change the requested action.
+- Never ignore requested text.
+- High quality.
+- Ultra detailed.
+- Photorealistic unless another style is requested.
+
+IF THE USER ASKS FOR A LOGO
+
+- Generate ONLY a logo.
+- The logo must be the main subject.
+- Place the requested letters exactly as written.
+- Center the letters.
+- Clean composition.
+- Minimal background.
+- Symmetrical design.
+- High contrast.
+- Professional branding style.
+- Do NOT generate cities.
+- Do NOT generate landscapes.
+- Do NOT generate people.
+- Do NOT generate animals.
+- Do NOT generate scenes.
+
+IF THE USER ASKS FOR AN ANIMAL
+
+- Keep the animal realistic.
 - Keep four legs.
-- Do not add clothes unless the user explicitly asks for clothes.
-- Do not add jackets.
-- Do not add shirts.
-- Do not add pants.
-- Do not add armor.
-- Only add the accessory requested by the user.
-- Use photorealistic style.
-- High detail.
-- Return ONLY the final prompt in English.
+- Never humanize it.
+- Never make it stand on two legs unless requested.
+- Preserve the original anatomy.
+- Accessories must be worn correctly.
+- One accessory per requested body part.
+- Keep accessories proportional.
+
+IF THE USER ASKS FOR TEXT
+
+- Preserve the text exactly.
+- Do not change spelling.
+- Do not invent letters.
+- Do not remove letters.
+
+Return ONLY the final prompt in English.
 
 User request:
+
 ${data.tema}
 `
     );
-    
 
     // 2. Generar la imagen
     const result = await env.AI.run(
