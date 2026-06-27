@@ -376,13 +376,21 @@ async function listarCategoria(
 
 async function generarPrompts(tema, formato, env) {
 
-  const ai = await env.AI.run(
-    "@cf/meta/llama-3.1-8b-instruct-fp8",
-    {
-      messages: [
-        {
-          role: "system",
-          content: `
+  const tema = data.tema || "";
+
+  const match = tema.match(/\d+/);
+
+  let cantidad = match
+    ? parseInt(match[0])
+    : 1;
+
+  if (cantidad > 20)
+    cantidad = 20;
+
+  const resultado = await ai(
+    env,
+`
+Generate EXACTLY ${cantidad} ideas. Be strict: if I request one idea, return only one. If I request three, return exactly three. Do not add more or fewer. Each idea must be a short concept, between 3 and 8 words. Return ONLY the numbered list.
 You are an expert AI prompt generator.
 
 CRITICAL RULES:
