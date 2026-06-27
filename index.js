@@ -727,45 +727,12 @@ async function generarImagen(data, env) {
 }
 //guardar imagen 
 async function generarImagen(data, env) {
-  try {
-    const { tema, categoria } = data;
 
-    const promptFinal = `Estilo ${categoria}. ${tema}. cinematográfico, alta calidad`;
-
-    const result = await env.AI.run(
-      "@cf/stabilityai/stable-diffusion-xl-base-1.0",
-      {
-        prompt: promptFinal
-      }
-    );
-
-    if (!result?.image) {
-      return new Response(
-        JSON.stringify({ error: "No se generó imagen" }),
-        {
-          status: 500,
-          headers: {
-            "Content-Type": "application/json"
-          }
-        }
-      );
+  return new Response("LLEGO AL WORKER", {
+    headers: {
+      "Content-Type": "text/plain",
+      "Access-Control-Allow-Origin": "*"
     }
+  });
 
-    return new Response(result.image, {
-      headers: {
-        "Content-Type": "image/png"
-      }
-    });
-
-  } catch (err) {
-    return new Response(
-      JSON.stringify({ error: err.message }),
-      {
-        status: 500,
-        headers: {
-          "Content-Type": "application/json"
-          }
-      }
-    );
-  }
 }
