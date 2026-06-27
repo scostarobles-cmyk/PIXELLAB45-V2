@@ -818,54 +818,32 @@ async function generarImagen() {
     });
 
     if (!res.ok) {
-      resultado.innerHTML =
-        `Error HTTP: ${res.status} ${res.statusText}`;
+      resultado.innerHTML = `Error HTTP: ${res.status}`;
       return;
     }
 
-    const blob = await res.blob();
+    // 🔥 CAMBIO CLAVE: ahora es JSON, no blob
+    const data = await res.json();
 
-    const url = URL.createObjectURL(blob);
+    if (!data.ok) {
+      resultado.innerHTML = "❌ Error generando imagen";
+      return;
+    }
+
+    // 🔥 construir URL real de la imagen
+    const imageUrl = WORKER_URL + data.url;
 
     resultado.innerHTML = `
       <img
-        src="${url}"
+        src="${imageUrl}"
         style="width:100%;border-radius:12px;">
     `;
 
   } catch (error) {
-
-    resultado.innerHTML =
-      `<pre>${error.message}</pre>`;
-
-  }
-
-}
-      
-async function guardarImagenAuto(imagen, categoria) {
-  try {
-    const res = await fetch(WORKER_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        tipo: "guardar-imagen",
-        imagen: imagen,
-        categoria: categoria
-      })
-    });
-
-    const data = await res.json();
-    if (data.success) {
-      console.log("Imagen guardada correctamente");
-    } else {
-      console.error("Error al guardar", data);
-    }
-  } catch (error) {
-    console.error("Error en la petición", error);
+    resultado.innerHTML = `<pre>${error.message}</pre>`;
   }
 }
+
 // MENÚ MÓVIL
 function toggleMenu() {
 

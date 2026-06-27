@@ -1,6 +1,5 @@
 const R2_BASE_URL =
   "https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev";
-  
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -9,126 +8,114 @@ const CORS_HEADERS = {
   "Content-Type": "application/json"
 };
 
+// =========================
+// 🧠 SERVIR IMAGEN DESDE R2 (NUEVO)
+// =========================
+async function getImage(request, env) {
+
+  const url = new URL(request.url);
+  const key = url.pathname.replace("/image/", "");
+
+  const object = await env.IMAGES.get(key);
+
+  if (!object) {
+    return new Response("Image not found", { status: 404 });
+  }
+
+  return new Response(object.body, {
+    headers: {
+      "Content-Type": "image/png",
+      "Cache-Control": "public, max-age=31536000"
+    }
+  });
+}
+
+// =========================
+// 🚀 WORKER PRINCIPAL
+// =========================
 export default {
   async fetch(request, env) {
 
+    const url = new URL(request.url);
+
+    // =========================
+    // 🖼️ FIX IMPORTANTE: IMÁGENES
+    // =========================
+    if (url.pathname.startsWith("/image/")) {
+      return getImage(request, env);
+    }
+
+    // =========================
+    // CORS
+    // =========================
     if (request.method === "OPTIONS") {
-      return new Response(null, {
-        headers: CORS_HEADERS
-      });
+      return new Response(null, { headers: CORS_HEADERS });
     }
 
     const json = (obj, status = 200) =>
-      new Response(
-        JSON.stringify(obj),
-        {
-          status,
-          headers: CORS_HEADERS 
-        }
-      );
+      new Response(JSON.stringify(obj), {
+        status,
+        headers: CORS_HEADERS
+      });
 
     let data = {};
 
     try {
-
       if (request.method === "POST") {
         data = await request.json();
       }
-
     } catch {
-
-      return json({
-        error: "JSON inválido"
-      }, 400);
-
+      return json({ error: "JSON inválido" }, 400);
     }
 
-    const tipo =
-      data.tipo || "";
+    const tipo = data.tipo || "";
 
     switch (tipo) {
 
       case "listar-imagenes":
-        return listarImagenes(
-          env,
-          json
-        );
+        return listarImagenes(env, json);
 
       case "listar-categoria":
-        return listarCategoria(
-          data.categoria,
-          env,
-          json
-        );
+        return listarCategoria(data.categoria, env, json);
 
       case "ideas":
-        return generarIdeas(
-          data,
-          env,
-          json
-        );
-        case "guardar-ideas":
-  return guardarIdeas(
-    data,
-    env,
-    json
-  );
-  case "prompt":
-  return json({
-    resultado: await generarPrompts(
-      data.tema,
-      data.formato,
-      env
-    )
-  });
-  case "guardar-prompts":
-  return guardarPrompts(
-    data,
-    env,
-    json
-  );
-  case "visual":
-  return generarVisualesPrompts(
-    data.tema,
-    env,
-    json
-  );
-  case "guardar-visuales":
-  return guardarVisuales(
-    data,
-    env,
-    json
-  );
-case "script":
-  return generarGuion(
-    data,
-    env,
-    json
-  );
-  case "guardar-guion":
-  return guardarGuion(
-    data,
-    env,
-    json
-  );
-  case "storyboard":
-  return generarStoryboard(
-    data,
-    env,
-    json
-  );
-  case "imagen":
-  return generarImagen(data, env);
+        return generarIdeas(data, env, json);
 
-case "guardar-imagen":
-  return guardarImagen(data, env);
-      default:
+      case "guardar-ideas":
+        return guardarIdeas(data, env, json);
+
+      case "prompt":
         return json({
-          error: "Tipo no válido"
-        }, 400);
+          resultado: await generarPrompts(data.tema, data.formato, env)
+        });
 
+      case "guardar-prompts":
+        return guardarPrompts(data, env, json);
+
+      case "visual":
+        return generarVisualesPrompts(data.tema, env, json);
+
+      case "guardar-visuales":
+        return guardarVisuales(data, env, json);
+
+      case "script":
+        return generarGuion(data, env, json);
+
+      case "guardar-guion":
+        return guardarGuion(data, env, json);
+
+      case "storyboard":
+        return generarStoryboard(data, env, json);
+
+      case "imagen":
+        return generarImagen(data, env);
+
+      case "guardar-imagen":
+        return guardarImagen(data, env);
+
+      default:
+        return json({ error: "Tipo no válido" }, 400);
     }
-
   }
 };
 
