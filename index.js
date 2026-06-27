@@ -637,39 +637,56 @@ ESCENA X
 }
 //Generar imagen 
 async function generarImagen(data, env) {
-  try {
-    const prompt = (data.prompt || data.tema || "").trim();
 
-    if (!prompt) {
+  try {
+
+    const promptUsuario = (data.prompt || data.tema || "").trim();
+
+    if (!promptUsuario) {
       return new Response(JSON.stringify({
         ok: false,
         error: "Sin prompt"
       }), {
         status: 400,
-        headers: { "Content-Type": "application/json" }
+        headers: {
+          "Content-Type": "application/json"
+        }
       });
     }
 
-    const finalPrompt = `
-Eres un generador de imágenes realistas. 
-Instrucciones estrictas:
-- Crea exactamente lo que el usuario solicita, sin añadir elementos extra.
-- Si el usuario describe un sujeto, colócalo en un ambiente realista, bien detallado.
-- No agregues personas, edificios, texto ni objetos no solicitados.
-- Usa iluminación natural y un enfoque fotográfico nítido.
+    // Mejorar el prompt con Llama
+    const promptMejorado = await ai(
+      env,
+`
+You are an expert AI image prompt engineer.
 
-Solicitud del usuario:
-${prompt}
-    `;
+Convert the user's request into a professional Stable Diffusion XL prompt.
 
-    const result = await env.AI.run(
-      "@cf/stabilityai/stable-diffusion-xl-base-1.0",
-      {
-        prompt: finalPrompt
-      }
+CRITICAL RULES:
+
+- Return ONLY the prompt.
+- English only.
+- Do not explain anything.
+- Do not add numbering.
+- Do not use quotes.
+- Keep the user's original request.
+- Add only details that improve image quality.
+- If the user specifies a style, preserve it.
+- If no style is specified, create a photorealistic image.
+
+User request:
+
+${promptUsuario}
+`
     );
 
-    const imageBytes = result;
+    // Generar imagen
+    const imageBytes = await env.AI.run(
+      "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+      {
+        prompt: promptMejorado
+      }
+    );
 
     return new Response(imageBytes, {
       headers: {
@@ -679,6 +696,7 @@ ${prompt}
     });
 
   } catch (err) {
+
     return new Response(JSON.stringify({
       ok: false,
       error: err.message
@@ -688,5 +706,7 @@ ${prompt}
         "Content-Type": "application/json"
       }
     });
+
   }
+
 }
