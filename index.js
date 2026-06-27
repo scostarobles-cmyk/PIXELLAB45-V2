@@ -701,14 +701,11 @@ async function generarImagen(data, env) {
         error: "Sin prompt"
       }), {
         status: 400,
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*"
-        }
+        headers: { "Content-Type": "application/json" }
       });
     }
 
-    // IA genera imagen
+    // 🔥 generar imagen
     const result = await env.AI.run(
       "@cf/stabilityai/stable-diffusion-xl-base-1.0",
       {
@@ -716,9 +713,10 @@ async function generarImagen(data, env) {
       }
     );
 
-    const arrayBuffer = await result.arrayBuffer();
+    // 🚨 CLAVE REAL: en Workers esto YA es Uint8Array
+    const imageBytes = result;
 
-    return new Response(arrayBuffer, {
+    return new Response(imageBytes, {
       headers: {
         "Content-Type": "image/png",
         "Access-Control-Allow-Origin": "*"
@@ -731,10 +729,7 @@ async function generarImagen(data, env) {
       error: err.message
     }), {
       status: 500,
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*"
-      }
+      headers: { "Content-Type": "application/json" }
     });
   }
 }

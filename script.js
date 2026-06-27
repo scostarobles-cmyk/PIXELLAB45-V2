@@ -794,47 +794,46 @@ async function generarStoryboard() {
 }
 const imageCache = new Map();
 
-async function generarImagen() {
-  const prompt = document.getElementById("promptImagen").value;
-  const resultado = document.getElementById("resultadoImagen");
-
-  if (!prompt.trim()) {
-    resultado.innerHTML = "⚠️ Escribe un prompt";
-    return;
-  }
-
-  resultado.innerHTML = "🎨 Generando imagen...";
-
+async function generarImagen(data, env) {
   try {
-    const res = await fetch(WORKER_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        tipo: "imagen",
-        prompt
-      })
-    });
+    const prompt = data.prompt || data.tema || "";
 
-    // 🔥 si algo falla, leemos texto primero
-    const contentType = res.headers.get("content-type");
-
-    if (contentType && contentType.includes("application/json")) {
-      const errorData = await res.json();
-      throw new Error(errorData.error || "Error IA");
+    if (!prompt) {
+      return new Response(JSON.stringify({
+        ok: false,
+        error: "Sin prompt"
+      }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" }
+      });
     }
 
-    const blob = await res.blob();
-    const url = URL.createObjectURL(blob);
+    // 🔥 generar imagen
+    const result = await env.AI.run(
+      "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+      {
+        prompt
+      }
+    );
 
-    resultado.innerHTML = `
-      <img src="${url}" style="width:100%;border-radius:12px;">
-    `;
+    // 🚨 CLAVE REAL: en Workers esto YA es Uint8Array
+    const imageBytes = result;
 
-  } catch (error) {
-    console.error(error);
-    resultado.innerHTML = "❌ Error de conexión: " + error.message;
+    return new Response(imageBytes, {
+      headers: {
+        "Content-Type": "image/png",
+        "Access-Control-Allow-Origin": "*"
+      }
+    });
+
+  } catch (err) {
+    return new Response(JSON.stringify({
+      ok: false,
+      error: err.message
+    }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
   }
 }
 // MENÚ MÓVIL
