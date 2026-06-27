@@ -1112,3 +1112,29 @@ section{
     min-height: auto;
   }
 }
+.ai-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  align-items: stretch;
+}
+
+/* fuerza igualdad real */
+.ai-card {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+/* hace que el contenido interno no rompa la altura */
+.ai-lab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.scroll-box {
+  width: 90%;      /* Ancho más grande */
+  max-height: 300px; /* Altura máxima */
+  overflow: auto;      /* Activa el scroll si excede el alto */
+  margin: 10px auto; /* Centrado */
+}
