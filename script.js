@@ -792,125 +792,97 @@ async function generarStoryboard() {
       error.message;
   }
 }
-//GENERAR Imagen 
 async function generarImagen() {
-
-  const prompt =
-    document.getElementById("promptImagen").value;
-
-  const categoria =
-    document.getElementById("categoriaImagen").value;
-
-  const resultado =
-    document.getElementById("resultadoImagen");
+  const prompt = document.getElementById("promptImagen").value;
+  const categoria = document.getElementById("categoriaImagen").value;
+  const resultado = document.getElementById("resultadoImagen");
 
   if (!prompt.trim()) {
-
-    resultado.innerHTML =
-      "⚠️ Escribe un prompt";
-
+    resultado.innerHTML = "⚠️ Escribe un prompt";
     return;
-
   }
 
-  const loading =
-    document.getElementById("loadingImagen");
-
-  const barra =
-    document.getElementById("barraImagen");
-
-  const estado =
-    document.getElementById("estadoImagen");
+  const loading = document.getElementById("loadingImagen");
+  const barra = document.getElementById("barraImagen");
+  const estado = document.getElementById("estadoImagen");
 
   loading.style.display = "block";
-
   barra.style.width = "10%";
-
-  estado.innerText =
-    "🎨 Generando imagen...";
+  estado.innerText = "🎨 Generando imagen...";
 
   let progreso = 10;
-
   const fakeProgress = setInterval(() => {
-
     if (progreso < 90) {
-
       progreso += Math.random() * 10;
-
-      barra.style.width =
-        progreso + "%";
-
-      if (progreso < 30)
-        estado.innerText =
-          "🧠 Analizando prompt...";
-
-      else if (progreso < 60)
-        estado.innerText =
-          "🎨 Creando imagen...";
-
-      else
-        estado.innerText =
-          "💾 Finalizando...";
-
+      barra.style.width = progreso + "%";
+      if (progreso < 30) estado.innerText = "🧠 Analizando prompt...";
+      else if (progreso < 60) estado.innerText = "🎨 Creando imagen...";
+      else estado.innerText = "💾 Finalizando...";
     }
-
   }, 400);
 
   try {
+    const res = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        tipo: "imagen",
+        tema: prompt,
+        categoria: categoria
+      })
+    });
 
-    const res = await fetch(
-      WORKER_URL,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          tipo: "imagen",
-          tema: prompt,
-          categoria
-        })
-      }
-    );
-
-    const blob =
-      await res.blob();
+    const data = await res.json();
 
     clearInterval(fakeProgress);
-
     barra.style.width = "100%";
+    estado.innerText = "✅ Imagen generada";
 
-    estado.innerText =
-      "✅ Imagen generada";
-
-    const url =
-      URL.createObjectURL(blob);
+    const imgUrl = `data:image/png;base64,${data.image}`;
 
     setTimeout(() => {
-
       loading.style.display = "none";
+      resultado.innerHTML = `<img src="${imgUrl}" style="width:100%; border-radius:12px;">`;
 
-      resultado.innerHTML = `
-        <img
-          src="${url}"
-          style="width:100%;border-radius:12px;">
-      `;
+      // Ahora guardar automáticamente
+      guardarImagenAuto(data.image, categoria);
 
     }, 300);
 
   } catch (error) {
-
     clearInterval(fakeProgress);
-
     loading.style.display = "none";
-
-    resultado.innerHTML =
-      `❌ ${error.message}`;
-
+    estado.innerText = "❌ Error";
+    resultado.innerHTML = `❌ ${error.message}`;
   }
-
 }
 
+async function guardarImagenAuto(imagen, categoria) {
+  try {
+    const res = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        tipo: "guardar-imagen",
+        imagen: imagen,
+        categoria: categoria
+      })
+    });
+
+    const data = await res.json();
+    if (data.success) {
+      console.log("Imagen guardada correctamente");
+    } else {
+      console.error("Error al guardar", data);
+    }
+  } catch (error) {
+    console.error("Error en la petición", error);
+  }
+}
 // MENÚ MÓVIL
 function toggleMenu() {
 

@@ -739,10 +739,12 @@ async function generarImagen(data, env) {
 }
 //guardar imagen 
 async function guardarImagen(data, env) {
-
   const { imagen, categoria } = data;
 
-  const buffer = new Uint8Array(imagen);
+  // Convertimos la base64 a un buffer
+  const buffer = new Uint8Array(
+    atob(imagen).split("").map(c => c.charCodeAt(0))
+  );
 
   const nombre = `${Date.now()}.png`;
 
