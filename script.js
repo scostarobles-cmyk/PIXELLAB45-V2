@@ -792,6 +792,8 @@ async function generarStoryboard() {
       error.message;
   }
 }
+const imageCache = new Map();
+
 async function generarImagen() {
 
   const prompt = document.getElementById("promptImagen").value;
@@ -802,41 +804,43 @@ async function generarImagen() {
     return;
   }
 
+  // 🔥 CACHE (evita repetir generación)
+  if (imageCache.has(prompt)) {
+    resultado.innerHTML = `
+      <img src="${imageCache.get(prompt)}" style="width:100%;border-radius:12px;">
+    `;
+    return;
+  }
+
   resultado.innerHTML = "🎨 Generando imagen...";
 
   try {
 
     const res = await fetch(WORKER_URL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         tipo: "imagen",
-        prompt: prompt
+        prompt
       })
     });
 
-    const data = await res.json();
+    if (!res.ok) throw new Error("Error generando imagen");
 
-    if (!data.ok) {
-      resultado.innerHTML = "❌ Error generando imagen";
-      return;
-    }
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
 
-    // 🔥 FIX CLAVE: usar URL directa del worker
-    const imageUrl = data.url;
+    // guardar en cache
+    imageCache.set(prompt, url);
 
     resultado.innerHTML = `
-      <img src="${imageUrl}" style="width:100%;border-radius:12px;">
+      <img src="${url}" style="width:100%;border-radius:12px;">
     `;
 
-  } catch (error) {
-    console.error(error);
-    resultado.innerHTML = "❌ Error de conexión";
+  } catch (err) {
+    resultado.innerHTML = "❌ " + err.message;
   }
 }
-
 // MENÚ MÓVIL
 function toggleMenu() {
 

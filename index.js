@@ -692,54 +692,60 @@ ESCENA X
 }
 //Generar imagen 
 async function generarImagen(data, env) {
+
   try {
 
-    // 1. Prompt optimizado
-    const promptOptimizado = await ai(env, `
-Convert the user's request into a professional AI image prompt.
+    const prompt = data.prompt || data.tema;
 
-User request:
-${data.tema}
+    if (!prompt) {
+      return new Response("Sin prompt", { status: 400 });
+    }
 
-Return ONLY the final prompt in English.
-`);
-
-    // 2. Generar imagen
-    const result = await env.AI.run(
-      "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+    // 🔥 optimizador de prompt (opcional pero recomendado)
+    const optimized = await env.AI.run(
+      "@cf/meta/llama-3.1-8b-instruct-fp8",
       {
-        prompt: promptOptimizado
+        messages: [
+          {
+            role: "system",
+            content: "Convierte a prompt profesional en inglés para Stable Diffusion."
+          },
+          {
+            role: "user",
+            content: prompt
+          }
+        ],
+        max_tokens: 300
       }
     );
 
-    // 3. Buffer de imagen
-    const imageBuffer = await result.arrayBuffer();
+    const finalPrompt = optimized.response;
 
-    // 4. Nombre único
-    const fileName = `images/${Date.now()}-${crypto.randomUUID()}.png`;
-
-    // 5. Guardar en R2
-    await env.IMAGES.put(fileName, imageBuffer, {
-      httpMetadata: {
-        contentType: "image/png"
+    // 🔥 generación de imagen
+    const img = await env.AI.run(
+      "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+      {
+        prompt: finalPrompt
       }
-    });
+    );
 
-    // 6. IMPORTANTE: devolver URL interna del Worker
-    return new Response(JSON.stringify({
-      ok: true,
-      url: `/image/${fileName}`,
-      path: fileName
-    }), {
+    const buffer = await img.arrayBuffer();
+
+    // 🔥 devolver imagen directa (NO JSON)
+    return new Response(buffer, {
       headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*"
+        "Content-Type": "image/png",
+        "Access-Control-Allow-Origin": "*",
+        "Cache-Control": "no-cache"
       }
     });
 
   } catch (err) {
-    return new Response(err.stack || err.message, {
-      status: 500
+    return new Response(err.message, {
+      status: 500,
+      headers: {
+        "Access-Control-Allow-Origin": "*"
+      }
     });
   }
 }
