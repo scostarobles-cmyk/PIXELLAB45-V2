@@ -1076,27 +1076,45 @@ async function generarEbook(data, env, json) {
     const promptOptimizado = await generarPrompts(tema, "ebook", env);
 
     // 2. Usar el prompt optimizado para generar el ebook
-    const ebook = await ai(env, `
-You are a professional ebook writer.
+    const ebook = await ai(
+  env,
+`
+You are a professional bestselling ebook writer.
 
 Write a complete professional ebook in Spanish.
 
-Approximate length: ${paginas} pages.
+Approximate length:
+${paginas} pages.
 
-Use this writing prompt as the guide:
+Use this optimized writing prompt as the foundation of the entire book:
 
 ${promptOptimizado}
 
+CRITICAL INSTRUCTIONS:
+
+- Expand the optimized prompt into a complete professional book.
+- Develop every idea in depth.
+- Each chapter should be several well-developed paragraphs.
+- Explain concepts clearly with examples when appropriate.
+- Write naturally like a real published book.
+- Maintain coherence between chapters.
+- Avoid repeating information.
+- Do not summarize chapters.
+- The total length should be close to the requested number of pages.
+
 The ebook must contain:
-- Title
-- Legal page
+
+- Professional title
+- Copyright page
 - Table of contents
 - Introduction
-- Chapters
+- Well-developed chapters
+- Practical examples where appropriate
 - Conclusion
 
-Return ONLY the ebook content.
-    `);
+Return ONLY the ebook.
+`
+);
 
     return json({
       ok: true,
