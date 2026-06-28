@@ -1063,3 +1063,53 @@ async function guardarImagen(data, env) {
   }
 
 }
+
+async function generarEbook(data, env, json) {
+  try {
+    const tema = (data.tema || "").trim();
+    const paginas = parseInt(data.paginas || "30", 10);
+
+    if (!tema) {
+      return json({
+        ok: false,
+        error: "Falta el tema del ebook",
+      }, 400);
+    }
+
+    // 1. Generar el prompt optimizado con el módulo de prompts
+    const promptOptimizado = await generarPrompts(tema, "ebook", env);
+
+    // 2. Usar el prompt optimizado para generar el ebook
+    const ebook = await ai(env, `
+You are a professional ebook writer.
+
+Write a complete professional ebook in Spanish.
+
+Approximate length: ${paginas} pages.
+
+Use this writing prompt as the guide:
+
+${promptOptimizado}
+
+The ebook must contain:
+- Title
+- Legal page
+- Table of contents
+- Introduction
+- Chapters
+- Conclusion
+
+Return ONLY the ebook content.
+    `);
+
+    return json({
+      ok: true,
+      resultado: ebook,
+    });
+  } catch (err) {
+    return json({
+      ok: false,
+      error: err.message || String(err),
+    }, 500);
+  }
+}
