@@ -120,12 +120,8 @@ case "script":
   case "imagen":
   return generarImagen(data, env);
 
-/*case "guardar-imagen":
+case "guardar-imagen":
   return guardarImagen(data, env);
-      default:
-        return json({
-          error: "Tipo no válido"
-        }, 400);*/
 
     }
 
@@ -708,6 +704,69 @@ ${promptVisual}
       headers: {
         "Content-Type": "image/png",
         "Access-Control-Allow-Origin": "*"
+      }
+    });
+
+  } catch (err) {
+
+    return new Response(JSON.stringify({
+      ok: false,
+      error: err.message
+    }), {
+      status: 500,
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+
+  }
+
+}
+
+async function guardarImagen(data, env) {
+
+  try {
+
+    const categoria = data.categoria || "imagenes";
+    const base64 = data.imagen;
+
+    if (!base64) {
+      return new Response(JSON.stringify({
+        ok: false,
+        error: "Imagen no recibida"
+      }), {
+        status: 400,
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+    }
+
+    // Base64 → bytes
+    const bytes = Uint8Array.from(
+      atob(base64),
+      c => c.charCodeAt(0)
+    );
+
+    const nombre =
+      `${Date.now()}-${crypto.randomUUID()}.png`;
+
+    await env.IMAGES.put(
+      `${categoria}/${nombre}`,
+      bytes,
+      {
+        httpMetadata: {
+          contentType: "image/png"
+        }
+      }
+    );
+
+    return new Response(JSON.stringify({
+      ok: true,
+      nombre
+    }), {
+      headers: {
+        "Content-Type": "application/json"
       }
     });
 

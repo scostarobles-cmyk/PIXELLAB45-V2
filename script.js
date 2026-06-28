@@ -795,6 +795,13 @@ async function generarStoryboard() {
 async function generarImagen() {
 
   const prompt = document.getElementById("promptImagen").value;
+  
+
+const categoria =
+  document.getElementById("categoriaImagen").value;
+
+const resultado =
+  document.getElementById("resultadoImagen");
 
   if (!prompt.trim()) {
     document.getElementById("resultadoImagen").innerHTML =
@@ -856,6 +863,17 @@ async function generarImagen() {
     }
 
     const blob = await res.blob();
+    const base64 = await new Promise((resolve) => {
+
+  const reader = new FileReader();
+
+  reader.onloadend = () => {
+    resolve(reader.result.split(",")[1]);
+  };
+
+  reader.readAsDataURL(blob);
+
+});
 
     clearInterval(fakeProgress);
 
@@ -872,6 +890,17 @@ async function generarImagen() {
         `<img src="${url}" style="width:100%;border-radius:12px;">`;
 
     }, 300);
+    await fetch(WORKER_URL, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    tipo: "guardar-imagen",
+    categoria,
+    imagen: base64
+  })
+});
 
   } catch (error) {
 
