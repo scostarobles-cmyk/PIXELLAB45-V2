@@ -43,8 +43,9 @@ export default {
 
     }
 
-    const tipo = String(data?.tipo ?? "").trim().toLowerCase();
-      
+    const tipo =
+      data.tipo || "";
+
     switch (tipo) {
 
       case "listar-imagenes":
@@ -133,21 +134,6 @@ case "guardar-imagen":
     data,
     env
   );
-  case "ebook":
-  return generarEbook(data, env, json);
-  
-
-case "guardar-ebook":
-  return guardarEbook(
-    data,
-    env,
-    json
-  );
-  case "test":
-  return json({
-    ok: true,
-    recibido: data.mensaje
-  });
 
 default:
   return json({
@@ -1070,125 +1056,4 @@ async function guardarImagen(data, env) {
 
   }
 
-}
-// =====================================
-// GENERAR EBOOK
-// =====================================
-async function generarEbook(data, env, json) {
-
-  const tema = data.tema || "";
-  const paginas = data.paginas || "30";
-  const tipo = data.tipo;
-
-  if (!tema.trim()) {
-    return json({
-      error: "Falta el tema del ebook"
-    }, 400);
-  }
-
-  // 1. Generar prompt optimizado
-  const promptOptimizado = await generarPrompts(
-    tema,
-    "ebook",
-    env
-  );
-
-  // 2. Crear el ebook usando ese prompt
-  const ebook = await ai(
-    env,
-`
-Write a complete professional ebook.
-
-Approximate length:
-${paginas} pages.
-
-Book type:
-${tipo}
-
-Use this optimized prompt:
-
-${promptOptimizado}
-
-Generate:
-
-- Title
-- Subtitle
-- Legal page
-- Table of contents
-- Introduction
-- Complete chapters
-- Conclusion
-
-Return ONLY the ebook.
-`
-  );
-
-  return json({
-    resultado: ebook
-  });
-
-}
-// =====================================
-// GUARDAR EBOOK
-// =====================================
-async function guardarEbook(data, env, json) {
-
-  const contenido = data.contenido || "";
-
-  if (!contenido.trim()) {
-    return json({
-      ok: false,
-      error: "Ebook vacío"
-    }, 400);
-  }
-
-  const nombre = `ebooks/${Date.now()}.txt`;
-
-  await env.IMAGES.put(
-    nombre,
-    contenido
-  );
-
-  return json({
-    ok: true,
-    mensaje: "✅ Ebook guardado"
-  });
-
-}
-//Generar Ebook 
-async function generarEbook(data, env, json) {
-
-  const tema = (data.tema || "").trim();
-  const paginas = parseInt(data.paginas || 30);
-
-  if (!tema) {
-    return json({
-      ok: false,
-      error: "Falta tema del ebook"
-    }, 400);
-  }
-
-  const prompt = `
-You are a professional ebook writer.
-
-Create a complete ebook in Spanish.
-
-RULES:
-- Topic: ${tema}
-- Length: approximately ${paginas} pages
-- Include:
-  1. Title
-  2. Index
-  3. Chapters
-  4. Legal page
-  5. Conclusion
-- Return ONLY the ebook content
-`;
-
-  const ebook = await ai(env, prompt);
-
-  return json({
-    ok: true,
-    resultado: ebook
-  });
 }

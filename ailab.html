@@ -570,63 +570,6 @@
   <div id="klingPreview"></div>
 
 </div>
-<div class="ai-card">
-
-  <h3>📘 Constructor de Ebooks</h3>
-
-  <!-- INPUTS -->
-  <textarea
-    id="temaEbook"
-    placeholder="Escribe el tema del ebook..."></textarea>
-
-  <input
-    type="number"
-    id="paginasEbook"
-    min="5"
-    max="300"
-    value="30"
-    placeholder="Cantidad de páginas">
-
-  <!-- BOTONES -->
-  <button onclick="generarEbook()">
-    Generar Ebook
-  </button>
-
-  <button onclick="guardarEbook()">
-    Guardar
-  </button>
-
-  <button onclick="copiarEbook()">
-    Copiar
-  </button>
-  <button onclick="testWorker()">TEST WORKER</button>
-
-<pre id="resultadoTest">---</pre>
-
-  <!-- LOADING / ANIMACIÓN -->
-  <div
-    id="loadingEbook"
-    class="loading-box"
-    style="display:none;">
-
-    <div class="loading-text" id="estadoEbook">
-      📘 Iniciando generación...
-    </div>
-
-    <div class="barra-fondo">
-      <div class="barra-progreso" id="barraEbook"></div>
-    </div>
-
-  </div>
-
-  <!-- RESULTADO -->
-  <pre
-    id="resultadoEbook"
-    class="resultado-box">
-  </pre>
-
-</div>
-
 </div>
 <div class="section-divider"></div>
 <!-- ===================================== -->
