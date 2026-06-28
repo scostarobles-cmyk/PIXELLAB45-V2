@@ -931,21 +931,28 @@ ${duration}
       }
     });
   }
-}}
+
 //guardar storyboard 
+// =====================================
+// GUARDAR STORYBOARD
+// =====================================
 async function guardarStoryboard(data, env, json) {
 
-  const contenido = data.contenido || "";
+  const contenido = (data.contenido || "").trim();
 
-  const nombre =
-    `storyboards/${Date.now()}.txt`;
+  if (!contenido) {
+    return json({
+      ok: false,
+      error: "Storyboard vacío"
+    }, 400);
+  }
 
-  await env.IMAGES.put(
-    nombre,
-    contenido
-  );
+  const nombre = `storyboards/${Date.now()}.txt`;
+
+  await env.IMAGES.put(nombre, contenido);
 
   return json({
+    ok: true,
     mensaje: "✅ Storyboard guardado correctamente"
   });
 

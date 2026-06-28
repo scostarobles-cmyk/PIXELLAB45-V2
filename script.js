@@ -793,21 +793,66 @@ async function generarStoryboard() {
   }
 }
 //guardar storyboard 
-async function guardarStoryboard(data, env, json) {
+async function guardarStoryboard() {
 
-  const contenido = data.contenido || "";
+  const storyboard = document.getElementById("resultadoStoryboard").value;
 
-  const nombre =
-    `storyboards/${Date.now()}.txt`;
+  if (!storyboard.trim()) {
+    alert("Primero genera un storyboard.");
+    return;
+  }
 
-  await env.IMAGES.put(
-    nombre,
-    contenido
-  );
+  const nombre = prompt("Nombre del storyboard:");
 
-  return json({
-    mensaje: "✅ Storyboard guardado correctamente"
-  });
+  if (!nombre) return;
+
+  try {
+
+    const res = await fetch(`${WORKER_URL}?action=guardar-texto`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      ...FETCH_CONFIG,
+      body: JSON.stringify({
+        categoria: "storyboards",
+        nombre,
+        contenido: storyboard
+      })
+    });
+
+    const data = await res.json();
+
+    if (data.ok) {
+      alert("✅ Storyboard guardado");
+    } else {
+      alert(data.error || "Error al guardar");
+    }
+
+  } catch (err) {
+    alert("Error de conexión");
+  }
+
+}
+//Copiar storyboard 
+async function copiarStoryboard() {
+
+  const storyboard = document.getElementById("resultadoStoryboard").value.trim();
+
+  if (!storyboard) {
+    alert("Primero genera un storyboard.");
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(storyboard);
+    alert("✅ Storyboard copiado");
+  } catch (err) {
+    const textarea = document.getElementById("resultadoStoryboard");
+    textarea.select();
+    document.execCommand("copy");
+    alert("✅ Storyboard copiado");
+  }
 
 }
 //generar imagen 
