@@ -835,71 +835,70 @@ async function guardarGuion(data, env, json) {
 
 }
 //Generar Storyboard 
+// =====================================
+// GENERAR STORYBOARD
+// =====================================
 async function generarStoryboard(data, env, json) {
 
-  const guion = data.guion || "";
-  const escenas = data.escenas || "8";
-  const estilo = data.estilo || "Realista";
+  try {
 
-  if (!guion.trim()) {
-    return json({
-      error: "Falta el guion"
-    }, 400);
-  }
+    const guion = (data.guion || "").trim();
+    const escenas = parseInt(data.escenas || "8");
+    const estilo = (data.estilo || "Realista").trim();
 
-  const prompt = `
+    if (!guion) {
+      return json({
+        ok: false,
+        error: "Falta el guion"
+      }, 400);
+    }
+
+    const prompt = `
 You are an expert storyboard artist.
 
-Convert the following script into a professional storyboard.
+Convert the following script into a storyboard.
 
-RULES
+Generate EXACTLY ${escenas} scenes.
 
-- Follow the script exactly.
-- Do not invent a different story.
-- Generate EXACTLY ${escenas} scenes.
-- Respect the selected visual style.
-- Return ONLY the storyboard.
-- No introductions.
-- No explanations.
-- No markdown.
-
-VISUAL STYLE
-
+Visual style:
 ${estilo}
 
-Each scene must have EXACTLY this format:
+For each scene use exactly this format:
 
 SCENE X
 
 TIME:
-00:00 - 00:04
 
 NARRATION:
 
-...
-
 CAMERA:
-
-...
 
 LIGHTING:
 
-...
-
 VISUAL PROMPT:
 
-...
-
 SCRIPT:
+
+Script:
 
 ${guion}
 `;
 
-  const storyboard = await ai(env, prompt);
+    const resultado = await ai(env, prompt);
 
-  return json({
-    resultado: storyboard
-  });
+    return json({
+      ok: true,
+      resultado
+    });
+
+  } catch (err) {
+
+    return json({
+      ok: false,
+      error: err.message || String(err)
+    }, 500);
+
+  }
 
 }
 // =====================================
