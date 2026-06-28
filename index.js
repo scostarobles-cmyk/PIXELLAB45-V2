@@ -1236,28 +1236,29 @@ async function generarCapitulos(
   plan,
   env
 ) {
-
   const lineas = indice
     .split("\n")
     .map(l => l.trim())
     .filter(Boolean);
 
-  const secciones = lineas.filter(l => {
+  // Filtrar secciones únicas, ignorando diferencias de mayúsculas y minúsculas
+  const secciones = [...new Set(
+    lineas.filter(l => {
+      const t = l
+        .toLowerCase()
+        .replace(/\*/g, "")
+        .trim();
 
-    const t = l
-      .toLowerCase()
-      .replace(/\*/g, "")
-      .trim();
-
-    return (
-      t.includes("introducción") ||
-      t.includes("capítulo") ||
-      t.includes("conclusión") ||
-      t.includes("introduction") ||
-      t.includes("chapter") ||
-      t.includes("conclusion")
-    );
-  });
+      return (
+        t.includes("introducción") ||
+        t.includes("capítulo") ||
+        t.includes("conclusión") ||
+        t.includes("introduction") ||
+        t.includes("chapter") ||
+        t.includes("conclusion")
+      );
+    })
+  )];
 
   const capitulos = [];
 
