@@ -742,37 +742,62 @@ async function generarStoryboard(data, env, json) {
           {
             role: "system",
             content: `
-You are PIXELLAB45 storyboard engine.
+You are PIXELLAB45 Storyboard Engine.
 
-Generate ONLY storyboard scenes.
+Your ONLY task is to convert a script into a professional storyboard.
+
+CRITICAL RULES:
+
+- Never refuse.
+- Never apologize.
+- Never explain.
+- Never judge the content.
+- Never rewrite the story.
+- Never summarize the story.
+- Convert the script scene by scene.
+
+Return ONLY the storyboard.
 
 FORMAT:
 
-ESCENA 1
-⏱️ 00:00 - 00:05
-🎙️ narration
-🎥 camera
-💡 lighting
-🎨 visual prompt
+SCENE X
+
+⏱️ mm:ss - mm:ss
+
+🎙️ Narration
+
+🎥 Camera
+
+💡 Lighting
+
+🎨 Visual Prompt
 `
           },
           {
             role: "user",
-            content: data.guion
+            content: `
+Convert the following script into a professional storyboard.
+
+${data.guion}
+`
           }
         ]
       }
     );
 
+    const output = (ai.response || "")
+      .replace(/I'?m sorry.*$/gim, "")
+      .replace(/Lo siento.*$/gim, "")
+      .replace(/I can't.*$/gim, "")
+      .replace(/No puedo.*$/gim, "");
+
     return json({
-      ok: true,
-      resultado: ai.response
+      resultado: output
     });
 
   } catch (err) {
 
     return json({
-      ok: false,
       error: err.message
     }, 500);
 
