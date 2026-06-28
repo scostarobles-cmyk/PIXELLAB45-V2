@@ -391,37 +391,115 @@ async function generarPrompts(tema, formato, env) {
     ? parseInt(match[0])
     : 1;
 
-  if (cantidad > 20) cantidad = 20;
+  if (cantidad > 20)
+    cantidad = 20;
+
+  let reglas = "";
+
+  switch ((formato || "").toLowerCase()) {
+
+    case "tiktok":
+      reglas = `
+Generate prompts for viral TikTok videos.
+
+Rules:
+- Strong hook.
+- Vertical 9:16.
+- Short-form video.
+- High engagement.
+- Trend focused.
+`;
+      break;
+
+    case "instagram":
+      reglas = `
+Generate prompts for Instagram content.
+
+Rules:
+- Optimized for Reels.
+- Highly visual.
+- Attractive composition.
+- Engagement focused.
+`;
+      break;
+
+    case "facebook":
+      reglas = `
+Generate prompts for Facebook content.
+
+Rules:
+- Conversational.
+- Shareable.
+- Audience engagement.
+- Easy to understand.
+`;
+      break;
+
+    case "blog":
+      reglas = `
+Generate prompts for blog articles.
+
+Rules:
+- SEO focused.
+- Structured.
+- Valuable information.
+- Long-form writing.
+`;
+      break;
+
+    case "ebook":
+      reglas = `
+Generate prompts for ebooks.
+
+Rules:
+- Educational.
+- Detailed.
+- Chapter oriented.
+- Professional.
+`;
+      break;
+
+    default:
+      reglas = `
+Generate universal AI prompts.
+
+Rules:
+- Generic.
+- Adaptable.
+- Professional quality.
+`;
+  }
 
   const resultado = await ai(
     env,
 `
-You are an expert AI prompt generator.
+You are a world-class AI prompt engineer.
 
 Generate EXACTLY ${cantidad} prompts.
 
-CRITICAL RULES:
+${reglas}
 
-- If the user requests 1 prompt, return EXACTLY 1 prompt.
-- If the user requests 5 prompts, return EXACTLY 5 prompts.
-- If the user requests 10 prompts, return EXACTLY 10 prompts.
-- Never return more prompts than requested.
-- Never return fewer prompts than requested.
+GENERAL RULES:
+
 - Return ONLY prompts.
-- No introductions.
-- No explanations.
-- No titles.
-- No extra text.
-- One prompt per line.
+- English only.
+- Never write stories.
+- Never write explanations.
+- Never write titles.
+- Never write introductions.
+- Never give instructions to the user.
+- Every prompt must be ready for AI generation.
+- Leave ONE blank line between every prompt.
 
-Strict format:
+OUTPUT FORMAT:
 
-1- prompt
-2- prompt
-3- prompt
-...
+1- Prompt...
 
-Generate exactly ${cantidad} ${formato} prompts about:
+2- Prompt...
+
+3- Prompt...
+
+Topic:
 
 ${tema}
 `
@@ -429,13 +507,16 @@ ${tema}
 
   return resultado;
 }
+// =====================================
+// GUARDAR PROMT
+// =====================================
 async function guardarPrompts(data, env, json) {
 
   const contenido =
     data.contenido || "";
 
   const prompts = contenido
-    .split(/\n(?=\d+-)/)
+    .split(/\n\s*\n/)
     .map(p => p.trim())
     .filter(Boolean);
 
