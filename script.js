@@ -974,12 +974,71 @@ if (!guardar.ok) {
 
 async function generarEbook() {
 
-  const data = await res.json();
+  const tema = document.getElementById("temaEbook").value;
+  const paginas = document.getElementById("paginasEbook").value;
 
-resultado.innerText = JSON.stringify(data, null, 2);
-return;
+  const resultado = document.getElementById("resultadoEbook");
+  const loading = document.getElementById("loadingEbook");
+  const barra = document.getElementById("barraEbook");
+  const estado = document.getElementById("estadoEbook");
 
+  if (!tema.trim()) {
+    resultado.innerText = "⚠️ Escribe un tema para el ebook";
+    return;
+  }
 
+  loading.style.display = "block";
+  barra.style.width = "10%";
+  estado.innerText = "📘 Analizando tema...";
+
+  let progreso = 10;
+
+  const fakeProgress = setInterval(() => {
+    if (progreso < 90) {
+      progreso += Math.random() * 10;
+      barra.style.width = progreso + "%";
+
+      if (progreso < 25)
+        estado.innerText = "📚 Creando estructura...";
+      else if (progreso < 50)
+        estado.innerText = "📑 Generando índice...";
+      else if (progreso < 75)
+        estado.innerText = "✍️ Escribiendo capítulos...";
+      else
+        estado.innerText = "📄 Finalizando ebook...";
+    }
+  }, 400);
+
+  try {
+    const res = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        tipo: "ebook",
+        tema,
+        paginas
+      })
+    });
+
+    const data = await res.json();
+
+    clearInterval(fakeProgress);
+    barra.style.width = "100%";
+    estado.innerText = "✅ Listo";
+
+    setTimeout(() => {
+      loading.style.display = "none";
+      resultado.innerText = data.resultado || data.mensaje || data.error;
+    }, 300);
+
+  } catch (error) {
+    clearInterval(fakeProgress);
+    loading.style.display = "none";
+    estado.innerText = "❌ Error";
+    resultado.innerText = error.message;
+  }
 }
 
 // MENÚ MÓVIL
