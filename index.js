@@ -732,14 +732,12 @@ async function guardarImagen(data, env) {
 
     if (!base64) {
       return new Response(JSON.stringify({
-        ok: false,
-        error: "Imagen no recibida"
-      }), {
-        status: 400,
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
+  ok: false,
+  error: "Imagen no recibida"
+}), {
+  status: 400,
+  headers: CORS_HEADERS
+});
     }
 
     // Base64 → bytes
@@ -762,25 +760,21 @@ async function guardarImagen(data, env) {
     );
 
     return new Response(JSON.stringify({
-      ok: true,
-      nombre
-    }), {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
+  ok: true,
+  nombre
+}), {
+  headers: CORS_HEADERS
+});
 
   } catch (err) {
 
     return new Response(JSON.stringify({
-      ok: false,
-      error: err.message
-    }), {
-      status: 500,
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
+  ok: false,
+  error: err.message
+}), {
+  status: 500,
+  headers: CORS_HEADERS
+});
 
   }
 
