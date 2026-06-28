@@ -135,10 +135,7 @@ case "guardar-imagen":
     env
   );
   case "ebook":
-  return json({
-    ok: true,
-    mensaje: "EBOOK MODULE OK",
-    recibido: data
+  return generarEbook(data, env, json);
   });
 
 default:
