@@ -570,63 +570,14 @@
   <div id="klingPreview"></div>
 
 </div>
-
-<div class="ai-card">
-
-  <h3>📖 Constructor de Ebooks</h3>
-
-  <p>
-    Genera ebooks completos con índice, capítulos,
-    introducción y página legal.
-  </p>
-
-  <label>Tema del ebook</label>
-
-  <textarea
-    id="temaEbook"
-    rows="5"
-    placeholder="Describe el tema del ebook..."></textarea>
-
-  <label>Cantidad aproximada de páginas</label>
-
-  <input
-    type="number"
-    id="paginasEbook"
-    min="5"
-    max="300"
-    value="30">
-
-  <label>Estilo</label>
-
-  <select id="estiloEbook">
-    <option value="automatico">Automático</option>
-    <option value="guia">Guía</option>
-    <option value="curso">Curso</option>
-    <option value="manual">Manual</option>
-    <option value="tutorial">Tutorial</option>
-    <option value="academico">Académico</option>
-    <option value="profesional">Profesional</option>
-  </select>
-
-  <button onclick="generarEbook()">
-    📖 Generar Ebook
-  </button>
-
-  <button onclick="guardarEbook()">
-    💾 Guardar
-  </button>
-
-  <button onclick="copiarEbook()">
-    📋 Copiar
-  </button>
-
 <div class="ai-card">
 
   <h3>📘 Constructor de Ebooks</h3>
 
+  <!-- INPUTS -->
   <textarea
     id="temaEbook"
-    placeholder="Tema del ebook..."></textarea>
+    placeholder="Escribe el tema del ebook..."></textarea>
 
   <input
     type="number"
@@ -636,6 +587,7 @@
     value="30"
     placeholder="Cantidad de páginas">
 
+  <!-- BOTONES -->
   <button onclick="generarEbook()">
     Generar Ebook
   </button>
@@ -648,30 +600,23 @@
     Copiar
   </button>
 
-  <!-- Animación -->
-
+  <!-- LOADING / ANIMACIÓN -->
   <div
     id="loadingEbook"
     class="loading-box"
     style="display:none;">
 
     <div class="loading-text" id="estadoEbook">
-      📘 Analizando tema...
+      📘 Iniciando generación...
     </div>
 
     <div class="barra-fondo">
-
-      <div
-        class="barra-progreso"
-        id="barraEbook">
-      </div>
-
+      <div class="barra-progreso" id="barraEbook"></div>
     </div>
 
   </div>
 
-  <!-- Resultado -->
-
+  <!-- RESULTADO -->
   <pre
     id="resultadoEbook"
     class="resultado-box">
@@ -679,9 +624,6 @@
 
 </div>
 
-  <pre id="resultadoEbook"></pre>
-
-</div>
 </div>
 <div class="section-divider"></div>
 <!-- ===================================== -->
