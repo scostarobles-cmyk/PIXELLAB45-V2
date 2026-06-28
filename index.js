@@ -931,7 +931,7 @@ ${duration}
       }
     });
   }
-
+}
 //guardar storyboard 
 // =====================================
 // GUARDAR STORYBOARD
