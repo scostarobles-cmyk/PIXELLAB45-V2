@@ -795,11 +795,14 @@ async function generarStoryboard() {
 //guardar storyboard 
 async function guardarStoryboard() {
 
-  const storyboard =
-    document.getElementById("resultadoStoryboard").innerText;
+  const resultado =
+    document.getElementById("resultadoStoryboard");
+
+  const storyboard = resultado.innerText;
 
   if (!storyboard.trim()) {
-    alert("Primero genera un storyboard.");
+    resultado.innerHTML =
+      "⚠️ Primero genera un storyboard.";
     return;
   }
 
@@ -816,7 +819,8 @@ async function guardarStoryboard() {
 
   const data = await res.json();
 
-  alert(data.mensaje || data.error);
+  resultado.innerHTML +=
+    `<br><br>${data.mensaje || data.error}`;
 
 }
 //Copiar storyboard 
@@ -825,14 +829,17 @@ async function copiarStoryboard() {
   const storyboard =
     document.getElementById("resultadoStoryboard").innerText;
 
+  const resultado =
+    document.getElementById("resultadoStoryboard");
+
   if (!storyboard.trim()) {
-    alert("Primero genera un storyboard.");
+    resultado.innerHTML = "⚠️ Primero genera un storyboard.";
     return;
   }
 
   await navigator.clipboard.writeText(storyboard);
 
-  alert("✅ Storyboard copiado");
+  resultado.innerHTML += "<br><br>✅ Storyboard copiado";
 
 }
 //generar imagen 
