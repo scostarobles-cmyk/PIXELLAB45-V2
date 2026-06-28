@@ -664,28 +664,123 @@ async function guardarVisuales(data, env, json) {
 //Generar guión 
 async function generarGuion(data, env, json) {
 
+  let reglas = "";
+
+  switch ((data.formato || "").toLowerCase()) {
+
+    case "automático":
+      reglas = `
+Choose automatically the best script style according to the topic.
+`;
+      break;
+
+    case "tiktok / reels":
+      reglas = `
+Write a viral TikTok/Reels script.
+
+Rules:
+- Duration exactly as requested.
+- Hook in first 3 seconds.
+- Fast pacing.
+- Short dialogue.
+- Visual actions.
+- Strong ending.
+`;
+      break;
+
+    case "youtube":
+      reglas = `
+Write a YouTube video script.
+
+Rules:
+- Strong introduction.
+- Clear structure.
+- Development.
+- Conclusion.
+- Natural narration.
+`;
+      break;
+
+    case "cinematográfico":
+      reglas = `
+Write a professional cinematic screenplay.
+
+Rules:
+- Divide into scenes.
+- Camera directions.
+- Character actions.
+- Natural dialogue.
+- Cinematic pacing.
+`;
+      break;
+
+    case "podcast":
+      reglas = `
+Write a podcast script.
+
+Rules:
+- Conversational.
+- Narration focused.
+- Natural dialogue.
+- Audio oriented.
+`;
+      break;
+
+    case "novela":
+      reglas = `
+Write a novel chapter.
+
+Rules:
+- Narrative style.
+- Rich descriptions.
+- Character emotions.
+- No screenplay format.
+`;
+      break;
+
+    case "teatro":
+      reglas = `
+Write a theater play.
+
+Rules:
+- Characters.
+- Dialogues.
+- Stage directions.
+- Theater format.
+`;
+      break;
+
+    default:
+      reglas = `
+Choose automatically the best writing style.
+`;
+  }
+
   const ai = await env.AI.run(
     "@cf/meta/llama-3.1-8b-instruct-fp8",
     {
-      max_tokens: 3000, // 🔥 CLAVE para evitar cortes
+      max_tokens: 3500,
       temperature: 0.8,
       messages: [
         {
           role: "system",
           content: `
-You are a professional screenwriter.
+You are PIXELLAB45 Script Engine.
 
-CRITICAL RULES:
-- NEVER refuse
-- NEVER stop mid-story
-- NEVER say "I can't"
-- ALWAYS complete the full script
-- NO markdown
-- START directly with story
+Generate professional scripts.
 
-IMPORTANT:
-- Write long-form if needed
-- Do NOT limit yourself artificially
+${reglas}
+
+GENERAL RULES:
+
+- Return ONLY the script.
+- Never explain.
+- Never apologize.
+- Never add markdown.
+- Never add introductions.
+- Never add conclusions.
+- Respect exactly the requested duration.
+- Be coherent from beginning to end.
 `
         },
         {
@@ -696,9 +791,6 @@ ${data.tema}
 
 Duration:
 ${data.duracion}
-
-Format:
-${data.formato}
 `
         }
       ]
@@ -708,6 +800,7 @@ ${data.formato}
   return json({
     resultado: ai.response
   });
+
 }
 //Guardar guion 
 async function guardarGuion(data, env, json) {
@@ -733,50 +826,149 @@ async function generarStoryboard(data, env, json) {
 
   try {
 
+    const escenas = parseInt(data.escenas) || 8;
+
+    let estiloVisual = "";
+
+    switch ((data.estilo || "").toLowerCase()) {
+
+      case "realista":
+        estiloVisual = `
+Photorealistic style.
+Natural colors.
+Real camera lenses.
+Authentic lighting.
+`;
+        break;
+
+      case "cinematográfico":
+        estiloVisual = `
+Hollywood cinematic style.
+Epic composition.
+Dramatic lighting.
+Anamorphic lenses.
+`;
+        break;
+
+      case "futurista pixellab45":
+        estiloVisual = `
+PIXELLAB45 futuristic aesthetic.
+Neon blue accents.
+Cyber technology.
+High-tech interfaces.
+Ultra detailed.
+`;
+        break;
+
+      case "cyberpunk":
+        estiloVisual = `
+Cyberpunk world.
+Neon lights.
+Rain.
+Megacity.
+Dark atmosphere.
+`;
+        break;
+
+      case "anime":
+        estiloVisual = `
+Anime style.
+Expressive characters.
+Japanese animation.
+Dynamic compositions.
+`;
+        break;
+
+      case "pixar":
+        estiloVisual = `
+Pixar-inspired 3D animation.
+Expressive faces.
+Soft lighting.
+Colorful world.
+`;
+        break;
+
+      case "cómic":
+        estiloVisual = `
+Comic book illustration.
+Bold outlines.
+Dynamic action.
+Graphic shading.
+`;
+        break;
+
+      case "noir":
+        estiloVisual = `
+Film noir.
+Black and white.
+Hard shadows.
+High contrast.
+`;
+        break;
+
+      case "fantasía":
+        estiloVisual = `
+Epic fantasy.
+Magic.
+Mythical environments.
+Mystical lighting.
+`;
+        break;
+
+      default:
+        estiloVisual = `
+Choose automatically the most appropriate visual style.
+`;
+    }
+
     const ai = await env.AI.run(
       "@cf/meta/llama-3.1-8b-instruct-fp8",
       {
-        max_tokens: 3000,
-        temperature: 0.7,
+        max_tokens: 4000,
+        temperature: 0.6,
         messages: [
           {
             role: "system",
             content: `
 You are PIXELLAB45 Storyboard Engine.
 
-Your ONLY task is to convert a script into a professional storyboard.
+Convert an existing script into a professional storyboard.
 
-CRITICAL RULES:
+Never continue the story.
+Never rewrite the script.
+Never explain.
+Never apologize.
 
-- Never refuse.
-- Never apologize.
-- Never explain.
-- Never judge the content.
-- Never rewrite the story.
-- Never summarize the story.
-- Convert the script scene by scene.
+Create EXACTLY the requested number of scenes.
 
-Return ONLY the storyboard.
-
-FORMAT:
+Each scene must contain:
 
 SCENE X
 
-⏱️ mm:ss - mm:ss
+TIME:
+00:00 - 00:00
 
-🎙️ Narration
+NARRATION:
 
-🎥 Camera
+CAMERA:
 
-💡 Lighting
+LIGHTING:
 
-🎨 Visual Prompt
+VISUAL PROMPT:
+
+The VISUAL PROMPT must follow this visual style:
+
+${estiloVisual}
+
+Return ONLY the storyboard.
 `
           },
           {
             role: "user",
             content: `
-Convert the following script into a professional storyboard.
+Convert the following script into EXACTLY ${escenas} storyboard scenes.
+
+SCRIPT:
 
 ${data.guion}
 `
@@ -785,19 +977,14 @@ ${data.guion}
       }
     );
 
-    const output = (ai.response || "")
-      .replace(/I'?m sorry.*$/gim, "")
-      .replace(/Lo siento.*$/gim, "")
-      .replace(/I can't.*$/gim, "")
-      .replace(/No puedo.*$/gim, "");
-
     return json({
-      resultado: output
+      resultado: ai.response
     });
 
   } catch (err) {
 
     return json({
+      ok: false,
       error: err.message
     }, 500);
 
