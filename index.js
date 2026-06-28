@@ -45,6 +45,14 @@ export default {
 
     const tipo =
       data.tipo || "";
+      
+      if (!tipo) {
+  return json({
+    ok: false,
+    error: "TIPO VACÍO",
+    recibido: data
+  }, 400);
+}
 
     switch (tipo) {
 
@@ -135,10 +143,8 @@ case "guardar-imagen":
     env
   );
   case "ebook":
-  return json({
-    debug: "ENTRÓ A EBOOK",
-    data_recibida: data
-  });
+  return generarEbook(data, env, json);
+  
 
 case "guardar-ebook":
   return guardarEbook(
@@ -1156,11 +1162,12 @@ async function guardarEbook(data, env, json) {
 //Generar Ebook 
 async function generarEbook(data, env, json) {
 
-  const tema = data.tema || "";
+  const tema = (data.tema || "").trim();
   const paginas = parseInt(data.paginas || 30);
 
-  if (!tema.trim()) {
+  if (!tema) {
     return json({
+      ok: false,
       error: "Falta tema del ebook"
     }, 400);
   }
@@ -1173,23 +1180,19 @@ Create a complete ebook in Spanish.
 RULES:
 - Topic: ${tema}
 - Length: approximately ${paginas} pages
-- Must include:
+- Include:
   1. Title
   2. Index
-  3. Chapters (well structured)
+  3. Chapters
   4. Legal page
   5. Conclusion
-- Do not add explanations
-- Do not add notes
 - Return ONLY the ebook content
-
-Format clearly and professionally.
 `;
 
   const ebook = await ai(env, prompt);
 
   return json({
-  success: true,
-  resultado: ebook || ""
-});
+    ok: true,
+    resultado: ebook
+  });
 }
