@@ -822,175 +822,116 @@ async function guardarGuion(data, env, json) {
 
 }
 //Generar Storyboard 
-async function generarStoryboard(data, env, json) {
-
+async function generarStoryboard(data, env) {
   try {
+    const script = data.script || "";
+    const style = data.style || "Realistic";
+    const duration = data.duration || "30 seconds";
 
-    const escenas = parseInt(data.escenas) || 8;
-
-    let estiloVisual = "";
-
-    switch ((data.estilo || "").toLowerCase()) {
-
-      case "realista":
-        estiloVisual = `
-Photorealistic style.
-Natural colors.
-Real camera lenses.
-Authentic lighting.
-`;
-        break;
-
-      case "cinematográfico":
-        estiloVisual = `
-Hollywood cinematic style.
-Epic composition.
-Dramatic lighting.
-Anamorphic lenses.
-`;
-        break;
-
-      case "futurista pixellab45":
-        estiloVisual = `
-PIXELLAB45 futuristic aesthetic.
-Neon blue accents.
-Cyber technology.
-High-tech interfaces.
-Ultra detailed.
-`;
-        break;
-
-      case "cyberpunk":
-        estiloVisual = `
-Cyberpunk world.
-Neon lights.
-Rain.
-Megacity.
-Dark atmosphere.
-`;
-        break;
-
-      case "anime":
-        estiloVisual = `
-Anime style.
-Expressive characters.
-Japanese animation.
-Dynamic compositions.
-`;
-        break;
-
-      case "pixar":
-        estiloVisual = `
-Pixar-inspired 3D animation.
-Expressive faces.
-Soft lighting.
-Colorful world.
-`;
-        break;
-
-      case "cómic":
-        estiloVisual = `
-Comic book illustration.
-Bold outlines.
-Dynamic action.
-Graphic shading.
-`;
-        break;
-
-      case "noir":
-        estiloVisual = `
-Film noir.
-Black and white.
-Hard shadows.
-High contrast.
-`;
-        break;
-
-      case "fantasía":
-        estiloVisual = `
-Epic fantasy.
-Magic.
-Mythical environments.
-Mystical lighting.
-`;
-        break;
-
-      default:
-        estiloVisual = `
-Choose automatically the most appropriate visual style.
-`;
+    if (!script.trim()) {
+      return new Response(JSON.stringify({
+        ok: false,
+        error: "Missing script"
+      }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" }
+      });
     }
 
-    const ai = await env.AI.run(
-      "@cf/meta/llama-3.1-8b-instruct-fp8",
-      {
-        max_tokens: 4000,
-        temperature: 0.6,
-        messages: [
-          {
-            role: "system",
-            content: `
-You are PIXELLAB45 Storyboard Engine.
+    const prompt = `
+You are an expert cinematic storyboard artist and AI image prompt engineer.
 
-Convert an existing script into a professional storyboard.
+Your task is to convert the provided script into a professional AI storyboard.
 
-Never continue the story.
-Never rewrite the script.
-Never explain.
-Never apologize.
+IMPORTANT RULES
 
-Create EXACTLY the requested number of scenes.
+- DO NOT invent a new story.
+- Follow the narration exactly.
+- Keep the same order as the script.
+- Do not summarize.
+- Do not omit information.
+- Divide the script into scenes of approximately 3–5 seconds.
+- Every scene must represent a different visual moment.
+- Avoid repeating camera angles.
+- Avoid repeating compositions.
+- Every VISUAL PROMPT must be ready to send directly to an AI image generator.
+- Every prompt must be highly descriptive and cinematic.
 
-Each scene must contain:
+STYLE
+
+The selected visual style is:
+
+${style}
+
+Respect this style in EVERY scene.
+
+Never change it.
+
+Never mix styles.
+
+Each scene MUST follow EXACTLY this structure:
 
 SCENE X
 
 TIME:
-00:00 - 00:00
+00:00 - 00:04
 
 NARRATION:
+(Text from the script.)
 
 CAMERA:
+(Camera framing.)
+
+CAMERA MOVEMENT:
+(Camera movement.)
 
 LIGHTING:
+(Lighting.)
 
 VISUAL PROMPT:
+(A complete AI image prompt describing the subject, environment, composition, camera lens, depth of field, cinematic lighting, atmosphere, colors, ultra detailed, masterpiece, 8K.)
 
-The VISUAL PROMPT must follow this visual style:
+IMAGE STYLE:
+${style}
 
-${estiloVisual}
+Generate ONLY the storyboard.
 
-Return ONLY the storyboard.
-`
-          },
-          {
-            role: "user",
-            content: `
-Convert the following script into EXACTLY ${escenas} storyboard scenes.
+Do not explain anything.
+
+Do not use Markdown.
 
 SCRIPT:
 
-${data.guion}
-`
-          }
-        ]
-      }
-    );
+${script}
 
-    return json({
-      resultado: ai.response
+VIDEO DURATION:
+
+${duration}
+`;
+
+    const storyboard = await ai(env, prompt);
+
+    return new Response(JSON.stringify({
+      ok: true,
+      storyboard
+    }), {
+      headers: {
+        "Content-Type": "application/json"
+      }
     });
 
   } catch (err) {
-
-    return json({
+    return new Response(JSON.stringify({
       ok: false,
       error: err.message
-    }, 500);
-
+    }), {
+      status: 500,
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
   }
-
-}
+}}
 //guardar storyboard 
 async function guardarStoryboard(data, env, json) {
 
