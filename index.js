@@ -43,23 +43,8 @@ export default {
 
     }
 
-    const tipo =
-      data.tipo || "";
+    const tipo = String(data?.tipo ?? "").trim().toLowerCase();
       
-      if (!tipo) {
-  return json({
-    ok: false,
-    error: "TIPO VACÍO",
-    recibido: data
-  }, 400);
-}
-return json({
-  debug: {
-    raw: data,
-    tipo: data.tipo,
-    tipo_type: typeof data.tipo
-  }
-});
     switch (tipo) {
 
       case "listar-imagenes":
