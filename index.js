@@ -124,15 +124,28 @@ case "script":
     json
   );
   case "imagen":
-  return generarImagen(data, env);
+  return generarImagen(
+    data,
+    env
+  );
 
 case "guardar-imagen":
-  return guardarImagen(data, env);
+  return guardarImagen(
+    data,
+    env
+  );
 
-    }
+default:
+  return json({
+    ok: false,
+    error: "Tipo no válido: " + tipo
+  }, 400);
 
-  }
-};
+} // ← FIN DEL SWITCH
+
+} // ← FIN DE fetch()
+
+}; // ← FIN DE export default
 
 // =====================================
 // CEREBRO IA
