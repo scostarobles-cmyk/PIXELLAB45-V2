@@ -1126,9 +1126,9 @@ async function generarIndice(promptOptimizado, paginas, env) {
   const indice = await ai(env, `
 You are a professional book editor.
 
-Create ONLY the complete structure of a professional ebook.
+Create ONLY the structure of a professional ebook.
 
-Use this optimized writing prompt:
+Use this writing prompt:
 
 ${promptOptimizado}
 
@@ -1137,17 +1137,17 @@ ${paginas} pages.
 
 CRITICAL RULES:
 
-- Return ONLY the outline.
-- Do NOT write any chapter content.
+- Write the entire result in Spanish.
+- Return ONLY the book structure.
+- Do NOT write chapter content.
+- Do NOT write descriptions.
+- Do NOT write bullet lists.
+- Do NOT summarize chapters.
 - Do NOT explain anything.
-- Adapt the structure to the topic.
-- Create between 8 and 15 chapters depending on the subject.
-- Chapters must follow a logical progression.
-- Include practical chapters when appropriate.
 
-The output must follow exactly this format:
+The output must contain ONLY:
 
-TITLE:
+TITLE
 
 COPYRIGHT
 
@@ -1155,17 +1155,19 @@ TABLE OF CONTENTS
 
 INTRODUCTION
 
-CHAPTER 1: ...
+CHAPTER 1: Title
 
-CHAPTER 2: ...
+CHAPTER 2: Title
 
-CHAPTER 3: ...
+CHAPTER 3: Title
 
 ...
 
 CONCLUSION
 
-Return ONLY the outline.
+Choose the number of chapters according to the requested length.
+
+Return ONLY the structure.
 `);
 
   return indice;
