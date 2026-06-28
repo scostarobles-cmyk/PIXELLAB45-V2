@@ -890,7 +890,7 @@ const resultado =
         `<img src="${url}" style="width:100%;border-radius:12px;">`;
 
     }, 300);
-    await fetch(WORKER_URL, {
+    const guardar = await fetch(WORKER_URL, {
   method: "POST",
   headers: {
     "Content-Type": "application/json"
@@ -901,6 +901,12 @@ const resultado =
     imagen: base64
   })
 });
+
+const respuesta = await guardar.json();
+
+if (!guardar.ok) {
+  console.error("Error al guardar:", respuesta);
+}
 
   } catch (error) {
 
