@@ -1054,6 +1054,25 @@ async function generarEbook() {
   }
 }
 
+async function testWorker() {
+
+  const res = await fetch(WORKER_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      tipo: "test",
+      mensaje: "hola desde el front"
+    })
+  });
+
+  const data = await res.json();
+
+  document.getElementById("resultadoTest").innerText =
+    JSON.stringify(data, null, 2);
+}
+
 // MENÚ MÓVIL
 function toggleMenu() {
 

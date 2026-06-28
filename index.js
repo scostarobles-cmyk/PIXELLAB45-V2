@@ -158,6 +158,11 @@ case "guardar-ebook":
     env,
     json
   );
+  case "test":
+  return json({
+    ok: true,
+    recibido: data.mensaje
+  });
 
 default:
   return json({
@@ -1088,7 +1093,7 @@ async function generarEbook(data, env, json) {
 
   const tema = data.tema || "";
   const paginas = data.paginas || "30";
-  const tipo = data.tipo || "";
+  const tipo = data.tipo;
 
   if (!tema.trim()) {
     return json({
