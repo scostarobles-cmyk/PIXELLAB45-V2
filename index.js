@@ -1063,7 +1063,10 @@ async function guardarImagen(data, env) {
 async function generarEbook(data, env, json) {
 
   try {
-
+    const legales = `
+Todos los derechos reservados. Queda prohibida la reproducción total o parcial de este libro, así como su almacenamiento en sistemas de recuperación o transmisión, por cualquier medio o forma, sin la autorización previa y por escrito del autor.
+La información contenida en esta publicación es de carácter educativo e informativo. El autor no asume ninguna responsabilidad por el uso que se haga de dicha información.
+`.trim();
     const tema = (data.tema || "").trim();
     const paginas = parseInt(data.paginas || "30", 10);
 
@@ -1098,7 +1101,8 @@ async function generarEbook(data, env, json) {
     // 4. Unir todo
     const ebook = unirCapitulos(
       indice,
-      capitulos
+      capitulos,
+      legales
     );
 
     // 5. Devolver resultado
@@ -1283,18 +1287,21 @@ async function generarCapitulos(
 // =====================================
 // UNIR CAPÍTULOS
 // =====================================
-function unirCapitulos(indice, capitulos) {
+function unirCapitulos(indice, capitulos, legales) {
 
   let ebook = "";
 
-  // Agregar índice
+  // Portada / índice
   ebook += indice + "\n\n";
 
-  // Agregar capítulos
+  // Capítulos
   for (const capitulo of capitulos) {
     ebook += capitulo.titulo + "\n\n";
     ebook += capitulo.contenido + "\n\n";
   }
+
+  // LEGAL al final (puedes cambiarlo a inicio si quieres)
+  ebook += "\n\n" + legales;
 
   return ebook.trim();
 }
