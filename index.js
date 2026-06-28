@@ -1073,7 +1073,7 @@ async function generarEbook(data, env, json) {
         error: "Falta el tema del ebook"
       }, 400);
     }
-
+     const plan = planificarEbook(paginas);
     // 1. Prompt optimizado
     const promptOptimizado = await generarPrompts(
       tema,
@@ -1083,11 +1083,10 @@ async function generarEbook(data, env, json) {
 
     // 2. Índice
     const indice = await generarIndice(
-      promptOptimizado,
-      paginas,
-      env
-    );
-
+  promptOptimizado,
+  plan,
+  env
+);
     // 3. Capítulos
     const capitulos = await generarCapitulos(
       promptOptimizado,
@@ -1118,10 +1117,39 @@ async function generarEbook(data, env, json) {
   }
 
 }
+
+// =====================================
+// PLANIFICADOR DE EBOOK
+// =====================================
+function planificarEbook(paginas) {
+
+  paginas = parseInt(paginas || 30, 10);
+
+  let capitulos;
+
+  if (paginas <= 5)
+    capitulos = 3;
+  else if (paginas <= 10)
+    capitulos = 5;
+  else if (paginas <= 20)
+    capitulos = 8;
+  else if (paginas <= 35)
+    capitulos = 10;
+  else if (paginas <= 50)
+    capitulos = 12;
+  else
+    capitulos = 15;
+
+  return {
+    paginas,
+    capitulos
+  };
+}
+
 // =====================================
 // GENERAR ÍNDICE EBOOK
 // =====================================
-async function generarIndice(promptOptimizado, paginas, env) {
+async function generarIndice(promptOptimizado, plan, env) {
 
   const indice = await ai(env, `
 You are a professional book editor.
@@ -1133,46 +1161,26 @@ Use this writing prompt:
 ${promptOptimizado}
 
 Approximate length:
-${paginas} pages.
+${plan.paginas} pages.
 
-CRITICAL RULES:
+Generate EXACTLY ${plan.capitulos} chapters.
 
-- Write the entire result in Spanish.
-- Return ONLY the book structure.
-- Do NOT write chapter content.
-- Do NOT write descriptions.
-- Do NOT write bullet lists.
-- Do NOT summarize chapters.
-- Do NOT explain anything.
+The structure must be:
 
-The output must contain ONLY:
+- Title
+- Copyright page
+- Table of contents
+- Introduction
+- EXACTLY ${plan.capitulos} chapters
+- Conclusion
 
-TITLE
-
-COPYRIGHT
-
-TABLE OF CONTENTS
-
-INTRODUCTION
-
-CHAPTER 1: Title
-
-CHAPTER 2: Title
-
-CHAPTER 3: Title
-
-...
-
-CONCLUSION
-
-Choose the number of chapters according to the requested length.
-
-Return ONLY the structure.
+Do not generate any chapter content.
+Return ONLY the complete outline.
 `);
 
   return indice;
-
 }
+
 // =====================================
 // GENERAR CAPÍTULO
 // =====================================
@@ -1180,7 +1188,7 @@ async function generarCapitulo(
   promptOptimizado,
   indice,
   capitulo,
-  paginas,
+  plan,
   env
 ) {
 
@@ -1202,7 +1210,7 @@ Section to write:
 ${capitulo}
 
 Approximate ebook length:
-${paginas} pages.
+${plan.paginas} pages.
 
 CRITICAL RULES:
 
@@ -1216,20 +1224,18 @@ CRITICAL RULES:
 - Include examples when appropriate.
 - Use subsections if necessary.
 - Keep continuity with the rest of the book.
-- Return ONLY the text of this section.
-
-`);
+- Return ONLY the text of this section.`);
 
   return resultado;
-
 }
+
 // =====================================
 // GENERAR TODOS LOS CAPÍTULOS
 // =====================================
 async function generarCapitulos(
   promptOptimizado,
   indice,
-  paginas,
+  plan,
   env
 ) {
 
@@ -1240,32 +1246,29 @@ async function generarCapitulos(
 
   const secciones = lineas.filter(l => {
 
-  const t = l
-    .toLowerCase()
-    .replace(/\*/g, "")
-    .trim();
+    const t = l
+      .toLowerCase()
+      .replace(/\*/g, "")
+      .trim();
 
-  return (
-    t.includes("introducción") ||
-    t.includes("capítulo") ||
-    t.includes("conclusión") ||
-    t.includes("introduction") ||
-    t.includes("chapter") ||
-    t.includes("conclusion")
-  );
-
-
-});
+    return (
+      t.includes("introducción") ||
+      t.includes("capítulo") ||
+      t.includes("conclusión") ||
+      t.includes("introduction") ||
+      t.includes("chapter") ||
+      t.includes("conclusion")
+    );
+  });
 
   const capitulos = [];
 
   for (const seccion of secciones) {
-
     const texto = await generarCapitulo(
       promptOptimizado,
       indice,
       seccion,
-      paginas,
+      plan,
       env
     );
 
@@ -1273,12 +1276,11 @@ async function generarCapitulos(
       titulo: seccion,
       contenido: texto
     });
-
   }
 
   return capitulos;
-
 }
+
 // =====================================
 // UNIR CAPÍTULOS
 // =====================================
@@ -1291,13 +1293,9 @@ function unirCapitulos(indice, capitulos) {
 
   // Agregar capítulos
   for (const capitulo of capitulos) {
-
     ebook += capitulo.titulo + "\n\n";
-
     ebook += capitulo.contenido + "\n\n";
-
   }
 
   return ebook.trim();
-
 }
