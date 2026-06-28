@@ -136,7 +136,6 @@ case "guardar-imagen":
   );
   case "ebook":
   return generarEbook(data, env, json);
-  });
 
 default:
   return json({
