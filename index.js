@@ -382,7 +382,6 @@ async function listarCategoria(
 // =====================================
 // GENERAR PROMT
 // =====================================
-
 async function generarPrompts(tema, formato, env) {
 
   const match = tema.match(/\d+/);
@@ -400,61 +399,63 @@ async function generarPrompts(tema, formato, env) {
 
     case "tiktok":
       reglas = `
-Generate prompts for viral TikTok videos.
+Generate professional AI prompts for viral TikTok videos.
 
 Rules:
-- Strong hook.
 - Vertical 9:16.
-- Short-form video.
+- Short-form content.
+- Strong visual impact.
+- Cinematic quality.
 - High engagement.
-- Trend focused.
+- Optimized for AI video generation.
 `;
       break;
 
     case "instagram":
       reglas = `
-Generate prompts for Instagram content.
+Generate professional AI prompts for Instagram content.
 
 Rules:
-- Optimized for Reels.
-- Highly visual.
-- Attractive composition.
-- Engagement focused.
+- Reels or posts.
+- Visually attractive.
+- Premium aesthetic.
+- Cinematic composition.
+- Optimized for AI image or video generation.
 `;
       break;
 
     case "facebook":
       reglas = `
-Generate prompts for Facebook content.
+Generate professional AI prompts for Facebook content.
 
 Rules:
-- Conversational.
+- Engaging.
 - Shareable.
-- Audience engagement.
-- Easy to understand.
+- Realistic.
+- Professional quality.
 `;
       break;
 
     case "blog":
       reglas = `
-Generate prompts for blog articles.
+Generate professional writing prompts for blog articles.
 
 Rules:
-- SEO focused.
-- Structured.
-- Valuable information.
-- Long-form writing.
+- SEO oriented.
+- Educational.
+- Well structured.
+- Professional writing.
 `;
       break;
 
     case "ebook":
       reglas = `
-Generate prompts for ebooks.
+Generate professional writing prompts for ebooks.
 
 Rules:
 - Educational.
-- Detailed.
 - Chapter oriented.
+- Detailed.
 - Professional.
 `;
       break;
@@ -464,32 +465,57 @@ Rules:
 Generate universal AI prompts.
 
 Rules:
-- Generic.
 - Adaptable.
-- Professional quality.
+- Professional.
+- High quality.
 `;
   }
 
   const resultado = await ai(
     env,
 `
-You are a world-class AI prompt engineer.
+You are one of the world's best AI prompt engineers.
 
 Generate EXACTLY ${cantidad} prompts.
 
 ${reglas}
 
-GENERAL RULES:
+CRITICAL RULES:
 
 - Return ONLY prompts.
 - English only.
+- Never write ideas.
 - Never write stories.
+- Never write scripts.
 - Never write explanations.
 - Never write titles.
 - Never write introductions.
-- Never give instructions to the user.
-- Every prompt must be ready for AI generation.
-- Leave ONE blank line between every prompt.
+- Never write markdown.
+- Never write instructions for a human.
+- Never start with:
+  Create
+  Make
+  Record
+  Show
+  Write
+
+Never use words like:
+trying
+attempt
+attempting
+while
+before
+after
+then
+finally
+because
+but
+
+Each prompt must describe ONE final scene or ONE complete writing objective depending on the selected category.
+
+Every prompt must be professional and immediately usable by an AI.
+
+Leave ONE blank line between every prompt.
 
 OUTPUT FORMAT:
 
