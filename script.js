@@ -974,23 +974,25 @@ if (!guardar.ok) {
 
 async function generarEbook() {
 
-  alert("Antes del fetch");
+  const data = await res.json();
 
-  const res = await fetch(WORKER_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      tipo: "ebook"
-    })
-  });
+clearInterval(fakeProgress);
 
-  alert("Después del fetch");
+barra.style.width = "100%";
+estado.innerText = "✅ Listo";
+
+setTimeout(() => {
+
+  loading.style.display = "none";
+  resultado.innerText = data.resultado || data.mensaje || data.error;
+
+}, 300);
 
   const data = await res.json();
 
-  alert(JSON.stringify(data));
+resultado.innerText = JSON.stringify(data, null, 2);
+
+return;
 
 }
 
