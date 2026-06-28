@@ -972,6 +972,7 @@ if (!guardar.ok) {
 
 }
 //Generar Ebook 
+// Generar Ebook 
 async function generarEbook() {
 
   const tema = document.getElementById("temaEbook").value;
@@ -1035,7 +1036,9 @@ async function generarEbook() {
     setTimeout(() => {
 
       loading.style.display = "none";
-      resultado.innerText = data.resultado || data.error;
+
+      resultado.innerText =
+        data.resultado || data.error || "Sin respuesta";
 
     }, 300);
 
@@ -1047,6 +1050,7 @@ async function generarEbook() {
     estado.innerText = "❌ Error";
 
     resultado.innerText = err.message;
+
   }
 }
 
