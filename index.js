@@ -323,11 +323,24 @@ async function listarImagenes(
   const lista =
     await env.IMAGES.list();
 
-  const imagenes =
-    lista.objects.map(obj => ({
-      nombre: obj.key,
-      url: `${R2_BASE_URL}/${obj.key}`
-    }));
+  const imagenes = lista.objects
+  .filter(obj => {
+
+    const key = obj.key;
+
+    return !(
+      key.startsWith("ideas/") ||
+      key.startsWith("prompts/") ||
+      key.startsWith("visuals/") ||
+      key.startsWith("scripts/") ||
+      key.startsWith("storyboards/")
+    );
+
+  })
+  .map(obj => ({
+    nombre: obj.key,
+    url: `${R2_BASE_URL}/${obj.key}`
+  }));
 
   return json({
     success: true,
