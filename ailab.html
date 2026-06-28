@@ -570,10 +570,76 @@
   <div id="klingPreview"></div>
 
 </div>
-    <div class="ai-card">
-      <h3>Constructor de Ebooks</h3>
-      <p>Asistente para crear ebooks completos.</p>
+<div class="ai-card">
+
+  <h3>📖 Constructor de Ebooks</h3>
+
+  <p>
+    Genera ebooks completos con índice, capítulos,
+    introducción y página legal.
+  </p>
+
+  <label>Tema del ebook</label>
+
+  <textarea
+    id="temaEbook"
+    rows="5"
+    placeholder="Describe el tema del ebook..."></textarea>
+
+  <label>Cantidad aproximada de páginas</label>
+
+  <input
+    type="number"
+    id="paginasEbook"
+    min="5"
+    max="300"
+    value="30">
+
+  <label>Estilo</label>
+
+  <select id="estiloEbook">
+    <option value="automatico">Automático</option>
+    <option value="guia">Guía</option>
+    <option value="curso">Curso</option>
+    <option value="manual">Manual</option>
+    <option value="tutorial">Tutorial</option>
+    <option value="academico">Académico</option>
+    <option value="profesional">Profesional</option>
+  </select>
+
+  <button onclick="generarEbook()">
+    📖 Generar Ebook
+  </button>
+
+  <button onclick="guardarEbook()">
+    💾 Guardar
+  </button>
+
+  <button onclick="copiarEbook()">
+    📋 Copiar
+  </button>
+
+  <div
+    id="loadingEbook"
+    class="loading"
+    style="display:none;">
+
+    <div class="barra">
+      <div
+        id="barraEbook"
+        class="barra-progreso">
+      </div>
     </div>
+
+    <div id="estadoEbook">
+      Generando ebook...
+    </div>
+
+  </div>
+
+  <pre id="resultadoEbook"></pre>
+
+</div>
 </div>
 <div class="section-divider"></div>
 <!-- ===================================== -->
