@@ -792,6 +792,25 @@ async function generarStoryboard() {
       error.message;
   }
 }
+//guardar storyboard 
+async function guardarStoryboard(data, env, json) {
+
+  const contenido = data.contenido || "";
+
+  const nombre =
+    `storyboards/${Date.now()}.txt`;
+
+  await env.IMAGES.put(
+    nombre,
+    contenido
+  );
+
+  return json({
+    mensaje: "✅ Storyboard guardado correctamente"
+  });
+
+}
+//generar imagen 
 async function generarImagen() {
 
   const prompt = document.getElementById("promptImagen").value;

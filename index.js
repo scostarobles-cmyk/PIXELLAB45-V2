@@ -117,6 +117,12 @@ case "script":
     env,
     json
   );
+  case "guardar-storyboard":
+  return guardarStoryboard(
+    data,
+    env,
+    json
+  );
   case "imagen":
   return generarImagen(data, env);
 
@@ -766,6 +772,24 @@ ESCENA X
     .replace(/no puedo[^.]*\./gi, "");
 
   return json({ resultado: output });
+}
+//guardar storyboard 
+async function guardarStoryboard(data, env, json) {
+
+  const contenido = data.contenido || "";
+
+  const nombre =
+    `storyboards/${Date.now()}.txt`;
+
+  await env.IMAGES.put(
+    nombre,
+    contenido
+  );
+
+  return json({
+    mensaje: "✅ Storyboard guardado correctamente"
+  });
+
 }
 //Generar imagen 
 async function generarImagen(data, env) {
