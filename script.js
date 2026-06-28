@@ -972,7 +972,7 @@ if (!guardar.ok) {
 
 }
 
-async function generarEbook() {
+/*async function generarEbook() {
 
   const tema = document.getElementById("temaEbook").value;
   const paginas = document.getElementById("paginasEbook").value;
@@ -1004,6 +1004,9 @@ async function generarEbook() {
       "❌ Error: " + err.message;
 
   }
+}*/
+async function generarEbook() {
+  alert("BOTÓN FUNCIONA");
 }
 // MENÚ MÓVIL
 function toggleMenu() {
