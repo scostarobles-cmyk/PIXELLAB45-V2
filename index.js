@@ -1190,6 +1190,7 @@ Format clearly and professionally.
   const ebook = await ai(env, prompt);
 
   return json({
-    resultado: ebook
-  });
+  success: true,
+  resultado: ebook || ""
+});
 }
