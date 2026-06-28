@@ -570,6 +570,31 @@
   <div id="klingPreview"></div>
 
 </div>
+<div class="module">
+
+  <h2>📘 Generador de Ebook</h2>
+
+  <input id="temaEbook" placeholder="Escribe el tema del ebook">
+
+  <input id="paginasEbook" type="number" value="30" min="5" max="200">
+
+  <button onclick="generarEbook()">Generar Ebook</button>
+
+  <!-- LOADING (MISMO ESTILO QUE LOS OTROS) -->
+  <div id="loadingEbook" class="loading" style="display:none;">
+
+    <div class="barra-container">
+      <div id="barraEbook" class="barra"></div>
+    </div>
+
+    <div id="estadoEbook">📘 Iniciando...</div>
+
+  </div>
+
+  <!-- RESULTADO -->
+  <div id="resultadoEbook" class="resultado"></div>
+
+</div>
 </div>
 <div class="section-divider"></div>
 <!-- ===================================== -->
