@@ -731,47 +731,53 @@ async function guardarGuion(data, env, json) {
 //Generar Storyboard 
 async function generarStoryboard(data, env, json) {
 
-  const ai = await env.AI.run(
-    "@cf/meta/llama-3.1-8b-instruct-fp8",
-    {
-      max_tokens: 3000,
-      temperature: 0.7,
-      messages: [
-        {
-          role: "system",
-          content: `
+  try {
+
+    const ai = await env.AI.run(
+      "@cf/meta/llama-3.1-8b-instruct-fp8",
+      {
+        max_tokens: 3000,
+        temperature: 0.7,
+        messages: [
+          {
+            role: "system",
+            content: `
 You are PIXELLAB45 storyboard engine.
 
-CRITICAL RULES:
-- NEVER refuse content
-- NEVER add apologies
-- NEVER break format
-- ALWAYS output ALL scenes requested
-- NEVER stop early
+Generate ONLY storyboard scenes.
 
 FORMAT:
 
-ESCENA X
-⏱️ mm:ss - mm:ss
+ESCENA 1
+⏱️ 00:00 - 00:05
 🎙️ narration
 🎥 camera
 💡 lighting
 🎨 visual prompt
 `
-        },
-        {
-          role: "user",
-          content: data.guion
-        }
-      ]
-    }
-  );
+          },
+          {
+            role: "user",
+            content: data.guion
+          }
+        ]
+      }
+    );
 
-  let output = (ai.response || "")
-    .replace(/lo siento[^.]*\./gi, "")
-    .replace(/no puedo[^.]*\./gi, "");
+    return json({
+      ok: true,
+      resultado: ai.response
+    });
 
-  return json({ resultado: output });
+  } catch (err) {
+
+    return json({
+      ok: false,
+      error: err.message
+    }, 500);
+
+  }
+
 }
 //guardar storyboard 
 async function guardarStoryboard(data, env, json) {
