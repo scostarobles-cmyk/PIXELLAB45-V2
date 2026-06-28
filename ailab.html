@@ -619,23 +619,64 @@
     📋 Copiar
   </button>
 
+<div class="ai-card">
+
+  <h3>📘 Constructor de Ebooks</h3>
+
+  <textarea
+    id="temaEbook"
+    placeholder="Tema del ebook..."></textarea>
+
+  <input
+    type="number"
+    id="paginasEbook"
+    min="5"
+    max="300"
+    value="30"
+    placeholder="Cantidad de páginas">
+
+  <button onclick="generarEbook()">
+    Generar Ebook
+  </button>
+
+  <button onclick="guardarEbook()">
+    Guardar
+  </button>
+
+  <button onclick="copiarEbook()">
+    Copiar
+  </button>
+
+  <!-- Animación -->
+
   <div
     id="loadingEbook"
-    class="loading"
+    class="loading-box"
     style="display:none;">
 
-    <div class="barra">
-      <div
-        id="barraEbook"
-        class="barra-progreso">
-      </div>
+    <div class="loading-text" id="estadoEbook">
+      📘 Analizando tema...
     </div>
 
-    <div id="estadoEbook">
-      Generando ebook...
+    <div class="barra-fondo">
+
+      <div
+        class="barra-progreso"
+        id="barraEbook">
+      </div>
+
     </div>
 
   </div>
+
+  <!-- Resultado -->
+
+  <pre
+    id="resultadoEbook"
+    class="resultado-box">
+  </pre>
+
+</div>
 
   <pre id="resultadoEbook"></pre>
 
