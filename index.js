@@ -1059,71 +1059,240 @@ async function guardarImagen(data, env) {
   }
 
 }
-
+// gerar ebooks
 async function generarEbook(data, env, json) {
+
   try {
+
     const tema = (data.tema || "").trim();
     const paginas = parseInt(data.paginas || "30", 10);
 
     if (!tema) {
       return json({
         ok: false,
-        error: "Falta el tema del ebook",
+        error: "Falta el tema del ebook"
       }, 400);
     }
 
-    // 1. Generar el prompt optimizado con el módulo de prompts
-    const promptOptimizado = await generarPrompts(tema, "ebook", env);
+    // 1. Prompt optimizado
+    const promptOptimizado = await generarPrompts(
+      tema,
+      "ebook",
+      env
+    );
 
-    // 2. Usar el prompt optimizado para generar el ebook
-    const ebook = await ai(
-  env,
-`
-You are a professional bestselling ebook writer.
+    // 2. Índice
+    const indice = await generarIndice(
+      promptOptimizado,
+      paginas,
+      env
+    );
 
-Write a complete professional ebook in Spanish.
+    // 3. Capítulos
+    const capitulos = await generarCapitulos(
+      promptOptimizado,
+      indice,
+      paginas,
+      env
+    );
+
+    // 4. Unir todo
+    const ebook = unirCapitulos(
+      indice,
+      capitulos
+    );
+
+    // 5. Devolver resultado
+    return json({
+      ok: true,
+      resultado: ebook
+    });
+
+  } catch (err) {
+
+    return json({
+      ok: false,
+      error: err.message || String(err)
+    }, 500);
+
+  }
+
+}
+// =====================================
+// GENERAR ÍNDICE EBOOK
+// =====================================
+async function generarIndice(promptOptimizado, paginas, env) {
+
+  const indice = await ai(env, `
+You are a professional book editor.
+
+Create ONLY the complete structure of a professional ebook.
+
+Use this optimized writing prompt:
+
+${promptOptimizado}
 
 Approximate length:
 ${paginas} pages.
 
-Use this optimized writing prompt as the foundation of the entire book:
+CRITICAL RULES:
+
+- Return ONLY the outline.
+- Do NOT write any chapter content.
+- Do NOT explain anything.
+- Adapt the structure to the topic.
+- Create between 8 and 15 chapters depending on the subject.
+- Chapters must follow a logical progression.
+- Include practical chapters when appropriate.
+
+The output must follow exactly this format:
+
+TITLE:
+
+COPYRIGHT
+
+TABLE OF CONTENTS
+
+INTRODUCTION
+
+CHAPTER 1: ...
+
+CHAPTER 2: ...
+
+CHAPTER 3: ...
+
+...
+
+CONCLUSION
+
+Return ONLY the outline.
+`);
+
+  return indice;
+
+}
+// =====================================
+// GENERAR CAPÍTULO
+// =====================================
+async function generarCapitulo(
+  promptOptimizado,
+  indice,
+  capitulo,
+  paginas,
+  env
+) {
+
+  const resultado = await ai(env, `
+You are a professional bestselling book writer.
+
+Write ONLY the requested section of the ebook.
+
+Optimized writing prompt:
 
 ${promptOptimizado}
 
-CRITICAL INSTRUCTIONS:
+Complete ebook outline:
 
-- Expand the optimized prompt into a complete professional book.
-- Develop every idea in depth.
-- Each chapter should be several well-developed paragraphs.
-- Explain concepts clearly with examples when appropriate.
-- Write naturally like a real published book.
-- Maintain coherence between chapters.
-- Avoid repeating information.
-- Do not summarize chapters.
-- The total length should be close to the requested number of pages.
+${indice}
 
-The ebook must contain:
+Section to write:
 
-- Professional title
-- Copyright page
-- Table of contents
-- Introduction
-- Well-developed chapters
-- Practical examples where appropriate
-- Conclusion
+${capitulo}
 
-Return ONLY the ebook.
-`
-);
+Approximate ebook length:
+${paginas} pages.
 
-    return json({
-      ok: true,
-      resultado: ebook,
+CRITICAL RULES:
+
+- Write ONLY the requested section.
+- Do NOT write the next chapter.
+- Do NOT repeat the table of contents.
+- Do NOT write the conclusion unless requested.
+- Write in Spanish.
+- Use a professional, fluent and engaging style.
+- Develop the topic thoroughly.
+- Include examples when appropriate.
+- Use subsections if necessary.
+- Keep continuity with the rest of the book.
+- Return ONLY the text of this section.
+
+`);
+
+  return resultado;
+
+}
+// =====================================
+// GENERAR TODOS LOS CAPÍTULOS
+// =====================================
+async function generarCapitulos(
+  promptOptimizado,
+  indice,
+  paginas,
+  env
+) {
+
+  const lineas = indice
+    .split("\n")
+    .map(l => l.trim())
+    .filter(Boolean);
+
+  const secciones = lineas.filter(l => {
+
+  const t = l.toLowerCase();
+
+  return (
+    t.startsWith("introducción") ||
+    t.startsWith("capítulo") ||
+    t.startsWith("conclusión") ||
+    t.startsWith("introduction") ||
+    t.startsWith("chapter") ||
+    t.startsWith("conclusion")
+  );
+
+});
+  );
+
+  const capitulos = [];
+
+  for (const seccion of secciones) {
+
+    const texto = await generarCapitulo(
+      promptOptimizado,
+      indice,
+      seccion,
+      paginas,
+      env
+    );
+
+    capitulos.push({
+      titulo: seccion,
+      contenido: texto
     });
-  } catch (err) {
-    return json({
-      ok: false,
-      error: err.message || String(err),
-    }, 500);
+
   }
+
+  return capitulos;
+
+}
+// =====================================
+// UNIR CAPÍTULOS
+// =====================================
+function unirCapitulos(indice, capitulos) {
+
+  let ebook = "";
+
+  // Agregar índice
+  ebook += indice + "\n\n";
+
+  // Agregar capítulos
+  for (const capitulo of capitulos) {
+
+    ebook += capitulo.titulo + "\n\n";
+
+    ebook += capitulo.contenido + "\n\n";
+
+  }
+
+  return ebook.trim();
+
 }
