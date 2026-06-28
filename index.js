@@ -1240,16 +1240,20 @@ async function generarCapitulos(
 
   const secciones = lineas.filter(l => {
 
-  const t = l.toLowerCase();
+  const t = l
+    .toLowerCase()
+    .replace(/\*/g, "")
+    .trim();
 
   return (
-    t.startsWith("introducción") ||
-    t.startsWith("capítulo") ||
-    t.startsWith("conclusión") ||
-    t.startsWith("introduction") ||
-    t.startsWith("chapter") ||
-    t.startsWith("conclusion")
+    t.includes("introducción") ||
+    t.includes("capítulo") ||
+    t.includes("conclusión") ||
+    t.includes("introduction") ||
+    t.includes("chapter") ||
+    t.includes("conclusion")
   );
+
 
 });
 
