@@ -795,64 +795,44 @@ async function generarStoryboard() {
 //guardar storyboard 
 async function guardarStoryboard() {
 
-  const storyboard = document.getElementById("resultadoStoryboard").value;
+  const storyboard =
+    document.getElementById("resultadoStoryboard").innerText;
 
   if (!storyboard.trim()) {
     alert("Primero genera un storyboard.");
     return;
   }
 
-  const nombre = prompt("Nombre del storyboard:");
+  const res = await fetch(WORKER_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      tipo: "guardar-storyboard",
+      contenido: storyboard
+    })
+  });
 
-  if (!nombre) return;
+  const data = await res.json();
 
-  try {
-
-    const res = await fetch(`${WORKER_URL}?action=guardar-texto`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      ...FETCH_CONFIG,
-      body: JSON.stringify({
-        categoria: "storyboards",
-        nombre,
-        contenido: storyboard
-      })
-    });
-
-    const data = await res.json();
-
-    if (data.ok) {
-      alert("✅ Storyboard guardado");
-    } else {
-      alert(data.error || "Error al guardar");
-    }
-
-  } catch (err) {
-    alert("Error de conexión");
-  }
+  alert(data.mensaje || data.error);
 
 }
 //Copiar storyboard 
 async function copiarStoryboard() {
 
-  const storyboard = document.getElementById("resultadoStoryboard").value.trim();
+  const storyboard =
+    document.getElementById("resultadoStoryboard").innerText;
 
-  if (!storyboard) {
+  if (!storyboard.trim()) {
     alert("Primero genera un storyboard.");
     return;
   }
 
-  try {
-    await navigator.clipboard.writeText(storyboard);
-    alert("✅ Storyboard copiado");
-  } catch (err) {
-    const textarea = document.getElementById("resultadoStoryboard");
-    textarea.select();
-    document.execCommand("copy");
-    alert("✅ Storyboard copiado");
-  }
+  await navigator.clipboard.writeText(storyboard);
+
+  alert("✅ Storyboard copiado");
 
 }
 //generar imagen 

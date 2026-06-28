@@ -822,54 +822,39 @@ async function guardarGuion(data, env, json) {
 
 }
 //Generar Storyboard 
-async function generarStoryboard(data, env) {
-  try {
-    const script = data.script || "";
-    const style = data.style || "Realistic";
-    const duration = data.duration || "30 seconds";
+async function generarStoryboard(data, env, json) {
 
-    if (!script.trim()) {
-      return new Response(JSON.stringify({
-        ok: false,
-        error: "Missing script"
-      }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" }
-      });
-    }
+  const guion = data.guion || "";
+  const escenas = data.escenas || "8";
+  const estilo = data.estilo || "Realista";
 
-    const prompt = `
-You are an expert cinematic storyboard artist and AI image prompt engineer.
+  if (!guion.trim()) {
+    return json({
+      error: "Falta el guion"
+    }, 400);
+  }
 
-Your task is to convert the provided script into a professional AI storyboard.
+  const prompt = `
+You are an expert storyboard artist.
 
-IMPORTANT RULES
+Convert the following script into a professional storyboard.
 
-- DO NOT invent a new story.
-- Follow the narration exactly.
-- Keep the same order as the script.
-- Do not summarize.
-- Do not omit information.
-- Divide the script into scenes of approximately 3–5 seconds.
-- Every scene must represent a different visual moment.
-- Avoid repeating camera angles.
-- Avoid repeating compositions.
-- Every VISUAL PROMPT must be ready to send directly to an AI image generator.
-- Every prompt must be highly descriptive and cinematic.
+RULES
 
-STYLE
+- Follow the script exactly.
+- Do not invent a different story.
+- Generate EXACTLY ${escenas} scenes.
+- Respect the selected visual style.
+- Return ONLY the storyboard.
+- No introductions.
+- No explanations.
+- No markdown.
 
-The selected visual style is:
+VISUAL STYLE
 
-${style}
+${estilo}
 
-Respect this style in EVERY scene.
-
-Never change it.
-
-Never mix styles.
-
-Each scene MUST follow EXACTLY this structure:
+Each scene must have EXACTLY this format:
 
 SCENE X
 
@@ -877,70 +862,41 @@ TIME:
 00:00 - 00:04
 
 NARRATION:
-(Text from the script.)
+
+...
 
 CAMERA:
-(Camera framing.)
 
-CAMERA MOVEMENT:
-(Camera movement.)
+...
 
 LIGHTING:
-(Lighting.)
+
+...
 
 VISUAL PROMPT:
-(A complete AI image prompt describing the subject, environment, composition, camera lens, depth of field, cinematic lighting, atmosphere, colors, ultra detailed, masterpiece, 8K.)
 
-IMAGE STYLE:
-${style}
-
-Generate ONLY the storyboard.
-
-Do not explain anything.
-
-Do not use Markdown.
+...
 
 SCRIPT:
 
-${script}
-
-VIDEO DURATION:
-
-${duration}
+${guion}
 `;
 
-    const storyboard = await ai(env, prompt);
+  const storyboard = await ai(env, prompt);
 
-    return new Response(JSON.stringify({
-      ok: true,
-      storyboard
-    }), {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
+  return json({
+    resultado: storyboard
+  });
 
-  } catch (err) {
-    return new Response(JSON.stringify({
-      ok: false,
-      error: err.message
-    }), {
-      status: 500,
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-  }
 }
-//guardar storyboard 
 // =====================================
 // GUARDAR STORYBOARD
 // =====================================
 async function guardarStoryboard(data, env, json) {
 
-  const contenido = (data.contenido || "").trim();
+  const contenido = data.contenido || "";
 
-  if (!contenido) {
+  if (!contenido.trim()) {
     return json({
       ok: false,
       error: "Storyboard vacío"
@@ -953,7 +909,7 @@ async function guardarStoryboard(data, env, json) {
 
   return json({
     ok: true,
-    mensaje: "✅ Storyboard guardado correctamente"
+    mensaje: "✅ Storyboard guardado"
   });
 
 }
