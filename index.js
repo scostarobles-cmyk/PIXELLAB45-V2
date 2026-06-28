@@ -1150,7 +1150,6 @@ function planificarEbook(paginas) {
 // GENERAR ÍNDICE EBOOK
 // =====================================
 async function generarIndice(promptOptimizado, plan, env) {
-
   const indice = await ai(env, `
 You are a professional book editor.
 
@@ -1170,17 +1169,15 @@ The structure must be:
 - Title
 - Copyright page
 - Table of contents
-- Introduction
+- Introduction (only one introduction)
 - EXACTLY ${plan.capitulos} chapters
-- Conclusion
+- Conclusion (only one conclusion)
 
 Do not generate any chapter content.
 Return ONLY the complete outline.
 `);
-
   return indice;
 }
-
 // =====================================
 // GENERAR CAPÍTULO
 // =====================================
@@ -1191,7 +1188,6 @@ async function generarCapitulo(
   plan,
   env
 ) {
-
   const resultado = await ai(env, `
 You are a professional bestselling book writer.
 
@@ -1212,6 +1208,9 @@ ${capitulo}
 Approximate ebook length:
 ${plan.paginas} pages.
 
+Target number of chapters:
+${plan.capitulos}
+
 CRITICAL RULES:
 
 - Write ONLY the requested section.
@@ -1219,7 +1218,7 @@ CRITICAL RULES:
 - Do NOT repeat the table of contents.
 - Do NOT write the conclusion unless requested.
 - Write in Spanish.
-- Use a professional, fluent and engaging style.
+- Use a professional, fluent, and engaging style.
 - Develop the topic thoroughly.
 - Include examples when appropriate.
 - Use subsections if necessary.
@@ -1228,7 +1227,6 @@ CRITICAL RULES:
 
   return resultado;
 }
-
 // =====================================
 // GENERAR TODOS LOS CAPÍTULOS
 // =====================================
