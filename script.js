@@ -971,6 +971,40 @@ if (!guardar.ok) {
   }
 
 }
+
+async function generarEbook() {
+
+  const tema = document.getElementById("temaEbook").value;
+  const paginas = document.getElementById("paginasEbook").value;
+
+  const resultado = document.getElementById("resultadoEbook");
+
+  try {
+
+    const res = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        tipo: "ebook",
+        tema,
+        paginas
+      })
+    });
+
+    const data = await res.json();
+
+    resultado.innerText =
+      data.mensaje || JSON.stringify(data, null, 2);
+
+  } catch (err) {
+
+    resultado.innerText =
+      "❌ Error: " + err.message;
+
+  }
+}
 // MENÚ MÓVIL
 function toggleMenu() {
 
