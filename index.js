@@ -1250,7 +1250,6 @@ async function generarCapitulos(
   );
 
 });
-  );
 
   const capitulos = [];
 
