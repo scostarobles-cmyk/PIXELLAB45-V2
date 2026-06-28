@@ -135,11 +135,10 @@ case "guardar-imagen":
     env
   );
   case "ebook":
-  return generarEbook(
-    data,
-    env,
-    json
-  );
+  return json({
+    debug: "ENTRÓ A EBOOK",
+    data_recibida: data
+  });
 
 case "guardar-ebook":
   return guardarEbook(
