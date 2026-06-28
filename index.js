@@ -1088,7 +1088,7 @@ async function generarEbook(data, env, json) {
 
   const tema = data.tema || "";
   const paginas = data.paginas || "30";
-  const tipo = data.tipo || "automatico";
+  const tipo = data.tipo || "";
 
   if (!tema.trim()) {
     return json({
