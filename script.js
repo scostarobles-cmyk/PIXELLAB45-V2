@@ -1044,27 +1044,45 @@ async function listarEbooks() {
 
   const select = document.getElementById("ebookSeleccion");
 
-  select.innerHTML = '<option value="">📖 Seleccionar Ebook...</option>';
+  select.innerHTML = '<option>Cargando...</option>';
 
-  const res = await fetch(`${WORKER_URL}?tipo=listar-ebooks`);
-  const data = await res.json();
+  try {
 
-  if (!data.ok) return;
+    const res = await fetch(`${WORKER_URL}?tipo=listar-ebooks`);
 
-  data.ebooks.forEach(ebook => {
+    const data = await res.json();
 
-    const option = document.createElement("option");
+    if (!data.ok) {
 
-    option.value = ebook.ruta;
+      select.innerHTML = `<option>${data.error}</option>`;
+      return;
 
-    option.textContent = ebook.nombre;
+    }
 
-    select.appendChild(option);
+    select.innerHTML = '<option value="">📖 Seleccionar Ebook...</option>';
 
-  });
+    data.ebooks.forEach(ebook => {
+
+      select.innerHTML += `
+        <option value="${ebook.ruta}">
+          ${ebook.nombre}
+        </option>
+      `;
+
+    });
+
+    if (data.ebooks.length === 0) {
+      select.innerHTML = '<option>No hay ebooks</option>';
+    }
+
+  } catch (err) {
+
+    select.innerHTML = `<option>Error: ${err.message}</option>`;
+
+  }
 
 }
-//desplegable del ebook 
+//desplegable del ebook
 document.addEventListener("DOMContentLoaded", () => {
     listarEbooks();
 });
