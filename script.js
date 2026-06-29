@@ -13,7 +13,7 @@ let ebookActual = "";
 let estructuraEbook = null;
 //Galería completa 
 async function cargarGaleriaCompleta() {
- 
+
   const contenedor =
     document.getElementById("galeriaCompleta");
 
@@ -1194,34 +1194,49 @@ function analizarEbook(contenido) {
         capitulos: 0
     };
 
-    const inicio = contenido.indexOf("===METADATA===");
-    const fin = contenido.indexOf("===LIBRO===");
-
-    if (inicio === -1 || fin === -1) {
-        return { ok: false, error: "No se encontraron metadatos" };
+    if (!contenido) {
+        return { ok: false, error: "Contenido vacío" };
     }
 
-    const bloque = contenido
-        .substring(inicio, fin)
-        .replace("===METADATA===", "")
-        .trim();
+    const inicio = contenido.indexOf("METADATOS:");
+    const fin = contenido.indexOf("====================================");
 
-    const get = (key) => {
-        const regex = new RegExp(`${key}:\\s*([^\\n]*)`, "i");
-        const match = bloque.match(regex);
-        return match ? match[1].trim() : "";
-    };
+    if (inicio === -1) {
+        return { ok: false, error: "No se encontró METADATOS" };
+    }
 
-    estructuraEbook.titulo = get("TITULO");
-    estructuraEbook.subtitulo = get("SUBTITULO");
-    estructuraEbook.descripcion = get("DESCRIPCION");
-    estructuraEbook.autor = get("AUTOR");
-    estructuraEbook.fecha = get("FECHA");
-    estructuraEbook.idioma = get("IDIOMA");
-    estructuraEbook.version = get("VERSION");
-    estructuraEbook.capitulos = parseInt(get("CAPITULOS")) || 0;
+    let bloque = contenido.slice(inicio);
 
-    return { ok: true, estructuraEbook };
+    // Extraer JSON entre llaves
+    const jsonMatch = bloque.match(/\{[\s\S]*?\}/);
+
+    if (!jsonMatch) {
+        return { ok: false, error: "No se encontró JSON de metadatos" };
+    }
+
+    try {
+        const meta = JSON.parse(jsonMatch[0]);
+
+        estructuraEbook.titulo = meta.titulo || "";
+        estructuraEbook.subtitulo = meta.subtitulo || "";
+        estructuraEbook.descripcion = meta.descripcion || "";
+        estructuraEbook.autor = meta.autor || "";
+        estructuraEbook.fecha = meta.fecha || "";
+        estructuraEbook.idioma = meta.idioma || "";
+        estructuraEbook.version = meta.version || "";
+        estructuraEbook.capitulos = parseInt(meta.capitulos) || 0;
+
+        return {
+            ok: true,
+            estructuraEbook
+        };
+
+    } catch (err) {
+        return {
+            ok: false,
+            error: "Error parseando JSON de metadatos"
+        };
+    }
 }
 // MENÚ MÓVIL
 function toggleMenu() {
