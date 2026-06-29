@@ -1262,40 +1262,49 @@ You never add text outside JSON.
 
 async function generarIntroduccion(concepto, indice, env) {
 
+  if (!concepto || !indice) {
+    throw new Error("Falta tema o índice para la introducción");
+  }
+
   const prompt = `
-Write ONLY the introduction of the ebook.
+You are a professional book writer.
+
+Write ONLY the introduction of an ebook.
 
 CRITICAL RULES:
-- Write ONLY in Spanish.
-- No English.
+- Return ONLY the introduction text.
 - No titles.
-- No explanations.
 - No markdown.
+- No explanations.
+- No chapter content.
+- No conclusions.
 
-BOOK TOPIC:
-${concepto}
+The introduction must:
+- Present the topic clearly.
+- Be engaging.
+- Prepare the reader for the book.
+- Be 1 to 3 paragraphs max.
 
-INDEX:
-${JSON.stringify(indice)}
+BOOK INFO:
+Topic: ${concepto}
 
-INSTRUCTIONS:
-- Introduce the topic clearly.
-- Set context for the book.
-- Do not start chapters.
-- Do not summarize the whole book.
+INDEX (for context only):
+${JSON.stringify(indice, null, 2)}
 `;
 
-  const res = await env.AI.run(
+  const response = await env.AI.run(
     "@cf/meta/llama-3.1-8b-instruct-fp8",
     {
       messages: [
-        {
-          role: "system",
-          content: `
-You are a professional Spanish book writer.
+      {
+  role: "system",
+  content: `
+You are a professional book writing engine.
 You ALWAYS write in Spanish.
+Never use English.
+Only output the requested section.
 `
-        },
+},
         {
           role: "user",
           content: prompt
@@ -1306,7 +1315,8 @@ You ALWAYS write in Spanish.
     }
   );
 
-  return res.response;
+  return response.response;
+
 }
 // =====================================
 // BLOQUE 4
