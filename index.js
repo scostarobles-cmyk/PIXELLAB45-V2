@@ -1465,68 +1465,94 @@ No extras.
 // ENSAMBLADOR DEL EBOOK
 // =====================================
 
-function ensamblarEbook(
-  indice, 
-  capitulos, 
-  conclusion, 
-  introduccion, 
-  legales, 
-  titulo, 
-  subtitulo, 
-  descripcion, 
-  autor, 
-  fecha
+async function ensamblarEbook(
+  indice,
+  capitulos,
+  conclusion,
+  introduccion,
+  legales,
+  titulo,
+  subtitulo,
+  descripcion,
+  autor,
+  fecha,
+  env,
+  json
 ) {
+
   let libro = "";
 
-  // METADATOS (bloque JSON)
+  // =========================
+  // METADATOS
+  // =========================
   const metadatos = {
+    tipo: "ebook",
     titulo: titulo || "",
     subtitulo: subtitulo || "",
     descripcion: descripcion || "",
     autor: autor || "Desconocido",
-    fecha: fecha || new Date().toISOString().split('T')[0],
+    fecha: fecha || new Date().toISOString().split("T")[0],
+    idioma: "es"
   };
+
   libro += "METADATOS:\n";
   libro += JSON.stringify(metadatos, null, 2) + "\n\n";
   libro += "====================================\n\n";
 
-  // PORTADA (virtual)
-  libro += `${titulo}\n`;
-  libro += `${subtitulo}\n\n`;
-  libro += `${descripcion}\n\n`;
+  // PORTADA
+  libro += `${titulo || ""}\n`;
+  libro += `${subtitulo || ""}\n\n`;
+  libro += `${descripcion || ""}\n\n`;
   libro += "====================================\n\n";
 
-  // PÁGINA LEGAL
+  // LEGAL
   libro += "AVISO LEGAL\n\n";
-  libro += legales + "\n\n";
+  libro += (legales || "") + "\n\n";
   libro += "====================================\n\n";
 
   // ÍNDICE
   libro += "ÍNDICE\n\n";
-  indice.indice.forEach(item => {
-    libro += `Capítulo ${item.capitulo}: ${item.titulo}\n`;
+
+  const itemsIndice = indice?.indice || [];
+  itemsIndice.forEach((item, i) => {
+    libro += `Capítulo ${item?.capitulo ?? i + 1}: ${item?.titulo || ""}\n`;
   });
 
   libro += "\n====================================\n\n";
 
   // INTRODUCCIÓN
   libro += "INTRODUCCIÓN\n\n";
-  libro += introduccion + "\n\n";
+  libro += (introduccion || "") + "\n\n";
   libro += "====================================\n\n";
 
   // CAPÍTULOS
-  capitulos.forEach((cap, i) => {
-    libro += `CAPÍTULO ${i + 1}: ${cap.titulo || ""}\n\n`;
-    libro += cap.contenido + "\n\n";
+  (capitulos || []).forEach((cap, i) => {
+    libro += `CAPÍTULO ${i + 1}: ${cap?.titulo || ""}\n\n`;
+    libro += (cap?.contenido || "") + "\n\n";
     libro += "------------------------------------\n\n";
   });
 
   // CONCLUSIÓN
   libro += "CONCLUSIÓN\n\n";
-  libro += conclusion + "\n\n";
+  libro += (conclusion || "") + "\n";
 
-  return libro;
+  // =========================
+  // GUARDADO EN R2
+  // =========================
+  const nombre = `ebooks/${Date.now()}.txt`;
+
+  await env.IMAGES.put(nombre, libro);
+
+  // =========================
+  // DEVOLVER PARA UI (ESTO TE FALTABA)
+  // =========================
+  return json({
+    ok: true,
+    mensaje: "✅ Ebook generado y guardado",
+    archivo: nombre,
+    metadatos,
+    contenido: libro   // 👈 ESTO ES LO QUE TE LO VUELVE A MOSTRAR
+  });
 }
 // =====================================
 // BLOQUE 7
