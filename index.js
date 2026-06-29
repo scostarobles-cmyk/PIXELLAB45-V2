@@ -1207,7 +1207,7 @@ RULES FOR INDEX:
 - Educational flow.
 
 BOOK INFO:
-Topic: ${tema}
+Topic: ${concepto}
 Pages: ${plan.paginasTotales}
 Chapters: ${plan.capitulos}
 Pages per chapter: ${plan.paginasPorCapitulo}
@@ -1286,7 +1286,7 @@ The introduction must:
 - Be 1 to 3 paragraphs max.
 
 BOOK INFO:
-Topic: ${tema}
+Topic: ${concepto}
 
 INDEX (for context only):
 ${JSON.stringify(indice, null, 2)}
@@ -1354,7 +1354,7 @@ Title: ${capituloInfo.titulo}
 Objective: ${capituloInfo.objetivo}
 
 BOOK TOPIC:
-${tema}
+${concepto}
 
 PREVIOUS CHAPTER CONTEXT:
 ${capituloAnterior || "None (this is the first chapter)"}
@@ -1423,7 +1423,7 @@ The conclusion must:
 - Give a final reflection.
 
 BOOK TOPIC:
-${tema}
+${concepto}
 
 INDEX (context only):
 ${JSON.stringify(indice, null, 2)}
