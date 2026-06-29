@@ -1150,7 +1150,6 @@ function planificarEbook(paginas) {
   };
 }
 
-
 // =====================================
 // GENERAR ÍNDICE EBOOK
 // =====================================
@@ -1165,22 +1164,22 @@ Usa este prompt de escritura:
 
 ${promptOptimizado}
 
-Genera SOLAMENTE el índice.
+Genera SOLAMENTE el índice del libro.
 
 REGLAS OBLIGATORIAS:
 
 - No escribas el título.
-- No escribas la página legal.
 - No escribas copyright.
-- No escribas introducción.
-- No escribas conclusión.
+- No escribas página legal.
 - No escribas contenido.
 - No escribas explicaciones.
 - No escribas texto en inglés.
+- No escribas viñetas.
+- No escribas numeración adicional.
+- Los títulos de los capítulos deben ser claros y cortos (máximo 10 palabras).
+- Genera EXACTAMENTE ${plan.capitulos} capítulos.
 
-Genera EXACTAMENTE ${plan.capitulos} capítulos.
-
-Formato:
+Devuelve EXACTAMENTE este formato:
 
 ÍNDICE
 
@@ -1190,11 +1189,15 @@ Capítulo 1: ...
 
 Capítulo 2: ...
 
+Capítulo 3: ...
+
 ...
 
 Capítulo ${plan.capitulos}: ...
 
 Conclusión
+
+No agregues absolutamente nada más.
 `);
 }
 // =====================================
