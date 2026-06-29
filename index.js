@@ -1123,203 +1123,532 @@ La información contenida en esta publicación es de carácter educativo e infor
 }
 
 // =====================================
-// PLANIFICADOR DE EBOOK
+// BLOQUE 1
+// PLANIFICADOR DEL EBOOK
 // =====================================
+
 function planificarEbook(paginas) {
 
   paginas = parseInt(paginas || 30, 10);
 
-  let capitulos;
+  if (isNaN(paginas))
+    paginas = 30;
 
-  if (paginas <= 5)
-    capitulos = 3;
-  else if (paginas <= 10)
-    capitulos = 5;
-  else if (paginas <= 20)
-    capitulos = 8;
-  else if (paginas <= 35)
-    capitulos = 10;
-  else if (paginas <= 50)
-    capitulos = 12;
-  else
-    capitulos = 15;
+  if (paginas < 5)
+    paginas = 5;
 
-  return {
-    paginas,
-    capitulos
+  if (paginas > 200)
+    paginas = 200;
+
+  const paginasFijas = {
+    portada: 1,
+    legales: 1,
+    indice: 1,
+    introduccion: 1,
+    conclusion: 1
   };
-}
 
-// =====================================
-// GENERAR ÍNDICE EBOOK
-// =====================================
-async function generarIndice(promptOptimizado, plan, env) {
-
-  return await ai(env, `
-Eres un editor profesional de libros.
-
-Responde ÚNICAMENTE en español.
-
-Usa este prompt de escritura:
-
-${promptOptimizado}
-
-Genera SOLAMENTE el índice del libro.
-
-REGLAS OBLIGATORIAS:
-
-- No escribas el título.
-- No escribas copyright.
-- No escribas página legal.
-- No escribas contenido.
-- No escribas explicaciones.
-- No escribas texto en inglés.
-- No escribas viñetas.
-- No escribas numeración adicional.
-- Los títulos de los capítulos deben ser claros y cortos (máximo 10 palabras).
-- Genera EXACTAMENTE ${plan.capitulos} capítulos.
-
-Devuelve EXACTAMENTE este formato:
-
-ÍNDICE
-
-Introducción
-
-Capítulo 1: ...
-
-Capítulo 2: ...
-
-Capítulo 3: ...
-
-...
-
-Capítulo ${plan.capitulos}: ...
-
-Conclusión
-
-No agregues absolutamente nada más.
-`);
-}
-// =====================================
-// GENERAR CAPÍTULO
-// =====================================
-async function generarCapitulo(
-  promptOptimizado,
-  indice,
-  capitulo,
-  plan,
-  env
-) {
-  const resultado = await ai(env, `
-You are a professional bestselling book writer.
-
-Write ONLY the requested section of the ebook.
-
-Optimized writing prompt:
-
-${promptOptimizado}
-
-Complete ebook outline:
-
-${indice}
-
-Section to write:
-
-${capitulo}
-
-Approximate ebook length:
-${plan.paginas} pages.
-
-Target number of chapters:
-${plan.capitulos}
-
-CRITICAL RULES:
-
-- Write ONLY the requested section.
-- Do NOT write the next chapter.
-- Do NOT repeat the table of contents.
-- Do NOT write the conclusion unless requested.
-- Write in Spanish.
-- Use a professional, fluent, and engaging style.
-- Develop the topic thoroughly.
-- Include examples when appropriate.
-- Use subsections if necessary.
-- Keep continuity with the rest of the book.
-- Return ONLY the text of this section.`);
-
-  return resultado;
-}
-// =====================================
-// GENERAR TODOS LOS CAPÍTULOS
-// =====================================
-async function generarCapitulos(
-  promptOptimizado,
-  indice,
-  plan,
-  env
-) {
-  const lineas = indice
-    .split("\n")
-    .map(l => l.trim())
-    .filter(Boolean);
-
-  // Filtrar secciones únicas, ignorando diferencias de mayúsculas y minúsculas
-  const secciones = [...new Set(
-    lineas.filter(l => {
-      const t = l
-        .toLowerCase()
-        .replace(/\*/g, "")
-        .trim();
-
-      return (
-        t.includes("introducción") ||
-        t.includes("capítulo") ||
-        t.includes("conclusión") ||
-        t.includes("introduction") ||
-        t.includes("chapter") ||
-        t.includes("conclusion")
-      );
-    })
-  )];
-
-  const capitulos = [];
-
-  for (const seccion of secciones) {
-    const texto = await generarCapitulo(
-      promptOptimizado,
-      indice,
-      seccion,
-      plan,
-      env
+  const paginasDisponibles =
+    Math.max(
+      1,
+      paginas -
+      paginasFijas.portada -
+      paginasFijas.legales -
+      paginasFijas.indice -
+      paginasFijas.introduccion -
+      paginasFijas.conclusion
     );
 
-    capitulos.push({
-      titulo: seccion,
-      contenido: texto
+  let capitulos;
+
+  if (paginas <= 10)
+    capitulos = 4;
+  else if (paginas <= 20)
+    capitulos = 6;
+  else if (paginas <= 40)
+    capitulos = 8;
+  else if (paginas <= 60)
+    capitulos = 10;
+  else if (paginas <= 100)
+    capitulos = 12;
+  else if (paginas <= 150)
+    capitulos = 15;
+  else
+    capitulos = 18;
+
+  const paginasPorCapitulo =
+    Math.max(
+      2,
+      Math.floor(
+        paginasDisponibles / capitulos
+      )
+    );
+
+  const estructura = [];
+
+  for (let i = 1; i <= capitulos; i++) {
+
+    estructura.push({
+      numero: i,
+      titulo: "",
+      paginas: paginasPorCapitulo
     });
+
   }
 
-  return capitulos;
+  return {
+
+    paginasTotales: paginas,
+
+    paginasDisponibles,
+
+    capitulos,
+
+    paginasPorCapitulo,
+
+    portada: paginasFijas.portada,
+
+    legales: paginasFijas.legales,
+
+    indice: paginasFijas.indice,
+
+    introduccion: paginasFijas.introduccion,
+
+    conclusion: paginasFijas.conclusion,
+
+    estructura
+
+  };
+
+}
+// =====================================
+// BLOQUE 2
+// GENERADOR DE ÍNDICE ESTRUCTURADO
+// =====================================
+
+async function generarIndice(tema, plan, env) {
+
+  if (!tema || !plan) {
+    throw new Error("Falta tema o plan del ebook");
+  }
+
+  const prompt = `
+You are an expert book structuring engine.
+
+You must create a complete ebook blueprint.
+
+CRITICAL RULES:
+- Return ONLY valid JSON.
+- No explanations.
+- No markdown.
+- No text outside JSON.
+- No extra keys.
+
+You must use EXACTLY this structure:
+
+{
+  "titulo": "",
+  "subtitulo": "",
+  "descripcion": "",
+  "categoria": "",
+  "keywords": [],
+  "indice": [
+    {
+      "capitulo": 1,
+      "titulo": "",
+      "objetivo": ""
+    }
+  ]
 }
 
-// =====================================
-// UNIR CAPÍTULOS
-// =====================================
-function unirCapitulos(indice, capitulos, legales) {
+RULES FOR INDEX:
+- Must generate EXACTLY ${plan.capitulos} chapters.
+- Each chapter must be different.
+- No repetition.
+- Logical progression.
+- Educational flow.
 
-  let ebook = "";
+BOOK INFO:
+Topic: ${tema}
+Pages: ${plan.paginasTotales}
+Chapters: ${plan.capitulos}
+Pages per chapter: ${plan.paginasPorCapitulo}
+`;
 
-  // Portada / índice
-  ebook += indice + "\n\n";
+  const response = await env.AI.run(
+    "@cf/meta/llama-3.1-8b-instruct-fp8",
+    {
+      messages: [
+        {
+          role: "system",
+          content: `
+You are a strict JSON generator.
+You never break format.
+You never add text outside JSON.
+`
+        },
+        {
+          role: "user",
+          content: prompt
+        }
+      ],
+      temperature: 0.7,
+      max_tokens: 2000
+    }
+  );
 
-  // Capítulos
-  for (const capitulo of capitulos) {
-    ebook += capitulo.titulo + "\n\n";
-    ebook += capitulo.contenido + "\n\n";
+  try {
+
+    const raw = response.response;
+
+    const jsonMatch =
+      raw.match(/\{[\s\S]*\}/);
+
+    if (!jsonMatch) {
+      throw new Error("No JSON generated");
+    }
+
+    return JSON.parse(jsonMatch[0]);
+
+  } catch (err) {
+
+    throw new Error("Error parsing índice: " + err.message);
+
   }
 
-  // LEGAL al final (puedes cambiarlo a inicio si quieres)
-  ebook += "\n\n" + legales;
+}
+// =====================================
+// BLOQUE 3
+// GENERADOR DE INTRODUCCIÓN
+// =====================================
 
-  return ebook.trim();
+async function generarIntroduccion(tema, indice, env) {
+
+  if (!tema || !indice) {
+    throw new Error("Falta tema o índice para la introducción");
+  }
+
+  const prompt = `
+You are a professional book writer.
+
+Write ONLY the introduction of an ebook.
+
+CRITICAL RULES:
+- Return ONLY the introduction text.
+- No titles.
+- No markdown.
+- No explanations.
+- No chapter content.
+- No conclusions.
+
+The introduction must:
+- Present the topic clearly.
+- Be engaging.
+- Prepare the reader for the book.
+- Be 1 to 3 paragraphs max.
+
+BOOK INFO:
+Topic: ${tema}
+
+INDEX (for context only):
+${JSON.stringify(indice, null, 2)}
+`;
+
+  const response = await env.AI.run(
+    "@cf/meta/llama-3.1-8b-instruct-fp8",
+    {
+      messages: [
+        {
+          role: "system",
+          content: `
+You are a strict book writing engine.
+You only output the requested section.
+No extras.
+`
+        },
+        {
+          role: "user",
+          content: prompt
+        }
+      ],
+      temperature: 0.7,
+      max_tokens: 1200
+    }
+  );
+
+  return response.response;
+
+}
+// =====================================
+// BLOQUE 4
+// GENERADOR DE CAPÍTULOS
+// =====================================
+
+async function generarCapitulo(tema, indice, numeroCapitulo, capituloAnterior, env) {
+
+  if (!tema || !indice || !numeroCapitulo) {
+    throw new Error("Faltan datos para generar el capítulo");
+  }
+
+  const capituloInfo =
+    indice.indice.find(c => c.capitulo === numeroCapitulo);
+
+  if (!capituloInfo) {
+    throw new Error("Capítulo no encontrado en el índice");
+  }
+
+  const prompt = `
+You are a professional book writer.
+
+Write ONLY chapter ${numeroCapitulo} of the ebook.
+
+CRITICAL RULES:
+- Return ONLY the chapter content.
+- No titles like "Chapter".
+- No markdown.
+- No explanations.
+- No repeating introduction.
+- No ending conclusion of the book.
+- Focus ONLY on this chapter.
+
+CHAPTER INFO:
+Title: ${capituloInfo.titulo}
+Objective: ${capituloInfo.objetivo}
+
+BOOK TOPIC:
+${tema}
+
+PREVIOUS CHAPTER CONTEXT:
+${capituloAnterior || "None (this is the first chapter)"}
+
+INSTRUCTIONS:
+- Maintain continuity.
+- Do not repeat previous content.
+- Be structured with paragraphs.
+- Educational and clear writing style.
+`;
+
+  const response = await env.AI.run(
+    "@cf/meta/llama-3.1-8b-instruct-fp8",
+    {
+      messages: [
+        {
+          role: "system",
+          content: `
+You are a strict book chapter generator.
+You only write the requested chapter.
+No extras. No formatting noise.
+`
+        },
+        {
+          role: "user",
+          content: prompt
+        }
+      ],
+      temperature: 0.75,
+      max_tokens: 2000
+    }
+  );
+
+  return response.response;
+
+}
+// =====================================
+// BLOQUE 5
+// GENERADOR DE CONCLUSIÓN
+// =====================================
+
+async function generarConclusion(tema, indice, env) {
+
+  if (!tema || !indice) {
+    throw new Error("Faltan datos para generar la conclusión");
+  }
+
+  const prompt = `
+You are a professional book writer.
+
+Write ONLY the conclusion of an ebook.
+
+CRITICAL RULES:
+- Return ONLY the conclusion text.
+- No titles.
+- No markdown.
+- No explanations.
+- No new topics.
+- No chapter content.
+- No summaries of each chapter individually.
+
+The conclusion must:
+- Close the book naturally.
+- Reinforce main ideas.
+- Be 1 to 3 paragraphs.
+- Give a final reflection.
+
+BOOK TOPIC:
+${tema}
+
+INDEX (context only):
+${JSON.stringify(indice, null, 2)}
+`;
+
+  const response = await env.AI.run(
+    "@cf/meta/llama-3.1-8b-instruct-fp8",
+    {
+      messages: [
+        {
+          role: "system",
+          content: `
+You are a strict book writing engine.
+You only output the requested section.
+No extras.
+`
+        },
+        {
+          role: "user",
+          content: prompt
+        }
+      ],
+      temperature: 0.7,
+      max_tokens: 1200
+    }
+  );
+
+  return response.response;
+
+}
+// =====================================
+// BLOQUE 6
+// ENSAMBLADOR DEL EBOOK
+// =====================================
+
+function ensamblarEbook(indice, capitulos, conclusion, introduccion, legales, titulo, subtitulo, descripcion) {
+
+  let libro = "";
+
+  // PORTADA (virtual)
+  libro += `${titulo}\n`;
+  libro += `${subtitulo}\n\n`;
+  libro += `${descripcion}\n\n`;
+  libro += "====================================\n\n";
+
+  // PÁGINA LEGAL
+  libro += "AVISO LEGAL\n\n";
+  libro += legales + "\n\n";
+  libro += "====================================\n\n";
+
+  // ÍNDICE
+  libro += "ÍNDICE\n\n";
+
+  indice.indice.forEach(item => {
+    libro += `Capítulo ${item.capitulo}: ${item.titulo}\n`;
+  });
+
+  libro += "\n====================================\n\n";
+
+  // INTRODUCCIÓN
+  libro += "INTRODUCCIÓN\n\n";
+  libro += introduccion + "\n\n";
+  libro += "====================================\n\n";
+
+  // CAPÍTULOS
+  capitulos.forEach((cap, i) => {
+
+    libro += `CAPÍTULO ${i + 1}: ${cap.titulo || ""}\n\n`;
+    libro += cap.contenido + "\n\n";
+    libro += "------------------------------------\n\n";
+
+  });
+
+  // CONCLUSIÓN
+  libro += "CONCLUSIÓN\n\n";
+  libro += conclusion + "\n\n";
+
+  return libro;
+
+}
+// =====================================
+// BLOQUE 7
+// GENERADOR FINAL DE EBOOK
+// =====================================
+
+async function generarEbook(data, env, json) {
+
+  try {
+
+    const temaRaw = (data.tema || "").trim();
+    const paginas = data.paginas || 30;
+    const concepto = await generarPrompts(
+  temaRaw,
+  "ebook",
+  env
+);
+
+    if (!tema) {
+      return json({
+        ok: false,
+        error: "Falta el tema del ebook"
+      }, 400);
+    }
+
+    // 1. PLANIFICACIÓN
+    const plan = planificarEbook(paginas);
+
+    // 2. ÍNDICE + METADATA
+    const indice = await generarIndice(concepto, plan, env);
+
+    // 3. INTRODUCCIÓN
+    const introduccion = await generarIntroduccion(concepto, indice, env);
+    
+    // 4. CAPÍTULOS
+    let capitulos = [];
+    let capituloAnterior = "";
+
+    for (let i = 1; i <= indice.indice.length; i++) {
+
+      const contenido = await generarCapitulo(concepto, indice, i, capituloAnterior, env);
+
+      capitulos.push({
+        titulo: indice.indice[i - 1].titulo,
+        contenido
+      });
+
+      capituloAnterior = contenido;
+    }
+
+    // 5. CONCLUSIÓN
+    const conclusion = await generarConclusion(concepto, indice, env);
+
+    // 6. LEGALES
+    const legales = `
+Todos los derechos reservados. Queda prohibida la reproducción total o parcial de este libro sin autorización.
+Este contenido es educativo e informativo.
+`.trim();
+
+    // 7. ENSAMBLAR LIBRO
+    const ebook = ensamblarEbook(
+      indice,
+      capitulos,
+      conclusion,
+      introduccion,
+      legales,
+      indice.titulo,
+      indice.subtitulo,
+      indice.descripcion
+    );
+
+    // 8. RESPUESTA FINAL
+    return json({
+      ok: true,
+      resultado: ebook
+    });
+
+  } catch (err) {
+
+    return json({
+      ok: false,
+      error: err.message
+    }, 500);
+
+  }
+
 }
