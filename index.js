@@ -1150,37 +1150,52 @@ function planificarEbook(paginas) {
   };
 }
 
+
 // =====================================
 // GENERAR ÍNDICE EBOOK
 // =====================================
 async function generarIndice(promptOptimizado, plan, env) {
-  const indice = await ai(env, `
-You are a professional book editor.
 
-Create ONLY the structure of a professional ebook.
+  return await ai(env, `
+Eres un editor profesional de libros.
 
-Use this writing prompt:
+Responde ÚNICAMENTE en español.
+
+Usa este prompt de escritura:
 
 ${promptOptimizado}
 
-Approximate length:
-${plan.paginas} pages.
+Genera SOLAMENTE el índice.
 
-Generate EXACTLY ${plan.capitulos} chapters.
+REGLAS OBLIGATORIAS:
 
-The structure must be:
+- No escribas el título.
+- No escribas la página legal.
+- No escribas copyright.
+- No escribas introducción.
+- No escribas conclusión.
+- No escribas contenido.
+- No escribas explicaciones.
+- No escribas texto en inglés.
 
-- Title
-- Copyright page
-- Table of contents
-- Introduction (only one introduction)
-- EXACTLY ${plan.capitulos} chapters
-- Conclusion (only one conclusion)
+Genera EXACTAMENTE ${plan.capitulos} capítulos.
 
-Do not generate any chapter content.
-Return ONLY the complete outline.
+Formato:
+
+ÍNDICE
+
+Introducción
+
+Capítulo 1: ...
+
+Capítulo 2: ...
+
+...
+
+Capítulo ${plan.capitulos}: ...
+
+Conclusión
 `);
-  return indice;
 }
 // =====================================
 // GENERAR CAPÍTULO
