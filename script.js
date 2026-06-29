@@ -1064,11 +1064,11 @@ async function listarEbooks() {
   });
 
 }
-window.onload = ()=>{
+//desplegable del ebook 
 document.addEventListener("DOMContentLoaded", () => {
     listarEbooks();
 });
-}
+
 // MENÚ MÓVIL
 function toggleMenu() {
 
