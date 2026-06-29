@@ -1157,7 +1157,7 @@ async function disenarEbook() {
 
   }
 
-  analizarEbook();
+  analizarEbook(ebookActual);
 
 }
 // =====================================
