@@ -1267,26 +1267,28 @@ async function generarIntroduccion(concepto, indice, env) {
   }
 
   const prompt = `
-You are a professional book writer.
-
-Write ONLY the introduction of an ebook.
+const prompt = `
+Write ONLY the introduction of the ebook.
 
 CRITICAL RULES:
-- Return ONLY the introduction text.
+- Write ONLY in Spanish.
+- No English.
 - No titles.
-- No markdown.
 - No explanations.
-- No chapter content.
-- No conclusions.
+- No markdown.
 
-The introduction must:
-- Present the topic clearly.
-- Be engaging.
-- Prepare the reader for the book.
-- Be 1 to 3 paragraphs max.
+BOOK TOPIC:
+${concepto}
 
-BOOK INFO:
-Topic: ${concepto}
+INDEX:
+${JSON.stringify(indice)}
+
+INSTRUCTIONS:
+- Introduce the topic clearly.
+- Set context for the book.
+- Do not start chapters.
+- Do not summarize the whole book.
+`;
 
 INDEX (for context only):
 ${JSON.stringify(indice, null, 2)}
