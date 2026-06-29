@@ -1164,9 +1164,9 @@ function planificarEbook(paginas) {
 // GENERADOR DE ÍNDICE ESTRUCTURADO
 // =====================================
 
-async function generarIndice(tema, plan, env) {
+async function generarIndice(concepto, plan, env) {
 
-  if (!tema || !plan) {
+  if (!concepto || !plan) {
     throw new Error("Falta tema o plan del ebook");
   }
 
@@ -1260,9 +1260,9 @@ You never add text outside JSON.
 // GENERADOR DE INTRODUCCIÓN
 // =====================================
 
-async function generarIntroduccion(tema, indice, env) {
+async function generarIntroduccion(concepto, indice, env) {
 
-  if (!tema || !indice) {
+  if (!concepto || !indice) {
     throw new Error("Falta tema o índice para la introducción");
   }
 
@@ -1322,9 +1322,9 @@ No extras.
 // GENERADOR DE CAPÍTULOS
 // =====================================
 
-async function generarCapitulo(tema, indice, numeroCapitulo, capituloAnterior, env) {
+async function generarCapitulo(concepto, indice, numeroCapitulo, capituloAnterior, env) {
 
-  if (!tema || !indice || !numeroCapitulo) {
+  if (!concepto || !indice || !numeroCapitulo) {
     throw new Error("Faltan datos para generar el capítulo");
   }
 
@@ -1396,9 +1396,9 @@ No extras. No formatting noise.
 // GENERADOR DE CONCLUSIÓN
 // =====================================
 
-async function generarConclusion(tema, indice, env) {
+async function generarConclusion(concepto, indice, env) {
 
-  if (!tema || !indice) {
+  if (!concepto || !indice) {
     throw new Error("Faltan datos para generar la conclusión");
   }
 
@@ -1521,12 +1521,12 @@ async function generarEbook(data, env, json) {
   env
 );
 
-    if (!tema) {
-      return json({
-        ok: false,
-        error: "Falta el tema del ebook"
-      }, 400);
-    }
+   if (!temaRaw) {
+  return json({
+    ok: false,
+    error: "Falta el tema del ebook"
+  }, 400);
+}
 
     // 1. PLANIFICACIÓN
     const plan = planificarEbook(paginas);
