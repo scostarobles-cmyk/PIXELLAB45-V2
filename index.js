@@ -1465,9 +1465,31 @@ No extras.
 // ENSAMBLADOR DEL EBOOK
 // =====================================
 
-function ensamblarEbook(indice, capitulos, conclusion, introduccion, legales, titulo, subtitulo, descripcion) {
-
+function ensamblarEbook(
+  indice, 
+  capitulos, 
+  conclusion, 
+  introduccion, 
+  legales, 
+  titulo, 
+  subtitulo, 
+  descripcion, 
+  autor, 
+  fecha
+) {
   let libro = "";
+
+  // METADATOS (bloque JSON)
+  const metadatos = {
+    titulo: titulo || "",
+    subtitulo: subtitulo || "",
+    descripcion: descripcion || "",
+    autor: autor || "Desconocido",
+    fecha: fecha || new Date().toISOString().split('T')[0],
+  };
+  libro += "METADATOS:\n";
+  libro += JSON.stringify(metadatos, null, 2) + "\n\n";
+  libro += "====================================\n\n";
 
   // PORTADA (virtual)
   libro += `${titulo}\n`;
@@ -1482,7 +1504,6 @@ function ensamblarEbook(indice, capitulos, conclusion, introduccion, legales, ti
 
   // ÍNDICE
   libro += "ÍNDICE\n\n";
-
   indice.indice.forEach(item => {
     libro += `Capítulo ${item.capitulo}: ${item.titulo}\n`;
   });
@@ -1496,11 +1517,9 @@ function ensamblarEbook(indice, capitulos, conclusion, introduccion, legales, ti
 
   // CAPÍTULOS
   capitulos.forEach((cap, i) => {
-
     libro += `CAPÍTULO ${i + 1}: ${cap.titulo || ""}\n\n`;
     libro += cap.contenido + "\n\n";
     libro += "------------------------------------\n\n";
-
   });
 
   // CONCLUSIÓN
@@ -1508,7 +1527,6 @@ function ensamblarEbook(indice, capitulos, conclusion, introduccion, legales, ti
   libro += conclusion + "\n\n";
 
   return libro;
-
 }
 // =====================================
 // BLOQUE 7
