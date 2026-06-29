@@ -596,16 +596,17 @@
 
 </div>
 
-  <div class="ia-card editor-ebook">
+<div class="ia-card">
 
-  <div class="editor-header">
-    <h2>📚 Editor de Ebook IA</h2>
-    <p>Diseña, maqueta y exporta tu ebook profesional.</p>
-  </div>
+  <h2>📚 Editor de Ebook IA</h2>
 
-  <label>Ebook guardado</label>
+  <p class="descripcion">
+    Diseña la portada, las carátulas de capítulos, maqueta las páginas y exporta el ebook en PDF.
+  </p>
 
-  <select id="ebookSeleccion">
+  <label for="ebookSeleccion">Ebook guardado</label>
+
+  <select id="ebookSeleccion" class="campo">
     <option value="">📖 Seleccionar ebook...</option>
   </select>
 
@@ -613,45 +614,29 @@
     📖 Cargar Ebook
   </button>
 
-  <div class="editor-grid">
+  <hr>
 
-    <button class="editor-btn portada"
-      onclick="generarPortada()">
-      <span>🎨</span>
-      <strong>Portada</strong>
-      <small>Generar portada IA</small>
-    </button>
+  <button class="btn-primary" onclick="generarPortada()">
+    🎨 Generar Portada
+  </button>
 
-    <button class="editor-btn caratulas"
-      onclick="generarCaratulas()">
-      <span>📚</span>
-      <strong>Carátulas</strong>
-      <small>Capítulos</small>
-    </button>
+  <button class="btn-primary" onclick="generarCaratulas()">
+    📚 Generar Carátulas de Capítulos
+  </button>
 
-    <button class="editor-btn paginas"
-      onclick="generarPaginas()">
-      <span>📄</span>
-      <strong>Maquetar</strong>
-      <small>Aplicar diseño</small>
-    </button>
+  <button class="btn-primary" onclick="generarPaginas()">
+    📄 Maquetar Páginas
+  </button>
 
-    <button class="editor-btn pdf"
-      onclick="crearPDF()">
-      <span>📕</span>
-      <strong>Crear PDF</strong>
-      <small>Exportar libro</small>
-    </button>
+  <button class="btn-primary" onclick="crearPDF()">
+    📕 Crear PDF
+  </button>
 
-  </div>
-
-  <button class="btn-success"
-    onclick="guardarPDF()">
+  <button class="btn-success" onclick="guardarPDF()">
     💾 Guardar PDF en R2
   </button>
 
-  <div id="estadoEditor"
-       class="resultado"></div>
+  <div id="estadoEditor" class="resultado"></div>
 
 </div>
 
