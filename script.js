@@ -1148,7 +1148,6 @@ async function cargarEbook() {
 // =====================================
 
 async function disenarEbook() {
-
   const msg = document.getElementById("mensajeEditor");
 
   if (!ebookActual) {
@@ -1158,14 +1157,25 @@ async function disenarEbook() {
 
   const resultado = analizarEbook(ebookActual);
 
-  if (!resultado || !resultado.ok) {
-    msg.innerText = "❌ No se pudo analizar el ebook";
+  if (!resultado.ok) {
+    msg.innerText = "❌ Error analizando el ebook: " + (resultado.error || "Desconocido");
     return;
   }
 
   estructuraEbook = resultado.estructuraEbook;
 
-  msg.innerText = "✅ Ebook analizado correctamente";
+  // Mostramos en la UI
+  document.getElementById("resultadoEditor").innerHTML = `
+    <h2>${estructuraEbook.titulo}</h2>
+    <h4>${estructuraEbook.subtitulo}</h4>
+    <p>${estructuraEbook.descripcion}</p>
+    <p><b>Autor:</b> ${estructuraEbook.autor}</p>
+    <p><b>Fecha:</b> ${estructuraEbook.fecha}</p>
+    <p><b>Idioma:</b> ${estructuraEbook.idioma}</p>
+    <p><b>Capítulos:</b> ${estructuraEbook.capitulos}</p>
+  `;
+
+  msg.innerText = "✅ Ebook analizado y listo para diseñar";
 }
 // =====================================
 // ANALIZAR EBOOK
