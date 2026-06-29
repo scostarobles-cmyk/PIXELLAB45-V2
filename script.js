@@ -1149,22 +1149,30 @@ async function cargarEbook() {
 
 async function disenarEbook() {
 
+  const msg = document.getElementById("mensajeEditor");
+
   if (!ebookActual) {
-
-    alert("Primero cargá un ebook.");
-
+    msg.innerText = "⚠️ Primero cargá un ebook.";
     return;
-
   }
 
-  analizarEbook(ebookActual);
+  const resultado = analizarEbook(ebookActual);
 
+  if (!resultado || !resultado.ok) {
+    msg.innerText = "❌ No se pudo analizar el ebook";
+    return;
+  }
+
+  estructuraEbook = resultado.estructuraEbook;
+
+  msg.innerText = "✅ Ebook analizado correctamente";
 }
 // =====================================
 // ANALIZAR EBOOK
 // =====================================
 
 function analizarEbook(contenido) {
+
     const estructuraEbook = {
         titulo: "",
         subtitulo: "",
@@ -1183,22 +1191,25 @@ function analizarEbook(contenido) {
         return { ok: false, error: "No se encontraron metadatos" };
     }
 
-    const bloque = contenido.substring(inicio, fin).replace("===METADATA===", "").trim();
+    const bloque = contenido
+        .substring(inicio, fin)
+        .replace("===METADATA===", "")
+        .trim();
 
-    const getValue = (key) => {
-        const regex = new RegExp(`${key}:\\s*\\n([\\s\\S]*?)\\n\\n`, "m");
+    const get = (key) => {
+        const regex = new RegExp(`${key}:\\s*([^\\n]*)`, "i");
         const match = bloque.match(regex);
         return match ? match[1].trim() : "";
     };
 
-    estructuraEbook.titulo = getValue("TITULO");
-    estructuraEbook.subtitulo = getValue("SUBTITULO");
-    estructuraEbook.descripcion = getValue("DESCRIPCION");
-    estructuraEbook.autor = getValue("AUTOR");
-    estructuraEbook.fecha = getValue("FECHA");
-    estructuraEbook.idioma = getValue("IDIOMA");
-    estructuraEbook.version = getValue("VERSION");
-    estructuraEbook.capitulos = parseInt(getValue("CAPITULOS"), 10) || 0;
+    estructuraEbook.titulo = get("TITULO");
+    estructuraEbook.subtitulo = get("SUBTITULO");
+    estructuraEbook.descripcion = get("DESCRIPCION");
+    estructuraEbook.autor = get("AUTOR");
+    estructuraEbook.fecha = get("FECHA");
+    estructuraEbook.idioma = get("IDIOMA");
+    estructuraEbook.version = get("VERSION");
+    estructuraEbook.capitulos = parseInt(get("CAPITULOS")) || 0;
 
     return { ok: true, estructuraEbook };
 }
