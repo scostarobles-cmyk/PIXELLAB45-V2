@@ -136,6 +136,8 @@ case "guardar-imagen":
   );
   case "ebook":
   return generarEbook(data, env, json);
+  case "listar-ebooks":
+  return await listarEbooks(env, json);
 
 default:
   return json({
@@ -1607,3 +1609,35 @@ Este contenido es educativo e informativo.
   }
 }
 
+// =====================================
+// LISTAR EBOOKS
+// =====================================
+
+async function listarEbooks(env, json) {
+
+  try {
+
+    const lista = await env.IMAGES.list({
+      prefix: "Ebook/"
+    });
+
+    const ebooks = lista.objects.map(obj => ({
+      nombre: obj.key.split("/").pop(),
+      ruta: obj.key
+    }));
+
+    return json({
+      ok: true,
+      ebooks
+    });
+
+  } catch (err) {
+
+    return json({
+      ok: false,
+      error: err.message
+    }, 500);
+
+  }
+
+}
