@@ -10,6 +10,7 @@ const FETCH_CONFIG = {
   }
 };
 let ebookActual = "";
+let estructuraEbook = null;
 //Galería completa 
 async function cargarGaleriaCompleta() {
 
@@ -1142,7 +1143,65 @@ async function cargarEbook() {
   }
 
 }
+// =====================================
+// DISEÑAR EBOOK
+// =====================================
 
+async function disenarEbook() {
+
+  if (!ebookActual) {
+
+    alert("Primero cargá un ebook.");
+
+    return;
+
+  }
+
+  analizarEbook();
+
+}
+// =====================================
+// ANALIZAR EBOOK
+// =====================================
+
+function analizarEbook(contenido) {
+    const estructuraEbook = {
+        titulo: "",
+        subtitulo: "",
+        descripcion: "",
+        autor: "",
+        fecha: "",
+        idioma: "",
+        version: "",
+        capitulos: 0
+    };
+
+    const inicio = contenido.indexOf("===METADATA===");
+    const fin = contenido.indexOf("===LIBRO===");
+
+    if (inicio === -1 || fin === -1) {
+        return { ok: false, error: "No se encontraron metadatos" };
+    }
+
+    const bloque = contenido.substring(inicio, fin).replace("===METADATA===", "").trim();
+
+    const getValue = (key) => {
+        const regex = new RegExp(`${key}:\\s*\\n([\\s\\S]*?)\\n\\n`, "m");
+        const match = bloque.match(regex);
+        return match ? match[1].trim() : "";
+    };
+
+    estructuraEbook.titulo = getValue("TITULO");
+    estructuraEbook.subtitulo = getValue("SUBTITULO");
+    estructuraEbook.descripcion = getValue("DESCRIPCION");
+    estructuraEbook.autor = getValue("AUTOR");
+    estructuraEbook.fecha = getValue("FECHA");
+    estructuraEbook.idioma = getValue("IDIOMA");
+    estructuraEbook.version = getValue("VERSION");
+    estructuraEbook.capitulos = parseInt(getValue("CAPITULOS"), 10) || 0;
+
+    return { ok: true, estructuraEbook };
+}
 // MENÚ MÓVIL
 function toggleMenu() {
 
@@ -1153,7 +1212,6 @@ function toggleMenu() {
   menu.classList.toggle("active");
 
 }
-
 
 
 
