@@ -596,45 +596,64 @@
 
 </div>
 
-<div class="ia-card">
+<div class="ai-card">
 
-  <h2>📚 Editor de Ebook</h2>
+  <h3>📚 Editor de Ebook IA</h3>
 
-  <p class="descripcion">
-    Diseña la portada, las carátulas y exporta tu ebook profesional.
-  </p>
-
-  <label>Ebook guardado</label>
-
-  <select id="ebookSeleccion" class="input-dark">
-    <option value="">Seleccionar ebook...</option>
+  <select id="ebookSeleccion">
+    <option value="">📖 Seleccionar Ebook...</option>
   </select>
 
-  <button class="btn-primary" onclick="cargarEbook()">
+  <button onclick="cargarEbook()">
     📖 Cargar Ebook
   </button>
 
-  <button class="btn-primary" onclick="generarPortada()">
-    🎨 Generar Portada
+  <button onclick="generarPortada()">
+    🎨 Generar Portada IA
   </button>
 
-  <button class="btn-primary" onclick="generarCaratulas()">
+  <button onclick="generarCaratulas()">
     📚 Generar Carátulas de Capítulos
   </button>
 
-  <button class="btn-primary" onclick="generarPaginas()">
+  <button onclick="generarPaginas()">
     📄 Maquetar Páginas
   </button>
 
-  <button class="btn-primary" onclick="crearPDF()">
+  <button onclick="crearPDF()">
     📕 Crear PDF
   </button>
 
-  <button class="btn-success" onclick="guardarPDF()">
+  <button onclick="guardarPDF()">
     💾 Guardar PDF en R2
   </button>
 
-  <div id="estadoEditor" class="resultado"></div>
+  <div id="mensajeEditor"></div>
+
+  <div id="loadingEditor" style="display:none;">
+
+    <p id="estadoEditor">📚 Preparando editor...</p>
+
+    <div style="
+      width:100%;
+      height:10px;
+      background:#222;
+      border-radius:5px;
+      overflow:hidden;
+      margin-top:10px;">
+
+      <div id="barraEditor" style="
+        width:0%;
+        height:100%;
+        background:#00ffcc;
+        transition:width .4s ease;">
+      </div>
+
+    </div>
+
+  </div>
+
+  <div id="resultadoEditor" class="scroll-box"></div>
 
 </div>
 
