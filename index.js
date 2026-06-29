@@ -1574,11 +1574,27 @@ Este contenido es educativo e informativo.
       indice.subtitulo,
       indice.descripcion
     );
+    // =====================================
+    // GUARDAR EBOOK EN R2
+    // =====================================
 
-    // 8. RESPUESTA FINAL
+    const nombreArchivo = `Ebook/${Date.now()}-${crypto.randomUUID()}.txt`;
+
+    await env.IMAGES.put(
+      nombreArchivo,
+      ebook,
+      {
+        httpMetadata: {
+          contentType: "text/plain"
+        }
+      }
+    );
+
+    // RESPUESTA FINAL
     return json({
       ok: true,
-      resultado: ebook
+      resultado: ebook,
+      archivo: nombreArchivo
     });
 
   } catch (err) {
@@ -1587,7 +1603,6 @@ Este contenido es educativo e informativo.
       ok: false,
       error: err.message
     }, 500);
-
   }
-
 }
+
