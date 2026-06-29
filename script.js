@@ -1042,24 +1042,28 @@ async function generarEbook() {
 }
 async function listarEbooks() {
 
-  const select = document.getElementById("ebookSeleccion");
+  const select =
+    document.getElementById("ebookSeleccion");
 
-  select.innerHTML = '<option>Cargando...</option>';
+  select.innerHTML =
+    '<option>Cargando...</option>';
 
   try {
 
-    const res = await fetch(`${WORKER_URL}?tipo=listar-ebooks`);
+    const res = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        tipo: "listar-ebooks"
+      })
+    });
 
     const data = await res.json();
 
-    if (!data.ok) {
-
-      select.innerHTML = `<option>${data.error}</option>`;
-      return;
-
-    }
-
-    select.innerHTML = '<option value="">📖 Seleccionar Ebook...</option>';
+    select.innerHTML =
+      '<option value="">📖 Seleccionar Ebook...</option>';
 
     data.ebooks.forEach(ebook => {
 
@@ -1071,13 +1075,12 @@ async function listarEbooks() {
 
     });
 
-    if (data.ebooks.length === 0) {
-      select.innerHTML = '<option>No hay ebooks</option>';
-    }
+  } catch (error) {
 
-  } catch (err) {
+    select.innerHTML =
+      '<option>Error cargando ebooks</option>';
 
-    select.innerHTML = `<option>Error: ${err.message}</option>`;
+    console.error(error);
 
   }
 

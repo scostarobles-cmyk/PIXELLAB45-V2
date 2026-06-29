@@ -1615,29 +1615,20 @@ Este contenido es educativo e informativo.
 
 async function listarEbooks(env, json) {
 
-  try {
+  const lista = await env.IMAGES.list({
+    prefix: "Ebook/"
+  });
 
-    const lista = await env.IMAGES.list({
-      prefix: "Ebook/"
-    });
+  const ebooks = lista.objects.map(obj => ({
+    nombre: obj.key.replace("Ebook/", ""),
+    ruta: obj.key,
+    url: `${R2_BASE_URL}/${obj.key}`
+  }));
 
-    const ebooks = lista.objects.map(obj => ({
-      nombre: obj.key.split("/").pop(),
-      ruta: obj.key
-    }));
-
-    return json({
-      ok: true,
-      ebooks
-    });
-
-  } catch (err) {
-
-    return json({
-      ok: false,
-      error: err.message
-    }, 500);
-
-  }
+  return json({
+    success: true,
+    ebooks,
+    total: ebooks.length
+  });
 
 }
