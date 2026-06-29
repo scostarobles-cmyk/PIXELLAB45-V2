@@ -9,6 +9,7 @@ const FETCH_CONFIG = {
     "Content-Type": "application/json"
   }
 };
+let ebookActual = "";
 //Galería completa 
 async function cargarGaleriaCompleta() {
 
