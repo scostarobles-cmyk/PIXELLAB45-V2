@@ -138,6 +138,8 @@ case "guardar-imagen":
   return generarEbook(data, env, json);
   case "listar-ebooks":
   return await listarEbooks(env, json);
+  case "cargar-ebook":
+  return await cargarEbook(data, env, json);
 
 default:
   return json({
@@ -1630,5 +1632,53 @@ async function listarEbooks(env, json) {
     ebooks,
     total: ebooks.length
   });
+
+}
+// =====================================
+// CARGAR EBOOK
+// =====================================
+
+async function cargarEbook(data, env, json) {
+
+  try {
+
+    const archivo = data.archivo;
+
+    if (!archivo) {
+
+      return json({
+        ok: false,
+        error: "No se seleccionó ningún ebook"
+      }, 400);
+
+    }
+
+    const objeto = await env.IMAGES.get(archivo);
+
+    if (!objeto) {
+
+      return json({
+        ok: false,
+        error: "Ebook no encontrado"
+      }, 404);
+
+    }
+
+    const contenido = await objeto.text();
+
+    return json({
+      ok: true,
+      nombre: archivo,
+      contenido
+    });
+
+  } catch (err) {
+
+    return json({
+      ok: false,
+      error: err.message
+    }, 500);
+
+  }
 
 }

@@ -1090,6 +1090,58 @@ document.addEventListener("DOMContentLoaded", () => {
     listarEbooks();
 });
 
+async function cargarEbook() {
+
+  const archivo =
+    document.getElementById("ebookSeleccion").value;
+
+  if (!archivo) {
+    alert("Seleccioná un ebook.");
+    return;
+  }
+
+  try {
+
+    const res = await fetch(WORKER_URL, {
+
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json"
+      },
+
+      body: JSON.stringify({
+
+        tipo: "cargar-ebook",
+        archivo
+
+      })
+
+    });
+
+    const data = await res.json();
+
+    if (!data.ok) {
+
+      alert(data.error);
+      return;
+
+    }
+
+    ebookActual = data.contenido;
+
+    document.getElementById("mensajeEditor").innerHTML =
+      "✅ Ebook cargado correctamente.";
+
+  } catch (err) {
+
+    document.getElementById("mensajeEditor").innerHTML =
+      "❌ Error cargando el ebook.";
+
+  }
+
+}
+
 // MENÚ MÓVIL
 function toggleMenu() {
 
