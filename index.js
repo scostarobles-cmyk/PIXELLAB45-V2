@@ -1059,68 +1059,6 @@ async function guardarImagen(data, env) {
   }
 
 }
-// gerar ebooks
-async function generarEbook(data, env, json) {
-
-  try {
-    const legales = `
-Todos los derechos reservados. Queda prohibida la reproducción total o parcial de este libro, así como su almacenamiento en sistemas de recuperación o transmisión, por cualquier medio o forma, sin la autorización previa y por escrito del autor.
-La información contenida en esta publicación es de carácter educativo e informativo. El autor no asume ninguna responsabilidad por el uso que se haga de dicha información.
-`.trim();
-    const tema = (data.tema || "").trim();
-    const paginas = parseInt(data.paginas || "30", 10);
-
-    if (!tema) {
-      return json({
-        ok: false,
-        error: "Falta el tema del ebook"
-      }, 400);
-    }
-     const plan = planificarEbook(paginas);
-    // 1. Prompt optimizado
-    const promptOptimizado = await generarPrompts(
-      tema,
-      "ebook",
-      env
-    );
-
-    // 2. Índice
-    const indice = await generarIndice(
-  promptOptimizado,
-  plan,
-  env
-);
-    // 3. Capítulos
-    const capitulos = await generarCapitulos(
-      promptOptimizado,
-      indice,
-      paginas,
-      env
-    );
-
-    // 4. Unir todo
-    const ebook = unirCapitulos(
-      indice,
-      capitulos,
-      legales
-    );
-
-    // 5. Devolver resultado
-    return json({
-      ok: true,
-      resultado: ebook
-    });
-
-  } catch (err) {
-
-    return json({
-      ok: false,
-      error: err.message || String(err)
-    }, 500);
-
-  }
-
-}
 
 // =====================================
 // BLOQUE 1
