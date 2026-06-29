@@ -595,6 +595,66 @@
   <div id="resultadoEbook" class="resultado"></div>
 
 </div>
+
+  <div class="ia-card">
+
+  <div class="editor-header">
+    <h2>📚 Editor de Ebook IA</h2>
+    <p>Diseña, maqueta y exporta tu ebook profesional.</p>
+  </div>
+
+  <label>Ebook guardado</label>
+
+  <select id="ebookSeleccion">
+    <option value="">📖 Seleccionar ebook...</option>
+  </select>
+
+  <button class="btn-primary" onclick="cargarEbook()">
+    📖 Cargar Ebook
+  </button>
+
+  <div class="editor-grid">
+
+    <button class="editor-btn portada"
+      onclick="generarPortada()">
+      <span>🎨</span>
+      <strong>Portada</strong>
+      <small>Generar portada IA</small>
+    </button>
+
+    <button class="editor-btn caratulas"
+      onclick="generarCaratulas()">
+      <span>📚</span>
+      <strong>Carátulas</strong>
+      <small>Capítulos</small>
+    </button>
+
+    <button class="editor-btn paginas"
+      onclick="generarPaginas()">
+      <span>📄</span>
+      <strong>Maquetar</strong>
+      <small>Aplicar diseño</small>
+    </button>
+
+    <button class="editor-btn pdf"
+      onclick="crearPDF()">
+      <span>📕</span>
+      <strong>Crear PDF</strong>
+      <small>Exportar libro</small>
+    </button>
+
+  </div>
+
+  <button class="btn-success"
+    onclick="guardarPDF()">
+    💾 Guardar PDF en R2
+  </button>
+
+  <div id="estadoEditor"
+       class="resultado"></div>
+
+</div>
+
 </div>
 <div class="section-divider"></div>
 <!-- ===================================== -->
