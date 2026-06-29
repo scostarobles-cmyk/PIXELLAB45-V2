@@ -13,7 +13,7 @@ let ebookActual = "";
 let estructuraEbook = null;
 //Galería completa 
 async function cargarGaleriaCompleta() {
-
+ 
   const contenedor =
     document.getElementById("galeriaCompleta");
 
