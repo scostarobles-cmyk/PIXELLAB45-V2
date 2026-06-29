@@ -354,7 +354,8 @@ async function listarImagenes(
       key.startsWith("prompts/") ||
       key.startsWith("visuals/") ||
       key.startsWith("scripts/") ||
-      key.startsWith("storyboards/")
+      key.startsWith("storyboards/") ||
+      key.startsWith("Ebook/")
     );
 
   })
