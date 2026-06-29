@@ -1040,7 +1040,35 @@ async function generarEbook() {
     resultado.innerText = error.message;
   }
 }
+async function listarEbooks() {
 
+  const select = document.getElementById("ebookSeleccion");
+
+  select.innerHTML = '<option value="">📖 Seleccionar Ebook...</option>';
+
+  const res = await fetch(`${WORKER_URL}?tipo=listar-ebooks`);
+  const data = await res.json();
+
+  if (!data.ok) return;
+
+  data.ebooks.forEach(ebook => {
+
+    const option = document.createElement("option");
+
+    option.value = ebook.ruta;
+
+    option.textContent = ebook.nombre;
+
+    select.appendChild(option);
+
+  });
+
+}
+window.onload = ()=>{
+document.addEventListener("DOMContentLoaded", () => {
+    listarEbooks();
+});
+}
 // MENÚ MÓVIL
 function toggleMenu() {
 
@@ -1051,6 +1079,7 @@ function toggleMenu() {
   menu.classList.toggle("active");
 
 }
+
 
 
 
