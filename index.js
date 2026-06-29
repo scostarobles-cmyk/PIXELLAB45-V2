@@ -1262,12 +1262,7 @@ You never add text outside JSON.
 
 async function generarIntroduccion(concepto, indice, env) {
 
-  if (!concepto || !indice) {
-    throw new Error("Falta tema o índice para la introducción");
-  }
-
   const prompt = `
-const prompt = `
 Write ONLY the introduction of the ebook.
 
 CRITICAL RULES:
@@ -1290,20 +1285,15 @@ INSTRUCTIONS:
 - Do not summarize the whole book.
 `;
 
-INDEX (for context only):
-${JSON.stringify(indice, null, 2)}
-`;
-
-  const response = await env.AI.run(
+  const res = await env.AI.run(
     "@cf/meta/llama-3.1-8b-instruct-fp8",
     {
       messages: [
         {
           role: "system",
           content: `
-You are a strict book writing engine.
-You only output the requested section.
-No extras.
+You are a professional Spanish book writer.
+You ALWAYS write in Spanish.
 `
         },
         {
@@ -1316,8 +1306,7 @@ No extras.
     }
   );
 
-  return response.response;
-
+  return res.response;
 }
 // =====================================
 // BLOQUE 4
