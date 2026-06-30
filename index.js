@@ -474,16 +474,33 @@ Rules:
       break;
 
     case "ebook":
-      reglas = `
-Generate professional writing prompts for ebooks.
+  reglas = `
+Generate ONE professional prompt for writing a complete ebook.
 
-Rules:
-- Educational.
-- Chapter oriented.
-- Detailed.
-- Professional.
+RULES:
+
+- Preserve EXACTLY the user's original topic.
+- Never change the title.
+- Never invent another subject.
+- Never reinterpret the user's request.
+- Expand the original idea with professional detail.
+- Clearly define the objective of the ebook.
+- Clearly define the target audience.
+- Define the reader's knowledge level.
+- Define the writing style.
+- Define the educational approach.
+- Suggest a logical progression from beginner to advanced when appropriate.
+- Keep the ebook focused ONLY on the user's topic.
+- Do not add unrelated concepts.
+- Do not create the ebook.
+- Do not create chapters.
+- Do not create an index.
+- Do not write explanations.
+- Return ONLY one optimized prompt that will be used by another AI to generate the ebook.
+
+The optimized prompt must clearly state that the ebook title must remain EXACTLY as provided by the user.
 `;
-      break;
+  break;
 
     default:
       reglas = `
