@@ -1,6 +1,5 @@
 const R2_BASE_URL =
   "https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev";
-  
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -1342,34 +1341,59 @@ async function generarCapitulo(concepto, indice, numeroCapitulo, capituloAnterio
   }
 
   const prompt = `
-You are a professional book writer.
+Eres un escritor profesional especializado en ebooks.
 
-Write ONLY chapter ${numeroCapitulo} of the ebook.
+Debes escribir ÚNICAMENTE el capítulo ${numeroCapitulo}.
 
-CRITICAL RULES:
-- Return ONLY the chapter content.
-- No titles like "Chapter".
-- No markdown.
-- No explanations.
-- No repeating introduction.
-- No ending conclusion of the book.
-- Focus ONLY on this chapter.
+INSTRUCCIONES OBLIGATORIAS:
 
-CHAPTER INFO:
-Title: ${capituloInfo.titulo}
-Objective: ${capituloInfo.objetivo}
+- Escribe SIEMPRE en español neutro.
+- Está TERMINANTEMENTE PROHIBIDO escribir una sola palabra en inglés.
+- No traduzcas títulos al inglés.
+- No uses frases en inglés.
+- No mezcles idiomas.
+- No escribas markdown.
+- No escribas listas innecesarias.
+- No escribas la palabra "Capítulo".
+- No escribas introducción ni conclusión del libro.
+- Continúa naturalmente desde el capítulo anterior.
+- No repitas contenido.
 
-BOOK TOPIC:
+OBJETIVO DEL CAPÍTULO
+
+Título:
+${capituloInfo.titulo}
+
+Objetivo:
+${capituloInfo.objetivo}
+
+TEMA DEL LIBRO
+
 ${concepto}
 
-PREVIOUS CHAPTER CONTEXT:
-${capituloAnterior || "None (this is the first chapter)"}
+CONTEXTO DEL CAPÍTULO ANTERIOR
 
-INSTRUCTIONS:
-- Maintain continuity.
-- Do not repeat previous content.
-- Be structured with paragraphs.
-- Educational and clear writing style.
+${capituloAnterior || "Es el primer capítulo."}
+
+DESARROLLO
+
+El capítulo debe ser amplio, profundo y profesional.
+
+Debe incluir:
+
+- explicación completa
+- desarrollo detallado
+- ejemplos prácticos
+- aplicaciones reales
+- ventajas
+- limitaciones
+- buenas prácticas
+- recomendaciones
+- transición natural hacia el siguiente capítulo
+
+La longitud debe ser aproximadamente entre 1000 y 1800 palabras.
+
+Devuelve únicamente el texto del capítulo.
 `;
 
   const response = await env.AI.run(
@@ -1379,9 +1403,16 @@ INSTRUCTIONS:
         {
           role: "system",
           content: `
-You are a strict book chapter generator.
-You only write the requested chapter.
-No extras. No formatting noise.
+Eres un escritor profesional de libros.
+
+REGLAS OBLIGATORIAS:
+
+- Siempre respondes en español.
+- Nunca escribes en inglés.
+- Nunca mezclas idiomas.
+- Nunca respondes con markdown.
+- Nunca agregas explicaciones.
+- Solo devuelves el contenido solicitado.
 `
         },
         {
@@ -1389,12 +1420,12 @@ No extras. No formatting noise.
           content: prompt
         }
       ],
-      temperature: 0.75,
-      max_tokens: 2000
+      temperature: 0.6,
+      max_tokens: 3500
     }
   );
 
-  return response.response;
+  return response.response.trim();
 
 }
 // =====================================
