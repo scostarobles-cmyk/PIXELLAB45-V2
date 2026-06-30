@@ -11,6 +11,7 @@ const FETCH_CONFIG = {
 };
 let ebookActual = "";
 let estructuraEbook = null;
+let ebookDiseno = null;
 //Galería completa 
 async function cargarGaleriaCompleta() {
 
@@ -1148,34 +1149,54 @@ async function cargarEbook() {
 // =====================================
 
 async function disenarEbook() {
-  const msg = document.getElementById("mensajeEditor");
 
   if (!ebookActual) {
-    msg.innerText = "⚠️ Primero cargá un ebook.";
+    alert("Primero cargá un ebook.");
     return;
   }
 
   const resultado = analizarEbook(ebookActual);
 
   if (!resultado.ok) {
-    msg.innerText = "❌ Error analizando el ebook: " + (resultado.error || "Desconocido");
+    alert(resultado.error);
     return;
   }
 
-  estructuraEbook = resultado.estructuraEbook;
+  let texto = "";
 
-  // Mostramos en la UI
-  document.getElementById("resultadoEditor").innerHTML = `
-    <h2>${estructuraEbook.titulo}</h2>
-    <h4>${estructuraEbook.subtitulo}</h4>
-    <p>${estructuraEbook.descripcion}</p>
-    <p><b>Autor:</b> ${estructuraEbook.autor}</p>
-    <p><b>Fecha:</b> ${estructuraEbook.fecha}</p>
-    <p><b>Idioma:</b> ${estructuraEbook.idioma}</p>
-    <p><b>Capítulos:</b> ${estructuraEbook.capitulos}</p>
-  `;
+  texto += "===== METADATOS =====\n\n";
+  texto += JSON.stringify(ebookDiseno.metadata, null, 2);
 
-  msg.innerText = "✅ Ebook analizado y listo para diseñar";
+  texto += "\n\n===== PORTADA =====\n\n";
+  texto += "Título: " + ebookDiseno.portada.titulo + "\n";
+  texto += "Subtítulo: " + ebookDiseno.portada.subtitulo + "\n";
+  texto += "Descripción:\n";
+  texto += ebookDiseno.portada.descripcion + "\n";
+
+  texto += "\n\n===== AVISO LEGAL =====\n\n";
+  texto += ebookDiseno.legales;
+
+  texto += "\n\n===== ÍNDICE =====\n\n";
+  texto += ebookDiseno.indice.join("\n");
+
+  texto += "\n\n===== INTRODUCCIÓN =====\n\n";
+  texto += ebookDiseno.introduccion;
+
+  ebookDiseno.capitulos.forEach(cap => {
+
+    texto += "\n\n========================================\n";
+    texto += "CAPÍTULO " + cap.numero + "\n";
+    texto += cap.titulo + "\n\n";
+    texto += cap.contenido;
+
+  });
+
+  texto += "\n\n===== CONCLUSIÓN =====\n\n";
+  texto += ebookDiseno.conclusion;
+
+  // Mostramos todo en el editor
+  document.getElementById("resultado").textContent = texto;
+
 }
 // =====================================
 // ANALIZAR EBOOK
@@ -1183,60 +1204,135 @@ async function disenarEbook() {
 
 function analizarEbook(contenido) {
 
-    const estructuraEbook = {
-        titulo: "",
-        subtitulo: "",
-        descripcion: "",
-        autor: "",
-        fecha: "",
-        idioma: "",
-        version: "",
-        capitulos: 0
-    };
+  ebookDiseno = {
+    metadata: {},
+    portada: {},
+    legales: "",
+    indice: [],
+    introduccion: "",
+    capitulos: [],
+    conclusion: ""
+  };
 
-    if (!contenido) {
-        return { ok: false, error: "Contenido vacío" };
-    }
+  // ==========================
+  // METADATOS
+  // ==========================
 
-    const inicio = contenido.indexOf("METADATOS:");
-    const fin = contenido.indexOf("====================================");
+  const iniMeta = contenido.indexOf("METADATOS:");
+  const finMeta = contenido.indexOf("====================================");
 
-    if (inicio === -1) {
-        return { ok: false, error: "No se encontró METADATOS" };
-    }
-
-    let bloque = contenido.slice(inicio);
-
-    // Extraer JSON entre llaves
-    const jsonMatch = bloque.match(/\{[\s\S]*?\}/);
-
-    if (!jsonMatch) {
-        return { ok: false, error: "No se encontró JSON de metadatos" };
-    }
+  if (iniMeta !== -1 && finMeta !== -1) {
 
     try {
-        const meta = JSON.parse(jsonMatch[0]);
 
-        estructuraEbook.titulo = meta.titulo || "";
-        estructuraEbook.subtitulo = meta.subtitulo || "";
-        estructuraEbook.descripcion = meta.descripcion || "";
-        estructuraEbook.autor = meta.autor || "";
-        estructuraEbook.fecha = meta.fecha || "";
-        estructuraEbook.idioma = meta.idioma || "";
-        estructuraEbook.version = meta.version || "";
-        estructuraEbook.capitulos = parseInt(meta.capitulos) || 0;
+      const bloque = contenido
+        .substring(iniMeta + "METADATOS:".length, finMeta)
+        .trim();
 
-        return {
-            ok: true,
-            estructuraEbook
-        };
+      ebookDiseno.metadata = JSON.parse(bloque);
 
-    } catch (err) {
-        return {
-            ok: false,
-            error: "Error parseando JSON de metadatos"
-        };
+    } catch (e) {
+
+      return {
+        ok: false,
+        error: "Error leyendo metadatos"
+      };
+
     }
+
+  }
+
+  // ==========================
+  // PORTADA
+  // ==========================
+
+  ebookDiseno.portada = {
+    titulo: ebookDiseno.metadata.titulo || "",
+    subtitulo: ebookDiseno.metadata.subtitulo || "",
+    descripcion: ebookDiseno.metadata.descripcion || ""
+  };
+
+  // ==========================
+  // AVISO LEGAL
+  // ==========================
+
+  const legal = contenido.match(
+    /AVISO LEGAL\s*([\s\S]*?)====================================/
+  );
+
+  if (legal)
+    ebookDiseno.legales = legal[1].trim();
+
+  // ==========================
+  // ÍNDICE
+  // ==========================
+
+  const indice = contenido.match(
+    /ÍNDICE\s*([\s\S]*?)====================================/
+  );
+
+  if (indice) {
+
+    ebookDiseno.indice = indice[1]
+      .split("\n")
+      .map(x => x.trim())
+      .filter(x => x);
+
+  }
+
+  // ==========================
+  // INTRODUCCIÓN
+  // ==========================
+
+  const intro = contenido.match(
+    /INTRODUCCIÓN\s*([\s\S]*?)====================================/
+  );
+
+  if (intro)
+    ebookDiseno.introduccion = intro[1].trim();
+
+  // ==========================
+  // CAPÍTULOS
+  // ==========================
+
+  const regex =
+    /CAPÍTULO\s+(\d+):(.*?)([\s\S]*?)(?=CAPÍTULO\s+\d+:|CONCLUSIÓN|$)/g;
+
+  let m;
+
+  while ((m = regex.exec(contenido)) !== null) {
+
+    ebookDiseno.capitulos.push({
+
+      numero: parseInt(m[1]),
+
+      titulo: m[2].trim(),
+
+      contenido: m[3].trim()
+
+    });
+
+  }
+
+  // ==========================
+  // CONCLUSIÓN
+  // ==========================
+
+  const conclusion = contenido.match(
+    /CONCLUSIÓN\s*([\s\S]*)$/
+  );
+
+  if (conclusion)
+    ebookDiseno.conclusion = conclusion[1].trim();
+
+  return {
+
+    ok: true,
+
+    ebook: ebookDiseno
+
+  };
+
 }
 // MENÚ MÓVIL
 function toggleMenu() {
