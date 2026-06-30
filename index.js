@@ -1466,27 +1466,31 @@ No extras.
 // =====================================
 
 function ensamblarEbook(
-  indice, 
-  capitulos, 
-  conclusion, 
-  introduccion, 
-  legales, 
-  titulo, 
-  subtitulo, 
-  descripcion, 
-  autor, 
-  fecha
+  indice,
+  capitulos,
+  conclusion,
+  introduccion,
+  legales,
+  titulo,
+  subtitulo,
+  descripcion,
+  autor,
+  fecha,
+  plan
 ) {
   let libro = "";
 
   // METADATOS (bloque JSON)
   const metadatos = {
-    titulo: titulo || "",
-    subtitulo: subtitulo || "",
-    descripcion: descripcion || "",
-    autor: autor || "Desconocido",
-    fecha: fecha || new Date().toISOString().split('T')[0],
-  };
+  titulo: titulo || "",
+  subtitulo: subtitulo || "",
+  descripcion: descripcion || "",
+  autor: autor || "PIXELLAB45 IA",
+  fecha: fecha || new Date().toISOString().split("T")[0],
+  idioma: "Español",
+  version: "1.0",
+  capitulos: plan.capitulos
+};
   libro += "METADATOS:\n";
   libro += JSON.stringify(metadatos, null, 2) + "\n\n";
   libro += "====================================\n\n";
@@ -1596,7 +1600,8 @@ Este contenido es educativo e informativo.
       legales,
       indice.titulo,
       indice.subtitulo,
-      indice.descripcion
+      indice.descripcion,
+      plan
     );
     // =====================================
     // GUARDAR EBOOK EN R2
