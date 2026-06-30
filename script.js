@@ -1014,16 +1014,20 @@ async function generarEbook() {
 
   try {
     const res = await fetch(WORKER_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        tipo: "ebook",
-        tema,
-        paginas
-      })
-    });
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    tipo: "ebook",
+    tema,
+    paginas
+  })
+});
+
+const texto = await res.text();
+resultado.innerText = texto;
+return;
 
     const data = await res.json();
 
