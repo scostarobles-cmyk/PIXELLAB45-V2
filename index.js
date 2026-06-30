@@ -1456,6 +1456,7 @@ CRITICAL RULES:
 - No new topics.
 - No chapter content.
 - No summaries of each chapter individually.
+- Only Spanish
 
 The conclusion must:
 - Close the book naturally.
