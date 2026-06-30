@@ -1475,8 +1475,7 @@ function ensamblarEbook(
   subtitulo,
   descripcion,
   autor,
-  fecha,
-  plan
+  fecha
 ) {
   let libro = "";
 
@@ -1600,8 +1599,7 @@ Este contenido es educativo e informativo.
       legales,
       indice.titulo,
       indice.subtitulo,
-      indice.descripcion,
-      plan
+      indice.descripcion
     );
     // =====================================
     // GUARDAR EBOOK EN R2
