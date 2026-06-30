@@ -1543,9 +1543,16 @@ function ensamblarEbook(
 
   // ÍNDICE
   libro += "ÍNDICE\n\n";
-  indice.indice.forEach(item => {
-    libro += `Capítulo ${item.capitulo}: ${item.titulo}\n`;
-  });
+
+const indiceUnico = new Set();
+
+indice.indice.forEach(item => {
+  const linea = `Capítulo ${item.capitulo}: ${item.titulo}`;
+  if (!indiceUnico.has(linea)) {
+    indiceUnico.add(linea);
+    libro += linea + "\n";
+  }
+});
 
   libro += "\n====================================\n\n";
 
