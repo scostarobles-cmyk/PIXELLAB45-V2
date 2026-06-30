@@ -1189,6 +1189,9 @@ async function disenarEbook() {
 
   texto += "\n\n===== INTRODUCCIÓN =====\n\n";
   texto += ebookDiseno.introduccion;
+  resultadoEditor.innerHTML =
+"<pre>" + JSON.stringify(ebookDiseno.capitulos[0], null, 2) + "</pre>";
+return;
 
   ebookDiseno.capitulos.forEach(cap => {
 
