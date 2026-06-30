@@ -1466,30 +1466,30 @@ No extras.
 // =====================================
 
 function ensamblarEbook(
-  indice,
-  capitulos,
-  conclusion,
-  introduccion,
-  legales,
-  titulo,
-  subtitulo,
-  descripcion,
-  autor,
+  indice, 
+  capitulos, 
+  conclusion, 
+  introduccion, 
+  legales, 
+  titulo, 
+  subtitulo, 
+  descripcion, 
+  autor, 
   fecha
 ) {
   let libro = "";
 
   // METADATOS (bloque JSON)
   const metadatos = {
-  titulo: titulo || "",
-  subtitulo: subtitulo || "",
-  descripcion: descripcion || "",
-  autor: autor || "PIXELLAB45 IA",
-  fecha: fecha || new Date().toISOString().split("T")[0],
-  idioma: "Español",
-  version: "1.0",
-  capitulos: plan.capitulos
-};
+    titulo: titulo || "",
+    subtitulo: subtitulo || "",
+    descripcion: descripcion || "",
+    autor: autor || "PIXELLAB45 IA",
+    fecha: fecha || new Date().toISOString().split("T")[0],
+    idioma: "Español",
+    version: "1.0",
+    capitulos: plan.capitulos  // Acá es plan.capitulos
+  };
   libro += "METADATOS:\n";
   libro += JSON.stringify(metadatos, null, 2) + "\n\n";
   libro += "====================================\n\n";
