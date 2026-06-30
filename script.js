@@ -1025,20 +1025,24 @@ async function generarEbook() {
   })
 });
 
-const texto = await res.text();
-resultado.innerText = texto;
-return;
+if (!res.ok) {
+  throw new Error(`HTTP ${res.status}`);
+}
 
-    const data = await res.json();
+const data = await res.json();
 
-    clearInterval(fakeProgress);
-    barra.style.width = "100%";
-    estado.innerText = "✅ Listo";
+if (!data.ok) {
+  throw new Error(data.error || "Error generando ebook");
+}
 
-    setTimeout(() => {
-      loading.style.display = "none";
-      resultado.innerText = data.resultado || data.mensaje || data.error;
-    }, 300);
+clearInterval(fakeProgress);
+barra.style.width = "100%";
+estado.innerText = "✅ Listo";
+
+setTimeout(() => {
+  loading.style.display = "none";
+  resultado.innerText = data.resultado;
+}, 300);
 
   } catch (error) {
     clearInterval(fakeProgress);

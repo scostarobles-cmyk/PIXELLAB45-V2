@@ -1175,18 +1175,19 @@ async function generarIndice(concepto, plan, env) {
   }
 
   const prompt = `
-You are an expert book structuring engine.
+Eres un experto en estructuración de libros en español.
 
-You must create a complete ebook blueprint.
+Tu tarea es crear el índice completo de un ebook.
 
-CRITICAL RULES:
-- Return ONLY valid JSON.
-- No explanations.
-- No markdown.
-- No text outside JSON.
-- No extra keys.
+REGLAS ESTRICTAS:
+- TODO debe estar en español neutro.
+- No uses inglés en ninguna parte.
+- No inventes temas fuera del concepto.
+- No repitas capítulos ni ideas.
+- No agregues texto fuera del JSON.
+- Devuelve SOLO JSON válido.
 
-You must use EXACTLY this structure:
+ESTRUCTURA OBLIGATORIA:
 
 {
   "titulo": "",
@@ -1203,18 +1204,19 @@ You must use EXACTLY this structure:
   ]
 }
 
-RULES FOR INDEX:
-- Must generate EXACTLY ${plan.capitulos} chapters.
-- Each chapter must be different.
-- No repetition.
-- Logical progression.
-- Educational flow.
+REGLAS DEL ÍNDICE:
+- Debe tener EXACTAMENTE ${plan.capitulos} capítulos.
+- Cada capítulo debe avanzar lógicamente del anterior.
+- El contenido debe estar estrictamente relacionado con el tema: "${concepto}".
+- No mezclar subtemas aleatorios.
+- No repetir títulos ni ideas.
+- Mantener enfoque educativo y progresivo.
 
-BOOK INFO:
-Topic: ${concepto}
-Pages: ${plan.paginasTotales}
-Chapters: ${plan.capitulos}
-Pages per chapter: ${plan.paginasPorCapitulo}
+INFORMACIÓN DEL LIBRO:
+Tema: ${concepto}
+Páginas totales: ${plan.paginasTotales}
+Capítulos: ${plan.capitulos}
+Páginas por capítulo: ${plan.paginasPorCapitulo}
 `;
 
   const response = await env.AI.run(
@@ -1224,9 +1226,11 @@ Pages per chapter: ${plan.paginasPorCapitulo}
         {
           role: "system",
           content: `
-You are a strict JSON generator.
-You never break format.
-You never add text outside JSON.
+Eres un generador estricto de estructuras de libros.
+Solo respondes en español.
+Solo devuelves JSON válido.
+No explicas nada.
+No agregas texto fuera del JSON.
 `
         },
         {
@@ -1234,8 +1238,8 @@ You never add text outside JSON.
           content: prompt
         }
       ],
-      temperature: 0.7,
-      max_tokens: 2000
+      temperature: 0.4,
+      max_tokens: 2500
     }
   );
 
@@ -1243,21 +1247,21 @@ You never add text outside JSON.
 
     const raw = response.response;
 
-    const jsonMatch =
-      raw.match(/\{[\s\S]*\}/);
+    const jsonMatch = raw.match(/\{[\s\S]*\}/);
 
     if (!jsonMatch) {
-      throw new Error("No JSON generated");
+      throw new Error("No JSON generado");
     }
 
-    return JSON.parse(jsonMatch[0]);
+    const parsed = JSON.parse(jsonMatch[0]);
+
+    return parsed;
 
   } catch (err) {
 
-    throw new Error("Error parsing índice: " + err.message);
+    throw new Error("Error parseando índice: " + err.message);
 
   }
-
 }
 // =====================================
 // BLOQUE 3
