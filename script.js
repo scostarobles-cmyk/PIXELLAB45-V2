@@ -1195,7 +1195,8 @@ async function disenarEbook() {
   texto += ebookDiseno.conclusion;
 
   // Mostramos todo en el editor
-  document.getElementById("resultado").textContent = texto;
+  document.getElementById("resultadoEditor").innerHTML =
+    "<pre style='white-space:pre-wrap'>" + texto + "</pre>";
 
 }
 // =====================================
