@@ -1184,13 +1184,11 @@ async function disenarEbook() {
   texto += "\n\n===== AVISO LEGAL =====\n\n";
   texto += ebookDiseno.legales;
 
-  texto += "\n\n===== ÍNDICE =====\n\n";
-  texto += ebookDiseno.indice.join("\n");
+ /* texto += "\n\n===== ÍNDICE =====\n\n";
+  texto += ebookDiseno.indice.join("\n");*/
 
   texto += "\n\n===== INTRODUCCIÓN =====\n\n";
   texto += ebookDiseno.introduccion;
-  resultadoEditor.innerHTML =
-"<pre>" + JSON.stringify(ebookDiseno.capitulos[0], null, 2) + "</pre>";
 return;
 
   ebookDiseno.capitulos.forEach(cap => {
