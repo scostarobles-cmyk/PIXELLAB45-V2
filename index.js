@@ -1488,8 +1488,9 @@ function ensamblarEbook(
     fecha: fecha || new Date().toISOString().split("T")[0],
     idioma: "Español",
     version: "1.0",
-    capitulos: plan.capitulos  // Acá es plan.capitulos
+    capitulos: indice.indice.length
   };
+
   libro += "METADATOS:\n";
   libro += JSON.stringify(metadatos, null, 2) + "\n\n";
   libro += "====================================\n\n";
@@ -1503,7 +1504,7 @@ function ensamblarEbook(
   // PÁGINA LEGAL
   libro += "AVISO LEGAL\n\n";
   libro += legales + "\n\n";
-  libro += "====================================\n\n";
+  libro += "================================\n\n";
 
   // ÍNDICE
   libro += "ÍNDICE\n\n";
@@ -1529,7 +1530,7 @@ function ensamblarEbook(
   libro += "CONCLUSIÓN\n\n";
   libro += conclusion + "\n\n";
 
-  // Devolvemos el contenido para que lo maneje el generador final
+  // Devolvemos el contenido ensamblado
   return libro;
 }
 // =====================================
