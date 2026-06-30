@@ -1444,24 +1444,18 @@ async function generarConclusion(concepto, indice, env) {
   }
 
   const prompt = `
-You are a professional book writer.
+CONCLUSIÓN
 
-Write ONLY the conclusion of an ebook.
+Escribe únicamente la conclusión del ebook siguiendo estas reglas:
 
-CRITICAL RULES:
-- Return ONLY the conclusion text.
-- No titles.
-- No markdown.
-- No explanations.
-- No new topics.
-- No chapter content.
-- No summaries of each chapter individually.
+- Resume los conceptos principales.
+- Refuerza el valor del contenido.
+- Motiva al lector a aplicar lo aprendido.
+- Mantén el mismo tono del ebook.
+- No agregues capítulos ni subtítulos adicionales.
+- No escribas explicaciones fuera del contenido.
 
-The conclusion must:
-- Close the book naturally.
-- Reinforce main ideas.
-- Be 1 to 3 paragraphs.
-- Give a final reflection.
+Devuelve solo el contenido de la conclusión.
 
 BOOK TOPIC:
 ${concepto}
