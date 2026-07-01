@@ -1030,15 +1030,19 @@ async function generarEbook() {
       })
     });
 
-    if (!res.ok) {
-      throw new Error(`HTTP ${res.status}`);
-    }
+   const data = await res.json();
 
-    const data = await res.json();
+if (!res.ok) {
+  throw new Error(
+    data.error || `HTTP ${res.status}`
+  );
+}
 
-    if (!data.ok) {
-      throw new Error(data.error || "Error generando ebook");
-    }
+if (!data.ok) {
+  throw new Error(
+    data.error || "Error generando ebook"
+  );
+}
 
     clearInterval(fakeProgress);
 
@@ -1198,10 +1202,7 @@ async function disenarEbook() {
   texto += "\n\n===== AVISO LEGAL =====\n\n";
   texto += ebookDiseno.legales;
 
- /* texto += "\n\n===== ÍNDICE =====\n\n";
-  texto += ebookDiseno.indice.join("\n");*/
-
-  texto += "\n\n===== INTRODUCCIÓN =====\n\n";
+   texto += "\n\n===== INTRODUCCIÓN =====\n\n";
   texto += ebookDiseno.introduccion;
 
   ebookDiseno.capitulos.forEach(cap => {
