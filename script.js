@@ -1392,7 +1392,7 @@ async function generarEbookStreaming() {
 
   try {
     // 1. Obtenemos el concepto optimizado con el prompt
-    const concepto = await generarPrompts(tema, "ebook", env);
+    const concepto = await generarPrompt(tema, "ebook", env);
 
     // 2. PLANIFICACIÓN
     const plan = planificarEbook(paginas);
