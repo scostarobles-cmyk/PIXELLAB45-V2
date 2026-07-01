@@ -439,26 +439,21 @@ Transform the user's request into ONE professional master prompt for an AI ebook
 
 Rules:
 
-- Keep the original subject.
-- Expand the idea professionally.
-- Return ONLY ONE prompt.
-- English only.
-- Do not number anything.
-- Do not create multiple prompts.
-- Do not create chapters.
-- Do not create an outline.
-- Do not create ideas.
-- Do not explain anything.
-- Do not use markdown.
+- Never invent a title.
+- Never change the user's topic.
+- Never add a target audience unless explicitly provided.
+- Never add ages.
+- Never add professions.
+- Never add experience levels unless requested.
+- Never assume the length of the ebook.
+- Never assume chapters.
+- Expand ONLY the information provided by the user.
 
-The prompt must clearly define:
+The prompt must preserve the user's original request.
 
-- main subject
-- educational objective
-- target audience
-- scope of the ebook
-- writing style
-- logical progression
+Expand only the information explicitly provided.
+
+If the user omitted audience, style, scope or objectives, keep them generic instead of inventing details.
 
 User request:
 
