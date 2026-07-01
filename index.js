@@ -416,7 +416,7 @@ async function listarCategoria(
 // =====================================
 async function generarPrompts(tema, formato, env) {
 
-  // Detecta un número SOLO si está al principio
+  // Detecta cantidad SOLO si el número está al principio
   const match = tema.match(/^\s*(\d+)\s+/);
 
   let cantidad = 1;
@@ -439,24 +439,27 @@ Transform the user's request into ONE professional master prompt for an AI ebook
 
 Rules:
 
+- Keep the user's original topic.
+- Never change the title.
 - Never invent a title.
-- Never change the user's topic.
-- Never add a target audience unless explicitly provided.
-- Never add ages.
-- Never add professions.
-- Never add experience levels unless requested.
-- Never assume the length of the ebook.
-- Never assume chapters.
+- Never invent a target audience.
+- Never invent ages.
+- Never invent professions.
+- Never invent experience levels.
+- Never invent chapters.
+- Never invent the ebook length.
 - Expand ONLY the information provided by the user.
+- Return ONLY ONE prompt.
+- English only.
+- Do not number anything.
+- Do not explain anything.
+- Do not use markdown.
 
-The prompt must clearly define:
+The prompt must preserve the user's original request.
 
-- main subject
-- educational objective
-- target audience
-- scope of the ebook
-- writing style
-- logical progression
+Expand only the information explicitly provided.
+
+If the user omitted audience, style, scope or objectives, keep them generic instead of inventing details.
 
 User request:
 
@@ -533,9 +536,9 @@ Rules:
 - High quality.
 `;
   }
-  
+
   const instruccionesCantidad = cantidad === 1
-? `
+    ? `
 Generate ONE prompt ONLY.
 
 CRITICAL:
@@ -543,9 +546,9 @@ CRITICAL:
 - Do NOT number the output.
 - Do NOT generate alternatives.
 - Do NOT generate multiple prompts.
-- The response must contain exactly one prompt.
+- The entire response must contain only one prompt.
 `
-: `
+    : `
 Generate EXACTLY ${cantidad} prompts.
 
 CRITICAL:
@@ -609,16 +612,12 @@ Every prompt must be professional and immediately usable by an AI.
 
 ${cantidad > 1 ? `
 Leave ONE blank line between every prompt.
-
-OUTPUT FORMAT:
-
-1- Prompt...
-
-2- Prompt...
-
-3- Prompt...
 ` : ""}
 
+User request:
+
+${tema}
+`
   );
 
   return resultado;
