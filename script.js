@@ -991,30 +991,41 @@ async function generarEbook() {
   }
 
   loading.style.display = "block";
-  barra.style.width = "10%";
-  estado.innerText = "📘 Analizando tema...";
+  resultado.innerHTML = "";
 
-  let progreso = 10;
+  // 🔥 ANIMACIÓN VIVA (NO BLOQUEA NADA)
+  const frames = [
+    "📚 Analizando tema",
+    "🧠 Generando estructura",
+    "📑 Construyendo índice",
+    "✍️ Escribiendo contenido",
+    "📄 Armando capítulos",
+    "🧩 Ensamblando ebook",
+    "💾 Preparando salida"
+  ];
 
-  const fakeProgress = setInterval(() => {
+  let i = 0;
+  let progreso = 5;
 
-    if (progreso < 90) {
+  const anim = setInterval(() => {
 
-      progreso += Math.random() * 10;
-      barra.style.width = progreso + "%";
+    estado.innerText = frames[i % frames.length];
 
-      if (progreso < 25)
-        estado.innerText = "📚 Creando estructura...";
-      else if (progreso < 50)
-        estado.innerText = "📑 Generando índice...";
-      else if (progreso < 75)
-        estado.innerText = "✍️ Escribiendo capítulos...";
-      else
-        estado.innerText = "📄 Finalizando ebook...";
+    progreso += Math.random() * 3;
+    if (progreso > 90) progreso = 90;
 
-    }
+    barra.style.width = progreso + "%";
 
-  }, 400);
+    // 🔥 efecto visual extra (evita sensación de congelado)
+    const dot = document.createElement("span");
+    dot.innerText = " .";
+    resultado.appendChild(dot);
+
+    setTimeout(() => dot.remove(), 800);
+
+    i++;
+
+  }, 1200);
 
   try {
 
@@ -1032,42 +1043,21 @@ async function generarEbook() {
 
     const data = await res.json();
 
-    if (!res.ok) {
-      throw new Error(
-        data.error || `HTTP ${res.status}`
-      );
-    }
-
-    if (!data.ok) {
-      throw new Error(
-        data.error || "Error generando ebook"
-      );
-    }
-
-    clearInterval(fakeProgress);
+    clearInterval(anim);
 
     barra.style.width = "100%";
     estado.innerText = "✅ Listo";
 
-    setTimeout(() => {
-
-      loading.style.display = "none";
-      resultado.innerText = data.resultado;
-
-    }, 300);
+    resultado.innerHTML = data.resultado;
 
   } catch (error) {
 
-    clearInterval(fakeProgress);
-
-    loading.style.display = "none";
+    clearInterval(anim);
 
     estado.innerText = "❌ Error";
 
     resultado.innerText = error.message;
-
   }
-
 }
 async function listarEbooks() {
 
