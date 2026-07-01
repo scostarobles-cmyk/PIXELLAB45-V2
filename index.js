@@ -412,18 +412,63 @@ async function listarCategoria(
 
 }
 // =====================================
-// GENERAR PROMT
+// GENERAR PROMPTS
 // =====================================
 async function generarPrompts(tema, formato, env) {
 
-  const match = tema.match(/\d+/);
+  // Detecta un número SOLO si está al principio
+  const match = tema.match(/^\s*(\d+)\s+/);
 
-  let cantidad = match
-    ? parseInt(match[0])
-    : 1;
+  let cantidad = 1;
 
-  if (cantidad > 20)
-    cantidad = 20;
+  if (match) {
+    cantidad = Math.min(parseInt(match[1]), 20);
+    tema = tema.replace(match[0], "").trim();
+  }
+
+  // =====================================
+  // CASO ESPECIAL: EBOOK
+  // =====================================
+
+  if ((formato || "").toLowerCase() === "ebook") {
+
+    return await ai(env, `
+You are one of the world's best AI prompt engineers.
+
+Transform the user's request into ONE professional master prompt for an AI ebook generation engine.
+
+Rules:
+
+- Keep the original subject.
+- Expand the idea professionally.
+- Return ONLY ONE prompt.
+- English only.
+- Do not number anything.
+- Do not create multiple prompts.
+- Do not create chapters.
+- Do not create an outline.
+- Do not create ideas.
+- Do not explain anything.
+- Do not use markdown.
+
+The prompt must clearly define:
+
+- main subject
+- educational objective
+- target audience
+- scope of the ebook
+- writing style
+- logical progression
+
+User request:
+
+${tema}
+`);
+  }
+
+  // =====================================
+  // RESTO DE FORMATOS
+  // =====================================
 
   let reglas = "";
 
@@ -480,14 +525,6 @@ Rules:
 `;
       break;
 
-    case "ebook":
-  reglas = `
-Keep the user's topic exactly.
-Do not change the title.
-Return one optimized ebook prompt.
-`;
-  break;
-
     default:
       reglas = `
 Generate universal AI prompts.
@@ -504,7 +541,7 @@ Rules:
 `
 You are one of the world's best AI prompt engineers.
 
-Generate EXACTLY ${cantidad} prompts.
+Generate EXACTLY ${cantidad} professional AI prompt${cantidad > 1 ? "s" : ""}.
 
 ${reglas}
 
@@ -520,12 +557,13 @@ CRITICAL RULES:
 - Never write introductions.
 - Never write markdown.
 - Never write instructions for a human.
-- Never start with:
-  Create
-  Make
-  Record
-  Show
-  Write
+
+Never start with:
+Create
+Make
+Record
+Show
+Write
 
 Never use words like:
 trying
@@ -553,7 +591,7 @@ OUTPUT FORMAT:
 
 3- Prompt...
 
-Topic:
+User request:
 
 ${tema}
 `
