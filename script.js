@@ -1467,7 +1467,7 @@ async function generarEbookStreaming() {
     resultado.innerText = error.message;
   }
 }
-}
+
 
 
 // MENÚ MÓVIL
