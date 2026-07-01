@@ -535,13 +535,41 @@ Rules:
 - High quality.
 `;
   }
+  
+  const instruccionesCantidad = cantidad === 1
+? `
+Generate ONE prompt ONLY.
+
+CRITICAL:
+- Return exactly ONE prompt.
+- Do NOT number the output.
+- Do NOT generate alternatives.
+- Do NOT generate multiple prompts.
+- The response must contain exactly one prompt.
+`
+: `
+Generate EXACTLY ${cantidad} prompts.
+
+CRITICAL:
+- Return exactly ${cantidad} prompts.
+- Number every prompt.
+- Leave one blank line between prompts.
+
+OUTPUT FORMAT:
+
+1- Prompt...
+
+2- Prompt...
+
+3- Prompt...
+`;
 
   const resultado = await ai(
     env,
 `
 You are one of the world's best AI prompt engineers.
 
-Generate EXACTLY ${cantidad} professional AI prompt${cantidad > 1 ? "s" : ""}.
+${instruccionesCantidad}
 
 ${reglas}
 
@@ -581,6 +609,7 @@ Each prompt must describe ONE final scene or ONE complete writing objective depe
 
 Every prompt must be professional and immediately usable by an AI.
 
+${cantidad > 1 ? `
 Leave ONE blank line between every prompt.
 
 OUTPUT FORMAT:
@@ -590,11 +619,8 @@ OUTPUT FORMAT:
 2- Prompt...
 
 3- Prompt...
+` : ""}
 
-User request:
-
-${tema}
-`
   );
 
   return resultado;
