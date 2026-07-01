@@ -1030,19 +1030,19 @@ async function generarEbook() {
       })
     });
 
-   const data = await res.json();
+    const data = await res.json();
 
-if (!res.ok) {
-  throw new Error(
-    data.error || `HTTP ${res.status}`
-  );
-}
+    if (!res.ok) {
+      throw new Error(
+        data.error || `HTTP ${res.status}`
+      );
+    }
 
-if (!data.ok) {
-  throw new Error(
-    data.error || "Error generando ebook"
-  );
-}
+    if (!data.ok) {
+      throw new Error(
+        data.error || "Error generando ebook"
+      );
+    }
 
     clearInterval(fakeProgress);
 
@@ -1357,7 +1357,119 @@ function analizarEbook(contenido) {
 
   };
 
+} 
+
+async function generarEbookStreaming() {
+  const tema = document.getElementById("temaEbook").value;
+  const paginas = document.getElementById("paginasEbook").value;
+
+  const resultado = document.getElementById("resultadoEbook");
+  const loading = document.getElementById("loadingEbook");
+  const barra = document.getElementById("barraEbook");
+  const estado = document.getElementById("estadoEbook");
+
+  if (!tema.trim()) {
+    resultado.innerText = "⚠️ Escribe un tema para el ebook";
+    return;
+  }
+
+  loading.style.display = "block";
+  barra.style.width = "10%";
+  estado.innerText = "📘 Analizando tema...";
+
+  let progreso = 10;
+  const fakeProgress = setInterval(() => {
+    if (progreso < 90) {
+      progreso += Math.random() * 10;
+      barra.style.width = progreso + "%";
+
+      if (progreso < 25) estado.innerText = "📚 Creando estructura...";
+      else if (progreso < 50) estado.innerText = "📑 Generando índice...";
+      else if (progreso < 75) estado.innerText = "✍️ Escribiendo capítulos...";
+      else estado.innerText = "📄 Finalizando ebook...";
+    }
+  }, 400);
+
+  try {
+    // 1. Obtenemos el concepto optimizado con el prompt
+    const concepto = await generarPrompts(tema, "ebook", env);
+
+    // 2. PLANIFICACIÓN
+    const plan = planificarEbook(paginas);
+
+    // Mostramos estado: planificando
+    estado.innerText = "📊 Planificando ebook...";
+
+    // 3. ÍNDICE + METADATA
+    estado.innerText = "📑 Generando índice...";
+    const indice = await generarIndice(concepto, plan, env);
+
+    resultado.innerHTML = `<h1>${indice.titulo}</h1><h2>${indice.subtitulo}</h2><h3>Índice</h3>`;
+    for (const cap of indice.indice) {
+      resultado.innerHTML += `<p><strong>${cap.capitulo}.</strong> ${cap.titulo}</p>`;
+    }
+
+    // 4. INTRODUCCIÓN
+    estado.innerText = "📝 Escribiendo introducción...";
+    const introduccion = await generarIntroduccion(concepto, indice, env);
+    resultado.innerHTML += `<h3>Introducción</h3><p>${introduccion}</p>`;
+
+    // 5. CAPÍTULOS
+    estado.innerText = "✍️ Escribiendo capítulos...";
+    let capitulos = [];
+    let capituloAnterior = "";
+
+    for (let i = 1; i <= indice.indice.length; i++) {
+      const contenido = await generarCapitulo(concepto, indice, i, capituloAnterior, env);
+      capitulos.push({ titulo: indice.indice[i - 1].titulo, contenido });
+      capituloAnterior = contenido;
+      resultado.innerHTML += `<h3>Capítulo ${i}</h3><p>${contenido}</p>`;
+    }
+
+    // 6. CONCLUSIÓN
+    estado.innerText = "📄 Finalizando ebook...";
+    const conclusion = await generarConclusion(concepto, indice, env);
+    resultado.innerHTML += `<h3>Conclusión</h3><p>${conclusion}</p>`;
+
+    // 7. LEGALES
+    const legales = `Todos los derechos reservados. Queda prohibida la reproducción total o parcial de este libro sin autorización. Este contenido es educativo e informativo.`;
+    resultado.innerHTML += `<h3>Legales</h3><p>${legales}</p>`;
+
+    // 8. ENSAMBLAR EBOOK
+    estado.innerText = "📥 Guardando ebook...";
+    const ebook = ensamblarEbook(
+      indice,
+      capitulos,
+      conclusion,
+      introduccion,
+      legales,
+      indice.titulo,
+      indice.subtitulo,
+      indice.descripcion
+    );
+
+    // 9. GUARDAR EN R2
+    const nombreArchivo = `Ebook/${Date.now()}-${crypto.randomUUID()}.txt`;
+    await env.IMAGES.put(
+      nombreArchivo,
+      ebook,
+      { httpMetadata: { contentType: "text/plain" } }
+    );
+
+    estado.innerText = "✅ Ebook listo";
+    loading.style.display = "none";
+    resultado.innerHTML += `<p><strong>Archivo:</strong> ${nombreArchivo}</p>`;
+
+  } catch (error) {
+    clearInterval(fakeProgress);
+    loading.style.display = "none";
+    estado.innerText = "❌ Error";
+    resultado.innerText = error.message;
+  }
 }
+}
+
+
 // MENÚ MÓVIL
 function toggleMenu() {
 

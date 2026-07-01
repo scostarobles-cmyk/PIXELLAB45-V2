@@ -139,7 +139,14 @@ case "guardar-imagen":
   return await listarEbooks(env, json);
   case "cargar-ebook":
   return await cargarEbook(data, env, json);
+  case "ebookPlan":
+  return await generarEbookPlan(data, env, json);
 
+
+return json({
+    ok:true,
+    introduccion:intro
+});
 default:
   return json({
     ok: false,
@@ -1794,4 +1801,50 @@ function analizarEbook(contenidoEbook) {
     ok: true,
     estructuraEbook
   };
+}
+async function generarEbookPlan(data, env, json) {
+
+  try {
+
+    const temaRaw = (data.tema || "").trim();
+
+    if (!temaRaw) {
+      return json({
+        ok: false,
+        error: "Falta el tema del ebook"
+      }, 400);
+    }
+
+    const paginas = data.paginas || 30;
+
+    const concepto = await generarPrompts(
+      temaRaw,
+      "ebook",
+      env
+    );
+
+    const plan = planificarEbook(paginas);
+
+    const indice = await generarIndice(
+      concepto,
+      plan,
+      env
+    );
+
+    return json({
+      ok: true,
+      concepto,
+      plan,
+      indice
+    });
+
+  } catch (err) {
+
+    return json({
+      ok: false,
+      error: err.message
+    }, 500);
+
+  }
+
 }
