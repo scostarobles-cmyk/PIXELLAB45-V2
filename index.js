@@ -1582,10 +1582,7 @@ async function generarEbook(data, env, json) {
   env
 );
 
-return json({
-  ok: true,
-  concepto
-});
+
 
    if (!temaRaw) {
   return json({
