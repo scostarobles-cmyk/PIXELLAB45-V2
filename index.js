@@ -1663,12 +1663,12 @@ Este contenido es educativo e informativo.
     });
 
   } catch (err) {
-
-    return json({
-      ok: false,
-      error: err.message
-    }, 500);
-  }
+  return json({
+    ok: false,
+    error: err.message,
+    stack: err.stack
+  }, 500);
+}
 }
 
 // =====================================
