@@ -1390,7 +1390,7 @@ Este ebook tiene fines exclusivamente educativos e informativos. Las estrategias
 El autor no garantiza resultados económicos, financieros o profesionales específicos derivados de la aplicación de los conocimientos aquí compartidos.
 Las marcas, nombres comerciales y servicios mencionados pertenecen a sus respectivos propietarios.
 Primera edición – 2026
-Autor: Sergio Costa
+Autor: Sergio Costa 
 Marca: PIXELLAB45
 `;
 
