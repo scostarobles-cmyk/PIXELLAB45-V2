@@ -1177,7 +1177,7 @@ async function disenarEbook() {
     alert(resultado.error);
     return;
   }
-
+ 
   // ← VA EXACTAMENTE AQUÍ
   const ebookDiseno = resultado.ebook;
 
