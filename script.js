@@ -1170,7 +1170,7 @@ async function disenarEbook() {
     alert("Primero cargá un ebook.");
     return;
   }
-
+  alert("entro al botón");
   const resultado = analizarEbook(ebookActual);
 
   if (!resultado.ok) {
