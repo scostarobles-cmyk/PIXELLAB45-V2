@@ -1170,9 +1170,9 @@ async function disenarEbook() {
     alert("Primero cargá un ebook.");
     return;
   }
-
+  
   const resultado = analizarEbook(ebookActual);
-
+  
   if (!resultado.ok) {
     alert(resultado.error);
     return;
@@ -1183,25 +1183,27 @@ async function disenarEbook() {
 
   // Construir HTML
   let html = construirHTMLLibro(ebookDiseno);
-alert("1");
+console.log(html);
 
 html = construirPortada(html, ebookDiseno);
-alert("2");
+console.log(html);
 
 html = construirLegales(html, ebookDiseno);
-alert("3");
+console.log(html);
 
 html = construirIndice(html, ebookDiseno);
-alert("4");
+console.log(html);
 
 html = construirIntroduccion(html, ebookDiseno);
-alert("5");
+console.log(html);
 
 html = construirCapitulos(html, ebookDiseno);
-alert("6");
+console.log(html);
 
 html = construirConclusion(html, ebookDiseno);
-alert("7");
+console.log(html);
+
+html = construirConclusion(html, ebookDiseno);
 
   document.getElementById("resultadoEditor").innerHTML = html;
 
