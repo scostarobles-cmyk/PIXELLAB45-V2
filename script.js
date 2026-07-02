@@ -1191,8 +1191,8 @@ console.log(html);
 html = construirLegales(html, ebookDiseno);
 console.log(html);
 
-html = construirIndice(html, ebookDiseno);
-console.log(html);
+//html = construirIndice(html, ebookDiseno);
+//console.log(html);
 
 html = construirIntroduccion(html, ebookDiseno);
 console.log(html);
@@ -1355,21 +1355,23 @@ if (legal) {
 function construirHTMLLibro(ebook) {
 
   return `
+
 <div class="ebook">
 
-  <section id="portada"></section>
+  <section id="portada" class="pagina"></section>
 
-  <section id="legales"></section>
+  <section id="legales" class="pagina"></section>
 
-  <section id="indice"></section>
+  <section id="indice" class="pagina"></section>
 
-  <section id="introduccion"></section>
+  <section id="introduccion" class="pagina"></section>
 
   <section id="capitulos"></section>
 
-  <section id="conclusion"></section>
+  <section id="conclusion" class="pagina"></section>
 
 </div>
+
 `;
 
 }
@@ -1445,13 +1447,23 @@ function construirCapitulos(html, ebook) {
 
     contenido += `
 
-<section class="capitulo">
+<section class="pagina capitulo">
 
-<h2>Capítulo ${cap.numero}</h2>
+    <h1>Capítulo ${cap.numero}</h1>
 
-<h3>${cap.titulo}</h3>
+    <h2>${cap.titulo}</h2>
 
-<p>${cap.contenido}</p>
+    <div class="imagen-capitulo">
+
+        <!-- Imagen IA -->
+
+    </div>
+
+    <div class="contenido-capitulo">
+
+        <p>${cap.contenido}</p>
+
+    </div>
 
 </section>
 
@@ -1467,46 +1479,29 @@ function construirCapitulos(html, ebook) {
 }
 function construirConclusion(html, ebook) {
 
+  const contenido = `
+
+<section class="pagina conclusion">
+
+    <h1>Conclusión</h1>
+
+    <div class="contenido-conclusion">
+
+        <p class="texto-libro">
+
+            ${ebook.conclusion}
+
+        </p>
+
+    </div>
+
+</section>
+
+`;
+
   return html.replace(
     '<section id="conclusion"></section>',
-    `
-<section id="conclusion">
-
-<h2>Conclusión</h2>
-
-<p>${ebook.conclusion}</p>
-
-</section>
-`
-  );
-
-}
-
-function construirIndice(html, ebook) {
-
-  let indice = `
-<section id="indice">
-
-<h2>Índice</h2>
-
-<ol>
-`;
-
-  ebook.indice.forEach(item => {
-
-    indice += `<li>${item}</li>`;
-
-  });
-
-  indice += `
-</ol>
-
-</section>
-`;
-
-  return html.replace(
-    '<section id="indice"></section>',
-    indice
+    contenido
   );
 
 }
