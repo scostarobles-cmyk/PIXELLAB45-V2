@@ -1170,7 +1170,7 @@ async function disenarEbook() {
     alert("Primero cargá un ebook.");
     return;
   }
-    
+  
   const resultado = analizarEbook(ebookActual);
   
   if (!resultado.ok) {
@@ -1191,8 +1191,8 @@ console.log(html);
 html = construirLegales(html, ebookDiseno);
 console.log(html);
 
-html = construirIndice(html, ebookDiseno);
-console.log(html);
+//html = construirIndice(html, ebookDiseno);
+//console.log(html);
 
 html = construirIntroduccion(html, ebookDiseno);
 console.log(html);
