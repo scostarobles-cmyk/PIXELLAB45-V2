@@ -1381,6 +1381,19 @@ function construirPortada(html, ebook) {
 
 function construirLegales(html, ebook) {
 
+  const legales = `
+PÁGINA LEGAL
+© 2026 Sergio Costa – PIXELLAB45
+Todos los derechos reservados.
+Ninguna parte de esta publicación puede ser reproducida, almacenada o transmitida por ningún medio, ya sea electrónico, mecánico, fotocopia, grabación o cualquier otro sistema, sin autorización previa y por escrito del autor, excepto para uso personal y educativo.
+Este ebook tiene fines exclusivamente educativos e informativos. Las estrategias, herramientas y ejemplos presentados están basados en información disponible al momento de su publicación.
+El autor no garantiza resultados económicos, financieros o profesionales específicos derivados de la aplicación de los conocimientos aquí compartidos.
+Las marcas, nombres comerciales y servicios mencionados pertenecen a sus respectivos propietarios.
+Primera edición – 2026
+Autor: Sergio Costa
+Marca: PIXELLAB45
+`;
+
   return html.replace(
     '<section id="legales"></section>',
     `
@@ -1388,33 +1401,7 @@ function construirLegales(html, ebook) {
 
 <h2>Aviso Legal</h2>
 
-<p>${ebook.legales}</p>
-
-</section>
-`
-  );
-
-}
-function construirIndice(html, ebook) {
-
-  let lista = "<ul>";
-
-  ebook.indice.forEach(item => {
-
-    lista += `<li>${item}</li>`;
-
-  });
-
-  lista += "</ul>";
-
-  return html.replace(
-    '<section id="indice"></section>',
-    `
-<section id="indice">
-
-<h2>Índice</h2>
-
-${lista}
+<p style="white-space: pre-line;">${legales}</p>
 
 </section>
 `
