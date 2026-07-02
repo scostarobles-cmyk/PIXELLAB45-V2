@@ -19,7 +19,7 @@ async function cargarGaleriaCompleta() {
     document.getElementById("galeriaCompleta");
 
   contenedor.innerHTML =
-    "⏳ Cargando galería...";
+    "⏳ Cargando galería..."; 
 
   try {
 
@@ -1191,8 +1191,8 @@ console.log(html);
 html = construirLegales(html, ebookDiseno);
 console.log(html);
 
-//html = construirIndice(html, ebookDiseno);
-//console.log(html);
+html = construirIndice(html, ebookDiseno);
+console.log(html);
 
 html = construirIntroduccion(html, ebookDiseno);
 console.log(html);
@@ -1482,6 +1482,34 @@ function construirConclusion(html, ebook) {
 
 }
 
+function construirIndice(html, ebook) {
+
+  let indice = `
+<section id="indice">
+
+<h2>Índice</h2>
+
+<ol>
+`;
+
+  ebook.indice.forEach(item => {
+
+    indice += `<li>${item}</li>`;
+
+  });
+
+  indice += `
+</ol>
+
+</section>
+`;
+
+  return html.replace(
+    '<section id="indice"></section>',
+    indice
+  );
+
+}
 
 // MENÚ MÓVIL
 function toggleMenu() {
