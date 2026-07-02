@@ -1255,11 +1255,12 @@ const ebookDiseno = {
   // ==========================
 
   const legal = contenido.match(
-    /AVISO LEGAL\s*([\s\S]*?)====================================/
-  );
+  /AVISO LEGAL\s*([\s\S]*?)ÍNDICE/
+);
 
-  if (legal)
-    ebookDiseno.legales = legal[1].trim();
+if (legal) {
+  ebookDiseno.legales = legal[1].trim();
+}
 
   // ==========================
   // ÍNDICE
