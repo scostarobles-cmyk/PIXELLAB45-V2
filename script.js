@@ -1177,7 +1177,7 @@ async function disenarEbook() {
     alert(resultado.error);
     return;
   }
- 
+
   // ← VA EXACTAMENTE AQUÍ
   const ebookDiseno = resultado.ebook;
 
@@ -1203,7 +1203,6 @@ console.log(html);
 html = construirConclusion(html, ebookDiseno);
 console.log(html);
 
-html = construirConclusion(html, ebookDiseno);
 
   document.getElementById("resultadoEditor").innerHTML = html;
 
