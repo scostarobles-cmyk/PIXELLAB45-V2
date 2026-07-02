@@ -1178,38 +1178,22 @@ async function disenarEbook() {
     return;
   }
 
-  let texto = "";
+  // ← VA EXACTAMENTE AQUÍ
+  const ebookDiseno = resultado.ebook;
 
-  texto += "===== METADATOS =====\n\n";
-  texto += JSON.stringify(ebookDiseno.metadata, null, 2);
+  // Construir HTML
+  let html = construirHTMLLibro(ebookDiseno);
 
-  texto += "\n\n===== PORTADA =====\n\n";
-  texto += "Título: " + ebookDiseno.portada.titulo + "\n";
-  texto += "Subtítulo: " + ebookDiseno.portada.subtitulo + "\n";
-  texto += "Descripción:\n";
-  texto += ebookDiseno.portada.descripcion + "\n";
+  html = construirPortada(html, ebookDiseno);
+  html = construirLegales(html, ebookDiseno);
+  html = construirIndice(html, ebookDiseno);
+  html = construirIntroduccion(html, ebookDiseno);
+  html = construirCapitulos(html, ebookDiseno);
+  html = construirConclusion(html, ebookDiseno);
 
-  texto += "\n\n===== AVISO LEGAL =====\n\n";
-  texto += ebookDiseno.legales;
+  document.getElementById("resultadoEditor").innerHTML = html;
 
-   texto += "\n\n===== INTRODUCCIÓN =====\n\n";
-  texto += ebookDiseno.introduccion;
-
-  ebookDiseno.capitulos.forEach(cap => {
-
-    texto += "\n\n========================================\n";
-    texto += "CAPÍTULO " + cap.numero + "\n";
-    texto += cap.titulo + "\n\n";
-    texto += cap.contenido;
-
-  });
-
-  texto += "\n\n===== CONCLUSIÓN =====\n\n";
-  texto += ebookDiseno.conclusion;
-
-  // Mostramos todo en el editor
-  document.getElementById("resultadoEditor").innerHTML =
-    "<pre style='white-space:pre-wrap'>" + texto + "</pre>";
+  ebookDiseno.html = html;
 
 }
 // =====================================
@@ -1218,7 +1202,7 @@ async function disenarEbook() {
 
 function analizarEbook(contenido) {
 
-  ebookDiseno = {
+const ebookDiseno = {
     metadata: {},
     portada: {},
     legales: "",
@@ -1349,7 +1333,153 @@ function analizarEbook(contenido) {
 
 } 
 
+// =====================================
+// BLOQUE 1
+// CONSTRUCTOR HTML DEL EBOOK
+// =====================================
 
+function construirHTMLLibro(ebook) {
+
+  return `
+<div class="ebook">
+
+  <section id="portada"></section>
+
+  <section id="legales"></section>
+
+  <section id="indice"></section>
+
+  <section id="introduccion"></section>
+
+  <section id="capitulos"></section>
+
+  <section id="conclusion"></section>
+
+</div>
+`;
+
+}
+function construirPortada(html, ebook) {
+
+  return html.replace(
+    '<section id="portada"></section>',
+    `
+<section id="portada">
+
+  <h1>${ebook.portada.titulo}</h1>
+
+  <h2>${ebook.portada.subtitulo}</h2>
+
+  <p>${ebook.portada.descripcion}</p>
+
+</section>
+`
+  );
+
+}
+
+function construirLegales(html, ebook) {
+
+  return html.replace(
+    '<section id="legales"></section>',
+    `
+<section id="legales">
+
+<h2>Aviso Legal</h2>
+
+<p>${ebook.legales}</p>
+
+</section>
+`
+  );
+
+}
+function construirIndice(html, ebook) {
+
+  let lista = "<ul>";
+
+  ebook.indice.forEach(item => {
+
+    lista += `<li>${item}</li>`;
+
+  });
+
+  lista += "</ul>";
+
+  return html.replace(
+    '<section id="indice"></section>',
+    `
+<section id="indice">
+
+<h2>Índice</h2>
+
+${lista}
+
+</section>
+`
+  );
+
+}
+function construirIntroduccion(html, ebook) {
+
+  return html.replace(
+    '<section id="introduccion"></section>',
+    `
+<section id="introduccion">
+
+<h2>Introducción</h2>
+
+<p>${ebook.introduccion}</p>
+
+</section>
+`
+  );
+
+}
+function construirCapitulos(html, ebook) {
+
+  let contenido = "";
+
+  ebook.capitulos.forEach(cap => {
+
+    contenido += `
+
+<section class="capitulo">
+
+<h2>Capítulo ${cap.numero}</h2>
+
+<h3>${cap.titulo}</h3>
+
+<p>${cap.contenido}</p>
+
+</section>
+
+`;
+
+  });
+
+  return html.replace(
+    '<section id="capitulos"></section>',
+    contenido
+  );
+
+}
+function construirConclusion(html, ebook) {
+
+  return html.replace(
+    '<section id="conclusion"></section>',
+    `
+<section id="conclusion">
+
+<h2>Conclusión</h2>
+
+<p>${ebook.conclusion}</p>
+
+</section>
+`
+  );
+
+}
 
 
 // MENÚ MÓVIL
