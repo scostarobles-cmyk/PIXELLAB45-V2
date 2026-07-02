@@ -1170,7 +1170,7 @@ async function disenarEbook() {
     alert("Primero cargá un ebook.");
     return;
   }
-  alert("entro al botón");
+alert("entro al botón");
   const resultado = analizarEbook(ebookActual);
 
   if (!resultado.ok) {
@@ -1183,13 +1183,25 @@ async function disenarEbook() {
 
   // Construir HTML
   let html = construirHTMLLibro(ebookDiseno);
+alert("1");
 
-  html = construirPortada(html, ebookDiseno);
-  html = construirLegales(html, ebookDiseno);
-  html = construirIndice(html, ebookDiseno);
-  html = construirIntroduccion(html, ebookDiseno);
-  html = construirCapitulos(html, ebookDiseno);
-  html = construirConclusion(html, ebookDiseno);
+html = construirPortada(html, ebookDiseno);
+alert("2");
+
+html = construirLegales(html, ebookDiseno);
+alert("3");
+
+html = construirIndice(html, ebookDiseno);
+alert("4");
+
+html = construirIntroduccion(html, ebookDiseno);
+alert("5");
+
+html = construirCapitulos(html, ebookDiseno);
+alert("6");
+
+html = construirConclusion(html, ebookDiseno);
+alert("7");
 
   document.getElementById("resultadoEditor").innerHTML = html;
 
