@@ -1366,7 +1366,7 @@ function construirHTMLLibro(ebook) {
 
   <section id="introduccion" class="pagina"></section>
 
-  <section id="capitulos"></section>
+  <section id="capitulos" class="pagina"></section>
 
   <section id="conclusion" class="pagina"></section>
 
