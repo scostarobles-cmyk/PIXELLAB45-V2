@@ -1177,17 +1177,12 @@ section{
 }
 
 .portada .descripcion{
-
-    max-width:650px;
-
+    color:#444;
     font-size:18px;
-
-    line-height:1.8;
-
-    margin-bottom:auto;
-
+    line-height:1.7;
+    max-width:650px;
+    margin:35px auto;
 }
-
 .portada .autor{
 
     font-size:20px;
