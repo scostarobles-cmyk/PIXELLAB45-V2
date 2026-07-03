@@ -1267,8 +1267,8 @@ const ebookDiseno = {
   // AVISO LEGAL
   // ==========================
 
-  const indice = contenido.match(
-  /ÍNDICE\s*([\s\S]*?)\n{2,}INTRODUCCIÓN/
+  const legal = contenido.match(
+  /AVISO LEGAL\s*([\s\S]*?)================================/
 );
 
 if (legal) {
@@ -1280,7 +1280,7 @@ if (legal) {
   // ==========================
 
   const indice = contenido.match(
-  /ÍNDICE\s*([\s\S]*?)INTRODUCCIÓN/
+  /ÍNDICE\s*([\s\S]*?)\n{2,}INTRODUCCIÓN/
 );
 
 
