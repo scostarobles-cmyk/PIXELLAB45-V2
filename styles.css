@@ -1170,15 +1170,10 @@ section{
 
 }
 
-.portada h2{
-
-    font-size:24px;
+..portada h2{
+    font-size:22px;
+    line-height:1.4;
     font-weight:400;
-
-    color:#555;
-
-    margin-bottom:40px;
-
 }
 
 .portada .descripcion{
