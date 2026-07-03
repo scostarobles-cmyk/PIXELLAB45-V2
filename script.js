@@ -1419,24 +1419,20 @@ Marca: PIXELLAB45
 }
 
 function construirIndice(html, ebook) {
-
   const items = ebook.indice
     .map(item => `<li>${item}</li>`)
     .join("");
-    
-
+  
+  // Reemplazar solo hasta antes de la línea de separación
   return html.replace(
-    '<section id="indice" class="pagina"></section>',
-    `
-    <section id="indice" class="pagina">
+    /<section id="indice" class="pagina"><\/section>/,
+    `<section id="indice" class="pagina">
       <h2>Índice</h2>
       <ul>
         ${items}
       </ul>
-    </section>
-    `
+    </section>`
   );
-
 }
 
 function construirIntroduccion(html, ebook) {
