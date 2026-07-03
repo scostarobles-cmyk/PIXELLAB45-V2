@@ -9,7 +9,7 @@ html {
   padding: 0;
   box-sizing: border-box;
 }
-   
+
 body {
   background: #05070d;
   color: #e6f7ff;
@@ -1280,8 +1280,15 @@ section{
   color: #d9d9d9 !important;
 }
 .ebook .pagina p{
-    margin-bottom:18px;
-    line-height:1.8;
+
+    text-align: justify;
+
+    text-justify: inter-word;
+
+    line-height: 1.8;
+
+    margin-bottom: 18px;
+
 }
 @keyframes fadeUp{
 
