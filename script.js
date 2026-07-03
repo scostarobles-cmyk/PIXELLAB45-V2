@@ -1280,8 +1280,8 @@ if (legal) {
   // ==========================
 
   const indice = contenido.match(
-    /ÍNDICE\s*([\s\S]*?)====================================/
-  );
+  /ÍNDICE\s*([\s\S]*?)INTRODUCCIÓN/
+);
 
   if (indice) {
 
