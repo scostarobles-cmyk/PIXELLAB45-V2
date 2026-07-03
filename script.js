@@ -1283,13 +1283,14 @@ if (legal) {
   /ÍNDICE\s*([\s\S]*?)INTRODUCCIÓN/
 );
 
+
   if (indice) {
 
     ebookDiseno.indice = indice[1]
       .split("\n")
       .map(x => x.trim())
       .filter(x => x);
-
+alert(ebookDiseno.indice.join("\n"));
   }
 
 
