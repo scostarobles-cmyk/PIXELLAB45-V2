@@ -1191,8 +1191,8 @@ console.log(html);
 html = construirLegales(html, ebookDiseno);
 console.log(html);
 
-//html = construirIndice(html, ebookDiseno);
-//console.log(html);
+html = construirIndice(html, ebookDiseno);
+console.log(html);
 
 html = construirIntroduccion(html, ebookDiseno);
 console.log(html);
@@ -1290,7 +1290,7 @@ if (legal) {
       .split("\n")
       .map(x => x.trim())
       .filter(x => x);
-alert(ebookDiseno.indice.join("\n"));
+
   }
 
 
@@ -1423,7 +1423,7 @@ function construirIndice(html, ebook) {
   const items = ebook.indice
     .map(item => `<li>${item}</li>`)
     .join("");
-    alert(ebookDiseno.indice.join('\n'))
+    
 
   return html.replace(
     '<section id="indice" class="pagina"></section>',
