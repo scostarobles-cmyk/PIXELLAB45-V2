@@ -1408,99 +1408,90 @@ async function generarCapitulo(concepto, indice, numeroCapitulo, capituloAnterio
     throw new Error("Capítulo no encontrado en el índice");
   }
 
-  const prompt = `
-Eres un escritor profesional especializado en ebooks.
+  // 🎯 OBJETIVO REAL DE LONGITUD (en tokens aproximados)
+  const objetivoPalabras = Math.max(1800, plan.paginasPorCapitulo * 450);
 
-Debes escribir ÚNICAMENTE el capítulo ${numeroCapitulo}.
+  let contenidoFinal = "";
+  let contexto = capituloAnterior || "Inicio del capítulo.";
 
-INSTRUCCIONES OBLIGATORIAS:
+  let iteraciones = 0;
+  const maxIteraciones = 4;
 
-- Escribe SIEMPRE en español neutro.
-- Está TERMINANTEMENTE PROHIBIDO escribir una sola palabra en inglés.
-- No traduzcas títulos al inglés.
-- No uses frases en inglés.
-- No mezcles idiomas.
-- No escribas markdown.
-- No escribas listas innecesarias.
-- No escribas la palabra "Capítulo".
-- No escribas introducción ni conclusión del libro.
-- Continúa naturalmente desde el capítulo anterior.
-- No repitas contenido.
+  while (contenidoFinal.length < objetivoPalabras * 6 && iteraciones < maxIteraciones) {
 
-OBJETIVO DEL CAPÍTULO
+    const prompt = `
+Eres un escritor profesional de ebooks.
 
-Título:
+Estás escribiendo el capítulo ${numeroCapitulo}.
+
+REGLAS:
+- Español neutro obligatorio
+- No inglés
+- No títulos
+- No markdown
+- Continúa exactamente desde el texto anterior
+- NO repitas contenido
+- NO cierres el capítulo aún
+
+OBJETIVO DEL CAPÍTULO:
 ${capituloInfo.titulo}
 
-Objetivo:
+OBJETIVO:
 ${capituloInfo.objetivo}
 
-TEMA DEL LIBRO
-
+TEMA:
 ${concepto}
 
-CONTEXTO DEL CAPÍTULO ANTERIOR
+CONTEXTO PREVIO:
+${contexto}
 
-${capituloAnterior || "Es el primer capítulo."}
+CONTENIDO YA ESCRITO:
+${contenidoFinal}
 
-DESARROLLO
+DESARROLLA MÁS CONTENIDO:
 
-El capítulo debe ser amplio, profundo y profesional.
+- Expande ideas anteriores
+- Agrega ejemplos
+- Agrega casos prácticos
+- Profundiza conceptos
+- Mantén coherencia
 
-Debe incluir:
-
-- explicación completa
-- desarrollo detallado
-- ejemplos prácticos
-- aplicaciones reales
-- ventajas
-- limitaciones
-- buenas prácticas
-- recomendaciones
-- transición natural hacia el siguiente capítulo
-
-La longitud debe ser aproximadamente entreEste capítulo debe ocupar aproximadamente ${plan.paginasPorCapitulo} páginas del ebook.
-
-La extensión debe adaptarse automáticamente a la cantidad de páginas asignadas.
-
-No acortes el contenido.
-Desarrolla todos los conceptos en profundidad.
-Utiliza ejemplos, explicaciones, casos prácticos y transiciones naturales hasta completar la extensión prevista. 1000 y 1800 palabras.
-
-Devuelve únicamente el texto del capítulo.
+NO TERMINES EL CAPÍTULO.
+SIGUE ESCRIBIENDO.
 `;
 
-  const response = await env.AI.run(
-    "@cf/meta/llama-3.1-8b-instruct-fp8",
-    {
-      messages: [
-        {
-          role: "system",
-          content: `
+    const response = await env.AI.run(
+      "@cf/meta/llama-3.1-8b-instruct-fp8",
+      {
+        messages: [
+          {
+            role: "system",
+            content: `
 Eres un escritor profesional de libros.
-
-REGLAS OBLIGATORIAS:
-
-- Siempre respondes en español.
-- Nunca escribes en inglés.
-- Nunca mezclas idiomas.
-- Nunca respondes con markdown.
-- Nunca agregas explicaciones.
-- Solo devuelves el contenido solicitado.
+Solo escribes en español.
+Nunca explicas nada.
+Solo continúas texto narrativo.
 `
-        },
-        {
-          role: "user",
-          content: prompt
-        }
-      ],
-      temperature: 0.6,
-      max_tokens: 3500
-    }
-  );
+          },
+          {
+            role: "user",
+            content: prompt
+          }
+        ],
+        temperature: 0.6,
+        max_tokens: 3500
+      }
+    );
 
-  return response.response.trim();
+    const nuevoTexto = response.response.trim();
 
+    contenidoFinal += "\n\n" + nuevoTexto;
+    contexto = contenidoFinal;
+
+    iteraciones++;
+  }
+
+  return contenidoFinal.trim();
 }
 // =====================================
 // BLOQUE 5
