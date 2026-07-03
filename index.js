@@ -1201,7 +1201,7 @@ function planificarEbook(paginas) {
     });
 
   }
-
+  
   return {
 
     paginasTotales: paginas,
@@ -1639,48 +1639,46 @@ indice.indice.forEach(item => {
   // Devolvemos el contenido ensamblado
   return libro;
 }
-// =====================================
-// BLOQUE 7
-// GENERADOR FINAL DE EBOOK
-// =====================================
-
 async function generarEbook(data, env, json) {
 
   try {
 
     const temaRaw = (data.tema || "").trim();
     const paginas = data.paginas || 30;
-    const concepto = await generarPrompts(
-  temaRaw,
-  "ebook",
-  env
-);
 
+    if (!temaRaw) {
+      return json({
+        ok: false,
+        error: "Falta el tema del ebook"
+      }, 400);
+    }
 
-
-   if (!temaRaw) {
-  return json({
-    ok: false,
-    error: "Falta el tema del ebook"
-  }, 400);
-}
+    // 🔥 FIX REAL: el concepto ES el tema, no un prompt intermedio
+    const concepto = temaRaw;
 
     // 1. PLANIFICACIÓN
     const plan = planificarEbook(paginas);
 
-    // 2. ÍNDICE + METADATA
+    // 2. ÍNDICE
     const indice = await generarIndice(concepto, plan, env);
 
     // 3. INTRODUCCIÓN
     const introduccion = await generarIntroduccion(concepto, indice, env);
-    
+
     // 4. CAPÍTULOS
     let capitulos = [];
     let capituloAnterior = "";
 
     for (let i = 1; i <= indice.indice.length; i++) {
 
-      const contenido = await generarCapitulo(concepto, indice, i, capituloAnterior, plan, env);;
+      const contenido = await generarCapitulo(
+        concepto,
+        indice,
+        i,
+        capituloAnterior,
+        plan,
+        env
+      );
 
       capitulos.push({
         titulo: indice.indice[i - 1].titulo,
@@ -1699,7 +1697,7 @@ Todos los derechos reservados. Queda prohibida la reproducción total o parcial 
 Este contenido es educativo e informativo.
 `.trim();
 
-    // 7. ENSAMBLAR LIBRO
+    // 7. ENSAMBLAR
     const ebook = ensamblarEbook(
       indice,
       capitulos,
@@ -1710,10 +1708,8 @@ Este contenido es educativo e informativo.
       indice.subtitulo,
       indice.descripcion
     );
-    // =====================================
-    // GUARDAR EBOOK EN R2
-    // =====================================
 
+    // 8. GUARDAR EN R2
     const nombreArchivo = `Ebook/${Date.now()}-${crypto.randomUUID()}.txt`;
 
     await env.IMAGES.put(
@@ -1726,20 +1722,22 @@ Este contenido es educativo e informativo.
       }
     );
 
-    // RESPUESTA FINAL
     return json({
       ok: true,
       resultado: ebook,
-      archivo: nombreArchivo
+      archivo: nombreArchivo,
+      paginasSolicitadas: plan.paginasTotales,
+      capitulos: plan.capitulos
     });
 
   } catch (err) {
-  return json({
-    ok: false,
-    error: err.message,
-    stack: err.stack
-  }, 500);
-}
+
+    return json({
+      ok: false,
+      error: err.message,
+      stack: err.stack
+    }, 500);
+  }
 }
 
 // =====================================
