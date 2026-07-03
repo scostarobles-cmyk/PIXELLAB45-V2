@@ -175,6 +175,11 @@ case "ebookEliminarProyecto":
   return await ebookAutoRunner(data, env, json);
   case "ebookAutoFull":
   return await ebookAutoFull(data, env, json);
+  case "cargar-ebook":
+  return cargarEbook(data, env, json);
+
+case "listar-ebooks":
+  return listarEbooks(env, json);
 default:
   return json({
     ok: false,
@@ -646,7 +651,7 @@ User request:
 
 ${tema}
 `
-  ); 
+  );
 
   return resultado;
 }
@@ -2899,177 +2904,34 @@ REGLAS:
 
   return JSON.parse(match[0]);
 }
-/// estás son del editor 
-// =====================================
-// LISTAR EBOOKS
-// =====================================
+async function cargarEbook(data, env, json) {
 
+  const key = data.proyecto;
+
+  const obj = await env.IMAGES.get(key);
+
+  if (!obj) {
+    return json({ ok: false, error: "No existe ebook" }, 404);
+  }
+
+  const proyecto = await obj.json();
+
+  return json({
+    ok: true,
+    proyecto
+  });
+}
 async function listarEbooks(env, json) {
 
-  const lista = await env.IMAGES.list({
-    prefix: "Ebook/"
-  });
+  const lista = await env.IMAGES.list({ prefix: "ebook-proyectos/" });
 
   const ebooks = lista.objects.map(obj => ({
-    nombre: obj.key.replace("Ebook/", ""),
-    ruta: obj.key,
-    url: `${R2_BASE_URL}/${obj.key}`
+    id: obj.key,
+    nombre: obj.key.replace("ebook-proyectos/", "")
   }));
 
   return json({
-    success: true,
-    ebooks,
-    total: ebooks.length
-  });
-
-}
-// =====================================
-// CARGAR EBOOK
-// =====================================
-
-async function cargarEbook(data, env, json) {
-
-  try {
-
-    const archivo = data.archivo;
-
-    if (!archivo) {
-
-      return json({
-        ok: false,
-        error: "No se seleccionó ningún ebook"
-      }, 400);
-
-    }
-
-    const objeto = await env.IMAGES.get(archivo);
-
-    if (!objeto) {
-
-      return json({
-        ok: false,
-        error: "Ebook no encontrado"
-      }, 404);
-
-    }
-
-    const contenido = await objeto.text();
-
-    return json({
-      ok: true,
-      nombre: archivo,
-      contenido
-    });
-
-  } catch (err) {
-
-    return json({
-      ok: false,
-      error: err.message
-    }, 500);
-
-  }
-
-}
-function analizarEbook(contenidoEbook) {
-
-  const estructuraEbook = {
-    titulo: "",
-    subtitulo: "",
-    descripcion: "",
-    autor: "",
-    fecha: "",
-    idioma: "",
-    version: "",
-    capitulos: 0
-  };
-
-  // =========================
-  // EXTRAER BLOQUE METADATA
-  // =========================
-  const inicio = contenidoEbook.indexOf("===METADATA===");
-  const fin = contenidoEbook.indexOf("===LIBRO===");
-
-  if (inicio === -1 || fin === -1) {
-    return {
-      ok: false,
-      error: "Metadata no encontrada"
-    };
-  }
-
-  const bloque = contenidoEbook
-    .substring(inicio, fin)
-    .replace("===METADATA===", "")
-    .trim();
-
-  // =========================
-  // PARSEO SIMPLE POR CLAVES
-  // =========================
-  const getValue = (key) => {
-    const regex = new RegExp(`${key}:\\s*\\n([\\s\\S]*?)(\\n\\n|$)`);
-    const match = bloque.match(regex);
-    return match ? match[1].trim() : "";
-  };
-
-  estructuraEbook.titulo = getValue("TITULO");
-  estructuraEbook.subtitulo = getValue("SUBTITULO");
-  estructuraEbook.descripcion = getValue("DESCRIPCION");
-  estructuraEbook.autor = getValue("AUTOR");
-  estructuraEbook.fecha = getValue("FECHA");
-  estructuraEbook.idioma = getValue("IDIOMA");
-  estructuraEbook.version = getValue("VERSION");
-
-  const cap = getValue("CAPITULOS");
-  estructuraEbook.capitulos = cap ? parseInt(cap) : 0;
-
-  return {
     ok: true,
-    estructuraEbook
-  };
-}
-async function generarEbookPlan(data, env, json) {
-
-  try {
-
-    const temaRaw = (data.tema || "").trim();
-
-    if (!temaRaw) {
-      return json({
-        ok: false,
-        error: "Falta el tema del ebook"
-      }, 400);
-    }
-
-    const paginas = data.paginas || 30;
-
-    const concepto = await generarPrompts(
-      temaRaw,
-      "ebook",
-      env
-    );
-
-    const plan = planificarEbook(paginas);
-
-    const indice = await generarIndice(
-      concepto,
-      plan,
-      env
-    );
-
-    return json({
-      ok: true,
-      concepto,
-      plan,
-      indice
-    });
-
-  } catch (err) {
-
-    return json({
-      ok: false,
-      error: err.message
-    }, 500);
-
-  }
-
+    ebooks
+  });
 }

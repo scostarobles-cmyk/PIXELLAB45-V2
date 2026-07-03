@@ -9,6 +9,7 @@ const FETCH_CONFIG = {
     "Content-Type": "application/json"
   }
 };
+window.ebookActual = null;
 let ebookActual = "";
 let estructuraEbook = null;
 let ebookDiseno = null;
@@ -1075,6 +1076,92 @@ async function generarEbook() {
 
   }
 }
+async function cargarEbook() {
+
+  const id = document.getElementById("ebookSeleccion").value;
+
+  if (!id) return;
+
+  const res = await fetch(WORKER_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      tipo: "cargar-ebook",
+      proyecto: id
+    })
+  });
+
+  const data = await res.json();
+
+  window.ebookActual = data.proyecto;
+
+  document.getElementById("mensajeEditor").innerText =
+    "📚 Ebook cargado correctamente";
+}
+function disenarEbook() {
+
+  const p = window.ebookActual;
+
+  if (!p) return;
+
+  let html = "";
+
+  html += `<h2>${p.titulo || ""}</h2>`;
+  html += `<h4>${p.subtitulo || ""}</h4>`;
+
+  html += `<h3>Introducción</h3>`;
+  html += `<div contenteditable="true">${p.introduccion || ""}</div>`;
+
+  html += `<h3>Capítulos</h3>`;
+
+  (p.capitulos || []).forEach((c, i) => {
+
+    html += `
+      <section>
+        <h4 contenteditable="true">${c.titulo || ""}</h4>
+        <div contenteditable="true" data-cap="${i+1}">
+          ${c.contenido || ""}
+        </div>
+      </section>
+    `;
+
+  });
+
+  html += `<h3>Conclusión</h3>`;
+  html += `<div contenteditable="true">${p.conclusion || ""}</div>`;
+
+  document.getElementById("resultadoEditor").innerHTML = html;
+}
+function crearPDF() {
+
+  const contenido = document.getElementById("resultadoEditor").innerHTML;
+
+  const win = window.open("", "_blank");
+
+  win.document.write(`
+    <html>
+    <head>
+      <style>
+        body {
+          font-family: Georgia, serif;
+          padding: 40px;
+          line-height: 1.6;
+        }
+        section {
+          page-break-before: always;
+        }
+      </style>
+    </head>
+    <body>
+      ${contenido}
+    </body>
+    </html>
+  `);
+
+  win.document.close();
+  win.print();
+}
+
 async function listarEbooks() {
 
   const select =

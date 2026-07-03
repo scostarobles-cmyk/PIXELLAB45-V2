@@ -599,59 +599,23 @@
 
 <div class="ai-card">
   <section class="ai-lab">
-  <h3>📚 Editor de Ebook IA</h3>
 
-  <select id="ebookSeleccion">
-    <option value="">📖 Seleccionar Ebook...</option>
-  </select>
+    <h3>📚 Editor Ebook V2</h3>
 
-  <button onclick="cargarEbook()">
-    📖 Cargar Ebook
-  </button>
+    <select id="ebookSeleccion">
+      <option value="">📖 Seleccionar Ebook...</option>
+    </select>
 
-  <button onclick="disenarEbook()">
-    🎨 Diseñar Ebook
-  </button>
+    <button onclick="cargarEbook()">📥 Cargar Ebook</button>
+    <button onclick="disenarEbook()">🎨 Diseñar Ebook</button>
+    <button onclick="crearPDF()">📄 Crear PDF</button>
 
-  <button onclick="crearPDF()">
-    📕 Crear PDF
-  </button>
+    <div id="mensajeEditor"></div>
 
-  <button onclick="guardarPDF()">
-    💾 Guardar PDF en R2
-  </button>
+    <div id="resultadoEditor" class="scroll-box"></div>
 
-  <div id="mensajeEditor"></div>
-
-  <div id="loadingEditor" style="display:none;">
-
-    <p id="estadoEditor">
-      📚 Preparando editor...
-    </p>
-
-    <div style="
-      width:100%;
-      height:10px;
-      background:#222;
-      border-radius:5px;
-      overflow:hidden;
-      margin-top:10px;">
-
-      <div id="barraEditor" style="
-        width:0%;
-        height:100%;
-        background:#00ffcc;
-        transition:width .4s ease;">
-      </div>
-
-    </div>
-
-  </div>
-
-  <div id="resultadoEditor" class="scroll-box"></div>
   </section>
 </div>
-
 </div>
 <div class="section-divider"></div>
 <!-- ===================================== -->
