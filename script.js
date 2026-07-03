@@ -8,7 +8,7 @@ const FETCH_CONFIG = {
   headers: {
     "Content-Type": "application/json"
   }
-}; 
+};
 let ebookActual = "";
 let estructuraEbook = null;
 let ebookDiseno = null;
@@ -1280,7 +1280,7 @@ if (legal) {
   // ==========================
 
   const indice = contenido.match(
-  /ÍNDICE\s*([\s\S]*?)\n{2,}INTRODUCCIÓN/
+  /ÍNDICE\\s*([\s\S]*?)================================/
 );
 
 
