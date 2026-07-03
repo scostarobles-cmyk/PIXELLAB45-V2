@@ -1162,6 +1162,7 @@ section{
 .portada-contenido{
     max-width:700px;
     width:100%;
+    color: #e6e6e6;
 }
 
 .pagina h1{
@@ -1214,17 +1215,11 @@ section{
     margin-top:120px;
 }
 .titulo-separador{
-
     width:120px;
-
     height:4px;
-
-    background:#00d9ff;
-
+    background:#00e5ff;
     margin:20px auto 40px;
-
     border-radius:20px;
-
 }
 /* ===========================
    PÁGINA BASE
@@ -1273,13 +1268,7 @@ section{
     color:#cfcfcf;
 }
 
-.titulo-separador{
-    width:120px;
-    height:4px;
-    background:#00e5ff;
-    margin:20px auto 40px;
-    border-radius:20px;
-}
+
 .ebook .pagina {
   background: #0b0f14 !important;
   color: #d9d9d9 !important;
@@ -1288,6 +1277,23 @@ section{
 .ebook .portada {
   background: #0b0f14 !important;
   color: #d9d9d9 !important;
+}
+.ebook .pagina p {
+
+    font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+
+    font-size: 16px;
+
+    line-height: 1.8;
+
+    text-align: justify;
+
+    text-justify: inter-word;
+
+    color: #d9d9d9;
+
+    margin-bottom: 18px;
+
 }
 @keyframes fadeUp{
 
