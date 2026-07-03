@@ -1207,6 +1207,8 @@ console.log(html);
   document.getElementById("resultadoEditor").innerHTML = html;
 
   ebookDiseno.html = html;
+  
+  mostrarEbook(ebookDiseno.html);
 
 }
 // =====================================
@@ -1523,6 +1525,45 @@ function construirConclusion(html, ebook) {
     `
   );
 }
+
+function mostrarEbook(html) {
+
+  const ventana = window.open("", "_blank");
+
+  if (!ventana) {
+    alert("No se pudo abrir la vista previa.");
+    return;
+  }
+
+  ventana.document.open();
+
+  ventana.document.write(`
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Vista previa Ebook</title>
+
+<link rel="stylesheet" href="styles.css">
+
+</head>
+
+<body>
+
+${html}
+
+</body>
+
+</html>
+  `);
+
+  ventana.document.close();
+
+}
+
 // MENÚ MÓVIL
 function toggleMenu() {
 
