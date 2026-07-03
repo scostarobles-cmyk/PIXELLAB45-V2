@@ -1423,7 +1423,6 @@ function construirIndice(html, ebook) {
     .join("");
 
   return html.replace(
-    '<section id="indice" class="pagina"></section>',
     `
     <section id="indice" class="pagina">
       <h2>Índice</h2>
