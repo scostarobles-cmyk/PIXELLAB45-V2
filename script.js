@@ -8,7 +8,7 @@ const FETCH_CONFIG = {
   headers: {
     "Content-Type": "application/json"
   }
-}; 
+};
 let ebookActual = "";
 let estructuraEbook = null;
 let ebookDiseno = null;
@@ -1418,11 +1418,13 @@ Marca: PIXELLAB45
 }
 
 function construirIndice(html, ebook) {
+
   const items = ebook.indice
     .map(item => `<li>${item}</li>`)
     .join("");
 
   return html.replace(
+    '<section id="indice" class="pagina"></section>',
     `
     <section id="indice" class="pagina">
       <h2>Índice</h2>
@@ -1432,6 +1434,7 @@ function construirIndice(html, ebook) {
     </section>
     `
   );
+
 }
 
 function construirIntroduccion(html, ebook) {
