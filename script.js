@@ -1282,6 +1282,7 @@ if (legal) {
   const indice = contenido.match(
     /ÍNDICE\s*([\s\S]*?)====================================/
   );
+  console.log(índice)
 
   if (indice) {
 
