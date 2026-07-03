@@ -1395,7 +1395,7 @@ Only output the requested section.
 // GENERADOR DE CAPÍTULOS
 // =====================================
 
-async function generarCapitulo(concepto, indice, numeroCapitulo, capituloAnterior, env) {
+async function generarCapitulo(concepto, indice, numeroCapitulo, capituloAnterior, plan, env) {
 
   if (!concepto || !indice || !numeroCapitulo) {
     throw new Error("Faltan datos para generar el capítulo");
@@ -1459,7 +1459,13 @@ Debe incluir:
 - recomendaciones
 - transición natural hacia el siguiente capítulo
 
-La longitud debe ser aproximadamente entre 1000 y 1800 palabras.
+La longitud debe ser aproximadamente entreEste capítulo debe ocupar aproximadamente ${plan.paginasPorCapitulo} páginas del ebook.
+
+La extensión debe adaptarse automáticamente a la cantidad de páginas asignadas.
+
+No acortes el contenido.
+Desarrolla todos los conceptos en profundidad.
+Utiliza ejemplos, explicaciones, casos prácticos y transiciones naturales hasta completar la extensión prevista. 1000 y 1800 palabras.
 
 Devuelve únicamente el texto del capítulo.
 `;
@@ -1674,7 +1680,7 @@ async function generarEbook(data, env, json) {
 
     for (let i = 1; i <= indice.indice.length; i++) {
 
-      const contenido = await generarCapitulo(concepto, indice, i, capituloAnterior, env);
+      const contenido = await generarCapitulo(concepto, indice, i, capituloAnterior, plan, env);;
 
       capitulos.push({
         titulo: indice.indice[i - 1].titulo,
