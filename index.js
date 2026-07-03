@@ -646,7 +646,7 @@ User request:
 
 ${tema}
 `
-  ); 
+  );
 
   return resultado;
 }
@@ -2830,6 +2830,74 @@ async function ebookAutoFull(data, env, json) {
 
   }
 
+}
+async function generarIndice(concepto, plan, env) {
+
+  if (!concepto || !plan) {
+    throw new Error("Falta tema o plan del ebook");
+  }
+
+  const prompt = `
+Eres un experto en estructuración de libros en español.
+
+Tu tarea es crear el índice completo de un ebook.
+
+REGLAS ESTRICTAS:
+- TODO en español neutro
+- Devuelve SOLO JSON válido
+- Sin texto extra
+
+FORMATO:
+
+{
+  "titulo": "",
+  "subtitulo": "",
+  "descripcion": "",
+  "categoria": "",
+  "keywords": [],
+  "indice": [
+    {
+      "capitulo": 1,
+      "titulo": "",
+      "objetivo": ""
+    }
+  ]
+}
+
+REGLAS:
+- EXACTAMENTE ${plan.capitulos} capítulos
+- Progresión lógica del tema: "${concepto}"
+- No repetir ideas
+
+`;
+
+  const response = await env.AI.run(
+    "@cf/meta/llama-3.1-8b-instruct-fp8",
+    {
+      messages: [
+        {
+          role: "system",
+          content: "Devuelve SOLO JSON válido en español."
+        },
+        {
+          role: "user",
+          content: prompt
+        }
+      ],
+      temperature: 0.4,
+      max_tokens: 2500
+    }
+  );
+
+  const raw = response.response;
+
+  const match = raw.match(/\{[\s\S]*\}/);
+
+  if (!match) {
+    throw new Error("JSON inválido en índice");
+  }
+
+  return JSON.parse(match[0]);
 }
 /// estás son del editor 
 // =====================================
