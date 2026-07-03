@@ -1378,22 +1378,40 @@ function construirHTMLLibro(ebook) {
 
 }
 function construirPortada(html, ebook) {
+
   return html.replace(
     '<section id="portada" class="pagina"></section>',
     `
     <section id="portada" class="pagina portada">
 
-      <h1>${ebook.portada.titulo}</h1>
+      <div class="portada-contenido">
 
-      <h2>${ebook.portada.subtitulo}</h2>
+        <h1>${ebook.portada.titulo}</h1>
 
-      <p class="descripcion">
-        ${ebook.portada.descripcion}
-      </p>
+        <h2>${ebook.portada.subtitulo}</h2>
+
+        <p class="descripcion">
+          ${ebook.portada.descripcion}
+        </p>
+
+        <div class="autor">
+          ${ebook.autor}
+        </div>
+
+        <div class="marca">
+          PIXELLAB45
+        </div>
+
+        <div class="fecha">
+          ${new Date(ebook.fecha).getFullYear()}
+        </div>
+
+      </div>
 
     </section>
     `
   );
+
 }
 function construirLegales(html, ebook) {
 
