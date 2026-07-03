@@ -1376,22 +1376,16 @@ function construirHTMLLibro(ebook) {
 
 }
 function construirPortada(html, ebook) {
-
   return html.replace(
-    '<section id="portada"></section>',
+    '<section id="portada" class="pagina"></section>',
     `
-<section id="portada">
-
-  <h1>${ebook.portada.titulo}</h1>
-
-  <h2>${ebook.portada.subtitulo}</h2>
-
-  <p>${ebook.portada.descripcion}</p>
-
-</section>
-`
+    <section id="portada" class="pagina">
+      <h1>${ebook.portada.titulo}</h1>
+      <h2>${ebook.portada.subtitulo}</h2>
+      <p>${ebook.portada.descripcion}</p>
+    </section>
+    `
   );
-
 }
 
 function construirLegales(html, ebook) {
@@ -1410,35 +1404,50 @@ Marca: PIXELLAB45
 `;
 
   return html.replace(
-    '<section id="legales"></section>',
+    '<section id="legales" class="pagina"></section>',
     `
-<section id="legales">
-
-<h2>Aviso Legal</h2>
-
-<p style="white-space: pre-line;">${legales}</p>
-
-</section>
-`
+    <section id="legales" class="pagina">
+      <h2>Aviso Legal</h2>
+      <p style="white-space: pre-line;">
+        ${ebook.legales}
+      </p>
+    </section>
+    `
   );
-
 }
-function construirIntroduccion(html, ebook) {
+
+function construirIndice(html, ebook) {
+  const items = ebook.indice.map(item => {
+    return `<li>Capítulo ${item.capitulo}: ${item.titulo}</li>`;
+  }).join('\n');
 
   return html.replace(
-    '<section id="introduccion"></section>',
+    '<section id="indice" class="pagina"></section>',
     `
-<section id="introduccion">
-
-<h2>Introducción</h2>
-
-<p>${ebook.introduccion}</p>
-
-</section>
-`
+    <section id="indice" class="pagina">
+      <h2>Índice</h2>
+      <ul>
+        ${items}
+      </ul>
+    </section>
+    `
   );
-
 }
+
+function construirIntroduccion(html, ebook) {
+  return html.replace(
+    '<section id="introduccion" class="pagina"></section>',
+    `
+    <section id="introduccion" class="pagina">
+      <h2>Introducción</h2>
+      <p class="texto-libro">
+        ${ebook.introduccion}
+      </p>
+    </section>
+    `
+  );
+}
+
 function construirCapitulos(html, ebook) {
 
   let contenido = "";
@@ -1478,34 +1487,18 @@ function construirCapitulos(html, ebook) {
 
 }
 function construirConclusion(html, ebook) {
-
-  const contenido = `
-
-<section class="pagina conclusion">
-
-    <h1>Conclusión</h1>
-
-    <div class="contenido-conclusion">
-
-        <p class="texto-libro">
-
-            ${ebook.conclusion}
-
-        </p>
-
-    </div>
-
-</section>
-
-`;
-
   return html.replace(
-    '<section id="conclusion"></section>',
-    contenido
+    '<section id="conclusion" class="pagina"></section>',
+    `
+    <section id="conclusion" class="pagina">
+      <h2>Conclusión</h2>
+      <p class="texto-libro">
+        ${ebook.conclusion}
+      </p>
+    </section>
+    `
   );
-
 }
-
 // MENÚ MÓVIL
 function toggleMenu() {
 
