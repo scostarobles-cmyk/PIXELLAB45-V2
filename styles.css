@@ -1228,6 +1228,33 @@ section{
     overflow:hidden;
 
 }
+
+/* ===========================
+   AVISO LEGAL
+=========================== */
+
+.legal{
+    background:#fff;
+    color:#111;
+}
+
+.legal h1{
+    text-align:center;
+    font-size:30px;
+    margin-bottom:40px;
+}
+
+.legal-text{
+
+    font-size:15px;
+
+    line-height:1.8;
+
+    text-align:justify;
+
+    color:#333;
+
+}
 @keyframes fadeUp{
 
     from{
