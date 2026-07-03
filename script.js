@@ -1423,6 +1423,7 @@ function construirIndice(html, ebook) {
   const items = ebook.indice
     .map(item => `<li>${item}</li>`)
     .join("");
+    alert(ebookDiseno.indice.join('\n'))
 
   return html.replace(
     '<section id="indice" class="pagina"></section>',
