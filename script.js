@@ -1409,7 +1409,7 @@ Marca: PIXELLAB45
     <section id="legales" class="pagina">
       <h2>Aviso Legal</h2>
       <p style="white-space: pre-line;">
-        ${ebook.legales}
+     ${legales}
       </p>
     </section>
     `
@@ -1417,9 +1417,9 @@ Marca: PIXELLAB45
 }
 
 function construirIndice(html, ebook) {
-  const items = ebook.indice.map(item => {
-    return `<li>Capítulo ${item.capitulo}: ${item.titulo}</li>`;
-  }).join('\n');
+  const items = ebook.indice
+    .map(item => `<li>${item}</li>`)
+    .join("");
 
   return html.replace(
     '<section id="indice" class="pagina"></section>',
@@ -1481,9 +1481,9 @@ function construirCapitulos(html, ebook) {
   });
 
   return html.replace(
-    '<section id="capitulos"></section>',
+    '<section id="capitulos" class="pagina"></section>',
     contenido
-  );
+);
 
 }
 function construirConclusion(html, ebook) {
