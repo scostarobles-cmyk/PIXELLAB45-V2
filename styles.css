@@ -9,7 +9,7 @@ html {
   padding: 0;
   box-sizing: border-box;
 }
- 
+
 body {
   background: #05070d;
   color: #e6f7ff;
@@ -1272,6 +1272,7 @@ section{
 .ebook .pagina {
   background: #0b0f14 !important;
   color: #d9d9d9 !important;
+  font-family: Inter, Roboto, "Segoe UI", Arial, sans-serif;
 }
 
 .ebook .portada {
