@@ -1287,9 +1287,9 @@ if (legal) {
   if (indice) {
 
     ebookDiseno.indice = indice[1]
-      .split("\n")
-      .map(x => x.trim())
-      .filter(x => x);
+  .split("\n")
+  .map(x => x.trim())
+  .filter(x => x && !x.match(/^=+$/));
 
   }
 
