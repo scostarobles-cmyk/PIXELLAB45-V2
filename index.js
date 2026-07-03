@@ -2921,6 +2921,23 @@ async function cargarEbook(data, env, json) {
     proyecto
   });
 }
+async function cargarEbook(data, env, json) {
+
+  const key = data.proyecto; // DEBE SER FULL KEY
+
+  const obj = await env.IMAGES.get(key);
+
+  if (!obj) {
+    return json({ ok: false, error: "No existe ebook" }, 404);
+  }
+
+  const proyecto = await obj.json();
+
+  return json({
+    ok: true,
+    proyecto
+  });
+}
 async function listarEbooks(env, json) {
 
   const lista = await env.IMAGES.list({ prefix: "ebook-proyectos/" });

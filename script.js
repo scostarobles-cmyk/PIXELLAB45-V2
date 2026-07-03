@@ -1078,20 +1078,30 @@ async function generarEbook() {
 }
 async function cargarEbook() {
 
-  const id = document.getElementById("ebookSeleccion").value;
+  const key = document.getElementById("ebookSeleccion").value;
 
-  if (!id) return;
+  if (!key) {
+    document.getElementById("mensajeEditor").innerText =
+      "⚠️ Selecciona un ebook";
+    return;
+  }
 
   const res = await fetch(WORKER_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       tipo: "cargar-ebook",
-      proyecto: id
+      proyecto: key
     })
   });
 
   const data = await res.json();
+
+  if (!data.proyecto) {
+    document.getElementById("mensajeEditor").innerText =
+      "❌ No existe ebook";
+    return;
+  }
 
   window.ebookActual = data.proyecto;
 
