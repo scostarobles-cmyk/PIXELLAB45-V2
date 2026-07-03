@@ -1170,7 +1170,7 @@ async function disenarEbook() {
     alert("Primero cargá un ebook.");
     return;
   }
-   
+  
   const resultado = analizarEbook(ebookActual);
   
   if (!resultado.ok) {
@@ -1282,7 +1282,6 @@ if (legal) {
   const indice = contenido.match(
     /ÍNDICE\s*([\s\S]*?)====================================/
   );
-  console.log(índice)
 
   if (indice) {
 
@@ -1292,7 +1291,7 @@ if (legal) {
       .filter(x => x);
 
   }
-  console.log(ebookDiseno.indice) 
+
 
   // ==========================
   // INTRODUCCIÓN
