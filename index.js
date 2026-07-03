@@ -1,4 +1,4 @@
-const R2_BASE_URL =
+ const R2_BASE_URL =
   "https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev";
 
 const CORS_HEADERS = {
