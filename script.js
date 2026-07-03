@@ -1381,15 +1381,20 @@ function construirPortada(html, ebook) {
   return html.replace(
     '<section id="portada" class="pagina"></section>',
     `
-    <section id="portada" class="pagina">
+    <section id="portada" class="pagina portada">
+
       <h1>${ebook.portada.titulo}</h1>
+
       <h2>${ebook.portada.subtitulo}</h2>
-      <p>${ebook.portada.descripcion}</p>
+
+      <p class="descripcion">
+        ${ebook.portada.descripcion}
+      </p>
+
     </section>
     `
   );
 }
-
 function construirLegales(html, ebook) {
 
   const legales = `
