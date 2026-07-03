@@ -993,15 +993,11 @@ async function generarEbook() {
   loading.style.display = "block";
   resultado.innerHTML = "";
 
-  // 🔥 ANIMACIÓN VIVA (NO BLOQUEA NADA)
   const frames = [
-    "📚 Analizando tema",
-    "🧠 Generando estructura",
-    "📑 Construyendo índice",
-    "✍️ Escribiendo contenido",
-    "📄 Armando capítulos",
-    "🧩 Ensamblando ebook",
-    "💾 Preparando salida"
+    "📚 Creando proyecto",
+    "🧠 Generando índice",
+    "📑 Estructurando capítulos",
+    "🚀 Preparando motor V2"
   ];
 
   let i = 0;
@@ -1011,31 +1007,26 @@ async function generarEbook() {
 
     estado.innerText = frames[i % frames.length];
 
-    progreso += Math.random() * 3;
-    if (progreso > 90) progreso = 90;
+    progreso += Math.random() * 4;
+    if (progreso > 85) progreso = 85;
 
     barra.style.width = progreso + "%";
 
-    // 🔥 efecto visual extra (evita sensación de congelado)
-    const dot = document.createElement("span");
-    dot.innerText = " .";
-    resultado.appendChild(dot);
-
-    setTimeout(() => dot.remove(), 800);
-
     i++;
 
-  }, 1200);
+  }, 900);
 
   try {
 
+    // =========================
+    // 1. CREAR PROYECTO (V2)
+    // =========================
+
     const res = await fetch(WORKER_URL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        tipo: "ebook",
+        tipo: "ebookCrearProyecto",
         tema,
         paginas
       })
@@ -1043,12 +1034,36 @@ async function generarEbook() {
 
     const data = await res.json();
 
+    if (!data.ok) throw new Error(data.error);
+
+    const proyecto = data.proyecto;
+
+    // =========================
+    // 2. GENERAR PRIMER CAPÍTULO (ARRANQUE V2)
+    // =========================
+
+    await fetch(WORKER_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        tipo: "ebookGenerarCapitulo",
+        proyecto,
+        capitulo: 1
+      })
+    });
+
     clearInterval(anim);
 
     barra.style.width = "100%";
-    estado.innerText = "✅ Listo";
+    estado.innerText = "✅ Proyecto creado (V2 activo)";
 
-    resultado.innerHTML = data.resultado;
+    resultado.innerHTML = `
+      <div>
+        <h3>📘 Proyecto creado</h3>
+        <p><b>ID:</b> ${proyecto}</p>
+        <p>Capítulos generándose bajo demanda</p>
+      </div>
+    `;
 
   } catch (error) {
 
@@ -1057,6 +1072,7 @@ async function generarEbook() {
     estado.innerText = "❌ Error";
 
     resultado.innerText = error.message;
+
   }
 }
 async function listarEbooks() {

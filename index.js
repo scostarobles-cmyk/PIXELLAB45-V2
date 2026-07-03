@@ -133,20 +133,48 @@ case "guardar-imagen":
     data,
     env
   );
-  case "ebook":
-  return generarEbook(data, env, json);
-  case "listar-ebooks":
-  return await listarEbooks(env, json);
-  case "cargar-ebook":
-  return await cargarEbook(data, env, json);
-  case "ebookPlan":
-  return await generarEbookPlan(data, env, json);
+  // =====================================
+// EBOOK V2
+// =====================================
 
+case "ebookCrearProyecto":
+  return await crearProyectoEbook(
+    data,
+    env,
+    json
+  );
 
-return json({
-    ok:true,
-    introduccion:intro
-});
+case "ebookCargarProyecto":
+  return await cargarProyectoEbook(
+    data,
+    env,
+    json
+  );
+
+case "ebookGenerarCapitulo":
+  return await generarCapituloProyecto(
+    data,
+    env,
+    json
+  );
+
+case "ebookSiguienteCapitulo":
+  return await siguienteCapituloProyecto(
+    data,
+    env,
+    json
+  );
+
+case "ebookEliminarProyecto":
+  return await eliminarProyectoEbook(
+    data,
+    env,
+    json
+  );
+  case "ebookAuto":
+  return await ebookAutoRunner(data, env, json);
+  case "ebookAutoFull":
+  return await ebookAutoFull(data, env, json);
 default:
   return json({
     ok: false,
@@ -1130,21 +1158,16 @@ async function guardarImagen(data, env) {
 
 // =====================================
 // BLOQUE 1
-// PLANIFICADOR DEL EBOOK
+// PLANIFICADOR DEL EBOOK V2
 // =====================================
 
 function planificarEbook(paginas) {
 
   paginas = parseInt(paginas || 30, 10);
 
-  if (isNaN(paginas))
-    paginas = 30;
+  if (isNaN(paginas)) paginas = 30;
 
-  if (paginas < 5)
-    paginas = 5;
-
-  if (paginas > 200)
-    paginas = 200;
+  paginas = Math.max(5, Math.min(200, paginas));
 
   const paginasFijas = {
     portada: 1,
@@ -1155,15 +1178,12 @@ function planificarEbook(paginas) {
   };
 
   const paginasDisponibles =
-    Math.max(
-      1,
-      paginas -
-      paginasFijas.portada -
-      paginasFijas.legales -
-      paginasFijas.indice -
-      paginasFijas.introduccion -
-      paginasFijas.conclusion
-    );
+    paginas -
+    paginasFijas.portada -
+    paginasFijas.legales -
+    paginasFijas.indice -
+    paginasFijas.introduccion -
+    paginasFijas.conclusion;
 
   let capitulos;
 
@@ -1185,9 +1205,7 @@ function planificarEbook(paginas) {
   const paginasPorCapitulo =
     Math.max(
       2,
-      Math.floor(
-        paginasDisponibles / capitulos
-      )
+      Math.ceil(paginasDisponibles / capitulos)
     );
 
   const estructura = [];
@@ -1197,12 +1215,21 @@ function planificarEbook(paginas) {
     estructura.push({
       numero: i,
       titulo: "",
-      paginas: paginasPorCapitulo
+      objetivo: "",
+      paginas: paginasPorCapitulo,
+      estado: "pendiente",
+      archivo: null
     });
 
   }
-  
+
   return {
+
+    version: 2,
+
+    estado: "planificado",
+
+    fechaCreacion: new Date().toISOString(),
 
     paginasTotales: paginas,
 
@@ -1222,503 +1249,258 @@ function planificarEbook(paginas) {
 
     conclusion: paginasFijas.conclusion,
 
+    progreso: {
+      total: capitulos,
+      completados: 0,
+      porcentaje: 0
+    },
+
     estructura
 
   };
 
 }
 // =====================================
-// BLOQUE 2
-// GENERADOR DE ÍNDICE ESTRUCTURADO
+// BLOQUE 2 V2
+// CREAR PROYECTO EBOOK
 // =====================================
 
-async function generarIndice(concepto, plan, env) {
-
-  if (!concepto || !plan) {
-    throw new Error("Falta tema o plan del ebook");
-  }
-
-  const prompt = `
-Eres un experto en estructuración de libros en español.
-
-Tu tarea es crear el índice completo de un ebook.
-
-REGLAS ESTRICTAS:
-- TODO debe estar en español neutro.
-- No uses inglés en ninguna parte.
-- No inventes temas fuera del concepto.
-- No repitas capítulos ni ideas.
-- No agregues texto fuera del JSON.
-- Devuelve SOLO JSON válido.
-
-ESTRUCTURA OBLIGATORIA:
-
-{
-  "titulo": "",
-  "subtitulo": "",
-  "descripcion": "",
-  "categoria": "",
-  "keywords": [],
-  "indice": [
-    {
-      "capitulo": 1,
-      "titulo": "",
-      "objetivo": ""
-    }
-  ]
-}
-
-REGLAS DEL ÍNDICE:
-- Debe tener EXACTAMENTE ${plan.capitulos} capítulos.
-- Cada capítulo debe avanzar lógicamente del anterior.
-- El contenido debe estar estrictamente relacionado con el tema: "${concepto}".
-- No mezclar subtemas aleatorios.
-- No repetir títulos ni ideas.
-- Mantener enfoque educativo y progresivo.
-
-INFORMACIÓN DEL LIBRO:
-Tema: ${concepto}
-Páginas totales: ${plan.paginasTotales}
-Capítulos: ${plan.capitulos}
-Páginas por capítulo: ${plan.paginasPorCapitulo}
-`;
-
-  const response = await env.AI.run(
-    "@cf/meta/llama-3.1-8b-instruct-fp8",
-    {
-      messages: [
-        {
-          role: "system",
-          content: `
-Eres un generador estricto de estructuras de libros.
-Solo respondes en español.
-Solo devuelves JSON válido.
-No explicas nada.
-No agregas texto fuera del JSON.
-`
-        },
-        {
-          role: "user",
-          content: prompt
-        }
-      ],
-      temperature: 0.4,
-      max_tokens: 2500
-    }
-  );
+async function crearProyectoEbook(data, env, json) {
 
   try {
 
-    const raw = response.response;
+    const tema = (data.tema || "").trim();
+    const paginas = parseInt(data.paginas || 30);
 
-    const jsonMatch = raw.match(/\{[\s\S]*\}/);
-
-    if (!jsonMatch) {
-      throw new Error("No JSON generado");
-    }
-
-    const parsed = JSON.parse(jsonMatch[0]);
-
-    return parsed;
-
-  } catch (err) {
-
-    throw new Error("Error parseando índice: " + err.message);
-
-  }
-}
-// =====================================
-// BLOQUE 3
-// GENERADOR DE INTRODUCCIÓN
-// =====================================
-
-async function generarIntroduccion(concepto, indice, env) {
-
-  if (!concepto || !indice) {
-    throw new Error("Falta tema o índice para la introducción");
-  }
-
-  const prompt = `
-You are a professional book writer.
-
-Write ONLY the introduction of an ebook.
-
-CRITICAL RULES:
-- Return ONLY the introduction text.
-- No titles.
-- No markdown.
-- No explanations.
-- No chapter content.
-- No conclusions.
-
-The introduction must:
-- Present the topic clearly.
-- Be engaging.
-- Prepare the reader for the book.
-- Be 1 to 3 paragraphs max.
-
-BOOK INFO:
-Topic: ${concepto}
-
-INDEX (for context only):
-${JSON.stringify(indice, null, 2)}
-`;
-
-  const response = await env.AI.run(
-    "@cf/meta/llama-3.1-8b-instruct-fp8",
-    {
-      messages: [
-      {
-  role: "system",
-  content: `
-You are a professional book writing engine.
-You ALWAYS write in Spanish.
-Never use English.
-Only output the requested section.
-`
-},
-        {
-          role: "user",
-          content: prompt
-        }
-      ],
-      temperature: 0.7,
-      max_tokens: 1200
-    }
-  );
-
-  return response.response;
-
-}
-// =====================================
-// BLOQUE 4
-// GENERADOR DE CAPÍTULOS
-// =====================================
-
-async function generarCapitulo(concepto, indice, numeroCapitulo, capituloAnterior, plan, env) {
-
-  if (!concepto || !indice || !numeroCapitulo) {
-    throw new Error("Faltan datos para generar el capítulo");
-  }
-
-  const capituloInfo =
-    indice.indice.find(c => c.capitulo === numeroCapitulo);
-
-  if (!capituloInfo) {
-    throw new Error("Capítulo no encontrado en el índice");
-  }
-
-  // 🎯 OBJETIVO REAL DE LONGITUD (en tokens aproximados)
-  const objetivoPalabras = Math.max(1800, plan.paginasPorCapitulo * 450);
-
-  let contenidoFinal = "";
-  let contexto = capituloAnterior || "Inicio del capítulo.";
-
-  let iteraciones = 0;
-  const maxIteraciones = 4;
-
-  while (contenidoFinal.length < objetivoPalabras * 6 && iteraciones < maxIteraciones) {
-
-    const prompt = `
-Eres un escritor profesional de ebooks.
-
-Estás escribiendo el capítulo ${numeroCapitulo}.
-
-REGLAS:
-- Español neutro obligatorio
-- No inglés
-- No títulos
-- No markdown
-- Continúa exactamente desde el texto anterior
-- NO repitas contenido
-- NO cierres el capítulo aún
-
-OBJETIVO DEL CAPÍTULO:
-${capituloInfo.titulo}
-
-OBJETIVO:
-${capituloInfo.objetivo}
-
-TEMA:
-${concepto}
-
-CONTEXTO PREVIO:
-${contexto}
-
-CONTENIDO YA ESCRITO:
-${contenidoFinal}
-
-DESARROLLA MÁS CONTENIDO:
-
-- Expande ideas anteriores
-- Agrega ejemplos
-- Agrega casos prácticos
-- Profundiza conceptos
-- Mantén coherencia
-
-NO TERMINES EL CAPÍTULO.
-SIGUE ESCRIBIENDO.
-`;
-
-    const response = await env.AI.run(
-      "@cf/meta/llama-3.1-8b-instruct-fp8",
-      {
-        messages: [
-          {
-            role: "system",
-            content: `
-Eres un escritor profesional de libros.
-Solo escribes en español.
-Nunca explicas nada.
-Solo continúas texto narrativo.
-`
-          },
-          {
-            role: "user",
-            content: prompt
-          }
-        ],
-        temperature: 0.6,
-        max_tokens: 3500
-      }
-    );
-
-    const nuevoTexto = response.response.trim();
-
-    contenidoFinal += "\n\n" + nuevoTexto;
-    contexto = contenidoFinal;
-
-    iteraciones++;
-  }
-
-  return contenidoFinal.trim();
-}
-// =====================================
-// BLOQUE 5
-// GENERADOR DE CONCLUSIÓN
-// =====================================
-
-async function generarConclusion(concepto, indice, env) {
-
-  if (!concepto || !indice) {
-    throw new Error("Faltan datos para generar la conclusión");
-  }
-
-  const prompt = `
-CONCLUSIÓN
-
-Escribe únicamente la conclusión del ebook siguiendo estas reglas:
-
-- Resume los conceptos principales.
-- Refuerza el valor del contenido.
-- Motiva al lector a aplicar lo aprendido.
-- Mantén el mismo tono del ebook.
-- No agregues capítulos ni subtítulos adicionales.
-- No escribas explicaciones fuera del contenido.
-
-Devuelve solo el contenido de la conclusión.
-
-BOOK TOPIC:
-${concepto}
-
-INDEX (context only):
-${JSON.stringify(indice, null, 2)}
-`;
-
-  const response = await env.AI.run(
-    "@cf/meta/llama-3.1-8b-instruct-fp8",
-    {
-      messages: [
-        {
-          role: "system",
-          content: `
-You are a strict book writing engine.
-You only output the requested section.
-No extras.
-`
-        },
-        {
-          role: "user",
-          content: prompt
-        }
-      ],
-      temperature: 0.7,
-      max_tokens: 1200
-    }
-  );
-
-  return response.response;
-
-}
-// =====================================
-// BLOQUE 6
-// ENSAMBLADOR DEL EBOOK
-// =====================================
-
-function ensamblarEbook(
-  indice, 
-  capitulos, 
-  conclusion, 
-  introduccion, 
-  legales, 
-  titulo, 
-  subtitulo, 
-  descripcion, 
-  autor, 
-  fecha
-) {
-  let libro = "";
-
-  // METADATOS (bloque JSON)
-  const metadatos = {
-    titulo: titulo || "",
-    subtitulo: subtitulo || "",
-    descripcion: descripcion || "",
-    autor: autor || "PIXELLAB45 IA",
-    fecha: fecha || new Date().toISOString().split("T")[0],
-    idioma: "Español",
-    version: "1.0",
-    capitulos: indice.indice.length
-  };
-
-  libro += "METADATOS:\n";
-  libro += JSON.stringify(metadatos, null, 2) + "\n\n";
-  libro += "====================================\n\n";
-
-  // PORTADA (virtual)
-  libro += `${titulo}\n`;
-  libro += `${subtitulo}\n\n`;
-  libro += `${descripcion}\n\n`;
-  libro += "====================================\n\n";
-
-  // PÁGINA LEGAL
-  libro += "AVISO LEGAL\n\n";
-  libro += legales + "\n\n";
-  libro += "================================\n\n";
-
-  // ÍNDICE
-  libro += "ÍNDICE\n\n";
-
-const indiceUnico = new Set();
-
-indice.indice.forEach(item => {
-  const linea = `Capítulo ${item.capitulo}: ${item.titulo}`;
-  if (!indiceUnico.has(linea)) {
-    indiceUnico.add(linea);
-    libro += linea + "\n";
-  }
-});
-
-  libro += "\n====================================\n\n";
-
-  // INTRODUCCIÓN
-  libro += "INTRODUCCIÓN\n\n";
-  libro += introduccion + "\n\n";
-  libro += "====================================\n\n";
-
-  // CAPÍTULOS
-  capitulos.forEach((cap, i) => {
-    libro += `CAPÍTULO ${i + 1}: ${cap.titulo || ""}\n\n`;
-    libro += cap.contenido + "\n\n";
-    libro += "------------------------------------\n\n";
-  });
-
-  // CONCLUSIÓN
-  libro += "CONCLUSIÓN\n\n";
-  libro += conclusion + "\n\n";
-
-  // Devolvemos el contenido ensamblado
-  return libro;
-}
-async function generarEbook(data, env, json) {
-
-  try {
-
-    const temaRaw = (data.tema || "").trim();
-    const paginas = data.paginas || 30;
-
-    if (!temaRaw) {
+    if (!tema) {
       return json({
         ok: false,
-        error: "Falta el tema del ebook"
+        error: "Debe indicar un tema."
       }, 400);
     }
 
-    // 🔥 FIX REAL: el concepto ES el tema, no un prompt intermedio
-    const concepto = temaRaw;
+    // =====================================
+    // PROMPT ENGINE
+    // =====================================
 
-    // 1. PLANIFICACIÓN
-    const plan = planificarEbook(paginas);
-
-    // 2. ÍNDICE
-    const indice = await generarIndice(concepto, plan, env);
-
-    // 3. INTRODUCCIÓN
-    const introduccion = await generarIntroduccion(concepto, indice, env);
-
-    // 4. CAPÍTULOS
-    let capitulos = [];
-    let capituloAnterior = "";
-
-    for (let i = 1; i <= indice.indice.length; i++) {
-
-      const contenido = await generarCapitulo(
-        concepto,
-        indice,
-        i,
-        capituloAnterior,
-        plan,
-        env
-      );
-
-      capitulos.push({
-        titulo: indice.indice[i - 1].titulo,
-        contenido
-      });
-
-      capituloAnterior = contenido;
-    }
-
-    // 5. CONCLUSIÓN
-    const conclusion = await generarConclusion(concepto, indice, env);
-
-    // 6. LEGALES
-    const legales = `
-Todos los derechos reservados. Queda prohibida la reproducción total o parcial de este libro sin autorización.
-Este contenido es educativo e informativo.
-`.trim();
-
-    // 7. ENSAMBLAR
-    const ebook = ensamblarEbook(
-      indice,
-      capitulos,
-      conclusion,
-      introduccion,
-      legales,
-      indice.titulo,
-      indice.subtitulo,
-      indice.descripcion
+    const concepto = await generarPrompts(
+      tema,
+      "ebook",
+      env
     );
 
-    // 8. GUARDAR EN R2
-    const nombreArchivo = `Ebook/${Date.now()}-${crypto.randomUUID()}.txt`;
+    // =====================================
+    // PLANIFICACIÓN
+    // =====================================
+
+    const plan = planificarEbook(paginas);
+
+    // =====================================
+    // ÍNDICE
+    // =====================================
+
+    const indice = await generarIndice(
+      concepto,
+      plan,
+      env
+    );
+
+    // =====================================
+    // COPIAR DATOS DEL ÍNDICE AL PLAN
+    // =====================================
+
+    if (
+      indice.indice &&
+      Array.isArray(indice.indice)
+    ) {
+
+      indice.indice.forEach((cap, i) => {
+
+        if (!plan.estructura[i]) return;
+
+        plan.estructura[i].titulo =
+          cap.titulo || "";
+
+        plan.estructura[i].objetivo =
+          cap.objetivo || "";
+
+      });
+
+    }
+
+    // =====================================
+    // ID DEL PROYECTO
+    // =====================================
+
+    const proyectoId =
+      crypto.randomUUID();
+
+    // =====================================
+    // OBJETO DEL PROYECTO
+    // =====================================
+
+    const proyecto = {
+
+      version: 2,
+
+      id: proyectoId,
+
+      estado: "creado",
+
+      temaOriginal: tema,
+
+      concepto,
+
+      titulo:
+        indice.titulo || tema,
+
+      subtitulo:
+        indice.subtitulo || "",
+
+      descripcion:
+        indice.descripcion || "",
+
+      categoria:
+        indice.categoria || "",
+
+      keywords:
+        indice.keywords || [],
+
+      fechaCreacion:
+        new Date().toISOString(),
+
+      plan,
+
+      indice,
+
+      introduccion: null,
+
+      conclusion: null,
+
+      legales: `
+Todos los derechos reservados.
+
+Queda prohibida la reproducción total o parcial.
+
+Contenido generado por PIXELLAB45 IA.
+`.trim(),
+
+      capitulos: {},
+
+      progreso: {
+
+        introduccion: false,
+
+        capitulos: 0,
+
+        conclusion: false,
+
+        ensamblado: false,
+
+        porcentaje: 0
+
+      }
+
+    };
+
+    // =====================================
+    // GUARDAR PROYECTO
+    // =====================================
 
     await env.IMAGES.put(
-      nombreArchivo,
-      ebook,
+
+      `ebook-proyectos/${proyectoId}.json`,
+
+      JSON.stringify(
+        proyecto,
+        null,
+        2
+      ),
+
       {
+
         httpMetadata: {
-          contentType: "text/plain"
+
+          contentType:
+            "application/json"
+
         }
+
       }
+
     );
 
     return json({
+
       ok: true,
-      resultado: ebook,
-      archivo: nombreArchivo,
-      paginasSolicitadas: plan.paginasTotales,
-      capitulos: plan.capitulos
+
+      proyecto: proyectoId,
+
+      titulo:
+        proyecto.titulo,
+
+      capitulos:
+        plan.capitulos,
+
+      paginas:
+        plan.paginasTotales,
+
+      estado:
+        proyecto.estado
+
+    });
+
+  }
+
+  catch (err) {
+
+    return json({
+
+      ok: false,
+
+      error: err.message,
+
+      stack: err.stack
+
+    }, 500);
+
+  }
+
+}
+// =====================================
+// BLOQUE 2 V2
+// CARGAR PROYECTO EBOOK
+// =====================================
+
+async function cargarProyectoEbook(data, env, json) {
+
+  try {
+
+    const proyectoId = (data.proyecto || "").trim();
+
+    if (!proyectoId) {
+      return json({
+        ok: false,
+        error: "Falta el ID del proyecto."
+      }, 400);
+    }
+
+    const objeto = await env.IMAGES.get(
+      `ebook-proyectos/${proyectoId}.json`
+    );
+
+    if (!objeto) {
+      return json({
+        ok: false,
+        error: "Proyecto no encontrado."
+      }, 404);
+    }
+
+    const proyecto = await objeto.json();
+
+    return json({
+      ok: true,
+      proyecto
     });
 
   } catch (err) {
@@ -1728,9 +1510,1328 @@ Este contenido es educativo e informativo.
       error: err.message,
       stack: err.stack
     }, 500);
+
   }
+
 }
 
+// =====================================
+// BLOQUE 2 V2
+// GUARDAR PROYECTO EBOOK
+// =====================================
+
+async function guardarProyectoEbook(proyecto, env) {
+
+  await env.IMAGES.put(
+
+    `ebook-proyectos/${proyecto.id}.json`,
+
+    JSON.stringify(
+      proyecto,
+      null,
+      2
+    ),
+
+    {
+      httpMetadata: {
+        contentType: "application/json"
+      }
+    }
+
+  );
+
+}
+
+// =====================================
+// BLOQUE 2 V2
+// ACTUALIZAR PROGRESO
+// =====================================
+
+function actualizarProgresoProyecto(proyecto) {
+
+  const total = proyecto.plan.capitulos;
+
+  let completados = 0;
+
+  for (const cap of proyecto.plan.estructura) {
+
+    if (cap.estado === "completo") {
+      completados++;
+    }
+
+  }
+
+  proyecto.plan.progreso.completados = completados;
+
+  proyecto.plan.progreso.porcentaje =
+    Math.round((completados / total) * 100);
+
+  proyecto.progreso.capitulos = completados;
+
+  proyecto.progreso.porcentaje =
+    proyecto.plan.progreso.porcentaje;
+
+  if (completados >= total) {
+    proyecto.estado = "capitulos_completos";
+  }
+
+  return proyecto;
+
+}
+// =====================================
+// BLOQUE 2 V2
+// GENERAR UN CAPÍTULO POR PETICIÓN
+// =====================================
+
+async function generarCapituloProyecto(data, env, json) {
+
+  try {
+
+    const proyectoId = (data.proyecto || "").trim();
+
+    const numeroCapitulo =
+      parseInt(data.capitulo);
+
+    if (!proyectoId) {
+
+      return json({
+        ok: false,
+        error: "Falta el proyecto."
+      }, 400);
+
+    }
+
+    if (isNaN(numeroCapitulo)) {
+
+      return json({
+        ok: false,
+        error: "Capítulo inválido."
+      }, 400);
+
+    }
+
+    // ===============================
+    // CARGAR PROYECTO
+    // ===============================
+
+    const objeto = await env.IMAGES.get(
+      `ebook-proyectos/${proyectoId}.json`
+    );
+
+    if (!objeto) {
+
+      return json({
+        ok: false,
+        error: "Proyecto no encontrado."
+      }, 404);
+
+    }
+
+    const proyecto = await objeto.json();
+
+    const info =
+      proyecto.plan.estructura.find(
+        c => c.numero === numeroCapitulo
+      );
+
+    if (!info) {
+
+      return json({
+        ok: false,
+        error: "Capítulo inexistente."
+      }, 404);
+
+    }
+
+    if (info.estado === "completo") {
+
+      return json({
+        ok: true,
+        mensaje: "El capítulo ya fue generado.",
+        capitulo: numeroCapitulo,
+        archivo: info.archivo
+      });
+
+    }
+
+    // ===============================
+    // CONTEXTO
+    // ===============================
+
+    let contexto = "";
+
+    if (numeroCapitulo > 1) {
+
+      const anterior =
+        proyecto.capitulos[
+          numeroCapitulo - 1
+        ];
+
+      if (anterior) {
+
+        contexto =
+          anterior.substring(
+            Math.max(
+              0,
+              anterior.length - 4000
+            )
+          );
+
+      }
+
+    }
+
+    // ===============================
+    // GENERAR
+    // ===============================
+
+    const contenido =
+      await generarCapitulo(
+
+        proyecto.concepto,
+
+        proyecto.indice,
+
+        numeroCapitulo,
+
+        contexto,
+
+        proyecto.plan,
+
+        env
+
+      );
+
+    // ===============================
+    // GUARDAR CAPÍTULO
+    // ===============================
+
+    const ruta =
+      `ebook-proyectos/${proyecto.id}/capitulo-${numeroCapitulo}.txt`;
+
+    await env.IMAGES.put(
+
+      ruta,
+
+      contenido,
+
+      {
+
+        httpMetadata: {
+
+          contentType: "text/plain"
+
+        }
+
+      }
+
+    );
+
+    proyecto.capitulos[
+      numeroCapitulo
+    ] = contenido;
+
+    info.estado = "completo";
+
+    info.archivo = ruta;
+
+    actualizarProgresoProyecto(
+      proyecto
+    );
+
+    await guardarProyectoEbook(
+      proyecto,
+      env
+    );
+
+    return json({
+
+      ok: true,
+
+      proyecto:
+        proyecto.id,
+
+      capitulo:
+        numeroCapitulo,
+
+      progreso:
+        proyecto.plan.progreso,
+
+      archivo:
+        ruta
+
+    });
+
+  }
+
+  catch (err) {
+
+    return json({
+
+      ok: false,
+
+      error:
+        err.message,
+
+      stack:
+        err.stack
+
+    }, 500);
+
+  }
+
+}
+// =====================================
+// BLOQUE 2 V2
+// OBTENER SIGUIENTE CAPÍTULO PENDIENTE
+// =====================================
+
+async function siguienteCapituloProyecto(data, env, json) {
+
+  try {
+
+    const proyectoId = (data.proyecto || "").trim();
+
+    if (!proyectoId) {
+
+      return json({
+        ok: false,
+        error: "Falta el ID del proyecto."
+      }, 400);
+
+    }
+
+    const objeto = await env.IMAGES.get(
+      `ebook-proyectos/${proyectoId}.json`
+    );
+
+    if (!objeto) {
+
+      return json({
+        ok: false,
+        error: "Proyecto no encontrado."
+      }, 404);
+
+    }
+
+    const proyecto = await objeto.json();
+
+    const pendiente = proyecto.plan.estructura.find(
+      c => c.estado !== "completo"
+    );
+
+    if (!pendiente) {
+
+      proyecto.estado = "capitulos_completos";
+
+      await guardarProyectoEbook(
+        proyecto,
+        env
+      );
+
+      return json({
+
+        ok: true,
+
+        terminado: true,
+
+        proyecto: proyecto.id,
+
+        mensaje: "Todos los capítulos fueron generados."
+
+      });
+
+    }
+
+    return json({
+
+      ok: true,
+
+      terminado: false,
+
+      proyecto: proyecto.id,
+
+      capitulo: pendiente.numero,
+
+      titulo: pendiente.titulo,
+
+      objetivo: pendiente.objetivo,
+
+      paginas: pendiente.paginas
+
+    });
+
+  }
+
+  catch (err) {
+
+    return json({
+
+      ok: false,
+
+      error: err.message,
+
+      stack: err.stack
+
+    }, 500);
+
+  }
+
+}
+
+// =====================================
+// BLOQUE 2 V2
+// ELIMINAR PROYECTO
+// =====================================
+
+async function eliminarProyectoEbook(data, env, json) {
+
+  try {
+
+    const proyectoId = (data.proyecto || "").trim();
+
+    if (!proyectoId) {
+
+      return json({
+        ok: false,
+        error: "Falta el ID del proyecto."
+      }, 400);
+
+    }
+
+    const objeto = await env.IMAGES.get(
+      `ebook-proyectos/${proyectoId}.json`
+    );
+
+    if (!objeto) {
+
+      return json({
+        ok: false,
+        error: "Proyecto no encontrado."
+      }, 404);
+
+    }
+
+    const proyecto = await objeto.json();
+
+    for (const cap of proyecto.plan.estructura) {
+
+      if (cap.archivo) {
+
+        await env.IMAGES.delete(
+          cap.archivo
+        );
+
+      }
+
+    }
+
+    await env.IMAGES.delete(
+      `ebook-proyectos/${proyectoId}.json`
+    );
+
+    return json({
+
+      ok: true,
+
+      mensaje: "Proyecto eliminado correctamente."
+
+    });
+
+  }
+
+  catch (err) {
+
+    return json({
+
+      ok: false,
+
+      error: err.message,
+
+      stack: err.stack
+
+    }, 500);
+
+  }
+
+}
+
+// =====================================
+// BLOQUE 3 V2
+// EDITOR IA DE CAPÍTULOS
+// =====================================
+
+async function editarCapituloIA(data, env, json) {
+
+  try {
+
+    const proyectoId = (data.proyecto || "").trim();
+    const numeroCapitulo = parseInt(data.capitulo);
+    const modo = (data.modo || "mejorar").trim(); 
+    const instruccionExtra = (data.instruccion || "").trim();
+
+    if (!proyectoId) {
+      return json({ ok: false, error: "Falta proyecto" }, 400);
+    }
+
+    if (isNaN(numeroCapitulo)) {
+      return json({ ok: false, error: "Capítulo inválido" }, 400);
+    }
+
+    const objeto = await env.IMAGES.get(
+      `ebook-proyectos/${proyectoId}.json`
+    );
+
+    if (!objeto) {
+      return json({ ok: false, error: "Proyecto no encontrado" }, 404);
+    }
+
+    const proyecto = await objeto.json();
+
+    const capitulo = proyecto.capitulos[numeroCapitulo];
+
+    if (!capitulo) {
+      return json({ ok: false, error: "Capítulo no existe" }, 404);
+    }
+
+    // =====================================
+    // PROMPT DE EDICIÓN
+    // =====================================
+
+    let prompt = "";
+
+    if (modo === "mejorar") {
+
+      prompt = `
+You are a professional book editor.
+
+Improve the following chapter WITHOUT changing its meaning.
+
+Rules:
+- Keep original language (Spanish)
+- Do not add new topics
+- Do not remove important content
+- Improve clarity, flow, grammar and structure
+- Make it more readable and professional
+- Do NOT summarize
+
+CHAPTER:
+${capitulo}
+`;
+
+    }
+
+    else if (modo === "expandir") {
+
+      prompt = `
+You are a professional book writer.
+
+Expand the following chapter with more depth.
+
+Rules:
+- Keep original language (Spanish)
+- Do not change original meaning
+- Add explanations, examples and detail
+- Maintain coherence
+- Do NOT repeat content
+
+CHAPTER:
+${capitulo}
+`;
+
+    }
+
+    else if (modo === "corregir") {
+
+      prompt = `
+You are a professional editor.
+
+Correct grammar, spelling and structure.
+
+Rules:
+- Do not change meaning
+- Fix errors only
+- Improve readability
+
+CHAPTER:
+${capitulo}
+`;
+
+    }
+
+    else if (modo === "custom") {
+
+      prompt = `
+You are a professional book editor.
+
+Edit the chapter following this instruction:
+
+INSTRUCTION:
+${instruccionExtra}
+
+CHAPTER:
+${capitulo}
+`;
+
+    }
+
+    // =====================================
+    // IA
+    // =====================================
+
+    const resultado = await ai(env, prompt);
+
+    // =====================================
+    // GUARDAR
+    // =====================================
+
+    proyecto.capitulos[numeroCapitulo] = resultado;
+
+    await guardarProyectoEbook(proyecto, env);
+
+    return json({
+      ok: true,
+      proyecto: proyectoId,
+      capitulo: numeroCapitulo,
+      modo,
+      resultado
+    });
+
+  }
+
+  catch (err) {
+
+    return json({
+      ok: false,
+      error: err.message,
+      stack: err.stack
+    }, 500);
+
+  }
+
+}
+
+// =====================================
+// BLOQUE 4 V2
+// TRADUCTOR IA DE CAPÍTULOS
+// =====================================
+
+async function traducirCapituloIA(data, env, json) {
+
+  try {
+
+    const proyectoId = (data.proyecto || "").trim();
+    const numeroCapitulo = parseInt(data.capitulo);
+    const idioma = (data.idioma || "ingles").trim();
+
+    if (!proyectoId) {
+      return json({ ok: false, error: "Falta proyecto" }, 400);
+    }
+
+    if (isNaN(numeroCapitulo)) {
+      return json({ ok: false, error: "Capítulo inválido" }, 400);
+    }
+
+    const objeto = await env.IMAGES.get(
+      `ebook-proyectos/${proyectoId}.json`
+    );
+
+    if (!objeto) {
+      return json({ ok: false, error: "Proyecto no encontrado" }, 404);
+    }
+
+    const proyecto = await objeto.json();
+
+    const capitulo = proyecto.capitulos[numeroCapitulo];
+
+    if (!capitulo) {
+      return json({ ok: false, error: "Capítulo no existe" }, 404);
+    }
+
+    // =====================================
+    // PROMPT DE TRADUCCIÓN
+    // =====================================
+
+    const prompt = `
+You are a professional translator.
+
+Translate the following chapter.
+
+Rules:
+- Preserve meaning exactly
+- Do not summarize
+- Do not add explanations
+- Keep formatting as plain text
+- Translate into: ${idioma}
+
+CHAPTER:
+${capitulo}
+`;
+
+    // =====================================
+    // IA
+    // =====================================
+
+    const resultado = await ai(env, prompt);
+
+    // =====================================
+    // GUARDAR TRADUCCIÓN
+    // =====================================
+
+    if (!proyecto.traducciones) {
+      proyecto.traducciones = {};
+    }
+
+    if (!proyecto.traducciones[numeroCapitulo]) {
+      proyecto.traducciones[numeroCapitulo] = {};
+    }
+
+    proyecto.traducciones[numeroCapitulo][idioma] = resultado;
+
+    await guardarProyectoEbook(proyecto, env);
+
+    return json({
+      ok: true,
+      proyecto: proyectoId,
+      capitulo: numeroCapitulo,
+      idioma,
+      resultado
+    });
+
+  }
+
+  catch (err) {
+
+    return json({
+      ok: false,
+      error: err.message,
+      stack: err.stack
+    }, 500);
+
+  }
+
+}
+
+// =====================================
+// BLOQUE 5 V2
+// GENERADOR DE IMÁGENES PARA CAPÍTULOS
+// =====================================
+
+async function generarImagenCapitulo(data, env, json) {
+
+  try {
+
+    const proyectoId = (data.proyecto || "").trim();
+    const numeroCapitulo = parseInt(data.capitulo);
+    const estilo = (data.estilo || "cinematic").trim();
+
+    if (!proyectoId) {
+      return json({ ok: false, error: "Falta proyecto" }, 400);
+    }
+
+    if (isNaN(numeroCapitulo)) {
+      return json({ ok: false, error: "Capítulo inválido" }, 400);
+    }
+
+    const objeto = await env.IMAGES.get(
+      `ebook-proyectos/${proyectoId}.json`
+    );
+
+    if (!objeto) {
+      return json({ ok: false, error: "Proyecto no encontrado" }, 404);
+    }
+
+    const proyecto = await objeto.json();
+
+    const capitulo = proyecto.capitulos[numeroCapitulo];
+
+    const info = proyecto.plan.estructura.find(
+      c => c.numero === numeroCapitulo
+    );
+
+    if (!capitulo || !info) {
+      return json({ ok: false, error: "Capítulo no existe" }, 404);
+    }
+
+    // =====================================
+    // PROMPT VISUAL
+    // =====================================
+
+    const prompt = `
+You are an expert cinematic prompt engineer.
+
+Create a high-quality AI image prompt based on this chapter.
+
+Rules:
+- English only
+- Cinematic, ultra-detailed
+- No text in image
+- No logos
+- No watermark
+- Focus on visual storytelling
+- Based ONLY on chapter content
+
+STYLE:
+${estilo}
+
+CHAPTER TITLE:
+${info.titulo}
+
+CHAPTER CONTENT:
+${capitulo.substring(0, 3000)}
+
+Return ONLY the image prompt.
+`;
+
+    const visualPrompt = await ai(env, prompt);
+
+    // =====================================
+    // GUARDAR PROMPT
+    // =====================================
+
+    const rutaPrompt =
+      `ebook-proyectos/${proyectoId}/imagenes/capitulo-${numeroCapitulo}.txt`;
+
+    await env.IMAGES.put(
+      rutaPrompt,
+      visualPrompt,
+      {
+        httpMetadata: {
+          contentType: "text/plain"
+        }
+      }
+    );
+
+    // =====================================
+    // (OPCIONAL) SI TENÉS GENERADOR DE IMAGEN
+    // =====================================
+
+    let imagenUrl = null;
+
+    if (env.AI_IMAGE) {
+
+      const img = await env.AI_IMAGE.run(
+        "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+        {
+          prompt: visualPrompt
+        }
+      );
+
+      imagenUrl = img?.image || null;
+    }
+
+    // =====================================
+    // GUARDAR EN PROYECTO
+    // =====================================
+
+    if (!proyecto.imagenes) {
+      proyecto.imagenes = {};
+    }
+
+    proyecto.imagenes[numeroCapitulo] = {
+      prompt: visualPrompt,
+      url: imagenUrl,
+      estilo
+    };
+
+    await guardarProyectoEbook(proyecto, env);
+
+    return json({
+      ok: true,
+      proyecto: proyectoId,
+      capitulo: numeroCapitulo,
+      prompt: visualPrompt,
+      imagen: imagenUrl
+    });
+
+  }
+
+  catch (err) {
+
+    return json({
+      ok: false,
+      error: err.message,
+      stack: err.stack
+    }, 500);
+
+  }
+
+}
+
+// =====================================
+// BLOQUE 6 V2
+// ENSAMBLADOR FINAL DEL EBOOK
+// =====================================
+
+async function ensamblarEbookV2(data, env, json) {
+
+  try {
+
+    const proyectoId = (data.proyecto || "").trim();
+
+    if (!proyectoId) {
+      return json({ ok: false, error: "Falta proyecto" }, 400);
+    }
+
+    const objeto = await env.IMAGES.get(
+      `ebook-proyectos/${proyectoId}.json`
+    );
+
+    if (!objeto) {
+      return json({ ok: false, error: "Proyecto no encontrado" }, 404);
+    }
+
+    const proyecto = await objeto.json();
+
+    // =====================================
+    // VALIDACIÓN FINAL
+    // =====================================
+
+    const total = proyecto.plan.capitulos;
+
+    for (let i = 1; i <= total; i++) {
+
+      if (!proyecto.capitulos[i]) {
+        return json({
+          ok: false,
+          error: `Falta el capítulo ${i}`
+        }, 400);
+      }
+
+    }
+
+    // =====================================
+    // INTRODUCCIÓN Y CONCLUSIÓN (si faltan)
+    // =====================================
+
+    if (!proyecto.introduccion) {
+
+      proyecto.introduccion = await generarIntroduccion(
+        proyecto.concepto,
+        proyecto.indice,
+        env
+      );
+
+    }
+
+    if (!proyecto.conclusion) {
+
+      proyecto.conclusion = await generarConclusion(
+        proyecto.concepto,
+        proyecto.indice,
+        env
+      );
+
+    }
+
+    // =====================================
+    // ENSAMBLADO FINAL
+    // =====================================
+
+    let ebook = "";
+
+    // METADATOS
+    ebook += "METADATOS\n\n";
+    ebook += JSON.stringify({
+      titulo: proyecto.titulo,
+      subtitulo: proyecto.subtitulo,
+      descripcion: proyecto.descripcion,
+      categoria: proyecto.categoria,
+      fecha: proyecto.fechaCreacion,
+      version: "V2"
+    }, null, 2) + "\n\n";
+
+    ebook += "====================================\n\n";
+
+    // INTRODUCCIÓN
+    ebook += "INTRODUCCIÓN\n\n";
+    ebook += proyecto.introduccion + "\n\n";
+    ebook += "====================================\n\n";
+
+    // CAPÍTULOS
+    for (let i = 1; i <= total; i++) {
+
+      const cap = proyecto.plan.estructura.find(
+        c => c.numero === i
+      );
+
+      ebook += `CAPÍTULO ${i}: ${cap?.titulo || ""}\n\n`;
+      ebook += proyecto.capitulos[i] + "\n\n";
+      ebook += "------------------------------------\n\n";
+
+    }
+
+    // CONCLUSIÓN
+    ebook += "CONCLUSIÓN\n\n";
+    ebook += proyecto.conclusion + "\n\n";
+
+    // =====================================
+    // GUARDAR EBOOK FINAL
+    // =====================================
+
+    const ruta =
+      `Ebook/final-${proyectoId}.txt`;
+
+    await env.IMAGES.put(
+      ruta,
+      ebook,
+      {
+        httpMetadata: {
+          contentType: "text/plain"
+        }
+      }
+    );
+
+    proyecto.estado = "finalizado";
+    proyecto.ebookFinal = ruta;
+
+    await guardarProyectoEbook(proyecto, env);
+
+    return json({
+      ok: true,
+      proyecto: proyectoId,
+      estado: "finalizado",
+      archivo: ruta,
+      paginas: proyecto.plan.paginasTotales
+    });
+
+  }
+
+  catch (err) {
+
+    return json({
+      ok: false,
+      error: err.message,
+      stack: err.stack
+    }, 500);
+
+  }
+
+}// =====================================
+// BLOQUE 7 V2
+// EXPORTADORES (TXT, JSON, HTML)
+// =====================================
+
+async function exportarEbookV2(data, env, json) {
+
+  try {
+
+    const proyectoId = (data.proyecto || "").trim();
+    const formato = (data.formato || "txt").toLowerCase();
+
+    if (!proyectoId) {
+      return json({ ok: false, error: "Falta proyecto" }, 400);
+    }
+
+    const objeto = await env.IMAGES.get(
+      `ebook-proyectos/${proyectoId}.json`
+    );
+
+    if (!objeto) {
+      return json({ ok: false, error: "Proyecto no encontrado" }, 404);
+    }
+
+    const proyecto = await objeto.json();
+
+    if (!proyecto.ebookFinal) {
+      return json({
+        ok: false,
+        error: "El ebook aún no fue ensamblado"
+      }, 400);
+    }
+
+    const ebookObj = await env.IMAGES.get(
+      proyecto.ebookFinal
+    );
+
+    if (!ebookObj) {
+      return json({
+        ok: false,
+        error: "Archivo final no encontrado"
+      }, 404);
+    }
+
+    const contenido = await ebookObj.text();
+
+    // =====================================
+    // EXPORTACIÓN TXT
+    // =====================================
+
+    if (formato === "txt") {
+
+      return new Response(contenido, {
+        headers: {
+          "Content-Type": "text/plain",
+          "Content-Disposition":
+            `attachment; filename="${proyectoId}.txt"`
+        }
+      });
+
+    }
+
+    // =====================================
+    // EXPORTACIÓN JSON
+    // =====================================
+
+    if (formato === "json") {
+
+      return json({
+        ok: true,
+        proyecto: proyectoId,
+        ebook: contenido
+      });
+
+    }
+
+    // =====================================
+    // EXPORTACIÓN HTML
+    // =====================================
+
+    if (formato === "html") {
+
+      const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>${proyecto.titulo}</title>
+  <style>
+    body {
+      font-family: Arial;
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    h1, h2 {
+      color: #333;
+    }
+    pre {
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+
+<h1>${proyecto.titulo}</h1>
+<h3>${proyecto.subtitulo || ""}</h3>
+
+<pre>${contenido}</pre>
+
+</body>
+</html>
+      `;
+
+      return new Response(html, {
+        headers: {
+          "Content-Type": "text/html"
+        }
+      });
+
+    }
+
+    return json({
+      ok: false,
+      error: "Formato no soportado"
+    }, 400);
+
+  }
+
+  catch (err) {
+
+    return json({
+      ok: false,
+      error: err.message,
+      stack: err.stack
+    }, 500);
+
+  }
+
+}
+
+// =====================================
+// MOTOR AUTOMÁTICO V2 (PIXELLAB45)
+// =====================================
+
+async function ebookAutoRunner(data, env, json) {
+
+  try {
+
+    const tema = (data.tema || "").trim();
+    const paginas = data.paginas || 30;
+
+    if (!tema) {
+      return json({ ok: false, error: "Falta tema" }, 400);
+    }
+
+    // 1. CREAR PROYECTO
+    const proyectoRes = await crearProyectoEbook(
+      { tema, paginas },
+      env,
+      json
+    );
+
+    const proyecto = proyectoRes.proyecto;
+
+    // 2. CARGAR PROYECTO REAL
+    const obj = await env.IMAGES.get(
+      `ebook-proyectos/${proyecto}.json`
+    );
+
+    const p = await obj.json();
+
+    const total = p.plan.capitulos;
+
+    let capituloAnterior = "";
+
+    // 3. LOOP AUTOMÁTICO DE CAPÍTULOS
+    for (let i = 1; i <= total; i++) {
+
+      const contenido = await generarCapituloProyecto(
+        {
+          proyecto,
+          capitulo: i
+        },
+        env,
+        json
+      );
+
+      capituloAnterior = contenido;
+
+    }
+
+    // 4. ENSAMBLAR
+    const final = await ensamblarEbookV2(
+      { proyecto },
+      env,
+      json
+    );
+
+    return json({
+      ok: true,
+      mensaje: "Ebook generado completamente",
+      proyecto,
+      archivo: final.archivo
+    });
+
+  }
+
+  catch (err) {
+
+    return json({
+      ok: false,
+      error: err.message,
+      stack: err.stack
+    }, 500);
+
+  }
+
+}
+async function ebookAutoFull(data, env, json) {
+
+  try {
+
+    const tema = (data.tema || "").trim();
+    const paginas = parseInt(data.paginas || 30);
+
+    if (!tema) {
+      return json({ ok: false, error: "Falta tema" }, 400);
+    }
+
+    // =========================
+    // 1. CREAR PROYECTO
+    // =========================
+    const proyectoRes = await crearProyectoEbook(
+      { tema, paginas },
+      env,
+      json
+    );
+
+    const proyectoId = proyectoRes.proyecto;
+
+    // =========================
+    // 2. CARGAR PROYECTO
+    // =========================
+    let obj = await env.IMAGES.get(`ebook-proyectos/${proyectoId}.json`);
+    let proyecto = await obj.json();
+
+    const total = proyecto.plan.capitulos;
+
+    // =========================
+    // 3. INTRODUCCIÓN
+    // =========================
+    proyecto.introduccion = await generarIntroduccion(
+      proyecto.concepto,
+      proyecto.indice,
+      env
+    );
+
+    // =========================
+    // 4. CAPÍTULOS EN SECUENCIA (AUTOMÁTICO REAL)
+    // =========================
+    let ultimo = "";
+
+    for (let i = 1; i <= total; i++) {
+
+      const contenido = await generarCapituloProyecto(
+        {
+          proyecto: proyectoId,
+          capitulo: i
+        },
+        env,
+        json
+      );
+
+      ultimo = contenido;
+
+      // 🔥 guardado progresivo para evitar pérdida
+      proyecto.capitulos[i] = contenido;
+
+      await guardarProyectoEbook(proyecto, env);
+
+    }
+
+    // =========================
+    // 5. CONCLUSIÓN
+    // =========================
+    proyecto.conclusion = await generarConclusion(
+      proyecto.concepto,
+      proyecto.indice,
+      env
+    );
+
+    await guardarProyectoEbook(proyecto, env);
+
+    // =========================
+    // 6. ENSAMBLADO FINAL
+    // =========================
+    const final = await ensamblarEbookV2(
+      { proyecto: proyectoId },
+      env,
+      json
+    );
+
+    return json({
+      ok: true,
+      proyecto: proyectoId,
+      estado: "completo",
+      archivo: final.archivo,
+      paginas: paginas
+    });
+
+  }
+
+  catch (err) {
+
+    return json({
+      ok: false,
+      error: err.message
+    }, 500);
+
+  }
+
+}
+/// estás son del editor 
 // =====================================
 // LISTAR EBOOKS
 // =====================================
