@@ -1260,11 +1260,14 @@ const ebookDiseno = {
   // ==========================
 
   ebookDiseno.portada = {
-    titulo: ebookDiseno.metadata.titulo || "",
-    subtitulo: ebookDiseno.metadata.subtitulo || "",
-    descripcion: ebookDiseno.metadata.descripcion || ""
-  };
+  titulo: ebookDiseno.metadata.titulo || "",
+  subtitulo: ebookDiseno.metadata.subtitulo || "",
+  descripcion: ebookDiseno.metadata.descripcion || ""
+};
 
+ebookDiseno.autor = ebookDiseno.metadata.autor || "PIXELLAB45";
+ebookDiseno.fecha = ebookDiseno.metadata.fecha || new Date().toISOString();
+ebookDiseno.marca = ebookDiseno.metadata.marca || "PIXELLAB45";
   // ==========================
   // AVISO LEGAL
   // ==========================
