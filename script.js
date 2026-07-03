@@ -1291,6 +1291,7 @@ if (legal) {
       .filter(x => x);
 
   }
+  console.log(ebookDiseno.indice) 
 
   // ==========================
   // INTRODUCCIÓN
