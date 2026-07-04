@@ -50,10 +50,7 @@ console.log("BODY.DATA:", JSON.stringify(data.data));
     switch (tipo) {
 
       case "listar-imagenes":
-        return listarImagenes(
-          env,
-          json
-        );
+    return listarImagenes(env, json);
 
       case "listar-categoria":
         return listarCategoria(
