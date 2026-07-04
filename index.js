@@ -53,11 +53,7 @@ console.log("BODY.DATA:", JSON.stringify(data.data));
     return listarImagenes(env, json);
 
       case "listar-categoria":
-        return listarCategoria(
-          data.categoria,
-          env,
-          json
-        );
+    return listarCategoria(env, json);
 
       case "ideas":
         return generarIdeas(
@@ -382,29 +378,25 @@ async function listarImagenes(
 // GALERÍA CATEGORÍA
 // =====================================
 
-async function listarCategoria(
-  categoria,
-  env,
-  json
-) {
+async function listarCategoria(env, json) {
 
-  const lista =
-    await env.IMAGES.list({
-      prefix: categoria + "/"
-    });
+  const categoria = json.categoria;
 
-  const imagenes =
-    lista.objects.map(obj => ({
-      nombre: obj.key,
-      url: `${R2_BASE_URL}/${obj.key}`
-    }));
+  const lista = await env.IMAGES.list({
+    prefix: `${categoria}/`
+  });
+
+  const archivos = lista.objects.map(obj => ({
+    nombre: obj.key,
+    url: `${R2_BASE_URL}/${obj.key}`
+  }));
 
   return json({
     success: true,
-    images: imagenes,
-    total: imagenes.length
+    categoria,
+    archivos,
+    total: archivos.length
   });
-  
 
 }
 // =====================================

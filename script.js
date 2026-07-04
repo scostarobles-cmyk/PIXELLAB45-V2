@@ -69,18 +69,18 @@ async function cargarCategoria(categoria) {
 
   try {
 
-    const res = await fetch(WORKER_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        tipo: "listar-categoria",
-        categoria: categoria
-      })
-    });
+const res = await fetch(WORKER_URL, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    action: "listar-categoria",
+    categoria: "ideas"   // o prompts, visuals, scripts, etc.
+  })
+});
 
-    const data = await res.json();
+const data = await res.json();
 
     contenedor.innerHTML = "";
 
