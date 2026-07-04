@@ -226,7 +226,7 @@ const data = await res.json();
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        tipo: "guardar-ideas",
+        action: "guardar-ideas",
         contenido: texto
       })
     });
@@ -327,7 +327,7 @@ const fakeProgress = setInterval(() => {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          tipo: "prompt",
+          acrion: "prompt",
           tema,
           formato: tipo
         })
@@ -390,7 +390,7 @@ async function guardarPrompts() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        tipo: "guardar-prompts",
+        action: "guardar-prompts",
         contenido: texto
       })
     });
@@ -468,7 +468,7 @@ async function generarVisuales() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        tipo: "visual",
+        action: "visual",
         tema
       })
     });
@@ -526,7 +526,7 @@ async function guardarVisuales() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        tipo: "guardar-visuales",
+        action: "guardar-visuales",
         contenido: texto
       })
     });
