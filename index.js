@@ -33,6 +33,8 @@ export default {
       if (request.method === "POST") {
         data = await request.json();
       }
+      console.log("BODY:", JSON.stringify(data));
+console.log("BODY.DATA:", JSON.stringify(data.data));
 
     } catch {
 
@@ -140,6 +142,8 @@ case "planificar-ebook":
     ok: true,
     data: result.data
   });
+  console.log("DATA:", data);
+console.log("DATA.DATA:", data.data);
 default:
   return json({
     ok: false,
@@ -2663,7 +2667,7 @@ async function planificarEbook(data, env) {
       autor = "PIXELLAB45"
     } = data;
 
-    if (!data.tema)
+    if (!tema)
       throw new Error("Falta el tema.");
 
     if (!paginas || paginas < 10)
