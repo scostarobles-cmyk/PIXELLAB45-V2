@@ -1165,110 +1165,7 @@ async function guardarImagen(data, env) {
 
 }
 
-// =====================================
-// BLOQUE 1
-// PLANIFICADOR DEL EBOOK V2
-// =====================================
 
-function planificarEbook(paginas) {
-
-  paginas = parseInt(paginas || 30, 10);
-
-  if (isNaN(paginas)) paginas = 30;
-
-  paginas = Math.max(5, Math.min(200, paginas));
-
-  const paginasFijas = {
-    portada: 1,
-    legales: 1,
-    indice: 1,
-    introduccion: 1,
-    conclusion: 1
-  };
-
-  const paginasDisponibles =
-    paginas -
-    paginasFijas.portada -
-    paginasFijas.legales -
-    paginasFijas.indice -
-    paginasFijas.introduccion -
-    paginasFijas.conclusion;
-
-  let capitulos;
-
-  if (paginas <= 10)
-    capitulos = 4;
-  else if (paginas <= 20)
-    capitulos = 6;
-  else if (paginas <= 40)
-    capitulos = 8;
-  else if (paginas <= 60)
-    capitulos = 10;
-  else if (paginas <= 100)
-    capitulos = 12;
-  else if (paginas <= 150)
-    capitulos = 15;
-  else
-    capitulos = 18;
-
-  const paginasPorCapitulo =
-    Math.max(
-      2,
-      Math.ceil(paginasDisponibles / capitulos)
-    );
-
-  const estructura = [];
-
-  for (let i = 1; i <= capitulos; i++) {
-
-    estructura.push({
-      numero: i,
-      titulo: "",
-      objetivo: "",
-      paginas: paginasPorCapitulo,
-      estado: "pendiente",
-      archivo: null
-    });
-
-  }
-
-  return {
-
-    version: 2,
-
-    estado: "planificado",
-
-    fechaCreacion: new Date().toISOString(),
-
-    paginasTotales: paginas,
-
-    paginasDisponibles,
-
-    capitulos,
-
-    paginasPorCapitulo,
-
-    portada: paginasFijas.portada,
-
-    legales: paginasFijas.legales,
-
-    indice: paginasFijas.indice,
-
-    introduccion: paginasFijas.introduccion,
-
-    conclusion: paginasFijas.conclusion,
-
-    progreso: {
-      total: capitulos,
-      completados: 0,
-      porcentaje: 0
-    },
-
-    estructura
-
-  };
-
-}
 // =====================================
 // BLOQUE 2 V2
 // CREAR PROYECTO EBOOK
@@ -2816,7 +2713,7 @@ Formato:
 }
 `;
    
-   const respuesta = await llamarAI(prompt, env);
+   const respuesta = await AI(prompt, env);
 
     if (!respuesta?.capitulos)
       throw new Error("AI devolvió un plan inválido.");
