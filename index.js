@@ -44,7 +44,7 @@ export default {
 
     const tipo =
       data.tipo || "";
-
+ console.log(tipo);
     switch (tipo) {
 
       case "listar-imagenes":
