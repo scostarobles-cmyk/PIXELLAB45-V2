@@ -997,7 +997,7 @@ async function generarImagen(data, env,json) {
 
     }
    
-
+ 
     // Obtener el prompt visual optimizado
     const visual = await generarVisualesPrompts(
       {
