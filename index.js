@@ -1062,6 +1062,7 @@ CRITICAL RULES:
 ${promptVisual}
 `;
 
+console.log(promptVisual);
     const imageBytes = await env.AI.run(
       "@cf/stabilityai/stable-diffusion-xl-base-1.0",
       {
