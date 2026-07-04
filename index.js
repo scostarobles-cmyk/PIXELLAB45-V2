@@ -43,7 +43,7 @@ export default {
     }
 
     const tipo =
-      data.action | | "";
+      data.action || "";
  
     switch (tipo) {
 
