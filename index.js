@@ -68,26 +68,27 @@ console.log("BODY.DATA:", JSON.stringify(data.data));
                 json
             );
       case "prompt":
-          return json({
-               resultado: await generarPrompts(
-               data.tema,
-               data.formato,
-               env
-               )
-            });
-      case "guardar-prompts":
-           return guardarPrompts(
-          data,
-          env,
-         json
-         );
-  case "visual":
-  return generarVisualesPrompts(
-    data.tema,
+  return generarPrompts(
+    data,
     env,
     json
   );
-  case "guardar-visuales":
+
+case "guardar-prompts":
+  return guardarPrompts(
+    data,
+    env,
+    json
+  );
+
+case "visual":
+  return generarVisualesPrompts(
+    data,
+    env,
+    json
+  );
+
+case "guardar-visuales":
   return guardarVisuales(
     data,
     env,
