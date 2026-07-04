@@ -6,7 +6,7 @@ const CORS_HEADERS = {
   "Access-Control-Allow-Headers": "*",
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Content-Type": "application/json"
-};
+}; 
 
 export default {
   async fetch(request, env) {
