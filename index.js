@@ -839,7 +839,12 @@ Rules:
 Choose automatically the best writing style.
 `;
   }
-
+if (!data.formsto) {
+  return json({
+    success: false,
+    error: "formato proporcionados"
+  }, 400);
+}
   const ai = await env.AI.run(
     "@cf/meta/llama-3.1-8b-instruct-fp8",
     {
