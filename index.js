@@ -378,25 +378,29 @@ async function listarImagenes(
 // GALERÍA CATEGORÍA
 // =====================================
 
-async function listarCategoria(env, json) {
+async function listarCategoria(
+  categoria,
+  env,
+  json
+) {
 
-  const categoria = json.categoria;
+  const lista =
+    await env.IMAGES.list({
+      prefix: categoria + "/"
+    });
 
-  const lista = await env.IMAGES.list({
-    prefix: `${categoria}/`
-  });
-
-  const archivos = lista.objects.map(obj => ({
-    nombre: obj.key,
-    url: `${R2_BASE_URL}/${obj.key}`
-  }));
+  const imagenes =
+    lista.objects.map(obj => ({
+      nombre: obj.key,
+      url: `${R2_BASE_URL}/${obj.key}`
+    }));
 
   return json({
     success: true,
-    categoria,
-    archivos,
-    total: archivos.length
+    images: imagenes,
+    total: imagenes.length
   });
+  
 
 }
 // =====================================
