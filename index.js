@@ -133,55 +133,12 @@ case "guardar-imagen":
     data,
     env
   );
-  // =====================================
-// EBOOK V2
-// =====================================
-
-case "ebookCrearProyecto":
-  return await crearProyectoEbook(
-    data,
-    env,
-    json
-  );
-
-case "ebookCargarProyecto":
-  return await cargarProyectoEbook(
-    data,
-    env,
-    json
-  );
-
-case "ebookGenerarCapitulo":
-  return await generarCapituloProyecto(
-    data,
-    env,
-    json
-  );
-
-case "ebookSiguienteCapitulo":
-  return await siguienteCapituloProyecto(
-    data,
-    env,
-    json
-  );
-
-case "ebookEliminarProyecto":
-  return await eliminarProyectoEbook(
-    data,
-    env,
-    json
-  );
-  case "ebookAuto":
-  return await ebookAutoRunner(data, env, json);
-  case "ebookAutoFull":
-  return await ebookAutoFull(data, env, json);
-  case "cargar-ebook":
-  return cargarEbook(data, env, json);
-
-case "listar-ebooks":
-  return listarEbooks(env, json);
-  case "guardar-ebook":
-  return guardarEbook(data, env, json);
+case "planificar-ebook":
+  const result = await planificarEbook(data, env);
+  return json({
+    ok: true,
+    data: result.data
+  });
 default:
   return json({
     ok: false,
