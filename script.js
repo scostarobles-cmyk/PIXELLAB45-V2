@@ -604,7 +604,9 @@ async function generarGuion() {
   }, 400);
 
   try {
-
+    console.log(tema);
+    console.log(duracion);
+    console.log(formato);
     const res = await fetch(
       WORKER_URL,
       {
@@ -613,7 +615,7 @@ async function generarGuion() {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          tipo: "script",
+          action: "script",
           tema,
           duracion,
           formato
@@ -670,7 +672,7 @@ async function guardarGuion() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        tipo: "guardar-guion",
+        action: "guardar-guion",
         contenido
       })
     }
@@ -764,7 +766,7 @@ async function generarStoryboard() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        tipo: "storyboard",
+        action: "storyboard",
         guion,
         escenas,
         estilo
@@ -817,7 +819,7 @@ async function guardarStoryboard() {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      tipo: "guardar-storyboard",
+      action: "guardar-storyboard",
       contenido: storyboard
     })
   });
@@ -902,7 +904,7 @@ const resultado =
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        tipo: "imagen",
+        action: "imagen",
         prompt
       })
     });
@@ -952,7 +954,7 @@ const resultado =
     "Content-Type": "application/json"
   },
   body: JSON.stringify({
-    tipo: "guardar-imagen",
+    action: "guardar-imagen",
     categoria,
     imagen: base64
   })
