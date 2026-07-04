@@ -136,7 +136,7 @@ case "guardar-imagen":
     env
   );
 case "planificar-ebook":
-  const result = await planificarEbook(data, env);
+  const result = await planificarEbook(data.data, env);
   console.log(result);
   return json({
     ok: true,
@@ -2655,7 +2655,8 @@ async function listarEbooks(env, json) {
 // =====================================================
 
 async function planificarEbook(data, env) {
-
+console.log("planificarEbook recibió:", JSON.stringify(data));
+console.log("tema:", data?.tema);
   try {
 
     const {
