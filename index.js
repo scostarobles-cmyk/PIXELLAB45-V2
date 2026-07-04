@@ -660,7 +660,9 @@ async function guardarPrompts(data, env, json) {
 }
 
 //Generar Visuales 
-async function generarVisualesPrompts(tema, env, json = null) {
+async function generarVisualesPrompts(data, env, json) {
+
+  const tema = data.tema || "";
 
   const ai = await env.AI.run(
     "@cf/meta/llama-3.1-8b-instruct-fp8",
@@ -711,13 +713,10 @@ ${tema}
     }
   );
 
-  if (json) {
   return json({
+    success: true,
     resultado: ai.response
   });
-}
-
-return ai.response;
 
 }
 //GUARDAR Visuales 
