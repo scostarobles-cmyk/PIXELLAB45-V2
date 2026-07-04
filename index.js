@@ -135,6 +135,7 @@ case "guardar-imagen":
   );
 case "planificar-ebook":
   const result = await planificarEbook(data, env);
+  console.log(result);
   return json({
     ok: true,
     data: result.data
