@@ -1025,7 +1025,7 @@ async function generarEbook() {
 
   try {
 
-    const response = await fetch(worker_url, {
+    const response = await fetch(WORKER_URL, {
 
       method: "POST",
 
