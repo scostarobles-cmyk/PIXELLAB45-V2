@@ -378,13 +378,12 @@ async function listarImagenes(
 // GALERÍA CATEGORÍA
 // =====================================
 
-async function listarCategoria(env, json) {
-	
+async function listarCategoria(env, data) {
 
-  const categoria = json.categoria;
-  console.log("JSON recibido:", json);
-console.log("Categoría:", json.categoria);
-  
+  const categoria = data.categoria;
+
+  console.log("DATA:", data);
+  console.log("Categoría:", categoria);
 
   const lista = await env.IMAGES.list({
     prefix: `${categoria}/`
@@ -394,14 +393,14 @@ console.log("Categoría:", json.categoria);
     nombre: obj.key,
     url: `${R2_BASE_URL}/${obj.key}`
   }));
-console.log(archivos);
+
   return json({
-  success: true,
-  categoria,
-  prefix: `${categoria}/`,
-  archivos,
-  total: archivos.length
-});
+    success: true,
+    categoria,
+    prefix: `${categoria}/`,
+    archivos,
+    total: archivos.length
+  });
 
 }
 // =====================================
