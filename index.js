@@ -686,7 +686,7 @@ ${tema}
 }
 //GUARDAR Visuales 
 async function guardarVisuales(data, env, json) {
-
+console.log("TIPO JSON EN generarVisualesPrompts:", typeof json);
   const contenido = data.contenido || "";
 
   const items = contenido
@@ -979,7 +979,7 @@ async function guardarStoryboard(data, env, json) {
 }
 //Generar imagen 
 async function generarImagen(data, env,json) {
-
+console.log("TIPO JSON EN generarImagen:", typeof json);
   try {
     const promptUsuario =
       (data.prompt || data.tema || "").trim();
@@ -997,7 +997,7 @@ async function generarImagen(data, env,json) {
 
     }
    
- 
+
     // Obtener el prompt visual optimizado
     const visual = await generarVisualesPrompts(
       {
