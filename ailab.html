@@ -573,28 +573,119 @@
   </section>
 <div class="ai-card">
   <section class="ai-lab">
-  <h2>📘 Generador de Ebook</h2>
 
-  <input id="temaEbook" placeholder="Escribe el tema del ebook">
+    <h2>📘 Generador de Ebook</h2>
 
-  <input id="paginasEbook" type="number" value="30" min="5" max="200">
+    <input
+      id="temaEbook"
+      placeholder="Escribe el tema del ebook">
+<input
+    id="autorEbook"
+    placeholder="Nombre del autor (opcional)">
+    
+    <input
+      id="paginasEbook"
+      type="number"
+      value="30"
+      min="10"
+      max="500">
 
-  <button onclick="generarEbook()">Generar Ebook</button>
+    <select id="idiomaEbook">
+      <option value="Español">🇪🇸 Español</option>
+      <option value="English">🇺🇸 English</option>
+      <option value="Português">🇧🇷 Português</option>
+      <option value="Français">🇫🇷 Français</option>
+      <option value="Italiano">🇮🇹 Italiano</option>
+      <option value="Deutsch">🇩🇪 Deutsch</option>
+    </select>
 
-  <!-- LOADING (MISMO ESTILO QUE LOS OTROS) -->
-  <div id="loadingEbook" class="loading" style="display:none;">
+    <select id="tonoEbook">
 
-    <div class="barra-container">
-      <div id="barraEbook" class="barra"></div>
+      <option value="Profesional">
+        Profesional
+      </option>
+
+      <option value="Formal">
+        Formal
+      </option>
+
+      <option value="Académico">
+        Académico
+      </option>
+
+      <option value="Educativo">
+        Educativo
+      </option>
+
+      <option value="Informal">
+        Informal
+      </option>
+
+      <option value="Inspirador">
+        Inspirador
+      </option>
+
+      <option value="Motivacional">
+        Motivacional
+      </option>
+
+      <option value="Técnico">
+        Técnico
+      </option>
+
+    </select>
+
+    <select id="publicoEbook">
+
+      <option value="General">
+        Público General
+      </option>
+
+      <option value="Principiantes">
+        Principiantes
+      </option>
+
+      <option value="Intermedio">
+        Intermedio
+      </option>
+
+      <option value="Avanzado">
+        Avanzado
+      </option>
+
+      <option value="Profesionales">
+        Profesionales
+      </option>
+
+      <option value="Empresas">
+        Empresas
+      </option>
+
+      <option value="Estudiantes">
+        Estudiantes
+      </option>
+
+    </select>
+
+    <button onclick="generarEbook()">
+      📘 Generar Ebook
+    </button>
+
+    <div id="loadingEbook" class="loading" style="display:none;">
+
+      <div class="barra-container">
+        <div id="barraEbook" class="barra"></div>
+      </div>
+
+      <div id="estadoEbook">
+        📘 Iniciando...
+      </div>
+
     </div>
 
-    <div id="estadoEbook">📘 Iniciando...</div>
+    <div id="resultadoEbook" class="resultado"></div>
 
-  </div>
-
-  <!-- RESULTADO -->
-  <div id="resultadoEbook" class="resultado"></div>
-  </section >
+  </section>
 </div>
 
 <div class="ai-card">

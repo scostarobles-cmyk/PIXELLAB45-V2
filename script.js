@@ -976,107 +976,109 @@ if (!guardar.ok) {
 
 }
 
-async function generarEbook() {
 
-  const tema = document.getElementById("temaEbook").value;
-  const paginas = document.getElementById("paginasEbook").value;
+// =====================================================
+// PIXELLAB45 EBOOK V3
+// FUNCIÓN: generarEbook()
+// RESPONSABILIDAD:
+// Iniciar la generación del Ebook.
+// =====================================================
+
+async function generarEbook() {
 
   const resultado = document.getElementById("resultadoEbook");
   const loading = document.getElementById("loadingEbook");
   const barra = document.getElementById("barraEbook");
   const estado = document.getElementById("estadoEbook");
 
-  if (!tema.trim()) {
-    resultado.innerText = "⚠️ Escribe un tema para el ebook";
+  resultado.innerHTML = "";
+
+  const data = {
+
+    tema: document.getElementById("temaEbook").value.trim(),
+
+    autor: document.getElementById("autorEbook").value.trim() || "PIXELLAB45",
+
+    paginas: parseInt(document.getElementById("paginasEbook").value),
+
+    idioma: document.getElementById("idiomaEbook").value,
+
+    tono: document.getElementById("tonoEbook").value,
+
+    publico: document.getElementById("publicoEbook").value
+
+  };
+
+  if (!data.tema) {
+
+    resultado.innerHTML = "❌ Escribe el tema del ebook.";
+
     return;
+
   }
 
   loading.style.display = "block";
-  resultado.innerHTML = "";
 
-  const frames = [
-    "📚 Creando proyecto",
-    "🧠 Generando índice",
-    "📑 Estructurando capítulos",
-    "🚀 Preparando motor V2"
-  ];
+  barra.style.width = "5%";
 
-  let i = 0;
-  let progreso = 5;
-
-  const anim = setInterval(() => {
-
-    estado.innerText = frames[i % frames.length];
-
-    progreso += Math.random() * 4;
-    if (progreso > 85) progreso = 85;
-
-    barra.style.width = progreso + "%";
-
-    i++;
-
-  }, 900);
+  estado.innerHTML = "📖 Planificando Ebook...";
 
   try {
 
-    // =========================
-    // 1. CREAR PROYECTO (V2)
-    // =========================
+    const response = await fetch(worker_url, {
 
-    const res = await fetch(WORKER_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+
+      headers: {
+        "Content-Type": "application/json"
+      },
+
       body: JSON.stringify({
-        tipo: "ebookCrearProyecto",
-        tema,
-        paginas
+
+        action: "planificar-ebook",
+
+        data
+
       })
+
     });
 
-    const data = await res.json();
+    const plan = await response.json();
 
-    if (!data.ok) throw new Error(data.error);
+    if (!plan.ok)
+      throw new Error(plan.error);
 
-    const proyecto = data.proyecto;
-
-    // =========================
-    // 2. GENERAR PRIMER CAPÍTULO (ARRANQUE V2)
-    // =========================
-
-    await fetch(WORKER_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        tipo: "ebookGenerarCapitulo",
-        proyecto,
-        capitulo: 1
-      })
-    });
-
-    clearInterval(anim);
+    window.ebookActual = plan.data;
 
     barra.style.width = "100%";
-    estado.innerText = "✅ Proyecto creado (V2 activo)";
+
+    estado.innerHTML = "✅ Plan generado.";
 
     resultado.innerHTML = `
-      <div>
-        <h3>📘 Proyecto creado</h3>
-        <p><b>ID:</b> ${proyecto}</p>
-        <p>Capítulos generándose bajo demanda</p>
-      </div>
+      ✅ Plan generado correctamente.<br><br>
+      <b>Tema:</b> ${plan.data.tema}<br>
+      <b>Capítulos:</b> ${plan.data.capitulos}<br>
+      <b>Páginas:</b> ${plan.data.paginasTotales}
     `;
 
-  } catch (error) {
+  }
 
-    clearInterval(anim);
+  catch (error) {
 
-    estado.innerText = "❌ Error";
-
-    resultado.innerText = error.message;
+    resultado.innerHTML = "❌ " + error.message;
 
   }
+
+  finally {
+
+    loading.style.display = "none";
+
+    barra.style.width = "0%";
+
+  }
+
 }
-async function cargarEbook() {
+/*async function cargarEbook() {
 
   const key = document.getElementById("ebookSeleccion").value;
 
@@ -1541,7 +1543,7 @@ Ninguna parte de esta publicación puede ser reproducida, almacenada o transmiti
 Este ebook tiene fines exclusivamente educativos e informativos. Las estrategias, herramientas y ejemplos presentados están basados en información disponible al momento de su publicación.
 El autor no garantiza resultados económicos, financieros o profesionales específicos derivados de la aplicación de los conocimientos aquí compartidos.
 Las marcas, nombres comerciales y servicios mencionados pertenecen a sus respectivos propietarios.
-Primera edición – 2026
+/*Primera edición – 2026
 
 Autor: Sergio Costa
 Marca: PIXELLAB45
@@ -1574,8 +1576,8 @@ function construirIndice(html, ebook) {
     .join("");
   
   // Reemplazar solo hasta antes de la línea de separación
-  return html.replace(
-    /<section id="indice" class="pagina"><\/section>/,
+//  return html.replace(
+   /* /<section id="indice" class="pagina"><\/section>/,
     `<section id="indice" class="pagina">
       <h2>Índice</h2>
       <ul>
@@ -1687,7 +1689,7 @@ ${html}
 
   ventana.document.close();
 
-}
+}*/
 
 // MENÚ MÓVIL
 function toggleMenu() {
