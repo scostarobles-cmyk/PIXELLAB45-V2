@@ -177,8 +177,7 @@ async function generarIdeas() {
 
 const data = await res.json();
 
-
-    clearInterval(fakeProgress);
+   clearInterval(fakeProgress);
 
     barra.style.width = "100%";
 
@@ -327,7 +326,7 @@ const fakeProgress = setInterval(() => {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          acrion: "prompt",
+          action: "prompt",
           tema,
           formato: tipo
         })
