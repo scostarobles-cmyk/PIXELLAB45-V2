@@ -882,6 +882,7 @@ ${data.duracion}
   );
 
   return json({
+    success: true,
     resultado: ai.response
   });
 
@@ -889,11 +890,18 @@ ${data.duracion}
 //Guardar guion 
 async function guardarGuion(data, env, json) {
 
-  const contenido =
-    data.contenido || "";
+  const contenido = data.contenido || "";
 
-  const nombre =
-    `scripts/${Date.now()}.txt`;
+  if (!contenido.trim()) {
+
+    return json({
+      success: false,
+      error: "Guion vacío"
+    });
+
+  }
+
+  const nombre = `scripts/${Date.now()}.txt`;
 
   await env.IMAGES.put(
     nombre,
@@ -901,6 +909,7 @@ async function guardarGuion(data, env, json) {
   );
 
   return json({
+    success: true,
     mensaje: "✅ Guion guardado correctamente"
   });
 
@@ -919,7 +928,7 @@ async function generarStoryboard(data, env, json) {
 
     if (!guion) {
       return json({
-        ok: false,
+        success: false,
         error: "Falta el guion"
       }, 400);
     }
@@ -958,14 +967,14 @@ ${guion}
     const resultado = await ai(env, prompt);
 
     return json({
-      ok: true,
+      success: true,
       resultado
     });
 
   } catch (err) {
 
     return json({
-      ok: false,
+      success: false,
       error: err.message || String(err)
     }, 500);
 
@@ -980,18 +989,24 @@ async function guardarStoryboard(data, env, json) {
   const contenido = data.contenido || "";
 
   if (!contenido.trim()) {
+
     return json({
-      ok: false,
+      success: false,
       error: "Storyboard vacío"
     }, 400);
+
   }
 
-  const nombre = `storyboards/${Date.now()}.txt`;
+  const nombre =
+    `storyboards/${Date.now()}.txt`;
 
-  await env.IMAGES.put(nombre, contenido);
+  await env.IMAGES.put(
+    nombre,
+    contenido
+  );
 
   return json({
-    ok: true,
+    success: true,
     mensaje: "✅ Storyboard guardado"
   });
 
@@ -1007,7 +1022,7 @@ async function generarImagen(data, env) {
     if (!promptUsuario) {
 
       return new Response(JSON.stringify({
-        ok: false,
+        success: false,
         error: "Sin prompt"
       }), {
         status: 400,
@@ -1018,14 +1033,18 @@ async function generarImagen(data, env) {
 
     }
 
-    // Obtener el prompt profesional desde Visuales
-    const promptVisual =
-      await generarVisualesPrompts(
-        promptUsuario,
-        env
-      );
+    // Obtener el prompt visual optimizado
+    const visual = await generarVisualesPrompts(
+      {
+        tema: promptUsuario
+      },
+      env,
+      null
+    );
 
-    // Reglas específicas para Stable Diffusion
+    const promptVisual = visual.resultado;
+
+    // Prompt final para Stable Diffusion XL
     const promptFinal = `
 Generate exactly what is described below.
 
@@ -1059,7 +1078,7 @@ ${promptVisual}
   } catch (err) {
 
     return new Response(JSON.stringify({
-      ok: false,
+      success: false,
       error: err.message
     }), {
       status: 500,
@@ -1072,21 +1091,18 @@ ${promptVisual}
 
 }
 
-async function guardarImagen(data, env) {
+async function guardarImagen(data, env, json) {
 
   try {
 
     const categoria = data.categoria || "imagenes";
-    const base64 = data.imagen;
+    const base64 = data.imagen || "";
 
     if (!base64) {
-      return new Response(JSON.stringify({
-  ok: false,
-  error: "Imagen no recibida"
-}), {
-  status: 400,
-  headers: CORS_HEADERS
-});
+      return json({
+        success: false,
+        error: "Imagen no recibida"
+      }, 400);
     }
 
     // Base64 → bytes
@@ -1108,27 +1124,22 @@ async function guardarImagen(data, env) {
       }
     );
 
-    return new Response(JSON.stringify({
-  ok: true,
-  nombre
-}), {
-  headers: CORS_HEADERS
-});
+    return json({
+      success: true,
+      nombre,
+      mensaje: "✅ Imagen guardada correctamente"
+    });
 
   } catch (err) {
 
-    return new Response(JSON.stringify({
-  ok: false,
-  error: err.message
-}), {
-  status: 500,
-  headers: CORS_HEADERS
-});
+    return json({
+      success: false,
+      error: err.message || String(err)
+    }, 500);
 
   }
 
 }
-
 
 // =====================================================
 // PIXELLAB45 - EBOOK V3
