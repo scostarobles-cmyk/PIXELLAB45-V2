@@ -177,7 +177,6 @@ async function generarIdeas() {
 
 const data = await res.json();
 
-    const data = await res.json();
 
     clearInterval(fakeProgress);
 
