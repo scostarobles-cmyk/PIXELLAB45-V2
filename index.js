@@ -367,7 +367,7 @@ async function listarImagenes(
     url: `${R2_BASE_URL}/${obj.key}`
   }));
 
-  return json({
+  return json({ 
     success: true,
     images: imagenes,
     total: imagenes.length
