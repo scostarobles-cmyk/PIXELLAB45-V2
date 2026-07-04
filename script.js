@@ -69,22 +69,22 @@ async function cargarCategoria(categoria) {
 
   try {
 
-const res = await fetch(WORKER_URL, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    action: "listar-categoria",
-  //  categoria: "ideas"   // o prompts, visuals, scripts, etc.
-  })
-});
+    const res = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        action: "listar-categoria",
+        categoria: categoria
+      })
+    });
 
-const data = await res.json();
+    const data = await res.json();
 
     contenedor.innerHTML = "";
 
-    data.images.forEach(img => {
+    data.archivos.forEach(img => {
 
       contenedor.innerHTML += `
         <div class="project-card">
@@ -98,11 +98,10 @@ const data = await res.json();
 
   } catch (error) {
 
-    contenedor.innerHTML =
-      "❌ Error cargando categoría";
-
     console.error(error);
 
+    contenedor.innerHTML =
+      "❌ Error cargando categoría";
   }
 
 }
