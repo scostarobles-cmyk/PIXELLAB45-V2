@@ -60,6 +60,7 @@ async function cargarGaleriaCompleta() {
 
 //Galería por categoría 
 async function cargarCategoria(categoria) {
+alert("Categoría recibida: " + categoria);
 
   const contenedor =
     document.getElementById("galeriaCategoria");
