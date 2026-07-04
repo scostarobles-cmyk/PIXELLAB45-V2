@@ -996,7 +996,7 @@ async function generarImagen(data, env,json) {
       });
 
     }
-    const json = { tema: promptUsuario };
+    
 
     // Obtener el prompt visual optimizado
     const visual = await generarVisualesPrompts(
@@ -1004,9 +1004,9 @@ async function generarImagen(data, env,json) {
         tema: promptUsuario
       },
       env,
-      jsonl
+      json
     );
-    aler
+  
     const promptVisual = visual.resultado;
     // Prompt final para Stable Diffusion XL
     const promptFinal = `
