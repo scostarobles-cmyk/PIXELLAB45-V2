@@ -156,50 +156,7 @@ default:
 
 }; // ← FIN DE export default
 
-async function guardarEbook(data, env, json) {
 
-  try {
-
-    const ebook = data.ebook;
-
-    if (!ebook) {
-      return json({ ok: false, error: "Falta ebook" }, 400);
-    }
-
-    const id = ebook.id || crypto.randomUUID();
-
-    const ebookFinal = {
-      ...ebook,
-      id,
-      fechaGuardado: new Date().toISOString()
-    };
-
-    const nombreArchivo = `ebook-proyectos/${id}.json`;
-
-    await env.IMAGES.put(
-      nombreArchivo,
-      JSON.stringify(ebookFinal),
-      {
-        httpMetadata: {
-          contentType: "application/json"
-        }
-      }
-    );
-
-    return json({
-      ok: true,
-      id,
-      archivo: nombreArchivo
-    });
-
-  } catch (err) {
-
-    return json({
-      ok: false,
-      error: err.message
-    }, 500);
-  }
-}
 
 // =====================================
 // CEREBRO IA
@@ -1244,7 +1201,7 @@ Formato:
 }
 `;
    
-   const respuesta = await AI(prompt, env);
+   const respuesta = await ai(env, prompt);
 
     if (!respuesta?.capitulos)
       throw new Error("AI devolvió un plan inválido.");
