@@ -1269,3 +1269,22 @@ if (!respuesta.capitulos) {
   }
 
 }
+function parsePromptFromJson(input) {
+    if (typeof input === 'string') {
+        // Si es un string, lo devolvemos directo
+        return input;
+    }
+    try {
+        // Si es un JSON, extraemos el campo 'prompt'
+        const data = JSON.parse(input);
+        return data.prompt || ''; // Si no existe, devolvemos un string vacío
+    } catch (e) {
+        // Si falla el parseo, devolvemos el input original
+        return input;
+    }
+}
+
+// Ejemplo de uso
+const inputJson = '{"prompt":"Una ciudad cyberpunk iluminada"}';
+const prompt = parsePromptFromJson(inputJson);
+console.log(prompt); // Esto te devuelve "Una ciudad cyberpunk iluminada"

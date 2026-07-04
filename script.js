@@ -30,7 +30,7 @@ async function cargarGaleriaCompleta() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        tipo: "listar-imagenes"
+    acción: "listar-imagenes"
       })
     });
 
