@@ -996,7 +996,7 @@ async function generarImagen(data, env,json) {
       });
 
     }
-    
+   
 
     // Obtener el prompt visual optimizado
     const visual = await generarVisualesPrompts(
@@ -1006,7 +1006,7 @@ async function generarImagen(data, env,json) {
       env,
       json
     );
-  
+    
     const promptVisual = visual.resultado;
     // Prompt final para Stable Diffusion XL
     const promptFinal = `
@@ -1041,7 +1041,9 @@ console.log(await imageBytes.text());
     
 
   } catch (err) {
-    console.log(err.stack)
+    console.log("ERROR generarImagen:", err);
+console.log("MESSAGE:", err?.message);
+console.log("STACK:", err?.stack);
     return new Response(JSON.stringify({
       success: false,
       error: err.message
