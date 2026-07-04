@@ -959,7 +959,7 @@ const resultado =
     imagen: base64
   })
 });
-
+console.log("Base64 length:", base64.length);
 const respuesta = await guardar.json();
 
 if (!guardar.ok) {
