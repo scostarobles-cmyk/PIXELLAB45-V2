@@ -1202,7 +1202,7 @@ Formato:
 `;
    
    const respuesta = await ai(env, prompt);
-
+console.log("Respuesta IA:", respuesta);
     if (!respuesta?.capitulos)
       throw new Error("AI devolvió un plan inválido.");
 
