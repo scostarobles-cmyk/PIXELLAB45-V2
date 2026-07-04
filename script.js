@@ -98,13 +98,13 @@ alert("Categoría recibida: " + categoria);
 
     });
 
-  } catch (error) {
+} catch (error) {
 
-    console.error(error);
+  console.error(error);
 
-    contenedor.innerHTML =
-      "❌ Error cargando categoría";
-  }
+  alert(error.stack);
+
+}
 
 }
 //Generar ideas
