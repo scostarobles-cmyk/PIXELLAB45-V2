@@ -368,7 +368,7 @@ async function listarImagenes(
   }));
 
   return json({
-    success: true,
+    success: true, 
     images: imagenes,
     total: imagenes.length
   });
