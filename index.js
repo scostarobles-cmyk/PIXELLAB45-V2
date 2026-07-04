@@ -2663,7 +2663,7 @@ async function planificarEbook(data, env) {
       autor = "PIXELLAB45"
     } = data;
 
-    if (!tema)
+    if (!data.tema)
       throw new Error("Falta el tema.");
 
     if (!paginas || paginas < 10)
