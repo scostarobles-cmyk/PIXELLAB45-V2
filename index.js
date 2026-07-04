@@ -53,7 +53,7 @@ console.log("BODY.DATA:", JSON.stringify(data.data));
     return listarImagenes(env, json);
 
       case "listar-categoria":
-    return listarCategoria(env, json);
+  return listarCategoria(env, data, json);
 
       case "ideas":
         return generarIdeas(
@@ -378,7 +378,7 @@ async function listarImagenes(
 // GALERÍA CATEGORÍA
 // =====================================
 
-async function listarCategoria(env, data) {
+async function listarCategoria(env, data, json) {
 
   const categoria = data.categoria;
 
