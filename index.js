@@ -85,7 +85,7 @@ export default {
 
   case "guardar-storyboard":
     return guardarStoryboard(data, env, json);
-
+ 
   case "imagen":
     return generarImagen(data, env, json);
 
