@@ -11,147 +11,114 @@ const CORS_HEADERS = {
 export default {
   async fetch(request, env) {
 
+    // CORS preflight
     if (request.method === "OPTIONS") {
       return new Response(null, {
         headers: CORS_HEADERS
       });
     }
 
+    // Helper JSON seguro
     const json = (obj, status = 200) =>
-      new Response(
-        JSON.stringify(obj),
-        {
-          status,
-          headers: CORS_HEADERS 
-        }
-      );
+      new Response(JSON.stringify(obj), {
+        status,
+        headers: CORS_HEADERS
+      });
 
     let data = {};
 
+    // Parse seguro del body
     try {
-
       if (request.method === "POST") {
         data = await request.json();
       }
-      console.log("BODY:", JSON.stringify(data));
-console.log("BODY.DATA:", JSON.stringify(data.data));
 
-    } catch {
+      console.log("BODY:", data);
+      console.log("BODY.DATA:", data.data);
+
+    } catch (err) {
+      console.log("JSON ERROR:", err);
 
       return json({
         error: "JSON inválido"
       }, 400);
-
     }
 
-    const tipo =
-      data.action || "";
- 
-    switch (tipo) {
+    const tipo = data.action || "";
 
-      case "listar-imagenes":
-    return listarImagenes(env, json);
+    try {
 
-      case "listar-categoria":
-  return listarCategoria(env, data, json);
+      switch (tipo) {
 
-      case "ideas":
-        return generarIdeas(
-          data,
-          env,
-          json
-        );
+        case "listar-imagenes":
+          return listarImagenes(env, data, json);
+
+        case "listar-categoria":
+          return listarCategoria(env, data, json);
+
+        case "ideas":
+          return generarIdeas(data, env, json);
+
         case "guardar-ideas":
-              return guardarIdeas(
-                 data,
-                 env,
-                json
-            );
-      case "prompt":
-  return generarPrompts(
-    data,
-    env,
-    json
-  );
+          return guardarIdeas(data, env, json);
 
-case "guardar-prompts":
-  return guardarPrompts(
-    data,
-    env,
-    json
-  );
+        case "prompt":
+          return generarPrompts(data, env, json);
 
-case "visual":
-  return generarVisualesPrompts(
-    data,
-    env,
-    json
-  );
+        case "guardar-prompts":
+          return guardarPrompts(data, env, json);
 
-case "guardar-visuales":
-  return guardarVisuales(
-    data,
-    env,
-    json
-  );
-case "script":
-  return generarGuion(
-    data,
-    env,
-    json
-  );
-  case "guardar-guion":
-  return guardarGuion(
-    data,
-    env,
-    json
-  );
-  case "storyboard":
-  return generarStoryboard(
-    data,
-    env,
-    json
-  );
-  case "guardar-storyboard":
-  return guardarStoryboard(
-    data,
-    env,
-    json
-  );
-  case "imagen":
-  return generarImagen(
-    data,
-    env
-  );
+        case "visual":
+          return generarVisualesPrompts(data, env, json);
 
-case "guardar-imagen":
-  return guardarImagen(
-    data,
-    env
-  );
-case "planificar-ebook":
-  const result = await planificarEbook(data.data, env);
-  console.log(result);
-  return json({
-    ok: true,
-    data: result.data
-  });
-  console.log("DATA:", data);
-console.log("DATA.DATA:", data.data);
-default:
-  return json({
-    ok: false,
-    error: "Tipo no válido: " + tipo
-  }, 400);
+        case "guardar-visuales":
+          return guardarVisuales(data, env, json);
 
-} // ← FIN DEL SWITCH
+        case "script":
+          return generarGuion(data, env, json);
 
-} // ← FIN DE fetch()
+        case "guardar-guion":
+          return guardarGuion(data, env, json);
 
-}; // ← FIN DE export default
+        case "storyboard":
+          return generarStoryboard(data, env, json);
 
+        case "guardar-storyboard":
+          return guardarStoryboard(data, env, json);
 
+        case "imagen":
+          return generarImagen(data, env, json);
 
+        case "guardar-imagen":
+          return guardarImagen(data, env, json);
+
+        case "planificar-ebook":
+          const result = await planificarEbook(data.data, env);
+
+          console.log("PLAN RESULT:", result);
+
+          return json({
+            ok: true,
+            data: result.data
+          });
+
+        default:
+          return json({
+            ok: false,
+            error: "Tipo no válido: " + tipo
+          }, 400);
+      }
+
+    } catch (err) {
+      console.log("WORKER ERROR:", err);
+
+      return json({
+        ok: false,
+        error: err.message || String(err)
+      }, 500);
+    }
+  }
+};
 // =====================================
 // CEREBRO IA
 // =====================================
@@ -1025,7 +992,7 @@ async function generarImagen(data, env,json) {
         error: "Sin prompt"
       }), {
         status: 400,
-        headers: { 
+        headers: {
           "Content-Type": "application/json"
         }
       });
