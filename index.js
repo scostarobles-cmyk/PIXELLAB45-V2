@@ -85,12 +85,20 @@ export default {
 
   case "guardar-storyboard":
     return guardarStoryboard(data, env, json);
- 
+
   case "imagen":
-    return generarImagen(data, env, json);
+  return generarImagen(
+    data,
+    env,
+    json
+  );
 
   case "guardar-imagen":
-    return guardarImagen(data, env);
+  return guardarImagen(
+    data,
+    env,
+    json
+  );
 
   case "planificar-ebook":
     const result = await planificarEbook(data.data, env);
@@ -1031,7 +1039,7 @@ ${promptVisual}
         prompt: promptFinal
       }
     );
-console.log(await imageBytes.text());
+    
     return new Response(imageBytes, {
       headers: {
         "Content-Type": "image/png",
