@@ -1067,7 +1067,9 @@ console.log("STACK:", err?.stack);
 }
 
 async function guardarImagen(data, env, json) {
-
+console.log("Entró a guardarImagen");
+console.log("Categoría:", data.categoria);
+console.log("Base64 recibido:", data.imagen?.length);
   try {
 
     const categoria = data.categoria || "imagenes";
