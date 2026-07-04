@@ -1016,7 +1016,7 @@ async function guardarStoryboard(data, env, json) {
 async function generarImagen(data, env,json) {
 
   try {
-
+console.log(data);
     const promptUsuario =
       (data.prompt || data.tema || "").trim();
 
