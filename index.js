@@ -7,7 +7,7 @@ const CORS_HEADERS = {
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Content-Type": "application/json"
 };
- 
+
 export default {
   async fetch(request, env) {
 
@@ -683,9 +683,17 @@ ${tema}
     }
   );
 
+  const resultado = ai.response;
+
+  // Si se usa como función interna
+  if (typeof json !== "function") {
+    return resultado;
+  }
+
+  // Si se llama desde el endpoint /visual
   return json({
     success: true,
-    resultado: ai.response
+    resultado
   });
 
 }
@@ -1002,16 +1010,12 @@ async function generarImagen(data, env,json) {
    
 
     // Obtener el prompt visual optimizado
-    const visual = await generarVisualesPrompts(
-      {
-        tema: promptUsuario
-      },
-      env,
-      json
-    );
-    
-    const promptVisual = visual.resultado;
-    // Prompt final para Stable Diffusion XL
+    const promptVisual = await generarVisualesPrompts(
+  {
+    tema: promptUsuario
+  },
+  env
+);
     const promptFinal = `
 Generate exactly what is described below.
 
