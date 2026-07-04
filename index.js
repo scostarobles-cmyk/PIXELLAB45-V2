@@ -368,7 +368,7 @@ async function listarImagenes(
   }));
 
   return json({
-    success: true, 
+    success: true,
     images: imagenes,
     total: imagenes.length
   });
@@ -1013,7 +1013,7 @@ async function guardarStoryboard(data, env, json) {
 
 }
 //Generar imagen 
-async function generarImagen(data, env) {
+async function generarImagen(data, env,json) {
 
   try {
 
