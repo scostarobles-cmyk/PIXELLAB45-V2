@@ -60,7 +60,7 @@ async function cargarGaleriaCompleta() {
 
 //Galería por categoría 
 async function cargarCategoria(categoria) {
-alert("Categoría recibida: " + categoria);
+
 
   const contenedor =
     document.getElementById("galeriaCategoria");
@@ -82,7 +82,7 @@ alert("Categoría recibida: " + categoria);
     });
 
     const data = await res.json();
-    alert(JSON.stringify(data));
+  
 
     contenedor.innerHTML = "";
 
@@ -102,7 +102,8 @@ alert("Categoría recibida: " + categoria);
 
   console.error(error);
 
-  alert(error.stack);
+  contenedor.innerHTML =
+    "❌ Error cargando categoría";
 
 }
 
@@ -164,15 +165,17 @@ async function generarIdeas() {
       "🧠 Generando ideas...";
 
     const res = await fetch(WORKER_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        tipo: "ideas",
-        tema
-      })
-    });
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    action: "ideas",
+    tema: tema
+  })
+});
+
+const data = await res.json();
 
     const data = await res.json();
 

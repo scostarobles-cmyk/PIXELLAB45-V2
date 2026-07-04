@@ -56,11 +56,11 @@ console.log("BODY.DATA:", JSON.stringify(data.data));
   return listarCategoria(env, data, json);
 
       case "ideas":
-        return generarIdeas(
-          data,
-          env,
-          json
-        );
+  return generarIdeas(
+    data,
+    env,
+    json
+  );
         case "guardar-ideas":
               return guardarIdeas(
                  data,
@@ -372,13 +372,13 @@ async function listarImagenes(
     total: imagenes.length
   });
 
-} 
+}
 
 // =====================================
 // GALERÍA CATEGORÍA
 // =====================================
 
-async function listarCategoria(env, data, json) {
+async function listarCategoria(env, data, json) {{
 
   const categoria = data.categoria;
 
