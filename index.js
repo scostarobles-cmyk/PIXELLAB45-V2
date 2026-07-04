@@ -50,64 +50,62 @@ export default {
 
       switch (tipo) {
 
-        case "listar-imagenes":
-          return listarImagenes(env, data, json);
+  case "listar-imagenes":
+    return listarImagenes(env, json);
 
-        case "listar-categoria":
-          return listarCategoria(env, data, json);
+  case "listar-categoria":
+    return listarCategoria(env, data, json);
 
-        case "ideas":
-          return generarIdeas(data, env, json);
+  case "ideas":
+    return generarIdeas(data, env, json);
 
-        case "guardar-ideas":
-          return guardarIdeas(data, env, json);
+  case "guardar-ideas":
+    return guardarIdeas(data, env, json);
 
-        case "prompt":
-          return generarPrompts(data, env, json);
+  case "prompt":
+    return generarPrompts(data, env, json);
 
-        case "guardar-prompts":
-          return guardarPrompts(data, env, json);
+  case "guardar-prompts":
+    return guardarPrompts(data, env, json);
 
-        case "visual":
-          return generarVisualesPrompts(data, env, json);
+  case "visual":
+    return generarVisualesPrompts(data, env, json);
 
-        case "guardar-visuales":
-          return guardarVisuales(data, env, json);
+  case "guardar-visuales":
+    return guardarVisuales(data, env, json);
 
-        case "script":
-          return generarGuion(data, env, json);
+  case "script":
+    return generarGuion(data, env, json);
 
-        case "guardar-guion":
-          return guardarGuion(data, env, json);
+  case "guardar-guion":
+    return guardarGuion(data, env, json);
 
-        case "storyboard":
-          return generarStoryboard(data, env, json);
+  case "storyboard":
+    return generarStoryboard(data, env, json);
 
-        case "guardar-storyboard":
-          return guardarStoryboard(data, env, json);
+  case "guardar-storyboard":
+    return guardarStoryboard(data, env, json);
 
-        case "imagen":
-          return generarImagen(data, env, json);
+  case "imagen":
+    return generarImagen(data, env);
 
-        case "guardar-imagen":
-          return guardarImagen(data, env, json);
+  case "guardar-imagen":
+    return guardarImagen(data, env);
 
-        case "planificar-ebook":
-          const result = await planificarEbook(data.data, env);
+  case "planificar-ebook":
+    const result = await planificarEbook(data.data, env);
 
-          console.log("PLAN RESULT:", result);
+    return json({
+      ok: true,
+      data: result.data
+    });
 
-          return json({
-            ok: true,
-            data: result.data
-          });
-
-        default:
-          return json({
-            ok: false,
-            error: "Tipo no válido: " + tipo
-          }, 400);
-      }
+  default:
+    return json({
+      ok: false,
+      error: "Tipo no válido: " + tipo
+    }, 400);
+}
 
     } catch (err) {
       console.log("WORKER ERROR:", err);
