@@ -407,7 +407,10 @@ async function listarCategoria(env, data, json) {
 // =====================================
 // GENERAR PROMPTS
 // =====================================
-async function generarPrompts(tema, formato, env) {
+async function generarPrompts(data, env, json) {
+
+  let tema = data.tema || "";
+  const formato = data.formato || "";
 
   // Detecta cantidad SOLO si el número está al principio
   const match = tema.match(/^\s*(\d+)\s+/);
@@ -423,9 +426,9 @@ async function generarPrompts(tema, formato, env) {
   // CASO ESPECIAL: EBOOK
   // =====================================
 
-  if ((formato || "").toLowerCase() === "ebook") {
+  if (formato.toLowerCase() === "ebook") {
 
-    return await ai(env, `
+    const resultado = await ai(env, `
 You are one of the world's best AI prompt engineers.
 
 Transform the user's request into ONE professional master prompt for an AI ebook generation engine.
@@ -458,6 +461,11 @@ User request:
 
 ${tema}
 `);
+
+    return json({
+      success: true,
+      resultado
+    });
   }
 
   // =====================================
@@ -466,7 +474,7 @@ ${tema}
 
   let reglas = "";
 
-  switch ((formato || "").toLowerCase()) {
+  switch (formato.toLowerCase()) {
 
     case "tiktok":
       reglas = `
@@ -558,9 +566,7 @@ OUTPUT FORMAT:
 3- Prompt...
 `;
 
-  const resultado = await ai(
-    env,
-`
+  const resultado = await ai(env, `
 You are one of the world's best AI prompt engineers.
 
 ${instruccionesCantidad}
@@ -610,10 +616,13 @@ Leave ONE blank line between every prompt.
 User request:
 
 ${tema}
-`
-  );
+`);
 
-  return resultado;
+  return json({
+    success: true,
+    resultado
+  });
+
 }
 // =====================================
 // GUARDAR PROMT
