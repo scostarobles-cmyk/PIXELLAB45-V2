@@ -372,7 +372,7 @@ async function listarImagenes(
     total: imagenes.length
   });
 
-}
+} 
 
 // =====================================
 // GALERÍA CATEGORÍA
