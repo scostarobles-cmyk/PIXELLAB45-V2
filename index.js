@@ -1019,7 +1019,7 @@ async function generarImagen(data, env,json) {
 console.log(data);
     const promptUsuario =
       (data.prompt || data.tema || "").trim();
-
+console.log(promptUsuario);
     if (!promptUsuario) {
 
       return new Response(JSON.stringify({
@@ -1044,7 +1044,7 @@ console.log(data);
     );
 
     const promptVisual = visual.resultado;
-
+console.log(promptVisual);
     // Prompt final para Stable Diffusion XL
     const promptFinal = `
 Generate exactly what is described below.
@@ -1075,6 +1075,7 @@ ${promptVisual}
         "Access-Control-Allow-Origin": "*"
       }
     });
+   
 
   } catch (err) {
 
