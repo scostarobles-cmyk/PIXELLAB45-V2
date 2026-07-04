@@ -23,7 +23,7 @@ async function cargarGaleriaCompleta() {
     "⏳ Cargando galería..."; 
 
   try {
-
+ 
     const res = await fetch(WORKER_URL, {
       method: "POST",
       headers: {
