@@ -1076,10 +1076,10 @@ console.log(promptVisual);
         "Access-Control-Allow-Origin": "*"
       }
     });
-   
+   console.log(await imageBytes.text());
 
   } catch (err) {
-
+    console.log(err.stack)
     return new Response(JSON.stringify({
       success: false,
       error: err.message
