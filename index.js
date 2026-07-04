@@ -1016,10 +1016,8 @@ async function guardarStoryboard(data, env, json) {
 async function generarImagen(data, env,json) {
 
   try {
-console.log(data);
     const promptUsuario =
       (data.prompt || data.tema || "").trim();
-console.log(promptUsuario);
     if (!promptUsuario) {
 
       return new Response(JSON.stringify({
@@ -1044,7 +1042,6 @@ console.log(promptUsuario);
     );
 
     const promptVisual = visual.resultado;
-console.log(promptVisual);
     // Prompt final para Stable Diffusion XL
     const promptFinal = `
 Generate exactly what is described below.
@@ -1062,21 +1059,20 @@ CRITICAL RULES:
 ${promptVisual}
 `;
 
-console.log(promptVisual);
     const imageBytes = await env.AI.run(
       "@cf/stabilityai/stable-diffusion-xl-base-1.0",
       {
         prompt: promptFinal
       }
     );
-
+console.log(await imageBytes.text());
     return new Response(imageBytes, {
       headers: {
         "Content-Type": "image/png",
         "Access-Control-Allow-Origin": "*"
       }
     });
-   console.log(await imageBytes.text());
+    
 
   } catch (err) {
     console.log(err.stack)
