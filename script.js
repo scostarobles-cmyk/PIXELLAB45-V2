@@ -87,11 +87,11 @@ async function cargarCategoria(categoria) {
     data.archivos.forEach(img => {
 
       contenedor.innerHTML += `
-        <div class="project-card">
-          <img
-            src="${img.url}"
-            alt="${img.nombre}">
-        </div>
+          <div
+    id="galeriaCategoria"
+    class="gallery-grid">
+
+  </div>
       `;
 
     });
