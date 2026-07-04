@@ -1025,7 +1025,7 @@ async function generarImagen(data, env,json) {
         error: "Sin prompt"
       }), {
         status: 400,
-        headers: {
+        headers: { 
           "Content-Type": "application/json"
         }
       });
