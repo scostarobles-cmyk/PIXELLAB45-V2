@@ -23,17 +23,16 @@ async function cargarGaleriaCompleta() {
     "⏳ Cargando galería..."; 
 
   try {
- 
-    const res = await fetch(WORKER_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-    acción: "listar-imagenes"
-      })
-    });
 
+    const res = await fetch(WORKER_URL, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    action: "listar-imagenes"
+  })
+});
     const data = await res.json();
 
     contenedor.innerHTML = "";
