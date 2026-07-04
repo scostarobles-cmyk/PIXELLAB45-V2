@@ -390,7 +390,7 @@ async function listarCategoria(env, json) {
     nombre: obj.key,
     url: `${R2_BASE_URL}/${obj.key}`
   }));
-
+console.log(archivos);
   return json({
     success: true,
     categoria,
