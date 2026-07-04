@@ -43,8 +43,8 @@ export default {
     }
 
     const tipo =
-      data.tipo || "";
- console.log(tipo);
+      data.action | | "";
+ 
     switch (tipo) {
 
       case "listar-imagenes":
