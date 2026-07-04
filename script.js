@@ -76,7 +76,7 @@ const res = await fetch(WORKER_URL, {
   },
   body: JSON.stringify({
     action: "listar-categoria",
-    categoria: "ideas"   // o prompts, visuals, scripts, etc.
+  //  categoria: "ideas"   // o prompts, visuals, scripts, etc.
   })
 });
 
