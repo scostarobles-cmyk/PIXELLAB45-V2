@@ -81,18 +81,18 @@ async function cargarCategoria(categoria) {
     });
 
     const data = await res.json();
-alert(JSON.stringify(data));
+    alert(JSON.stringify(data));
 
     contenedor.innerHTML = "";
 
     data.archivos.forEach(img => {
 
       contenedor.innerHTML += `
-          <div
-    id="galeriaCategoria"
-    class="gallery-grid">
-
-  </div>
+        <div class="project-card">
+          <img
+            src="${img.url}"
+            alt="${img.nombre}">
+        </div>
       `;
 
     });

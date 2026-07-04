@@ -379,8 +379,12 @@ async function listarImagenes(
 // =====================================
 
 async function listarCategoria(env, json) {
+	
 
   const categoria = json.categoria;
+  console.log("JSON recibido:", json);
+console.log("Categoría:", json.categoria);
+  
 
   const lista = await env.IMAGES.list({
     prefix: `${categoria}/`
