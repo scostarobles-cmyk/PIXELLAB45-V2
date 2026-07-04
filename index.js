@@ -33,8 +33,6 @@ export default {
         data = await request.json();
       }
 
-      console.log("BODY:", data);
-      console.log("BODY.DATA:", data.data);
 
     } catch (err) {
       console.log("JSON ERROR:", err);
@@ -116,7 +114,6 @@ export default {
 }
 
     } catch (err) {
-      console.log("WORKER ERROR:", err);
 
       return json({
         ok: false,
@@ -694,7 +691,7 @@ ${tema}
 }
 //GUARDAR Visuales 
 async function guardarVisuales(data, env, json) {
-console.log("TIPO JSON EN generarVisualesPrompts:", typeof json);
+
   const contenido = data.contenido || "";
 
   const items = contenido
@@ -722,7 +719,6 @@ console.log("TIPO JSON EN generarVisualesPrompts:", typeof json);
 async function generarGuion(data, env, json) {
 
   let reglas = "";
-  console.log(data);
 
   switch ((data.formato || "").toLowerCase()) {
 
@@ -987,7 +983,6 @@ async function guardarStoryboard(data, env, json) {
 }
 //Generar imagen 
 async function generarImagen(data, env,json) {
-console.log("TIPO JSON EN generarImagen:", typeof json);
   try {
     const promptUsuario =
       (data.prompt || data.tema || "").trim();
@@ -1049,9 +1044,6 @@ ${promptVisual}
     
 
   } catch (err) {
-    console.log("ERROR generarImagen:", err);
-console.log("MESSAGE:", err?.message);
-console.log("STACK:", err?.stack);
     return new Response(JSON.stringify({
       success: false,
       error: err.message
