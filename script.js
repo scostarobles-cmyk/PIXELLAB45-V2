@@ -81,6 +81,7 @@ async function cargarCategoria(categoria) {
     });
 
     const data = await res.json();
+alert(JSON.stringify(data));
 
     contenedor.innerHTML = "";
 

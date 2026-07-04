@@ -6,7 +6,7 @@ const CORS_HEADERS = {
   "Access-Control-Allow-Headers": "*",
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Content-Type": "application/json"
-}; 
+};
 
 export default {
   async fetch(request, env) {
@@ -392,11 +392,12 @@ async function listarCategoria(env, json) {
   }));
 console.log(archivos);
   return json({
-    success: true,
-    categoria,
-    archivos,
-    total: archivos.length
-  });
+  success: true,
+  categoria,
+  prefix: `${categoria}/`,
+  archivos,
+  total: archivos.length
+});
 
 }
 // =====================================
