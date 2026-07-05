@@ -105,7 +105,16 @@ export default {
       ok: true,
       data: result.data
     });
+case "cargar-ebook":
+  return await cargarEbook(data, env);
 
+case "indice":
+case "legales":
+case "introduccion":
+case "capitulos":
+case "conclusion":
+case "ensamblador":
+  return await procesarPaso(data, env);
   default:
     return json({
       ok: false,
@@ -1238,6 +1247,18 @@ if (!respuesta.capitulos) {
       }))
 
     };
+    const id = plan.id;
+const key = `ebooks/${id}.json`;
+
+try {
+  await env.EBOOKS.put(
+    key,
+    JSON.stringify(plan)
+  );
+} catch (err) {
+  console.log("R2 ERROR:", err);
+}
+
 
     return {
       ok:true,
@@ -1255,6 +1276,97 @@ if (!respuesta.capitulos) {
   }
 
 }
+
+// =====================================================
+// PIXELLAB45 WORKER V3
+// FUNCIÓN: procesarPaso()
+// RESPONSABILIDAD:
+// Ejecutar cualquier paso del pipeline (indice, legales, etc.)
+// y persistir cambios en R2 sin duplicar lógica.
+// =====================================================
+
+async function procesarPaso(data, env) {
+
+  const { id, proyecto } = data;
+  const paso = data.action;
+
+  if (!id || !proyecto) {
+    return json({
+      ok: false,
+      error: "Faltan datos (id o proyecto)"
+    }, 400);
+  }
+
+  let actualizado = { ...proyecto };
+
+  try {
+
+    // -----------------------------
+    // EJEMPLO BASE (cada paso IA)
+    // -----------------------------
+    let resultado = null;
+
+    switch (paso) {
+
+      case "indice":
+        resultado = await generarIndiceIA(proyecto, env);
+        actualizado.indice = resultado;
+        break;
+
+      case "legales":
+        resultado = await generarLegalesIA(proyecto, env);
+        actualizado.legales = resultado;
+        break;
+
+      case "introduccion":
+        resultado = await generarIntroduccionIA(proyecto, env);
+        actualizado.introduccion = resultado;
+        break;
+
+      case "capitulos":
+        resultado = await generarCapitulosIA(proyecto, env);
+        actualizado.capitulos = resultado;
+        break;
+
+      case "conclusion":
+        resultado = await generarConclusionIA(proyecto, env);
+        actualizado.conclusion = resultado;
+        break;
+
+      case "ensamblador":
+        resultado = await ensamblarEbookIA(proyecto, env);
+        actualizado.ensamblador = resultado;
+        break;
+
+      default:
+        return json({
+          ok: false,
+          error: "Paso no válido: " + paso
+        }, 400);
+    }
+
+    // -----------------------------
+    // PERSISTENCIA EN R2
+    // -----------------------------
+    await env.EBOOKS.put(
+      `ebooks/${id}.json`,
+      JSON.stringify(actualizado)
+    );
+
+    return json({
+      ok: true,
+      data: actualizado
+    });
+
+  } catch (err) {
+
+    return json({
+      ok: false,
+      error: err.message || String(err)
+    }, 500);
+  }
+}
+
 function parsePromptFromJson(input) {
     if (typeof input === 'string') {
         // Si es un string, lo devolvemos directo
