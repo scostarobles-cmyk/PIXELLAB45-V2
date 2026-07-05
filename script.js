@@ -1018,8 +1018,6 @@ document.getElementById("estadoPlan").innerText = "🟢 Plan generado";
 const plan = result.ebook.plan;
 
 
-return;
-
 let html = `<h3>📘 Plan del e-book</h3>`;
 
 plan.capitulos.forEach(c => {
