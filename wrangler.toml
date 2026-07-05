@@ -9,6 +9,10 @@ binding = "AI"
 binding = "IMAGES"
 bucket_name = "pixellab45-images"
 
+[[r2_buckets]]
+binding = "EBOOKS"
+bucket_name = "pixellab45-ebooks"
+
 [observability.logs]
 enabled = true
 invocation_logs = true

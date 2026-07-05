@@ -1118,10 +1118,12 @@ async function planificarEbook(data, env, json) {
 
     const plan = await generarPlanEbook(data, env);
 
-    return json({
-      success: true,
-      plan
-    });
+const ebook = await guardarPlanR2(data, plan, env);
+
+return json({
+  success: true,
+  ebook
+});
 
   } catch (error) {
 
@@ -1210,5 +1212,35 @@ Responde EXACTAMENTE con esta estructura:
   const respuesta = await ai(env, prompt);
 
   return JSON.parse(respuesta);
+
+}
+async function guardarPlanR2(data, plan, env) {
+
+  const id = crypto.randomUUID();
+
+  const ebook = {
+    id,
+    fecha: new Date().toISOString(),
+    tema: data.tema,
+    paginas: data.paginas,
+    idioma: data.idioma,
+    tono: data.tono,
+    publico: data.publico,
+    autor: data.autor,
+    estado: "plan_generado",
+    plan
+  };
+
+  await env.EBOOKS.put(
+  `ebooks/${id}.json`,
+  JSON.stringify(ebook, null, 2),
+  {
+    httpMetadata: {
+      contentType: "application/json"
+    }
+  }
+);
+
+  return ebook;
 
 }
