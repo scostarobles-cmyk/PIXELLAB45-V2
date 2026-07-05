@@ -1015,7 +1015,7 @@ if (!result.success) {
 
 document.getElementById("estadoPlan").innerText = "🟢 Plan generado";
 
-const plan = result.plan;
+const plan = result.ebook.plan;
 
 let html = `<h3>📘 Plan del e-book</h3>`;
 
