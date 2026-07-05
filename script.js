@@ -1019,6 +1019,10 @@ const plan = result.plan;
 
 let html = `<h3>📘 Plan del e-book</h3>`;
 
+document.getElementById("monitorIA").innerHTML =
+  "<pre>" + JSON.stringify(plan, null, 2) + "</pre>";
+return;
+
 plan.capitulos.forEach(c => {
   html += `
     <div style="margin-bottom:10px;padding:10px;border-left:3px solid #00c8ff;">
