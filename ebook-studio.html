@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PIXELLAB45 eBook Studio</title>
+
+<link rel="stylesheet" href="styles.css?v=1">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</head>
+
+<body>
+
+<header class="navbar">
+
+<button class="menu-toggle" onclick="toggleMenu()">
+☰
+</button>
+
+<nav class="nav-links">
+
+<a href="index.html">
+🏠 Inicio
+</a>
+
+<a href="#">
+📚 eBook Studio
+</a>
+
+<a href="#">
+📖 Biblioteca
+</a>
+
+<a href="#">
+⚙️ Proyectos
+</a>
+
+</nav>
+
+</header>
+
+<div class="divider"></div>
+
+<section class="ailab-hero">
+
+<h1>
+📚 PIXELLAB45 eBook Studio
+</h1>
+
+<p>
+AI Publishing Workstation
+</p>
+
+</section>
+
+<div class="ai-grid">
+
+<div class="ai-card">
+
+<section class="ai-lab">
+
+<h2>
+🚀 Nuevo Proyecto
+</h2>
+
+<p class="ai-subtitle">
+Crea la estructura completa de un eBook mediante Inteligencia Artificial.
+</p>
+
+<input
+id="temaEbook"
+type="text"
+placeholder="Tema del eBook">
+
+<input
+id="autorEbook"
+type="text"
+placeholder="Autor">
+
+<input
+id="paginasEbook"
+type="number"
+value="100"
+min="10"
+max="1000">
+
+<select id="idiomaEbook">
+
+<option value="Español">🇪🇸 Español</option>
+
+<option value="English">
+🇺🇸 English
+</option>
+
+<option value="Português">
+🇧🇷 Português
+</option>
+
+<option value="Français">
+🇫🇷 Français
+</option>
+
+<option value="Italiano">
+🇮🇹 Italiano
+</option>
+
+</select>
+
+<select id="tonoEbook">
+
+<option>Profesional</option>
+
+<option>Técnico</option>
+
+<option>Académico</option>
+
+<option>Inspirador</option>
+
+<option>Educativo</option>
+
+</select>
+
+<select id="publicoEbook">
+
+<option>General</option>
+
+<option>Principiantes</option>
+
+<option>Intermedio</option>
+
+<option>Avanzado</option>
+
+<option>Profesionales</option>
+
+</select>
+
+<div class="section-divider"></div>
+
+<h3>
+⚙️ Motores IA
+</h3>
+
+<div class="gallery-filters">
+
+<button onclick="generarPlan()">
+📋 Plan
+</button>
+
+<button onclick="generarIndice()">
+📑 Índice
+</button>
+
+<button onclick="generarLegales()">
+⚖️ Legales
+</button>
+
+<button onclick="generarIntroduccion()">
+📝 Introducción
+</button>
+
+<button onclick="generarCapitulos()">
+📖 Capítulos
+</button>
+
+<button onclick="generarConclusion()">
+🏁 Conclusión
+</button>
+
+<button onclick="ensamblarEbook()">
+📦 Ensamblar
+</button>
+
+<button onclick="generarTodo()">
+🚀 Generar Todo
+</button>
+
+</div>
+<div class="section-divider"></div>
+
+<div class="ai-grid">
+
+  <!-- =============================== -->
+  <!-- PIPELINE -->
+  <!-- =============================== -->
+
+  <div class="ai-card">
+
+    <section class="ai-lab">
+
+      <h2>📊 Pipeline IA</h2>
+
+      <p class="ai-subtitle">
+        Estado de los motores del proyecto
+      </p>
+
+      <div class="scroll-box">
+
+        <p id="estadoPlan">⚪ Planificador</p>
+
+        <p id="estadoIndice">⚪ Índice</p>
+
+        <p id="estadoLegales">⚪ Legales</p>
+
+        <p id="estadoIntro">⚪ Introducción</p>
+
+        <p id="estadoCapitulos">⚪ Capítulos</p>
+
+        <p id="estadoConclusion">⚪ Conclusión</p>
+
+        <p id="estadoEnsamblador">⚪ Ensamblador</p>
+
+      </div>
+
+    </section>
+
+  </div>
+
+  <!-- =============================== -->
+  <!-- MONITOR -->
+  <!-- =============================== -->
+
+  <div class="ai-card">
+
+    <section class="ai-lab">
+
+      <h2>🖥️ AI Engine Monitor</h2>
+
+      <p class="ai-subtitle">
+
+        Registro en tiempo real del sistema.
+
+      </p>
+
+      <div
+        id="monitorIA"
+        class="scroll-box"
+        style="height:320px;">
+
+Esperando instrucciones...
+
+      </div>
+
+    </section>
+
+  </div>
+
+</div>
+
+<div class="section-divider"></div>
+
+<!-- =============================== -->
+<!-- EDITOR -->
+<!-- =============================== -->
+
+<div class="ai-card">
+
+<section class="ai-lab">
+
+<h2>
+📚 Editor de eBook
+</h2>
+
+<p class="ai-subtitle">
+
+El editor se habilitará automáticamente
+cuando exista un proyecto generado.
+
+</p>
+
+<div
+id="editorBloqueado"
+class="scroll-box"
+style="height:350px;">
+
+<h3>🔒 Sin proyecto</h3>
+
+<p>
+
+Genera un proyecto desde el módulo superior
+para comenzar la edición.
+
+</p>
+
+</div>
+
+<div
+id="editorActivo"
+style="display:none;">
+
+<div class="gallery-filters">
+
+<button>
+📄 Portada
+</button>
+
+<button>
+📑 Índice
+</button>
+
+<button>
+📝 Texto
+</button>
+
+<button>
+🖼️ Imágenes
+</button>
+
+<button>
+🎨 Diseño
+</button>
+
+<button>
+📄 Exportar PDF
+</button>
+
+</div>
+
+<div
+id="editorContenido"
+class="scroll-box"
+style="height:500px;">
+
+Proyecto cargado...
+
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+<div class="section-divider"></div>
+
+<footer class="footer">
+
+<h3>
+
+PIXELLAB45
+
+</h3>
+
+<p>
+
+AI Publishing Workstation
+
+</p>
+
+</footer>
+
+<script src="script.js?v=__VERSION__"></script>
+
+</body>
+
+</html>
