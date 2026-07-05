@@ -188,7 +188,9 @@ Always be literal.
     }
   );
 
-  return res.response;
+console.log(JSON.stringify(res, null, 2));
+
+return res.response;;
 
 }
 
