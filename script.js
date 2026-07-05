@@ -985,7 +985,8 @@ if (!guardar.ok) {
 // =====================================================
 
 async function generarPlan() {
-logMonitor("🚀 Entró a generarPlan()");
+//logMonitor("🚀 Entró a generarPlan()");
+alert("entro aquí");
   try {
 
     document.getElementById("estadoPlan").innerText = "🔵 Ejecutando...";
