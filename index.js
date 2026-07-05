@@ -6,8 +6,8 @@ const CORS_HEADERS = {
   "Access-Control-Allow-Headers": "*",
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Content-Type": "application/json"
-}; 
- 
+};
+
 export default {
   async fetch(request, env) {
 
@@ -1121,9 +1121,9 @@ async function planificarEbook(data, env, json) {
     const ebook = await guardarPlanR2(data, plan, env);
 
     await generarIndiceDesdeR2(ebook.id, env);
-alerta("paso por acá");
+alert("paso por acá");
     const actualizado = await env.EBOOKS.get(`ebooks/${ebook.id}.json`);
-alerta("paso por acá también");
+aler("paso por acá también");
     return json({
       success: true,
       ebook: await actualizado.json()
