@@ -986,42 +986,52 @@ if (!guardar.ok) {
 
 async function generarPlan() {
 
-  const payload = {
-    action: "planificar-ebook",
-    data: {
-      tema: document.getElementById("temaEbook").value,
-      paginas: document.getElementById("paginasEbook").value,
-      idioma: document.getElementById("idiomaEbook").value,
-      tono: document.getElementById("tonoEbook").value,
-      publico: document.getElementById("publicoEbook").value,
-      autor: document.getElementById("autorEbook").value
+  try {
+
+    document.getElementById("estadoPlan").innerText = "🔵 Ejecutando...";
+
+    const payload = {
+      action: "planificar-ebook",
+      data: {
+        tema: document.getElementById("temaEbook").value,
+        paginas: Number(document.getElementById("paginasEbook").value),
+        idioma: document.getElementById("idiomaEbook").value,
+        tono: document.getElementById("tonoEbook").value,
+        publico: document.getElementById("publicoEbook").value,
+        autor: document.getElementById("autorEbook").value
+      }
+    };
+
+    const res = await fetch("/api", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    const result = await res.json();
+
+    if (!result || !result.ok) {
+      throw new Error(result?.error || "Error desconocido");
     }
-  };
 
-  document.getElementById("estadoPlan").innerText = "🔵 Ejecutando...";
-  logMonitor("📋 Generando plan...");
+    const plan = result.data;
 
-  const res = await fetch("/api", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
-  });
+    window.currentEbookId = plan.id;
 
-  const result = await res.json();
+    document.getElementById("estadoPlan").innerText = "🟢 Listo";
 
-  if (!result.ok) {
+    logMonitor("✔ Plan generado");
+    logMonitor("📦 ID: " + plan.id);
+
+    return plan;
+
+  } catch (err) {
+
     document.getElementById("estadoPlan").innerText = "🔴 Error";
-    logMonitor("❌ Error en planificador");
-    return;
+    logMonitor("❌ " + err.message);
+
+    console.error(err);
   }
-
-  document.getElementById("estadoPlan").innerText = "🟢 Finalizado";
-
-  logMonitor("✔ Plan generado");
-  logMonitor("📦 ID: " + result.data.id);
-
-  // opcional: guardar ID en frontend
-  window.currentEbookId = result.data.id;
 }
 
 // MENÚ MÓVIL
