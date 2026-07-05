@@ -1115,7 +1115,7 @@ async function planificarEbook(data, env, json) {
   try {
 
     // 1. Generar el plan con la IA
-    const plan = await generarPlanEbook(data, env, json);
+    const plan = await generarPlanEbook(data, env);
 
     // 2. (Próximamente)
     // const planParseado = await parsearPlan(data, plan);
@@ -1143,81 +1143,27 @@ async function planificarEbook(data, env, json) {
 // PIXELLAB45 - EBOOK V3
 // FUNCIÓN: generarPlanEbook()
 // =====================================================
-async function generarPlanEbook(data, env, json) {
+async function generarPlanEbook(data, env) {
 
-    try {
+  const {
+    tema,
+    paginas,
+    idioma,
+    tono,
+    publico,
+    autor
+  } = data;
 
-    const {
-      tema,
-      paginas,
-      idioma,
-      tono,
-      publico,
-      autor
-    } = data;
+  if (!tema)
+    throw new Error("Falta el tema.");
 
-    if (!tema)
-      throw new Error("Falta el tema.");
+  if (!paginas)
+    throw new Error("Falta la cantidad de páginas.");
 
-    if (!paginas)
-      throw new Error("Falta la cantidad de páginas.");
+  const prompt = `...`;
 
-    const prompt = `
-Eres un editor profesional.
- 
-Diseña únicamente el PLAN de un ebook.
+  const respuesta = await ai(env, prompt);
 
-NO escribas el contenido.
-
-Devuelve EXCLUSIVAMENTE JSON válido.
-
-Tema:
-${tema}
-
-Páginas:
-${paginas}
-
-Idioma:
-${idioma}
-
-Tono:
-${tono}
-
-Público:
-${publico}
-
-Autor:
-${autor}
-
-Devuelve este formato:
-
-{
-  "capitulos":[
-    {
-      "numero":1,
-      "titulo":"",
-      "objetivo":"",
-      "paginas":0
-    }
-  ]
-}
-`;
-
-    const respuesta = await ai(env, prompt);
-
-    const plan = JSON.parse(respuesta);
-
-    return json({
-      success: true,
-      plan
-    });
-
-  } catch (error) {
-
-    return json({
-      success: false,
-      error: error.message
-    }, 500);
-}
+  return JSON.parse(respuesta);
 
 }
