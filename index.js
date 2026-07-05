@@ -1123,7 +1123,7 @@ async function planificarEbook(data, env, json) {
     await generarIndiceDesdeR2(ebook.id, env);
 
     const actualizado = await env.EBOOKS.get(`ebooks/${ebook.id}.json`);
-
+ 
     return json({
       success: true,
       ebook: await actualizado.json()
