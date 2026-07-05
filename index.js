@@ -1112,18 +1112,22 @@ console.log("Base64 length:", data.imagen?.length);
 // NO genera contenido.
 // =====================================================
 
-async function planificarEbook(data, env, json) {
+async function planificadorEbook(data, env, json) {
 
   try {
 
     const plan = await generarPlanEbook(data, env);
 
-const ebook = await guardarPlanR2(data, plan, env);
+    const ebook = await guardarPlanR2(data, plan, env);
 
-return json({
-  success: true,
-  ebook
-});
+    await generarIndiceDesdeR2(ebook.id, env);
+
+    const actualizado = await env.EBOOKS.get(`ebooks/${ebook.id}.json`);
+
+    return json({
+      success: true,
+      ebook: await actualizado.json()
+    });
 
   } catch (error) {
 
@@ -1240,6 +1244,39 @@ async function guardarPlanR2(data, plan, env) {
     }
   }
 );
+
+  return ebook;
+
+}
+async function generarIndiceDesdeR2(ebookId, env) {
+
+  const obj = await env.EBOOKS.get(`ebooks/${ebookId}.json`);
+
+  if (!obj) {
+    throw new Error("Ebook no encontrado en R2");
+  }
+
+  const ebook = await obj.json();
+
+  const indice = ebook.plan.capitulos.map(c => ({
+    numero: c.numero,
+    titulo: c.titulo,
+    paginas: c.paginas
+  }));
+
+  ebook.indice = indice;
+  ebook.estado = "indice_generado";
+  ebook.actualizadoEn = new Date().toISOString();
+
+  await env.EBOOKS.put(
+    `ebooks/${ebookId}.json`,
+    JSON.stringify(ebook, null, 2),
+    {
+      httpMetadata: {
+        contentType: "application/json"
+      }
+    }
+  );
 
   return ebook;
 
