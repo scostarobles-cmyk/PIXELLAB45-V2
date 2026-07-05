@@ -1023,8 +1023,8 @@ alert("entro aquí");
 
     document.getElementById("estadoPlan").innerText = "🟢 Listo";
 
-    logMonitor("✔ Plan generado");
-    logMonitor("📦 ID: " + plan.id);
+   // logMonitor("✔ Plan generado");
+    //logMonitor("📦 ID: " + plan.id);
 
     return plan;
 
