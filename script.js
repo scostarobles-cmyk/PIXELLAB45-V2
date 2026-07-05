@@ -1016,6 +1016,10 @@ if (!result.success) {
 document.getElementById("estadoPlan").innerText = "🟢 Plan generado";
 
 const plan = result.ebook.plan;
+document.getElementById("monitorIA").innerHTML =
+  "<pre>" + JSON.stringify(result, null, 2) + "</pre>";
+
+return;
 
 let html = `<h3>📘 Plan del e-book</h3>`;
 
