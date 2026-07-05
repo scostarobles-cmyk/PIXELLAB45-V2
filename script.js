@@ -1015,8 +1015,8 @@ if (!result.success) {
 
 document.getElementById("estadoPlan").innerText = "🟢 Plan generado";
 
-document.getElementById("resultado").innerHTML =
-    "<pre>" + JSON.stringify(result.plan, null, 2) + "</pre>";
+document.getElementById("monitorIA").innerHTML =
+  "<pre>" + JSON.stringify(result.plan, null, 2) + "</pre>";
     
   } catch (err) {
 
