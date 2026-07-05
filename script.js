@@ -1002,18 +1002,18 @@ alert("entro aquí");
         autor: document.getElementById("autorEbook").value
       }
     };
- alert(playload);
+ alert(payload);
     const res = await fetch(WORKER_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
     });
-
+    alert(res);
     const result = await res.json();
-
+   alert(resul);
     if (!result.ok) {
   document.getElementById("estadoPlan").innerText = "🔴 Error";
-  logMonitor("❌ " + (result.error || "Error desconocido"));
+//  logMonitor("❌ " + (result.error || "Error desconocido"));
   return;
 }
 
