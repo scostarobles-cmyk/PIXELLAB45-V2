@@ -7,7 +7,7 @@ const FETCH_CONFIG = {
   headers: {
     "Content-Type": "application/json"
   }
-}; 
+};
 window.ebookActual = null;
 let ebookActual = "";
 let estructuraEbook = null;
@@ -1015,8 +1015,21 @@ if (!result.success) {
 
 document.getElementById("estadoPlan").innerText = "🟢 Plan generado";
 
-document.getElementById("monitorIA").innerHTML =
-  "<pre>" + JSON.stringify(result.plan, null, 2) + "</pre>";
+const plan = result.plan;
+
+let html = `<h3>📘 Plan del e-book</h3>`;
+
+plan.capitulos.forEach(c => {
+  html += `
+    <div style="margin-bottom:10px;padding:10px;border-left:3px solid #00c8ff;">
+      <b>Capítulo ${c.numero}: ${c.titulo}</b><br>
+      <small>${c.objetivo}</small><br>
+      <span>Páginas: ${c.paginas}</span>
+    </div>
+  `;
+});
+
+document.getElementById("monitorIA").innerHTML = html;
     
   } catch (err) {
 
