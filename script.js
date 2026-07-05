@@ -1008,16 +1008,16 @@ async function generarPlan() {
 
     const result = await res.json();
 
-    if (!result.success) {
-      document.getElementById("estadoPlan").innerText = "🔴 " + result.error;
-      return;
-    }
+if (!result.success) {
+  document.getElementById("estadoPlan").innerText = "🔴 " + result.error;
+  return;
+}
 
-    document.getElementById("estadoPlan").innerText = "🟢 Plan generado";
+document.getElementById("estadoPlan").innerText = "🟢 Plan generado";
 
-    document.getElementById("planEbook").innerHTML =
-      JSON.stringify(result.plan, null, 2);
-
+document.getElementById("resultado").innerHTML =
+    "<pre>" + JSON.stringify(result.plan, null, 2) + "</pre>";
+    
   } catch (err) {
 
     document.getElementById("estadoPlan").innerText = "🔴 " + err.message;
