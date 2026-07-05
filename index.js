@@ -1365,7 +1365,7 @@ async function procesarPaso(data, env) {
       error: err.message || String(err)
     }, 500);
   }
-}
+} 
 
 function parsePromptFromJson(input) {
     if (typeof input === 'string') {

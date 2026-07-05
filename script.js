@@ -2040,7 +2040,11 @@ function attachQuickActions() {
   const exportBtn = document.querySelector("#btnExport");
   const importInput = document.querySelector("#importEbookFile");
   const refreshBtn = document.querySelector("#btnRefreshUI");
+   const testBtn = document.querySelector("#btnTestPlan");
 
+if (testBtn) {
+  testBtn.onclick = testPlan;
+}
   if (newBtn) {
     newBtn.onclick = createNewEbookSession;
   }
