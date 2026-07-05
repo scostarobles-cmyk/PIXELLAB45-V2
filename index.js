@@ -1115,7 +1115,7 @@ async function planificarEbook(data, env, json) {
   try {
 
     // 1. Generar el plan con la IA
-    const plan = await generarPlanEbook(data, env);
+    const plan = await generarPlanEbook(data, env, json);
 
     // 2. (Próximamente)
     // const planParseado = await parsearPlan(data, plan);
@@ -1143,7 +1143,7 @@ async function planificarEbook(data, env, json) {
 // PIXELLAB45 - EBOOK V3
 // FUNCIÓN: generarPlanEbook()
 // =====================================================
-async function generarPlanEbook(data, env) {
+async function generarPlanEbook(data, env, json) {
 
     try {
 
@@ -1164,7 +1164,7 @@ async function generarPlanEbook(data, env) {
 
     const prompt = `
 Eres un editor profesional.
-
+ 
 Diseña únicamente el PLAN de un ebook.
 
 NO escribas el contenido.
