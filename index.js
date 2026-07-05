@@ -44,93 +44,70 @@ export default {
 
     const tipo = data.action || "";
 
-    try {
+try {
 
-      switch (tipo) {
+  switch (tipo) {
 
-  case "listar-imagenes":
-    return listarImagenes(env, json);
+    case "listar-imagenes":
+      return listarImagenes(env, json);
 
-  case "listar-categoria":
-    return listarCategoria(env, data, json);
+    case "listar-categoria":
+      return listarCategoria(env, data, json);
 
-  case "ideas":
-    return generarIdeas(data, env, json);
+    case "ideas":
+      return generarIdeas(data, env, json);
 
-  case "guardar-ideas":
-    return guardarIdeas(data, env, json);
+    case "guardar-ideas":
+      return guardarIdeas(data, env, json);
 
-  case "prompt":
-    return generarPrompts(data, env, json);
+    case "prompt":
+      return generarPrompts(data, env, json);
 
-  case "guardar-prompts":
-    return guardarPrompts(data, env, json);
+    case "guardar-prompts":
+      return guardarPrompts(data, env, json);
 
-  case "visual":
-    return generarVisualesPrompts(data, env, json);
+    case "visual":
+      return generarVisualesPrompts(data, env, json);
 
-  case "guardar-visuales":
-    return guardarVisuales(data, env, json);
+    case "guardar-visuales":
+      return guardarVisuales(data, env, json);
 
-  case "script":
-    return generarGuion(data, env, json);
+    case "script":
+      return generarGuion(data, env, json);
 
-  case "guardar-guion":
-    return guardarGuion(data, env, json);
+    case "guardar-guion":
+      return guardarGuion(data, env, json);
 
-  case "storyboard":
-    return generarStoryboard(data, env, json);
+    case "storyboard":
+      return generarStoryboard(data, env, json);
 
-  case "guardar-storyboard":
-    return guardarStoryboard(data, env, json);
+    case "guardar-storyboard":
+      return guardarStoryboard(data, env, json);
 
-  case "imagen":
-  return generarImagen(
-    data,
-    env,
-    json
-  );
+    case "imagen":
+      return generarImagen(data, env, json);
 
-  case "guardar-imagen":
-  return guardarImagen(
-    data,
-    env,
-    json
-  );
+    case "guardar-imagen":
+      return guardarImagen(data, env, json);
 
-  case "planificar-ebook": {
-  try {
+    case "planificar-ebook":
+      return planificarEbook(data.data, env, json);
 
-    const result = await planificarEbook(data.data, env);
-
-    return Response.json({
-      ok: true,
-      data: result.data
-    });
-
-  } catch (err) {
-
-    return Response.json({
-      ok: false,
-      error: err.message
-    });
-  }
-}
-
-  default:
-    return json({
-      ok: false,
-      error: "Tipo no válido: " + tipo
-    }, 400);
-}
-
-    } catch (err) {
-
+    default:
       return json({
         ok: false,
-        error: err.message || String(err)
-      }, 500);
-    }
+        error: "Tipo no válido: " + tipo
+      }, 400);
+  }
+
+} catch (err) {
+
+  return json({
+    ok: false,
+    error: err.message || String(err)
+  }, 500);
+}
+
   }
 };
 // =====================================
@@ -1134,8 +1111,7 @@ console.log("Base64 length:", data.imagen?.length);
 // =====================================================
 
 async function planificarEbook(data, env) {
-console.log("planificarEbook recibió:", JSON.stringify(data));
-console.log("tema:", data?.tema);
+
   try {
 
     const {
@@ -1147,11 +1123,8 @@ console.log("tema:", data?.tema);
       autor = "PIXELLAB45"
     } = data;
 
-    if (!tema)
-      throw new Error("Falta el tema.");
-
-    if (!paginas || paginas < 10)
-      throw new Error("Cantidad de páginas inválida.");
+    if (!tema) throw new Error("Falta el tema.");
+    if (!paginas || paginas < 10) throw new Error("Cantidad de páginas inválida.");
 
     const prompt = `
 Eres un editor profesional.
@@ -1160,32 +1133,15 @@ Diseña únicamente el PLAN de un ebook.
 
 NO escribas contenido.
 
-Devuelve EXCLUSIVAMENTE JSON válido.
+Devuelve SOLO JSON válido.
 
-Tema:
-${tema}
-
-Páginas:
-${paginas}
-
-Idioma:
-${idioma}
-
-Tono:
-${tono}
-
-Público:
-${publico}
-
-Calcula automáticamente:
-
-- cantidad de capítulos
-- páginas por capítulo
-- título de cada capítulo
-- objetivo de cada capítulo
+Tema: ${tema}
+Páginas: ${paginas}
+Idioma: ${idioma}
+Tono: ${tono}
+Público: ${publico}
 
 Formato:
-
 {
   "capitulos":[
     {
@@ -1197,85 +1153,76 @@ Formato:
   ]
 }
 `;
-   
-   const respuestaTexto = await ai(env, prompt);
 
-let respuesta;
-try {
-  respuesta = JSON.parse(respuestaTexto);
-} catch (e) {
-  throw new Error("AI devolvió un JSON inválido.");
-}
-console.log(respuesta);
-if (!respuesta.capitulos) {
-  throw new Error("AI devolvió un plan inválido.");
-}
+    const respuestaTexto = await ai(env, prompt);
 
-// Continuás con tu lógica...
+    if (!respuestaTexto || typeof respuestaTexto !== "string") {
+      throw new Error("AI no devolvió texto válido.");
+    }
+
+    let respuesta;
+
+    try {
+      respuesta = JSON.parse(respuestaTexto);
+    } catch (e) {
+      throw new Error("AI devolvió JSON inválido.");
+    }
+
+    if (!respuesta.capitulos) {
+      throw new Error("Plan inválido.");
+    }
+
+    const id = crypto.randomUUID();
+
     const plan = {
 
-      version:3,
+      // 📦 METADATOS COMPLETOS (LO QUE PEDISTE AHORA)
+      metadata: {
+        id,
+        tema,
+        autor,
+        idioma,
+        tono,
+        publico,
+        estado: "planificado",
+        fechaCreacion: new Date().toISOString()
+      },
 
-      id: crypto.randomUUID(),
-
-      estado:"planificado",
-
-      fechaCreacion:new Date().toISOString(),
-
-      autor,
-
-      tema,
-
-      idioma,
-
-      tono,
-
-      publico,
-
-      paginasTotales: paginas,
-
-      capitulos: respuesta.capitulos.length,
-
-      paginasPorCapitulo: Math.floor(
-        paginas / respuesta.capitulos.length
-      ),
-
-      estructura: respuesta.capitulos.map(c => ({
-        numero: c.numero,
-        titulo: c.titulo,
-        objetivo: c.objetivo,
-        paginas: c.paginas,
-        estado:"pendiente"
-      }))
+      // 📘 ESTRUCTURA DEL LIBRO
+      estructura: {
+        paginasTotales: paginas,
+        capitulos: respuesta.capitulos.length,
+        paginasPorCapitulo: Math.floor(paginas / respuesta.capitulos.length),
+        capitulos: respuesta.capitulos.map(c => ({
+          numero: c.numero,
+          titulo: c.titulo,
+          objetivo: c.objetivo,
+          paginas: c.paginas,
+          estado: "pendiente"
+        }))
+      }
 
     };
-    const id = plan.id;
-const key = `ebooks/${id}.json`;
 
-try {
-  await env.EBOOKS.put(
-    key,
-    JSON.stringify(plan)
-  );
-} catch (err) {
-  console.log("R2 ERROR:", err);
-}
-
+    try {
+      await env.EBOOKS.put(
+        `ebooks/${id}.json`,
+        JSON.stringify(plan)
+      );
+    } catch (err) {
+      console.log("R2 ERROR:", err);
+    }
 
     return {
-      ok:true,
-      data:plan
+      ok: true,
+      data: plan
     };
 
-  }
-  catch(error){
+  } catch (error) {
 
-    return{
-      ok:false,
-      error:error.message
+    return {
+      ok: false,
+      error: error.message
     };
-
   }
-
 }
-
