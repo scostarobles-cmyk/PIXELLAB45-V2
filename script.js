@@ -7,7 +7,7 @@ const FETCH_CONFIG = {
   headers: {
     "Content-Type": "application/json"
   }
-}; 
+};
 window.ebookActual = null;
 let ebookActual = "";
 let estructuraEbook = null;
@@ -1003,7 +1003,7 @@ alert("entro aquí");
       }
     };
 
-    const res = await fetch("/api", {
+    const res = await fetch(WORKER_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
