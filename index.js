@@ -1112,7 +1112,7 @@ console.log("Base64 length:", data.imagen?.length);
 // NO genera contenido.
 // =====================================================
 
-async function planificadorEbook(data, env, json) {
+async function planificarEbook(data, env, json) {
 
   try {
 
