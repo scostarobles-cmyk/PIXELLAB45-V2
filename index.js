@@ -1120,7 +1120,7 @@ async function planificarEbook(data, env, json) {
 
 let ebook = await guardarPlanR2(data, plan, env);
 
-ebook = await generarIndice(ebook);
+ebook = await generarIndice(ebook,env);
 
 ebook = await guardarEbookR2(ebook, env);
 
