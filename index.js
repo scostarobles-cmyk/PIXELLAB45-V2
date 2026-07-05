@@ -1114,6 +1114,39 @@ async function planificarEbook(data, env, json) {
 
   try {
 
+    // 1. Generar el plan con la IA
+    const plan = await generarPlanEbook(data, env);
+
+    // 2. (Próximamente)
+    // const planParseado = await parsearPlan(data, plan);
+
+    // 3. (Próximamente)
+    // await guardarPlanR2(planParseado, env);
+
+    // 4. Devolver el resultado
+    return json({
+      success: true,
+      plan
+    });
+
+  } catch (error) {
+
+    return json({
+      success: false,
+      error: error.message
+    }, 500);
+
+  }
+
+}
+// =====================================================
+// PIXELLAB45 - EBOOK V3
+// FUNCIÓN: generarPlanEbook()
+// =====================================================
+async function generarPlanEbook(data, env) {
+
+    try {
+
     const {
       tema,
       paginas,
@@ -1185,7 +1218,6 @@ Devuelve este formato:
       success: false,
       error: error.message
     }, 500);
-
-  }
+}
 
 }
