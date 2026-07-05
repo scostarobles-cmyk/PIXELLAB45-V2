@@ -1214,14 +1214,14 @@ Formato:
     }
 console.log("✅ Plan generado correctamente");
     return json({
-  ok: true,
-  data: plan
+success: true,
+ plan
 });
 
   } catch (error) {
 
     return {
-  ok: false,
+  success: false,
   error: error.message
 };
   }
