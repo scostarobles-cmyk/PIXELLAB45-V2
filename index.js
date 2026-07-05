@@ -1164,6 +1164,5 @@ async function generarPlanEbook(data, env) {
 
   const respuesta = await ai(env, prompt);
 
-  return JSON.parse(respuesta);
-
+return respuesta;
 }
