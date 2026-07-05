@@ -1023,3 +1023,22 @@ async function generarPlan() {
   // opcional: guardar ID en frontend
   window.currentEbookId = result.data.id;
 }
+
+// MENÚ MÓVIL
+function toggleMenu() {
+
+
+  const menu =
+    document.querySelector(".nav-links");
+
+  menu.classList.toggle("active");
+
+}
+
+
+// INICIO
+window.onload = () => {
+
+  cargarGaleriaCompleta();
+
+};
