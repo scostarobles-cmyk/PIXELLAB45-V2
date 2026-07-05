@@ -1002,7 +1002,7 @@ alert("entro aquí");
         autor: document.getElementById("autorEbook").value
       }
     };
-
+ alert(playload);
     const res = await fetch(WORKER_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -1018,21 +1018,21 @@ alert("entro aquí");
 }
 
     const plan = result.data;
-
+alert(plan);
     window.currentEbookId = plan.id;
 
     document.getElementById("estadoPlan").innerText = "🟢 Listo";
 
    // logMonitor("✔ Plan generado");
     //logMonitor("📦 ID: " + plan.id);
-
+ 
     return plan;
 
   } catch (err) {
 
     document.getElementById("estadoPlan").innerText = "🔴 Error";
     logMonitor("❌ " + err.message);
-
+alert(err);
     console.error(err);
   }
 }
