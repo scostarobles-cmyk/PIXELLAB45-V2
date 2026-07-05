@@ -1185,6 +1185,14 @@ Cada capítulo debe contener:
 - objetivo
 - paginas
 
+IMPORTANTE:
+
+La suma de las páginas de TODOS los capítulos debe ser EXACTAMENTE igual a la cantidad de páginas solicitada.
+
+Antes de responder, verifica que la suma sea correcta.
+
+Si el usuario solicita 100 páginas, la suma de "paginas" de todos los capítulos debe ser exactamente 100.
+
 Responde EXACTAMENTE con esta estructura:
 
 {
