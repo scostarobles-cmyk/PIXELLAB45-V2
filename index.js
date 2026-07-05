@@ -91,7 +91,7 @@ try {
       return guardarImagen(data, env, json);
 
     case "planificar-ebook":
-      return planificarEbook(data.data, env, json);
+      return planificarEbook(data, env, json);
 
     default:
       return json({
@@ -1116,7 +1116,7 @@ console.log("➡️ Entró a planificarEbook");
 
     const {
       tema,
-      paginas,
+      paginas, 
       idioma = "es",
       tono = "Profesional",
       publico = "General",

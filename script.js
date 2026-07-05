@@ -986,31 +986,28 @@ if (!guardar.ok) {
 
 async function generarPlan() {
 //logMonitor("🚀 Entró a generarPlan()");
-alert("entro aquí");
+
   try {
 
     document.getElementById("estadoPlan").innerText = "🔵 Ejecutando...";
 
-    const payload = {
-      action: "planificar-ebook",
-      data: {
-        tema: document.getElementById("temaEbook").value,
-        paginas: Number(document.getElementById("paginasEbook").value),
-        idioma: document.getElementById("idiomaEbook").value,
-        tono: document.getElementById("tonoEbook").value,
-        publico: document.getElementById("publicoEbook").value,
-        autor: document.getElementById("autorEbook").value
-      }
-    };
- alert(payload); 
-    const res = await fetch(WORKER_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-    alert(res);
+    
+    const guardar = await fetch(WORKER_URL, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+  action: "planificar-ebook",
+  tema: document.getElementById("temaEbook").value,
+  paginas: Number(document.getElementById("paginasEbook").value),
+  idioma: document.getElementById("idiomaEbook").value,
+  tono: document.getElementById("tonoEbook").value,
+  publico: document.getElementById("publicoEbook").value,
+  autor: document.getElementById("autorEbook").value
+})
+});
     const result = await res.json();
-   alert(result);
     if (!result.ok) {
   document.getElementById("estadoPlan").innerText = "🔴 Error";
 //  logMonitor("❌ " + (result.error || "Error desconocido"));
@@ -1018,7 +1015,6 @@ alert("entro aquí");
 }
 
     const plan = result.data;
-alert(plan);
     window.currentEbookId = plan.id;
 
     document.getElementById("estadoPlan").innerText = "🟢 Listo";
@@ -1032,7 +1028,6 @@ alert(plan);
 
     document.getElementById("estadoPlan").innerText = "🔴 Error";
     logMonitor("❌ " + err.message);
-alert(err);
     console.error(err);
   }
 }
