@@ -2075,13 +2075,19 @@ if (testBtn) {
 
 window.addEventListener("DOMContentLoaded", () => {
 
+  logMonitor("🟢 DOMContentLoaded OK");
+
   initEbookStudio();
+
+  logMonitor("🟡 initEbookStudio OK");
 
   attachQuickActions();
 
+  logMonitor("🟡 attachQuickActions OK");
+
   startAutoSave(30000);
 
-  logMonitor("🚀 Ebook Studio completamente inicializado");
+  logMonitor("🚀 SISTEMA INICIALIZADO");
 });
 // =====================================================
 // PIXELLAB45 EBOOK V3
@@ -2402,54 +2408,21 @@ async function markStepDone(ebookId, step) {
 
 async function testPlan() {
 
-  const output = document.getElementById("monitorIA");
+  logMonitor("🧪 BOTÓN PRESIONADO");
 
-  const payload = {
-    action: "planificar-ebook",
-    data: {
-      tema: "IA aplicada a productividad",
-      paginas: 10,
-      idioma: "es",
-      tono: "profesional",
-      publico: "tecnología",
-      autor: "PIXELLAB45"
-    }
-  };
+  const res = await fetch("/api", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      action: "planificar-ebook",
+      data: {
+        tema: "test",
+        paginas: 10
+      }
+    })
+  });
 
-  output.innerHTML += "🧪 Enviando plan...<br>";
+  const result = await res.json();
 
-  try {
-
-    const res = await fetch("/api", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-
-    const result = await res.json();
-
-    output.innerHTML += "📥 Respuesta recibida<br>";
-
-    if (result.ok) {
-
-      output.innerHTML += "🟢 PLAN OK<br>";
-      output.innerHTML += "🆔 ID: " + result.data.id + "<br>";
-
-    } else {
-
-      output.innerHTML += "🔴 ERROR EN PLAN<br>";
-      output.innerHTML += JSON.stringify(result) + "<br>";
-    }
-
-  } catch (err) {
-
-    output.innerHTML += "❌ ERROR RED: " + err.message + "<br>";
-  }
+  logMonitor("📥 RESPUESTA: " + JSON.stringify(result));
 }
-
-// INICIO
-window.onload = () => {
-
-  cargarGaleriaCompleta();
-
-};
