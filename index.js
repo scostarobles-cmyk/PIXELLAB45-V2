@@ -1118,16 +1118,16 @@ async function planificarEbook(data, env, json) {
 
     const plan = await generarPlanEbook(data, env);
 
-    const ebook = await guardarPlanR2(data, plan, env);
+let ebook = await guardarPlanR2(data, plan, env);
 
-    await generarIndiceDesdeR2(ebook.id, env);
+ebook = await generarIndice(ebook);
 
-    const actualizado = await env.EBOOKS.get(`ebooks/${ebook.id}.json`);
- 
-    return json({
-      success: true,
-      ebook: await actualizado.json()
-    });
+ebook = await guardarEbookR2(ebook, env);
+
+return json({
+  success: true,
+  ebook
+});
 
   } catch (error) {
 
@@ -1280,4 +1280,18 @@ async function generarIndiceDesdeR2(ebookId, env) {
 
   return ebook;
 
+}
+async function guardarEbookR2(ebook, env) {
+
+  await env.EBOOKS.put(
+    `ebooks/${ebook.id}.json`,
+    JSON.stringify(ebook, null, 2),
+    {
+      httpMetadata: {
+        contentType: "application/json"
+      }
+    }
+  );
+
+  return ebook;
 }
