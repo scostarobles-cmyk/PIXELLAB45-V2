@@ -1248,7 +1248,7 @@ async function guardarPlanR2(data, plan, env) {
   return ebook;
 
 }
-async function generarIndiceDesdeR2(ebookId, env) {
+async function generarIndice(ebookId, env) {
 
   const obj = await env.EBOOKS.get(`ebooks/${ebookId}.json`);
 
