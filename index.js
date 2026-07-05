@@ -1213,16 +1213,16 @@ Formato:
       console.log("R2 ERROR:", err);
     }
 console.log("✅ Plan generado correctamente");
-    return {
-      ok: true,
-      data: plan
-    };
+    return json({
+  ok: true,
+  data: plan
+});
 
   } catch (error) {
 
     return {
-      ok: false,
-      error: error.message
-    };
+  ok: false,
+  error: error.message
+};
   }
 }
