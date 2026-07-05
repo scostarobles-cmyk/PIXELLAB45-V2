@@ -1116,16 +1116,8 @@ async function planificarEbook(data, env, json) {
 
   try {
 
-    // 1. Generar el plan con la IA
     const plan = await generarPlanEbook(data, env);
 
-    // 2. (Próximamente)
-    // const planParseado = await parsearPlan(data, plan);
-
-    // 3. (Próximamente)
-    // await guardarPlanR2(planParseado, env);
-
-    // 4. Devolver el resultado
     return json({
       success: true,
       plan
@@ -1156,15 +1148,59 @@ async function generarPlanEbook(data, env) {
     autor
   } = data;
 
-  if (!tema)
-    throw new Error("Falta el tema.");
+  if (!tema) throw new Error("Falta el tema.");
+  if (!paginas) throw new Error("Falta la cantidad de páginas.");
 
-  if (!paginas)
-    throw new Error("Falta la cantidad de páginas.");
+  const prompt = `
+Eres un editor profesional especializado en la creación de ebooks.
 
-  const prompt = `...`;
+Tu única tarea es diseñar el plan estructural del ebook.
+
+NO escribas el contenido de los capítulos.
+
+Devuelve EXCLUSIVAMENTE un JSON válido.
+
+No utilices markdown.
+No utilices \`\`\`.
+No agregues explicaciones.
+No agregues texto antes ni después del JSON.
+
+Datos del ebook:
+
+Tema: ${tema}
+Cantidad de páginas: ${paginas}
+Idioma: ${idioma}
+Tono: ${tono}
+Público objetivo: ${publico}
+Autor: ${autor}
+
+Distribuye las páginas de forma lógica entre los capítulos.
+
+El resultado debe tener entre 5 y 12 capítulos según la cantidad de páginas.
+
+Cada capítulo debe contener:
+
+- numero
+- titulo
+- objetivo
+- paginas
+
+Responde EXACTAMENTE con esta estructura:
+
+{
+  "capitulos": [
+    {
+      "numero": 1,
+      "titulo": "",
+      "objetivo": "",
+      "paginas": 0
+    }
+  ]
+}
+`;
 
   const respuesta = await ai(env, prompt);
 
-return respuesta;
+  return JSON.parse(respuesta);
+
 }
