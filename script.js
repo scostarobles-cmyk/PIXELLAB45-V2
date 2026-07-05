@@ -2426,3 +2426,23 @@ async function testPlan() {
 
   logMonitor("📥 RESPUESTA: " + JSON.stringify(result));
 }
+function bindTestButton() {
+
+  const btn = document.getElementById("btnTestPlan");
+
+  if (!btn) {
+    console.log("BOTÓN NO ENCONTRADO");
+    return;
+  }
+
+  btn.addEventListener("click", () => {
+
+    const el = document.getElementById("monitorIA");
+
+    if (el) el.innerHTML += "🧪 CLICK FUNCIONA<br>";
+
+  });
+
+  console.log("BOTÓN CONECTADO");
+}
+window.addEventListener("DOMContentLoaded", bindTestButton);
