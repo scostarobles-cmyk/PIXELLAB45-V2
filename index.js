@@ -1110,38 +1110,54 @@ console.log("Base64 length:", data.imagen?.length);
 // NO genera contenido.
 // =====================================================
 
-async function planificarEbook(data, env) {
-console.log("➡️ Entró a planificarEbook");
+async function planificarEbook(data, env, json) {
+
   try {
 
     const {
       tema,
-      paginas, 
-      idioma = "es",
-      tono = "Profesional",
-      publico = "General",
-      autor = "PIXELLAB45"
+      paginas,
+      idioma,
+      tono,
+      publico,
+      autor
     } = data;
 
-    if (!tema) throw new Error("Falta el tema.");
-    if (!paginas || paginas < 10) throw new Error("Cantidad de páginas inválida.");
+    if (!tema)
+      throw new Error("Falta el tema.");
+
+    if (!paginas)
+      throw new Error("Falta la cantidad de páginas.");
 
     const prompt = `
 Eres un editor profesional.
 
 Diseña únicamente el PLAN de un ebook.
 
-NO escribas contenido.
+NO escribas el contenido.
 
-Devuelve SOLO JSON válido.
+Devuelve EXCLUSIVAMENTE JSON válido.
 
-Tema: ${tema}
-Páginas: ${paginas}
-Idioma: ${idioma}
-Tono: ${tono}
-Público: ${publico}
+Tema:
+${tema}
 
-Formato:
+Páginas:
+${paginas}
+
+Idioma:
+${idioma}
+
+Tono:
+${tono}
+
+Público:
+${publico}
+
+Autor:
+${autor}
+
+Devuelve este formato:
+
 {
   "capitulos":[
     {
@@ -1154,75 +1170,22 @@ Formato:
 }
 `;
 
-    const respuestaTexto = await ai(env, prompt);
+    const respuesta = await ai(env, prompt);
 
-    if (!respuestaTexto || typeof respuestaTexto !== "string") {
-      throw new Error("AI no devolvió texto válido.");
-    }
+    const plan = JSON.parse(respuesta);
 
-    let respuesta;
-
-    try {
-      respuesta = JSON.parse(respuestaTexto);
-    } catch (e) {
-      throw new Error("AI devolvió JSON inválido.");
-    }
-
-    if (!respuesta.capitulos) {
-      throw new Error("Plan inválido.");
-    }
-
-    const id = crypto.randomUUID();
-
-    const plan = {
-
-      // 📦 METADATOS COMPLETOS (LO QUE PEDISTE AHORA)
-      metadata: {
-        id,
-        tema,
-        autor,
-        idioma,
-        tono,
-        publico,
-        estado: "planificado",
-        fechaCreacion: new Date().toISOString()
-      },
-
-      // 📘 ESTRUCTURA DEL LIBRO
-      estructura: {
-        paginasTotales: paginas,
-        capitulos: respuesta.capitulos.length,
-        paginasPorCapitulo: Math.floor(paginas / respuesta.capitulos.length),
-        capitulos: respuesta.capitulos.map(c => ({
-          numero: c.numero,
-          titulo: c.titulo,
-          objetivo: c.objetivo,
-          paginas: c.paginas,
-          estado: "pendiente"
-        }))
-      }
-
-    };
-
-    try {
-      await env.EBOOKS.put(
-        `ebooks/${id}.json`,
-        JSON.stringify(plan)
-      );
-    } catch (err) {
-      console.log("R2 ERROR:", err);
-    }
-console.log("✅ Plan generado correctamente");
     return json({
-success: true,
- plan
-});
+      success: true,
+      plan
+    });
 
   } catch (error) {
 
-    return {
-  success: false,
-  error: error.message
-};
+    return json({
+      success: false,
+      error: error.message
+    }, 500);
+
   }
+
 }

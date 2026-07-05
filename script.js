@@ -985,51 +985,46 @@ if (!guardar.ok) {
 // =====================================================
 
 async function generarPlan() {
-//logMonitor("🚀 Entró a generarPlan()");
 
   try {
 
-    document.getElementById("estadoPlan").innerText = "🔵 Ejecutando...";
+    document.getElementById("estadoPlan").innerText = "🔵 Generando plan...";
 
-    
-    const guardar = await fetch(WORKER_URL, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-  action: "planificar-ebook",
-  tema: document.getElementById("temaEbook").value,
-  paginas: Number(document.getElementById("paginasEbook").value),
-  idioma: document.getElementById("idiomaEbook").value,
-  tono: document.getElementById("tonoEbook").value,
-  publico: document.getElementById("publicoEbook").value,
-  autor: document.getElementById("autorEbook").value
-})
-});
+    const res = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        action: "planificar-ebook",
+        tema: document.getElementById("temaEbook").value,
+        paginas: Number(document.getElementById("paginasEbook").value),
+        idioma: document.getElementById("idiomaEbook").value,
+        tono: document.getElementById("tonoEbook").value,
+        publico: document.getElementById("publicoEbook").value,
+        autor: document.getElementById("autorEbook").value
+      })
+    });
+
     const result = await res.json();
-    if (!result.ok) {
-  document.getElementById("estadoPlan").innerText = "🔴 Error";
-//  logMonitor("❌ " + (result.error || "Error desconocido"));
-  return;
-}
 
-    const plan = result.data;
-    window.currentEbookId = plan.id;
+    if (!result.success) {
+      document.getElementById("estadoPlan").innerText = "🔴 " + result.error;
+      return;
+    }
 
-    document.getElementById("estadoPlan").innerText = "🟢 Listo";
+    document.getElementById("estadoPlan").innerText = "🟢 Plan generado";
 
-   // logMonitor("✔ Plan generado");
-    //logMonitor("📦 ID: " + plan.id);
- 
-    return plan;
+    document.getElementById("planEbook").innerHTML =
+      JSON.stringify(result.plan, null, 2);
 
   } catch (err) {
 
-    document.getElementById("estadoPlan").innerText = "🔴 Error";
-    logMonitor("❌ " + err.message);
+    document.getElementById("estadoPlan").innerText = "🔴 " + err.message;
     console.error(err);
+
   }
+
 }
 
 // MENÚ MÓVIL
