@@ -1010,9 +1010,11 @@ async function generarPlan() {
 
     const result = await res.json();
 
-    if (!result || !result.ok) {
-      throw new Error(result?.error || "Error desconocido");
-    }
+    if (!result.ok) {
+  document.getElementById("estadoPlan").innerText = "🔴 Error";
+  logMonitor("❌ " + (result.error || "Error desconocido"));
+  return;
+}
 
     const plan = result.data;
 
