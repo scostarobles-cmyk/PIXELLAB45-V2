@@ -1111,7 +1111,7 @@ console.log("Base64 length:", data.imagen?.length);
 // =====================================================
 
 async function planificarEbook(data, env) {
-
+console.log("➡️ Entró a planificarEbook");
   try {
 
     const {
@@ -1212,7 +1212,7 @@ Formato:
     } catch (err) {
       console.log("R2 ERROR:", err);
     }
-
+console.log("✅ Plan generado correctamente");
     return {
       ok: true,
       data: plan
@@ -1225,4 +1225,4 @@ Formato:
       error: error.message
     };
   }
-} 
+}
