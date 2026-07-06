@@ -423,9 +423,7 @@ async function listarCategoria(env, data, json) {
   });
 
 }
-// =====================================
-// GENERAR PROMPTS
-// =====================================
+
 // =====================================
 // GENERADOR DE PROMPTS (GEMINI)
 // =====================================
@@ -798,13 +796,20 @@ Generate professional scripts.
 ${reglas}
 
 GENERAL RULES:
-- Return ONLY the script.
+- - Return ONLY a real script.
+- Must include spoken lines (dialogue or narration).
+- Must NOT be explanatory text.
+- Must NOT describe what ChatGPT is or how to use it.
+- Must feel like a production-ready script for audio/video.
 - Never explain.
 - Never apologize.
 - Never use markdown.
 - Never add introductions.
 - Never add conclusions.
 - The script must be coherent from beginning to end.
+- NEVER write instructional or educational explanations about AI or tools.
+- NEVER write meta content about ChatGPT, OpenAI, or how to use AI.
+- ALWAYS write as if it is a real production script (voice, narration, dialogue or scene).
 
 Topic:
 ${data.tema}
