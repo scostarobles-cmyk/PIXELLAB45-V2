@@ -1249,11 +1249,7 @@ async function guardarPlanR2(data, plan, env) {
 
 }
 async function generarIndice(ebook) {
-
-  
-
-  
-
+const ebookId = ebook.id;
   const indice = ebook.plan.capitulos.map(c => ({
     numero: c.numero,
     titulo: c.titulo,
