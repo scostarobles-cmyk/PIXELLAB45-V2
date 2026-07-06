@@ -1125,49 +1125,54 @@ console.log("Base64 length:", data.imagen?.length);
 // FUNCIÓN: generarPlanEbook()
 // =====================================================
 async function generarPlan(data, env) {
-
   const paginas = Number(data.paginas);
+  const tema = data.tema;
+  const autor = data.autor;
 
-  // reglas base: capítulos dinámicos (15 páginas promedio)
+  // Generamos un ID único basado en el título
+  const id = `${Date.now()}-${tema.replace(/\s+/g, "-").toLowerCase()}`;
+
+  // Cálculo de capítulos (regla: 15 páginas promedio)
   let capitulos = Math.round(paginas / 15);
-
   if (capitulos < 3) capitulos = 3;
 
   const base = Math.floor(paginas / capitulos);
   let resto = paginas % capitulos;
 
-  const distribucion = [];
+  const capitulosOrdenados = [];
 
   for (let i = 0; i < capitulos; i++) {
     let paginasCap = base;
-
     if (resto > 0) {
-      paginasCap += 1;
+      paginasCap++;
       resto--;
     }
-
-    distribucion.push({
+    capitulosOrdenados.push({
       capitulo: i + 1,
-      paginas: paginasCap
+      titulo: `Capítulo ${i + 1}`,
+      paginas: paginasCap,
+      descripcion: `Parte ${i + 1} del libro`
     });
   }
 
   const plan = {
-    action: "generar-plan",
-    tema: data.tema,
-    autor: data.autor,
-    idioma: data.idioma,
-    tono: data.tono,
-    publico: data.publico,
+    id: id,
+    titulo: tema,
+    nombre: autor,
     paginasTotales: paginas,
-    capitulos: capitulos,
-    distribucion: distribucion,
-    creado: new Date().toISOString()
+    cantidadCapitulos: capitulos,
+    capitulos: capitulosOrdenados,
+    metadatos: {
+      creado: new Date().toISOString(),
+      motor: "PIXELLAB45 eBook Engine",
+      version: "1.0"
+    }
   };
 
-  const key = `ebooks/${Date.now()}-plan.json`;
+  // Guardar en R2 (bucket eBooks en mayúscula)
+  const key = `eBooks/${id}.json`;
 
-  await env.R2_BUCKET.put(key, JSON.stringify(plan), {
+  await env.EBOOKS.put(key, JSON.stringify(plan), {
     httpMetadata: {
       contentType: "application/json"
     }
@@ -1175,8 +1180,8 @@ async function generarPlan(data, env) {
 
   return new Response(JSON.stringify({
     ok: true,
-    key,
-    plan
+    id: id,
+    plan: plan
   }), {
     headers: { "Content-Type": "application/json" }
   });
