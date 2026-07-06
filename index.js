@@ -1120,7 +1120,7 @@ async function planificarEbook(data, env, json) {
 
 let ebook = await guardarPlanR2(data, plan, env);
 
-ebook = await generarIndice(ebook);
+ebook = await generarIndice(ebook,env);
 
 ebook = await guardarEbookR2(ebook, env);
 
@@ -1248,30 +1248,35 @@ async function guardarPlanR2(data, plan, env) {
   return ebook;
 
 }
-async function generarIndice(ebook) {
-const ebookId = ebook.id;
-  const indice = ebook.plan.capitulos.map(c => ({
-    numero: c.numero,
-    titulo: c.titulo,
-    paginas: c.paginas
-  }));
+async function generarIndice(ebook, env) {
+  try {
+    const indice = ebook.plan.capitulos.map(c => ({
+      numero: c.numero,
+      titulo: c.titulo,
+      paginas: c.paginas
+    }));
 
-  ebook.indice = indice;
-  ebook.estado = "indice_generado";
-  ebook.actualizadoEn = new Date().toISOString();
+    ebook.indice = indice;
+    ebook.estado = "indice_generado";
+    ebook.actualizadoEn = new Date().toISOString();
 
-  await env.EBOOKS.put(
-    `ebooks/${ebookId}.json`,
-    JSON.stringify(ebook, null, 2),
-    {
-      httpMetadata: {
-        contentType: "application/json"
+    const ebookId = ebook.id;
+
+    await env.EBOOKS.put(
+      `ebooks/${ebookId}.json`,
+      JSON.stringify(ebook, null, 2),
+      {
+        httpMetadata: {
+          contentType: "application/json"
+        }
       }
-    }
-  );
+    );
 
-  return ebook;
-
+    return ebook;
+  } catch (error) {
+    console.error("Error al generar índice:", error);
+    throw error;
+  }
 }
 async function guardarEbookR2(ebook, env) {
 
