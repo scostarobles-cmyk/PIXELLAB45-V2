@@ -1127,100 +1127,105 @@ console.log("Base64 length:", data.imagen?.length);
 // =====================================================
 async function generarPlan(data, env) {
 
-  // Generar el plan con IA
-  const plan = await generarPlanEbook(data, env);
+  try {
 
-  // Crear el ebook
-  const ebook = {
-    id: crypto.randomUUID(),
-    fecha: new Date().toISOString(),
+    const prompt = `
+Eres un editor profesional especializado en la creación de ebooks.
 
-    tema: data.tema,
-    paginas: data.paginas,
-    idioma: data.idioma,
-    tono: data.tono,
-    publico: data.publico,
-    autor: data.autor,
+Tu única tarea es generar el PLAN editorial del ebook.
 
-    estado: "plan_generado",
+NO escribas el contenido del ebook.
 
-    plan
-  };
+Datos:
 
-  // Guardar en R2
-  await env.EBOOKS.put(
-  `ebooks/planes/${ebook.id}.json`,
-  JSON.stringify(ebook, null, 2),
-  {
-    httpMetadata: {
-      contentType: "application/json"
-    }
-  }
-);
+Tema: ${data.tema}
+Autor: ${data.autor}
+Idioma: ${data.idioma}
+Público objetivo: ${data.publico}
+Tono: ${data.tono}
+Cantidad total de páginas: ${data.paginas}
 
-  return {
-    success: true,
-    ebook
-  };
+Reglas:
 
-}
-async function guardarPlanR2(data, plan, env) {
+- Diseña una estructura lógica y profesional.
+- Divide el ebook en los capítulos necesarios.
+- Distribuye EXACTAMENTE ${data.paginas} páginas entre todos los capítulos.
+- Cada capítulo debe contener:
+  - numero
+  - titulo
+  - objetivo
+  - paginas
+- Antes de responder verifica que la suma de páginas sea exactamente ${data.paginas}.
+- NO escribas introducción.
+- NO escribas índice.
+- NO escribas legales.
+- NO escribas contenido.
+- Devuelve EXCLUSIVAMENTE JSON válido.
 
-  const id = crypto.randomUUID();
+Formato:
 
-  const ebook = {
-    id,
-    fecha: new Date().toISOString(),
-    tema: data.tema,
-    paginas: data.paginas,
-    idioma: data.idioma,
-    tono: data.tono,
-    publico: data.publico,
-    autor: data.autor,
-    estado: "plan_generado",
-    plan
-  };
-
-  await env.EBOOKS.put(
-  `ebooks/${id}.json`,
-  JSON.stringify(ebook, null, 2),
-  {
-    httpMetadata: {
-      contentType: "application/json"
-    }
-  }
-);
-
-  return ebook;
-
-}
-async function generarIndice(ebook) {
-
-  ebook.indice = ebook.plan.capitulos.map(c => ({
-    numero: c.numero,
-    titulo: c.titulo,
-    paginas: c.paginas
-  }));
-
-  ebook.estado = "indice_generado";
-  ebook.actualizadoEn = new Date().toISOString();
-
-  console.log("Índice generado:", ebook.indice.length);
-
-  return ebook;
-
-}
-async function guardarEbookR2(ebook, env) {
-
-  await env.EBOOKS.put(
-    `ebooks/${ebook.id}.json`,
-    JSON.stringify(ebook, null, 2),
+{
+  "capitulos":[
     {
-      httpMetadata: {
-        contentType: "application/json"
-      }
+      "numero":1,
+      "titulo":"",
+      "objetivo":"",
+      "paginas":0
     }
-  );
+  ]
+}
+`;
 
-  return ebook;
+    // Llamada al cerebro
+    const respuesta = await llamarIA({
+      env,
+      prompt
+    });
+
+    const plan = JSON.parse(limpiarRespuestaJSON(respuesta));
+
+    // Crear el ebook
+    const ebook = {
+      id: crypto.randomUUID(),
+      fecha: new Date().toISOString(),
+
+      tema: data.tema,
+      autor: data.autor,
+      idioma: data.idioma,
+      publico: data.publico,
+      tono: data.tono,
+      paginas: data.paginas,
+
+      estado: "plan_generado",
+
+      plan
+    };
+
+    // Guardar en R2
+    await env.EBOOKS.put(
+      `ebooks/planes/${ebook.id}.json`,
+      JSON.stringify(ebook, null, 2),
+      {
+        httpMetadata: {
+          contentType: "application/json"
+        }
+      }
+    );
+
+    return {
+      success: true,
+      ebook
+    };
+
+  } catch (error) {
+
+    console.error(error);
+
+    return {
+      success: false,
+      error: error.message
+    };
+
+  }
+
 }
