@@ -1143,8 +1143,7 @@ Devuelve únicamente JSON válido.
 
 No escribas Markdown.
 No escribas \`\`\`json.
-No escribas \`\`\`.
-No agregues explicaciones.
+No agregues texto.
 
 Genera el plan de un ebook.
 
@@ -1175,16 +1174,21 @@ El formato debe ser EXACTAMENTE:
         max_tokens: 5000
       }
     );
-return json({
-  success: true,
-  respuesta: respuesta
-});
-    const texto = respuesta.response
-      .replace(/^```json\s*/i, "")
-      .replace(/\s*```$/i, "")
-      .trim();
 
-    const planIA = JSON.parse(texto);
+    // Extraer solo el primer bloque JSON
+    const texto = respuesta.response.trim();
+
+    // Buscar el primer `{` y el primer `}` para asegurar el JSON
+    const inicio = texto.indexOf('{');
+    const fin = texto.lastIndexOf('}');
+
+    if (inicio === -1 || fin === -1) {
+      throw new Error("JSON no válido en la respuesta.");
+    }
+
+    const jsonStr = texto.slice(inicio, fin + 1);
+
+    const planIA = JSON.parse(jsonStr);
 
     return json({
       success: true,
