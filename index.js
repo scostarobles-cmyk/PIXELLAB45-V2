@@ -1128,28 +1128,12 @@ async function generarPlan(data, env, json) {
 
   try {
 
-    const tema = (data.tema || "").trim();
-    const paginas = Number(data.paginas || 0);
+    return json({
+      success: true,
 
-    if (!tema) {
-      return Response.json({
-        ok: false,
-        error: "Sin tema"
-      });
-    }
+      mensaje: "generarPlan funcionando",
 
-    if (paginas <= 0) {
-      return Response.json({
-        ok: false,
-        error: "Cantidad de páginas inválida"
-      });
-    }
-
-    return Response.json({
-
-      ok: true,
-
-      titulo: tema,
+      titulo: data.tema,
 
       autor: data.autor,
 
@@ -1159,34 +1143,20 @@ async function generarPlan(data, env, json) {
 
       publico: data.publico,
 
-      paginas: paginas,
-
-      cantidadCapitulos: 8,
+      paginas: data.paginas,
 
       capitulos: [
-
         {
           numero: 1,
-          titulo: "Capítulo 1",
-          paginas: 12,
-          descripcion: "Prueba"
-        },
-
-        {
-          numero: 2,
-          titulo: "Capítulo 2",
-          paginas: 13,
-          descripcion: "Prueba"
+          titulo: "Capítulo 1"
         }
-
       ]
-
     });
 
   } catch (err) {
 
-    return Response.json({
-      ok: false,
+    return json({
+      success: false,
       error: err.message
     });
 
