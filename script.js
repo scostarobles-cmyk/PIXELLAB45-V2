@@ -984,8 +984,38 @@ if (!guardar.ok) {
 // Iniciar la generación del Plan.
 // =====================================================
 
-function generarPlan() {
-    alert("Entró a generarPlan()");
+async function generarPlan() {
+
+    alert("1 - Entró a generarPlan");
+
+    const payload = {
+        action: "generar-plan",
+        tema: document.getElementById("temaEbook").value,
+        paginas: Number(document.getElementById("paginasEbook").value),
+        idioma: document.getElementById("idiomaEbook").value,
+        tono: document.getElementById("tonoEbook").value,
+        publico: document.getElementById("publicoEbook").value,
+        autor: document.getElementById("autorEbook").value
+    };
+
+    alert("2 - Payload creado");
+
+    const res = await fetch(WORKER_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+    });
+
+    alert("3 - Volvió del fetch");
+
+    const result = await res.json();
+
+    alert("4 - JSON recibido");
+
+    console.log(result);
+
 }
 
 // MENÚ MÓVIL

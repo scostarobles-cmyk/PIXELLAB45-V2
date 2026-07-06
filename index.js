@@ -91,7 +91,19 @@ try {
       return guardarImagen(data, env, json);
 
     case "generar-plan":
-    return await generarPlan(json, env);
+    case "generar-plan":
+
+    return new Response(
+        JSON.stringify({
+            success: true,
+            mensaje: "Llegó al Worker"
+        }),
+        {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }
+    );
 
   case "generar-indice":
     return await generarIndice(json, env);
@@ -1125,125 +1137,3 @@ console.log("Base64 length:", data.imagen?.length);
 // PIXELLAB45 - EBOOK V3
 // FUNCIÓN: generarPlanEbook()
 // =====================================================
-async function generarPlan(data, env) {
-
-  try {
-
-    const prompt = `
-Eres un editor profesional especializado en la creación de ebooks.
-
-Tu única tarea es generar el PLAN editorial del ebook.
-
-NO escribas el contenido del ebook.
-
-Datos:
-
-Tema: ${data.tema}
-Autor: ${data.autor}
-Idioma: ${data.idioma}
-Público objetivo: ${data.publico}
-Tono: ${data.tono}
-Cantidad total de páginas: ${data.paginas}
-
-Reglas:
-
-- Diseña una estructura lógica y profesional.
-- Divide el ebook en los capítulos necesarios.
-- Distribuye EXACTAMENTE ${data.paginas} páginas entre los capítulos.
-- Cada capítulo debe contener:
-  - numero
-  - titulo
-  - objetivo
-  - paginas
-- Antes de responder verifica que la suma de páginas sea exactamente ${data.paginas}.
-- NO escribas introducción.
-- NO escribas índice.
-- NO escribas legales.
-- NO escribas contenido.
-- Devuelve EXCLUSIVAMENTE JSON válido.
-
-Formato:
-
-{
-  "capitulos":[
-    {
-      "numero":1,
-      "titulo":"",
-      "objetivo":"", 
-      "paginas":0
-    }
-  ]
-}
-`;
-
-    // Llamada al cerebro
-    const respuesta = await ai({
-      env,
-      prompt
-    });
-
-    if (!respuesta) {
-      throw new Error("No se recibió respuesta válida de la IA.");
-    }
-
-    let plan;
-    try {
-      plan = JSON.parse(limpiarRespuestaJSON(respuesta));
-    } catch (e) {
-      throw new Error("La IA devolvió un JSON inválido.");
-    }
-
-    // Crear el ebook con metadatos
-    const ebook = {
-      id: crypto.randomUUID(),
-      fecha: new Date().toISOString(),
-
-      tema: data.tema,
-      autor: data.autor,
-      idioma: data.idioma,
-      publico: data.publico,
-      tono: data.tono,
-      paginas: data.paginas,
-
-      estado: "plan_generado",
-
-      plan
-    };
-
-    // Guardar en R2
-    const key = `ebooks/planes/${ebook.id}.json`;
-    const res = await env.EBOOKS.put(
-      key,
-      JSON.stringify(ebook, null, 2),
-      {
-        httpMetadata: {
-          contentType: "application/json"
-        }
-      }
-    );
-
-    return {
-      success: true,
-      ebook
-    };
-
-  } catch (error) {
-    console.error(error);
-    return {
-      success: false,
-      error: error.message
-    };
-  }
-
-}
-
-// Función auxiliar para limpiar la respuesta de la IA
-function limpiarRespuestaJSON(respuesta) {
-  // En caso de que la IA responda con algún texto no deseado, recortamos cualquier línea no válida
-  // Por ejemplo, eliminamos líneas al principio o final que no sean JSON
-  // (Asegurate de ajustar esto según tu IA. Aquí asumo que la respuesta es pura JSON o un JSON envuelto en texto)
-  // Si la IA responde con texto y no JSON, podrías ajustar la lógica aquí
-  const lines = respuesta.trim().split('\n');
-  const jsonLines = lines.filter(line => line.trim().startsWith('{') || line.trim().startsWith('['));
-  return jsonLines.join('\n');
-}
