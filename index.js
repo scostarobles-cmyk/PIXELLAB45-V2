@@ -127,6 +127,51 @@ try {
   }
 };
 // =====================================
+// GEMINI IA 
+// =====================================
+async function gemini(env, prompt, modelo = "gemini-2.5-flash") {
+
+  const respuesta = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${modelo}:generateContent?key=${env.GEMINI_API_KEY}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        contents: [
+          {
+            parts: [
+              {
+                text: prompt
+              }
+            ]
+          }
+        ]
+      })
+    }
+  );
+
+  if (!respuesta.ok) {
+    const error = await respuesta.text();
+    throw new Error(`Gemini Error: ${error}`);
+  }
+
+  const data = await respuesta.json();
+
+  if (
+    !data.candidates ||
+    !data.candidates.length ||
+    !data.candidates[0].content ||
+    !data.candidates[0].content.parts ||
+    !data.candidates[0].content.parts.length
+  ) {
+    throw new Error("Gemini no devolvió contenido.");
+  }
+
+  return data.candidates[0].content.parts[0].text.trim();
+}
+// =====================================
 // CEREBRO IA
 // =====================================
 
@@ -226,55 +271,7 @@ async function generarIdeas(data, env, json) {
   if (cantidad > 20)
     cantidad = 20;
 
-  const respuesta = await fetch(
-  `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${env.GEMINI_API_KEY}`,
-  {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      contents: [
-        {
-          parts: [
-            {
-              text: `
-Generate EXACTLY ${cantidad} ideas. Be strict: if I request one idea, return only one. If I request three, return exactly three. Do not add more or fewer. Each idea must be a short concept, between 3 and 8 words. Return ONLY the numbered list.
-
-CRITICAL RULES:
-
-- Return ONLY ideas.
-- An idea is a short concept.
-- NOT a story.
-- NOT a paragraph.
-- NOT a description.
-- Each idea must contain between 3 and 8 words.
-- Be specific.
-- Be creative.
-- Do not repeat ideas.
-- Do not invent names.
-- Do not add explanations.
-
-Format:
-
-1 - Idea
-
-2 - Idea
-
-3 - Idea
-
-Return ONLY the numbered list.
-
-Topic:
-${tema}
-`
-            }
-          ]
-        }
-      ]
-    })
-  }
-);
+  const respuesta = await gemini(env, prompt);
 
 if (!respuesta.ok) {
   throw new Error(await respuesta.text());
