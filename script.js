@@ -985,74 +985,40 @@ if (!guardar.ok) {
 // =====================================================
 
 async function generarPlan() {
-  alert("BTN OK: generarPlan ejecutado");
 
-  const payload = {
-    action: "generar-plan",
-    tema: document.getElementById("temaEbook").value,
-    paginas: Number(document.getElementById("paginasEbook").value),
-    idioma: document.getElementById("idiomaEbook").value,
-    tono: document.getElementById("tonoEbook").value,
-    publico: document.getElementById("publicoEbook").value,
-    autor: document.getElementById("autorEbook").value
-  };
+    const payload = {
+        action: "generar-plan",
+        tema: document.getElementById("temaEbook").value,
+        paginas: Number(document.getElementById("paginasEbook").value),
+        idioma: document.getElementById("idiomaEbook").value,
+        tono: document.getElementById("tonoEbook").value,
+        publico: document.getElementById("publicoEbook").value,
+        autor: document.getElementById("autorEbook").value
+    };
 
-  console.log("📤 ENVIANDO AL WORKER:", payload);
-
-  // Mostrar en pantalla lo que se envía
-  const monitor = document.getElementById("monitorIA");
-  monitor.innerHTML += `<p>📤 Enviando: ${JSON.stringify(payload)}</p>`;
-
-  try {
-    const res = await fetch(WORKER_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-
-    console.log("📡 STATUS:", res.status);
-
-    const text = await res.text();
-    console.log("📥 RESPUESTA RAW:", text);
-
-    monitor.innerHTML += `<p>📥 Respuesta RAW: ${text}</p>`;
-
-    let data;
     try {
-      data = JSON.parse(text);
-    } catch (e) {
-      monitor.innerHTML += `<p style="color:red;">❌ Error JSON</p>`;
-      return;
+
+        const res = await fetch(WORKER_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const plan = await res.json();
+
+        document.getElementById("monitorIA").innerHTML =
+            "<pre>" + JSON.stringify(plan, null, 2) + "</pre>";
+
+    } catch (err) {
+
+        document.getElementById("monitorIA").innerHTML =
+            "<b>Error:</b> " + err.message;
+
     }
 
-    console.log("✅ RESPUESTA PARSEADA:", data);
-
-    monitor.innerHTML += `
-      <p style="color:lime;">
-        ✅ Plan recibido: capítulos ${data.plan?.capitulos}
-      </p>
-    `;
-
-    // actualizar estado UI
-    document.getElementById("estadoPlan").innerText =
-      "🟢 Plan generado";
-
-  } catch (err) {
-    console.error("❌ ERROR FETCH:", err);
-    monitor.innerHTML += `<p style="color:red;">❌ Error: ${err.message}</p>`;
-  }
 }
-// MENÚ MÓVIL
-function toggleMenu() {
-
-
-  const menu =
-    document.querySelector(".nav-links");
-
-  menu.classList.toggle("active");
-
-}
-
 
 // INICIO
 window.onload = () => {

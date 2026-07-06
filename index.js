@@ -7,7 +7,7 @@ const CORS_HEADERS = {
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Content-Type": "application/json"
 };
- 
+
 export default {
   async fetch(request, env) {
 
@@ -1124,65 +1124,70 @@ console.log("Base64 length:", data.imagen?.length);
 // PIXELLAB45 - EBOOK V3
 // FUNCIÓN: generarPlanEbook()
 // =====================================================
-async function generarPlan(data, env) {
-  const paginas = Number(data.paginas);
-  const tema = data.tema;
-  const autor = data.autor;
+async function generarPlan(data) {
 
-  // Generamos un ID único basado en el título
-  const id = `${Date.now()}-${tema.replace(/\s+/g, "-").toLowerCase()}`;
+    const paginas = Number(data.paginas);
 
-  // Cálculo de capítulos (regla: 15 páginas promedio)
-  let capitulos = Math.round(paginas / 15);
-  if (capitulos < 3) capitulos = 3;
+    let cantidadCapitulos = Math.round(paginas / 15);
 
-  const base = Math.floor(paginas / capitulos);
-  let resto = paginas % capitulos;
+    if (cantidadCapitulos < 3)
+        cantidadCapitulos = 3;
 
-  const capitulosOrdenados = [];
+    const paginasBase = Math.floor(paginas / cantidadCapitulos);
+    let resto = paginas % cantidadCapitulos;
 
-  for (let i = 0; i < capitulos; i++) {
-    let paginasCap = base;
-    if (resto > 0) {
-      paginasCap++;
-      resto--;
+    const capitulos = [];
+
+    let pagina = 1;
+
+    for (let i = 1; i <= cantidadCapitulos; i++) {
+
+        let pags = paginasBase;
+
+        if (resto > 0) {
+            pags++;
+            resto--;
+        }
+
+        capitulos.push({
+            numero: i,
+            titulo: `Capítulo ${i}`,
+            desde: pagina,
+            hasta: pagina + pags - 1,
+            paginas: pags,
+            descripcion: ""
+        });
+
+        pagina += pags;
+
     }
-    capitulosOrdenados.push({
-      capitulo: i + 1,
-      titulo: `Capítulo ${i + 1}`,
-      paginas: paginasCap,
-      descripcion: `Parte ${i + 1} del libro`
+
+    return new Response(JSON.stringify({
+
+        ok: true,
+
+        titulo: data.tema,
+
+        autor: data.autor,
+
+        idioma: data.idioma,
+
+        tono: data.tono,
+
+        publico: data.publico,
+
+        paginas: paginas,
+
+        cantidadCapitulos: cantidadCapitulos,
+
+        capitulos: capitulos
+
+    }), {
+
+        headers: {
+            "Content-Type": "application/json"
+        }
+
     });
-  }
 
-  const plan = {
-    id: id,
-    titulo: tema,
-    nombre: autor,
-    paginasTotales: paginas,
-    cantidadCapitulos: capitulos,
-    capitulos: capitulosOrdenados,
-    metadatos: {
-      creado: new Date().toISOString(),
-      motor: "PIXELLAB45 eBook Engine",
-      version: "1.0"
-    }
-  };
-
-  // Guardar en R2 (bucket eBooks en mayúscula)
-/*  const key = `eBooks/${id}.json`;
-
-  await env.EBOOKS.put(key, JSON.stringify(plan), {
-    httpMetadata: {
-      contentType: "application/json"
-    }
-  });*/
-
-  return new Response(JSON.stringify({
-    ok: true,
-    id: id,
-    plan: plan
-  }), {
-    headers: { "Content-Type": "application/json" }
-  });
 }
