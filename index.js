@@ -701,25 +701,45 @@ async function guardarVisuales(data, env, json) {
 // =====================================
 // GENERADOR DE GUIONES (GEMINI)
 // =====================================
+// =====================================
+// GENERADOR DE GUIONES (GEMINI PRO)
+// =====================================
 async function generarGuion(data, env, json) {
+
+  const formato = (data.formato || "").toLowerCase();
 
   let reglas = "";
 
-  switch ((data.formato || "").toLowerCase()) {
+  switch (formato) {
 
     case "automático":
-      reglas = `Choose automatically the best script style according to the topic.`;
+      reglas = `
+Choose automatically the best script style according to the topic.
+`;
       break;
 
     case "tiktok / reels":
       reglas = `
 Write a viral TikTok/Reels script.
 
-Rules:
-- Hook in first 3 seconds.
-- Fast pacing.
-- Short dialogue.
-- Strong ending.
+STRICT STRUCTURE (mandatory):
+
+1. HOOK (0–3 seconds)
+- Must be direct, shocking or curiosity-driven
+- No poetry, no abstract phrases
+
+2. BODY (fast pacing)
+- 2 to 5 short lines max
+- Clear idea or transformation
+- Simple language
+
+3. ENDING
+- Strong closing line OR CTA
+
+FORMAT RULES:
+- Short lines
+- Optional VOICE / MUSIC directions allowed
+- No intros, no storytelling fluff
 `;
       break;
 
@@ -727,12 +747,16 @@ Rules:
       reglas = `
 Write a YouTube video script.
 
-Rules:
-- Strong introduction.
-- Clear structure.
-- Development.
-- Conclusion.
-- Natural narration.
+STRUCTURE (mandatory):
+
+1. INTRO (Hook + context)
+2. DEVELOPMENT (clear explanation or storytelling)
+3. CONCLUSION (summary + closing impact)
+
+RULES:
+- Natural narration
+- No unnecessary fluff
+- Clear progression of ideas
 `;
       break;
 
@@ -740,12 +764,16 @@ Rules:
       reglas = `
 Write a professional cinematic screenplay.
 
-Rules:
-- Divide into scenes.
-- Camera directions.
-- Character actions.
-- Natural dialogue.
-- Cinematic pacing.
+FORMAT:
+- Scene-based structure (SCENE 1, SCENE 2...)
+- Action descriptions
+- Character dialogue
+- Optional camera directions
+
+RULES:
+- Cinematic tone
+- No marketing language
+- No abstract poetry unless required by scene
 `;
       break;
 
@@ -753,10 +781,14 @@ Rules:
       reglas = `
 Write a podcast script.
 
-Rules:
-- Conversational tone.
-- Natural dialogue.
-- Audio-focused narration.
+FORMAT:
+- Host narration
+- Optional dialogue between speakers
+- Natural conversational flow
+
+RULES:
+- Audio-focused
+- No stage directions unless necessary
 `;
       break;
 
@@ -764,11 +796,14 @@ Rules:
       reglas = `
 Write a novel chapter.
 
-Rules:
-- Narrative style.
-- Rich descriptions.
-- Character emotions.
-- No screenplay format.
+FORMAT:
+- Narrative prose
+
+RULES:
+- Rich descriptions
+- Character emotions
+- Story-driven flow
+- No screenplay format
 `;
       break;
 
@@ -776,16 +811,21 @@ Rules:
       reglas = `
 Write a theater play.
 
-Rules:
-- Characters.
-- Dialogues.
-- Stage directions.
-- Theater format.
+FORMAT:
+- Characters
+- Dialogue
+- Stage directions
+
+RULES:
+- Theatrical structure
+- Clear acts or scenes
 `;
       break;
 
     default:
-      reglas = `Choose automatically the best writing style.`;
+      reglas = `
+Choose automatically the best writing style.
+`;
   }
 
   const prompt = `
@@ -795,21 +835,16 @@ Generate professional scripts.
 
 ${reglas}
 
-GENERAL RULES:
-- - Return ONLY a real script.
-- Must include spoken lines (dialogue or narration).
-- Must NOT be explanatory text.
-- Must NOT describe what ChatGPT is or how to use it.
-- Must feel like a production-ready script for audio/video.
-- Never explain.
-- Never apologize.
-- Never use markdown.
-- Never add introductions.
-- Never add conclusions.
-- The script must be coherent from beginning to end.
-- NEVER write instructional or educational explanations about AI or tools.
-- NEVER write meta content about ChatGPT, OpenAI, or how to use AI.
-- ALWAYS write as if it is a real production script (voice, narration, dialogue or scene).
+GLOBAL RULES:
+- Return ONLY the script.
+- Must include spoken lines (dialogue or narration when applicable).
+- Must feel like a real production-ready script.
+- NEVER write explanations.
+- NEVER write educational/meta content about AI or tools.
+- NEVER mention ChatGPT, OpenAI, or prompt engineering.
+- NEVER use markdown.
+- NEVER add introductions or conclusions outside the script.
+- Be coherent from beginning to end.
 
 Topic:
 ${data.tema}
