@@ -6,8 +6,8 @@ const CORS_HEADERS = {
   "Access-Control-Allow-Headers": "*",
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Content-Type": "application/json"
-}; 
- 
+};
+
 export default {
   async fetch(request, env) {
 
@@ -1117,41 +1117,55 @@ console.log("Base64 length:", data.imagen?.length);
 }
 async function generarImagenGemini(promptText, env) {
 
-  const response = await fetch(
-    "https://generativelanguage.googleapis.com/v1beta/interactions",
-    {
-      method: "POST",
-      headers: {
-        "x-goog-api-key": env.GEMINI_API_KEY,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        model: "gemini-3.1-flash-image",
-        input: [
-          {
-            type: "text",
-            text: promptText
+  if (!env.GEMINI_API_KEY) {
+    throw new Error("Falta GEMINI_API_KEY");
+  }
+
+  let response;
+
+  try {
+
+    response = await fetch(
+      "https://generativelanguage.googleapis.com/v1beta/interactions",
+      {
+        method: "POST",
+        headers: {
+          "x-goog-api-key": env.GEMINI_API_KEY,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          model: "gemini-3.1-flash-image",
+          input: promptText,
+          response_format: {
+            type: "image",
+            aspect_ratio: "1:1",
+            image_size: "1K"
           }
-        ]
-      })
-    }
-  );
+        })
+      }
+    );
+
+  } catch (err) {
+    throw new Error("Fetch Gemini: " + err.message);
+  }
+
+  const texto = await response.text();
 
   if (!response.ok) {
-    const error = await response.text();
-    throw new Error(`Gemini Image Error (${response.status}): ${error}`);
+    throw new Error(`Gemini ${response.status}: ${texto}`);
   }
 
-  const data = await response.json();
+  let data;
 
-  const base64 = data?.output_image?.data;
-
-  if (!base64) {
-    throw new Error("Gemini no devolvió ninguna imagen.");
+  try {
+    data = JSON.parse(texto);
+  } catch {
+    throw new Error("La respuesta de Gemini no es JSON:\n" + texto);
   }
 
-  return base64;
-}
+  console.log("Respuesta Gemini:", data);
+
+ 
 // =====================================================
 // PIXELLAB45 - EBOOK V3
 // FUNCIÓN: generarPlanEbook()
