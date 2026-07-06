@@ -1172,14 +1172,11 @@ No escribas texto fuera del JSON.
       }
     );
 
-    const texto = respuesta.response
-  .replace(/```json/g, "")
-  .replace(/```/g, "")
-  .trim();
-
-const planIA = JSON.parse(texto);
-
     return json({
+  success: true,
+  respuestaIA: respuesta.response
+});
+/*    return json({
       success: true,
 
       titulo: tema,
@@ -1188,7 +1185,7 @@ const planIA = JSON.parse(texto);
       cantidadCapitulos: planIA.cantidadCapitulos,
 
       capitulos: planIA.capitulos
-    });
+    });*/
 
   } catch (err) {
 
