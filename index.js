@@ -92,7 +92,7 @@ try {
 
     
     case "generar-plan":
-  return await generarPlan(data, env);
+  return await generarPlan(data, env,json);
 
   case "generar-indice":
     return await generarIndice(json, env);
@@ -1124,70 +1124,40 @@ console.log("Base64 length:", data.imagen?.length);
 // PIXELLAB45 - EBOOK V3
 // FUNCIÓN: generarPlanEbook()
 // =====================================================
-async function generarPlan(data) {
+async function generarPlan(data, env, json) {
 
-    const paginas = Number(data.paginas);
+  try {
 
-    let cantidadCapitulos = Math.round(paginas / 15);
+    const plan = await generarPlanLibro(
+      {
+        tema: data.tema,
+        paginas: data.paginas,
+        idioma: data.idioma,
+        tono: data.tono,
+        publico: data.publico,
+        autor: data.autor
+      },
+      env
+    );
 
-    if (cantidadCapitulos < 3)
-        cantidadCapitulos = 3;
+    return new Response(JSON.stringify(plan), {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
 
-    const paginasBase = Math.floor(paginas / cantidadCapitulos);
-    let resto = paginas % cantidadCapitulos;
-
-    const capitulos = [];
-
-    let pagina = 1;
-
-    for (let i = 1; i <= cantidadCapitulos; i++) {
-
-        let pags = paginasBase;
-
-        if (resto > 0) {
-            pags++;
-            resto--;
-        }
-
-        capitulos.push({
-            numero: i,
-            titulo: `Capítulo ${i}`,
-            desde: pagina,
-            hasta: pagina + pags - 1,
-            paginas: pags,
-            descripcion: ""
-        });
-
-        pagina += pags;
-
-    }
+  } catch (err) {
 
     return new Response(JSON.stringify({
-
-        ok: true,
-
-        titulo: data.tema,
-
-        autor: data.autor,
-
-        idioma: data.idioma,
-
-        tono: data.tono,
-
-        publico: data.publico,
-
-        paginas: paginas,
-
-        cantidadCapitulos: cantidadCapitulos,
-
-        capitulos: capitulos
-
+      ok: false,
+      error: err.message
     }), {
-
-        headers: {
-            "Content-Type": "application/json"
-        }
-
+      status: 500,
+      headers: {
+        "Content-Type": "application/json"
+      }
     });
+
+  }
 
 }
