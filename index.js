@@ -1117,33 +1117,37 @@ console.log("Base64 length:", data.imagen?.length);
 }
 async function generarImagenGemini(promptText, env) {
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-001:generateImages?key=${env.GEMINI_API_KEY}`;
-
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      prompt: promptText,
-      numberOfImages: 1,
-      outputMimeType: "image/png",
-      aspectRatio: "1:1",
-      personGeneration: "ALLOW_ADULT"
-    })
-  });
+  const response = await fetch(
+    "https://generativelanguage.googleapis.com/v1beta/interactions",
+    {
+      method: "POST",
+      headers: {
+        "x-goog-api-key": env.GEMINI_API_KEY,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: "gemini-3.1-flash-image",
+        input: [
+          {
+            type: "text",
+            text: promptText
+          }
+        ]
+      })
+    }
+  );
 
   if (!response.ok) {
     const error = await response.text();
-    throw new Error(`Gemini Image Error: ${error}`);
+    throw new Error(`Gemini Image Error (${response.status}): ${error}`);
   }
 
   const data = await response.json();
 
-  const base64 = data?.generatedImages?.[0]?.image?.imageBytes;
+  const base64 = data?.output_image?.data;
 
   if (!base64) {
-    throw new Error("No image returned from Gemini");
+    throw new Error("Gemini no devolvió ninguna imagen.");
   }
 
   return base64;
