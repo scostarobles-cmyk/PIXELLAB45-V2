@@ -1172,7 +1172,12 @@ No escribas texto fuera del JSON.
       }
     );
 
-    const planIA = JSON.parse(respuesta.response);
+    const texto = respuesta.response
+  .replace(/```json/g, "")
+  .replace(/```/g, "")
+  .trim();
+
+const planIA = JSON.parse(texto);
 
     return json({
       success: true,
