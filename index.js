@@ -1120,7 +1120,7 @@ async function planificarEbook(data, env, json) {
 
 let ebook = await guardarPlanR2(data, plan, env);
 
-ebook = await generarIndice(ebook,env);
+ebook = await generarIndice(ebook);
 
 ebook = await guardarEbookR2(ebook, env);
 
@@ -1248,15 +1248,11 @@ async function guardarPlanR2(data, plan, env) {
   return ebook;
 
 }
-async function generarIndice(ebookId, env) {
+async function generarIndice(ebook) {
 
-  const obj = await env.EBOOKS.get(`ebooks/${ebookId}.json`);
+  
 
-  if (!obj) {
-    throw new Error("Ebook no encontrado en R2");
-  }
-
-  const ebook = await obj.json();
+  
 
   const indice = ebook.plan.capitulos.map(c => ({
     numero: c.numero,
