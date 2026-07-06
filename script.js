@@ -988,17 +988,7 @@ async function generarPlan() {
 
     alert("1 - Entró a generarPlan");
 
-    const payload = {
-        action: "generar-plan",
-        tema: document.getElementById("temaEbook").value,
-        paginas: Number(document.getElementById("paginasEbook").value),
-        idioma: document.getElementById("idiomaEbook").value,
-        tono: document.getElementById("tonoEbook").value,
-        publico: document.getElementById("publicoEbook").value,
-        autor: document.getElementById("autorEbook").value
-    };
-
-    alert("2 - Payload creado");
+    try {
 
     const res = await fetch(WORKER_URL, {
         method: "POST",
@@ -1016,8 +1006,15 @@ async function generarPlan() {
 
     console.log(result);
 
-}
+} catch (err) {
 
+    alert("ERROR FETCH");
+
+    alert(err.message);
+
+    console.error(err);
+
+}
 // MENÚ MÓVIL
 function toggleMenu() {
 
