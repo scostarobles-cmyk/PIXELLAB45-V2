@@ -6,8 +6,8 @@ const CORS_HEADERS = {
   "Access-Control-Allow-Headers": "*",
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Content-Type": "application/json"
-};  
- 
+};
+
 export default {
   async fetch(request, env) {
 
@@ -1128,34 +1128,66 @@ async function generarPlan(data, env, json) {
 
   try {
 
-    const plan = await generarPlanLibro(
-      {
-        tema: data.tema,
-        paginas: data.paginas,
-        idioma: data.idioma,
-        tono: data.tono,
-        publico: data.publico,
-        autor: data.autor
-      },
-      env
-    );
+    const tema = (data.tema || "").trim();
+    const paginas = Number(data.paginas || 0);
 
-    return new Response(JSON.stringify(plan), {
-      headers: {
-        "Content-Type": "application/json"
-      }
+    if (!tema) {
+      return Response.json({
+        ok: false,
+        error: "Sin tema"
+      });
+    }
+
+    if (paginas <= 0) {
+      return Response.json({
+        ok: false,
+        error: "Cantidad de páginas inválida"
+      });
+    }
+
+    return Response.json({
+
+      ok: true,
+
+      titulo: tema,
+
+      autor: data.autor,
+
+      idioma: data.idioma,
+
+      tono: data.tono,
+
+      publico: data.publico,
+
+      paginas: paginas,
+
+      cantidadCapitulos: 8,
+
+      capitulos: [
+
+        {
+          numero: 1,
+          titulo: "Capítulo 1",
+          paginas: 12,
+          descripcion: "Prueba"
+        },
+
+        {
+          numero: 2,
+          titulo: "Capítulo 2",
+          paginas: 13,
+          descripcion: "Prueba"
+        }
+
+      ]
+
     });
 
   } catch (err) {
 
-    return new Response(JSON.stringify({
+    return Response.json({
       ok: false,
       error: err.message
-    }), {
-      status: 500,
-      headers: {
-        "Content-Type": "application/json"
-      }
     });
 
   }
