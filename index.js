@@ -1149,7 +1149,7 @@ Reglas:
 
 - Diseña una estructura lógica y profesional.
 - Divide el ebook en los capítulos necesarios.
-- Distribuye EXACTAMENTE ${data.paginas} páginas entre todos los capítulos.
+- Distribuye EXACTAMENTE ${data.paginas} páginas entre los capítulos.
 - Cada capítulo debe contener:
   - numero
   - titulo
@@ -1169,7 +1169,7 @@ Formato:
     {
       "numero":1,
       "titulo":"",
-      "objetivo":"",
+      "objetivo":"", 
       "paginas":0
     }
   ]
@@ -1182,9 +1182,18 @@ Formato:
       prompt
     });
 
-    const plan = JSON.parse(limpiarRespuestaJSON(respuesta));
+    if (!respuesta) {
+      throw new Error("No se recibió respuesta válida de la IA.");
+    }
 
-    // Crear el ebook
+    let plan;
+    try {
+      plan = JSON.parse(limpiarRespuestaJSON(respuesta));
+    } catch (e) {
+      throw new Error("La IA devolvió un JSON inválido.");
+    }
+
+    // Crear el ebook con metadatos
     const ebook = {
       id: crypto.randomUUID(),
       fecha: new Date().toISOString(),
@@ -1202,8 +1211,9 @@ Formato:
     };
 
     // Guardar en R2
-    await env.EBOOKS.put(
-      `ebooks/planes/${ebook.id}.json`,
+    const key = `ebooks/planes/${ebook.id}.json`;
+    const res = await env.EBOOKS.put(
+      key,
       JSON.stringify(ebook, null, 2),
       {
         httpMetadata: {
@@ -1218,14 +1228,22 @@ Formato:
     };
 
   } catch (error) {
-
     console.error(error);
-
     return {
       success: false,
       error: error.message
     };
-
   }
 
+}
+
+// Función auxiliar para limpiar la respuesta de la IA
+function limpiarRespuestaJSON(respuesta) {
+  // En caso de que la IA responda con algún texto no deseado, recortamos cualquier línea no válida
+  // Por ejemplo, eliminamos líneas al principio o final que no sean JSON
+  // (Asegurate de ajustar esto según tu IA. Aquí asumo que la respuesta es pura JSON o un JSON envuelto en texto)
+  // Si la IA responde con texto y no JSON, podrías ajustar la lógica aquí
+  const lines = respuesta.trim().split('\n');
+  const jsonLines = lines.filter(line => line.trim().startsWith('{') || line.trim().startsWith('['));
+  return jsonLines.join('\n');
 }
