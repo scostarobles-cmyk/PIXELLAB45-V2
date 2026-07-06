@@ -7,7 +7,7 @@ const CORS_HEADERS = {
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Content-Type": "application/json"
 };
- 
+
 export default {
   async fetch(request, env) {
 
@@ -1175,7 +1175,10 @@ El formato debe ser EXACTAMENTE:
         max_tokens: 5000
       }
     );
-
+return json({
+  success: true,
+  respuesta: respuesta
+});
     const texto = respuesta.response
       .replace(/^```json\s*/i, "")
       .replace(/\s*```$/i, "")
