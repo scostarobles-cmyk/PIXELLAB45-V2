@@ -1037,19 +1037,16 @@ CRITICAL RULES:
 ${promptVisual}
 `;
 
-    const imageBytes = await env.AI.run(
-      "@cf/stabilityai/stable-diffusion-xl-base-1.0",
-      {
-        prompt: promptFinal
-      }
-    );
-    
-    return new Response(imageBytes, {
-      headers: {
-        "Content-Type": "image/png",
-        "Access-Control-Allow-Origin": "*"
-      }
-    });
+    const base64 = await generarImagenGemini(prompt, env);
+
+await guardarImagen(
+  {
+    imagen: base64,
+    categoria: data.categoria || "imagenes"
+  },
+  env,
+  json
+);
     
 
   } catch (err) {
@@ -1118,7 +1115,41 @@ console.log("Base64 length:", data.imagen?.length);
   }
 
 }
+async function generarImagenGemini(promptText, env) {
 
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:generateImages?key=${env.GEMINI_API_KEY}`;
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      prompt: promptText,
+      numberOfImages: 1,
+      outputMimeType: "image/png",
+      aspectRatio: "1:1",
+      personGeneration: "ALLOW_ADULT"
+    })
+  });
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(`Gemini Image Error: ${error}`);
+  }
+
+  const data = await response.json();
+
+  // 🔥 IMPORTANTE: esta es tu estructura real
+  const base64 = data?.generatedImages?.[0]?.image?.imageBytes;
+
+  if (!base64) {
+    throw new Error("No se recibió imagen desde Gemini");
+  }
+
+  // 🔥 DEVOLVEMOS SOLO BASE64 PURO (tu guardarImagen lo necesita así)
+  return base64;
+}
 // =====================================================
 // PIXELLAB45 - EBOOK V3
 // FUNCIÓN: generarPlanEbook()
