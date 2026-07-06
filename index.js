@@ -90,20 +90,9 @@ try {
     case "guardar-imagen":
       return guardarImagen(data, env, json);
 
+    
     case "generar-plan":
-    case "generar-plan":
-
-    return new Response(
-        JSON.stringify({
-            success: true,
-            mensaje: "Llegó al Worker"
-        }),
-        {
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }
-    );
+  return await generarPlan(data, env);
 
   case "generar-indice":
     return await generarIndice(json, env);
@@ -1131,9 +1120,64 @@ console.log("Base64 length:", data.imagen?.length);
 
 }
 
-
-
 // =====================================================
 // PIXELLAB45 - EBOOK V3
 // FUNCIÓN: generarPlanEbook()
 // =====================================================
+async function generarPlan(data, env) {
+
+  const paginas = Number(data.paginas);
+
+  // reglas base: capítulos dinámicos (15 páginas promedio)
+  let capitulos = Math.round(paginas / 15);
+
+  if (capitulos < 3) capitulos = 3;
+
+  const base = Math.floor(paginas / capitulos);
+  let resto = paginas % capitulos;
+
+  const distribucion = [];
+
+  for (let i = 0; i < capitulos; i++) {
+    let paginasCap = base;
+
+    if (resto > 0) {
+      paginasCap += 1;
+      resto--;
+    }
+
+    distribucion.push({
+      capitulo: i + 1,
+      paginas: paginasCap
+    });
+  }
+
+  const plan = {
+    action: "generar-plan",
+    tema: data.tema,
+    autor: data.autor,
+    idioma: data.idioma,
+    tono: data.tono,
+    publico: data.publico,
+    paginasTotales: paginas,
+    capitulos: capitulos,
+    distribucion: distribucion,
+    creado: new Date().toISOString()
+  };
+
+  const key = `ebooks/${Date.now()}-plan.json`;
+
+  await env.R2_BUCKET.put(key, JSON.stringify(plan), {
+    httpMetadata: {
+      contentType: "application/json"
+    }
+  });
+
+  return new Response(JSON.stringify({
+    ok: true,
+    key,
+    plan
+  }), {
+    headers: { "Content-Type": "application/json" }
+  });
+}

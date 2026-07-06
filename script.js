@@ -986,7 +986,7 @@ if (!guardar.ok) {
 
 async function generarPlan() {
 
-    alert("1 - Entró a generarPlan");
+    
 
     const payload = {
         action: "generar-plan",
@@ -998,7 +998,7 @@ async function generarPlan() {
         autor: document.getElementById("autorEbook").value
     };
 
-    alert("2 - Payload creado");
+    
 
     const res = await fetch(WORKER_URL, {
         method: "POST",
@@ -1008,16 +1008,33 @@ async function generarPlan() {
         body: JSON.stringify(payload)
     });
 
-    alert("3 - Volvió del fetch");
+    
 
     const result = await res.json();
 
-    alert("4 - JSON recibido");
+    
 
     console.log(result);
 
 }
+// MENÚ MÓVIL
+function toggleMenu() {
 
+
+  const menu =
+    document.querySelector(".nav-links");
+
+  menu.classList.toggle("active");
+
+}
+
+
+// INICIO
+window.onload = () => {
+
+  cargarGaleriaCompleta();
+
+};
 // MENÚ MÓVIL
 function toggleMenu() {
 
