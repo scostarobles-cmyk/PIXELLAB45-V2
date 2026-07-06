@@ -1115,64 +1115,84 @@ console.log("Base64 length:", data.imagen?.length);
   }
 
 }
-async function generarImagenGemini(promptText, env) {
+// =====================================
+// GEMINI IA
+// =====================================
+async function gemini(env, prompt, modelo = "gemini-2.5-flash") {
 
-  if (!env.GEMINI_API_KEY) {
-    throw new Error("Falta GEMINI_API_KEY");
-  }
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelo}:generateContent?key=${env.GEMINI_API_KEY}`;
 
-  let response;
+  console.log("================================");
+  console.log("LLAMANDO A GEMINI");
+  console.log("Modelo:", modelo);
+  console.log("URL:", url);
+  console.log("================================");
+
+  let respuesta;
 
   try {
 
-    response = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/interactions",
-      {
-        method: "POST",
-        headers: {
-          "x-goog-api-key": env.GEMINI_API_KEY,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          model: "gemini-3.1-flash-image",
-          input: promptText,
-          response_format: {
-            type: "image",
-            aspect_ratio: "1:1",
-            image_size: "1K"
+    respuesta = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        contents: [
+          {
+            parts: [
+              {
+                text: prompt
+              }
+            ]
           }
-        })
-      }
-    );
+        ]
+      })
+    });
 
   } catch (err) {
+
+    console.log("ERROR EN FETCH:");
+    console.log(err);
+
     throw new Error("Fetch Gemini: " + err.message);
   }
 
-  const texto = await response.text();
+  const texto = await respuesta.text();
 
-  if (!response.ok) {
-    throw new Error(`Gemini ${response.status}: ${texto}`);
+  if (!respuesta.ok) {
+
+    console.log("================================");
+    console.log("GEMINI ERROR");
+    console.log("STATUS:", respuesta.status);
+    console.log(texto);
+    console.log("================================");
+
+    throw new Error(`Gemini ${respuesta.status}: ${texto}`);
   }
 
   let data;
 
   try {
     data = JSON.parse(texto);
-  } catch {
-    throw new Error("La respuesta de Gemini no es JSON:\n" + texto);
+  } catch (err) {
+    throw new Error("Gemini devolvió una respuesta que no es JSON:\n" + texto);
   }
 
-  console.log("Respuesta Gemini:", data);
+  console.log("Respuesta Gemini OK");
 
- const base64 = data?.output_image?.data;
+  if (
+    !data.candidates ||
+    !data.candidates.length ||
+    !data.candidates[0].content ||
+    !data.candidates[0].content.parts ||
+    !data.candidates[0].content.parts.length
+  ) {
+    console.log(data);
+    throw new Error("Gemini no devolvió contenido.");
+  }
 
-if (!base64) {
-  throw new Error("Gemini respondió pero no devolvió ninguna imagen.");
-}
-
-return base64;
-
+  return data.candidates[0].content.parts[0].text.trim();
 }
 // =====================================================
 // PIXELLAB45 - EBOOK V3
