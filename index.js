@@ -1117,37 +1117,49 @@ console.log("Base64 length:", data.imagen?.length);
 }
 async function generarImagenGemini(promptText, env) {
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:generateImages?key=${env.GEMINI_API_KEY}`;
+  if (!env?.GEMINI_API_KEY) {
+    throw new Error("Falta GEMINI_API_KEY en el env");
+  }
 
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      prompt: promptText,
-      numberOfImages: 1,
-      outputMimeType: "image/png",
-      aspectRatio: "1:1",
-      personGeneration: "ALLOW_ADULT"
-    })
-  });
+  // Endpoint oficial del modelo
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-image:generateImages?key=${env.GEMINI_API_KEY}`;
+
+  let response;
+
+  try {
+    response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        prompt: promptText,
+        numberOfImages: 1,
+        outputMimeType: "image/png",
+        aspectRatio: "1:1",
+        personGeneration: "ALLOW_ADULT"
+      })
+    });
+  } catch (err) {
+    // ❌ error de red / DNS / endpoint inválido
+    throw new Error("Failed to fetch Gemini Image API: " + err.message);
+  }
 
   if (!response.ok) {
-    const error = await response.text();
-    throw new Error(`Gemini Image Error: ${error}`);
+    const errorText = await response.text();
+    throw new Error(`Gemini Image API Error (${response.status}): ${errorText}`);
   }
 
   const data = await response.json();
 
-  // 🔥 IMPORTANTE: esta es tu estructura real
+  // 📦 extracción segura del base64
   const base64 = data?.generatedImages?.[0]?.image?.imageBytes;
 
   if (!base64) {
-    throw new Error("No se recibió imagen desde Gemini");
+    throw new Error("Gemini no devolvió imagen (imageBytes vacío)");
   }
 
-  // 🔥 DEVOLVEMOS SOLO BASE64 PURO (tu guardarImagen lo necesita así)
+  // ✔ IMPORTANTE: devolver SOLO base64 limpio
   return base64;
 }
 // =====================================================
