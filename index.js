@@ -1165,7 +1165,15 @@ async function generarImagenGemini(promptText, env) {
 
   console.log("Respuesta Gemini:", data);
 
- 
+ const base64 = data?.output_image?.data;
+
+if (!base64) {
+  throw new Error("Gemini respondió pero no devolvió ninguna imagen.");
+}
+
+return base64;
+
+}
 // =====================================================
 // PIXELLAB45 - EBOOK V3
 // FUNCIÓN: generarPlanEbook()
