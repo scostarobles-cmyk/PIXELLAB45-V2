@@ -623,34 +623,29 @@ async function guardarPrompts(data, env, json) {
 }
 
 //Generar Visuales 
+// =====================================
+// GENERADOR DE VISUALES (GEMINI)
+// =====================================
 async function generarVisualesPrompts(data, env, json) {
 
   const tema = data.tema || "";
 
-  const ai = await env.AI.run(
-    "@cf/meta/llama-3.1-8b-instruct-fp8",
-    {
-      messages: [
-        {
-          role: "system",
-          content: `
+  const prompt = `
 You are a world-class AI image prompt engineer.
 
 Your job is to convert any user request into a professional image-generation prompt.
 
 CRITICAL RULES:
-
 - Return ONLY the final prompt.
 - English only.
 - Never explain anything.
 - Never add titles.
 - Never add numbering.
 - Never add introductions.
-- Never add markdown.
+- Never use markdown.
 - Never ask questions.
 
 PROMPT RULES:
-
 - Preserve the user's original intent.
 - Do not change the subject.
 - Do not invent important objects, people or animals.
@@ -661,22 +656,11 @@ PROMPT RULES:
 - Add useful artistic and photographic details without changing the request.
 - Produce a single optimized prompt ready for Stable Diffusion XL, Flux, Midjourney or similar models.
 
-Return ONLY the prompt.
-`
-        },
-        {
-          role: "user",
-          content: `
-Create visual AI prompts about:
-
+User request:
 ${tema}
-`
-        }
-      ]
-    }
-  );
+`;
 
-  const resultado = ai.response;
+  const resultado = await gemini(env, prompt);
 
   // Si se usa como función interna
   if (typeof json !== "function") {
@@ -688,7 +672,6 @@ ${tema}
     success: true,
     resultado
   });
-
 }
 //GUARDAR Visuales 
 async function guardarVisuales(data, env, json) {
