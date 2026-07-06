@@ -264,33 +264,54 @@ async function generarIdeas(data, env, json) {
 
   const match = tema.match(/\d+/);
 
-  let cantidad = match
-    ? parseInt(match[0])
-    : 1;
+  let cantidad = match ? parseInt(match[0]) : 1;
 
-  if (cantidad > 20)
-    cantidad = 20;
+  if (cantidad > 20) cantidad = 20;
 
-  const respuesta = await gemini(env, prompt);
+  const prompt = `
+Generate EXACTLY ${cantidad} ideas. Be strict: if I request one idea, return only one. If I request three, return exactly three. Do not add more or fewer. Each idea must be a short concept, between 3 and 8 words. Return ONLY the numbered list.
 
-if (!respuesta.ok) {
-  throw new Error(await respuesta.text());
-}
+CRITICAL RULES:
 
-const dataGemini = await respuesta.json();
+- Return ONLY ideas.
+- An idea is a short concept.
+- NOT a story.
+- NOT a paragraph.
+- NOT a description.
+- Each idea must contain between 3 and 8 words.
+- Be specific.
+- Be creative.
+- Do not repeat ideas.
+- Do not invent names.
+- Do not add explanations.
 
-const resultado =
-  dataGemini.candidates?.[0]?.content?.parts?.[0]?.text || "";
-const ideas = resultado.split("\n").map(i => i.trim()).filter(i => i);
+Format:
 
-// Limitar al número de ideas solicitadas
-const ideasLimitadas = ideas.slice(0, cantidad);
+1 - Idea
 
-return json({
-  success: true,
-  ideas: ideasLimitadas.join("\n")
-});
-  
+2 - Idea
+
+3 - Idea
+
+Return ONLY the numbered list.
+
+Topic:
+${tema}
+`;
+
+  const resultado = await gemini(env, prompt);
+
+  const ideas = resultado
+    .split("\n")
+    .map(i => i.trim())
+    .filter(i => i);
+
+  const ideasLimitadas = ideas.slice(0, cantidad);
+
+  return json({
+    success: true,
+    ideas: ideasLimitadas.join("\n")
+  });
 
 }
 // =====================================
