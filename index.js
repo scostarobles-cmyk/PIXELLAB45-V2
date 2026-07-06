@@ -1170,13 +1170,13 @@ async function generarPlan(data, env) {
   };
 
   // Guardar en R2 (bucket eBooks en mayúscula)
-  const key = `eBooks/${id}.json`;
+/*  const key = `eBooks/${id}.json`;
 
   await env.EBOOKS.put(key, JSON.stringify(plan), {
     httpMetadata: {
       contentType: "application/json"
     }
-  });
+  });*/
 
   return new Response(JSON.stringify({
     ok: true,
