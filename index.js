@@ -1141,6 +1141,11 @@ async function generarPlan(data, env, json) {
     const prompt = `
 Devuelve únicamente JSON válido.
 
+No escribas Markdown.
+No escribas \`\`\`json.
+No escribas \`\`\`.
+No agregues explicaciones.
+
 Genera el plan de un ebook.
 
 Tema: ${tema}
@@ -1161,32 +1166,30 @@ El formato debe ser EXACTAMENTE:
     }
   ]
 }
-
-No escribas texto fuera del JSON.
 `;
 
     const respuesta = await env.AI.run(
-  "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
-  {
-    prompt,
-    max_tokens: 5000
-  }
-);
+      "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+      {
+        prompt,
+        max_tokens: 5000
+      }
+    );
+
+    const texto = respuesta.response
+      .replace(/^```json\s*/i, "")
+      .replace(/\s*```$/i, "")
+      .trim();
+
+    const planIA = JSON.parse(texto);
 
     return json({
-  success: true,
-  respuestaIA: respuesta.response
-});
-/*    return json({
       success: true,
-
       titulo: tema,
       paginas: paginas,
-
       cantidadCapitulos: planIA.cantidadCapitulos,
-
       capitulos: planIA.capitulos
-    });*/
+    });
 
   } catch (err) {
 
