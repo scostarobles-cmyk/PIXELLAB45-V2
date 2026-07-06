@@ -989,7 +989,7 @@ async function generarPlan() {
   try {
 
     document.getElementById("estadoPlan").innerText = "🔵 Generando plan...";
-
+    document.getElementById("estadoIndice").innerText = "🔵 Generando índice ...";
     const res = await fetch(WORKER_URL, {
       method: "POST",
       headers: {
@@ -1010,13 +1010,15 @@ async function generarPlan() {
 
 if (!result.success) {
   document.getElementById("estadoPlan").innerText = "🔴 " + result.error;
+  document.getElementById("estadoIndice").innerText = "🔴 " + result.error;
   return;
 }
 
 document.getElementById("estadoPlan").innerText = "🟢 Plan generado";
+document.getElementById("estadoIndice").innerText = "🟢 Índice generado";
 
 const plan = result.ebook.plan;
-
+const indice = result.ebook.indice;
 
 let html = `<h3>📘 Plan del e-book</h3>`;
 
@@ -1030,11 +1032,22 @@ plan.capitulos.forEach(c => {
   `;
 });
 
+html += `<h3 style="margin-top:20px;">📑 Índice</h3>`;
+
+indice.forEach(i => {
+  html += `
+    <div style="margin-bottom:6px;padding-left:10px;">
+      ${i.numero}. ${i.titulo} (${i.paginas} páginas)
+    </div>
+  `;
+});
+
 document.getElementById("monitorIA").innerHTML = html;
     
   } catch (err) {
 
     document.getElementById("estadoPlan").innerText = "🔴 " + err.message;
+    document.getElementById("estadoIndice").innerText = "🔴 " + err.message;
     console.error(err);
 
   }
