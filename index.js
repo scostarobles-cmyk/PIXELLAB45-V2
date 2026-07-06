@@ -1128,29 +1128,61 @@ async function generarPlan(data, env, json) {
 
   try {
 
+    const tema = (data.tema || "").trim();
+    const paginas = Number(data.paginas);
+
+    if (!tema) {
+      return json({
+        success: false,
+        error: "Sin tema"
+      });
+    }
+
+    const prompt = `
+Devuelve únicamente JSON válido.
+
+Genera el plan de un ebook.
+
+Tema: ${tema}
+Cantidad total de páginas: ${paginas}
+
+Reparte las páginas entre los capítulos.
+
+El formato debe ser EXACTAMENTE:
+
+{
+  "cantidadCapitulos": number,
+  "capitulos": [
+    {
+      "numero": 1,
+      "titulo": "...",
+      "descripcion": "...",
+      "paginas": 12
+    }
+  ]
+}
+
+No escribas texto fuera del JSON.
+`;
+
+    const respuesta = await env.AI.run(
+      "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+      {
+        prompt
+      }
+    );
+
+    const planIA = JSON.parse(respuesta.response);
+
     return json({
       success: true,
 
-      mensaje: "generarPlan funcionando",
+      titulo: tema,
+      paginas: paginas,
 
-      titulo: data.tema,
+      cantidadCapitulos: planIA.cantidadCapitulos,
 
-      autor: data.autor,
-
-      idioma: data.idioma,
-
-      tono: data.tono,
-
-      publico: data.publico,
-
-      paginas: data.paginas,
-
-      capitulos: [
-        {
-          numero: 1,
-          titulo: "Capítulo 1"
-        }
-      ]
+      capitulos: planIA.capitulos
     });
 
   } catch (err) {
