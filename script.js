@@ -989,7 +989,7 @@ async function generarPlan() {
   try {
 
     document.getElementById("estadoPlan").innerText = "🔵 Generando plan...";
-
+    alert("1");
     const res = await fetch(WORKER_URL, {
       method: "POST",
       headers: {
@@ -1005,9 +1005,9 @@ async function generarPlan() {
         autor: document.getElementById("autorEbook").value
       })
     });
-
+alert("2");
     const result = await res.json();
-
+    alert("3");
     if (!result.success) {
       document.getElementById("estadoPlan").innerText = "🔴 " + result.error;
       return;
