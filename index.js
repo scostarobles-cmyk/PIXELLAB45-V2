@@ -1036,8 +1036,7 @@ CRITICAL RULES:
 
 ${promptVisual}
 `;
-
-    const base64 = await generarImagenGemini(prompt, env);
+    const base64 = await geminiImagen(prompt, env);
 
 await guardarImagen(
   {
@@ -1118,7 +1117,7 @@ console.log("Base64 length:", data.imagen?.length);
 // =====================================
 // GEMINI IA
 // =====================================
-async function gemini(env, prompt, modelo = "gemini-2.5-flash") {
+ async function geminiImagen(env, prompt)
 
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelo}:generateContent?key=${env.GEMINI_API_KEY}`;
 
