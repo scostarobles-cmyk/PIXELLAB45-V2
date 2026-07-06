@@ -1117,7 +1117,7 @@ console.log("Base64 length:", data.imagen?.length);
 // =====================================
 // GEMINI IA
 // =====================================
- async function geminiImagen(env, prompt)
+ async function geminiImagen(env, prompt){
 
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelo}:generateContent?key=${env.GEMINI_API_KEY}`;
 
