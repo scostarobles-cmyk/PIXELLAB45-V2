@@ -1118,19 +1118,19 @@ async function planificarEbook(data, env, json) {
 
     const plan = await generarPlanEbook(data, env);
 
-alert("1 - Antes de guardar");
+console.log("1 - Antes de guardar");
 
 let ebook = await guardarPlanR2(data, plan, env);
 
-alert("2 - Después de guardar");
+console.log("2 - Después de guardar");
 
 ebook = await generarIndice(ebook);
 
-alert("3 - Después de generar índice");
+console.log("3 - Después de generar índice");
 
 await guardarEbookR2(ebook, env);
 
-alert("4 - Después de guardar índice");
+console.log("4 - Después de guardar índice");
 
 return json({
     success: true,
