@@ -1177,7 +1177,7 @@ Formato:
 `;
 
     // Llamada al cerebro
-    const respuesta = await llamarIA({
+    const respuesta = await ai({
       env,
       prompt
     });
