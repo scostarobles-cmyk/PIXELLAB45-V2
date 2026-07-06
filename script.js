@@ -7,7 +7,7 @@ const FETCH_CONFIG = {
   headers: {
     "Content-Type": "application/json"
   }
-}; 
+};
 window.ebookActual = null;
 let ebookActual = "";
 let estructuraEbook = null;
@@ -984,74 +984,8 @@ if (!guardar.ok) {
 // Iniciar la generación del Plan.
 // =====================================================
 
-async function generarPlan() {
-
-  try {
-
-    document.getElementById("estadoPlan").innerText = "🔵 Generando plan...";
-    alert("1");
-    const res = await fetch(WORKER_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        action: "generar-plan",
-        tema: document.getElementById("temaEbook").value,
-        paginas: Number(document.getElementById("paginasEbook").value),
-        idioma: document.getElementById("idiomaEbook").value,
-        tono: document.getElementById("tonoEbook").value,
-        publico: document.getElementById("publicoEbook").value,
-        autor: document.getElementById("autorEbook").value
-      })
-    });
-alert("2");
-    const result = await res.json();
-    alert("3");
-    if (!result.success) {
-      document.getElementById("estadoPlan").innerText = "🔴 " + result.error;
-      return;
-    }
-
-    document.getElementById("estadoPlan").innerText = "🟢 Plan generado";
-
-    const ebook = result.ebook;
-    const plan = ebook.plan;
-
-    let html = `
-      <h3>📘 Plan del e-book</h3>
-      <p><b>ID:</b> ${ebook.id}</p>
-      <p><b>Tema:</b> ${ebook.tema}</p>
-      <p><b>Autor:</b> ${ebook.autor}</p>
-      <p><b>Páginas:</b> ${ebook.paginas}</p>
-      <hr>
-    `;
-
-    plan.capitulos.forEach(c => {
-
-      html += `
-        <div style="
-          margin-bottom:10px;
-          padding:10px;
-          border-left:3px solid #00c8ff;
-        ">
-          <b>Capítulo ${c.numero}: ${c.titulo}</b><br>
-          <small>${c.objetivo}</small><br>
-          <span>Páginas: ${c.paginas}</span>
-        </div>
-      `;
-
-    });
-
-    document.getElementById("monitorIA").innerHTML = html;
-
-  } catch (err) {
-
-    document.getElementById("estadoPlan").innerText = "🔴 " + err.message;
-    console.error(err);
-
-  }
-
+function generarPlan() {
+    alert("Entró a generarPlan()");
 }
 
 // MENÚ MÓVIL
