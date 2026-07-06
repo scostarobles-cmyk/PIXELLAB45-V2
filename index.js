@@ -226,9 +226,19 @@ async function generarIdeas(data, env, json) {
   if (cantidad > 20)
     cantidad = 20;
 
-  const resultado = await ai(
-    env,
-`
+  const respuesta = await fetch(
+  `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${env.GEMINI_API_KEY}`,
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      contents: [
+        {
+          parts: [
+            {
+              text: `
 Generate EXACTLY ${cantidad} ideas. Be strict: if I request one idea, return only one. If I request three, return exactly three. Do not add more or fewer. Each idea must be a short concept, between 3 and 8 words. Return ONLY the numbered list.
 
 CRITICAL RULES:
@@ -258,7 +268,22 @@ Return ONLY the numbered list.
 Topic:
 ${tema}
 `
-  );
+            }
+          ]
+        }
+      ]
+    })
+  }
+);
+
+if (!respuesta.ok) {
+  throw new Error(await respuesta.text());
+}
+
+const dataGemini = await respuesta.json();
+
+const resultado =
+  dataGemini.candidates?.[0]?.content?.parts?.[0]?.text || "";
 const ideas = resultado.split("\n").map(i => i.trim()).filter(i => i);
 
 // Limitar al número de ideas solicitadas
