@@ -90,8 +90,23 @@ try {
     case "guardar-imagen":
       return guardarImagen(data, env, json);
 
-    case "planificar-ebook":
-      return planificarEbook(data, env, json);
+    case "generar-plan":
+    return await generarPlan(json, env);
+
+  case "generar-indice":
+    return await generarIndice(json, env);
+
+  case "generar-legales":
+    return await generarLegales(json, env);
+
+  case "generar-introduccion":
+    return await generarIntroduccion(json, env);
+
+  case "generar-capitulo":
+    return await generarCapitulo(json, env);
+
+  // ...
+
 
     default:
       return json({
@@ -1104,126 +1119,49 @@ console.log("Base64 length:", data.imagen?.length);
 
 }
 
-// =====================================================
-// PIXELLAB45 - EBOOK V3
-// FUNCIÓN: planificarEbook()
-// RESPONSABILIDAD:
-// Diseñar la estructura del ebook.
-// NO genera contenido.
-// =====================================================
 
-async function planificarEbook(data, env, json) {
 
-  try {
-
-    const plan = await generarPlanEbook(data, env);
-
-console.log("1 - Antes de guardar");
-
-let ebook = await guardarPlanR2(data, plan, env);
-
-console.log("2 - Después de guardar");
-
-ebook = await generarIndice(ebook);
-
-console.log("3 - Después de generar índice");
-
-await guardarEbookR2(ebook, env);
-
-console.log("4 - Después de guardar índice");
-
-return json({
-    success: true,
-    ebook
-});
-
-  } catch (error) {
-
-    return json({
-      success: false,
-      error: error.message
-    }, 500);
-
-  }
-
-}
 // =====================================================
 // PIXELLAB45 - EBOOK V3
 // FUNCIÓN: generarPlanEbook()
 // =====================================================
-async function generarPlanEbook(data, env) {
+async function generarPlan(data, env) {
 
-  const {
-    tema,
-    paginas,
-    idioma,
-    tono,
-    publico,
-    autor
-  } = data;
+  // Generar el plan con IA
+  const plan = await generarPlanEbook(data, env);
 
-  if (!tema) throw new Error("Falta el tema.");
-  if (!paginas) throw new Error("Falta la cantidad de páginas.");
+  // Crear el ebook
+  const ebook = {
+    id: crypto.randomUUID(),
+    fecha: new Date().toISOString(),
 
-  const prompt = `
-Eres un editor profesional especializado en la creación de ebooks.
+    tema: data.tema,
+    paginas: data.paginas,
+    idioma: data.idioma,
+    tono: data.tono,
+    publico: data.publico,
+    autor: data.autor,
 
-Tu única tarea es diseñar el plan estructural del ebook.
+    estado: "plan_generado",
 
-NO escribas el contenido de los capítulos.
+    plan
+  };
 
-Devuelve EXCLUSIVAMENTE un JSON válido.
-
-No utilices markdown.
-No utilices \`\`\`.
-No agregues explicaciones.
-No agregues texto antes ni después del JSON.
-
-Datos del ebook:
-
-Tema: ${tema}
-Cantidad de páginas: ${paginas}
-Idioma: ${idioma}
-Tono: ${tono}
-Público objetivo: ${publico}
-Autor: ${autor}
-
-Distribuye las páginas de forma lógica entre los capítulos.
-
-El resultado debe tener entre 5 y 12 capítulos según la cantidad de páginas.
-
-Cada capítulo debe contener:
-
-- numero
-- titulo
-- objetivo
-- paginas
-
-IMPORTANTE:
-
-La suma de las páginas de TODOS los capítulos debe ser EXACTAMENTE igual a la cantidad de páginas solicitada.
-
-Antes de responder, verifica que la suma sea correcta.
-
-Si el usuario solicita 100 páginas, la suma de "paginas" de todos los capítulos debe ser exactamente 100.
-
-Responde EXACTAMENTE con esta estructura:
-
-{
-  "capitulos": [
-    {
-      "numero": 1,
-      "titulo": "",
-      "objetivo": "",
-      "paginas": 0
+  // Guardar en R2
+  await env.EBOOKS.put(
+  `ebooks/planes/${ebook.id}.json`,
+  JSON.stringify(ebook, null, 2),
+  {
+    httpMetadata: {
+      contentType: "application/json"
     }
-  ]
-}
-`;
+  }
+);
 
-  const respuesta = await ai(env, prompt);
-
-  return JSON.parse(respuesta);
+  return {
+    success: true,
+    ebook
+  };
 
 }
 async function guardarPlanR2(data, plan, env) {
