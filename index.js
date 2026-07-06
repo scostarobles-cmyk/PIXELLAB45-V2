@@ -700,6 +700,9 @@ async function guardarVisuales(data, env, json) {
 
 }
 //Generar guión 
+// =====================================
+// GENERADOR DE GUIONES (GEMINI)
+// =====================================
 async function generarGuion(data, env, json) {
 
   let reglas = "";
@@ -707,9 +710,7 @@ async function generarGuion(data, env, json) {
   switch ((data.formato || "").toLowerCase()) {
 
     case "automático":
-      reglas = `
-Choose automatically the best script style according to the topic.
-`;
+      reglas = `Choose automatically the best script style according to the topic.`;
       break;
 
     case "tiktok / reels":
@@ -717,11 +718,9 @@ Choose automatically the best script style according to the topic.
 Write a viral TikTok/Reels script.
 
 Rules:
-- Duration exactly as requested.
 - Hook in first 3 seconds.
 - Fast pacing.
 - Short dialogue.
-- Visual actions.
 - Strong ending.
 `;
       break;
@@ -757,10 +756,9 @@ Rules:
 Write a podcast script.
 
 Rules:
-- Conversational.
-- Narration focused.
+- Conversational tone.
 - Natural dialogue.
-- Audio oriented.
+- Audio-focused narration.
 `;
       break;
 
@@ -789,20 +787,10 @@ Rules:
       break;
 
     default:
-      reglas = `
-Choose automatically the best writing style.
-`;
+      reglas = `Choose automatically the best writing style.`;
   }
 
-  const ai = await env.AI.run(
-    "@cf/meta/llama-3.1-8b-instruct-fp8",
-    {
-      max_tokens: 3500,
-      temperature: 0.8,
-      messages: [
-        {
-          role: "system",
-          content: `
+  const prompt = `
 You are PIXELLAB45 Script Engine.
 
 Generate professional scripts.
@@ -810,36 +798,27 @@ Generate professional scripts.
 ${reglas}
 
 GENERAL RULES:
-
 - Return ONLY the script.
 - Never explain.
 - Never apologize.
-- Never add markdown.
+- Never use markdown.
 - Never add introductions.
 - Never add conclusions.
-- Respect exactly the requested duration.
-- Be coherent from beginning to end.
-`
-        },
-        {
-          role: "user",
-          content: `
+- The script must be coherent from beginning to end.
+
 Topic:
 ${data.tema}
 
 Duration:
 ${data.duracion}
-`
-        }
-      ]
-    }
-  );
+`;
+
+  const resultado = await gemini(env, prompt);
 
   return json({
     success: true,
-    resultado: ai.response
+    resultado
   });
-
 }
 //Guardar guion 
 async function guardarGuion(data, env, json) {
