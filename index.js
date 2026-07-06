@@ -426,6 +426,9 @@ async function listarCategoria(env, data, json) {
 // =====================================
 // GENERAR PROMPTS
 // =====================================
+// =====================================
+// GENERADOR DE PROMPTS (GEMINI)
+// =====================================
 async function generarPrompts(data, env, json) {
 
   let tema = data.tema || "";
@@ -444,16 +447,14 @@ async function generarPrompts(data, env, json) {
   // =====================================
   // CASO ESPECIAL: EBOOK
   // =====================================
-
   if (formato.toLowerCase() === "ebook") {
 
-    const resultado = await ai(env, `
+    const prompt = `
 You are one of the world's best AI prompt engineers.
 
 Transform the user's request into ONE professional master prompt for an AI ebook generation engine.
 
 Rules:
-
 - Keep the user's original topic.
 - Never change the title.
 - Never invent a title.
@@ -471,15 +472,13 @@ Rules:
 - Do not use markdown.
 
 The prompt must preserve the user's original request.
-
-Expand only the information explicitly provided.
-
-If the user omitted audience, style, scope or objectives, keep them generic instead of inventing details.
+If the user omitted details, keep them generic.
 
 User request:
-
 ${tema}
-`);
+`;
+
+    const resultado = await gemini(env, prompt);
 
     return json({
       success: true,
@@ -488,9 +487,8 @@ ${tema}
   }
 
   // =====================================
-  // RESTO DE FORMATOS
+  // REGLAS POR FORMATO
   // =====================================
-
   let reglas = "";
 
   switch (formato.toLowerCase()) {
@@ -498,62 +496,50 @@ ${tema}
     case "tiktok":
       reglas = `
 Generate professional AI prompts for viral TikTok videos.
-
-Rules:
-- Vertical 9:16.
-- Short-form content.
-- Strong visual impact.
-- Cinematic quality.
-- High engagement.
-- Optimized for AI video generation.
+- Vertical 9:16
+- Short-form content
+- Strong visual impact
+- Cinematic quality
+- High engagement
 `;
       break;
 
     case "instagram":
       reglas = `
 Generate professional AI prompts for Instagram content.
-
-Rules:
-- Reels or posts.
-- Visually attractive.
-- Premium aesthetic.
-- Cinematic composition.
-- Optimized for AI image or video generation.
+- Reels or posts
+- Visually attractive
+- Premium aesthetic
+- Cinematic composition
 `;
       break;
 
     case "facebook":
       reglas = `
 Generate professional AI prompts for Facebook content.
-
-Rules:
-- Engaging.
-- Shareable.
-- Realistic.
-- Professional quality.
+- Engaging
+- Shareable
+- Realistic
+- Professional quality
 `;
       break;
 
     case "blog":
       reglas = `
 Generate professional writing prompts for blog articles.
-
-Rules:
-- SEO oriented.
-- Educational.
-- Well structured.
-- Professional writing.
+- SEO oriented
+- Educational
+- Structured
+- Professional writing
 `;
       break;
 
     default:
       reglas = `
 Generate universal AI prompts.
-
-Rules:
-- Adaptable.
-- Professional.
-- High quality.
+- Professional
+- High quality
+- Adaptable
 `;
   }
 
@@ -564,84 +550,42 @@ Generate ONE prompt ONLY.
 CRITICAL:
 - Return exactly ONE prompt.
 - Do NOT number the output.
-- Do NOT generate alternatives.
 - Do NOT generate multiple prompts.
-- The entire response must contain only one prompt.
 `
     : `
 Generate EXACTLY ${cantidad} prompts.
 
 CRITICAL:
-- Return exactly ${cantidad} prompts.
 - Number every prompt.
-- Leave one blank line between prompts.
-
-OUTPUT FORMAT:
-
-1- Prompt...
-
-2- Prompt...
-
-3- Prompt...
+- One prompt per line or separated clearly.
+- No extra text.
 `;
 
-  const resultado = await ai(env, `
+  const prompt = `
 You are one of the world's best AI prompt engineers.
 
 ${instruccionesCantidad}
 
 ${reglas}
 
-CRITICAL RULES:
-
+GLOBAL RULES:
 - Return ONLY prompts.
 - English only.
-- Never write ideas.
-- Never write stories.
-- Never write scripts.
-- Never write explanations.
-- Never write titles.
-- Never write introductions.
-- Never write markdown.
-- Never write instructions for a human.
-
-Never start with:
-Create
-Make
-Record
-Show
-Write
-
-Never use words like:
-trying
-attempt
-attempting
-while
-before
-after
-then
-finally
-because
-but
-
-Each prompt must describe ONE final scene or ONE complete writing objective depending on the selected category.
-
-Every prompt must be professional and immediately usable by an AI.
-
-${cantidad > 1 ? `
-Leave ONE blank line between every prompt.
-` : ""}
+- No explanations.
+- No markdown.
+- No titles.
+- No introductions.
 
 User request:
-
 ${tema}
-`);
+`;
+
+  const resultado = await gemini(env, prompt);
 
   return json({
     success: true,
     resultado
   });
-
 }
 // =====================================
 // GUARDAR PROMT
