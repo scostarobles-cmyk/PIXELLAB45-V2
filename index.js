@@ -888,15 +888,16 @@ async function guardarGuion(data, env, json) {
 
 }
 //Generar Storyboard 
+
 // =====================================
-// GENERAR STORYBOARD
+// GENERADOR DE STORYBOARD (GEMINI PRO)
 // =====================================
 async function generarStoryboard(data, env, json) {
 
   try {
 
     const guion = (data.guion || "").trim();
-    const escenas = parseInt(data.escenas || "8");
+    const escenas = Math.min(parseInt(data.escenas || "8"), 20);
     const estilo = (data.estilo || "Realista").trim();
 
     if (!guion) {
@@ -907,37 +908,47 @@ async function generarStoryboard(data, env, json) {
     }
 
     const prompt = `
-You are an expert storyboard artist.
+You are a professional storyboard artist for film and AI video production.
 
-Convert the following script into a storyboard.
+TASK:
+Convert the script into EXACTLY ${escenas} storyboard scenes.
 
-Generate EXACTLY ${escenas} scenes.
-
-Visual style:
+STYLE:
 ${estilo}
 
-For each scene use exactly this format:
+STRICT FORMAT (mandatory for every scene):
 
 SCENE X
 
-TIME:
-
-NARRATION:
+VISUAL:
+Describe only what is seen in the frame.
 
 CAMERA:
+Shot type + movement (e.g. close-up, wide shot, drone, pan)
+
+ACTION:
+What is happening visually (no narration, no storytelling)
 
 LIGHTING:
+Lighting description (cinematic, natural, neon, etc.)
 
-VISUAL PROMPT:
+AI IMAGE PROMPT:
+Single clean prompt optimized for image generation models.
+
+RULES:
+- No narration
+- No dialogue
+- No explanations
+- No extra text outside scenes
+- Do NOT repeat the script
+- Do NOT add new story content
+- Only convert what is already in the script
 
 SCRIPT:
-
-Script:
-
 ${guion}
 `;
 
-    const resultado = await ai(env, prompt);
+    const resultado = await gemini(env, prompt);
 
     return json({
       success: true,
@@ -952,7 +963,6 @@ ${guion}
     }, 500);
 
   }
-
 }
 // =====================================
 // GUARDAR STORYBOARD
