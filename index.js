@@ -7,7 +7,7 @@ const CORS_HEADERS = {
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Content-Type": "application/json"
 };
- 
+
 export default {
   async fetch(request, env) {
 
@@ -1166,11 +1166,12 @@ No escribas texto fuera del JSON.
 `;
 
     const respuesta = await env.AI.run(
-      "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
-      {
-        prompt
-      }
-    );
+  "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+  {
+    prompt,
+    max_tokens: 5000
+  }
+);
 
     return json({
   success: true,
