@@ -7,7 +7,7 @@ const FETCH_CONFIG = {
   headers: {
     "Content-Type": "application/json"
   }
-};
+}; 
 window.ebookActual = null;
 let ebookActual = "";
 let estructuraEbook = null;
