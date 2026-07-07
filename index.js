@@ -107,7 +107,20 @@ try {
     return await generarCapitulo(json, env);
 
   // ...
+case "probar-imagen-externa": {
 
+  const resultado = await probarPixazo(env);
+
+  return new Response(
+    JSON.stringify(resultado),
+    {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }
+  );
+
+}
 
     default:
       return json({
@@ -130,9 +143,14 @@ try {
 // GEMINI
 // =====================================
 
-const GEMINI_MODELOS = [
-  "gemini-2.5-flash",
-  "gemini-3.1-flash-lite"
+const MODELOS = [
+  // Google
+  { proveedor: "google", modelo: "gemini-2.5-flash" },
+  { proveedor: "google", modelo: "gemini-3.1-flash-lite" },
+
+  // Cloudflare
+  { proveedor: "cloudflare", modelo: "@cf/meta/llama-3.3-70b-instruct-fp8-fast" },
+  { proveedor: "cloudflare", modelo: "@cf/qwen/qwen3-32b-instruct" }
 ];
 
 let modeloActual = 0;
@@ -141,72 +159,90 @@ async function gemini(env, prompt) {
 
   let ultimoError = null;
 
-  for (let intento = 0; intento < GEMINI_MODELOS.length; intento++) {
+  for (let intento = 0; intento < MODELOS.length; intento++) {
 
-    const indice = (modeloActual + intento) % GEMINI_MODELOS.length;
-    const modelo = GEMINI_MODELOS[indice];
+    const indice = (modeloActual + intento) % MODELOS.length;
+    const m = MODELOS[indice];
 
     try {
 
-      console.log("Probando modelo:", modelo);
+      console.log("Probando modelo:", m.modelo);
 
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${modelo}:generateContent?key=${env.GEMINI_API_KEY}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            contents: [
+      let texto = "";
+
+      if (m.proveedor === "google") {
+
+        const response = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${m.modelo}:generateContent?key=${env.GEMINI_API_KEY}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              contents: [
+                {
+                  parts: [
+                    {
+                      text: prompt
+                    }
+                  ]
+                }
+              ]
+            })
+          }
+        );
+
+
+        if (response.status === 429) {
+          console.log(`Cuota agotada para ${m.modelo}`);
+          continue;
+        }
+
+        if (!response.ok) {
+          throw new Error(await response.text());
+        }
+
+        const data = await response.json();
+
+        texto =
+          data?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+
+      } else if (m.proveedor === "cloudflare") {
+
+        const response = await env.AI.run(
+          m.modelo,
+          {
+            messages: [
               {
-                parts: [
-                  {
-                    text: prompt
-                  }
-                ]
+                role: "user",
+                content: prompt
               }
             ]
-          })
-        }
-      );
+          }
+        );
 
-      // Si agotó la cuota, probar el siguiente modelo
-      if (response.status === 429) {
-
-        console.log(`Cuota agotada para ${modelo}`);
-
-        continue;
+        texto = response?.response;
 
       }
 
-      if (!response.ok) {
-
-        throw new Error(await response.text());
-
-      }
-
-      const data = await response.json();
-
-      const texto =
-        data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
       if (!texto) {
-
-        throw new Error("Gemini no devolvió contenido.");
-
+        throw new Error("El modelo no devolvió contenido.");
       }
 
-      // Guardar el último modelo que funcionó
+
       modeloActual = indice;
 
-      console.log("Modelo activo:", modelo);
+      console.log("Modelo activo:", m.modelo);
 
       return texto.trim();
 
+
     } catch (err) {
 
-      console.log(`Error con ${modelo}:`, err.message);
+      console.log(`Error con ${m.modelo}:`, err.message);
 
       ultimoError = err;
 
@@ -214,7 +250,7 @@ async function gemini(env, prompt) {
 
   }
 
-  throw ultimoError || new Error("No hay modelos Gemini disponibles.");
+  throw ultimoError || new Error("No hay modelos disponibles.");
 
 }
 // =====================================
@@ -1292,4 +1328,38 @@ El formato debe ser EXACTAMENTE:
 
   }
 
+}
+async function probarPixazo(env) {
+
+  const prompt = 
+    "Avatar futurista latino tech influencer, cabello oscuro corto, barba prolija, campera negra futurista con luces LED azules, estilo cyberpunk cinematográfico";
+
+  const response = await fetch(
+    "https://api.pixazo.ai/v1/images/generations",
+    {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${env.PIXAZO_API_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: "flux-schnell",
+        prompt: prompt,
+        width: 1024,
+        height: 1024
+      })
+    }
+  );
+
+
+  if (!response.ok) {
+    throw new Error(await response.text());
+  }
+
+
+  const data = await response.json();
+
+  console.log("Respuesta Pixazo:", data);
+
+  return data;
 }
