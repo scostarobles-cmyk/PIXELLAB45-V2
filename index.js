@@ -1159,8 +1159,8 @@ ${promptVisual}
 
   return json({
     success: false,
-    error: err?.message || "Error sin mensaje",
-    detalle: JSON.stringify(err)
+    error: String(err),
+    mensaje: err.message
   }, 500);
 
 }
@@ -1352,8 +1352,7 @@ async function generarImagenIA(prompt, env) {
 
   try {
 
-    console.log("Usando Stable Diffusion Cloudflare");
-
+    console.log("PASO 1: entrando a generarImagenIA");
 
     const resultado = await env.AI.run(
       "@cf/stabilityai/stable-diffusion-xl-base-1.0",
@@ -1362,29 +1361,39 @@ async function generarImagenIA(prompt, env) {
       }
     );
 
+    console.log("PASO 2: respuesta Cloudflare");
 
     if (resultado?.image) {
+      console.log("PASO 3: imagen OK");
       return resultado.image;
     }
 
-
     throw new Error(
-      "Cloudflare no devolvió imagen"
+      "Cloudflare respondió pero sin imagen"
     );
 
 
   } catch (error) {
 
-  console.log("Error modelo principal:", error);
+    console.log(
+      "FALLÓ CLOUDFLARE:",
+      error
+    );
 
 
-    const imagen = await generarImagenPixazo(
+    console.log("PASO 4: probando Pixazo");
+
+
+    const imagenPixazo = await generarImagenPixazo(
       env,
       prompt
     );
 
 
-    return imagen;
+    console.log("PASO 5: Pixazo OK");
+
+
+    return imagenPixazo;
 
   }
 
