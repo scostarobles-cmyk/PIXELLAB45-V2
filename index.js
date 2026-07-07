@@ -1139,20 +1139,31 @@ ${promptVisual}
     // Generar imagen con Gemini
     const imagen = await generarImagenIA(promptFinal, env);
 
+   
     // Guardar imagen
-    await guardarImagen(
-  {
-    imagen,
-    categoria: data.categoria || "imagenes"
-  },
-  env,
-  json
+const guardada = await guardarImagen(
+{
+  imagen,
+  categoria: data.categoria || "imagenes"
+},
+env,
+json
 );
 
-    // Devolver la imagen al navegador
-    return json({
+if (!guardada.success) {
+
+  return json({
+    success: false,
+    error: guardada.error
+  }, 500);
+
+}
+
+// Devolver la URL pública
+return json({
   success: true,
-  imagen
+  imagen: guardada.url,
+  archivo: guardada.nombre
 });
 
   } catch (err) {
@@ -1168,52 +1179,55 @@ ${promptVisual}
 }
 async function guardarImagen(data, env, json) {
 
-  console.log("Entró a guardarImagen");
-  console.log("Categoría:", data.categoria);
-
   try {
 
     const categoria = data.categoria || "imagenes";
-    const imagen = data.imagen || "";
+    const imagen = data.imagen;
 
     if (!imagen) {
-      return json({
+      return {
         success: false,
         error: "Imagen no recibida"
-      }, 400);
+      };
     }
 
     let bytes;
 
     // Si es una URL (Pixazo)
-    if (imagen.startsWith("http")) {
+    if (typeof imagen === "string" && imagen.startsWith("http")) {
 
-      console.log("Imagen recibida desde URL");
+      console.log("Guardando imagen desde URL...");
 
       const response = await fetch(imagen);
 
       if (!response.ok) {
-        throw new Error("No se pudo descargar la imagen");
+        throw new Error("No se pudo descargar la imagen.");
       }
 
-      const buffer = await response.arrayBuffer();
-      bytes = new Uint8Array(buffer);
+      bytes = new Uint8Array(await response.arrayBuffer());
 
     } else {
 
-      console.log("Imagen recibida en Base64");
+      console.log("Guardando imagen Base64...");
+
+      let base64 = imagen;
+
+      // Eliminar encabezado data:image/...;base64,
+      if (
+        typeof base64 === "string" &&
+        base64.startsWith("data:image")
+      ) {
+        base64 = base64.substring(base64.indexOf(",") + 1);
+      }
 
       bytes = Uint8Array.from(
-        atob(imagen),
+        atob(base64),
         c => c.charCodeAt(0)
       );
-
     }
 
-    const nombre =
-      `${Date.now()}-${crypto.randomUUID()}.png`;
-console.log("Imagen recibida:", imagen);
-console.log("Tipo:", typeof imagen);
+    const nombre = `${Date.now()}-${crypto.randomUUID()}.png`;
+
     await env.IMAGES.put(
       `${categoria}/${nombre}`,
       bytes,
@@ -1224,18 +1238,20 @@ console.log("Tipo:", typeof imagen);
       }
     );
 
-    return json({
+    return {
       success: true,
       nombre,
-      mensaje: "✅ Imagen guardada correctamente"
-    });
+      url: `${R2_BASE_URL}/${categoria}/${nombre}`
+    };
 
   } catch (err) {
 
-    return json({
+    console.log("Error guardando imagen:", err);
+
+    return {
       success: false,
       error: err.message || String(err)
-    }, 500);
+    };
 
   }
 
@@ -1373,51 +1389,72 @@ El formato debe ser EXACTAMENTE:
 }
 async function generarImagenIA(prompt, env) {
 
+  // ========= CLOUDLFARE =========
+
   try {
 
-    console.log("PASO 1: entrando a generarImagenIA");
+    console.log("Generando imagen con Cloudflare...");
 
-    const resultado = await env.AI.run(
+    const res = await env.AI.run(
       "@cf/stabilityai/stable-diffusion-xl-base-1.0",
       {
-        prompt: prompt
+        prompt
       }
     );
 
-    console.log("PASO 2: respuesta Cloudflare");
+    console.log("Respuesta Cloudflare:", typeof res);
 
-    if (resultado?.image) {
-      console.log("PASO 3: imagen OK");
-      return resultado.image;
+    // Base64
+    if (typeof res === "string") {
+      return res;
     }
 
-    throw new Error(
-      "Cloudflare respondió pero sin imagen"
-    );
+    // { image: base64 }
+    if (res?.image) {
+      return res.image;
+    }
 
+    // Uint8Array
+    if (res instanceof Uint8Array) {
+      return btoa(String.fromCharCode(...res));
+    }
 
-  } catch (error) {
+    // ArrayBuffer
+    if (res instanceof ArrayBuffer) {
+      return btoa(
+        String.fromCharCode(...new Uint8Array(res))
+      );
+    }
 
-    console.log(
-      "FALLÓ CLOUDFLARE:",
-      error
-    );
+    // ReadableStream
+    if (res?.body) {
 
+      const bytes = new Uint8Array(await new Response(res.body).arrayBuffer());
 
-    console.log("PASO 4: probando Pixazo");
+      return btoa(String.fromCharCode(...bytes));
+    }
 
+    throw new Error("Cloudflare no devolvió una imagen válida.");
 
-    const imagenPixazo = await generarImagenPixazo(
-      env,
-      prompt
-    );
+  } catch (err) {
 
+    console.log("Cloudflare falló:", err);
 
-    console.log("PASO 5: Pixazo OK");
+  }
 
+  // ========= PIXAZO =========
 
-    return imagenPixazo;
+  try {
 
+    console.log("Intentando Pixazo...");
+
+    return await generarImagenPixazo(env, prompt);
+
+  } catch (err) {
+
+    console.log("Pixazo falló:", err);
+
+    throw new Error("Ningún motor pudo generar la imagen.");
   }
 
 }
@@ -1429,38 +1466,36 @@ async function generarImagenPixazo(env, prompt) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Cache-Control": "no-cache",
         "Ocp-Apim-Subscription-Key": env.PIXAZO_API_KEY
       },
       body: JSON.stringify({
-        prompt: prompt,
-        num_steps: 4,
+        prompt,
         width: 1024,
-        height: 1024
+        height: 1024,
+        num_steps: 4
       })
     }
   );
 
+  if (!response.ok) {
+    throw new Error(await response.text());
+  }
 
   const data = await response.json();
 
+  console.log("Pixazo:", JSON.stringify(data));
 
-  if (!data.output) {
-    throw new Error(
-      "Pixazo no devolvió imagen: " + JSON.stringify(data)
-    );
-  }
+  if (typeof data.output === "string")
+    return data.output;
 
+  if (Array.isArray(data.output))
+    return data.output[0];
 
-  const url = Array.isArray(data.output)
-  ? data.output[0]
-  : data.output;
+  if (typeof data.url === "string")
+    return data.url;
 
-if (!url || typeof url !== "string") {
-  throw new Error(
-    "URL inválida de Pixazo: " + JSON.stringify(data)
-  );
-}
+  if (Array.isArray(data.images))
+    return data.images[0];
 
-return url;
+  throw new Error("Pixazo no devolvió ninguna imagen.");
 }
