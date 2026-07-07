@@ -89,7 +89,9 @@ try {
 
     case "guardar-imagen":
       return guardarImagen(data, env, json);
+case "imagen_pixasso":
 
+  return await generarImagenPixasso(json, env);
     
     case "generar-plan":
   return await generarPlan(data, env,json);
@@ -797,10 +799,7 @@ async function guardarVisuales(data, env, json) {
   });
 
 }
-//Generar guión 
-// =====================================
-// GENERADOR DE GUIONES (GEMINI)
-// =====================================
+
 // =====================================
 // GENERADOR DE GUIONES (GEMINI PRO)
 // =====================================
@@ -1491,4 +1490,39 @@ async function generarImagenPixazo(env, prompt) {
     return data.images[0];
 
   throw new Error("Pixazo no devolvió ninguna imagen.");
+}
+
+/////prueba pixaso
+addEventListener('fetch', event => {
+  event.respondWith(handleRequest(event.request));
+});
+
+async function handleRequest(request) {
+  if (request.method !== 'POST') {
+    return new Response('Solo POST permitido', { status: 405 });
+  }
+
+  const { prompt } = await request.json();
+
+  const apiResponse = await fetch('https://gateway.pixazo.ai/flux-1-schnell/v1/getData', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer PIXAZO_API_KEY'
+    },
+    body: JSON.stringify({
+      prompt: prompt,
+      // Puedes agregar más parámetros, como tamaño o estilo, si la API lo permite
+    })
+  });
+
+  if (!apiResponse.ok) {
+    return new Response('Error en la API', { status: apiResponse.status });
+  }
+
+  const apiResult = await apiResponse.json();
+  // Supongamos que la imagen viene en base64 o como URL
+  return new Response(JSON.stringify(apiResult), {
+    headers: { 'Content-Type': 'application/json' }
+  });
 }

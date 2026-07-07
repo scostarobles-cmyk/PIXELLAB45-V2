@@ -7,7 +7,7 @@ const FETCH_CONFIG = {
   headers: {
     "Content-Type": "application/json"
   }
-}; 
+};
 window.ebookActual = null;
 let ebookActual = "";
 let estructuraEbook = null;
@@ -1017,6 +1017,42 @@ async function generarPlan() {
             "<b>Error:</b> " + err.message;
 
     }
+
+}
+async function generarImagenPixasso(){
+
+  const prompt =
+    document.getElementById("promptImagen").value;
+
+
+  const respuesta = await fetch(
+    WORKER_URL,
+    {
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        action:"imagen_pixasso",
+        prompt:prompt
+      })
+    }
+  );
+
+
+  const data = await respuesta.json();
+
+
+  if(data.imagen){
+
+    document.getElementById("loadingImagen").src =
+      data.imagen;
+
+  } else {
+
+    console.log(data);
+
+  }
 
 }
 
