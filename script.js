@@ -1023,7 +1023,7 @@ async function generarImagenPixasso(){
 
   const prompt =
     document.getElementById("promptImagen").value;
-
+alerta(prompt);
 
   const respuesta = await fetch(
     WORKER_URL,
@@ -1051,6 +1051,7 @@ async function generarImagenPixasso(){
   } else {
 
     console.log(data);
+    alerta(data);
 
   }
 
