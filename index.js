@@ -129,7 +129,7 @@ try {
 // =====================================
 // GEMINI IA 
 // =====================================
-async function gemini(env, prompt, modelo = "gemini-2.5-flash") {
+async function gemini(env, prompt, modelo = "gemini-3.1-flash-lite") {
 
   const respuesta = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${modelo}:generateContent?key=${env.GEMINI_API_KEY}`,
@@ -1113,7 +1113,7 @@ console.log("Base64 length:", data.imagen?.length);
 
   }
 
-} 
+}
 // =====================================
 // GEMINI IA
 // =====================================
