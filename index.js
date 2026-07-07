@@ -1168,7 +1168,7 @@ console.log("Base64 length:", data.imagen?.length);
  async function geminiImagen(prompt, env) {
 
   const response = await fetch(
-    "https://generativelanguage.googleapis.com/v1beta/interactions",
+    "https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict",
     {
       method: "POST",
       headers: {
@@ -1176,13 +1176,14 @@ console.log("Base64 length:", data.imagen?.length);
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "gemini-3.1-flash-image",
-        input: [
+        instances: [
           {
-            type: "text",
-            text: prompt
+            prompt: prompt
           }
-        ]
+        ],
+        parameters: {
+          sampleCount: 1
+        }
       })
     }
   );
@@ -1195,15 +1196,20 @@ console.log("Base64 length:", data.imagen?.length);
 
   const data = await response.json();
 
-  const imagen = data.output_image?.data;
+  console.log(JSON.stringify(data, null, 2));
 
-  if (!imagen) {
+  const base64 =
+    data?.predictions?.[0]?.bytesBase64Encoded ||
+    data?.predictions?.[0]?.image?.imageBytes ||
+    data?.generatedImages?.[0]?.image?.imageBytes;
 
-    throw new Error("Gemini no devolvió ninguna imagen.");
+  if (!base64) {
+
+    throw new Error("La API no devolvió ninguna imagen.");
 
   }
 
-  return imagen;
+  return base64;
 
 }
 // =====================================================
