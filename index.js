@@ -1352,6 +1352,11 @@ async function probarPixazo(env) {
   const prompt = 
     "Avatar futurista latino tech influencer, cabello oscuro corto, barba prolija, campera negra futurista con luces LED azules, estilo cyberpunk cinematográfico";
 
+  if (!env.PIXAZO_API_KEY) {
+    throw new Error("Falta PIXAZO_API_KEY en los secretos del Worker");
+  }
+
+
   const response = await fetch(
     "https://api.pixazo.ai/v1/images/generations",
     {
@@ -1364,20 +1369,33 @@ async function probarPixazo(env) {
         model: "flux-schnell",
         prompt: prompt,
         width: 1024,
-        height: 1024
+        height: 1024,
+        num_images: 1
       })
     }
   );
 
 
+  const textoRespuesta = await response.text();
+
+
   if (!response.ok) {
-    throw new Error(await response.text());
+    throw new Error(
+      `Pixazo error ${response.status}: ${textoRespuesta}`
+    );
   }
 
 
-  const data = await response.json();
+  let data;
 
-  console.log("Respuesta Pixazo:", data);
+  try {
+    data = JSON.parse(textoRespuesta);
+  } catch {
+    throw new Error(
+      "Pixazo devolvió una respuesta que no es JSON: " + textoRespuesta
+    );
+  }
+
 
   return data;
 }
