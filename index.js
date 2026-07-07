@@ -1137,7 +1137,7 @@ ${promptVisual}
 `;
 
     // Generar imagen con Gemini
-    const base64 = await geminiImagen(promptFinal, env);
+    const base64 = await generarImagenIA(promptFinal, env);
 
     // Guardar imagen
     await guardarImagen(
@@ -1347,40 +1347,47 @@ El formato debe ser EXACTAMENTE:
   }
 
 }
-async function probarPixazo(env) {
+async function generarImagenIA(prompt, env) {
 
-  const prompt =
-    "Avatar futurista latino tech influencer, cabello oscuro corto, barba prolija, campera negra futurista con luces LED azules, estilo cyberpunk cinematográfico";
+  try {
 
-
-  const response = await fetch(
-    "https://gateway.pixazo.ai/flux-1-schnell/v1/getData",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Cache-Control": "no-cache",
-        "Ocp-Apim-Subscription-Key": env.PIXAZO_API_KEY
-      },
-      body: JSON.stringify({
-        prompt: prompt,
-        num_steps: 4,
-        width: 512,
-        height: 512
-      })
-    }
-  );
+    console.log("Usando Stable Diffusion Cloudflare");
 
 
-  const texto = await response.text();
-
-
-  if (!response.ok) {
-    throw new Error(
-      `Pixazo ${response.status}: ${texto}`
+    const resultado = await env.AI.run(
+      "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+      {
+        prompt: prompt
+      }
     );
+
+
+    if (resultado?.image) {
+      return resultado.image;
+    }
+
+
+    throw new Error(
+      "Cloudflare no devolvió imagen"
+    );
+
+
+  } catch (error) {
+
+    console.log(
+      "Cloudflare falló, usando Pixazo:",
+      error.message
+    );
+
+
+    const imagen = await generarImagenPixazo(
+      env,
+      prompt
+    );
+
+
+    return imagen;
+
   }
 
-
-  return JSON.parse(texto);
 }
