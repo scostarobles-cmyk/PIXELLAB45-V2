@@ -1041,6 +1041,7 @@ alert(prompt);
 
 
   const data = await respuesta.json();
+  alert("contenido de data");
 alert(data);
 
   if(data.imagen){
@@ -1049,6 +1050,7 @@ alert(data);
       data.imagen;
 
   } else {
+  	alert("else");
 
     console.log(data);
     alert(data);
