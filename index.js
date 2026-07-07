@@ -127,49 +127,95 @@ try {
   }
 };
 // =====================================
-// GEMINI IA 
+// GEMINI
 // =====================================
-async function gemini(env, prompt, modelo = "gemini-3.1-flash-lite") {
 
-  const respuesta = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${modelo}:generateContent?key=${env.GEMINI_API_KEY}`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        contents: [
-          {
-            parts: [
+const GEMINI_MODELOS = [
+  "gemini-2.5-flash",
+  "gemini-3.1-flash-lite"
+];
+
+let modeloActual = 0;
+
+async function gemini(env, prompt) {
+
+  let ultimoError = null;
+
+  for (let intento = 0; intento < GEMINI_MODELOS.length; intento++) {
+
+    const indice = (modeloActual + intento) % GEMINI_MODELOS.length;
+    const modelo = GEMINI_MODELOS[indice];
+
+    try {
+
+      console.log("Probando modelo:", modelo);
+
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${modelo}:generateContent?key=${env.GEMINI_API_KEY}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            contents: [
               {
-                text: prompt
+                parts: [
+                  {
+                    text: prompt
+                  }
+                ]
               }
             ]
-          }
-        ]
-      })
+          })
+        }
+      );
+
+      // Si agotó la cuota, probar el siguiente modelo
+      if (response.status === 429) {
+
+        console.log(`Cuota agotada para ${modelo}`);
+
+        continue;
+
+      }
+
+      if (!response.ok) {
+
+        throw new Error(await response.text());
+
+      }
+
+      const data = await response.json();
+
+      const texto =
+        data?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+      if (!texto) {
+
+        throw new Error("Gemini no devolvió contenido.");
+
+      }
+
+      // Guardar el último modelo que funcionó
+      modeloActual = indice;
+
+      console.log("Modelo activo:", modelo);
+
+      return texto.trim();
+
+    } catch (err) {
+
+      console.log(`Error con ${modelo}:`, err.message);
+
+      ultimoError = err;
+
     }
-  );
 
-  if (!respuesta.ok) {
-    const error = await respuesta.text();
-    throw new Error(`Gemini Error: ${error}`);
   }
 
-  const data = await respuesta.json();
+  throw ultimoError || new Error("No hay modelos Gemini disponibles.");
 
-  if (
-    !data.candidates ||
-    !data.candidates.length ||
-    !data.candidates[0].content ||
-    !data.candidates[0].content.parts ||
-    !data.candidates[0].content.parts.length
-  ) {
-    throw new Error("Gemini no devolvió contenido.");
-  }
-
-  return data.candidates[0].content.parts[0].text.trim();
 }
 // =====================================
 // CEREBRO IA
