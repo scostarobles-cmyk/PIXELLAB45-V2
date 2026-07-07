@@ -91,7 +91,7 @@ try {
       return guardarImagen(data, env, json);
 case "imagen_pixasso":
 
-  return await generarImagenPixasso(env,json);
+  return await generarImagenPixasso(env, json.prompt);
     
     case "generar-plan":
   return await generarPlan(data, env,json);
@@ -1450,7 +1450,7 @@ async function generarImagenIA(prompt, env) {
   }
 
 }
-async function generarImagenPixasso(env,json) {
+async function generarImagenPixasso(env, prompt) {
 
   const response = await fetch(
     "https://gateway.pixazo.ai/ai-model-api/v1/text-to-image",
@@ -1461,7 +1461,7 @@ async function generarImagenPixasso(env,json) {
         "Ocp-Apim-Subscription-Key": env.PIXAZO_API_KEY
       },
       body: JSON.stringify({
-        prompt,
+        prompt: prompt,
         width: 1024,
         height: 1024,
         num_steps: 4
@@ -1490,39 +1490,4 @@ async function generarImagenPixasso(env,json) {
     return data.images[0];
 
   throw new Error("Pixazo no devolvió ninguna imagen.");
-}
-
-/////prueba pixaso
-addEventListener('fetch', event => {
-  event.respondWith(handleRequest(event.request));
-});
-
-async function handleRequest(request) {
-  if (request.method !== 'POST') {
-    return new Response('Solo POST permitido', { status: 405 });
-  }
-
-  const { prompt } = await request.json();
-
-  const apiResponse = await fetch('https://gateway.pixazo.ai/flux-1-schnell/v1/getData', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer PIXAZO_API_KEY'
-    },
-    body: JSON.stringify({
-      prompt: prompt,
-      // Puedes agregar más parámetros, como tamaño o estilo, si la API lo permite
-    })
-  });
-
-  if (!apiResponse.ok) {
-    return new Response('Error en la API', { status: apiResponse.status });
-  }
-
-  const apiResult = await apiResponse.json();
-  // Supongamos que la imagen viene en base64 o como URL
-  return new Response(JSON.stringify(apiResult), {
-    headers: { 'Content-Type': 'application/json' }
-  });
 }
