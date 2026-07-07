@@ -91,7 +91,7 @@ try {
       return guardarImagen(data, env, json);
 case "imagen_pixasso":
 
-  return await generarImagenPixasso(json, env);
+  return await generarImagenPixasso(data,env,json);
     
     case "generar-plan":
   return await generarPlan(data, env,json);
@@ -1450,7 +1450,7 @@ async function generarImagenIA(prompt, env) {
   }
 
 }
-async function generarImagenPixazo(env, prompt) {
+async function generarImagenPixasso(data,env,json) {
 
   const response = await fetch(
     "https://gateway.pixazo.ai/ai-model-api/v1/text-to-image",
