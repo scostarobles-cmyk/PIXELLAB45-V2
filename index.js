@@ -109,34 +109,17 @@ try {
   // ...
 case "probar-imagen-externa": {
 
-  try {
-
-    const resultado = await probarPixazo(env);
-
-    return new Response(
-      JSON.stringify(resultado),
-      {
-        headers: {
-          "Content-Type": "application/json"
-        }
+  return new Response(
+    JSON.stringify({
+      ok: true,
+      mensaje: "La acción llega al Worker"
+    }),
+    {
+      headers: {
+        "Content-Type": "application/json"
       }
-    );
-
-  } catch (error) {
-
-    return new Response(
-      JSON.stringify({
-        error: error.message
-      }),
-      {
-        status: 500,
-        headers: {
-          "Content-Type": "application/json"
-        }
-      }
-    );
-
-  }
+    }
+  );
 
 }
     default:
