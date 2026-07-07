@@ -1349,53 +1349,10 @@ El formato debe ser EXACTAMENTE:
 }
 async function probarPixazo(env) {
 
-  const prompt = 
-    "Avatar futurista latino tech influencer, cabello oscuro corto, barba prolija, campera negra futurista con luces LED azules, estilo cyberpunk cinematográfico";
+  return {
+    tieneKey: !!env.PIXAZO_API_KEY,
+    tipoKey: typeof env.PIXAZO_API_KEY,
+    longitudKey: env.PIXAZO_API_KEY ? env.PIXAZO_API_KEY.length : 0
+  };
 
-  if (!env.PIXAZO_API_KEY) {
-    throw new Error("Falta PIXAZO_API_KEY en los secretos del Worker");
-  }
-
-
-  const response = await fetch(
-    "https://api.pixazo.ai/v1/images/generations",
-    {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${env.PIXAZO_API_KEY}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        model: "flux-schnell",
-        prompt: prompt,
-        width: 1024,
-        height: 1024,
-        num_images: 1
-      })
-    }
-  );
-
-
-  const textoRespuesta = await response.text();
-
-
-  if (!response.ok) {
-    throw new Error(
-      `Pixazo error ${response.status}: ${textoRespuesta}`
-    );
-  }
-
-
-  let data;
-
-  try {
-    data = JSON.parse(textoRespuesta);
-  } catch {
-    throw new Error(
-      "Pixazo devolvió una respuesta que no es JSON: " + textoRespuesta
-    );
-  }
-
-
-  return data;
 }
