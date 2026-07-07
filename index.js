@@ -1137,17 +1137,17 @@ ${promptVisual}
 `;
 
     // Generar imagen con Gemini
-    const base64 = await generarImagenIA(promptFinal, env);
+    const imagen = await generarImagenIA(promptFinal, env);
 
     // Guardar imagen
     await guardarImagen(
-      {
-        imagen: base64,
-        categoria: data.categoria || "imagenes"
-      },
-      env,
-      json
-    );
+  {
+    imagen,
+    categoria: data.categoria || "imagenes"
+  },
+  env,
+  json
+);
 
     // Devolver la imagen al navegador
     return json({
@@ -1167,26 +1167,48 @@ ${promptVisual}
 
 }
 async function guardarImagen(data, env, json) {
-console.log("Entró a guardarImagen");
-console.log("Categoría:", data.categoria);
-console.log("Base64 length:", data.imagen?.length);
+
+  console.log("Entró a guardarImagen");
+  console.log("Categoría:", data.categoria);
+
   try {
 
     const categoria = data.categoria || "imagenes";
-    const base64 = data.imagen || "";
+    const imagen = data.imagen || "";
 
-    if (!base64) {
+    if (!imagen) {
       return json({
         success: false,
         error: "Imagen no recibida"
       }, 400);
     }
 
-    // Base64 → bytes
-    const bytes = Uint8Array.from(
-      atob(base64),
-      c => c.charCodeAt(0)
-    );
+    let bytes;
+
+    // Si es una URL (Pixazo)
+    if (imagen.startsWith("http")) {
+
+      console.log("Imagen recibida desde URL");
+
+      const response = await fetch(imagen);
+
+      if (!response.ok) {
+        throw new Error("No se pudo descargar la imagen");
+      }
+
+      const buffer = await response.arrayBuffer();
+      bytes = new Uint8Array(buffer);
+
+    } else {
+
+      console.log("Imagen recibida en Base64");
+
+      bytes = Uint8Array.from(
+        atob(imagen),
+        c => c.charCodeAt(0)
+      );
+
+    }
 
     const nombre =
       `${Date.now()}-${crypto.randomUUID()}.png`;
