@@ -1096,85 +1096,124 @@ async function guardarStoryboard(data, env, json) {
 }
 //Generar imagen 
 // Generar imagen
-async function generarImagen(data, env, json) {
+async function generarImagenIA(prompt, env) {
+
+  // ==========================
+  // 1) CLOUDFLARE
+  // ==========================
 
   try {
 
-    const promptUsuario =
-      (data.prompt || data.tema || "").trim();
+    console.log("Cloudflare AI...");
 
-    if (!promptUsuario) {
+    const imagen = await env.AI.run(
+      "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+      {
+        prompt
+      }
+    );
 
-      return json({
-        success: false,
-        error: "Sin prompt"
-      }, 400);
+    // La documentación oficial indica que devuelve los bytes
+    if (imagen instanceof ReadableStream) {
+
+      const buffer = await new Response(imagen).arrayBuffer();
+
+      return {
+        tipo: "bytes",
+        datos: new Uint8Array(buffer)
+      };
 
     }
 
-    // Obtener el prompt visual optimizado
-    const promptVisual = await generarVisualesPrompts(
+    if (imagen instanceof Uint8Array) {
+
+      return {
+        tipo: "bytes",
+        datos: imagen
+      };
+
+    }
+
+    if (imagen instanceof ArrayBuffer) {
+
+      return {
+        tipo: "bytes",
+        datos: new Uint8Array(imagen)
+      };
+
+    }
+
+    throw new Error("Cloudflare devolvió un formato desconocido.");
+
+  } catch (e) {
+
+    console.log("Cloudflare ERROR:", e.message);
+
+  }
+
+  // ==========================
+  // 2) PIXAZO
+  // ==========================
+
+  try {
+
+    console.log("Pixazo Nano Banana...");
+
+    const response = await fetch(
+      "https://gateway.pixazo.ai/nano-banana-2-lite/v1/text-to-image",
       {
-        tema: promptUsuario
-      },
-      env
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Ocp-Apim-Subscription-Key": env.PIXAZO_API_KEY
+        },
+        body: JSON.stringify({
+          prompt: prompt
+        })
+      }
     );
 
-    const promptFinal = `
-Generate exactly what is described below.
+    if (!response.ok) {
 
-CRITICAL RULES:
+      throw new Error(await response.text());
 
-- Do not change the subject.
-- Do not invent new objects.
-- Preserve any text, letters, numbers or symbols exactly as requested.
-- High quality.
-- Highly detailed.
-- Sharp focus.
-- Natural lighting unless another style is requested.
+    }
 
-${promptVisual}
-`;
+    const data = await response.json();
 
-    // Generar imagen con Gemini
-    const imagen = await generarImagenIA(promptFinal, env);
+    if (data.image)
+      return {
+        tipo: "base64",
+        datos: data.image
+      };
 
-   
-    // Guardar imagen
-const guardada = await guardarImagen(
-{
-  imagen,
-  categoria: data.categoria || "imagenes"
-},
-env,
-json
-);
+    if (data.output)
+      return {
+        tipo: "url",
+        datos: data.output
+      };
 
-if (!guardada.success) {
+    if (data.url)
+      return {
+        tipo: "url",
+        datos: data.url
+      };
 
-  return json({
-    success: false,
-    error: guardada.error
-  }, 500);
+    if (Array.isArray(data.images))
+      return {
+        tipo: "url",
+        datos: data.images[0]
+      };
 
-}
+    throw new Error("Pixazo no devolvió imagen.");
 
-// Devolver la URL pública
-return json({
-  success: true,
-  imagen: guardada.url,
-  archivo: guardada.nombre
-});
+  } catch (e) {
 
-  } catch (err) {
+    console.log("Pixazo ERROR:", e.message);
 
-  return json({
-    success: false,
-    error: String(err),
-    mensaje: err.message
-  }, 500);
+    throw new Error("No fue posible generar la imagen.");
 
-}
+  }
 
 }
 async function guardarImagen(data, env, json) {
@@ -1193,30 +1232,41 @@ async function guardarImagen(data, env, json) {
 
     let bytes;
 
-    // Si es una URL (Pixazo)
-    if (typeof imagen === "string" && imagen.startsWith("http")) {
+    // ==========================
+    // CLOUDLFARE (bytes)
+    // ==========================
 
-      console.log("Guardando imagen desde URL...");
+    if (imagen.tipo === "bytes") {
 
-      const response = await fetch(imagen);
+      bytes = imagen.datos;
 
-      if (!response.ok) {
+    }
+
+    // ==========================
+    // PIXAZO (URL)
+    // ==========================
+
+    else if (imagen.tipo === "url") {
+
+      const r = await fetch(imagen.datos);
+
+      if (!r.ok) {
         throw new Error("No se pudo descargar la imagen.");
       }
 
-      bytes = new Uint8Array(await response.arrayBuffer());
+      bytes = new Uint8Array(await r.arrayBuffer());
 
-    } else {
+    }
 
-      console.log("Guardando imagen Base64...");
+    // ==========================
+    // BASE64
+    // ==========================
 
-      let base64 = imagen;
+    else if (imagen.tipo === "base64") {
 
-      // Eliminar encabezado data:image/...;base64,
-      if (
-        typeof base64 === "string" &&
-        base64.startsWith("data:image")
-      ) {
+      let base64 = imagen.datos;
+
+      if (base64.startsWith("data:image")) {
         base64 = base64.substring(base64.indexOf(",") + 1);
       }
 
@@ -1224,6 +1274,46 @@ async function guardarImagen(data, env, json) {
         atob(base64),
         c => c.charCodeAt(0)
       );
+
+    }
+
+    // ==========================
+    // COMPATIBILIDAD
+    // ==========================
+
+    else if (typeof imagen === "string") {
+
+      if (imagen.startsWith("http")) {
+
+        const r = await fetch(imagen);
+
+        if (!r.ok) {
+          throw new Error("No se pudo descargar la imagen.");
+        }
+
+        bytes = new Uint8Array(await r.arrayBuffer());
+
+      } else {
+
+        let base64 = imagen;
+
+        if (base64.startsWith("data:image")) {
+          base64 = base64.substring(base64.indexOf(",") + 1);
+        }
+
+        bytes = Uint8Array.from(
+          atob(base64),
+          c => c.charCodeAt(0)
+        );
+
+      }
+
+    }
+
+    else {
+
+      throw new Error("Formato de imagen desconocido.");
+
     }
 
     const nombre = `${Date.now()}-${crypto.randomUUID()}.png`;
@@ -1246,7 +1336,7 @@ async function guardarImagen(data, env, json) {
 
   } catch (err) {
 
-    console.log("Error guardando imagen:", err);
+    console.log("guardarImagen:", err);
 
     return {
       success: false,
@@ -1255,51 +1345,7 @@ async function guardarImagen(data, env, json) {
 
   }
 
-}
-// =====================================
-// GEMINI IA
-// =====================================
- async function geminiImagen(prompt, env) {
-
-  const response = await fetch(
-    "https://generativelanguage.googleapis.com/v1beta/interactions",
-    {
-      method: "POST",
-      headers: {
-        "x-goog-api-key": env.GEMINI_API_KEY,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        model: "gemini-3.1-flash-image",
-        input: prompt,
-        response_format: {
-          type: "image",
-          aspect_ratio: "1:1",
-          image_size: "1K"
-        }
-      })
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error(await response.text());
-  }
-
-  const data = await response.json();
-
-  console.log("Respuesta Gemini Imagen:");
-  console.log(JSON.stringify(data, null, 2));
-
-  const base64 = data?.output_image?.data;
-
-  if (!base64) {
-    throw new Error("La API no devolvió ninguna imagen.");
-  }
-
-  return base64;
-
-}
-// =====================================================
+}// =====================================================
 // PIXELLAB45 - EBOOK V3
 // FUNCIÓN: generarPlanEbook()
 // =====================================================
@@ -1389,72 +1435,136 @@ El formato debe ser EXACTAMENTE:
 }
 async function generarImagenIA(prompt, env) {
 
-  // ========= CLOUDLFARE =========
+  // ==========================
+  // CLOUDFLARE
+  // ==========================
 
   try {
 
-    console.log("Generando imagen con Cloudflare...");
+    console.log("Generando con Cloudflare...");
 
-    const res = await env.AI.run(
+    const resultado = await env.AI.run(
       "@cf/stabilityai/stable-diffusion-xl-base-1.0",
       {
         prompt
       }
     );
 
-    console.log("Respuesta Cloudflare:", typeof res);
+    // Workers AI devuelve un ReadableStream
+    if (resultado instanceof ReadableStream) {
 
-    // Base64
-    if (typeof res === "string") {
-      return res;
+      const buffer = await new Response(resultado).arrayBuffer();
+
+      return {
+        tipo: "bytes",
+        datos: new Uint8Array(buffer)
+      };
+
     }
 
-    // { image: base64 }
-    if (res?.image) {
-      return res.image;
+    // Compatibilidad
+    if (resultado instanceof Uint8Array) {
+
+      return {
+        tipo: "bytes",
+        datos: resultado
+      };
+
     }
 
-    // Uint8Array
-    if (res instanceof Uint8Array) {
-      return btoa(String.fromCharCode(...res));
+    if (resultado instanceof ArrayBuffer) {
+
+      return {
+        tipo: "bytes",
+        datos: new Uint8Array(resultado)
+      };
+
     }
 
-    // ArrayBuffer
-    if (res instanceof ArrayBuffer) {
-      return btoa(
-        String.fromCharCode(...new Uint8Array(res))
-      );
-    }
-
-    // ReadableStream
-    if (res?.body) {
-
-      const bytes = new Uint8Array(await new Response(res.body).arrayBuffer());
-
-      return btoa(String.fromCharCode(...bytes));
-    }
-
-    throw new Error("Cloudflare no devolvió una imagen válida.");
+    throw new Error("Cloudflare devolvió un formato desconocido.");
 
   } catch (err) {
 
-    console.log("Cloudflare falló:", err);
+    console.log("Cloudflare:", err.message);
 
   }
 
-  // ========= PIXAZO =========
+  // ==========================
+  // PIXAZO
+  // ==========================
 
   try {
 
-    console.log("Intentando Pixazo...");
+    console.log("Usando Pixazo...");
 
-    return await generarImagenPixazo(env, prompt);
+    const response = await fetch(
+      "https://gateway.pixazo.ai/nano-banana-2-lite/v1/text-to-image",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Ocp-Apim-Subscription-Key": env.PIXAZO_API_KEY
+        },
+        body: JSON.stringify({
+          prompt: prompt
+        })
+      }
+    );
+
+    if (!response.ok) {
+
+      throw new Error(await response.text());
+
+    }
+
+    const data = await response.json();
+
+    console.log(JSON.stringify(data));
+
+    if (data.image) {
+
+      return {
+        tipo: "base64",
+        datos: data.image
+      };
+
+    }
+
+    if (data.output) {
+
+      return {
+        tipo: "url",
+        datos: data.output
+      };
+
+    }
+
+    if (data.url) {
+
+      return {
+        tipo: "url",
+        datos: data.url
+      };
+
+    }
+
+    if (Array.isArray(data.images) && data.images.length) {
+
+      return {
+        tipo: "url",
+        datos: data.images[0]
+      };
+
+    }
+
+    throw new Error("Pixazo no devolvió ninguna imagen.");
 
   } catch (err) {
 
-    console.log("Pixazo falló:", err);
+    console.log("Pixazo:", err.message);
 
-    throw new Error("Ningún motor pudo generar la imagen.");
+    throw new Error("Fallaron Cloudflare y Pixazo.");
+
   }
 
 }
