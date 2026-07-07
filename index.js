@@ -1096,227 +1096,106 @@ async function guardarStoryboard(data, env, json) {
 }
 //Generar imagen 
 // Generar imagen
-async function generarImagenIA(prompt, env) {
-
-  // ==========================
-  // 1) CLOUDFLARE
-  // ==========================
+async function generarImagen(data, env) {
 
   try {
 
-    console.log("Cloudflare AI...");
+    const promptUsuario =
+      (data.prompt || data.tema || "").trim();
 
-    const imagen = await env.AI.run(
+    if (!promptUsuario) {
+
+      return new Response(JSON.stringify({
+        ok: false,
+        error: "Sin prompt"
+      }), {
+        status: 400,
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+    }
+
+    // Obtener el prompt profesional desde Visuales
+    const promptVisual =
+      await generarVisualesPrompts(
+        promptUsuario,
+        env
+      );
+
+    // Reglas específicas para Stable Diffusion
+    const promptFinal = `
+Generate exactly what is described below.
+
+CRITICAL RULES:
+
+- Do not change the subject.
+- Do not invent new objects.
+- Preserve any text, letters, numbers or symbols exactly as requested.
+- High quality.
+- Highly detailed.
+- Sharp focus.
+- Natural lighting unless another style is requested.
+
+${promptVisual}
+`;
+
+    const imageBytes = await env.AI.run(
       "@cf/stabilityai/stable-diffusion-xl-base-1.0",
       {
-        prompt
+        prompt: promptFinal
       }
     );
 
-    // La documentación oficial indica que devuelve los bytes
-    if (imagen instanceof ReadableStream) {
-
-      const buffer = await new Response(imagen).arrayBuffer();
-
-      return {
-        tipo: "bytes",
-        datos: new Uint8Array(buffer)
-      };
-
-    }
-
-    if (imagen instanceof Uint8Array) {
-
-      return {
-        tipo: "bytes",
-        datos: imagen
-      };
-
-    }
-
-    if (imagen instanceof ArrayBuffer) {
-
-      return {
-        tipo: "bytes",
-        datos: new Uint8Array(imagen)
-      };
-
-    }
-
-    throw new Error("Cloudflare devolvió un formato desconocido.");
-
-  } catch (e) {
-
-    console.log("Cloudflare ERROR:", e.message);
-
-  }
-
-  // ==========================
-  // 2) PIXAZO
-  // ==========================
-
-  try {
-
-    console.log("Pixazo Nano Banana...");
-
-    const response = await fetch(
-      "https://gateway.pixazo.ai/nano-banana-2-lite/v1/text-to-image",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Ocp-Apim-Subscription-Key": env.PIXAZO_API_KEY
-        },
-        body: JSON.stringify({
-          prompt: prompt
-        })
+    return new Response(imageBytes, {
+      headers: {
+        "Content-Type": "image/png",
+        "Access-Control-Allow-Origin": "*"
       }
-    );
+    });
 
-    if (!response.ok) {
+  } catch (err) {
 
-      throw new Error(await response.text());
-
-    }
-
-    const data = await response.json();
-
-    if (data.image)
-      return {
-        tipo: "base64",
-        datos: data.image
-      };
-
-    if (data.output)
-      return {
-        tipo: "url",
-        datos: data.output
-      };
-
-    if (data.url)
-      return {
-        tipo: "url",
-        datos: data.url
-      };
-
-    if (Array.isArray(data.images))
-      return {
-        tipo: "url",
-        datos: data.images[0]
-      };
-
-    throw new Error("Pixazo no devolvió imagen.");
-
-  } catch (e) {
-
-    console.log("Pixazo ERROR:", e.message);
-
-    throw new Error("No fue posible generar la imagen.");
+    return new Response(JSON.stringify({
+      ok: false,
+      error: err.message
+    }), {
+      status: 500,
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
 
   }
 
 }
-async function guardarImagen(data, env, json) {
+
+async function guardarImagen(data, env) {
 
   try {
 
     const categoria = data.categoria || "imagenes";
-    const imagen = data.imagen;
+    const base64 = data.imagen;
 
-    if (!imagen) {
-      return {
-        success: false,
-        error: "Imagen no recibida"
-      };
+    if (!base64) {
+      return new Response(JSON.stringify({
+  ok: false,
+  error: "Imagen no recibida"
+}), {
+  status: 400,
+  headers: CORS_HEADERS
+});
     }
 
-    let bytes;
+    // Base64 → bytes
+    const bytes = Uint8Array.from(
+      atob(base64),
+      c => c.charCodeAt(0)
+    );
 
-    // ==========================
-    // CLOUDLFARE (bytes)
-    // ==========================
-
-    if (imagen.tipo === "bytes") {
-
-      bytes = imagen.datos;
-
-    }
-
-    // ==========================
-    // PIXAZO (URL)
-    // ==========================
-
-    else if (imagen.tipo === "url") {
-
-      const r = await fetch(imagen.datos);
-
-      if (!r.ok) {
-        throw new Error("No se pudo descargar la imagen.");
-      }
-
-      bytes = new Uint8Array(await r.arrayBuffer());
-
-    }
-
-    // ==========================
-    // BASE64
-    // ==========================
-
-    else if (imagen.tipo === "base64") {
-
-      let base64 = imagen.datos;
-
-      if (base64.startsWith("data:image")) {
-        base64 = base64.substring(base64.indexOf(",") + 1);
-      }
-
-      bytes = Uint8Array.from(
-        atob(base64),
-        c => c.charCodeAt(0)
-      );
-
-    }
-
-    // ==========================
-    // COMPATIBILIDAD
-    // ==========================
-
-    else if (typeof imagen === "string") {
-
-      if (imagen.startsWith("http")) {
-
-        const r = await fetch(imagen);
-
-        if (!r.ok) {
-          throw new Error("No se pudo descargar la imagen.");
-        }
-
-        bytes = new Uint8Array(await r.arrayBuffer());
-
-      } else {
-
-        let base64 = imagen;
-
-        if (base64.startsWith("data:image")) {
-          base64 = base64.substring(base64.indexOf(",") + 1);
-        }
-
-        bytes = Uint8Array.from(
-          atob(base64),
-          c => c.charCodeAt(0)
-        );
-
-      }
-
-    }
-
-    else {
-
-      throw new Error("Formato de imagen desconocido.");
-
-    }
-
-    const nombre = `${Date.now()}-${crypto.randomUUID()}.png`;
+    const nombre =
+      `${Date.now()}-${crypto.randomUUID()}.png`;
 
     await env.IMAGES.put(
       `${categoria}/${nombre}`,
@@ -1328,24 +1207,28 @@ async function guardarImagen(data, env, json) {
       }
     );
 
-    return {
-      success: true,
-      nombre,
-      url: `${R2_BASE_URL}/${categoria}/${nombre}`
-    };
+    return new Response(JSON.stringify({
+  ok: true,
+  nombre
+}), {
+  headers: CORS_HEADERS
+});
 
   } catch (err) {
 
-    console.log("guardarImagen:", err);
-
-    return {
-      success: false,
-      error: err.message || String(err)
-    };
+    return new Response(JSON.stringify({
+  ok: false,
+  error: err.message
+}), {
+  status: 500,
+  headers: CORS_HEADERS
+});
 
   }
 
-}// =====================================================
+}
+
+// =====================================================
 // PIXELLAB45 - EBOOK V3
 // FUNCIÓN: generarPlanEbook()
 // =====================================================
