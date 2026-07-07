@@ -1042,7 +1042,7 @@ alert(prompt);
 
   const data = await respuesta.json();
   alert("contenido de data");
-alert(data);
+alert(JSON.stringify(data));
 
   if(data.imagen){
 
