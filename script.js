@@ -1041,7 +1041,7 @@ alert(prompt);
 
 
   const data = await respuesta.json();
-
+alert(data);
 
   if(data.imagen){
 
