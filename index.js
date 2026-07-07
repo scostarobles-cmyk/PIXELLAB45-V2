@@ -1157,12 +1157,13 @@ ${promptVisual}
 
   } catch (err) {
 
-    return json({
-      success: false,
-      error: err.message || String(err)
-    }, 500);
+  return json({
+    success: false,
+    error: err?.message || "Error sin mensaje",
+    detalle: JSON.stringify(err)
+  }, 500);
 
-  }
+}
 
 }
 async function guardarImagen(data, env, json) {
@@ -1374,10 +1375,7 @@ async function generarImagenIA(prompt, env) {
 
   } catch (error) {
 
-    console.log(
-      "Cloudflare falló, usando Pixazo:",
-      error.message
-    );
+  console.log("Error modelo principal:", error);
 
 
     const imagen = await generarImagenPixazo(
