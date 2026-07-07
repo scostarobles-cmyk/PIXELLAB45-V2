@@ -89,59 +89,7 @@ try {
 
     case "guardar-imagen":
       return guardarImagen(data, env, json);
-case "imagen_pixasso":
 
-  return await generarImagenPixasso(env, json.prompt);
-    
-    case "generar-plan":
-  return await generarPlan(data, env,json);
-
-  case "generar-indice":
-    return await generarIndice(json, env);
-
-  case "generar-legales":
-    return await generarLegales(json, env);
-
-  case "generar-introduccion":
-    return await generarIntroduccion(json, env);
-
-  case "generar-capitulo":
-    return await generarCapitulo(json, env);
-
-  // ...
-case "probar-imagen-externa": {
-
-  try {
-
-    const resultado = await probarPixazo(env);
-
-    return new Response(
-      JSON.stringify(resultado),
-      {
-        headers: {
-          "Content-Type": "application/json"
-        }
-      }
-    );
-
-  } catch (error) {
-
-    return new Response(
-      JSON.stringify({
-        error: error.message,
-        stack: error.stack
-      }),
-      {
-        status: 500,
-        headers: {
-          "Content-Type": "application/json"
-        }
-      }
-    );
-
-  }
-
-}
     default:
       return json({
         ok: false,
