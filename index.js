@@ -1453,7 +1453,7 @@ async function generarImagenIA(prompt, env) {
 async function generarImagenPixazo(env, prompt) {
 
   const response = await fetch(
-    "https://gateway.pixazo.ai/flux-1-schnell/v1/getData",
+    "https://gateway.pixazo.ai/ai-model-api/v1/text-to-image",
     {
       method: "POST",
       headers: {
