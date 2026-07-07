@@ -1212,7 +1212,8 @@ async function guardarImagen(data, env, json) {
 
     const nombre =
       `${Date.now()}-${crypto.randomUUID()}.png`;
-
+console.log("Imagen recibida:", imagen);
+console.log("Tipo:", typeof imagen);
     await env.IMAGES.put(
       `${categoria}/${nombre}`,
       bytes,
@@ -1451,5 +1452,15 @@ async function generarImagenPixazo(env, prompt) {
   }
 
 
-  return data.output;
+  const url = Array.isArray(data.output)
+  ? data.output[0]
+  : data.output;
+
+if (!url || typeof url !== "string") {
+  throw new Error(
+    "URL inválida de Pixazo: " + JSON.stringify(data)
+  );
+}
+
+return url;
 }
