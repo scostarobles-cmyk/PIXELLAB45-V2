@@ -1041,32 +1041,31 @@ async function guardarStoryboard(data, env, json) {
 
 }
 //Generar imagen 
-async function generarImagen(data, env,json) {
+// Generar imagen
+async function generarImagen(data, env, json) {
+
   try {
+
     const promptUsuario =
       (data.prompt || data.tema || "").trim();
+
     if (!promptUsuario) {
 
-      return new Response(JSON.stringify({
+      return json({
         success: false,
         error: "Sin prompt"
-      }), {
-        status: 400,
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
+      }, 400);
 
     }
-   
 
     // Obtener el prompt visual optimizado
     const promptVisual = await generarVisualesPrompts(
-  {
-    tema: promptUsuario
-  },
-  env
-);
+      {
+        tema: promptUsuario
+      },
+      env
+    );
+
     const promptFinal = `
 Generate exactly what is described below.
 
@@ -1082,33 +1081,36 @@ CRITICAL RULES:
 
 ${promptVisual}
 `;
-    const base64 = await geminiImagen(prompt, env);
 
-await guardarImagen(
-  {
-    imagen: base64,
-    categoria: data.categoria || "imagenes"
-  },
-  env,
-  json
-);
-    
+    // Generar imagen con Gemini
+    const base64 = await geminiImagen(promptFinal, env);
+
+    // Guardar imagen
+    await guardarImagen(
+      {
+        imagen: base64,
+        categoria: data.categoria || "imagenes"
+      },
+      env,
+      json
+    );
+
+    // Devolver la imagen al navegador
+    return json({
+      success: true,
+      imagen: base64
+    });
 
   } catch (err) {
-    return new Response(JSON.stringify({
+
+    return json({
       success: false,
-      error: err.message
-    }), {
-      status: 500,
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
+      error: err.message || String(err)
+    }, 500);
 
   }
 
 }
-
 async function guardarImagen(data, env, json) {
 console.log("Entró a guardarImagen");
 console.log("Categoría:", data.categoria);
@@ -1163,81 +1165,46 @@ console.log("Base64 length:", data.imagen?.length);
 // =====================================
 // GEMINI IA
 // =====================================
- async function geminiImagen(env, prompt){
+ async function geminiImagen(prompt, env) {
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelo}:generateContent?key=${env.GEMINI_API_KEY}`;
-
-  console.log("================================");
-  console.log("LLAMANDO A GEMINI");
-  console.log("Modelo:", modelo);
-  console.log("URL:", url);
-  console.log("================================");
-
-  let respuesta;
-
-  try {
-
-    respuesta = await fetch(url, {
+  const response = await fetch(
+    "https://generativelanguage.googleapis.com/v1beta/interactions",
+    {
       method: "POST",
       headers: {
+        "x-goog-api-key": env.GEMINI_API_KEY,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        contents: [
+        model: "gemini-3.1-flash-image",
+        input: [
           {
-            parts: [
-              {
-                text: prompt
-              }
-            ]
+            type: "text",
+            text: prompt
           }
         ]
       })
-    });
+    }
+  );
 
-  } catch (err) {
+  if (!response.ok) {
 
-    console.log("ERROR EN FETCH:");
-    console.log(err);
+    throw new Error(await response.text());
 
-    throw new Error("Fetch Gemini: " + err.message);
   }
 
-  const texto = await respuesta.text();
+  const data = await response.json();
 
-  if (!respuesta.ok) {
+  const imagen = data.output_image?.data;
 
-    console.log("================================");
-    console.log("GEMINI ERROR");
-    console.log("STATUS:", respuesta.status);
-    console.log(texto);
-    console.log("================================");
+  if (!imagen) {
 
-    throw new Error(`Gemini ${respuesta.status}: ${texto}`);
+    throw new Error("Gemini no devolvió ninguna imagen.");
+
   }
 
-  let data;
+  return imagen;
 
-  try {
-    data = JSON.parse(texto);
-  } catch (err) {
-    throw new Error("Gemini devolvió una respuesta que no es JSON:\n" + texto);
-  }
-
-  console.log("Respuesta Gemini OK");
-
-  if (
-    !data.candidates ||
-    !data.candidates.length ||
-    !data.candidates[0].content ||
-    !data.candidates[0].content.parts ||
-    !data.candidates[0].content.parts.length
-  ) {
-    console.log(data);
-    throw new Error("Gemini no devolvió contenido.");
-  }
-
-  return data.candidates[0].content.parts[0].text.trim();
 }
 // =====================================================
 // PIXELLAB45 - EBOOK V3
