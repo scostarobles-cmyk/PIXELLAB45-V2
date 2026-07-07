@@ -1391,3 +1391,36 @@ async function generarImagenIA(prompt, env) {
   }
 
 }
+async function generarImagenPixazo(env, prompt) {
+
+  const response = await fetch(
+    "https://gateway.pixazo.ai/flux-1-schnell/v1/getData",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Cache-Control": "no-cache",
+        "Ocp-Apim-Subscription-Key": env.PIXAZO_API_KEY
+      },
+      body: JSON.stringify({
+        prompt: prompt,
+        num_steps: 4,
+        width: 1024,
+        height: 1024
+      })
+    }
+  );
+
+
+  const data = await response.json();
+
+
+  if (!data.output) {
+    throw new Error(
+      "Pixazo no devolvió imagen: " + JSON.stringify(data)
+    );
+  }
+
+
+  return data.output;
+}
