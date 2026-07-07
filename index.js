@@ -1140,7 +1140,7 @@ ${promptVisual}
     const imagen = await generarImagenIA(promptFinal, env);
 
     // Guardar imagen
-    await z(
+    await guardarImagen(
   {
     imagen,
     categoria: data.categoria || "imagenes"
