@@ -1349,10 +1349,38 @@ El formato debe ser EXACTAMENTE:
 }
 async function probarPixazo(env) {
 
-  return {
-    tieneKey: !!env.PIXAZO_API_KEY,
-    tipoKey: typeof env.PIXAZO_API_KEY,
-    longitudKey: env.PIXAZO_API_KEY ? env.PIXAZO_API_KEY.length : 0
-  };
+  const prompt =
+    "Avatar futurista latino tech influencer, cabello oscuro corto, barba prolija, campera negra futurista con luces LED azules, estilo cyberpunk cinematográfico";
 
+
+  const response = await fetch(
+    "https://gateway.pixazo.ai/flux-1-schnell/v1/getData",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Cache-Control": "no-cache",
+        "Ocp-Apim-Subscription-Key": env.PIXAZO_API_KEY
+      },
+      body: JSON.stringify({
+        prompt: prompt,
+        num_steps: 4,
+        width: 512,
+        height: 512
+      })
+    }
+  );
+
+
+  const texto = await response.text();
+
+
+  if (!response.ok) {
+    throw new Error(
+      `Pixazo ${response.status}: ${texto}`
+    );
+  }
+
+
+  return JSON.parse(texto);
 }
