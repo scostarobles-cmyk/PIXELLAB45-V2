@@ -222,13 +222,167 @@ async function gemini(env, prompt) {
 
 }
 // =====================================
+// IMAGE IA
+// =====================================
+
+const MODELOS_IMAGEN = [
+  {
+    proveedor: "google",
+    modelo: "imagen-3.0-generate-002"
+  },
+  {
+    proveedor: "cloudflare",
+    modelo: "@cf/stabilityai/stable-diffusion-xl-base-1.0"
+  }
+];
+
+let modeloImagenActual = 0;
+
+async function imagenIA(env, prompt) {
+
+  let ultimoError = null;
+
+  for (let intento = 0; intento < MODELOS_IMAGEN.length; intento++) {
+
+    const indice =
+      (modeloImagenActual + intento) %
+      MODELOS_IMAGEN.length;
+
+    const m = MODELOS_IMAGEN[indice];
+
+    try {
+
+      console.log("Probando modelo imagen:", m.modelo);
+
+      // ===============================
+      // GOOGLE IMAGEN
+      // ===============================
+
+      if (m.proveedor === "google") {
+
+        const response = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${m.modelo}:generateImages?key=${env.GEMINI_API_KEY}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+
+              prompt: prompt,
+
+              config: {
+                numberOfImages: 1,
+                outputMimeType: "image/png",
+                aspectRatio: "1:1"
+              }
+
+            })
+          }
+        );
+
+        if (response.status === 429) {
+
+          console.log("Cuota agotada:", m.modelo);
+
+          continue;
+
+        }
+
+        if (!response.ok) {
+
+          throw new Error(await response.text());
+
+        }
+
+        const data = await response.json();
+
+        const base64 =
+          data.generatedImages?.[0]?.image?.imageBytes;
+
+        if (!base64) {
+
+          throw new Error(
+            "Google no devolvió imagen."
+          );
+
+        }
+
+        const binary = atob(base64);
+
+        const bytes =
+          new Uint8Array(binary.length);
+
+        for (let i = 0; i < binary.length; i++) {
+
+          bytes[i] = binary.charCodeAt(i);
+
+        }
+
+        modeloImagenActual = indice;
+
+        console.log(
+          "Modelo imagen activo:",
+          m.modelo
+        );
+
+        return bytes;
+
+      }
+
+      // ===============================
+      // CLOUDFLARE
+      // ===============================
+
+      else {
+
+        const imageBytes =
+          await env.AI.run(
+            m.modelo,
+            {
+              prompt
+            }
+          );
+
+        modeloImagenActual = indice;
+
+        console.log(
+          "Modelo imagen activo:",
+          m.modelo
+        );
+
+        return imageBytes;
+
+      }
+
+    } catch (err) {
+
+      console.log(
+        `Error con ${m.modelo}:`,
+        err.message
+      );
+
+      ultimoError = err;
+
+    }
+
+  }
+
+  throw (
+    ultimoError ||
+    new Error(
+      "No hay modelos de imagen disponibles."
+    )
+  );
+
+}
+// =====================================
 // CEREBRO IA
 // =====================================
 
-async function ai(env, prompt) {
-
+async function ai(env, modelo, prompt) {
   const res = await env.AI.run(
-    "@cf/meta/llama-3.1-8b-instruct-fp8",
+    modelo, // Usamos el modelo que nos pasa el parámetro
     {
       messages: [
         {
@@ -287,8 +441,7 @@ If the user requests a STORYBOARD:
 - Follow the requested structure exactly.
 
 Always prioritize precision over creativity.
-Always be literal.
-`
+Always be literal.`
         },
         {
           role: "user",
@@ -299,12 +452,10 @@ Always be literal.
     }
   );
 
-console.log(JSON.stringify(res, null, 2));
+  console.log(JSON.stringify(res, null, 2));
 
-return res.response;;
-
+  return res.response;
 }
-
 // =====================================
 // GENERADOR DE IDEAS 
 // =====================================
@@ -1088,19 +1239,18 @@ CRITICAL RULES:
 ${promptVisual}
 `;
 
-    const imageBytes = await env.AI.run(
-      "@cf/stabilityai/stable-diffusion-xl-base-1.0",
-      {
-        prompt: promptFinal
-      }
-    );
+    const imageBytes =
+  await imagenIA(
+    env,
+    promptFinal
+  );
 
-    return new Response(imageBytes, {
-      headers: {
-        "Content-Type": "image/png",
-        "Access-Control-Allow-Origin": "*"
-      }
-    });
+return new Response(imageBytes, {
+  headers: {
+    "Content-Type": "image/png",
+    "Access-Control-Allow-Origin": "*"
+  }
+});
 
   } catch (err) {
 
