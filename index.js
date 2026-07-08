@@ -88,7 +88,7 @@ try {
       return guardarImagen(data, env, json);
       
      case "crear-proyecto":
-  return crearProyecto(data, env, json);
+  return json(await crearProyecto(data, env, json));
 
     default:
       return json({
