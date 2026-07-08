@@ -1033,35 +1033,20 @@ async function generarImagenPuter() {
 
   try {
 
-    const response = await fetch(WORKER_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        action: "imagen-puter",
-        prompt: prompt
-      })
-    });
+    const imagenUrl = await puter.ai.createImage(prompt);
 
-
-    const data = await response.json();
-
-
-resultado.innerHTML = `
-<pre>${JSON.stringify(data, null, 2)}</pre>
-`;
-
+    resultado.innerHTML = `
+      <img src="${imagenUrl}" class="imagen-generada">
+    `;
 
   } catch (error) {
 
     resultado.innerHTML =
-      "❌ Error de conexión: " + error.message;
+      "❌ Error Puter: " + error.message;
 
   }
 
 }
-
 // INICIO
 window.onload = () => {
 
