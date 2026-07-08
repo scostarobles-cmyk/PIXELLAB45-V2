@@ -1174,6 +1174,66 @@ async function guardarImagen(data, env) {
   }
 
 }
+// =====================================
+// GEMINI IMAGE
+// =====================================
+
+async function imagenIA(env, prompt) {
+
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-image:generateContent?key=${env.GEMINI_API_KEY}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        contents: [
+          {
+            parts: [
+              {
+                text: prompt
+              }
+            ]
+          }
+        ]
+      })
+    }
+  );
+
+  if (response.status === 429) {
+    throw new Error("Cuota de Gemini agotada.");
+  }
+
+  if (!response.ok) {
+    throw new Error(await response.text());
+  }
+
+  const data = await response.json();
+
+  console.log(JSON.stringify(data, null, 2));
+
+  const parts =
+    data?.candidates?.[0]?.content?.parts || [];
+
+  for (const part of parts) {
+
+    if (part.inlineData?.data) {
+
+      const bytes = Uint8Array.from(
+        atob(part.inlineData.data),
+        c => c.charCodeAt(0)
+      );
+
+      return bytes;
+
+    }
+
+  }
+
+  throw new Error("Gemini no devolvió una imagen.");
+
+}
 
 // =====================================================
 // PIXELLAB45 - EBOOK V3

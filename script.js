@@ -1019,45 +1019,7 @@ async function generarPlan() {
     }
 
 }
-async function generarImagenPixasso(){
 
-  const prompt =
-    document.getElementById("promptImagen").value;
-alert(prompt);
-
-  const respuesta = await fetch(
-    WORKER_URL,
-    {
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify({
-        action:"imagen_pixasso",
-        prompt:prompt
-      })
-    }
-  );
-
-
-  const data = await respuesta.json();
-  alert("contenido de data");
-alert(JSON.stringify(data));
-
-  if(data.imagen){
-
-    document.getElementById("loadingImagen").src =
-      data.imagen;
-
-  } else {
-  	alert("else");
-
-    console.log(data);
-    alert(data);
-
-  }
-
-}
 
 // INICIO
 window.onload = () => {
