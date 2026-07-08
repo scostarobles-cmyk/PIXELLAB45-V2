@@ -228,7 +228,7 @@ async function gemini(env, prompt) {
 const MODELOS_IMAGEN = [
   {
     proveedor: "google",
-    modelo: "imagen-3.0-generate-002"
+    modelo: "gemini-3.1-flash-image"
   },
   {
     proveedor: "cloudflare",
@@ -238,9 +238,11 @@ const MODELOS_IMAGEN = [
 
 let modeloImagenActual = 0;
 
+
 async function imagenIA(env, prompt) {
 
   let ultimoError = null;
+
 
   for (let intento = 0; intento < MODELOS_IMAGEN.length; intento++) {
 
@@ -248,104 +250,176 @@ async function imagenIA(env, prompt) {
       (modeloImagenActual + intento) %
       MODELOS_IMAGEN.length;
 
+
     const m = MODELOS_IMAGEN[indice];
+
 
     try {
 
       console.log("Probando modelo imagen:", m.modelo);
+      console.log("PROMPT IMAGEN:", prompt);
+
+
+      // ===============================
+      // GOOGLE GEMINI IMAGE
+      // ===============================
 
       if (m.proveedor === "google") {
 
+
         const response = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/${m.modelo}:generateImages?key=${env.GEMINI_API_KEY}`,
+          "https://generativelanguage.googleapis.com/v1beta/interactions",
           {
             method: "POST",
+
             headers: {
-              "Content-Type": "application/json"
+              "Content-Type": "application/json",
+              "x-goog-api-key": env.GEMINI_API_KEY
             },
+
             body: JSON.stringify({
-              prompt: prompt,
-              config: {
-                numberOfImages: 1,
-                outputMimeType: "image/png",
-                aspectRatio: "1:1"
-              }
+
+              model: m.modelo,
+
+              input: [
+                {
+                  type: "text",
+                  text: prompt
+                }
+              ]
+
             })
+
           }
         );
 
-        if (response.status === 429) {
-          console.log("Cuota agotada:", m.modelo);
-          continue;
-        }
+
+        const data = await response.json();
+
 
         if (!response.ok) {
 
-  const errorText = await response.text();
+          console.log(
+            "ERROR GOOGLE IMAGEN:",
+            JSON.stringify(data)
+          );
 
-  console.log("STATUS GOOGLE:", response.status);
-  console.log("RESPUESTA GOOGLE:", errorText);
+          throw new Error(
+            data.error?.message ||
+            "Error Google imagen"
+          );
 
-  throw new Error(
-    errorText || `Google error ${response.status}`
-  );
+        }
 
-}
-        const data = await response.json();
+
+        console.log(
+          "RESPUESTA GOOGLE:",
+          JSON.stringify(data)
+        );
+
+
+        /*
+          AQUÍ SE EXTRAERÁ LA IMAGEN
+          SEGÚN EL CAMPO QUE DEVUELVA
+          GEMINI IMAGE
+        */
+
 
         const base64 =
-          data.generatedImages?.[0]?.image?.imageBytes;
+          data.output?.[0]?.image?.imageBytes ||
+          data.imageBytes;
+
 
         if (!base64) {
-          throw new Error("Google no devolvió imagen.");
+
+          throw new Error(
+            "Google respondió pero no devolvió imagen"
+          );
+
         }
+
 
         const binary = atob(base64);
 
-        const bytes = new Uint8Array(binary.length);
+        const bytes =
+          new Uint8Array(binary.length);
+
 
         for (let i = 0; i < binary.length; i++) {
-          bytes[i] = binary.charCodeAt(i);
+
+          bytes[i] =
+            binary.charCodeAt(i);
+
         }
+
 
         modeloImagenActual = indice;
 
-        console.log("Modelo imagen activo:", m.modelo);
+
+        console.log(
+          "Modelo imagen activo:",
+          m.modelo
+        );
+
 
         return bytes;
 
-      } else {
 
-        const imageBytes = await env.AI.run(
-          m.modelo,
-          {
-            prompt
-          }
-        );
+      }
+
+
+      // ===============================
+      // CLOUDFLARE
+      // ===============================
+
+      else {
+
+
+        const imageBytes =
+          await env.AI.run(
+            m.modelo,
+            {
+              prompt
+            }
+          );
+
 
         modeloImagenActual = indice;
 
-        console.log("Modelo imagen activo:", m.modelo);
+
+        console.log(
+          "Modelo imagen activo:",
+          m.modelo
+        );
+
 
         return imageBytes;
 
       }
 
-} catch (err) {
 
-  console.log(
-    "ERROR COMPLETO MODELO IMAGEN:",
-    err
-  );
 
-  ultimoError = err;
+    } catch (err) {
 
-}
+
+      console.log(
+        "ERROR MODELO IMAGEN:",
+        err.message
+      );
+
+
+      ultimoError = err;
+
+    }
+
   }
+
 
   throw (
     ultimoError ||
-    new Error("No hay modelos de imagen disponibles.")
+    new Error(
+      "No hay modelos de imagen disponibles"
+    )
   );
 
 }
