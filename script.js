@@ -1032,9 +1032,9 @@ async function generarImagenPuter() {
 
   try {
 
-    resultado.innerHTML = "🧠 Mejorando prompt...";
+    resultado.innerHTML = "🧠 Creando prompt visual...";
 
-    // 1. Obtener prompt visual
+    // 1. Pedir mejora del prompt al Worker
     const resVisual = await fetch(WORKER_URL, {
       method: "POST",
       headers: {
@@ -1054,29 +1054,35 @@ async function generarImagenPuter() {
 
     const promptVisual = dataVisual.resultado;
 
+
     resultado.innerHTML = "🎨 Generando imagen...";
 
-    // 2. Generar imagen con Puter
-    const img = await puter.ai.txt2img(promptVisual);
+    // 2. Generar imagen con Puter + Gemini Imagen
+    const imagen = await puter.ai.txt2img(
+      promptVisual,
+      {
+        provider: "gemini",
+        model: "google/imagen-4.0-fast"
+      }
+    );
 
-    await new Promise(resolve => {
-      if (img.complete) return resolve();
-      img.onload = resolve;
-    });
 
     // 3. Mostrar imagen
     resultado.innerHTML = "";
-    resultado.appendChild(img);
+    resultado.appendChild(imagen);
 
-    // 4. Convertir a Base64
+
+    // 4. Convertir imagen a Base64
     const canvas = document.createElement("canvas");
-    canvas.width = img.naturalWidth;
-    canvas.height = img.naturalHeight;
+
+    canvas.width = imagen.naturalWidth;
+    canvas.height = imagen.naturalHeight;
 
     const ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0);
+    ctx.drawImage(imagen, 0, 0);
 
     const imagenBase64 = canvas.toDataURL("image/png");
+
 
     // 5. Guardar en R2
     const guardar = await fetch(WORKER_URL, {
@@ -1092,18 +1098,20 @@ async function generarImagenPuter() {
       })
     });
 
+
     const dataGuardar = await guardar.json();
 
-    if (!dataGuardar.ok) {
-      console.error("Error al guardar:", dataGuardar.error);
-    } else {
+    if (dataGuardar.ok) {
       console.log("Imagen guardada:", dataGuardar.url);
+    } else {
+      console.error("Error guardando imagen:", dataGuardar);
     }
 
-  } catch (err) {
 
-    console.error(err);
-    resultado.innerHTML = "❌ " + err.message;
+  } catch (error) {
+
+    console.error(error);
+    resultado.innerHTML = "❌ Error generando imagen: " + error.message;
 
   }
 
