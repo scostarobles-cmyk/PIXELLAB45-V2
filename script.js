@@ -1128,20 +1128,26 @@ if (!autor) {
   try {
 
     const response = await fetch(WORKER_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
     action: "crear-proyecto",
     tema,
     autor,
     paginas,
     idioma,
     tono,
-    publico
-})
-    });
+    publico,
+    estructura: {
+      indice: "pendiente",
+      legales: "pendiente",
+      capitulos: "pendiente",
+      conclusion: "pendiente"
+    }
+  })
+});
 
     const data = await response.json();
 
