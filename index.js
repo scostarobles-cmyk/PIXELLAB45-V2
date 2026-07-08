@@ -88,7 +88,7 @@ try {
       return guardarImagen(data, env, json);
       
      case "crear-proyecto":
-   return await crearProyecto(data, env);
+   return await crearProyecto(data, env, json);
     
 
     default:
@@ -1194,7 +1194,7 @@ El formato debe ser EXACTAMENTE:
 // 📁 MÓDULO: CREAR PROYECTO
 // =====================================================
 
-async function crearProyecto(data, env) {
+async function crearProyecto(data, env, json) {
 
   try {
 
