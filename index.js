@@ -1196,11 +1196,24 @@ El formato debe ser EXACTAMENTE:
 
 async function crearProyecto(data, env) {
 
-  const projectId = "ebook_test_001";
+  try {
 
-  return Response.json({
-    ok: true,
-    projectId
-  });
+    const projectId = "ebook_test_001";
+
+    return Response.json({
+      ok: true,
+      projectId
+    });
+
+  } catch (error) {
+
+    return Response.json({
+      ok: false,
+      error: error.message
+    }, {
+      status: 500
+    });
+
+  }
 
 }
