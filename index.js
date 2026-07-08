@@ -1194,7 +1194,7 @@ El formato debe ser EXACTAMENTE:
 // 📁 MÓDULO: CREAR PROYECTO
 // =====================================================
 
-async function crearProyecto(data, env) {
+/*async function crearProyecto(data, env) {
 
   try {
 
@@ -1253,5 +1253,15 @@ async function crearProyecto(data, env) {
     });
 
   }
+
+}*/
+
+//después borrar
+async function crearProyecto(data, env) {
+
+  return Response.json({
+    ok: true,
+    mensaje: "Entró a crearProyecto"
+  });
 
 }
