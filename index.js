@@ -1204,7 +1204,7 @@ async function crearProyecto(data, env) {
     // Crear proyecto maestro
     const proyecto = {
     id: projectId,
-    título: data.tema,
+    titulo: data.tema,
     autor: data.autor,
     paginas: Number(data.paginas),
     idioma: data.idioma,
