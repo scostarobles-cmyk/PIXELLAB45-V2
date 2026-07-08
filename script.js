@@ -1048,18 +1048,9 @@ async function generarImagenPuter() {
     const data = await response.json();
 
 
-    if (data.ok && data.imagen) {
-
-      resultado.innerHTML = `
-        <img src="${data.imagen}" class="imagen-generada">
-      `;
-
-    } else {
-
-      resultado.innerHTML =
-        "❌ Error generando imagen";
-
-    }
+resultado.innerHTML = `
+<pre>${JSON.stringify(data, null, 2)}</pre>
+`;
 
 
   } catch (error) {
