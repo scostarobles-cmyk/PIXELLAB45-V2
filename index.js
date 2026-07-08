@@ -280,9 +280,17 @@ async function imagenIA(env, prompt) {
         }
 
         if (!response.ok) {
-          throw new Error(await response.text());
-        }
 
+  const errorText = await response.text();
+
+  console.log("STATUS GOOGLE:", response.status);
+  console.log("RESPUESTA GOOGLE:", errorText);
+
+  throw new Error(
+    errorText || `Google error ${response.status}`
+  );
+
+}
         const data = await response.json();
 
         const base64 =
@@ -323,17 +331,16 @@ async function imagenIA(env, prompt) {
 
       }
 
-    } catch (err) {
+} catch (err) {
 
-      console.log(
-        `Error con ${m.modelo}:`,
-        err.message
-      );
+  console.log(
+    "ERROR COMPLETO MODELO IMAGEN:",
+    err
+  );
 
-      ultimoError = err;
+  ultimoError = err;
 
-    }
-
+}
   }
 
   throw (
