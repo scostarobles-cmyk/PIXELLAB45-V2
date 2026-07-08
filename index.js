@@ -1196,44 +1196,11 @@ El formato debe ser EXACTAMENTE:
 
 async function crearProyecto(data, env) {
 
-  try {
-
-    console.log("ENTRO CREAR PROYECTO");
-
-    const projectId = "ebook_" + Date.now();
-
-    console.log("ID:", projectId);
-
-    const proyecto = {
-      id: projectId,
-      titulo: data.tema || "",
-      autor: data.autor || "",
-      paginas: Number(data.paginas || 0),
-      idioma: data.idioma || "",
-      tono: data.tono || "",
-      publico: data.publico || "",
-      fecha: new Date().toISOString()
-    };
-
-    console.log("JSON CREADO");
-
-    return Response.json({
-      ok: true,
-      projectId,
-      proyecto
-    });
-
-  } catch (error) {
-
-    console.log("ERROR:", error.message);
-
-    return Response.json({
-      ok: false,
-      error: error.message
-    }, {
-      status: 500
-    });
-
-  }
+  return new Response(JSON.stringify({
+    ok: true,
+    mensaje: "Funcion crearProyecto ejecutada"
+  }), {
+    headers: CORS_HEADERS
+  });
 
 }
