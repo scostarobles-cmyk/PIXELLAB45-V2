@@ -254,10 +254,6 @@ async function imagenIA(env, prompt) {
 
       console.log("Probando modelo imagen:", m.modelo);
 
-      // ===============================
-      // GOOGLE IMAGEN
-      // ===============================
-
       if (m.proveedor === "google") {
 
         const response = await fetch(
@@ -268,31 +264,23 @@ async function imagenIA(env, prompt) {
               "Content-Type": "application/json"
             },
             body: JSON.stringify({
-
               prompt: prompt,
-
               config: {
                 numberOfImages: 1,
                 outputMimeType: "image/png",
                 aspectRatio: "1:1"
               }
-
             })
           }
         );
 
         if (response.status === 429) {
-
           console.log("Cuota agotada:", m.modelo);
-
           continue;
-
         }
 
         if (!response.ok) {
-
           throw new Error(await response.text());
-
         }
 
         const data = await response.json();
@@ -301,55 +289,35 @@ async function imagenIA(env, prompt) {
           data.generatedImages?.[0]?.image?.imageBytes;
 
         if (!base64) {
-
-          throw new Error(
-            "Google no devolvió imagen."
-          );
-
+          throw new Error("Google no devolvió imagen.");
         }
 
         const binary = atob(base64);
 
-        const bytes =
-          new Uint8Array(binary.length);
+        const bytes = new Uint8Array(binary.length);
 
         for (let i = 0; i < binary.length; i++) {
-
           bytes[i] = binary.charCodeAt(i);
-
         }
 
         modeloImagenActual = indice;
 
-        console.log(
-          "Modelo imagen activo:",
-          m.modelo
-        );
+        console.log("Modelo imagen activo:", m.modelo);
 
         return bytes;
 
-      }
+      } else {
 
-      // ===============================
-      // CLOUDFLARE
-      // ===============================
-
-      else {
-
-        const imageBytes =
-          await env.AI.run(
-            m.modelo,
-            {
-              prompt
-            }
-          );
+        const imageBytes = await env.AI.run(
+          m.modelo,
+          {
+            prompt
+          }
+        );
 
         modeloImagenActual = indice;
 
-        console.log(
-          "Modelo imagen activo:",
-          m.modelo
-        );
+        console.log("Modelo imagen activo:", m.modelo);
 
         return imageBytes;
 
@@ -370,9 +338,7 @@ async function imagenIA(env, prompt) {
 
   throw (
     ultimoError ||
-    new Error(
-      "No hay modelos de imagen disponibles."
-    )
+    new Error("No hay modelos de imagen disponibles.")
   );
 
 }
@@ -1324,66 +1290,7 @@ async function guardarImagen(data, env) {
   }
 
 }
-// =====================================
-// GEMINI IMAGE
-// =====================================
 
-async function imagenIA(env, prompt) {
-
-  const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-image:generateContent?key=${env.GEMINI_API_KEY}`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        contents: [
-          {
-            parts: [
-              {
-                text: prompt
-              }
-            ]
-          }
-        ]
-      })
-    }
-  );
-
-  if (response.status === 429) {
-    throw new Error("Cuota de Gemini agotada.");
-  }
-
-  if (!response.ok) {
-    throw new Error(await response.text());
-  }
-
-  const data = await response.json();
-
-  console.log(JSON.stringify(data, null, 2));
-
-  const parts =
-    data?.candidates?.[0]?.content?.parts || [];
-
-  for (const part of parts) {
-
-    if (part.inlineData?.data) {
-
-      const bytes = Uint8Array.from(
-        atob(part.inlineData.data),
-        c => c.charCodeAt(0)
-      );
-
-      return bytes;
-
-    }
-
-  }
-
-  throw new Error("Gemini no devolvió una imagen.");
-
-}
 
 // =====================================================
 // PIXELLAB45 - EBOOK V3
