@@ -86,6 +86,10 @@ try {
 
     case "guardar-imagen":
       return guardarImagen(data, env, json);
+      
+      case "crear-proyecto":
+    return await crearProyecto(data, env);
+    
 
     default:
       return json({
@@ -1181,6 +1185,71 @@ El formato debe ser EXACTAMENTE:
     return json({
       success: false,
       error: err.message
+    });
+
+  }
+
+}
+// =====================================================
+// 📁 MÓDULO: CREAR PROYECTO
+// =====================================================
+
+async function crearProyecto(data, env) {
+
+  try {
+
+    // Generar ID único
+    const projectId = "ebook_" + Date.now();
+
+    // Crear proyecto maestro
+    const proyecto = {
+    id: projectId,
+    título: data.tema,
+    autor: data.autor,
+    paginas: Number(data.paginas),
+    idioma: data.idioma,
+    tono: data.tono,
+    publico: data.publico,
+    fecha: new Date().toISOString(),
+    estado: {
+        proyecto: true,
+        plan: false,
+        indice: false,
+        legales: false,
+        introduccion: false,
+        capitulos: false,
+        conclusion: false,
+        ensamblado: false
+    }
+};
+
+    // Ruta en R2
+    const ruta = `ebook/${projectId}/proyecto.json`;
+
+    // Guardar archivo
+    await env.EBOOKS.put(
+      ruta,
+      JSON.stringify(proyecto, null, 2),
+      {
+        httpMetadata: {
+          contentType: "application/json"
+        }
+      }
+    );
+
+    return Response.json({
+      ok: true,
+      projectId,
+      mensaje: "Proyecto creado correctamente."
+    });
+
+  } catch (error) {
+
+    return Response.json({
+      ok: false,
+      error: error.message
+    }, {
+      status: 500
     });
 
   }

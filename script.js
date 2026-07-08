@@ -977,48 +977,7 @@ if (!guardar.ok) {
   }
 
 }
-// =====================================================
-// PIXELLAB45 EBOOK V3
-// FUNCIÓN: generarPlan()
-// RESPONSABILIDAD:
-// Iniciar la generación del Plan.
-// =====================================================
 
-async function generarPlan() {
-
-    const payload = {
-        action: "generar-plan",
-        tema: document.getElementById("temaEbook").value,
-        paginas: Number(document.getElementById("paginasEbook").value),
-        idioma: document.getElementById("idiomaEbook").value,
-        tono: document.getElementById("tonoEbook").value,
-        publico: document.getElementById("publicoEbook").value,
-        autor: document.getElementById("autorEbook").value
-    };
-
-    try {
-
-        const res = await fetch(WORKER_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(payload)
-        });
-
-        const plan = await res.json();
-
-        document.getElementById("monitorIA").innerHTML =
-            "<pre>" + JSON.stringify(plan, null, 2) + "</pre>";
-
-    } catch (err) {
-
-        document.getElementById("monitorIA").innerHTML =
-            "<b>Error:</b> " + err.message;
-
-    }
-
-}
 async function generarImagenPuter() {
 
   const prompt = document.getElementById("promptImagen").value.trim();
@@ -1128,6 +1087,91 @@ async function generarImagenPuter() {
       "❌ Error generando imagen: " + error.message;
 
   }
+
+}
+// =====================================================
+// 📁 MÓDULO: CREAR PROYECTO
+// Pipeline IA - eBook Studio
+// =====================================================
+
+async function crearProyecto() {
+
+  const btn = document.getElementById("btnProyecto");
+  const estado = document.getElementById("estadoProyecto");
+  const monitor = document.getElementById("monitorIA");
+  const tema = document.getElementById("temaEbook").value.trim();
+const autor = document.getElementById("autorEbook").value.trim();
+const paginas = document.getElementById("paginasEbook").value;
+const idioma = document.getElementById("idiomaEbook").value;
+const tono = document.getElementById("tonoEbook").value;
+const publico = document.getElementById("publicoEbook").value;
+
+if (!tema) {
+    monitor.innerHTML += "❌ Debes ingresar el título del eBook.<br>";
+    return;
+}
+
+if (!autor) {
+    monitor.innerHTML += "❌ Debes ingresar el autor.<br>";
+    return;
+}
+
+  // Botón azul
+  btn.disabled = true;
+  btn.style.background = "#009dff";
+  btn.innerHTML = "📁 Generando proyecto...";
+
+  estado.innerHTML = "🔵 Creando proyecto...";
+  monitor.innerHTML += "📁 Iniciando creación del proyecto...<br>";
+  
+
+  try {
+
+    const response = await fetch(worker_url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+    action: "crear-proyecto",
+    tema,
+    autor,
+    paginas,
+    idioma,
+    tono,
+    publico
+})
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.ok) {
+      throw new Error(data.error || "Error del Worker");
+    }
+
+    // Guardamos el ID para usarlo en los siguientes módulos
+    window.projectId = data.projectId;
+
+    monitor.innerHTML += `✅ Proyecto creado<br>`;
+    monitor.innerHTML += `🆔 ${data.projectId}<br>`;
+
+    estado.innerHTML = "🟢 Proyecto creado";
+
+    btn.style.background = "#00b050";
+    btn.innerHTML = "✅ Proyecto creado";
+
+  } catch (err) {
+
+    monitor.innerHTML += `❌ ${err.message}<br>`;
+
+    estado.innerHTML = "🔴 Error";
+
+    btn.style.background = "#d32f2f";
+    btn.innerHTML = "❌ Error";
+
+  }
+
+  btn.disabled = false;
 
 }
 // INICIO
