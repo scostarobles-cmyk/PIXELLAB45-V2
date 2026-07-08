@@ -88,8 +88,7 @@ try {
       return guardarImagen(data, env, json);
       
      case "crear-proyecto":
-  return json(await crearProyecto(data, env, json));
-    
+  return crearProyecto(data, env, json);
 
     default:
       return json({
@@ -1200,7 +1199,7 @@ El formato debe ser EXACTAMENTE:
 
   const proyecto = {
     projectId: projectId,
-    titulo: data.titulo || "",
+    titulo: data.tema || "",
     autor: data.autor || "",
     paginas: data.paginas || "",
     idioma: data.idioma || "",
