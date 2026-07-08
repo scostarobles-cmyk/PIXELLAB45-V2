@@ -1198,52 +1198,34 @@ async function crearProyecto(data, env) {
 
   try {
 
-    // Generar ID único
+    console.log("ENTRO CREAR PROYECTO");
+
     const projectId = "ebook_" + Date.now();
 
-    // Crear proyecto maestro
+    console.log("ID:", projectId);
+
     const proyecto = {
-    id: projectId,
-    titulo: data.tema,
-    autor: data.autor,
-    paginas: Number(data.paginas),
-    idioma: data.idioma,
-    tono: data.tono,
-    publico: data.publico,
-    fecha: new Date().toISOString(),
-    estado: {
-        proyecto: true,
-        plan: false,
-        indice: false,
-        legales: false,
-        introduccion: false,
-        capitulos: false,
-        conclusion: false,
-        ensamblado: false
-    }
-};
+      id: projectId,
+      titulo: data.tema || "",
+      autor: data.autor || "",
+      paginas: Number(data.paginas || 0),
+      idioma: data.idioma || "",
+      tono: data.tono || "",
+      publico: data.publico || "",
+      fecha: new Date().toISOString()
+    };
 
-    // Ruta en R2
-    const ruta = `ebook/${projectId}/proyecto.json`;
-
-    // Guardar archivo
-    await env.EBOOKS.put(
-      ruta,
-      JSON.stringify(proyecto, null, 2),
-      {
-        httpMetadata: {
-          contentType: "application/json"
-        }
-      }
-    );
+    console.log("JSON CREADO");
 
     return Response.json({
       ok: true,
       projectId,
-      mensaje: "Proyecto creado correctamente."
+      proyecto
     });
 
   } catch (error) {
+
+    console.log("ERROR:", error.message);
 
     return Response.json({
       ok: false,
@@ -1255,5 +1237,3 @@ async function crearProyecto(data, env) {
   }
 
 }
-
-
