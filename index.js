@@ -89,7 +89,8 @@ try {
 
     case "guardar-imagen":
       return guardarImagen(data, env, json);
-
+case "imagen-puter":
+  return await generarImagenPuter(data, env);
     default:
       return json({
         ok: false,
@@ -107,6 +108,33 @@ try {
 
   }
 };
+async function generarImagenPuter(data, env) {
+
+  const prompt = data.prompt || "";
+
+  if (!prompt) {
+    return new Response(JSON.stringify({
+      ok: false,
+      error: "Falta prompt"
+    }), {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+  }
+
+  const imagenUrl = await puter.ai.createImage(prompt);
+
+  return new Response(JSON.stringify({
+    ok: true,
+    imagen: imagenUrl
+  }), {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+
+}
 // =====================================
 // GEMINI
 // =====================================
@@ -221,206 +249,51 @@ async function gemini(env, prompt) {
   throw ultimoError || new Error("No hay modelos disponibles.");
 
 }
-// =====================================
-// IMAGE IA
-// =====================================
+async function imagenIA(env, prompt, modelo = "puter") {
 
-const MODELOS_IMAGEN = [
-  {
-    proveedor: "google",
-    modelo: "gemini-3.1-flash-image"
-  },
-  {
-    proveedor: "cloudflare",
-    modelo: "@cf/stabilityai/stable-diffusion-xl-base-1.0"
-  }
-];
+  try {
 
-let modeloImagenActual = 0;
+    if (modelo === "puter") {
 
+      const imagenUrl = await puter.ai.createImage(prompt);
 
-async function imagenIA(env, prompt) {
+      console.log("Usando Puter Image");
 
-  let ultimoError = null;
-
-
-  for (let intento = 0; intento < MODELOS_IMAGEN.length; intento++) {
-
-    const indice =
-      (modeloImagenActual + intento) %
-      MODELOS_IMAGEN.length;
-
-
-    const m = MODELOS_IMAGEN[indice];
-
-
-    try {
-
-      console.log("Probando modelo imagen:", m.modelo);
-      console.log("PROMPT IMAGEN:", prompt);
-
-
-      // ===============================
-      // GOOGLE GEMINI IMAGE
-      // ===============================
-
-      if (m.proveedor === "google") {
-
-
-        const response = await fetch(
-          "https://generativelanguage.googleapis.com/v1beta/interactions",
-          {
-            method: "POST",
-
-            headers: {
-              "Content-Type": "application/json",
-              "x-goog-api-key": env.GEMINI_API_KEY
-            },
-
-            body: JSON.stringify({
-
-              model: m.modelo,
-
-              input: [
-                {
-                  type: "text",
-                  text: prompt
-                }
-              ]
-
-            })
-
-          }
-        );
-
-
-        const data = await response.json();
-
-
-        if (!response.ok) {
-
-          console.log(
-            "ERROR GOOGLE IMAGEN:",
-            JSON.stringify(data)
-          );
-
-          throw new Error(
-            data.error?.message ||
-            "Error Google imagen"
-          );
-
-        }
-
-
-        console.log(
-          "RESPUESTA GOOGLE:",
-          JSON.stringify(data)
-        );
-
-
-        /*
-          AQUÍ SE EXTRAERÁ LA IMAGEN
-          SEGÚN EL CAMPO QUE DEVUELVA
-          GEMINI IMAGE
-        */
-
-
-        const base64 =
-          data.output?.[0]?.image?.imageBytes ||
-          data.imageBytes;
-
-
-        if (!base64) {
-
-          throw new Error(
-            "Google respondió pero no devolvió imagen"
-          );
-
-        }
-
-
-        const binary = atob(base64);
-
-        const bytes =
-          new Uint8Array(binary.length);
-
-
-        for (let i = 0; i < binary.length; i++) {
-
-          bytes[i] =
-            binary.charCodeAt(i);
-
-        }
-
-
-        modeloImagenActual = indice;
-
-
-        console.log(
-          "Modelo imagen activo:",
-          m.modelo
-        );
-
-
-        return bytes;
-
-
-      }
-
-
-      // ===============================
-      // CLOUDFLARE
-      // ===============================
-
-      else {
-
-
-        const imageBytes =
-          await env.AI.run(
-            m.modelo,
-            {
-              prompt
-            }
-          );
-
-
-        modeloImagenActual = indice;
-
-
-        console.log(
-          "Modelo imagen activo:",
-          m.modelo
-        );
-
-
-        return imageBytes;
-
-      }
-
-
-
-    } catch (err) {
-
-
-      console.log(
-        "ERROR MODELO IMAGEN:",
-        err.message
-      );
-
-
-      ultimoError = err;
+      return imagenUrl;
 
     }
 
+
+    if (modelo === "cloudflare") {
+
+      const imagen =
+        await env.AI.run(
+          "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+          {
+            prompt
+          }
+        );
+
+      console.log("Usando Cloudflare Image");
+
+      return imagen;
+
+    }
+
+
+    throw new Error("Modelo de imagen no válido");
+
+
+  } catch (error) {
+
+    console.log(
+      "Error imagen:",
+      error.message
+    );
+
+    throw error;
+
   }
-
-
-  throw (
-    ultimoError ||
-    new Error(
-      "No hay modelos de imagen disponibles"
-    )
-  );
 
 }
 // =====================================

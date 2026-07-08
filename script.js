@@ -1019,7 +1019,57 @@ async function generarPlan() {
     }
 
 }
+async function generarImagenPuter() {
 
+  const prompt = document.getElementById("promptImagen").value;
+  const resultado = document.getElementById("resultadoImagen");
+
+  if (!prompt.trim()) {
+    resultado.innerHTML = "⚠️ Escribe un prompt";
+    return;
+  }
+
+  resultado.innerHTML = "Generando imagen...";
+
+  try {
+
+    const response = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        action: "imagen-puter",
+        prompt: prompt
+      })
+    });
+
+
+    const data = await response.json();
+
+
+    if (data.ok && data.imagen) {
+
+      resultado.innerHTML = `
+        <img src="${data.imagen}" class="imagen-generada">
+      `;
+
+    } else {
+
+      resultado.innerHTML =
+        "❌ Error generando imagen";
+
+    }
+
+
+  } catch (error) {
+
+    resultado.innerHTML =
+      "❌ Error de conexión: " + error.message;
+
+  }
+
+}
 
 // INICIO
 window.onload = () => {
