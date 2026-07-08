@@ -1161,15 +1161,12 @@ if (!autor) {
     btn.innerHTML = "✅ Proyecto creado";
 
   } catch (err) {
+    console.error(err);
 
+    monitor.innerHTML += `❌ ${err.name}<br>`;
     monitor.innerHTML += `❌ ${err.message}<br>`;
-
-    estado.innerHTML = "🔴 Error";
-
-    btn.style.background = "#d32f2f";
-    btn.innerHTML = "❌ Error";
-
-  }
+    monitor.innerHTML += `❌ ${err.stack || "Sin stack"}<br>`;
+}
 
   btn.disabled = false;
 
