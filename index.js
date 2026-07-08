@@ -87,9 +87,13 @@ try {
     case "guardar-imagen":
       return guardarImagen(data, env, json);
       
-      case "crear-proyecto":
-    return await crearProyecto(data, env);
-    
+ ///    case "crear-proyecto":
+  //  return await crearProyecto(data, env);
+    case "crear-proyecto":
+  return json({
+    ok: true,
+    mensaje: "Entró a crear proyecto"
+  });
 
     default:
       return json({
