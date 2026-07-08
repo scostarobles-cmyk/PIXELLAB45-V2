@@ -1148,12 +1148,7 @@ if (!autor) {
     if (!response.ok || !data.ok) {
       throw new Error(data.error || "Error del Worker");
     }
-      monitor.innerHTML += `
-<pre style="color:#00d9ff">
-🔎 RESPUESTA DEL WORKER:
-${JSON.stringify(data, null, 2)}
-</pre>
-`;
+      
     // Guardamos el ID para usarlo en los siguientes módulos
     window.projectId = data.projectId;
 

@@ -1198,14 +1198,35 @@ El formato debe ser EXACTAMENTE:
 
   const projectId = "PROY-" + Date.now();
 
+  const proyecto = {
+    projectId: projectId,
+    titulo: data.titulo || "",
+    autor: data.autor || "",
+    paginas: data.paginas || "",
+    idioma: data.idioma || "",
+    tono: data.tono || "",
+    publico: data.publico || "",
+    fecha: new Date().toISOString()
+  };
+
+  const ruta = `proyectos/${projectId}/proyecto.json`;
+
+  await env.EBOOKS.put(
+    ruta,
+    JSON.stringify(proyecto, null, 2),
+    {
+      httpMetadata: {
+        contentType: "application/json"
+      }
+    }
+  );
+
   return {
     ok: true,
     mensaje: "Proyecto creado correctamente",
     projectId: projectId,
-    proyecto: {
-      estado: "creado",
-      fecha: new Date().toISOString()
-    }
+    archivo: ruta,
+    url: `${env.R2_BASE_URL}/${ruta}`
   };
 
 }
