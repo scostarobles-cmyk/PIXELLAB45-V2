@@ -88,7 +88,7 @@ try {
       return guardarImagen(data, env, json);
       
      case "crear-proyecto":
-   return await crearProyecto(data, env, json);
+  return json(await crearProyecto());
     
 
     default:
@@ -1194,26 +1194,11 @@ El formato debe ser EXACTAMENTE:
 // 📁 MÓDULO: CREAR PROYECTO
 // =====================================================
 
-async function crearProyecto(data, env, json) {
+async function crearProyecto() {
 
-  try {
-
-    const projectId = "ebook_test_001";
-
-    return Response.json({
-      ok: true,
-      projectId
-    });
-
-  } catch (error) {
-
-    return Response.json({
-      ok: false,
-      error: error.message
-    }, {
-      status: 500
-    });
-
-  }
+  return {
+    ok: true,
+    mensaje: "Funcion crearProyecto ejecutada"
+  };
 
 }
