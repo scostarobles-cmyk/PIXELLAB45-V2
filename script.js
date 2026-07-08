@@ -1021,33 +1021,89 @@ async function generarPlan() {
 }
 async function generarImagenPuter() {
 
-  const prompt = document.getElementById("promptImagen").value;
+  const prompt = document.getElementById("promptImagen").value.trim();
+  const categoria = document.getElementById("categoriaImagen").value;
   const resultado = document.getElementById("resultadoImagen");
 
-  if (!prompt.trim()) {
-    resultado.innerHTML = "⚠️ Escribe un prompt";
+  if (!prompt) {
+    resultado.innerHTML = "⚠️ Escribe un prompt.";
     return;
   }
 
-  resultado.innerHTML = "Generando imagen...";
-
   try {
 
-    const imagen = await puter.ai.txt2img(
-    prompt,
-    {
-        provider: "gemini",
-        model: "google/imagen-4.0-fast"
+    resultado.innerHTML = "🧠 Mejorando prompt...";
+
+    // 1. Obtener prompt visual
+    const resVisual = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        action: "visual",
+        tema: prompt
+      })
+    });
+
+    const dataVisual = await resVisual.json();
+
+    if (!dataVisual.resultado) {
+      throw new Error("No se pudo generar el prompt visual.");
     }
-);
 
-resultado.innerHTML = "";
-resultado.appendChild(imagen);
+    const promptVisual = dataVisual.resultado;
 
-  } catch (error) {
+    resultado.innerHTML = "🎨 Generando imagen...";
 
-    resultado.innerHTML =
-      "❌ Error Puter: " + error.message;
+    // 2. Generar imagen con Puter
+    const img = await puter.ai.txt2img(promptVisual);
+
+    await new Promise(resolve => {
+      if (img.complete) return resolve();
+      img.onload = resolve;
+    });
+
+    // 3. Mostrar imagen
+    resultado.innerHTML = "";
+    resultado.appendChild(img);
+
+    // 4. Convertir a Base64
+    const canvas = document.createElement("canvas");
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+
+    const imagenBase64 = canvas.toDataURL("image/png");
+
+    // 5. Guardar en R2
+    const guardar = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        action: "guardar-imagen",
+        categoria,
+        prompt,
+        imagenBase64
+      })
+    });
+
+    const dataGuardar = await guardar.json();
+
+    if (!dataGuardar.ok) {
+      console.error("Error al guardar:", dataGuardar.error);
+    } else {
+      console.log("Imagen guardada:", dataGuardar.url);
+    }
+
+  } catch (err) {
+
+    console.error(err);
+    resultado.innerHTML = "❌ " + err.message;
 
   }
 

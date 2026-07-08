@@ -84,13 +84,9 @@ try {
     case "guardar-storyboard":
       return guardarStoryboard(data, env, json);
 
-    case "imagen":
-      return generarImagen(data, env, json);
-
     case "guardar-imagen":
       return guardarImagen(data, env, json);
-case "imagen-puter":
-  return await generarImagenPuter(data, env);
+
     default:
       return json({
         ok: false,
@@ -108,45 +104,21 @@ case "imagen-puter":
 
   }
 };
-async function generarImagenPuter(data, env) {
 
-  const prompt = data.prompt || "";
-
-  if (!prompt) {
-    return new Response(JSON.stringify({
-      ok: false,
-      error: "Falta prompt"
-    }), {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-  }
-
-  const imagenUrl = await puter.ai.createImage(prompt);
-
-  return new Response(JSON.stringify({
-    ok: true,
-    imagen: imagenUrl
-  }), {
-    headers: {
-      "Content-Type": "application/json"
-    }
-  });
-
-}
 // =====================================
 // GEMINI
 // =====================================
 
 const MODELOS = [
+  // Cloudflare
+  { proveedor: "cloudflare", modelo: "@cf/meta/llama-3.3-70b-instruct-fp8-fast" },
+  { proveedor: "cloudflare", modelo: "@cf/qwen/qwen3-32b-instruct" }
+
   // Google
   { proveedor: "google", modelo: "gemini-2.5-flash" },
   { proveedor: "google", modelo: "gemini-3.1-flash-lite" },
 
-  // Cloudflare
-  { proveedor: "cloudflare", modelo: "@cf/meta/llama-3.3-70b-instruct-fp8-fast" },
-  { proveedor: "cloudflare", modelo: "@cf/qwen/qwen3-32b-instruct" }
+
 ];
 
 let modeloActual = 0;
@@ -249,53 +221,7 @@ async function gemini(env, prompt) {
   throw ultimoError || new Error("No hay modelos disponibles.");
 
 }
-async function imagenIA(env, prompt, modelo = "puter") {
 
-  try {
-
-    if (modelo === "puter") {
-
-      const imagenUrl = await puter.ai.createImage(prompt);
-
-      console.log("Usando Puter Image");
-
-      return imagenUrl;
-
-    }
-
-
-    if (modelo === "cloudflare") {
-
-      const imagen =
-        await env.AI.run(
-          "@cf/stabilityai/stable-diffusion-xl-base-1.0",
-          {
-            prompt
-          }
-        );
-
-      console.log("Usando Cloudflare Image");
-
-      return imagen;
-
-    }
-
-
-    throw new Error("Modelo de imagen no válido");
-
-
-  } catch (error) {
-
-    console.log(
-      "Error imagen:",
-      error.message
-    );
-
-    throw error;
-
-  }
-
-}
 // =====================================
 // CEREBRO IA
 // =====================================
@@ -741,7 +667,7 @@ async function guardarPrompts(data, env, json) {
 
 }
 
-//Generar Visuales 
+
 // =====================================
 // GENERADOR DE VISUALES (GEMINI)
 // =====================================
@@ -1112,81 +1038,7 @@ async function guardarStoryboard(data, env, json) {
   });
 
 }
-//Generar imagen 
-// Generar imagen
-async function generarImagen(data, env) {
 
-  try {
-
-    const promptUsuario =
-      (data.prompt || data.tema || "").trim();
-
-    if (!promptUsuario) {
-
-      return new Response(JSON.stringify({
-        ok: false,
-        error: "Sin prompt"
-      }), {
-        status: 400,
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
-
-    }
-
-    // Obtener el prompt profesional desde Visuales
-    const promptVisual =
-      await generarVisualesPrompts(
-        promptUsuario,
-        env
-      );
-
-    // Reglas específicas para Stable Diffusion
-    const promptFinal = `
-Generate exactly what is described below.
-
-CRITICAL RULES:
-
-- Do not change the subject.
-- Do not invent new objects.
-- Preserve any text, letters, numbers or symbols exactly as requested.
-- High quality.
-- Highly detailed.
-- Sharp focus.
-- Natural lighting unless another style is requested.
-
-${promptVisual}
-`;
-
-    const imageBytes =
-  await imagenIA(
-    env,
-    promptFinal
-  );
-
-return new Response(imageBytes, {
-  headers: {
-    "Content-Type": "image/png",
-    "Access-Control-Allow-Origin": "*"
-  }
-});
-
-  } catch (err) {
-
-    return new Response(JSON.stringify({
-      ok: false,
-      error: err.message
-    }), {
-      status: 500,
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-
-  }
-
-}
 
 async function guardarImagen(data, env) {
 
@@ -1333,180 +1185,4 @@ El formato debe ser EXACTAMENTE:
 
   }
 
-}
-async function generarImagenIA(prompt, env) {
-
-  // ==========================
-  // CLOUDFLARE
-  // ==========================
-
-  try {
-
-    console.log("Generando con Cloudflare...");
-
-    const resultado = await env.AI.run(
-      "@cf/stabilityai/stable-diffusion-xl-base-1.0",
-      {
-        prompt
-      }
-    );
-
-    // Workers AI devuelve un ReadableStream
-    if (resultado instanceof ReadableStream) {
-
-      const buffer = await new Response(resultado).arrayBuffer();
-
-      return {
-        tipo: "bytes",
-        datos: new Uint8Array(buffer)
-      };
-
-    }
-
-    // Compatibilidad
-    if (resultado instanceof Uint8Array) {
-
-      return {
-        tipo: "bytes",
-        datos: resultado
-      };
-
-    }
-
-    if (resultado instanceof ArrayBuffer) {
-
-      return {
-        tipo: "bytes",
-        datos: new Uint8Array(resultado)
-      };
-
-    }
-
-    throw new Error("Cloudflare devolvió un formato desconocido.");
-
-  } catch (err) {
-
-    console.log("Cloudflare:", err.message);
-
-  }
-
-  // ==========================
-  // PIXAZO
-  // ==========================
-
-  try {
-
-    console.log("Usando Pixazo...");
-
-    const response = await fetch(
-      "https://gateway.pixazo.ai/nano-banana-2-lite/v1/text-to-image",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Ocp-Apim-Subscription-Key": env.PIXAZO_API_KEY
-        },
-        body: JSON.stringify({
-          prompt: prompt
-        })
-      }
-    );
-
-    if (!response.ok) {
-
-      throw new Error(await response.text());
-
-    }
-
-    const data = await response.json();
-
-    console.log(JSON.stringify(data));
-
-    if (data.image) {
-
-      return {
-        tipo: "base64",
-        datos: data.image
-      };
-
-    }
-
-    if (data.output) {
-
-      return {
-        tipo: "url",
-        datos: data.output
-      };
-
-    }
-
-    if (data.url) {
-
-      return {
-        tipo: "url",
-        datos: data.url
-      };
-
-    }
-
-    if (Array.isArray(data.images) && data.images.length) {
-
-      return {
-        tipo: "url",
-        datos: data.images[0]
-      };
-
-    }
-
-    throw new Error("Pixazo no devolvió ninguna imagen.");
-
-  } catch (err) {
-
-    console.log("Pixazo:", err.message);
-
-    throw new Error("Fallaron Cloudflare y Pixazo.");
-
-  }
-
-}
-async function generarImagenPixasso(env, prompt) {
-
-  const response = await fetch(
-    "https://gateway.pixazo.ai/ai-model-api/v1/text-to-image",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Ocp-Apim-Subscription-Key": env.PIXAZO_API_KEY
-      },
-      body: JSON.stringify({
-        prompt: prompt,
-        width: 1024,
-        height: 1024,
-        num_steps: 4
-      })
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error(await response.text());
-  }
-
-  const data = await response.json();
-
-  console.log("Pixazo:", JSON.stringify(data));
-
-  if (typeof data.output === "string")
-    return data.output;
-
-  if (Array.isArray(data.output))
-    return data.output[0];
-
-  if (typeof data.url === "string")
-    return data.url;
-
-  if (Array.isArray(data.images))
-    return data.images[0];
-
-  throw new Error("Pixazo no devolvió ninguna imagen.");
 }
