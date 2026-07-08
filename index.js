@@ -1209,10 +1209,10 @@ El formato debe ser EXACTAMENTE:
   estado: "creado",
 
   estructura: data.estructura || {
-    indice: "pendiente",
-    legales: "pendiente",
-    capitulos: "pendiente",
-    conclusion: "pendiente"
+    indice: data estructura.indice,
+    legales: data estructura.legakes,
+    capitulos: data.esteuctura.capitulos.
+    conclusion: data.estructura.conclusion
   },
 
   fecha: new Date().toISOString()
