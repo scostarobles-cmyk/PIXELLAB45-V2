@@ -87,13 +87,9 @@ try {
     case "guardar-imagen":
       return guardarImagen(data, env, json);
       
- ///    case "crear-proyecto":
-  //  return await crearProyecto(data, env);
-    case "crear-proyecto":
-  return json({
-    ok: true,
-    mensaje: "Entró a crear proyecto"
-  });
+     case "crear-proyecto":
+   return await crearProyecto(data, env);
+    
 
     default:
       return json({
@@ -1198,7 +1194,7 @@ El formato debe ser EXACTAMENTE:
 // 📁 MÓDULO: CREAR PROYECTO
 // =====================================================
 
-/*async function crearProyecto(data, env) {
+async function crearProyecto(data, env) {
 
   try {
 
@@ -1258,14 +1254,6 @@ El formato debe ser EXACTAMENTE:
 
   }
 
-}*/
-
-//después borrar
-async function crearProyecto(data, env) {
-
-  return Response.json({
-    ok: true,
-    mensaje: "Entró a crearProyecto"
-  });
-
 }
+
+
