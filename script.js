@@ -1034,7 +1034,7 @@ async function generarImagenPuter() {
 
     resultado.innerHTML = "🧠 Creando prompt visual...";
 
-    // 1. Pedir mejora del prompt al Worker
+    // 1. Generar prompt visual con Worker
     const resVisual = await fetch(WORKER_URL, {
       method: "POST",
       headers: {
@@ -1057,6 +1057,7 @@ async function generarImagenPuter() {
 
     resultado.innerHTML = "🎨 Generando imagen...";
 
+
     // 2. Generar imagen con Puter + Gemini Imagen
     const imagen = await puter.ai.txt2img(
       promptVisual,
@@ -1072,7 +1073,7 @@ async function generarImagenPuter() {
     resultado.appendChild(imagen);
 
 
-    // 4. Convertir imagen a Base64
+    // 4. Convertir imagen a Base64 limpio
     const canvas = document.createElement("canvas");
 
     canvas.width = imagen.naturalWidth;
@@ -1081,7 +1082,9 @@ async function generarImagenPuter() {
     const ctx = canvas.getContext("2d");
     ctx.drawImage(imagen, 0, 0);
 
-    const imagenBase64 = canvas.toDataURL("image/png");
+    const imagenBase64 = canvas
+      .toDataURL("image/png")
+      .split(",")[1];
 
 
     // 5. Guardar en R2
@@ -1093,8 +1096,7 @@ async function generarImagenPuter() {
       body: JSON.stringify({
         action: "guardar-imagen",
         categoria,
-        prompt,
-        imagenBase64
+        imagen: imagenBase64
       })
     });
 
@@ -1102,16 +1104,28 @@ async function generarImagenPuter() {
     const dataGuardar = await guardar.json();
 
     if (dataGuardar.ok) {
-      console.log("Imagen guardada:", dataGuardar.url);
+
+      console.log(
+        "✅ Imagen guardada:",
+        dataGuardar.nombre
+      );
+
     } else {
-      console.error("Error guardando imagen:", dataGuardar);
+
+      console.error(
+        "❌ Error guardando:",
+        dataGuardar.error
+      );
+
     }
 
 
   } catch (error) {
 
     console.error(error);
-    resultado.innerHTML = "❌ Error generando imagen: " + error.message;
+
+    resultado.innerHTML =
+      "❌ Error generando imagen: " + error.message;
 
   }
 

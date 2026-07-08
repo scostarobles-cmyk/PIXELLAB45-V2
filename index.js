@@ -112,11 +112,11 @@ try {
 const MODELOS = [
   // Cloudflare
   { proveedor: "cloudflare", modelo: "@cf/meta/llama-3.3-70b-instruct-fp8-fast" },
-  { proveedor: "cloudflare", modelo: "@cf/qwen/qwen3-32b-instruct" }
+  { proveedor: "cloudflare", modelo: "@cf/qwen/qwen3-32b-instruct" },
 
   // Google
   { proveedor: "google", modelo: "gemini-2.5-flash" },
-  { proveedor: "google", modelo: "gemini-3.1-flash-lite" },
+  { proveedor: "google", modelo: "gemini-3.1-flash-lite" }
 
 
 ];
