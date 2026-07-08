@@ -1033,11 +1033,16 @@ async function generarImagenPuter() {
 
   try {
 
-    const imagenUrl = await puter.ai.createImage(prompt);
+    const imagen = await puter.ai.txt2img(
+    prompt,
+    {
+        provider: "gemini",
+        model: "google/imagen-4.0-fast"
+    }
+);
 
-    resultado.innerHTML = `
-      <img src="${imagenUrl}" class="imagen-generada">
-    `;
+resultado.innerHTML = "";
+resultado.appendChild(imagen);
 
   } catch (error) {
 
