@@ -1127,7 +1127,7 @@ if (!autor) {
 
   try {
 
-    const response = await fetch(worker_url, {
+    const response = await fetch(WORKER_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
