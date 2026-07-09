@@ -1198,25 +1198,26 @@ El formato debe ser EXACTAMENTE:
   const projectId = "PROY-" + Date.now();
 
   const proyecto = {
-  projectId: projectId,
-  titulo: data.tema || "",
-  autor: data.autor || "",
-  paginas: data.paginas || "",
-  idioma: data.idioma || "",
-  tono: data.tono || "",
-  publico: data.publico || "",
+    projectId: projectId,
+    titulo: data.tema || "",
+    autor: data.autor || "",
+    paginas: data.paginas || "",
+    idioma: data.idioma || "",
+    tono: data.tono || "",
+    publico: data.publico || "",
 
-  estado: "creado",
+    estado: "creado",
 
-  estructura: data.estructura || {
-    indice: data estructura.indice,
-    legales: data estructura.legakes,
-    capitulos: data.esteuctura.capitulos.
-    conclusion: data.estructura.conclusion
-  },
+    estructura: data.estructura || {
+      indice: "pendiente",
+      legales: "pendiente",
+      capitulos: "pendiente",
+      conclusion: "pendiente"
+    },
 
-  fecha: new Date().toISOString()
-};
+    fecha: new Date().toISOString()
+  };
+
   const ruta = `proyectos/${projectId}/proyecto.json`;
 
   await env.EBOOKS.put(
