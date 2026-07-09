@@ -1144,7 +1144,7 @@ async function verificarProduccion(env) {
 
     const proyecto = JSON.parse(await objeto.text());
 
-    if (proyecto.estado === "Producción") {
+    if (proyecto.estado === "produccion") {
 
       const partes = archivo.key.split("/");
       const projectId = partes[1];
@@ -1181,7 +1181,7 @@ async function verificarProduccion(env) {
     tono: data.tono || "",
     publico: data.publico || "",
 
-    estado: "Producción",
+    estado: "produccion",
 
     estructura: data.estructura || {
       indice: "pendiente",
