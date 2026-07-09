@@ -1106,8 +1106,7 @@ async function generarImagenPuter() {
 //====================================================
 
 
-
-async function verificarProyectoProduccion() {
+function verificarProyectoProduccion() {
 
   const estadoProyecto = document.getElementById("estadoProyecto");
   const monitor = document.getElementById("monitorIA");
@@ -1130,7 +1129,9 @@ async function verificarProyectoProduccion() {
 
     if (data.ok) {
 
-      proyectoActual = data.id;
+      projectIdActual = data.id;
+
+proyectoActual = data.proyecto;
 
       estadoProyecto.innerHTML = "🟢 Proyecto creado";
       estadoProyecto.style.color = "#00b050";
@@ -1140,15 +1141,16 @@ async function verificarProyectoProduccion() {
 
     } else {
 
-      proyectoActual = null;
+  projectIdActual = null;
+  proyectoActual = null;
 
-      estadoProyecto.innerHTML = "⚪ Sin proyecto";
-      estadoProyecto.style.color = "#808080";
+  estadoProyecto.innerHTML = "⚪ Sin proyecto";
+  estadoProyecto.style.color = "#808080";
 
-      monitor.innerHTML +=
-        "ℹ️ No hay proyectos en producción.<br>";
+  monitor.innerHTML +=
+    "ℹ️ No hay proyectos en producción.<br>";
 
-    }
+}
 
   } catch (err) {
 
@@ -1184,103 +1186,70 @@ async function crearProyecto() {
   const btn = document.getElementById("btnProyecto");
   const estado = document.getElementById("estadoProyecto");
   const monitor = document.getElementById("monitorIA");
-
   const tema = document.getElementById("temaEbook").value.trim();
-  const autor = document.getElementById("autorEbook").value.trim();
-  const paginas = document.getElementById("paginasEbook").value;
-  const idioma = document.getElementById("idiomaEbook").value;
-  const tono = document.getElementById("tonoEbook").value;
-  const publico = document.getElementById("publicoEbook").value;
+const autor = document.getElementById("autorEbook").value.trim();
+const paginas = document.getElementById("paginasEbook").value;
+const idioma = document.getElementById("idiomaEbook").value;
+const tono = document.getElementById("tonoEbook").value;
+const publico = document.getElementById("publicoEbook").value;
 
-  const estructura = {
-    indice: "pendiente",
-    legales: "pendiente",
-    capitulos: "pendiente",
-    conclusion: "pendiente"
-  };
-
-
-  if (!tema) {
+if (!tema) {
     monitor.innerHTML += "❌ Debes ingresar el título del eBook.<br>";
     return;
-  }
+}
 
-  if (!autor) {
+if (!autor) {
     monitor.innerHTML += "❌ Debes ingresar el autor.<br>";
     return;
-  }
+}
 
-
+  // Botón azul
   btn.disabled = true;
   btn.style.background = "#009dff";
   btn.innerHTML = "📁 Generando proyecto...";
 
   estado.innerHTML = "🔵 Creando proyecto...";
   monitor.innerHTML += "📁 Iniciando creación del proyecto...<br>";
-
+  
 
   try {
 
     const response = await fetch(WORKER_URL, {
-
-      method: "POST",
-
-      headers: {
-        "Content-Type": "application/json"
-      },
-
-      body: JSON.stringify({
-
-        action: "crear-proyecto",
-        tema,
-        autor,
-        paginas,
-        idioma,
-        tono,
-        publico,
-        estructura
-
-      })
-
-    });
-
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    action: "crear-proyecto",
+    tema,
+    autor,
+    paginas,
+    idioma,
+    tono,
+    publico,
+    estructura: {
+      indice: "pendiente",
+      legales: "pendiente",
+      capitulos: "pendiente",
+      conclusion: "pendiente"
+    }
+  })
+});
 
     const data = await response.json();
 
-
     if (!response.ok || !data.ok) {
-
       throw new Error(data.error || "Error del Worker");
-
     }
+      if (data.ok) {
 
+  proyectoActual = data.projectId;
 
-    // Guardar contexto global del proyecto
-
-    projectIdActual = data.projectId;
-
-
-    proyectoActual = {
-
-      projectId: data.projectId,
-      titulo: tema,
-      autor: autor,
-      paginas: paginas,
-      idioma: idioma,
-      tono: tono,
-      publico: publico,
-      estado: "produccion",
-      estructura: estructura
-
-    };
-
-
-    // Compatibilidad temporal
-
+}
+    // Guardamos el ID para usarlo en los siguientes módulos
     window.projectId = data.projectId;
 
-
-    monitor.innerHTML += "✅ Proyecto creado<br>";
+    monitor.innerHTML += `✅ Proyecto creado<br>`;
     monitor.innerHTML += `🆔 ${data.projectId}<br>`;
 
     estado.innerHTML = "🟢 Proyecto creado";
@@ -1288,20 +1257,13 @@ async function crearProyecto() {
     btn.style.background = "#00b050";
     btn.innerHTML = "✅ Proyecto creado";
 
-
-    console.log("Proyecto actual:", proyectoActual);
-
-
   } catch (err) {
-
     console.error(err);
 
     monitor.innerHTML += `❌ ${err.name}<br>`;
     monitor.innerHTML += `❌ ${err.message}<br>`;
     monitor.innerHTML += `❌ ${err.stack || "Sin stack"}<br>`;
-
-  }
-
+}
 
   btn.disabled = false;
 
