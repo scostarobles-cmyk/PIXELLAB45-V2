@@ -1243,51 +1243,51 @@ El formato debe ser EXACTAMENTE:
 
 }
 
-// =====================================================
-// 📄 MÓDULO: GENERAR PLAN DEL EBOOK (MODO PRUEBA)
+/// =====================================================
+// 📄 MÓDULO: GENERAR PLAN DEL EBOOK (ETAPA 1)
+// Buscar un proyecto disponible
 // =====================================================
 
 async function generarPlan(data, env, json) {
-  // Listar todos los proyectos en R2
-  const lista = await env.EBOOKS.list({ prefix: "proyectos/" });
-  
-  for (const file of lista.keys) {
-    if (file.name.endsWith("proyecto.json")) {
-      const proyecto = JSON.parse(await env.EBOOKS.get(file.name));
 
-      // Verificar que esté en estado 'creado' y estructura pendiente
-      if (
-        proyecto.estado === "creado" &&
-        proyecto.estructura.indice === "pendiente" &&
-        proyecto.estructura.legales === "pendiente" &&
-        proyecto.estructura.capitulos === "pendiente" &&
-        proyecto.estructura.conclusion === "pendiente"
-      ) {
-        // Encontrado el proyecto
-        const plan = {
-          projectId: proyecto.projectId,
-          titulo: proyecto.titulo,
-          autor: proyecto.autor,
-          paginas: proyecto.paginas,
-          idioma: proyecto.idioma,
-          tono: proyecto.tono,
-          publico: proyecto.publico,
-          estructura: proyecto.estructura, // Copiamos la estructura original
-          capitulos: [],
-          estado: "en proceso"
-        };
-        console.log(proyecto);
-        return {
-          ok: true,
-          proyecto: proyecto,
-          plan: plan
-        };
-      }
+  const lista = await env.EBOOKS.list({
+    prefix: "proyectos/"
+  });
+
+  for (const archivo of lista.keys) {
+
+    if (!archivo.name.endsWith("proyecto.json")) {
+      continue;
     }
+
+    const objeto = await env.EBOOKS.get(archivo.name);
+
+    if (!objeto) {
+      continue;
+    }
+
+    const proyecto = JSON.parse(await objeto.text());
+
+    if (
+      proyecto.estado === "creado" &&
+      proyecto.estructura.indice === "pendiente" &&
+      proyecto.estructura.legales === "pendiente" &&
+      proyecto.estructura.capitulos === "pendiente" &&
+      proyecto.estructura.conclusion === "pendiente"
+    ) {
+
+      return {
+        ok: true,
+        proyecto
+      };
+
+    }
+
   }
 
   return {
     ok: false,
-    error: "Primero genere un proyecto."
+    error: "No hay proyectos disponibles."
   };
+
 }
