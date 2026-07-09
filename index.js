@@ -91,8 +91,38 @@ try {
   return json(await crearProyecto(data, env, json));
   
 case "generar-plan":
-  
-    return generarPlan(data,env,json);
+  try {
+    const resultado = await generarPlan(env);
+
+    return new Response(
+      JSON.stringify(resultado),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        }
+      }
+    );
+
+  } catch (err) {
+
+    console.error("ERROR generar-plan:", err);
+
+    return new Response(
+      JSON.stringify({
+        ok: false,
+        error: err.message
+      }),
+      {
+        status: 500,
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        }
+      }
+    );
+  }
   
 
     default:
@@ -1161,7 +1191,7 @@ async function guardarImagen(data, env) {
 // GENERAR PLAN
 //=====================================
 
-async function generarPlan(data,env,json) {
+async function generarPlan(env) {
 
   const lista = await env.EBOOKS.list({
     prefix: "ebook/"
