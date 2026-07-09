@@ -1180,7 +1180,7 @@ if (!autor) {
 // =====================================================
 // 📄 MÓDULO: GENERAR PLAN DEL EBOOK (FRONTEND)
 // =====================================================
-async function generarPlan() {
+async function generarPlan2() {
 	monitor.innerHTML += "<pre>" +
 JSON.stringify(data.proyecto, null, 2) +
 "</pre>";

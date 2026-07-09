@@ -1248,7 +1248,7 @@ El formato debe ser EXACTAMENTE:
 // Buscar un proyecto disponible
 // =====================================================
 
-async function generarPlan(data, env, json) {
+async function generarPlan2(data, env, json) {
 
   const lista = await env.EBOOKS.list({
     prefix: "proyectos/"
