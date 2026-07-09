@@ -1207,7 +1207,7 @@ El formato debe ser EXACTAMENTE:
     publico: data.publico || "",
  
     estado: "creado",
-
+ 
     estructura: data.estructura || {
       indice: "pendiente",
       legales: "pendiente",
