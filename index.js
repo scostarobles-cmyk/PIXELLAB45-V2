@@ -1276,7 +1276,7 @@ async function generarPlan(data, env, json) {
           capitulos: [],
           estado: "en proceso"
         };
-
+        console.log(proyecto);
         return {
           ok: true,
           proyecto: proyecto,
