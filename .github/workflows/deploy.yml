@@ -1,7 +1,7 @@
 name: Deploy GitHub Pages
 
 on:
-  push: 
+  push:
     branches:
       - main
 
@@ -35,10 +35,17 @@ jobs:
 
           find . -type f \( -name "*.html" -o -name "*.js" \) \
             -exec sed -i "s/__VERSION__/${VERSION}/g" {} \;
-            - name: Verificar VERSION
-  run: |
-    grep -R "__VERSION__" . || true
-    grep -R "script.js?v=" . || true
+
+      #=========================================
+      # VERIFICAR REEMPLAZO
+      #=========================================
+      - name: Verificar VERSION
+        run: |
+          echo "Buscando __VERSION__..."
+          grep -R "__VERSION__" . || true
+
+          echo "Buscando referencias a script.js..."
+          grep -R "script.js?v=" . || true
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
