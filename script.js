@@ -1206,7 +1206,7 @@ async function generarPlan2() {
       })
     });
 
-    const data = await response.json();
+    const data = await response.text();
 
     if (!response.ok || !data.ok) {
       throw new Error(data.error || "Error del Worker");
