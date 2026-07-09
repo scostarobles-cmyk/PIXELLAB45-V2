@@ -1106,7 +1106,7 @@ async function generarImagenPuter() {
 //====================================================
 
 
-function verificarProyectoProduccion() {
+async function verificarProyectoProduccion() {
 
   const estadoProyecto = document.getElementById("estadoProyecto");
   const monitor = document.getElementById("monitorIA");
