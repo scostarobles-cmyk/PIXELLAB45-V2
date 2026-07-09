@@ -1274,50 +1274,34 @@ if (!autor) {
 
 async function generarPlan2() {
 
-
-  const btn = document.getElementById("btnPlan");
   const monitor = document.getElementById("monitorIA");
 
-  btn.disabled = true;
-  btn.style.background = "#009dff";
-  btn.innerHTML = "⏳ Generando plan...";
+  monitor.innerHTML += "📚 Iniciando generación del plan...<br><br>";
 
-  monitor.innerHTML += "📁 Enviando petición al Worker...<br>";
-
-  try {
-
-    const response = await fetch(WORKER_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        action: "generar-plan"
-      })
-    });
-
-    const data = await response.json();
-
-    monitor.innerHTML += "<pre>" +
-      JSON.stringify(data, null, 2) +
-      "</pre>";
-
-    btn.style.background = "#00b050";
-    btn.innerHTML = "✅ OK";
-
-  } catch (err) {
-
-    monitor.innerHTML += "❌ " + err.message + "<br>";
-
-    btn.style.background = "#c00000";
-    btn.innerHTML = "❌ Error";
-
+  if (!proyectoActual) {
+    monitor.innerHTML += "❌ No hay proyecto cargado.<br>";
+    return;
   }
 
-  btn.disabled = false;
+  // Crear el plan en memoria
+  const plan = {
+    titulo: proyectoActual.tema,
+    paginas: proyectoActual.paginas,
+    estructura: proyectoActual.estructura
+  };
+
+  // Cambiar el estado del proyecto (solo en memoria)
+  proyectoActual.estado = "produccion";
+
+  monitor.innerHTML += "✅ Estado del proyecto actualizado (solo en memoria).<br><br>";
+
+  monitor.innerHTML += "📁 Proyecto actualizado:<br>";
+  monitor.innerHTML += "<pre>" + JSON.stringify(proyectoActual, null, 2) + "</pre>";
+
+  monitor.innerHTML += "<br>📋 Plan generado:<br>";
+  monitor.innerHTML += "<pre>" + JSON.stringify(plan, null, 2) + "</pre>";
 
 }
-
 // MENÚ MÓVIL
 function toggleMenu() {
 
