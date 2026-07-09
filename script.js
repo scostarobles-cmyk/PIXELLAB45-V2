@@ -1,4 +1,4 @@
-//Variable global worker 
+//Variable global worker  
 const WORKER_URL =
   "https://pixellab45-v2.scostarobles.workers.dev/";
 //Función global 
