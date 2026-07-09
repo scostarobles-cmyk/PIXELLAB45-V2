@@ -1180,10 +1180,60 @@ if (!autor) {
 // =====================================================
 // 📄 MÓDULO: GENERAR PLAN DEL EBOOK (FRONTEND)
 // =====================================================
+
 async function generarPlan2() {
-	monitor.innerHTML += "<pre>" +
-JSON.stringify(data.proyecto, null, 2) +
-"</pre>";
+
+  const btn = document.getElementById("btnPlan");
+  const estado = document.getElementById("estadoPlan");
+  const monitor = document.getElementById("monitorIA");
+
+  btn.disabled = true;
+  btn.style.background = "#009dff";
+  btn.innerHTML = "📋 Generando plan...";
+
+  estado.innerHTML = "🔵 Buscando proyecto...";
+  monitor.innerHTML += "📋 Iniciando generación del plan...<br>";
+
+  try {
+
+    const response = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        action: "generar-plan"
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.ok) {
+      throw new Error(data.error || "Error del Worker");
+    }
+
+    monitor.innerHTML += "<pre>" +
+      JSON.stringify(data.proyecto, null, 2) +
+      "</pre>";
+
+    estado.innerHTML = "🟢 Proyecto encontrado";
+
+    btn.style.background = "#00b050";
+    btn.innerHTML = "✅ Proyecto encontrado";
+
+  } catch (err) {
+
+    monitor.innerHTML += `❌ ${err.message}<br>`;
+
+    estado.innerHTML = "🔴 Error";
+
+    btn.style.background = "#d32f2f";
+    btn.innerHTML = "❌ Error";
+
+  }
+
+  btn.disabled = false;
+
 }
 
 // MENÚ MÓVIL
