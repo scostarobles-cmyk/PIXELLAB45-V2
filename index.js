@@ -91,7 +91,14 @@ try {
   return json(await crearProyecto(data, env, json));
   
 case "generar-plan":
-  return Response.json(await generarPlan(env));
+  try {
+    return Response.json(await generarPlan(env));
+  } catch (err) {
+    return Response.json({
+      ok: false,
+      error: err.message
+    }, { status: 500 });
+  }
 
     default:
       return json({
