@@ -1106,6 +1106,8 @@ async function generarImagenPuter() {
 //====================================================
 
 
+
+
 async function verificarProyectoProduccion() {
 
   const estadoProyecto = document.getElementById("estadoProyecto");
@@ -1171,7 +1173,8 @@ async function verificarProyectoProduccion() {
     monitor.innerHTML +=
       "❌ " + err.message + "<br>";
 
-  }
+  }case "generar-plan":
+  return json(await generarPlan(env));
 
 }
 
@@ -1280,7 +1283,7 @@ if (!autor) {
 // =====================================================
 
 async function generarPlan2() {
-alert("ENTRÉ A generarPlan");
+
 
   const btn = document.getElementById("btnPlan");
   const monitor = document.getElementById("monitorIA");

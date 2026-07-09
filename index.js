@@ -88,45 +88,13 @@ try {
       return guardarImagen(data, env, json);
       
       case "verificar-produccion":
-  return Response.json(await verificarProduccion(env));
+  return json(await verificarProduccion(env));
       
      case "crear-proyecto":
   return json(await crearProyecto(data, env, json));
   
 case "generar-plan":
-  try {
-    const resultado = await generarPlan(env);
-
-    return new Response(
-      JSON.stringify(resultado),
-      {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*"
-        }
-      }
-    );
-
-  } catch (err) {
-
-    console.error("ERROR generar-plan:", err);
-
-    return new Response(
-      JSON.stringify({
-        ok: false,
-        error: err.message
-      }),
-      {
-        status: 500,
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*"
-        }
-      }
-    );
-  }
-  
+  return json(await generarPlan(env));
 
     default:
       return json({
