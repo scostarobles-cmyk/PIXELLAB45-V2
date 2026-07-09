@@ -1177,12 +1177,56 @@ if (!autor) {
   btn.disabled = false;
 
 }
-// INICIO
-window.onload = () => {
+// =====================================================
+// 📄 MÓDULO: GENERAR PLAN DEL EBOOK (FRONTEND)
+// =====================================================
+async function generarPlan() {
+  const btn = document.getElementById("btnGenerarPlan");
+  const estado = document.getElementById("estadoPlan");
+  const monitor = document.getElementById("monitorPlan");
 
-  cargarGaleriaCompleta();
+  btn.disabled = true;
+  btn.style.background = "#009dff";
+  btn.innerHTML = "📁 Generando plan...";
 
-};
+  estado.innerHTML = "🔵 Generando plan...";
+  monitor.innerHTML += "📁 Iniciando generación del plan...<br>";
+
+  try {
+    const response = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        action: "generar-plan"
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.ok) {
+      throw new Error(data.error || "Error del Worker");
+    }
+
+    monitor.innerHTML += "<pre>" + JSON.stringify(data.proyecto, null, 2) + "</pre>";
+    monitor.innerHTML += "<hr>";
+    monitor.innerHTML += "<pre>" + JSON.stringify(data.plan, null, 2) + "</pre>";
+
+    estado.innerHTML = "🟢 Plan generado";
+
+    btn.style.background = "#00b050";
+    btn.innerHTML = "✅ Plan generado";
+  } catch (err) {
+    console.error(err);
+    monitor.innerHTML += `❌ ${err.name}<br>`;
+    monitor.innerHTML += `❌ ${err.message}<br>`;
+    monitor.innerHTML += `❌ ${err.stack || "Sin stack"}<br>`;
+  }
+
+  btn.disabled = false;
+}
+
 // MENÚ MÓVIL
 function toggleMenu() {
 

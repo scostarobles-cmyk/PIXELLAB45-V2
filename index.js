@@ -89,6 +89,9 @@ try {
       
      case "crear-proyecto":
   return json(await crearProyecto(data, env, json));
+  
+  case "generar-plan":
+  return json(await generarPlan(data, env, json));
 
     default:
       return json({
@@ -1238,4 +1241,53 @@ El formato debe ser EXACTAMENTE:
     url: `${env.R2_BASE_URL}/${ruta}`
   };
 
+}
+
+// =====================================================
+// 📄 MÓDULO: GENERAR PLAN DEL EBOOK (MODO PRUEBA)
+// =====================================================
+
+async function generarPlan(data, env, json) {
+  // Listar todos los proyectos en R2
+  const lista = await env.EBOOKS.list({ prefix: "proyectos/" });
+  
+  for (const file of lista.keys) {
+    if (file.name.endsWith("proyecto.json")) {
+      const proyecto = JSON.parse(await env.EBOOKS.get(file.name));
+
+      // Verificar que esté en estado 'creado' y estructura pendiente
+      if (
+        proyecto.estado === "creado" &&
+        proyecto.estructura.indice === "pendiente" &&
+        proyecto.estructura.legales === "pendiente" &&
+        proyecto.estructura.capitulos === "pendiente" &&
+        proyecto.estructura.conclusion === "pendiente"
+      ) {
+        // Encontrado el proyecto
+        const plan = {
+          projectId: proyecto.projectId,
+          titulo: proyecto.titulo,
+          autor: proyecto.autor,
+          paginas: proyecto.paginas,
+          idioma: proyecto.idioma,
+          tono: proyecto.tono,
+          publico: proyecto.publico,
+          estructura: proyecto.estructura, // Copiamos la estructura original
+          capitulos: [],
+          estado: "en proceso"
+        };
+
+        return {
+          ok: true,
+          proyecto: proyecto,
+          plan: plan
+        };
+      }
+    }
+  }
+
+  return {
+    ok: false,
+    error: "Primero genere un proyecto."
+  };
 }
