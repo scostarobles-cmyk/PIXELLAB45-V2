@@ -1,6 +1,6 @@
  const R2_BASE_URL =
   "https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev";
- 
+
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "*",
@@ -1195,15 +1195,7 @@ async function verificarProduccion(env) {
 
   const ruta = `proyectos/${projectId}/proyecto.json`;
 
-  await env.EBOOKS.put(
-    ruta,
-    JSON.stringify(proyecto, null, 2),
-    {
-      httpMetadata: {
-        contentType: "application/json"
-      }
-    }
-  );
+  await guardarJSON(env, ruta, proyecto);
 
   return {
     ok: true,
@@ -1253,5 +1245,24 @@ async function generarPlan(env) {
     ok: false,
     error: "No hay proyectos pendientes"
   };
+
+}
+// =====================================================
+// 💾 FUNCIÓN: GUARDAR JSON EN R2
+// =====================================================
+
+async function guardarJSON(env, ruta, json) {
+
+  await env.EBOOKS.put(
+    ruta,
+    JSON.stringify(json, null, 2),
+    {
+      httpMetadata: {
+        contentType: "application/json"
+      }
+    }
+  );
+
+  return true;
 
 }
