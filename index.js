@@ -1164,3 +1164,42 @@ async function generarPlan() {
   };
 
 }
+
+//====================================
+// GENERAR PLAN
+//====================================
+
+async function generarPlan(env) {
+
+  const lista = await env.EBOOKS.list({
+    prefix: "ebook/"
+  });
+
+  for (const archivo of lista.objects) {
+
+    if (!archivo.key.endsWith("/proyecto.json")) continue;
+
+    const objeto = await env.EBOOKS.get(archivo.key);
+
+    if (!objeto) continue;
+
+    const proyecto = JSON.parse(await objeto.text());
+
+    if (proyecto.estado === "pendiente") {
+
+      return {
+        ok: true,
+        proyecto
+      };
+
+    }
+
+  }
+
+  return {
+    ok: false,
+    error: "No hay proyectos pendientes"
+  };
+
+}
+	
