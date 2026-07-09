@@ -1205,7 +1205,7 @@ El formato debe ser EXACTAMENTE:
     idioma: data.idioma || "",
     tono: data.tono || "",
     publico: data.publico || "",
-
+ 
     estado: "creado",
 
     estructura: data.estructura || {
