@@ -771,7 +771,7 @@ async function generarStoryboard() {
     });
 
     const data = await res.json();
-
+ alert("medio del código");
     clearInterval(fakeProgress);
 
     barra.style.width = "100%";
@@ -1173,9 +1173,7 @@ async function verificarProyectoProduccion() {
     monitor.innerHTML +=
       "❌ " + err.message + "<br>";
 
-  }case "generar-plan":
-  return json(await generarPlan(env));
-
+  }
 }
 
 
