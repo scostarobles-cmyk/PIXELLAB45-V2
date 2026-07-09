@@ -1105,8 +1105,6 @@ async function generarImagenPuter() {
 // - Informa que no hay proyectos activos.
 //====================================================
 
-let proyectoActual = null;
-
 
 async function verificarProyectoProduccion() {
 
