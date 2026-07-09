@@ -91,14 +91,9 @@ try {
   return json(await crearProyecto(data, env, json));
   
 case "generar-plan":
-  try {
-    return Response.json(await generarPlan(env));
-  } catch (err) {
-    return Response.json({
-      ok: false,
-      error: err.message
-    }, { status: 500 });
-  }
+  
+    return generarPlan(data,env,json);
+  
 
     default:
       return json({
@@ -1166,7 +1161,7 @@ async function guardarImagen(data, env) {
 // GENERAR PLAN
 //=====================================
 
-async function generarPlan(env) {
+async function generarPlan(data,env,json) {
 
   const lista = await env.EBOOKS.list({
     prefix: "ebook/"
