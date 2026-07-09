@@ -1204,4 +1204,3 @@ window.onload = () => {
   cargarGaleriaCompleta();
 
 };
-window.generarPlan = generarPlan;
