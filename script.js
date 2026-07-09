@@ -1184,8 +1184,8 @@ if (!autor) {
 async function generarPlan2() {
 alert("ENTRÉ A generarPlan2");
 
-  const btn = document.getElementById("btnGenerarPlan");
-  const monitor = document.getElementById("monitor");
+  const btn = document.getElementById("btnPlan");
+  const monitor = document.getElementById("monitorIA");
 
   btn.disabled = true;
   btn.style.background = "#009dff";
