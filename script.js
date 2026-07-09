@@ -8,7 +8,7 @@ const FETCH_CONFIG = {
     "Content-Type": "application/json"
   }
 };
-let proyectoActual = null;
+
 
 //Galería completa 
 async function cargarGaleriaCompleta() {
@@ -1091,22 +1091,20 @@ async function generarImagenPuter() {
 //====================================================
 // VERIFICAR PROYECTO EN PRODUCCIÓN
 //====================================================
-// Se ejecuta al ingresar a eBook Studio.
+// Se ejecuta automáticamente al ingresar a eBook Studio.
 //
-// Consulta al Worker si existe un proyecto guardado
-// en R2 con estado "produccion".
+// Busca un proyecto con estado "produccion".
 //
-// Si encuentra uno:
+// Si existe:
 // - Guarda el projectId.
 // - Actualiza el indicador del Pipeline.
-// - Deja disponible el proyecto para Generar Plan.
+// - Deja listo el proyecto para Generar Plan.
 //
-// Si no encuentra:
-// - Informa que no hay proyectos activos.
+// Si no existe:
+// - Informa que no hay proyectos disponibles.
 //====================================================
 
-
-
+let proyectoActual = null;
 
 async function verificarProyectoProduccion() {
 
@@ -1116,7 +1114,6 @@ async function verificarProyectoProduccion() {
   try {
 
     monitor.innerHTML += "🔎 Verificando proyectos...<br>";
-
 
     const response = await fetch(WORKER_URL, {
       method: "POST",
@@ -1128,57 +1125,48 @@ async function verificarProyectoProduccion() {
       })
     });
 
-
     const data = await response.json();
-
 
     if (data.ok) {
 
       proyectoActual = data.id;
 
-      sessionStorage.setItem(
-        "proyectoActual",
-        data.id
-      );
-
-
-      estadoProyecto.innerHTML = "🔵 Proyecto en producción";
-estadoProyecto.style.color = "#00d9ff";
-
+      estadoProyecto.innerHTML = "🟢 Proyecto creado";
+      estadoProyecto.style.color = "#00b050";
 
       monitor.innerHTML +=
         "✅ Proyecto encontrado: " + data.id + "<br>";
 
-estadoProyecto.innerHTML = "🟢 Proyecto creado";
-estadoProyecto.style.color = "#00b050";
     } else {
 
+      proyectoActual = null;
 
-      estadoProyecto.innerHTML = "⚪ Sin proyecto en producción";
-estadoProyecto.style.color = "#808080";
-
+      estadoProyecto.innerHTML = "⚪ Sin proyecto";
+      estadoProyecto.style.color = "#808080";
 
       monitor.innerHTML +=
-        "ℹ️ " + data.error + "<br>";
+        "ℹ️ No hay proyectos en producción.<br>";
 
     }
 
-
   } catch (err) {
 
+    proyectoActual = null;
 
-    estadoProyecto.innerHTML = "⚪ Sin proyecto en producción";
-estadoProyecto.style.color = "#808080";
-
+    estadoProyecto.innerHTML = "🔴 Error";
+    estadoProyecto.style.color = "#c00000";
 
     monitor.innerHTML +=
       "❌ " + err.message + "<br>";
 
   }
+
 }
 
+//====================================================
+// INICIO DEL SISTEMA
+//====================================================
 
-// Ejecutar automáticamente al entrar a la página
 window.addEventListener("DOMContentLoaded", () => {
 
   verificarProyectoProduccion();
