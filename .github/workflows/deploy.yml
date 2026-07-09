@@ -46,7 +46,7 @@ jobs:
                    echo "=== index.html ==="
                                grep "__VERSION__" index.html || true
           grep "script.js?v=" index.html || true
-          grep "Versión:" index.html
+      
       #=========================================
       # VERIFICAR REEMPLAZO
       #=========================================
