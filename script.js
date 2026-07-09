@@ -1181,18 +1181,16 @@ if (!autor) {
 // 📄 MÓDULO: GENERAR PLAN DEL EBOOK (FRONTEND)
 // =====================================================
 
-async function generarPlan2() {
+async function generarPlan() {
 
-  const btn = document.getElementById("btnPlan");
-  const estado = document.getElementById("estadoPlan");
-  const monitor = document.getElementById("monitorIA");
+  const btn = document.getElementById("btnGenerarPlan");
+  const monitor = document.getElementById("monitor");
 
   btn.disabled = true;
   btn.style.background = "#009dff";
-  btn.innerHTML = "📋 Generando plan...";
+  btn.innerHTML = "⏳ Generando plan...";
 
-  estado.innerHTML = "🔵 Buscando proyecto...";
-  monitor.innerHTML += "📋 Iniciando generación del plan...<br>";
+  monitor.innerHTML += "📁 Enviando petición al Worker...<br>";
 
   try {
 
@@ -1206,28 +1204,20 @@ async function generarPlan2() {
       })
     });
 
-    const data = await response.text();
-
-    if (!response.ok || !data.ok) {
-      throw new Error(data.error || "Error del Worker");
-    }
+    const data = await response.json();
 
     monitor.innerHTML += "<pre>" +
-      JSON.stringify(data.proyecto, null, 2) +
+      JSON.stringify(data, null, 2) +
       "</pre>";
 
-    estado.innerHTML = "🟢 Proyecto encontrado";
-
     btn.style.background = "#00b050";
-    btn.innerHTML = "✅ Proyecto encontrado";
+    btn.innerHTML = "✅ OK";
 
   } catch (err) {
 
-    monitor.innerHTML += `❌ ${err.message}<br>`;
+    monitor.innerHTML += "❌ " + err.message + "<br>";
 
-    estado.innerHTML = "🔴 Error";
-
-    btn.style.background = "#d32f2f";
+    btn.style.background = "#c00000";
     btn.innerHTML = "❌ Error";
 
   }
