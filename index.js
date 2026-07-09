@@ -91,7 +91,7 @@ try {
   return json(await crearProyecto(data, env, json));
   
 case "generar-plan":
-  return json(await generarPlan());
+  return Response.json(await generarPlan(env));
 
     default:
       return json({
@@ -1165,9 +1165,9 @@ async function generarPlan() {
 
 }
 
-//====================================
+//=====================================
 // GENERAR PLAN
-//====================================
+//=====================================
 
 async function generarPlan(env) {
 
@@ -1177,11 +1177,15 @@ async function generarPlan(env) {
 
   for (const archivo of lista.objects) {
 
-    if (!archivo.key.endsWith("/proyecto.json")) continue;
+    if (!archivo.key.endsWith("/proyecto.json")) {
+      continue;
+    }
 
     const objeto = await env.EBOOKS.get(archivo.key);
 
-    if (!objeto) continue;
+    if (!objeto) {
+      continue;
+    }
 
     const proyecto = JSON.parse(await objeto.text());
 
@@ -1189,7 +1193,7 @@ async function generarPlan(env) {
 
       return {
         ok: true,
-        proyecto
+        proyecto: proyecto
       };
 
     }
@@ -1202,4 +1206,3 @@ async function generarPlan(env) {
   };
 
 }
-	
