@@ -1181,6 +1181,7 @@ if (!autor) {
 // 📄 MÓDULO: GENERAR PLAN DEL EBOOK (FRONTEND)
 // =====================================================
 async function generarPlan2() {
+	alert("entro en la función");
   const btn = document.getElementById("btnGenerarPlan");
   const estado = document.getElementById("estadoPlan");
   const monitor = document.getElementById("monitorPlan");
