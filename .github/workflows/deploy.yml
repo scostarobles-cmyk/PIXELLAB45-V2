@@ -35,6 +35,10 @@ jobs:
 
           find . -type f \( -name "*.html" -o -name "*.js" \) \
             -exec sed -i "s/__VERSION__/${VERSION}/g" {} \;
+            - name: Verificar VERSION
+  run: |
+    grep -R "__VERSION__" . || true
+    grep -R "script.js?v=" . || true
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
