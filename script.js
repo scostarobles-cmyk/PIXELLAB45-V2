@@ -1,4 +1,4 @@
-//Variable global worker  
+//Variable global worker 
 const WORKER_URL =
   "https://pixellab45-v2.scostarobles.workers.dev/";
 //Función global 
@@ -1181,7 +1181,7 @@ if (!autor) {
 // 📄 MÓDULO: GENERAR PLAN DEL EBOOK (FRONTEND)
 // =====================================================
 
-async function generarPlan() {
+async function generarPlan2() {
 alert("ENTRÉ A generarPlan");
 
   const btn = document.getElementById("btnPlan");
