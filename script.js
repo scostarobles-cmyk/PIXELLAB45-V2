@@ -1142,19 +1142,20 @@ async function verificarProyectoProduccion() {
       );
 
 
-      estadoProyecto.innerHTML =
-        "🟢 Proyecto en producción";
+      estadoProyecto.innerHTML = "🔵 Proyecto en producción";
+estadoProyecto.style.color = "#00d9ff";
 
 
       monitor.innerHTML +=
         "✅ Proyecto encontrado: " + data.id + "<br>";
 
-
+estadoProyecto.innerHTML = "🟢 Proyecto creado";
+estadoProyecto.style.color = "#00b050";
     } else {
 
 
-      estadoProyecto.innerHTML =
-        "⚪ Sin proyecto en producción";
+      estadoProyecto.innerHTML = "⚪ Sin proyecto en producción";
+estadoProyecto.style.color = "#808080";
 
 
       monitor.innerHTML +=
@@ -1166,9 +1167,9 @@ async function verificarProyectoProduccion() {
   } catch (err) {
 
 
-    estadoProyecto.innerHTML =
-      "🔴 Error proyecto";
- 
+    estadoProyecto.innerHTML = "⚪ Sin proyecto en producción";
+estadoProyecto.style.color = "#808080";
+
 
     monitor.innerHTML +=
       "❌ " + err.message + "<br>";
