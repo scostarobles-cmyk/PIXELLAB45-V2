@@ -87,6 +87,9 @@ try {
     case "guardar-imagen":
       return guardarImagen(data, env, json);
       
+      case "verificar-produccion":
+  return Response.json(await verificarProduccion(env));
+      
      case "crear-proyecto":
   return json(await crearProyecto(data, env, json));
   
@@ -1135,7 +1138,63 @@ async function guardarImagen(data, env) {
 
 }
 
+//====================================================
+// VERIFICAR PROYECTO EN PRODUCCIÓN
+//====================================================
+// Busca en R2 todos los proyectos guardados en:
+// proyectos/{projectId}/proyecto.json
+//
+// Revisa si existe un proyecto con estado "produccion".
+//
+// Si encuentra uno:
+// - Obtiene el ID del proyecto.
+// - Devuelve la información al frontend.
+// - Permite continuar con la generación del plan.
+//
+// Si no encuentra proyectos:
+// - Devuelve ok:false.
+//
+// Esta función se ejecuta al cargar la página
+// para mostrar el estado actual del proyecto.
+//====================================================
 
+async function verificarProduccion(env) {
+
+  const lista = await env.EBOOKS.list({
+    prefix: "proyectos/"
+  });
+
+  for (const archivo of lista.objects) {
+
+    if (!archivo.key.endsWith("/proyecto.json")) {
+      continue;
+    }
+
+    const objeto = await env.EBOOKS.get(archivo.key);
+
+    if (!objeto) continue;
+
+    const proyecto = JSON.parse(await objeto.text());
+
+    if (proyecto.estado === "produccion") {
+
+      const partes = archivo.key.split("/");
+      const projectId = partes[1];
+
+      return {
+        ok: true,
+        id: projectId,
+        proyecto: proyecto
+      };
+    }
+  }
+
+  return {
+    ok: false,
+    error: "No hay proyectos en producción"
+  };
+
+}
 
 // =====================================================
 // 📁 MÓDULO: CREAR PROYECTO
@@ -1154,7 +1213,7 @@ async function guardarImagen(data, env) {
     tono: data.tono || "",
     publico: data.publico || "",
 
-    estado: "creado",
+    estado: "Producción",
 
     estructura: data.estructura || {
       indice: "pendiente",
@@ -1211,7 +1270,7 @@ async function generarPlan(env) {
 
     const proyecto = JSON.parse(await objeto.text());
 
-    if (proyecto.estado === "pendiente") {
+    if (proyecto.estado === "Producción") {
 
       return {
         ok: true,

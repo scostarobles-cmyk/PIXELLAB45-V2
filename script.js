@@ -8,10 +8,8 @@ const FETCH_CONFIG = {
     "Content-Type": "application/json"
   }
 };
-window.ebookActual = null;
-let ebookActual = "";
-let estructuraEbook = null;
-let ebookDiseno = null;
+let proyectoActual = null;
+
 //Galería completa 
 async function cargarGaleriaCompleta() {
 
@@ -1089,6 +1087,104 @@ async function generarImagenPuter() {
   }
 
 }
+
+//====================================================
+// VERIFICAR PROYECTO EN PRODUCCIÓN
+//====================================================
+// Se ejecuta al ingresar a eBook Studio.
+//
+// Consulta al Worker si existe un proyecto guardado
+// en R2 con estado "produccion".
+//
+// Si encuentra uno:
+// - Guarda el projectId.
+// - Actualiza el indicador del Pipeline.
+// - Deja disponible el proyecto para Generar Plan.
+//
+// Si no encuentra:
+// - Informa que no hay proyectos activos.
+//====================================================
+
+let proyectoActual = null;
+
+
+async function verificarProyectoProduccion() {
+
+  const estadoProyecto = document.getElementById("estadoProyecto");
+  const monitor = document.getElementById("monitorIA");
+
+  try {
+
+    monitor.innerHTML += "🔎 Verificando proyectos...<br>";
+
+
+    const response = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        action: "verificar-produccion"
+      })
+    });
+
+
+    const data = await response.json();
+
+
+    if (data.ok) {
+
+      proyectoActual = data.id;
+
+      sessionStorage.setItem(
+        "proyectoActual",
+        data.id
+      );
+
+
+      estadoProyecto.innerHTML =
+        "🟢 Proyecto en producción";
+
+
+      monitor.innerHTML +=
+        "✅ Proyecto encontrado: " + data.id + "<br>";
+
+
+    } else {
+
+
+      estadoProyecto.innerHTML =
+        "⚪ Sin proyecto en producción";
+
+
+      monitor.innerHTML +=
+        "ℹ️ " + data.error + "<br>";
+
+    }
+
+
+  } catch (err) {
+
+
+    estadoProyecto.innerHTML =
+      "🔴 Error proyecto";
+
+
+    monitor.innerHTML +=
+      "❌ " + err.message + "<br>";
+
+  }
+
+}
+
+
+// Ejecutar automáticamente al entrar a la página
+window.addEventListener("DOMContentLoaded", () => {
+
+  verificarProyectoProduccion();
+
+});
+
 // =====================================================
 // 📁 MÓDULO: CREAR PROYECTO
 // Pipeline IA - eBook Studio
@@ -1154,7 +1250,11 @@ if (!autor) {
     if (!response.ok || !data.ok) {
       throw new Error(data.error || "Error del Worker");
     }
-      
+      if (data.ok) {
+
+  proyectoActual = data.projectId;
+
+}
     // Guardamos el ID para usarlo en los siguientes módulos
     window.projectId = data.projectId;
 
