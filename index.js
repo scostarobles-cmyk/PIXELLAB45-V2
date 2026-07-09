@@ -1162,34 +1162,9 @@ async function guardarImagen(data, env) {
 
 async function generarPlan(data, env, json) {
 
-  const lista = await env.EBOOKS.list({
-    prefix: "proyectos/"
-  });
-
-  for (const archivo of lista.keys) {
-
-    if (!archivo.name.endsWith("proyecto.json")) {
-      continue;
-    }
-
-    const objeto = await env.EBOOKS.get(archivo.name);
-
-    if (!objeto) {
-      continue;
-    }
-
-    const proyecto = JSON.parse(await objeto.text());
-
-    return {
-      ok: true,
-      proyecto
-    };
-
-  }
-
   return {
-    ok: false,
-    error: "No hay proyectos."
+    ok: true,
+    mensaje: "Entró a generarPlan"
   };
 
 }
