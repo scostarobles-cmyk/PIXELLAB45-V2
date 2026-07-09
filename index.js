@@ -1243,12 +1243,11 @@ El formato debe ser EXACTAMENTE:
 
 }
 
-/// =====================================================
-// 📄 MÓDULO: GENERAR PLAN DEL EBOOK (ETAPA 1)
-// Buscar un proyecto disponible
+// =====================================================
+// 📄 ETAPA 1 - Buscar un proyecto
 // =====================================================
 
-async function generarPlan2(data, env, json) {
+async function generarPlan(data, env, json) {
 
   const lista = await env.EBOOKS.list({
     prefix: "proyectos/"
@@ -1268,26 +1267,16 @@ async function generarPlan2(data, env, json) {
 
     const proyecto = JSON.parse(await objeto.text());
 
-    if (
-      proyecto.estado === "creado" &&
-      proyecto.estructura.indice === "pendiente" &&
-      proyecto.estructura.legales === "pendiente" &&
-      proyecto.estructura.capitulos === "pendiente" &&
-      proyecto.estructura.conclusion === "pendiente"
-    ) {
-
-      return {
-        ok: true,
-        proyecto
-      };
-
-    }
+    return {
+      ok: true,
+      proyecto
+    };
 
   }
 
   return {
     ok: false,
-    error: "No hay proyectos disponibles."
+    error: "No hay proyectos."
   };
 
 }
