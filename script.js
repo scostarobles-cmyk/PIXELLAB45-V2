@@ -9,7 +9,7 @@ const FETCH_CONFIG = {
   }
 };
 let proyectoActual = null;
-let projectIdActual = null; aa
+let projectIdActual = null; 
 
 //Galería completa 
 async function cargarGaleriaCompleta() {
@@ -1105,7 +1105,7 @@ async function generarImagenPuter() {
 // - Informa que no hay proyectos disponibles.
 //====================================================
 
-let proyectoActual = null;
+
 
 async function verificarProyectoProduccion() {
 
