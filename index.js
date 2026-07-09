@@ -7,7 +7,7 @@ const CORS_HEADERS = {
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Content-Type": "application/json"
 };
- 
+
 export default {
   async fetch(request, env) {
 
@@ -91,7 +91,7 @@ try {
   return json(await crearProyecto(data, env, json));
   
   case "generar-plan":
-  return generarPlan(data, env, json);
+  return generarPlan();
 
     default:
       return json({
@@ -1160,7 +1160,7 @@ async function guardarImagen(data, env) {
 // 📄 ETAPA 1 - Buscar un proyecto
 // =====================================================
 
-async function generarPlan(data, env, json) {
+async function generarPlan() {
 
   return {
     ok: true,
