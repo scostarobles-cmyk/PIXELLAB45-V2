@@ -1182,9 +1182,10 @@ if (!autor) {
 // =====================================================
 async function generarPlan2() {
 	alert("entro en la función");
-  const btn = document.getElementById("btnGenerarPlan");
+  const btn = document.getElementById("btnPlan");
+
   const estado = document.getElementById("estadoPlan");
-  const monitor = document.getElementById("monitorPlan");
+  const monitor = document.getElementById("monitorIA");
 
   btn.disabled = true;
   btn.style.background = "#009dff";
