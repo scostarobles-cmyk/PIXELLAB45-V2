@@ -1,4 +1,4 @@
-name: Deploy GitHub Pages 
+name: Deploy GitHub Pages
 
 on:
   push:
@@ -26,10 +26,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      #=========================================
+      # GENERAR VERSIÓN AUTOMÁTICA
+      #=========================================
       - name: Inject version
         run: |
-          sed -i "s/__VERSION__/${GITHUB_SHA}/g" index.html
-          sed -i "s/__VERSION__/${GITHUB_SHA}/g" ailab.html
+          VERSION=$(date +%Y%m%d%H%M%S)
+
+          find . -type f \( -name "*.html" -o -name "*.js" \) \
+            -exec sed -i "s/__VERSION__/${VERSION}/g" {} \;
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
