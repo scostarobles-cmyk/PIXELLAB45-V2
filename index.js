@@ -88,10 +88,10 @@ try {
       return guardarImagen(data, env, json);
       
      case "crear-proyecto":
-  return jcrearProyecto(data, env, json);
+  return json(await crearProyecto(data, env, json));
   
   case "generar-plan":
-  return json(await generarPlan(data, env, json));
+  return generarPlan(data, env, json);
 
     default:
       return json({
