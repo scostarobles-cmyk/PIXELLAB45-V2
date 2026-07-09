@@ -1205,9 +1205,9 @@ El formato debe ser EXACTAMENTE:
     idioma: data.idioma || "",
     tono: data.tono || "",
     publico: data.publico || "",
- 
+
     estado: "creado",
- 
+
     estructura: data.estructura || {
       indice: "pendiente",
       legales: "pendiente",
@@ -1237,77 +1237,5 @@ El formato debe ser EXACTAMENTE:
     archivo: ruta,
     url: `${env.R2_BASE_URL}/${ruta}`
   };
-
-}
-
-// =====================================================
-// 📄 FUNCIÓN: GENERAR PLAN DEL PROYECTO
-// =====================================================
-
-async function generarPlan() {
-
-  const btn = document.getElementById("btnGenerarPlan");
-  const estado = document.getElementById("estadoPlan");
-  const monitor = document.getElementById("monitorIA");
-
-  if (!window.projectId) {
-    monitor.innerHTML += "❌ No existe un proyecto creado.<br>";
-    return;
-  }
-
-  // Botón azul
-  btn.disabled = true;
-  btn.style.background = "#009dff";
-  btn.innerHTML = "📄 Generando plan...";
-
-  estado.innerHTML = "🔵 Generando estructura del plan...";
-  monitor.innerHTML += "📄 Iniciando generación del plan...<br>";
-
-  try {
-
-    const response = await fetch(WORKER_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        action: "generar-plan",
-        projectId: window.projectId
-      })
-    });
-
-    const data = await response.json();
-
-    if (!response.ok || !data.ok) {
-      throw new Error(data.error || "Error generando plan");
-    }
-
-    monitor.innerHTML += `✅ Plan generado correctamente<br>`;
-    monitor.innerHTML += `🆔 Proyecto: ${window.projectId}<br>`;
-
-    if (data.archivo) {
-      monitor.innerHTML += `📁 Archivo: ${data.archivo}<br>`;
-    }
-
-    estado.innerHTML = "🟢 Plan creado";
-
-    btn.style.background = "#00b050";
-    btn.innerHTML = "✅ Plan generado";
-
-  } catch (err) {
-
-    console.error(err);
-
-    monitor.innerHTML += `❌ Error generando plan<br>`;
-    monitor.innerHTML += `❌ ${err.message}<br>`;
-
-    estado.innerHTML = "🔴 Error en el plan";
-
-    btn.style.background = "#ff0000";
-    btn.innerHTML = "❌ Error";
-
-  }
-
-  btn.disabled = false;
 
 }
