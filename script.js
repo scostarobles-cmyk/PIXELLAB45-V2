@@ -1168,7 +1168,7 @@ async function verificarProyectoProduccion() {
 
     estadoProyecto.innerHTML =
       "🔴 Error proyecto";
-
+ 
 
     monitor.innerHTML +=
       "❌ " + err.message + "<br>";
