@@ -1,14 +1,13 @@
 //Variable global worker 
 const WORKER_URL =
   "https://pixellab45-v2.scostarobles.workers.dev/";
-  alert("SCRIPT NUEVO CARGADO");
 //Función global 
 const FETCH_CONFIG = {
   method: "POST",
   headers: {
     "Content-Type": "application/json"
   }
-}; 
+};
 window.ebookActual = null;
 let ebookActual = "";
 let estructuraEbook = null;
@@ -1183,6 +1182,7 @@ if (!autor) {
 // =====================================================
 
 async function generarPlan2() {
+alert("ENTRÉ A generarPlan2");
 
   const btn = document.getElementById("btnGenerarPlan");
   const monitor = document.getElementById("monitor");
