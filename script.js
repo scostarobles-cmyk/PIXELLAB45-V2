@@ -1292,11 +1292,9 @@ function actualizarIndicador(id, estado = "verde") {
 //=====================================================
 
 async function verificarProyecto() {
-
     monitor("🔍 Verificando proyecto...");
 
     try {
-
         const respuesta = await fetch(WORKER_URL, {
             method: "POST",
             headers: {
@@ -1307,48 +1305,40 @@ async function verificarProyecto() {
             })
         });
 
-
         const datos = await respuesta.json();
 
-
         if (!datos.ok || !datos.proyecto) {
-
             monitor("📁 No existe un proyecto.");
             monitor("👉 Cree un proyecto.");
-
             return;
         }
 
-
         // Proyecto encontrado
-
         proyectoActual = datos.proyecto;
         projectIdActual = proyectoActual.projectId;
-
 
         monitor("✅ Proyecto encontrado.");
         monitor("🆔 " + projectIdActual);
 
-
         // Actualiza solamente el primer paso del pipeline
         actualizarIndicador("estadoProyecto", "verde");
 
-
-        // Frenar aquí hasta completar la siguiente etapa
-        monitor("⏸️ Esperando generación del plan.");
+        // Verificar plan
+        if (datos.plan) {
+            monitor("✅ Plan encontrado.");
+            actualizarIndicador("estadoPlan", "verde");
+        } else {
+            monitor("⏳ Esperando generación del plan.");
+            actualizarIndicador("estadoPlan", "azul");
+        }
 
         return;
 
-
     } catch (error) {
-
         console.error(error);
-
         monitor("❌ Error verificando proyecto.");
         monitor(error.message);
-
     }
-
 }
 window.addEventListener("load", async () => {
     await verificarProyecto();
