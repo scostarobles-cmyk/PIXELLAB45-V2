@@ -98,8 +98,8 @@ try {
       });
 
     }
-
-
+    
+ 
     case "cargar-json": {
 
       const archivo = await cargarJSON(env, data.ruta);
@@ -138,6 +138,11 @@ try {
 
     }
 
+case "generar-plan":
+
+    resultado = await generarPlan2(env);
+
+    break;
 
     default:
 
@@ -1273,4 +1278,157 @@ async function buscarProyectoActivo(env) {
     }
 
     return null;
+}
+i
+//=====================================================
+// FUNCIÓN: generarPlan2()
+// Descripción:
+// Genera el plan del eBook desde proyecto.json.
+// Calcula capítulos y páginas.
+// Guarda plan.json y actualiza proyecto.json.
+//=====================================================
+
+async function generarPlan2(env) {
+
+
+    const proyecto = await buscarProyectoActivo(env);
+
+
+    if (!proyecto) {
+
+        return {
+            ok: false,
+            mensaje: "No existe proyecto activo."
+        };
+
+    }
+
+
+    const projectId = proyecto.projectId;
+
+
+    const paginas = Number(proyecto.paginas);
+
+
+    if (!paginas || paginas <= 0) {
+
+        return {
+            ok: false,
+            mensaje: "Cantidad de páginas inválida."
+        };
+
+    }
+
+
+    // Calcular capítulos
+
+    let cantidadCapitulos;
+
+
+    if (paginas <= 50) {
+
+        cantidadCapitulos = 5;
+
+    } else if (paginas <= 100) {
+
+        cantidadCapitulos = 8;
+
+    } else {
+
+        cantidadCapitulos = 10;
+
+    }
+
+
+    const paginasPorCapitulo = Math.floor(
+        paginas / cantidadCapitulos
+    );
+
+
+    // Crear estructura de capítulos
+
+    const capitulos = [];
+
+
+    for (let i = 1; i <= cantidadCapitulos; i++) {
+
+        capitulos.push({
+
+            numero: i,
+
+            titulo: "pendiente",
+
+            paginas: paginasPorCapitulo,
+
+            estado: "pendiente"
+
+        });
+
+    }
+
+
+    // Crear plan.json
+
+    const plan = {
+
+        projectId,
+
+        titulo: proyecto.titulo,
+
+        autor: proyecto.autor,
+
+        paginas,
+
+        cantidadCapitulos,
+
+        paginasPorCapitulo,
+
+        capitulos,
+
+        fecha: new Date().toISOString()
+
+    };
+
+
+    const rutaProyecto =
+        `proyectos/${projectId}/proyecto.json`;
+
+
+    const rutaPlan =
+        `proyectos/${projectId}/plan.json`;
+
+
+    // Actualizar estado interno del proyecto
+
+    proyecto.estructura.plan = "creado";
+
+
+    // Guardar proyecto actualizado
+
+    await guardarJSON(
+        env,
+        rutaProyecto,
+        proyecto
+    );
+
+
+    // Guardar plan
+
+    await guardarJSON(
+        env,
+        rutaPlan,
+        plan
+    );
+
+
+    return {
+
+        ok: true,
+
+        mensaje: "Plan generado correctamente.",
+
+        plan
+
+    };
+
 }

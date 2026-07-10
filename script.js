@@ -1372,6 +1372,68 @@ function monitor(texto, limpiar = false) {
 
 }
 
+//=====================================
+// GENERAR PLAN
+//=====================================
+
+async function generarPlan2() {
+
+    monitor("📋 Generando plan...");
+
+    try {
+
+        const respuesta = await fetch(WORKER_URL, {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+
+                action: "generar-plan"
+
+            })
+
+        });
+
+
+        const datos = await respuesta.json();
+
+
+        if (!datos.ok) {
+
+            monitor("❌ Error generando plan.");
+            monitor(datos.mensaje || "Error desconocido.");
+
+            return;
+
+        }
+
+
+        monitor("✅ Plan generado correctamente.");
+
+
+        // Actualizar indicador del pipeline
+
+        actualizarIndicador(
+            "estadoPlan",
+            "verde"
+        );
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        monitor("❌ Error comunicando con el Worker.");
+        monitor(error.message);
+
+    }
+
+}
+
 // MENÚ MÓVIL
 function toggleMenu() {
 
