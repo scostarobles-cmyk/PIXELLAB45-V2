@@ -1088,242 +1088,259 @@ async function generarImagenPuter() {
   }
 
 }
-
-//====================================================
-// VERIFICAR PROYECTO EN PRODUCCIÓN
-//====================================================
-// Se ejecuta automáticamente al ingresar a eBook Studio.
-//
-// Busca un proyecto con estado "produccion".
-//
-// Si existe:
-// - Guarda el projectId.
-// - Actualiza el indicador del Pipeline.
-// - Deja listo el proyecto para Generar Plan.
-//
-// Si no existe:
-// - Informa que no hay proyectos disponibles.
-//====================================================
-
-
-async function verificarProyectoProduccion() {
-
-  const estadoProyecto = document.getElementById("estadoProyecto");
-  const monitor = document.getElementById("monitorIA");
-
-  try {
-
-    monitor.innerHTML += "🔎 Verificando proyectos...<br>";
-
-    const response = await fetch(WORKER_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        action: "verificar-produccion"
-      })
-    });
-
-    const data = await response.json();
-
-    if (data.ok) {
-
-      projectIdActual = data.id;
-
-proyectoActual = data.proyecto;
-
-      estadoProyecto.innerHTML = "🟢 Proyecto creado";
-      estadoProyecto.style.color = "#00b050";
-
-      monitor.innerHTML +=
-        "✅ Proyecto encontrado: " + data.id + "<br>";
-
-    } else {
-
-  projectIdActual = null;
-  proyectoActual = null;
-
-  estadoProyecto.innerHTML = "⚪ Sin proyecto";
-  estadoProyecto.style.color = "#808080";
-
-  monitor.innerHTML +=
-    "ℹ️ No hay proyectos en producción.<br>";
-
-}
-
-  } catch (err) {
-
-    proyectoActual = null;
-
-    estadoProyecto.innerHTML = "🔴 Error";
-    estadoProyecto.style.color = "#c00000";
-
-    monitor.innerHTML +=
-      "❌ " + err.message + "<br>";
-
-  }
-
-}
-
-//====================================================
-// INICIO DEL SISTEMA
-//====================================================
-
-window.addEventListener("DOMContentLoaded", () => {
-
-  verificarProyectoProduccion();
-
-});
-
-// =====================================================
-// 📁 MÓDULO: CREAR PROYECTO
-// Pipeline IA - eBook Studio
-// =====================================================
+//=====================================================
+// FUNCIÓN: crearProyecto()
+// Descripción:
+// Lee los datos del formulario del eBook, crea el
+// proyecto con un ID único, establece el estado inicial
+// "produccion" y lo guarda como proyecto.json en R2.
+//=====================================================
 
 async function crearProyecto() {
 
   const btn = document.getElementById("btnProyecto");
   const estado = document.getElementById("estadoProyecto");
   const monitor = document.getElementById("monitorIA");
-  const tema = document.getElementById("temaEbook").value.trim();
-const autor = document.getElementById("autorEbook").value.trim();
-const paginas = document.getElementById("paginasEbook").value;
-const idioma = document.getElementById("idiomaEbook").value;
-const tono = document.getElementById("tonoEbook").value;
-const publico = document.getElementById("publicoEbook").value;
 
-if (!tema) {
+  const tema = document.getElementById("temaEbook").value.trim();
+  const autor = document.getElementById("autorEbook").value.trim();
+  const paginas = parseInt(document.getElementById("paginasEbook").value);
+  const idioma = document.getElementById("idiomaEbook").value;
+  const tono = document.getElementById("tonoEbook").value;
+  const publico = document.getElementById("publicoEbook").value;
+
+  if (!tema) {
     monitor.innerHTML += "❌ Debes ingresar el título del eBook.<br>";
     return;
-}
+  }
 
-if (!autor) {
+  if (!autor) {
     monitor.innerHTML += "❌ Debes ingresar el autor.<br>";
     return;
-}
+  }
 
-  // Botón azul
   btn.disabled = true;
   btn.style.background = "#009dff";
   btn.innerHTML = "📁 Generando proyecto...";
 
   estado.innerHTML = "🔵 Creando proyecto...";
-  monitor.innerHTML += "📁 Iniciando creación del proyecto...<br>";
-  
+
+  monitor.innerHTML += "📁 Creando proyecto...<br><br>";
 
   try {
 
-    const response = await fetch(WORKER_URL, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    action: "crear-proyecto",
-    tema,
-    autor,
-    paginas,
-    idioma,
-    tono,
-    publico,
-    estructura: {
-      indice: "pendiente",
-      legales: "pendiente",
-      capitulos: "pendiente",
-      conclusion: "pendiente"
-    }
-  })
-});
+    const projectId = "PROY-" + Date.now();
 
-    const data = await response.json();
+    const proyecto = {
 
-    if (!response.ok || !data.ok) {
-      throw new Error(data.error || "Error del Worker");
-    }
-      if (data.ok) {
+      projectId,
 
-  proyectoActual = data.projectId;
+      titulo: tema,
+      autor,
+      paginas,
+      idioma,
+      tono,
+      publico,
 
-}
-    // Guardamos el ID para usarlo en los siguientes módulos
-    window.projectId = data.projectId;
+      estado: "produccion",
 
-    monitor.innerHTML += `✅ Proyecto creado<br>`;
-    monitor.innerHTML += `🆔 ${data.projectId}<br>`;
+      estructura: {
+
+        indice: "pendiente",
+        plan: "pendiente",
+        legales: "pendiente",
+        introduccion: "pendiente",
+        capitulos: "pendiente",
+        conclusion: "pendiente"
+
+      },
+
+      fecha: new Date().toISOString()
+
+    };
+
+    await guardarJSON(
+      `proyectos/${projectId}/proyecto.json`,
+      proyecto
+    );
+
+    proyectoActual = proyecto;
+
+    monitor.innerHTML += "✅ Proyecto creado correctamente.<br>";
+    monitor.innerHTML += "<pre>" + JSON.stringify(proyecto, null, 2) + "</pre>";
 
     estado.innerHTML = "🟢 Proyecto creado";
 
     btn.style.background = "#00b050";
     btn.innerHTML = "✅ Proyecto creado";
 
-  } catch (err) {
+  }
+  catch (err) {
+
     console.error(err);
 
-    monitor.innerHTML += `❌ ${err.name}<br>`;
     monitor.innerHTML += `❌ ${err.message}<br>`;
-    monitor.innerHTML += `❌ ${err.stack || "Sin stack"}<br>`;
-}
+
+    estado.innerHTML = "🔴 Error";
+
+    btn.style.background = "#d32f2f";
+    btn.innerHTML = "❌ Error";
+
+  }
 
   btn.disabled = false;
 
 }
 // =====================================================
-// 📄 MÓDULO: GENERAR PLAN DEL EBOOK (FRONTEND)
+// FUNCIÓN: guardarJSON()
+// Descripción:
+// Toma una ruta y un objeto JSON, y guarda el objeto en R2 en esa ruta específica.
+// Parámetros:
+//   ruta -> Ruta completa donde se guardará el JSON.
+//   datos -> Objeto JSON a guardar.
+// Retorno:
+//   Devuelve un booleano (true) si se guardó correctamente.
 // =====================================================
 
-async function generarPlan2() {
+async function guardarJSON(ruta, datos) {
 
-  const monitor = document.getElementById("monitorIA");
-
-  monitor.innerHTML += "📚 Iniciando generación del plan...<br><br>";
-
-  if (!proyectoActual) {
-    monitor.innerHTML += "❌ No hay proyecto cargado.<br>";
-    return;
-  }
- const id = proyectoActual.projectid;
-  // Crear el plan en memoria
-  const plan = {
-  	id: proyectoActual.id,
-    titulo: proyectoActual.titulo,
-    paginas: proyectoActual.paginas,
-    estructura: proyectoActual.estructura
-  };
-
-  // Cambiar el estado del proyecto (solo en memoria)
-  proyectoActual.estado = "creado";
-
-  monitor.innerHTML += "✅ Estado del proyecto actualizado bb.<br><br>";
-await fetch(WORKER_URL, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    action: "guardar-json",
-    ruta: `proyectos/${proyectoActual.projectId}/proyecto.json`,
-    json: proyectoActual
-  })
-});
-  monitor.innerHTML += "📁 Proyecto actualizado:<br>";
-  monitor.innerHTML += "<pre>" + JSON.stringify(proyectoActual, null, 2) + "</pre>";
-
-  monitor.innerHTML += "<br>📋 Plan generado:<br>";
-  monitor.innerHTML += "<pre>" + JSON.stringify(plan, null, 2) + "</pre>";
   await fetch(WORKER_URL, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    action: "guardar-json",
-    ruta: `proyectos/${proyectoActual.projectId}/plan.json`,
-    json: plan
-  })
-});
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      action: "guardar-json",
+      ruta: ruta,
+      json: datos
+    })
+  });
+
+  return true;
+}
+//=====================================================
+// FUNCIÓN: cargarJSON()
+// Descripción:
+// Carga cualquier archivo JSON desde R2.
+//=====================================================
+
+async function cargarJSON(ruta) {
+
+    const respuesta = await fetch(WORKER_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            action: "cargar-json",
+            ruta: ruta
+        })
+    });
+
+    const datos = await respuesta.json();
+
+    if (!datos.ok) return null;
+
+    return datos.json;
 
 }
+//=====================================================
+// FUNCIÓN: verificarProyecto()
+// Descripción:
+// Verifica el estado del proyecto y habilita el
+// siguiente botón de la botonera.
+//=====================================================
+
+async function verificarProyecto() {
+
+    monitor("🔍 Verificando proyecto...");
+
+    // Buscar proyecto
+    proyectoActual = await cargarJSON(
+        `proyectos/${projectIdActual}/proyecto.json`
+    );
+
+    if (!proyectoActual) {
+
+        monitor("📁 No existe un proyecto.");
+        monitor("👉 Cree un proyecto.");
+
+        return;
+    }
+
+    // Proyecto encontrado
+    monitor("✅ Proyecto encontrado.");
+
+    // Si todavía no existe el plan
+    const plan = await cargarJSON(
+        `proyectos/${projectIdActual}/plan.json`
+    );
+
+    if (!plan) {
+
+        monitor("👉 Debe generar el plan.");
+
+        document.getElementById("btnPlan").disabled = false;
+
+        return;
+    }
+
+    // Índice
+    if (plan.indice === "pendiente") {
+
+        monitor("👉 Debe generar el índice.");
+
+        document.getElementById("btnIndice").disabled = false;
+
+        return;
+    }
+
+    // Legales
+    if (plan.legales === "pendiente") {
+
+        monitor("👉 Debe generar los legales.");
+
+        document.getElementById("btnLegales").disabled = false;
+
+        return;
+    }
+
+    // Introducción
+    if (plan.introduccion === "pendiente") {
+
+        monitor("👉 Debe generar la introducción.");
+
+        document.getElementById("btnIntroduccion").disabled = false;
+
+        return;
+    }
+
+    // Capítulos
+    if (plan.capitulos === "pendiente") {
+
+        monitor("👉 Debe generar los capítulos.");
+
+        document.getElementById("btnCapitulos").disabled = false;
+
+        return;
+    }
+
+    // Conclusión
+    if (plan.conclusion === "pendiente") {
+
+        monitor("👉 Debe generar la conclusión.");
+
+        document.getElementById("btnConclusion").disabled = false;
+
+        return;
+    }
+
+    monitor("✅ Proyecto completo.");
+
+    document.getElementById("btnEnsamblar").disabled = false;
+
+}
+
 // MENÚ MÓVIL
 function toggleMenu() {
 

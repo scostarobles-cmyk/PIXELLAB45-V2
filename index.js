@@ -87,25 +87,46 @@ try {
     case "guardar-imagen":
       return guardarImagen(data, env, json);
       
-      case "verificar-produccion":
-  return json(await verificarProduccion(env));
-      
-     case "crear-proyecto":
-  return json(await crearProyecto(data, env, json));
-  
-  case "guardar-json":
-console.log("entro al case guardar -json");
-  return json(await guardarJSON(env, ruta, json));
-  
-case "generar-plan":
-  return json(await generarPlan(env));
+      case "crear-proyecto":
+  // Recibe los datos del frontend, genera el proyecto, y lo guarda en R2.
+  const proyecto = await crearProyecto(data, env);
+//=====================================================
+// CASE: cargar-json
+//=====================================================
 
-    default:
-      return json({
-        ok: false,
-        error: "Tipo no válido: " + tipo
-      }, 400);
-  }
+case "cargar-json": {
+
+    const json = await cargarJSON(env, data.ruta);
+
+    return Response.json({
+        ok: json !== null,
+        json
+    });
+
+}
+  return json({
+    ok: true,
+    proyecto: proyecto
+  });
+  //=====================================================
+// CASE: guardar-json
+// Descripción:
+// Guarda cualquier archivo JSON en R2.
+//=====================================================
+
+case "guardar-json": {
+
+    await guardarJSON(
+        env,
+        data.ruta,
+        data.json
+    );
+
+    return Response.json({
+        ok: true
+    });
+
+}
 
 } catch (err) {
 
@@ -1109,166 +1130,91 @@ async function guardarImagen(data, env) {
   }
 
 }
+// ======================================================
+// FUNCIÓN: crearProyecto()
+// Descripción:
+// Lee los datos del formulario, genera un ID único para el proyecto y arma el objeto del proyecto en memoria. No guarda nada, solo devuelve el objeto listo para guardar.
+// ======================================================
 
-//====================================================
-// VERIFICAR PROYECTO EN PRODUCCIÓN
-//====================================================
-// Busca en R2 todos los proyectos guardados en:
-// proyectos/{projectId}/proyecto.json
-//
-// Revisa si existe un proyecto con estado "produccion".
-//
-// Si encuentra uno:
-// - Obtiene el ID del proyecto.
-// - Devuelve la información al frontend.
-// - Permite continuar con la generación del plan.
-//
-// Si no encuentra proyectos:
-// - Devuelve ok:false.
-//
-// Esta función se ejecuta al cargar la página
-// para mostrar el estado actual del proyecto.
-//====================================================
+async function crearProyecto() {
 
-async function verificarProduccion(env) {
+  const tema = document.getElementById("temaEbook").value.trim();
+  const autor = document.getElementById("autorEbook").value.trim();
+  const paginas = parseInt(document.getElementById("paginasEbook").value);
+  const idioma = document.getElementById("idiomaEbook").value;
+  const tono = document.getElementById("tonoEbook").value;
+  const publico = document.getElementById("publicoEbook").value;
 
-  const lista = await env.EBOOKS.list({
-    prefix: "proyectos/"
-  });
-
-  for (const archivo of lista.objects) {
-
-    if (!archivo.key.endsWith("/proyecto.json")) {
-      continue;
-    }
-
-    const objeto = await env.EBOOKS.get(archivo.key);
-
-    if (!objeto) continue;
-
-    const proyecto = JSON.parse(await objeto.text());
-
-    if (proyecto.estado === "produccion") {
-
-      const partes = archivo.key.split("/");
-      const projectId = partes[1];
-
-      return {
-        ok: true,
-        id: projectId,
-        proyecto: proyecto
-      };
-    }
+  if (!tema) {
+    alert("Debes ingresar el título del eBook.");
+    return;
   }
 
-  return {
-    ok: false,
-    error: "No hay proyectos en producción"
-  };
-
-}
-
-// =====================================================
-// 📁 MÓDULO: CREAR PROYECTO
-// =====================================================
-
- async function crearProyecto(data, env, json) {
+  if (!autor) {
+    alert("Debes ingresar el autor.");
+    return;
+  }
 
   const projectId = "PROY-" + Date.now();
 
   const proyecto = {
     projectId: projectId,
-    titulo: data.tema || "",
-    autor: data.autor || "",
-    paginas: data.paginas || "",
-    idioma: data.idioma || "",
-    tono: data.tono || "",
-    publico: data.publico || "",
-
+    titulo: tema,
+    autor: autor,
+    paginas: paginas,
+    idioma: idioma,
+    tono: tono,
+    publico: publico,
     estado: "produccion",
-
-    estructura: data.estructura || {
+    estructura: {
       indice: "pendiente",
       legales: "pendiente",
       capitulos: "pendiente",
+      introduccion: "pendiente",
       conclusion: "pendiente"
     },
-
     fecha: new Date().toISOString()
   };
 
-  const ruta = `proyectos/${projectId}/proyecto.json`;
+  return proyecto;
+}
 
-  await guardarJSON(env, ruta, proyecto);
+////=====================================================
+// FUNCIÓN: guardarJSON()
+// Descripción:
+// Guarda cualquier objeto JSON en R2.
+// Si el archivo ya existe, lo reemplaza.
+//=====================================================
 
-  return {
-    ok: true,
-    mensaje: "Proyecto creado correctamente",
-    projectId: projectId,
-    archivo: ruta,
-    url: `${env.R2_BASE_URL}/${ruta}`
-  };
+async function guardarJSON(env, ruta, datos) {
+
+    await env.EBOOKS.put(
+        ruta,
+        JSON.stringify(datos, null, 2),
+        {
+            httpMetadata: {
+                contentType: "application/json"
+            }
+        }
+    );
+
+    return true;
 
 }
-//=====================================
-// GENERAR PLAN
-//=====================================
+//=====================================================
+// FUNCIÓN: cargarJSON()
+// Descripción:
+// Lee cualquier archivo JSON desde R2.
+//=====================================================
 
-async function generarPlan(env) {
+async function cargarJSON(env, ruta) {
 
-  const lista = await env.EBOOKS.list({
-    prefix: "ebook/"
-  });
+    const archivo = await env.EBOOKS.get(ruta);
 
-  for (const archivo of lista.objects) {
-
-    if (!archivo.key.endsWith("/proyecto.json")) {
-      continue;
+    if (!archivo) {
+        return null;
     }
 
-    const objeto = await env.EBOOKS.get(archivo.key);
-
-    if (!objeto) {
-      continue;
-    }
-
-    const proyecto = JSON.parse(await objeto.text());
-
-    if (proyecto.estado === "Producción") {
-
-      return {
-        ok: true,
-        proyecto: proyecto
-      };
-
-    }
-
-  }
-
-  return {
-    ok: false,
-    error: "No hay proyectos pendientes"
-  };
-
-}
-// =====================================================
-// 💾 FUNCIÓN: GUARDAR JSON EN R2
-// =====================================================
-
-async function guardarJSON(env, ruta, json) {
-console.log("antes del push");
-console.log(ruta);
-console.log(Json);
-  await env.EBOOKS.put(
-    ruta,
-    JSON.stringify(json, null, 2),
-    {
-      httpMetadata: {
-        contentType: "application/json"
-      }
-    }
-  );
-
-  return true;
+    return await archivo.json();
 
 }
