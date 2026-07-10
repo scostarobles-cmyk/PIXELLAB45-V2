@@ -1256,19 +1256,33 @@ function actualizarIndicador(id, estado = "verde") {
     if (!indicador) return;
 
 
+    let texto = indicador.textContent;
+
+
+    // Quitar círculo actual
+    texto = texto.replace(/^⚪|^🟢|^🔵/, "");
+
+
+    let circulo = "⚪";
+
+
     if (estado === "verde") {
-        indicador.style.background = "#00b050";
+        circulo = "🟢";
     }
 
 
     if (estado === "azul") {
-        indicador.style.background = "#0099ff";
+        circulo = "🔵";
     }
 
 
     if (estado === "blanco") {
-        indicador.style.background = "#ffffff";
+        circulo = "⚪";
     }
+
+
+    indicador.textContent = circulo + texto;
+
 }
 //=====================================================
 // FUNCIÓN: verificarProyecto()
