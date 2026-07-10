@@ -43,6 +43,7 @@ export default {
     }
 
     const tipo = data.action || "";
+    let resultado;
 
 try {
 
