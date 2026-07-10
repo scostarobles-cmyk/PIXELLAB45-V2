@@ -1245,6 +1245,31 @@ async function cargarJSON(ruta) {
     return datos.json;
 
 }
+//=====================================
+// ACTUALIZAR INDICADOR PIPELINE
+//=====================================
+
+function actualizarIndicador(id, estado = "verde") {
+
+    const indicador = document.getElementById(id);
+
+    if (!indicador) return;
+
+
+    if (estado === "verde") {
+        indicador.style.background = "#00b050";
+    }
+
+
+    if (estado === "azul") {
+        indicador.style.background = "#0099ff";
+    }
+
+
+    if (estado === "blanco") {
+        indicador.style.background = "#ffffff";
+    }
+}
 //=====================================================
 // FUNCIÓN: verificarProyecto()
 // Descripción:
@@ -1288,96 +1313,17 @@ async function verificarProyecto() {
 
 
         monitor("✅ Proyecto encontrado.");
-
-const indicador = document.getElementById("estadoProyecto");
-
-if (indicador) {
-    indicador.style.background = "#00b050";
-    indicador.innerHTML = "🟢 Proyecto encontrado";
-}
         monitor("🆔 " + projectIdActual);
 
 
-        // Buscar plan
-
-        const plan = await cargarJSON(
-            `proyectos/${projectIdActual}/plan.json`
-        );
+        // Actualiza solamente el primer paso del pipeline
+        actualizarIndicador("estadoProyecto", "verde");
 
 
-        if (!plan) {
+        // Frenar aquí hasta completar la siguiente etapa
+        monitor("⏸️ Esperando generación del plan.");
 
-            monitor("👉 Debe generar el plan.");
-
-            document.getElementById("btnPlan").disabled = false;
-
-            return;
-        }
-
-
-        // Índice
-
-        if (plan.indice === "pendiente") {
-
-            monitor("👉 Debe generar el índice.");
-
-            document.getElementById("btnIndice").disabled = false;
-
-            return;
-        }
-
-
-        // Legales
-
-        if (plan.legales === "pendiente") {
-
-            monitor("👉 Debe generar los legales.");
-
-            document.getElementById("btnLegales").disabled = false;
-
-            return;
-        }
-
-
-        // Introducción
-
-        if (plan.introduccion === "pendiente") {
-
-            monitor("👉 Debe generar la introducción.");
-
-            document.getElementById("btnIntroduccion").disabled = false;
-
-            return;
-        }
-
-
-        // Capítulos
-
-        if (plan.capitulos === "pendiente") {
-
-            monitor("👉 Debe generar los capítulos.");
-
-            document.getElementById("btnCapitulos").disabled = false;
-
-            return;
-        }
-
-
-        // Conclusión
-
-        if (plan.conclusion === "pendiente") {
-
-            monitor("👉 Debe generar la conclusión.");
-
-            document.getElementById("btnConclusion").disabled = false;
-
-            return;
-        }
-
-
-        monitor("✅ Proyecto completo.");
-
-        document.getElementById("btnEnsamblar").disabled = false;
+        return;
 
 
     } catch (error) {
@@ -1390,19 +1336,6 @@ if (indicador) {
     }
 
 }
-
-
-window.addEventListener("load", async () => {
-
-    await verificarProyecto();
-
-});
-
-window.addEventListener("load", async () => {
-
-    await verificarProyecto();
-
-});
 window.addEventListener("load", async () => {
     await verificarProyecto();
 });
