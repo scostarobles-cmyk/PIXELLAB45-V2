@@ -43,7 +43,7 @@ export default {
     }
 
     const tipo = data.action || "";
-    let resultado;
+    
 
 try {
 
@@ -139,11 +139,13 @@ try {
 
     }
 
-case "generar-plan":
+case "generar-plan": {
 
-    resultado = await generarPlan2(env);
+    const resultado = await generarPlan2(env);
 
-    break;
+    return json(resultado);
+
+}
 
     default:
 
