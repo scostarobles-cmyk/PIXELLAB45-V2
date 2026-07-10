@@ -1443,22 +1443,43 @@ async function generarPlan2() {
 }
 
 async function generarIndice() {
-    const response = await fetch(WORKER_URL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            action: 'generar-indice'
-        })
-    });
-    
-    const data = await response.json();
-    if (data.success) {
-        console.log('Índice generado:', data.indice);
-    } else {
-        console.error('Error:', data.error);
+
+    monitor("📚 Generando índice...");
+
+    try {
+
+        const response = await fetch(WORKER_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                action: "generar-indice"
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+
+            monitor("✅ Índice generado correctamente.");
+
+            await verificarProyecto();
+
+        } else {
+
+            monitor("❌ Error generando índice.");
+            monitor(data.error);
+
+        }
+
+    } catch (error) {
+
+        monitor("❌ Error de conexión.");
+        monitor(error.message);
+
     }
+
 }
 
 // MENÚ MÓVIL
