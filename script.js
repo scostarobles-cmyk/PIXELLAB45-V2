@@ -1248,99 +1248,136 @@ async function cargarJSON(ruta) {
 //=====================================================
 // FUNCIÓN: verificarProyecto()
 // Descripción:
-// Verifica el estado del proyecto y habilita el
-// siguiente botón de la botonera.
+// Solicita al Worker la búsqueda del proyecto activo
+// en R2 y continúa según el estado encontrado.
 //=====================================================
 
 async function verificarProyecto() {
 
     monitor("🔍 Verificando proyecto...");
 
-    // Buscar proyecto
-    proyectoActual = await cargarJSON(
-        `proyectos/${projectIdActual}/proyecto.json`
-    );
+    try {
 
-    if (!proyectoActual) {
+        const respuesta = await fetch(WORKER_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                action: "verificar-proyecto"
+            })
+        });
 
-        monitor("📁 No existe un proyecto.");
-        monitor("👉 Cree un proyecto.");
 
-        return;
+        const datos = await respuesta.json();
+
+
+        if (!datos.ok || !datos.proyecto) {
+
+            monitor("📁 No existe un proyecto.");
+            monitor("👉 Cree un proyecto.");
+
+            return;
+        }
+
+
+        // Guardar proyecto actual
+
+        proyectoActual = datos.proyecto;
+        projectIdActual = datos.proyecto.projectId;
+
+
+        monitor("✅ Proyecto encontrado.");
+        monitor("🆔 " + projectIdActual);
+
+
+        // Buscar plan
+
+        const plan = await cargarJSON(
+            `proyectos/${projectIdActual}/plan.json`
+        );
+
+
+        if (!plan) {
+
+            monitor("👉 Debe generar el plan.");
+
+            document.getElementById("btnPlan").disabled = false;
+
+            return;
+        }
+
+
+        if (plan.indice === "pendiente") {
+
+            monitor("👉 Debe generar el índice.");
+
+            document.getElementById("btnIndice").disabled = false;
+
+            return;
+        }
+
+
+        if (plan.legales === "pendiente") {
+
+            monitor("👉 Debe generar los legales.");
+
+            document.getElementById("btnLegales").disabled = false;
+
+            return;
+        }
+
+
+        if (plan.introduccion === "pendiente") {
+
+            monitor("👉 Debe generar la introducción.");
+
+            document.getElementById("btnIntroduccion").disabled = false;
+
+            return;
+        }
+
+
+        if (plan.capitulos === "pendiente") {
+
+            monitor("👉 Debe generar los capítulos.");
+
+            document.getElementById("btnCapitulos").disabled = false;
+
+            return;
+        }
+
+
+        if (plan.conclusion === "pendiente") {
+
+            monitor("👉 Debe generar la conclusión.");
+
+            document.getElementById("btnConclusion").disabled = false;
+
+            return;
+        }
+
+
+        monitor("✅ Proyecto completo.");
+
+        document.getElementById("btnEnsamblar").disabled = false;
+
+
+    } catch (error) {
+
+        monitor("❌ Error verificando proyecto.");
+        monitor(error.message);
+
     }
-
-    // Proyecto encontrado
-    monitor("✅ Proyecto encontrado.");
-
-    // Si todavía no existe el plan
-    const plan = await cargarJSON(
-        `proyectos/${projectIdActual}/plan.json`
-    );
-
-    if (!plan) {
-
-        monitor("👉 Debe generar el plan.");
-
-        document.getElementById("btnPlan").disabled = false;
-
-        return;
-    }
-
-    // Índice
-    if (plan.indice === "pendiente") {
-
-        monitor("👉 Debe generar el índice.");
-
-        document.getElementById("btnIndice").disabled = false;
-
-        return;
-    }
-
-    // Legales
-    if (plan.legales === "pendiente") {
-
-        monitor("👉 Debe generar los legales.");
-
-        document.getElementById("btnLegales").disabled = false;
-
-        return;
-    }
-
-    // Introducción
-    if (plan.introduccion === "pendiente") {
-
-        monitor("👉 Debe generar la introducción.");
-
-        document.getElementById("btnIntroduccion").disabled = false;
-
-        return;
-    }
-
-    // Capítulos
-    if (plan.capitulos === "pendiente") {
-
-        monitor("👉 Debe generar los capítulos.");
-
-        document.getElementById("btnCapitulos").disabled = false;
-
-        return;
-    }
-
-    // Conclusión
-    if (plan.conclusion === "pendiente") {
-
-        monitor("👉 Debe generar la conclusión.");
-
-        document.getElementById("btnConclusion").disabled = false;
-
-        return;
-    }
-
-    monitor("✅ Proyecto completo.");
-
-    document.getElementById("btnEnsamblar").disabled = false;
 
 }
+
+
+window.addEventListener("load", async () => {
+
+    await verificarProyecto();
+
+});
 window.addEventListener("load", async () => {
     await verificarProyecto();
 });

@@ -122,6 +122,14 @@ case "guardar-json": {
     });
 
 }
+case "verificar-proyecto":
+
+    const proyecto = await buscarProyectoActivo(env);
+
+    return Response.json({
+        ok: true,
+        proyecto
+    });
 
     default:
       return json({
@@ -1222,4 +1230,38 @@ async function cargarJSON(env, ruta) {
 
     return await archivo.json();
 
+}
+//=====================================================
+// FUNCIÓN: buscarProyectoActivo()
+// Descripción:
+// Busca en R2 el proyecto actual.
+// Recorre la carpeta proyectos/,
+// encuentra el archivo proyecto.json
+// cuyo estado sea "produccion".
+// Retorna el proyecto activo.
+//=====================================================
+
+async function buscarProyectoActivo(env) {
+
+    const lista = await env.EBOOKS.list({
+        prefix: "proyectos/"
+    });
+
+    for (const archivo of lista.objects) {
+
+        if (!archivo.key.endsWith("proyecto.json")) {
+            continue;
+        }
+
+        const proyecto = await cargarJSON(
+            env,
+            archivo.key
+        );
+
+        if (proyecto && proyecto.estado === "produccion") {
+            return proyecto;
+        }
+    }
+
+    return null;
 }
