@@ -1343,6 +1343,25 @@ async function verificarProyecto() {
 window.addEventListener("load", async () => {
     await verificarProyecto();
 });
+
+//=====================================================
+// FUNCIÓN: monitor()
+// Descripción:
+// Escribe un mensaje en el monitor.
+//=====================================================
+
+function monitor(texto, limpiar = false) {
+
+    const monitor = document.getElementById("monitorIA");
+
+    if (limpiar) {
+        monitor.innerHTML = "";
+    }
+
+    monitor.innerHTML += texto + "<br>";
+
+}
+
 // MENÚ MÓVIL
 function toggleMenu() {
 
