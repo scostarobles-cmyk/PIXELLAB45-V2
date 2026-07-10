@@ -146,6 +146,10 @@ case "generar-plan": {
     return json(resultado);
 
 }
+case "generar-indice": {
+    const resultado = await generarIndice(env, json);
+    return json(resultado);
+}
 
     default:
 
@@ -1434,5 +1438,80 @@ async function generarPlan2(env) {
         plan
 
     };
+
+}
+//=====================================
+// GENERAR INDICE
+//=====================================
+
+async function generarIndice(env) {
+
+  // Buscar proyecto activo
+  const proyecto = await buscarProyectoActivo(env);
+
+  if (!proyecto) {
+    return {
+      ok: false,
+      error: "No existe un proyecto activo."
+    };
+  }
+
+  // Cargar plan
+  const plan = await cargarJSON(
+    env,
+    `ebook/${proyecto.projectId}/plan.json`
+  );
+
+  if (!plan) {
+    return {
+      ok: false,
+      error: "No existe el plan."
+    };
+  }
+
+  //=====================================
+  // Generar Prompt Maestro
+  //=====================================
+
+  const prom = await generarPrompts({
+    tema: proyecto.titulo,
+    formato: "ebook"
+  }, env);
+
+  //=====================================
+  // Generar índice
+  //=====================================
+
+  const resultado = await gemini(
+    env,
+    prom.resultado
+  );
+
+  //=====================================
+  // Guardar indice.json
+  //=====================================
+
+  await guardarJSON(
+    env,
+    `ebook/${proyecto.projectId}/indice.json`,
+    resultado
+  );
+
+  //=====================================
+  // Actualizar estados
+  //=====================================
+
+  plan.estado.indice = true;
+
+  await guardarJSON(
+    env,
+    `ebook/${proyecto.projectId}/plan.json`,
+    plan
+  );
+
+  return {
+    ok: true,
+    indice: resultado
+  };
 
 }

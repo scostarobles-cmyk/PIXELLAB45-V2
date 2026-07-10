@@ -1433,6 +1433,25 @@ async function generarPlan2() {
 
 }
 
+async function generarIndiceFrontend() {
+    const response = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            action: 'generar-indice'
+        })
+    });
+    
+    const data = await response.json();
+    if (data.success) {
+        console.log('Índice generado:', data.indice);
+    } else {
+        console.error('Error:', data.error);
+    }
+}
+
 // MENÚ MÓVIL
 function toggleMenu() {
 
