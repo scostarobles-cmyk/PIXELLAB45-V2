@@ -86,72 +86,81 @@ try {
 
     case "guardar-imagen":
       return guardarImagen(data, env, json);
-      
-   case "crear-proyecto": {
 
-    const proyecto = await crearProyecto(data, env);
 
-    return json({
+    case "crear-proyecto": {
+
+      const proyecto = await crearProyecto(data, env);
+
+      return json({
         ok: true,
         proyecto: proyecto
-    });
-
-}
-
-case "cargar-json": {
-
-    const archivo = await cargarJSON(env, data.ruta);
-
-    return json({
-        ok: archivo !== null,
-        json: archivo
-    });
-
-}
-
-case "guardar-json": {
-
-    await guardarJSON(
-        env,
-        data.ruta,
-        data.json
-    );
-
-    return json({
-        ok: true
-    });
-
-}
-case "verificar-proyecto":
-
-    const proyecto = await buscarProyectoActivo(env);
-
-    return Response.json({
-        ok: true,
-        proyecto
-    });
-
-    default:
-      return json({
-        ok: false,
-        error: "Acción no válida"
       });
 
     }
 
+
+    case "cargar-json": {
+
+      const archivo = await cargarJSON(env, data.ruta);
+
+      return json({
+        ok: archivo !== null,
+        json: archivo
+      });
+
+    }
+
+
+    case "guardar-json": {
+
+      await guardarJSON(
+        env,
+        data.ruta,
+        data.json
+      );
+
+      return json({
+        ok: true
+      });
+
+    }
+
+
+    case "verificar-proyecto": {
+
+      const proyecto = await buscarProyectoActivo(env);
+
+      return json({
+        ok: true,
+        proyecto: proyecto
+      });
+
+    }
+
+
+    default:
+
+      return json({
+        ok: false,
+        error: "Acción no reconocida: " + tipo
+      }, 400);
+
+  }
+
+
 } catch (err) {
 
-    return json({
-        ok: false,
-        error: err.message || String(err)
-    }, 500);
+  return json({
+    ok: false,
+    error: err.message || String(err)
+  }, 500);
 
 }
 
-  } // fin de fetch
+  } // cierre de fetch
 
-}; // fin de export default
-
+}; // cierre de export default
 // ====================================
 // GEMINI
 // =====================================
