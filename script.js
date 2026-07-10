@@ -1340,7 +1340,9 @@ async function verificarProyecto() {
     document.getElementById("btnEnsamblar").disabled = false;
 
 }
-
+window.addEventListener("load", async () => {
+    await verificarProyecto();
+});
 // MENÚ MÓVIL
 function toggleMenu() {
 
