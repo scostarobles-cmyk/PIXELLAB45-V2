@@ -87,32 +87,27 @@ try {
     case "guardar-imagen":
       return guardarImagen(data, env, json);
       
-      case "crear-proyecto":
-  // Recibe los datos del frontend, genera el proyecto, y lo guarda en R2.
-  const proyecto = await crearProyecto(data, env);
-//=====================================================
-// CASE: cargar-json
-//=====================================================
+   case "crear-proyecto": {
 
-case "cargar-json": {
+    const proyecto = await crearProyecto(data, env);
 
-    const json = await cargarJSON(env, data.ruta);
-
-    return Response.json({
-        ok: json !== null,
-        json
+    return json({
+        ok: true,
+        proyecto: proyecto
     });
 
 }
-  return json({
-    ok: true,
-    proyecto: proyecto
-  });
-  //=====================================================
-// CASE: guardar-json
-// Descripción:
-// Guarda cualquier archivo JSON en R2.
-//=====================================================
+
+case "cargar-json": {
+
+    const archivo = await cargarJSON(env, data.ruta);
+
+    return json({
+        ok: archivo !== null,
+        json: archivo
+    });
+
+}
 
 case "guardar-json": {
 
@@ -122,24 +117,34 @@ case "guardar-json": {
         data.json
     );
 
-    return Response.json({
+    return json({
         ok: true
     });
 
 }
 
+    default:
+      return json({
+        ok: false,
+        error: "Acción no válida"
+      });
+
+    }
+
 } catch (err) {
 
-  return json({
-    ok: false,
-    error: err.message || String(err)
-  }, 500);
+    return json({
+        ok: false,
+        error: err.message || String(err)
+    }, 500);
+
 }
 
-  }
-};
+  } // fin de fetch
 
-// =====================================
+}; // fin de export default
+
+// ====================================
 // GEMINI
 // =====================================
 
