@@ -1459,7 +1459,7 @@ async function generarIndice(env) {
   // Cargar plan
   const plan = await cargarJSON(
     env,
-    `ebook/${proyecto.projectId}/plan.json`
+    `proyectos/${proyecto.projectId}/plan.json`
   );
 
   if (!plan) {
