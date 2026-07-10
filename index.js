@@ -94,7 +94,7 @@ try {
   return json(await crearProyecto(data, env, json));
   
   case "guardar-json":
-
+console.log("entro al case guardar -json");
   return json(await guardarJSON(env, ruta, json));
   
 case "generar-plan":
@@ -1256,7 +1256,9 @@ async function generarPlan(env) {
 // =====================================================
 
 async function guardarJSON(env, ruta, json) {
-
+console.log("antes del push");
+console.log(ruta);
+console.log(Json);
   await env.EBOOKS.put(
     ruta,
     JSON.stringify(json, null, 2),
