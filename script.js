@@ -1442,7 +1442,7 @@ async function generarPlan2() {
 
 }
 
-async function generarIndiceFrontend() {
+async function generarIndice() {
     const response = await fetch(WORKER_URL, {
         method: 'POST',
         headers: {
