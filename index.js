@@ -93,6 +93,10 @@ try {
      case "crear-proyecto":
   return json(await crearProyecto(data, env, json));
   
+  case "guardar-json":
+
+  return json(await guardarJSON(data, env, json));
+  
 case "generar-plan":
   return json(await generarPlan(env));
 

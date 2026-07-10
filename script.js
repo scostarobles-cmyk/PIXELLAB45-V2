@@ -1282,24 +1282,46 @@ async function generarPlan2() {
     monitor.innerHTML += "❌ No hay proyecto cargado.<br>";
     return;
   }
-
+ const id = proyectoActual.projectid;
   // Crear el plan en memoria
   const plan = {
-    titulo: proyectoActual.tema,
+  	id: proyectoActual.id,
+    titulo: proyectoActual.titulo,
     paginas: proyectoActual.paginas,
     estructura: proyectoActual.estructura
   };
 
   // Cambiar el estado del proyecto (solo en memoria)
-  proyectoActual.estado = "produccion";
+  proyectoActual.estado = "creado";
 
-  monitor.innerHTML += "✅ Estado del proyecto actualizado (solo en memoria).<br><br>";
-
+  monitor.innerHTML += "✅ Estado del proyecto actualizado bb.<br><br>";
+await fetch(WORKER_URL, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    action: "guardar-json",
+    ruta: `proyectos/${proyectoActual.projectId}/proyecto.json`,
+    json: proyectoActual
+  })
+});
   monitor.innerHTML += "📁 Proyecto actualizado:<br>";
   monitor.innerHTML += "<pre>" + JSON.stringify(proyectoActual, null, 2) + "</pre>";
 
   monitor.innerHTML += "<br>📋 Plan generado:<br>";
   monitor.innerHTML += "<pre>" + JSON.stringify(plan, null, 2) + "</pre>";
+  await fetch(WORKER_URL, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    action: "guardar-json",
+    ruta: `proyectos/${proyectoActual.projectId}/plan.json`,
+    json: plan
+  })
+});
 
 }
 // MENÚ MÓVIL
