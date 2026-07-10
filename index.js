@@ -47,133 +47,47 @@ export default {
 
 try {
 
-  switch (tipo) {
+  const data = await request.json();
 
-    case "listar-imagenes":
-      return listarImagenes(env, json);
-
-    case "listar-categoria":
-      return listarCategoria(env, data, json);
-
-    case "ideas":
-      return generarIdeas(data, env, json);
-
-    case "guardar-ideas":
-      return guardarIdeas(data, env, json);
-
-    case "prompt":
-      return generarPrompts(data, env, json);
-
-    case "guardar-prompts":
-      return guardarPrompts(data, env, json);
-
-    case "visual":
-      return generarVisualesPrompts(data, env, json);
-
-    case "guardar-visuales":
-      return guardarVisuales(data, env, json);
-
-    case "script":
-      return generarGuion(data, env, json);
-
-    case "guardar-guion":
-      return guardarGuion(data, env, json);
-
-    case "storyboard":
-      return generarStoryboard(data, env, json);
-
-    case "guardar-storyboard":
-      return guardarStoryboard(data, env, json);
-
-    case "guardar-imagen":
-      return guardarImagen(data, env, json);
+  switch (data.action) {
 
 
-    case "crear-proyecto": {
+    case "generar-indice": {
 
-      const proyecto = await crearProyecto(data, env);
+      const resultado = await generarIndice(env);
 
       return json({
-        ok: true,
-        proyecto: proyecto
-      });
-
-    }
-    
- 
-    case "cargar-json": {
-
-      const archivo = await cargarJSON(env, data.ruta);
-
-      return json({
-        ok: archivo !== null,
-        json: archivo
+        success: resultado.ok,
+        indice: resultado.indice || null,
+        error: resultado.error || null
       });
 
     }
 
 
-    case "guardar-json": {
+    // otros cases que ya tengas...
 
-      await guardarJSON(
-        env,
-        data.ruta,
-        data.json
-      );
-
-      return json({
-        ok: true
-      });
-
-    }
-
-
-    case "verificar-proyecto": {
-
-      const proyecto = await buscarProyectoActivo(env);
-
-      return json({
-        ok: true,
-        proyecto: proyecto
-      });
-
-    }
-
-case "generar-plan": {
-
-    const resultado = await generarPlan2(env);
-
-    return json(resultado);
-
-}
-case "generar-indice": {
-    const resultado = await generarIndice(env, json);
-    return json(resultado);
-}
 
     default:
 
       return json({
-        ok: false,
-        error: "Acción no reconocida: " + tipo
-      }, 400);
+        success: false,
+        error: "Acción no válida."
+      });
 
   }
 
 
-} catch (err) {
+} catch (error) {
+
+  console.error(error);
 
   return json({
-    ok: false,
-    error: err.message || String(err),
-    stack: err.stack
-  }, 500);
+    success: false,
+    error: error.message
+  });
 
 }
-
-  } // cierre de fetch
-
-}; // cierre de export default
 // ====================================
 // GEMINI
 // =====================================
