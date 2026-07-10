@@ -151,7 +151,7 @@ case "generar-indice": {
     return json(resultado);
 }
 
-    default:
+    default: 
 
       return json({
         ok: false,
