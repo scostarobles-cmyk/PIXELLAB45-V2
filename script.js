@@ -1288,6 +1288,13 @@ async function verificarProyecto() {
 
 
         monitor("✅ Proyecto encontrado.");
+
+const indicador = document.getElementById("estadoProyecto");
+
+if (indicador) {
+    indicador.style.background = "#00b050";
+    indicador.innerHTML = "🟢 Proyecto encontrado";
+}
         monitor("🆔 " + projectIdActual);
 
 
