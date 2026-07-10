@@ -1404,13 +1404,12 @@ async function generarPlan2() {
 
         if (!datos.ok) {
 
-            monitor("❌ Error generando plan.");
-            monitor(datos.mensaje || "Error desconocido.");
+    monitor("❌ Error generando plan.");
+    monitor(JSON.stringify(datos));
 
-            return;
+    return;
 
-        }
-
+}
 
         monitor("✅ Plan generado correctamente.");
 
