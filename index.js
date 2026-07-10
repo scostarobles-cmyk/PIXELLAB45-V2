@@ -1279,7 +1279,7 @@ async function buscarProyectoActivo(env) {
 
     return null;
 }
-i
+
 //=====================================================
 // FUNCIÓN: generarPlan2()
 // Descripción:
