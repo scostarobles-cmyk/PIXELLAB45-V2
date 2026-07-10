@@ -151,7 +151,7 @@ case "generar-indice": {
     return json(resultado);
 }
 
-    default: 
+    default:
 
       return json({
         ok: false,
@@ -1505,7 +1505,7 @@ async function generarIndice(env) {
 
   await guardarJSON(
     env,
-    `ebook/${proyecto.projectId}/plan.json`,
+    `proyectos/${proyecto.projectId}/plan.json`,
     plan
   );
 
