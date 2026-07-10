@@ -1249,7 +1249,7 @@ async function cargarJSON(ruta) {
 // FUNCIÓN: verificarProyecto()
 // Descripción:
 // Solicita al Worker la búsqueda del proyecto activo
-// en R2 y continúa según el estado encontrado.
+// en R2 y continúa según el estado del proyecto.
 //=====================================================
 
 async function verificarProyecto() {
@@ -1281,10 +1281,10 @@ async function verificarProyecto() {
         }
 
 
-        // Guardar proyecto actual
+        // Proyecto encontrado
 
         proyectoActual = datos.proyecto;
-        projectIdActual = datos.proyecto.projectId;
+        projectIdActual = proyectoActual.projectId;
 
 
         monitor("✅ Proyecto encontrado.");
@@ -1308,6 +1308,8 @@ async function verificarProyecto() {
         }
 
 
+        // Índice
+
         if (plan.indice === "pendiente") {
 
             monitor("👉 Debe generar el índice.");
@@ -1317,6 +1319,8 @@ async function verificarProyecto() {
             return;
         }
 
+
+        // Legales
 
         if (plan.legales === "pendiente") {
 
@@ -1328,6 +1332,8 @@ async function verificarProyecto() {
         }
 
 
+        // Introducción
+
         if (plan.introduccion === "pendiente") {
 
             monitor("👉 Debe generar la introducción.");
@@ -1338,6 +1344,8 @@ async function verificarProyecto() {
         }
 
 
+        // Capítulos
+
         if (plan.capitulos === "pendiente") {
 
             monitor("👉 Debe generar los capítulos.");
@@ -1347,6 +1355,8 @@ async function verificarProyecto() {
             return;
         }
 
+
+        // Conclusión
 
         if (plan.conclusion === "pendiente") {
 
@@ -1365,6 +1375,8 @@ async function verificarProyecto() {
 
     } catch (error) {
 
+        console.error(error);
+
         monitor("❌ Error verificando proyecto.");
         monitor(error.message);
 
@@ -1372,6 +1384,12 @@ async function verificarProyecto() {
 
 }
 
+
+window.addEventListener("load", async () => {
+
+    await verificarProyecto();
+
+});
 
 window.addEventListener("load", async () => {
 

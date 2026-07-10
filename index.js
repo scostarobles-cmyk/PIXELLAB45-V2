@@ -1265,3 +1265,44 @@ async function buscarProyectoActivo(env) {
 
     return null;
 }
+//=====================================================
+// FUNCIÓN: buscarProyectoActivo()
+// Descripción:
+// Busca en R2 dentro de EBOOKS el proyecto activo.
+// Recorre los proyectos existentes y devuelve
+// el proyecto cuyo estado sea "produccion".
+//=====================================================
+
+async function buscarProyectoActivo(env) {
+
+    const lista = await env.EBOOKS.list({
+        prefix: "proyectos/"
+    });
+
+
+    for (const archivo of lista.objects) {
+
+
+        if (!archivo.key.endsWith("proyecto.json")) {
+            continue;
+        }
+
+
+        const proyecto = await cargarJSON(
+            env,
+            archivo.key
+        );
+
+
+        if (proyecto && proyecto.estado === "produccion") {
+
+            return proyecto;
+
+        }
+
+    }
+
+
+    return null;
+
+}
