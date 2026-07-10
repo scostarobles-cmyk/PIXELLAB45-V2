@@ -95,7 +95,7 @@ try {
   
   case "guardar-json":
 
-  return json(await guardarJSON(data, env, json));
+  return json(await guardarJSON(env, ruta, json));
   
 case "generar-plan":
   return json(await generarPlan(env));
