@@ -159,7 +159,8 @@ case "generar-plan":
 
   return json({
     ok: false,
-    error: err.message || String(err)
+    error: err.message || String(err),
+    stack: err.stack
   }, 500);
 
 }
