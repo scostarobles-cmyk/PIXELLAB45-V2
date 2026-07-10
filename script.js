@@ -1165,6 +1165,7 @@ async function crearProyecto() {
     );
 
     proyectoActual = proyecto;
+projectIdActual = proyecto.projectId;
 
     monitor.innerHTML += "✅ Proyecto creado correctamente.<br>";
     monitor.innerHTML += "<pre>" + JSON.stringify(proyecto, null, 2) + "</pre>";
