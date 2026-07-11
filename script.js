@@ -1354,17 +1354,21 @@ async function verificarProyecto() {
 
         if (proyectoActual.estructura.indice === "creado") {
 
-            actualizarIndicador("estadoIndice", "verde");
+    actualizarIndicador("estadoIndice", "verde");
 
-            monitor("✅ Índice generado.");
+    monitor("✅ Índice generado.");
 
-        } else {
+    // Siguiente paso
+    actualizarIndicador("estadoLegales", "azul");
+    monitor("👉 Falta generar las páginas legales.");
 
-            actualizarIndicador("estadoIndice", "azul");
+} else {
 
-            monitor("👉 Falta generar el índice.");
+    actualizarIndicador("estadoIndice", "azul");
 
-        }
+    monitor("👉 Falta generar el índice.");
+
+}
 
     } catch (error) {
 
