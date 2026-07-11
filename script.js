@@ -1172,8 +1172,8 @@ projectIdActual = proyecto.projectId;
 
     estado.innerHTML = "🟢 Proyecto creado";
 
-    btn.style.background = "#00b050";
-    btn.innerHTML = "✅ Proyecto creado";
+btn.classList.add("completo");
+btn.innerHTML = "✅ Proyecto creado";
 
   }
   catch (err) {
@@ -1619,7 +1619,11 @@ async function generarPlan2() {
             "estadoPlan",
             "verde"
         );
+const btn = document.getElementById("btnPlan");
 
+btn.classList.add("completo");
+btn.innerHTML = "✅ Plan generado";
+btn.disabled = true;
 
     } catch (error) {
 
@@ -1653,6 +1657,11 @@ async function generarIndice() {
         if (data.ok) {
             monitor(JSON.stringify(data, null, 2));
             monitor("✅ Índice generado correctamente.");
+            const btn = document.getElementById("btnIndice");
+
+btn.classList.add("completo");
+btn.innerHTML = "✅ Índice generado";
+btn.disabled = true;
 
             await verificarProyecto();
 
