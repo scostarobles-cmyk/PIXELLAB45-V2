@@ -1826,6 +1826,58 @@ async function generarLegales() {
     }
 
 }
+async function generarIntroduccion() {
+
+    monitor("📖 Generando introducción...");
+
+    try {
+
+        const respuesta = await fetch(WORKER_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                action: "generar-introduccion"
+            })
+        });
+
+
+        const resultado = await respuesta.json();
+
+
+        if (!resultado.ok) {
+
+            monitor(
+                "❌ Error generando introducción: " + resultado.error
+            );
+
+            return;
+        }
+
+
+        monitor("✅ Introducción creada correctamente.");
+
+
+        if (typeof actualizarEstadoProyecto === "function") {
+            actualizarEstadoProyecto(
+                "introduccion",
+                "creado"
+            );
+        }
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        monitor(
+            "❌ Error de conexión al generar introducción."
+        );
+
+    }
+
+}
 
 // MENÚ MÓVIL
 function toggleMenu() {

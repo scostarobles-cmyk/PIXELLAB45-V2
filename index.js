@@ -150,11 +150,14 @@ case "generar-indice": {
     const resultado = await generarIndice(env);
     return json(resultado);
 }
-case "generar-legales":
-
-    resultado = await generarLegales(env);
-
-    break;
+case "generar-legales": {
+    const resultado = await generarLegales(env);
+    return json(resultado);
+}
+case "generar-introduccion": {
+    const resultado = await generarIntroduccion(env);
+    return json(resultado);
+}
 
     default:
 
@@ -1742,6 +1745,118 @@ Format:
     return {
         ok: true,
         legales
+    };
+
+}
+async function generarIntroduccion(env) {
+
+    // Buscar proyecto activo
+    const proyecto = await buscarProyectoActivo(env);
+
+    if (!proyecto) {
+        return {
+            ok: false,
+            error: "No existe un proyecto activo."
+        };
+    }
+
+
+    // Generar prompt maestro usando generador de prompts
+
+    const prom = await generarPrompts(
+        {
+            tema: proyecto.titulo,
+            formato: "general"
+        },
+        env,
+        null
+    );
+
+
+    const promptIntroduccion = prom.resultado + `
+
+IMPORTANT:
+The previous prompt is for generating content.
+
+Now generate ONLY the introduction of the ebook.
+
+Use this project information:
+Title: ${proyecto.titulo}
+Author: ${proyecto.autor || ""}
+
+Rules:
+- Write a professional ebook introduction.
+- Explain what the reader will learn.
+- Create interest and motivation to continue reading.
+- Maintain a clear and educational tone.
+- Do not include chapter content.
+- Do not include conclusion.
+- Do not add explanations outside the introduction.
+
+Return ONLY valid JSON.
+
+Format:
+
+{
+  "titulo": "Introducción",
+  "contenido": "",
+  "estado": "creado"
+}
+`;
+
+
+    // Generar introducción con Gemini
+
+    const respuesta = await gemini(
+        env,
+        promptIntroduccion,
+        3
+    );
+
+
+    // Convertir respuesta a JSON
+
+    let introduccion;
+
+    try {
+
+        introduccion = JSON.parse(respuesta);
+
+    } catch (error) {
+
+        return {
+            ok: false,
+            error: "La introducción generada no tiene formato JSON.",
+            respuesta
+        };
+
+    }
+
+
+    // Guardar introduccion.json
+
+    await guardarJSON(
+        env,
+        `proyectos/${proyecto.projectId}/introduccion.json`,
+        introduccion
+    );
+
+
+    // Actualizar estado del proyecto
+
+    proyecto.estructura.introduccion = "creado";
+
+
+    await guardarJSON(
+        env,
+        `proyectos/${proyecto.projectId}/proyecto.json`,
+        proyecto
+    );
+
+
+    return {
+        ok: true,
+        introduccion
     };
 
 }
