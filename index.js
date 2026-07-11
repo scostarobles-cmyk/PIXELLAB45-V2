@@ -1507,13 +1507,41 @@ async function generarIndice(env,) {
         null
     );
 
+const promptIndice = prom.resultado + `
 
-    // Generar índice con Gemini
+IMPORTANT:
+The previous prompt is for an ebook.
+
+Now generate ONLY the ebook chapter index.
+
+Rules:
+- Only chapter numbers and chapter titles.
+- No explanations.
+- No descriptions.
+- No introduction.
+- No conclusion.
+- No extra text.
+
+Return ONLY valid JSON.
+
+Format:
+
+{
+  "capitulos": [
+    {
+      "numero": 1,
+      "titulo": "Chapter title"
+    }
+  ]
+}
+`;
+    
+// Generar índice con Gemini
 
     const respuesta = await gemini(
     env,
-    prom.resultado,
-    2
+    promptIndice,
+    3
 );
   
 
