@@ -1477,44 +1477,71 @@ async function verificarProyecto() {
 
         }
 
-        if (proyectoActual.estructura.capitulos === "produccion") {
+        //------------------------------------
+// CARGAR PLAN (antes de capítulos)
+//------------------------------------
 
-            actualizarIndicador("estadoCapitulos", "amarillo");
-            botonAmarillo("btnCapitulos");
-            habilitarBoton("btnCapitulos");
+const plan = await cargarJSON(projectIdActual, "plan.json");
 
-            if (!datos.plan) {
 
-                monitor("❌ No se recibió el plan.");
+//------------------------------------
+// CAPÍTULOS
+//------------------------------------
 
-                return;
+if (proyectoActual.estructura.capitulos === "pendiente") {
 
-            }
+    actualizarIndicador("estadoCapitulos", "azul");
+    botonAzul("btnCapitulos");
+    habilitarBoton("btnCapitulos");
 
-            for (const capitulo of datos.plan.capitulos) {
+    monitor("👉 Falta generar los capítulos.");
 
-                if (capitulo.estado !== "creado") {
+    return;
 
-                    monitor("🟡 Generando capítulos...");
-                    monitor(`👉 Falta generar el Capítulo ${capitulo.numero}: ${capitulo.titulo}`);
+}
 
-                    return;
 
-                }
+if (proyectoActual.estructura.capitulos === "produccion") {
 
-            }
+    actualizarIndicador("estadoCapitulos", "amarillo");
+    botonAmarillo("btnCapitulos");
+    habilitarBoton("btnCapitulos");
+
+
+    if (!plan) {
+
+        monitor("❌ No se recibió el plan.");
+
+        return;
+
+    }
+
+
+    for (const capitulo of plan.capitulos) {
+
+        if (capitulo.estado !== "creado") {
+
+            monitor("🟡 Generando capítulos...");
+            monitor(`👉 Falta generar el Capítulo ${capitulo.numero}: ${capitulo.titulo}`);
+
+            return;
 
         }
 
-        if (proyectoActual.estructura.capitulos === "creado") {
+    }
 
-            actualizarIndicador("estadoCapitulos", "verde");
-            botonVerde("btnCapitulos");
-            deshabilitarBoton("btnCapitulos");
+}
 
-            monitor("✅ Capítulos generados.");
 
-        }
+if (proyectoActual.estructura.capitulos === "creado") {
+
+    actualizarIndicador("estadoCapitulos", "verde");
+    botonVerde("btnCapitulos");
+    deshabilitarBoton("btnCapitulos");
+
+    monitor("✅ Capítulos generados.");
+
+}
 
         //------------------------------------
         // CONCLUSIÓN
