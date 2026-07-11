@@ -1920,7 +1920,7 @@ async function generarCapitulos() {
             `✅ Capítulo ${resultado.numero} generado correctamente.`
         );
 
-        await verificarProyecto();
+        
 
         // Acá después agregaremos
         // el modal Continuar / Pausar
