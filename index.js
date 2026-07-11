@@ -1477,7 +1477,10 @@ async function generarIndice(data,env,json) {
     tema: proyecto.titulo,
     formato: "ebook"
   }, env,json);
-
+return {
+    ok: false,
+    prueba: prom
+};
   //=====================================
   // Generar índice
   //=====================================
