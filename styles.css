@@ -1314,6 +1314,26 @@ section{
     cursor: not-allowed;
     opacity: 0.85;
 }
+/* Estado verde de botones */
+.gallery-filters button.verde {
+    background: #00b050;
+    color: #000;
+    box-shadow: 0 0 15px #00b050;
+}
+
+/* Estado azul de botones */
+.gallery-filters button.azul {
+    background: #009dff;
+    color: white;
+    box-shadow: 0 0 15px #009dff;
+}
+
+/* Estado amarillo de botones */
+.gallery-filters button.amarillo {
+    background: #ffc107;
+    color: #000;
+    box-shadow: 0 0 15px #ffc107;
+}
 @keyframes fadeUp{
 
     from{
