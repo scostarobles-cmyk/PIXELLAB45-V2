@@ -147,7 +147,7 @@ case "generar-plan": {
 
 }
 case "generar-indice": {
-    const resultado = await generarIndice(env, json);
+    const resultado = await generarIndice(data,env, json);
     return json(resultado);
 }
 
@@ -1476,7 +1476,7 @@ async function generarIndice(env,json) {
   const prom = await generarPrompts({
     tema: proyecto.titulo,
     formato: "ebook"
-  }, env,plan);
+  }, env,json);
 
   //=====================================
   // Generar índice
