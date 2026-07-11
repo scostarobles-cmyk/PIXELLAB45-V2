@@ -158,7 +158,10 @@ case "generar-introduccion": {
     const resultado = await generarIntroduccion(env);
     return json(resultado);
 }
-
+case "generar-capitulo": {
+    const resultado = await generarCapitulo(env);
+    return json(resultado);
+}
     default:
 
       return json({
@@ -1857,6 +1860,377 @@ Format:
     return {
         ok: true,
         introduccion
+    };
+
+}
+
+async function generarCapitulo(env) {
+
+    // Buscar proyecto activo
+
+    const proyecto = await buscarProyectoActivo(env);
+
+    if (!proyecto) {
+        return {
+            ok: false,
+            error: "No existe un proyecto activo."
+        };
+    }
+
+
+    // Cargar plan
+
+    const rutaPlan =
+        `proyectos/${proyecto.projectId}/plan.json`;
+
+    const plan = await cargarJSON(
+        env,
+        rutaPlan
+    );
+
+    if (!plan) {
+        return {
+            ok: false,
+            error: "No existe el plan."
+        };
+    }
+
+
+    // Cargar configuración
+
+    const rutaConfig =
+        `proyectos/${proyecto.projectId}/config.json`;
+
+    let config = await cargarJSON(
+        env,
+        rutaConfig
+    );
+
+    if (!config) {
+
+        config = {
+
+            confirmarEntreCapitulos: true,
+            continuarAutomaticoCapitulos: false
+
+        };
+
+        await guardarJSON(
+            env,
+            rutaConfig,
+            config
+        );
+
+    }
+
+
+    // Buscar primer capítulo pendiente
+
+    const capitulo =
+        plan.capitulos.find(
+            c => c.estado === "pendiente"
+        );
+
+    if (!capitulo) {
+
+        proyecto.estructura.capitulos =
+            "creado";
+
+        await guardarJSON(
+            env,
+            `proyectos/${proyecto.projectId}/proyecto.json`,
+            proyecto
+        );
+
+        return {
+
+            ok: true,
+            finalizado: true
+
+        };
+
+    }
+
+
+    // Cambiar estado del proyecto
+
+    if (
+        proyecto.estructura.capitulos !==
+        "produccion"
+    ) {
+
+        proyecto.estructura.capitulos =
+            "produccion";
+
+        await guardarJSON(
+            env,
+            `proyectos/${proyecto.projectId}/proyecto.json`,
+            proyecto
+        );
+
+    }
+
+
+    // Generar prompt maestro
+
+    const prom =
+        await generarPrompts(
+            {
+                tema: capitulo.titulo,
+                formato: "general"
+            },
+            env,
+            null
+        );
+
+
+    // Prompt específico del capítulo
+
+    const promptCapitulo =
+        prom.resultado + `
+
+IMPORTANT:
+The previous prompt defines the writing style, quality and objectives.
+
+Now generate ONLY ONE COMPLETE CHAPTER of the ebook.
+
+Project Information
+
+Ebook Title:
+${proyecto.titulo}
+
+Author:
+${proyecto.autor}
+
+Chapter Number:
+${capitulo.numero}
+
+Chapter Title:
+${capitulo.titulo}
+
+Target Length:
+Approximately ${capitulo.paginas} pages.
+
+GENERAL RULES
+
+- Generate ONLY this chapter.
+- Do NOT generate the ebook introduction.
+- Do NOT generate the ebook conclusion.
+- Do NOT generate any other chapter.
+- Respect the supplied chapter number and title exactly.
+- Write entirely in Spanish.
+- Use a professional, educational and engaging writing style.
+- Produce original content.
+- Never repeat paragraphs, concepts or examples.
+- Do not use filler text.
+- Develop every topic in depth.
+- Explain concepts progressively from simple to advanced.
+- Keep the content coherent from beginning to end.
+- Make the chapter useful for beginners while still providing value for advanced readers.
+- Use natural transitions between sections.
+- Every paragraph must contribute useful information.
+- Do not leave incomplete ideas.
+- Avoid generic statements.
+- Prioritize practical knowledge over theory whenever possible.
+
+STRUCTURE RULES
+
+The chapter must contain:
+
+- An engaging introduction.
+- Between 4 and 8 well-developed sections.
+- Each section must have its own title.
+- Each section must contain complete explanatory content.
+- Include practical examples whenever appropriate.
+- Include useful recommendations.
+- Include common mistakes readers should avoid.
+- Finish with a concise chapter summary.
+- Include one practical exercise that the reader can perform.
+- End with a short motivational transition to the next chapter.
+
+CONTENT QUALITY
+
+- Every explanation must be clear and easy to understand.
+- Include practical real-world situations whenever possible.
+- Do not assume previous knowledge.
+- Avoid unnecessary repetition.
+- Expand ideas instead of repeating them.
+- Use professional terminology only after explaining it.
+- Keep the same tone throughout the chapter.
+- Write naturally, like a professionally edited technical book.
+- The final result must be publication quality.
+
+OUTPUT RULES
+
+Return ONLY valid JSON.
+
+Do NOT use Markdown.
+Do NOT include explanations.
+Do NOT include comments.
+Do NOT wrap the JSON inside code fences.
+
+Return EXACTLY this structure:
+
+{
+  "numero": ${capitulo.numero},
+  "titulo": "${capitulo.titulo}",
+
+  "introduccion": "",
+
+  "secciones": [
+    {
+      "numero": 1,
+      "titulo": "",
+      "contenido": ""
+    }
+  ],
+
+  "ejemplos": [
+    {
+      "titulo": "",
+      "contenido": ""
+    }
+  ],
+
+  "consejos": [
+    ""
+  ],
+
+  "erroresComunes": [
+    ""
+  ],
+
+  "resumen": "",
+
+  "ejercicio": {
+    "titulo": "",
+    "descripcion": ""
+  },
+
+  "fraseFinal": "",
+
+  "estado": "creado"
+}
+`;
+
+
+    // Generar capítulo
+
+    const respuesta =
+        await gemini(
+            env,
+            promptCapitulo,
+            3
+        );
+
+
+    // Convertir respuesta a JSON
+
+    let capituloJSON;
+
+    try {
+
+        capituloJSON =
+            JSON.parse(respuesta);
+
+    } catch (error) {
+
+        return {
+
+            ok: false,
+            error:
+                "El capítulo generado no tiene formato JSON.",
+            respuesta
+
+        };
+
+    }
+
+
+    // Guardar capítulo
+
+    const numeroArchivo =
+        String(capitulo.numero)
+            .padStart(3, "0");
+
+    await guardarJSON(
+
+        env,
+
+        `proyectos/${proyecto.projectId}/capitulos/capitulo-${numeroArchivo}.json`,
+
+        capituloJSON
+
+    );
+
+
+    // Actualizar estado del capítulo en el plan
+
+    capitulo.estado = "creado";
+    
+    // Guardar plan actualizado
+
+    await guardarJSON(
+        env,
+        rutaPlan,
+        plan
+    );
+
+
+    // Verificar si quedan capítulos pendientes
+
+    const quedanPendientes =
+        plan.capitulos.some(
+            c => c.estado === "pendiente"
+        );
+
+
+    if (quedanPendientes) {
+
+        proyecto.estructura.capitulos =
+            "produccion";
+
+    } else {
+
+        proyecto.estructura.capitulos =
+            "creado";
+
+    }
+
+
+    // Guardar proyecto actualizado
+
+    await guardarJSON(
+        env,
+        `proyectos/${proyecto.projectId}/proyecto.json`,
+        proyecto
+    );
+
+
+    // Buscar el siguiente capítulo pendiente
+
+    const siguiente =
+        plan.capitulos.find(
+            c => c.estado === "pendiente"
+        );
+
+
+    return {
+
+        ok: true,
+
+        finalizado: !quedanPendientes,
+
+        numero: capitulo.numero,
+
+        titulo: capitulo.titulo,
+
+        siguiente: siguiente
+            ? siguiente.numero
+            : null,
+
+        configuracion: config
+
     };
 
 }

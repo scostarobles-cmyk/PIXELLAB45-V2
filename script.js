@@ -1879,6 +1879,66 @@ async function generarIntroduccion() {
 
 }
 
+//=====================================
+// GENERAR CAPÍTULOS
+//=====================================
+
+async function generarCapitulos() {
+
+    monitor("📖 Generando capítulo...");
+
+    try {
+
+        const respuesta = await fetch(
+            WORKER_URL,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    action: "generar-capitulo"
+                })
+            }
+        );
+
+        const resultado =
+            await respuesta.json();
+
+        if (!resultado.ok) {
+
+            monitor(
+                "❌ Error generando capítulo: " +
+                resultado.error
+            );
+
+            return;
+
+        }
+
+        monitor(
+            `✅ Capítulo ${resultado.numero} generado correctamente.`
+        );
+
+        await verificarProyecto();
+
+        // Acá después agregaremos
+        // el modal Continuar / Pausar
+
+    } catch (error) {
+
+        console.error(error);
+
+        monitor(
+            "❌ Error generando capítulo."
+        );
+
+        monitor(error.message);
+
+    }
+
+}
+
 // MENÚ MÓVIL
 function toggleMenu() {
 
