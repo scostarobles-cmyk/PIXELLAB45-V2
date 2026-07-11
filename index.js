@@ -150,6 +150,11 @@ case "generar-indice": {
     const resultado = await generarIndice(env);
     return json(resultado);
 }
+case "generar-legales":
+
+    resultado = await generarLegales(env);
+
+    break;
 
     default:
 
@@ -1620,6 +1625,123 @@ Format:
     return {
         ok: true,
         indice
+    };
+
+}
+async function generarLegales(env) {
+
+    // Buscar proyecto activo
+    const proyecto = await buscarProyectoActivo(env);
+
+    if (!proyecto) {
+        return {
+            ok: false,
+            error: "No existe un proyecto activo."
+        };
+    }
+
+
+    // Generar prompt maestro usando generador de prompts
+
+    const prom = await generarPrompts(
+        {
+            tema: proyecto.titulo,
+            formato: "general"
+        },
+        env,
+        null
+    );
+
+
+    const promptLegales = prom.resultado + `
+
+IMPORTANT:
+The previous prompt is for generating content.
+
+Now generate ONLY the legal page of an ebook.
+
+Use this project information:
+Title: ${proyecto.titulo}
+Author: ${proyecto.autor || ""}
+Creation date: ${proyecto.fechaCreacion || ""}
+
+Rules:
+- Generate only the legal page.
+- No introduction.
+- No explanation.
+- No extra text.
+- Must be professional and suitable for an ebook.
+- Include copyright notice.
+- Include terms of use.
+- Include distribution restrictions.
+- Include responsibility disclaimer.
+
+Return ONLY valid JSON.
+
+Format:
+
+{
+  "titulo": "",
+  "autor": "",
+  "fechaCreacion": "",
+  "contenido": "",
+  "estado": "creado"
+}
+`;
+
+
+    // Generar legales con Gemini
+
+    const respuesta = await gemini(
+        env,
+        promptLegales,
+        3
+    );
+
+
+    // Convertir respuesta a JSON
+
+    let legales;
+
+    try {
+
+        legales = JSON.parse(respuesta);
+
+    } catch (error) {
+
+        return {
+            ok: false,
+            error: "Los legales generados no tienen formato JSON.",
+            respuesta
+        };
+
+    }
+
+
+    // Guardar legales.json
+
+    await guardarJSON(
+        env,
+        `proyectos/${proyecto.projectId}/legales.json`,
+        legales
+    );
+
+
+    // Actualizar estado del proyecto
+
+    proyecto.estructura.legales = "creado";
+
+
+    await guardarJSON(
+        env,
+        `proyectos/${proyecto.projectId}/proyecto.json`,
+        proyecto
+    );
+
+
+    return {
+        ok: true,
+        legales
     };
 
 }

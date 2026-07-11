@@ -1777,6 +1777,56 @@ function restaurarInterfaz() {
 
 }
 
+async function generarLegales() {
+
+    monitor("📄 Generando legales...");
+
+    try {
+
+        const respuesta = await fetch(WORKER_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                action: "generar-legales"
+            })
+        });
+
+
+        const resultado = await respuesta.json();
+
+
+        if (!resultado.ok) {
+
+            monitor(
+                "❌ Error generando legales: " + resultado.error
+            );
+
+            return;
+        }
+
+
+        monitor("✅ Página de legales creada correctamente.");
+
+        // Actualizar interfaz si existe indicador
+        if (typeof actualizarEstadoProyecto === "function") {
+            actualizarEstadoProyecto("legales", "creado");
+        }
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        monitor(
+            "❌ Error de conexión al generar legales."
+        );
+
+    }
+
+}
+
 // MENÚ MÓVIL
 function toggleMenu() {
 
