@@ -1315,7 +1315,7 @@ section{
     opacity: 0.85;
 }
 /* Estado verde de botones */
-..gallery-filters button.verde {
+.gallery-filters button.verde {
     background: lime !important;
     color: black !important;
 }
