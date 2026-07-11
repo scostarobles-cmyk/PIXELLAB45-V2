@@ -1443,7 +1443,7 @@ async function verificarProyecto() {
 
         if (proyectoActual.estructura.introduccion === "creado") {
 
-            actualizarIndicador("estadoIntroduccion", "verde");
+            actualizarIndicador("estadoIntro", "verde");
             botonVerde("btnIntroduccion");
             deshabilitarBoton("btnIntroduccion");
 
@@ -1451,7 +1451,7 @@ async function verificarProyecto() {
 
         } else {
 
-            actualizarIndicador("estadoIntroduccion", "azul");
+            actualizarIndicador("estadoIntro", "azul");
             botonAzul("btnIntroduccion");
             habilitarBoton("btnIntroduccion");
 
