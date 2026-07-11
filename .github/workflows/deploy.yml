@@ -29,24 +29,16 @@ jobs:
       #=========================================
       # GENERAR VERSIÓN AUTOMÁTICA
       #=========================================
-      - name: Inject version
-        run: |
-          VERSION=$(date +%Y%m%d%H%M%S)
+       - name: Inject version
+  run: |
+    VERSION=$(date +%Y%m%d%H%M%S)
+    echo "VERSION=$VERSION"
 
-          find . -type f \( -name "*.html" -o -name "*.js" \) \
-            -exec sed -i "s/__VERSION__/${VERSION}/g" {} \;
-      - name: Inject version
-        run: |
-         VERSION=$(date +%Y%m%d%H%M%S)
-            echo "VERSION=$VERSION"
+    sed -i "s/__VERSION__/${VERSION}/g" *.html *.js
 
-              find . -type f \( -name "*.html" -o -name "*.js" \) \
-         -exec sed -i "s/__VERSION__/${VERSION}/g" {} \;
-
-                   echo "=== index.html ==="
-                               grep "__VERSION__" index.html || true
-          grep "script.js?v=" index.html || true
-      
+    echo "=== Verificando ==="
+    grep "script.js?v=" index.html || true
+    grep "Versión:" index.html || true
       #=========================================
       # VERIFICAR REEMPLAZO
       #=========================================
