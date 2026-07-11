@@ -593,10 +593,7 @@ ${tema}
 `;
 
     const resultado = await gemini(env, prompt);
-return {
-    success: true,
-    resultado
-};
+
    if (typeof json !== "function") {
     return {
         success: true,
@@ -1461,78 +1458,132 @@ async function generarPlan2(env) {
 // GENERAR INDICE
 //=====================================
 
-async function generarIndice(data,env,json) {
+async function generarIndice(env, json) {
 
-  // Buscar proyecto activo
-  const proyecto = await buscarProyectoActivo(env);
+    // Buscar proyecto activo
+    const proyecto = await buscarProyectoActivo(env);
 
-  if (!proyecto) {
+    if (!proyecto) {
+        return {
+            ok: false,
+            error: "No existe un proyecto activo."
+        };
+    }
+
+
+    // Cargar plan
+
+    const rutaPlan =
+        `proyectos/${proyecto.projectId}/plan.json`;
+
+    const plan = await cargarJSON(
+        env,
+        rutaPlan
+    );
+
+
+    if (!plan) {
+        return {
+            ok: false,
+            error: "No existe el plan."
+        };
+    }
+
+
+    // Generar prompt maestro usando generador de prompts
+
+    const prom = await generarPrompts(
+        {
+            tema: proyecto.titulo,
+            formato: "ebook"
+        },
+        env,
+        null
+    );
+
+
+    // Generar índice con Gemini
+
+    const respuesta = await gemini(
+        env,
+        prom.resultado
+    );
+
+
+    // Convertir respuesta a JSON
+
+    let indice;
+
+    try {
+
+        indice = JSON.parse(respuesta);
+
+    } catch (error) {
+
+        return {
+            ok: false,
+            error: "El índice generado no tiene formato JSON.",
+            respuesta
+        };
+
+    }
+
+
+    // Guardar indice.json
+
+    await guardarJSON(
+        env,
+        `proyectos/${proyecto.projectId}/indice.json`,
+        indice
+    );
+
+
+    // Pasar títulos al plan
+
+    if (indice.capitulos) {
+
+        for (
+            let i = 0;
+            i < indice.capitulos.length;
+            i++
+        ) {
+
+            if (plan.capitulos[i]) {
+
+                plan.capitulos[i].titulo =
+                    indice.capitulos[i].titulo;
+
+            }
+
+        }
+
+    }
+
+
+    // Guardar plan actualizado
+
+    await guardarJSON(
+        env,
+        rutaPlan,
+        plan
+    );
+
+
+    // Actualizar estado del proyecto
+
+    proyecto.estructura.indice = "creado";
+
+
+    await guardarJSON(
+        env,
+        `proyectos/${proyecto.projectId}/proyecto.json`,
+        proyecto
+    );
+
+
     return {
-      ok: false,
-      error: "No existe un proyecto activo."
+        ok: true,
+        indice
     };
-  }
-
-  // Cargar plan
-  const plan = await cargarJSON(
-    env,
-    `proyectos/${proyecto.projectId}/plan.json`
-  );
-
-  if (!plan) {
-    return {
-      ok: false,
-      error: "No existe el plan."
-    };
-  }
-
-  //=====================================
-  // Generar Prompt Maestro
-  //=====================================
-
-  const prom = await generarPrompts({
-    tema: proyecto.titulo,
-    formato: "ebook"
-  }, env,json);
-return {
-    ok: false,
-    tipo: typeof prom,
-    prom: prom
-};
-  //=====================================
-  // Generar índice
-  //=====================================
-
-  const resultado = await gemini(
-    env,
-    prom.resultado
-  );
-
-  //=====================================
-  // Guardar indice.json
-  //=====================================
-
-  await guardarJSON(
-    env,
-    `proyectos/${proyecto.projectId}/indice.json`,
-    resultado
-  );
-
-  //=====================================
-  // Actualizar estados
-  //=====================================
-
-  plan.estado.indice = true;
-
-  await guardarJSON(
-    env,
-    `proyectos/${proyecto.projectId}/plan.json`,
-    plan
-  );
-
-  return {
-    ok: true,
-    indice: resultado
-  };
 
 }
