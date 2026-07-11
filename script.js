@@ -1469,8 +1469,9 @@ async function generarIndice() {
         } else {
 
             monitor("❌ Error generando índice.");
-            monitor(data.error);
-            monitor(data.stack);
+           /* monitor(data.error);
+            monitor(data.stack);*/
+            monitor(JSON.stringify(data.prueba));
         }
 
     } catch (error) {
