@@ -1493,7 +1493,7 @@ async function generarIndice(env,json) {
 
   await guardarJSON(
     env,
-    `ebook/${proyecto.projectId}/indice.json`,
+    `proyectos/${proyecto.projectId}/indice.json`,
     resultado
   );
 
