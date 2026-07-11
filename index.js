@@ -192,13 +192,19 @@ const MODELOS = [
 
 let modeloActual = 0;
 
-async function gemini(env, prompt) {
+async function gemini(env, prompt, modeloInicial = null) {
 
   let ultimoError = null;
 
   for (let intento = 0; intento < MODELOS.length; intento++) {
 
-    const indice = (modeloActual + intento) % MODELOS.length;
+    const inicio =
+    modeloInicial !== null
+        ? modeloInicial
+        : modeloActual;
+
+const indice =
+    (inicio + intento) % MODELOS.length;
     const m = MODELOS[indice];
 
     try {
@@ -1505,9 +1511,11 @@ async function generarIndice(env,) {
     // Generar índice con Gemini
 
     const respuesta = await gemini(
-        env,
-        prom.resultado
-    );
+    env,
+    prom.resultado,
+    2
+);
+  
 
 
     // Convertir respuesta a JSON
