@@ -1460,7 +1460,7 @@ async function generarIndice() {
 
         const data = await response.json();
 
-        if (data.success) {
+        if (data.ok) {
 
             monitor("✅ Índice generado correctamente.");
 
@@ -1470,7 +1470,7 @@ async function generarIndice() {
 
             monitor("❌ Error generando índice.");
             monitor(data.error);
-
+            monitor(data.stack);
         }
 
     } catch (error) {
