@@ -1481,7 +1481,9 @@ async function verificarProyecto() {
 // CARGAR PLAN (antes de capítulos)
 //------------------------------------
 
-const plan = await cargarJSON(projectIdActual, "plan.json");
+const plan = await cargarJSON(
+    `proyectos/${projectIdActual}/plan.json`
+);
 
 
 //------------------------------------
