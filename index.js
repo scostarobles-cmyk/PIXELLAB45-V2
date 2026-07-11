@@ -544,7 +544,10 @@ async function listarCategoria(env, data, json) {
 // GENERADOR DE PROMPTS (GEMINI)
 // =====================================
 async function generarPrompts(data, env, json) {
-
+return {
+    success: true,
+    resultado: "PRUEBA"
+};
   let tema = data.tema || "";
   const formato = data.formato || "";
 
