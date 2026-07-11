@@ -1950,12 +1950,12 @@ async function generarCapitulos() {
         monitor(
             `✅ Capítulo ${resultado.numero} generado correctamente.`
         );
-
+    preguntarSiguienteCapitulo();
         
              await verificarProyecto();
         // Acá después agregaremos
         // el modal Continuar / Pausar
-preguntarSiguienteCapitulo();
+
     } catch (error) {
 
         console.error(error);
