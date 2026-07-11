@@ -594,10 +594,17 @@ ${tema}
 
     const resultado = await gemini(env, prompt);
 
-    return json({
-      success: true,
-      resultado
-    });
+   if (typeof json !== "function") {
+    return {
+        success: true,
+        resultado
+    };
+}
+
+return json({
+    success: true,
+    resultado
+});
   }
 
   // =====================================
@@ -696,10 +703,17 @@ ${tema}
 
   const resultado = await gemini(env, prompt);
 
-  return json({
+  if (typeof json !== "function") {
+    return {
+        success: true,
+        resultado
+    };
+}
+
+return json({
     success: true,
     resultado
-  });
+});
 }
 // =====================================
 // GUARDAR PROMT
