@@ -1337,7 +1337,6 @@ async function verificarProyecto() {
             actualizarIndicador("estadoPlan", "verde");
 
             monitor("✅ Plan generado.");
-            monitor("👉 Falta generar el índice.");
 
         } else {
 
@@ -1345,9 +1344,27 @@ async function verificarProyecto() {
 
             monitor("⏳ Esperando generación del plan.");
 
+            return;
+
         }
 
-        return;
+        //------------------------------------
+        // ÍNDICE
+        //------------------------------------
+
+        if (proyectoActual.estructura.indice === "creado") {
+
+            actualizarIndicador("estadoIndice", "verde");
+
+            monitor("✅ Índice generado.");
+
+        } else {
+
+            actualizarIndicador("estadoIndice", "azul");
+
+            monitor("👉 Falta generar el índice.");
+
+        }
 
     } catch (error) {
 
