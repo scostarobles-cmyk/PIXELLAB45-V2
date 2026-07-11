@@ -1319,7 +1319,11 @@ section{
     background: lime !important;
     color: black !important;
 }
-
+#btnProyecto.verde {
+    background: #00b050 !important;
+    color: #000 !important;
+    box-shadow: 0 0 15px #00b050 !important;
+}
 /* Estado azul de botones */
 .gallery-filters button.azul {
     background: #009dff;
