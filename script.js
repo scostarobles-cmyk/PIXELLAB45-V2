@@ -10,6 +10,8 @@ const FETCH_CONFIG = {
 };
 let proyectoActual = null;
 let projectIdActual = null; 
+let continuarCapitulosAutomatico = false;
+let preguntarContinuarCapitulos = true;
 
 //Galería completa 
 async function cargarGaleriaCompleta() {
@@ -1953,7 +1955,7 @@ async function generarCapitulos() {
              await verificarProyecto();
         // Acá después agregaremos
         // el modal Continuar / Pausar
-
+preguntarSiguienteCapitulo();
     } catch (error) {
 
         console.error(error);
@@ -1967,6 +1969,69 @@ async function generarCapitulos() {
     }
 
 }
+function preguntarSiguienteCapitulo() {
+
+    if (!preguntarContinuarCapitulos) {
+        generarSiguienteCapitulo();
+        return;
+    }
+
+    const ventana = document.createElement("div");
+
+    ventana.id = "modalCapitulos";
+
+    ventana.innerHTML = `
+        <div class="modal-contenido">
+            <h3>Capítulo generado correctamente</h3>
+            <p>¿Desea continuar con el siguiente capítulo?</p>
+
+            <label>
+                <input type="checkbox" id="noPreguntarCapitulos">
+                No volver a preguntar
+            </label>
+
+            <div>
+                <button id="btnContinuarCapitulo">
+                    ▶ Continuar
+                </button>
+
+                <button id="btnPausarCapitulo">
+                    ⏸ Pausar
+                </button>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(ventana);
+
+
+    document.getElementById("btnContinuarCapitulo")
+    .onclick = () => {
+
+        if (
+            document.getElementById("noPreguntarCapitulos").checked
+        ) {
+            preguntarContinuarCapitulos = false;
+        }
+
+        ventana.remove();
+
+        generarSiguienteCapitulo();
+
+    };
+
+
+    document.getElementById("btnPausarCapitulo")
+    .onclick = () => {
+
+        ventana.remove();
+
+        monitor("⏸ Generación de capítulos pausada.");
+
+    };
+
+}
+
 
 // MENÚ MÓVIL
 function toggleMenu() {
