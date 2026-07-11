@@ -1921,7 +1921,7 @@ async function generarCapitulos() {
         );
 
         
-
+             await verificarProyecto();
         // Acá después agregaremos
         // el modal Continuar / Pausar
 
