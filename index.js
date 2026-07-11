@@ -147,7 +147,7 @@ case "generar-plan": {
 
 }
 case "generar-indice": {
-    const resultado = await generarIndice(data,env, json);
+    const resultado = await generarIndice(env);
     return json(resultado);
 }
 
@@ -1458,7 +1458,7 @@ async function generarPlan2(env) {
 // GENERAR INDICE
 //=====================================
 
-async function generarIndice(env, json) {
+async function generarIndice(env,) {
 
     // Buscar proyecto activo
     const proyecto = await buscarProyectoActivo(env);
