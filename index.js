@@ -1444,7 +1444,7 @@ async function generarPlan2(env) {
 // GENERAR INDICE
 //=====================================
 
-async function generarIndice(env) {
+async function generarIndice(env,json) {
 
   // Buscar proyecto activo
   const proyecto = await buscarProyectoActivo(env);
