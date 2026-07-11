@@ -1476,7 +1476,7 @@ async function generarIndice(env,json) {
   const prom = await generarPrompts({
     tema: proyecto.titulo,
     formato: "ebook"
-  }, env);
+  }, env,plan);
 
   //=====================================
   // Generar índice
