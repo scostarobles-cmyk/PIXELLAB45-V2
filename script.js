@@ -1311,6 +1311,8 @@ async function verificarProyecto() {
 
         if (!datos.ok || !datos.proyecto) {
 
+            restaurarInterfaz();
+
             monitor("📁 No existe un proyecto.");
             monitor("👉 Cree un proyecto.");
 
@@ -1326,7 +1328,42 @@ async function verificarProyecto() {
         monitor("✅ Proyecto encontrado.");
         monitor("🆔 " + projectIdActual);
 
+        //------------------------------------
+        // PROYECTO
+        //------------------------------------
+
         actualizarIndicador("estadoProyecto", "verde");
+        botonVerde("btnProyecto");
+        deshabilitarBoton("btnProyecto");
+
+        //------------------------------------
+        // PROYECTO FINALIZADO
+        //------------------------------------
+
+        if (proyectoActual.estado === "finalizado") {
+
+            actualizarIndicador("estadoPlan", "verde");
+            actualizarIndicador("estadoIndice", "verde");
+            actualizarIndicador("estadoLegales", "verde");
+            actualizarIndicador("estadoIntroduccion", "verde");
+            actualizarIndicador("estadoCapitulos", "verde");
+            actualizarIndicador("estadoConclusion", "verde");
+
+            botonVerde("btnPlan");
+            botonVerde("btnIndice");
+            botonVerde("btnLegales");
+            botonVerde("btnIntroduccion");
+            botonVerde("btnCapitulos");
+            botonVerde("btnConclusion");
+
+            monitor("🎉 eBook finalizado.");
+            monitor("👉 Puede crear un nuevo proyecto.");
+
+            restaurarInterfaz();
+
+            return;
+
+        }
 
         //------------------------------------
         // PLAN
@@ -1335,11 +1372,17 @@ async function verificarProyecto() {
         if (proyectoActual.estructura.plan === "creado") {
 
             actualizarIndicador("estadoPlan", "verde");
+            botonVerde("btnPlan");
+            deshabilitarBoton("btnPlan");
+
             monitor("✅ Plan generado.");
 
         } else {
 
             actualizarIndicador("estadoPlan", "azul");
+            botonAzul("btnPlan");
+            habilitarBoton("btnPlan");
+
             monitor("👉 Falta generar el plan.");
 
             return;
@@ -1353,11 +1396,17 @@ async function verificarProyecto() {
         if (proyectoActual.estructura.indice === "creado") {
 
             actualizarIndicador("estadoIndice", "verde");
+            botonVerde("btnIndice");
+            deshabilitarBoton("btnIndice");
+
             monitor("✅ Índice generado.");
 
         } else {
 
             actualizarIndicador("estadoIndice", "azul");
+            botonAzul("btnIndice");
+            habilitarBoton("btnIndice");
+
             monitor("👉 Falta generar el índice.");
 
             return;
@@ -1371,11 +1420,17 @@ async function verificarProyecto() {
         if (proyectoActual.estructura.legales === "creado") {
 
             actualizarIndicador("estadoLegales", "verde");
+            botonVerde("btnLegales");
+            deshabilitarBoton("btnLegales");
+
             monitor("✅ Legales generadas.");
 
         } else {
 
             actualizarIndicador("estadoLegales", "azul");
+            botonAzul("btnLegales");
+            habilitarBoton("btnLegales");
+
             monitor("👉 Falta generar las legales.");
 
             return;
@@ -1389,11 +1444,17 @@ async function verificarProyecto() {
         if (proyectoActual.estructura.introduccion === "creado") {
 
             actualizarIndicador("estadoIntroduccion", "verde");
+            botonVerde("btnIntroduccion");
+            deshabilitarBoton("btnIntroduccion");
+
             monitor("✅ Introducción generada.");
 
         } else {
 
             actualizarIndicador("estadoIntroduccion", "azul");
+            botonAzul("btnIntroduccion");
+            habilitarBoton("btnIntroduccion");
+
             monitor("👉 Falta generar la introducción.");
 
             return;
@@ -1407,6 +1468,9 @@ async function verificarProyecto() {
         if (proyectoActual.estructura.capitulos === "pendiente") {
 
             actualizarIndicador("estadoCapitulos", "azul");
+            botonAzul("btnCapitulos");
+            habilitarBoton("btnCapitulos");
+
             monitor("👉 Falta generar los capítulos.");
 
             return;
@@ -1416,6 +1480,8 @@ async function verificarProyecto() {
         if (proyectoActual.estructura.capitulos === "produccion") {
 
             actualizarIndicador("estadoCapitulos", "amarillo");
+            botonAmarillo("btnCapitulos");
+            habilitarBoton("btnCapitulos");
 
             if (!datos.plan) {
 
@@ -1430,9 +1496,7 @@ async function verificarProyecto() {
                 if (capitulo.estado !== "creado") {
 
                     monitor("🟡 Generando capítulos...");
-                    monitor(
-                        `👉 Falta generar el Capítulo ${capitulo.numero}: ${capitulo.titulo}`
-                    );
+                    monitor(`👉 Falta generar el Capítulo ${capitulo.numero}: ${capitulo.titulo}`);
 
                     return;
 
@@ -1445,6 +1509,9 @@ async function verificarProyecto() {
         if (proyectoActual.estructura.capitulos === "creado") {
 
             actualizarIndicador("estadoCapitulos", "verde");
+            botonVerde("btnCapitulos");
+            deshabilitarBoton("btnCapitulos");
+
             monitor("✅ Capítulos generados.");
 
         }
@@ -1456,6 +1523,8 @@ async function verificarProyecto() {
         if (proyectoActual.estructura.conclusion === "creado") {
 
             actualizarIndicador("estadoConclusion", "verde");
+            botonVerde("btnConclusion");
+            deshabilitarBoton("btnConclusion");
 
             monitor("✅ Conclusión generada.");
             monitor("🎉 eBook finalizado.");
@@ -1463,6 +1532,9 @@ async function verificarProyecto() {
         } else {
 
             actualizarIndicador("estadoConclusion", "azul");
+            botonAzul("btnConclusion");
+            habilitarBoton("btnConclusion");
+
             monitor("👉 Falta generar la conclusión.");
 
         }
@@ -1598,6 +1670,101 @@ async function generarIndice() {
         monitor(error.message);
 
     }
+
+}
+
+
+
+
+
+//=====================================
+// BOTONES
+//=====================================
+
+function habilitarBoton(id) {
+
+    const boton = document.getElementById(id);
+
+    if (!boton) return;
+
+    boton.disabled = false;
+
+}
+
+function deshabilitarBoton(id) {
+
+    const boton = document.getElementById(id);
+
+    if (!boton) return;
+
+    boton.disabled = true;
+
+}
+
+function botonVerde(id) {
+
+    const boton = document.getElementById(id);
+
+    if (!boton) return;
+
+    boton.classList.remove("amarillo", "azul");
+    boton.classList.add("verde");
+
+}
+
+function botonAmarillo(id) {
+
+    const boton = document.getElementById(id);
+
+    if (!boton) return;
+
+    boton.classList.remove("verde", "azul");
+    boton.classList.add("amarillo");
+
+}
+
+function botonAzul(id) {
+
+    const boton = document.getElementById(id);
+
+    if (!boton) return;
+
+    boton.classList.remove("verde", "amarillo");
+    boton.classList.add("azul");
+
+}
+
+function botonNormal(id) {
+
+    const boton = document.getElementById(id);
+
+    if (!boton) return;
+
+    boton.classList.remove("verde", "amarillo", "azul");
+
+}
+//=====================================
+// RESTAURAR INTERFAZ
+//=====================================
+
+function restaurarInterfaz() {
+
+    botonNormal("btnProyecto");
+    botonNormal("btnPlan");
+    botonNormal("btnIndice");
+    botonNormal("btnLegales");
+    botonNormal("btnIntroduccion");
+    botonNormal("btnCapitulos");
+    botonNormal("btnConclusion");
+
+    habilitarBoton("btnProyecto");
+
+    deshabilitarBoton("btnPlan");
+    deshabilitarBoton("btnIndice");
+    deshabilitarBoton("btnLegales");
+    deshabilitarBoton("btnIntroduccion");
+    deshabilitarBoton("btnCapitulos");
+    deshabilitarBoton("btnConclusion");
 
 }
 
