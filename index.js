@@ -135,7 +135,7 @@ const proyectoCreado = await buscarProyectoCreado(env);
 
 return Response.json({
     ok: true,
-    proyectoActivo,
+    proyecto,
     proyectoCreado
 });
 
