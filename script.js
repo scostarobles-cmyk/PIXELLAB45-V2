@@ -1972,67 +1972,62 @@ async function generarCapitulos() {
 }
 function preguntarSiguienteCapitulo() {
 
-    if (!preguntarContinuarCapitulos) {
-        generarSiguienteCapitulo();
-        return;
+    // 1. Agregar CSS (solo la primera vez)
+
+    if (!document.getElementById("estiloModalCapitulos")) {
+
+        const style = document.createElement("style");
+        style.id = "estiloModalCapitulos";
+
+        style.textContent = `
+            /* Todo el CSS del modal */
+        `;
+
+        document.head.appendChild(style);
+
     }
 
-    const ventana = document.createElement("div");
 
-    ventana.id = "modalCapitulos";
+    // 2. Crear el fondo oscuro (overlay)
 
-    ventana.innerHTML = `
-        <div class="modal-contenido">
-            <h3>Capítulo generado correctamente</h3>
-            <p>¿Desea continuar con el siguiente capítulo?</p>
+    const overlay = document.createElement("div");
+    overlay.id = "modalCapitulos";
 
-            <label>
-                <input type="checkbox" id="noPreguntarCapitulos">
-                No volver a preguntar
-            </label>
 
-            <div>
-                <button id="btnContinuarCapitulo">
-                    ▶ Continuar
-                </button>
+    // 3. Crear el contenido
 
-                <button id="btnPausarCapitulo">
-                    ⏸ Pausar
-                </button>
-            </div>
-        </div>
+    overlay.innerHTML = `
+        Todo el HTML del modal...
     `;
 
-    document.body.appendChild(ventana);
+
+    // 4. Agregar al body
+
+    document.body.appendChild(overlay);
 
 
-    document.getElementById("btnContinuarCapitulo")
-    .onclick = () => {
+    // 5. Eventos de Continuar
 
-        if (
-            document.getElementById("noPreguntarCapitulos").checked
-        ) {
-            preguntarContinuarCapitulos = false;
-        }
+    document.getElementById("btnContinuarCapitulo").onclick = () => {
 
-        ventana.remove();
+        overlay.remove();
 
         generarSiguienteCapitulo();
 
     };
 
 
-    document.getElementById("btnPausarCapitulo")
-    .onclick = () => {
+    // 6. Eventos de Pausar
 
-        ventana.remove();
+    document.getElementById("btnPausarCapitulo").onclick = () => {
 
-        monitor("⏸ Generación de capítulos pausada.");
+        overlay.remove();
+
+        monitor("⏸ Generación pausada.");
 
     };
 
 }
-
 
 // MENÚ MÓVIL
 function toggleMenu() {
