@@ -2003,7 +2003,7 @@ async function generarCapitulos() {
             `✅ Capítulo ${resultado.numero} generado correctamente.`
         );
     
-        if (generacionCapitulosAutomatica) {
+        if (continuarCapitulosAutomatico) {
 
     await generarCapitulos();
 
@@ -2011,10 +2011,7 @@ async function generarCapitulos() {
 
     preguntarSiguienteCapitulo();
 
-}
-
-await verificarProyecto();
-        
+}  
 
     } catch (error) {
 
