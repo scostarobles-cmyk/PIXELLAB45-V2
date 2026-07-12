@@ -1520,14 +1520,14 @@ if (proyectoActual.estructura.capitulos === "produccion") {
 
     }
 
-
+preguntarSiguienteCapitulo();
     for (const capitulo of plan.capitulos) {
 
         if (capitulo.estado !== "creado") {
 
             monitor("🟡 Generando capítulos...");
             monitor(`👉 Falta generar el Capítulo ${capitulo.numero}: ${capitulo.titulo}`);
-            preguntarSiguienteCapitulo();
+            
 
             return;
 
