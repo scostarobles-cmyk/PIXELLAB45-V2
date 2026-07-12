@@ -1311,8 +1311,14 @@ async function verificarProyecto() {
         });
 
         const datos = await respuesta.json();
+        if (datos.proyectoCreado) {
 
-        if (!datos.ok || !datos.proyecto) {
+    monitor("✅ Proyecto creado exitosamente.");
+    monitor("🆔 Proyecto: " + datos.proyectoCreado.projectId);
+
+}
+
+        if (!datos.proyectoActivo) {
 
     monitor("📁 No existe un proyecto.");
     monitor("👉 Cree un proyecto.");

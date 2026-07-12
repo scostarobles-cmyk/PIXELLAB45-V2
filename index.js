@@ -130,12 +130,14 @@ try {
 
     case "verificar-proyecto": {
 
-      const proyecto = await buscarProyectoActivo(env);
+      const proyectoActivo = await buscarProyectoActivo(env);
+const proyectoCreado = await buscarProyectoCreado(env);
 
-      return json({
-        ok: true,
-        proyecto: proyecto
-      });
+return Response.json({
+    ok: true,
+    proyectoActivo,
+    proyectoCreado
+});
 
     }
 
@@ -1325,7 +1327,32 @@ async function buscarProyectoActivo(env) {
 
     return null;
 }
+async function buscarProyectoCreado(env) {
 
+    const lista = await env.EBOOKS.list({
+        prefix: "proyectos/"
+    });
+
+    for (const archivo of lista.objects) {
+
+        if (!archivo.key.endsWith("proyecto.json")) {
+            continue;
+        }
+
+        const proyecto = await cargarJSON(
+            env,
+            archivo.key
+        );
+
+        if (proyecto && proyecto.estado === "creado") {
+            return proyecto;
+        }
+
+    }
+
+    return null;
+
+}
 //=====================================================
 // FUNCIÓN: generarPlan2()
 // Descripción:
