@@ -1310,22 +1310,25 @@ async function verificarProyecto() {
             })
         });
 
+ 
         const datos = await respuesta.json();
-        if (datos.proyectoCreado) {
 
-    monitor("✅ Proyecto creado exitosamente.");
-    monitor("🆔 Proyecto: " + datos.proyectoCreado.projectId);
+if (!datos.ok || !datos.proyecto) {
 
-}
-
-        if (!datos.proyectoActivo) {
-
-    monitor("📁 No existe un proyecto.");
+    monitor("📁 No existe un proyecto.", true);
     monitor("👉 Cree un proyecto.");
 
     return;
 
 }
+
+// Proyecto encontrado
+
+proyectoActual = datos.proyecto;
+projectIdActual = proyectoActual.projectId;
+
+monitor("✅ Proyecto encontrado.");
+monitor("🆔 " + projectIdActual);
 
 
 // Proyecto encontrado
