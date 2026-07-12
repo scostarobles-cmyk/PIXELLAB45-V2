@@ -162,6 +162,13 @@ case "generar-capitulo": {
     const resultado = await generarCapitulo(env);
     return json(resultado);
 }
+case "generar-conclusion": {
+
+    const resultado = await generarConclusion(env);
+
+    return json(resultado);
+
+}
     default:
 
       return json({
@@ -2231,6 +2238,124 @@ Return EXACTLY this structure:
 
         configuracion: config
 
+    };
+
+}
+async function generarConclusion(env) {
+
+    // Buscar proyecto activo
+    const proyecto = await buscarProyectoActivo(env);
+
+    if (!proyecto) {
+        return {
+            ok: false,
+            error: "No existe un proyecto activo."
+        };
+    }
+
+
+    // Generar prompt maestro
+
+    const prom = await generarPrompts(
+        {
+            tema: proyecto.titulo,
+            formato: "general"
+        },
+        env,
+        null
+    );
+
+
+    const promptConclusion = prom.resultado + `
+
+IMPORTANT:
+The previous prompt is for generating content.
+
+Now generate ONLY the conclusion of the ebook.
+
+Use this project information:
+Title: ${proyecto.titulo}
+Author: ${proyecto.autor || ""}
+
+Rules:
+- Write a professional conclusion.
+- Thank the reader.
+- Summarize the main ideas learned.
+- Include key takeaways.
+- Motivate the reader to apply the knowledge.
+- Add a final call to action.
+- End with a farewell from the author.
+- Do not repeat chapters.
+- Return ONLY valid JSON.
+
+Format:
+
+{
+  "titulo": "Conclusión",
+  "agradecimiento": "",
+  "resumen": "",
+  "aprendizajesClave": [],
+  "proximosPasos": "",
+  "motivacionFinal": "",
+  "llamadoALaAccion": "",
+  "despedida": "",
+  "estado": "creado"
+}
+`;
+
+
+    // Generar conclusión con Gemini
+
+    const respuesta = await gemini(
+        env,
+        promptConclusion,
+        3
+    );
+
+
+    // Convertir respuesta a JSON
+
+    let conclusion;
+
+    try {
+
+        conclusion = JSON.parse(respuesta);
+
+    } catch (error) {
+
+        return {
+            ok: false,
+            error: "La conclusión generada no tiene formato JSON.",
+            respuesta
+        };
+
+    }
+
+
+    // Guardar conclusion.json
+
+    await guardarJSON(
+        env,
+        `proyectos/${proyecto.projectId}/conclusion.json`,
+        conclusion
+    );
+
+
+    // Actualizar estado del proyecto
+
+    proyecto.estructura.conclusion = "creado";
+
+
+    await guardarJSON(
+        env,
+        `proyectos/${proyecto.projectId}/proyecto.json`,
+        proyecto
+    );
+
+
+    return {
+        ok: true,
+        conclusion
     };
 
 }

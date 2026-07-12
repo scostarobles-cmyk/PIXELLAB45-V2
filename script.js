@@ -2181,6 +2181,57 @@ document.getElementById("btnPausarCapitulo").onclick = () => {
 
 }
 
+async function generarConclusion() {
+
+    monitor("📖 Generando conclusión...");
+
+    try {
+
+        const respuesta = await fetch(WORKER_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                action: "generar-conclusion"
+            })
+        });
+
+        const resultado = await respuesta.json();
+
+        if (!resultado.ok) {
+
+            monitor(
+                "❌ Error generando conclusión: " + resultado.error
+            );
+
+            return;
+
+        }
+
+        monitor("✅ Conclusión creada correctamente.");
+
+        if (typeof actualizarEstadoProyecto === "function") {
+
+            actualizarEstadoProyecto(
+                "conclusion",
+                "creado"
+            );
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        monitor(
+            "❌ Error de conexión al generar conclusión."
+        );
+
+    }
+
+}
+
 // MENÚ MÓVIL
 function toggleMenu() {
 
