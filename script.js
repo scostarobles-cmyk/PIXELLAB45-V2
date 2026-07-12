@@ -1560,7 +1560,7 @@ if (proyectoActual.estructura.capitulos === "creado") {
 
             monitor("✅ Conclusión generada.");
             monitor("🎉 eBook finalizado.");
-             restaurarInterfaz()
+             
         } else {
 
             actualizarIndicador("estadoConclusion", "azul");
