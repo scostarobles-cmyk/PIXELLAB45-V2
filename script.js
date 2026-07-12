@@ -1982,6 +1982,7 @@ async function generarCapitulos() {
         const resultado =
             await respuesta.json();
 
+
         if (!resultado.ok) {
 
             monitor(
@@ -1993,29 +1994,84 @@ async function generarCapitulos() {
 
         }
 
+
         monitor(
             `✅ Capítulo ${resultado.numero} generado correctamente.`
         );
-    
- if (preguntarContinuarCapitulos) {
 
-    preguntarSiguienteCapitulo();
 
-} else {
+        //------------------------------------
+        // CONTROL MANUAL / AUTOMÁTICO
+        //------------------------------------
 
- //  await verificarProyecto();
-    await generarCapitulos();
+        if (preguntarContinuarCapitulos) {
 
-}
-await verificarProyecto();
+            preguntarSiguienteCapitulo();
+
+
+        } else {
+
+
+            //------------------------------------
+            // CARGAR PLAN TEMPORALMENTE
+            //------------------------------------
+
+            const plan = await cargarJSON(
+                `proyectos/${projectIdActual}/plan.json`
+            );
+
+
+            if (!plan || !plan.capitulos) {
+
+                monitor("❌ No se pudo cargar el plan.");
+
+                return;
+
+            }
+
+
+            const quedanPendientes =
+                plan.capitulos.some(
+                    capitulo => capitulo.estado !== "creado"
+                );
+
+
+            //------------------------------------
+            // SI QUEDAN CAPÍTULOS, CONTINÚA
+            //------------------------------------
+
+            if (quedanPendientes) {
+
+                await generarCapitulos();
+
+            } else {
+
+
+                //------------------------------------
+                // TODOS LOS CAPÍTULOS TERMINADOS
+                //------------------------------------
+
+                monitor(
+                    "✅ Todos los capítulos fueron generados."
+                );
+
+
+                await verificarProyecto();
+
+            }
+
+        }
+
 
     } catch (error) {
 
         console.error(error);
 
+
         monitor(
             "❌ Error generando capítulo."
         );
+
 
         monitor(error.message);
 
