@@ -1313,10 +1313,11 @@ async function verificarProyecto() {
 
         if (!datos.ok || !datos.proyecto) {
 
-            restaurarInterfaz();
+            
 
             monitor("📁 No existe un proyecto.");
             monitor("👉 Cree un proyecto.");
+            restaurarInterfaz();
 
             return;
 
