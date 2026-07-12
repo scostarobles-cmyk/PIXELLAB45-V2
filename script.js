@@ -2202,10 +2202,10 @@ document.getElementById("btnContinuarCapitulo").onclick = async () => {
 
     if (chk.checked) {
 
-        preguntarContinuarCapitulos = false;
-        generacionCapitulosAutomatica = true;
+    preguntarContinuarCapitulos = false;
+    continuarCapitulosAutomatico = true;
 
-    }
+}
 
     overlay.remove();
 
