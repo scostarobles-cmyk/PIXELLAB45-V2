@@ -1852,8 +1852,11 @@ function restaurarInterfaz() {
     //==========================
     // Mensaje final
     //==========================
-    monitorElement.innerHTML = "";
-    monitor("🎉 Sistema listo para crear un nuevo Ebook.");
+    // Limpiar el monitor
+document.getElementById("monitor").innerHTML = "";
+
+// Mostrar el nuevo mensaje
+monitor("🎉 Sistema listo para crear un nuevo Ebook.");
 
 }
 
