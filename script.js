@@ -1313,15 +1313,14 @@ async function verificarProyecto() {
 
         if (!datos.ok || !datos.proyecto) {
 
-            
+    monitor("📁 No existe un proyecto.", true);
+    monitor("👉 Cree un proyecto.");
 
-            monitor("📁 No existe un proyecto.");
-            monitor("👉 Cree un proyecto.");
-            restaurarInterfaz();
+    restaurarInterfaz();
 
-            return;
+    return;
 
-        }
+}
 
         // Proyecto encontrado
 
