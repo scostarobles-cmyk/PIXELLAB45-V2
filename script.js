@@ -1491,7 +1491,7 @@ const plan = await cargarJSON(
 //------------------------------------
 // CAPÍTULOS
 //------------------------------------
-preguntarSiguienteCapitulo();
+
 if (proyectoActual.estructura.capitulos === "pendiente") {
 
     actualizarIndicador("estadoCapitulos", "azul");
@@ -1956,6 +1956,7 @@ async function generarCapitulos() {
              await verificarProyecto();
         // Acá después agregaremos
         // el modal Continuar / Pausar
+        preguntarSiguienteCapitulo();
 
     } catch (error) {
 
