@@ -1331,17 +1331,9 @@ monitor("✅ Proyecto encontrado.");
 monitor("🆔 " + projectIdActual);
 
 
-// Proyecto encontrado
 
-if (datos.proyecto.estado === "creado") {
 
-    monitor("✅ Proyecto creado exitosamente.");
-    monitor("🆔 Proyecto: " + datos.proyecto.projectId);
-    monitor("👉 Cree un nuevo proyecto para continuar.");
 
-    return;
-
-}
 
 
 // Proyecto en producción
