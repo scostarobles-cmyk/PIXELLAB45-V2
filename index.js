@@ -130,13 +130,11 @@ try {
 
     case "verificar-proyecto": {
 
-      const proyectoActivo = await buscarProyectoActivo(env);
-const proyectoCreado = await buscarProyectoCreado(env);
+      const proyecto = await buscarProyectoActivo(env);
 
 return Response.json({
-    ok: true,
-    proyecto,
-    proyectoCreado
+    ok: !!proyecto,
+    proyecto
 });
 
     }
