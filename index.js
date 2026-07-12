@@ -1,4 +1,4 @@
- const R2_BASE_URL =
+q const R2_BASE_URL =
   "https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev";
 
 const CORS_HEADERS = {
@@ -132,10 +132,10 @@ try {
 
       const proyecto = await buscarProyectoActivo(env);
 
-return Response.json({
-    ok: !!proyecto,
-    proyecto
-});
+      return json({
+        ok: true,
+        proyecto: proyecto
+      });
 
     }
 
@@ -1325,32 +1325,7 @@ async function buscarProyectoActivo(env) {
 
     return null;
 }
-async function buscarProyectoCreado(env) {
 
-    const lista = await env.EBOOKS.list({
-        prefix: "proyectos/"
-    });
-
-    for (const archivo of lista.objects) {
-
-        if (!archivo.key.endsWith("proyecto.json")) {
-            continue;
-        }
-
-        const proyecto = await cargarJSON(
-            env,
-            archivo.key
-        );
-
-        if (proyecto && proyecto.estado === "creado") {
-            return proyecto;
-        }
-
-    }
-
-    return null;
-
-}
 //=====================================================
 // FUNCIÓN: generarPlan2()
 // Descripción:
