@@ -2344,6 +2344,7 @@ Format:
     // Actualizar estado del proyecto
 
     proyecto.estructura.conclusion = "creado";
+    proyecto.estado = "creado";
 
 
     await guardarJSON(
