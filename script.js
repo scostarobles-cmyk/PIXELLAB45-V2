@@ -1560,7 +1560,7 @@ if (proyectoActual.estructura.capitulos === "creado") {
 
             monitor("✅ Conclusión generada.");
             monitor("🎉 eBook finalizado.");
-
+             restaurarInterfaz()
         } else {
 
             actualizarIndicador("estadoConclusion", "azul");
@@ -1790,6 +1790,34 @@ function botonNormal(id) {
 
 function restaurarInterfaz() {
 
+    //==========================
+    // Limpiar variables globales
+    //==========================
+
+    proyectoActual = null;
+    plan = null;
+
+    // Si tenés otras variables globales
+    // también se limpian aquí.
+
+
+    //==========================
+    // Restaurar indicadores
+    //==========================
+
+    actualizarIndicador("estadoProyecto", "blanco");
+    actualizarIndicador("estadoPlan", "blanco");
+    actualizarIndicador("estadoIndice", "blanco");
+    actualizarIndicador("estadoLegales", "blanco");
+    actualizarIndicador("estadoIntroduccion", "blanco");
+    actualizarIndicador("estadoCapitulos", "blanco");
+    actualizarIndicador("estadoConclusion", "blanco");
+
+
+    //==========================
+    // Restaurar botones
+    //==========================
+
     botonNormal("btnProyecto");
     botonNormal("btnPlan");
     botonNormal("btnIndice");
@@ -1797,6 +1825,11 @@ function restaurarInterfaz() {
     botonNormal("btnIntroduccion");
     botonNormal("btnCapitulos");
     botonNormal("btnConclusion");
+
+
+    //==========================
+    // Habilitar / Deshabilitar
+    //==========================
 
     habilitarBoton("btnProyecto");
 
@@ -1806,6 +1839,21 @@ function restaurarInterfaz() {
     deshabilitarBoton("btnIntroduccion");
     deshabilitarBoton("btnCapitulos");
     deshabilitarBoton("btnConclusion");
+
+
+    //==========================
+    // Reiniciar flujo automático
+    //==========================
+
+    preguntarContinuarCapitulos = true;
+    generacionCapitulosAutomatica = false;
+
+
+    //==========================
+    // Mensaje final
+    //==========================
+
+    monitor("🎉 Sistema listo para crear un nuevo Ebook.");
 
 }
 
