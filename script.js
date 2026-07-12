@@ -1314,22 +1314,36 @@ async function verificarProyecto() {
 
         if (!datos.ok || !datos.proyecto) {
 
-    monitor("📁 No existe un proyecto.", true);
+    monitor("📁 No existe un proyecto.");
     monitor("👉 Cree un proyecto.");
-
-    //restaurarInterfaz();
 
     return;
 
 }
 
-        // Proyecto encontrado
 
-        proyectoActual = datos.proyecto;
-        projectIdActual = proyectoActual.projectId;
+// Proyecto encontrado
 
-        monitor("✅ Proyecto encontrado.");
-        monitor("🆔 " + projectIdActual);
+if (datos.proyecto.estado === "creado") {
+
+    monitor("✅ Proyecto creado exitosamente.");
+    monitor("🆔 Proyecto: " + datos.proyecto.projectId);
+    monitor("👉 Cree un nuevo proyecto para continuar.");
+
+    return;
+
+}
+
+
+// Proyecto en producción
+
+proyectoActual = datos.proyecto;
+projectIdActual = proyectoActual.projectId;
+
+monitor("🔄 Proyecto en producción.");
+monitor("🆔 " + projectIdActual);
+
+// continúa el verificador normal
 
         //------------------------------------
         // PROYECTO
@@ -2326,6 +2340,7 @@ async function generarConclusion() {
             );
 
         }
+        await verificarProyecto();
 
     } catch (error) {
 
