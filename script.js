@@ -1809,7 +1809,7 @@ function restaurarInterfaz() {
     actualizarIndicador("estadoPlan", "blanco");
     actualizarIndicador("estadoIndice", "blanco");
     actualizarIndicador("estadoLegales", "blanco");
-    actualizarIndicador("estadoIntroduccion", "blanco");
+    actualizarIndicador("estadoIntro", "blanco");
     actualizarIndicador("estadoCapitulos", "blanco");
     actualizarIndicador("estadoConclusion", "blanco");
 
@@ -1852,7 +1852,7 @@ function restaurarInterfaz() {
     //==========================
     // Mensaje final
     //==========================
-
+    monitorElement.innerHTML = "";
     monitor("🎉 Sistema listo para crear un nuevo Ebook.");
 
 }
