@@ -1841,13 +1841,6 @@ function restaurarInterfaz() {
     deshabilitarBoton("btnConclusion");
 
 
-    //==========================
-    // Reiniciar flujo automático
-    //==========================
-
-    preguntarContinuarCapitulos = true;
-    generacionCapitulosAutomatica = false;
-
 
     //==========================
     // Mensaje final
@@ -2003,15 +1996,15 @@ async function generarCapitulos() {
             `✅ Capítulo ${resultado.numero} generado correctamente.`
         );
     
-        if (continuarCapitulosAutomatico) {
-
-    await generarCapitulos();
-
-} else {
+ if (preguntarContinuarCapitulos) {
 
     preguntarSiguienteCapitulo();
 
-}  
+} else {
+
+    await generarCapitulos();
+
+}
 
     } catch (error) {
 
