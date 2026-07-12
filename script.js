@@ -1527,6 +1527,7 @@ if (proyectoActual.estructura.capitulos === "produccion") {
 
             monitor("🟡 Generando capítulos...");
             monitor(`👉 Falta generar el Capítulo ${capitulo.numero}: ${capitulo.titulo}`);
+            preguntarSiguienteCapitulo();
 
             return;
 
@@ -1950,7 +1951,7 @@ async function generarCapitulos() {
         monitor(
             `✅ Capítulo ${resultado.numero} generado correctamente.`
         );
-    preguntarSiguienteCapitulo();
+    
         
              await verificarProyecto();
         // Acá después agregaremos
