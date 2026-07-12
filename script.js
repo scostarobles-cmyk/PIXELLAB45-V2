@@ -1331,19 +1331,6 @@ monitor("✅ Proyecto encontrado.");
 monitor("🆔 " + projectIdActual);
 
 
-
-
-
-
-
-// Proyecto en producción
-
-proyectoActual = datos.proyecto;
-projectIdActual = proyectoActual.projectId;
-
-monitor("🔄 Proyecto en producción.");
-monitor("🆔 " + projectIdActual);
-
 // continúa el verificador normal
 
         //------------------------------------
