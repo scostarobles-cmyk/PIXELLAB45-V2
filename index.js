@@ -130,11 +130,13 @@ try {
 
     case "verificar-proyecto": {
 
-      const proyecto = await buscarProyectoActivo(env);
+      const proyectoActivo = await buscarProyectoActivo(env);
+const proyectoCreado = await buscarProyectoCreado(env);
 
 return Response.json({
-    ok: !!proyecto,
-    proyecto
+    ok: true,
+    proyecto,
+    proyectoCreado
 });
 
     }
@@ -504,6 +506,515 @@ async function listarImagenes(
 ) {
 
   const lista =
+    await env.IMAGES.list();
+
+  const imagenes = lista.objects
+  .filter(obj => {
+
+    const key = obj.key;
+
+    return !(
+      key.startsWith("ideas/") ||
+      key.startsWith("prompts/") ||
+      key.startsWith("visuals/") ||
+      key.startsWith("scripts/") ||
+      key.startsWith("storyboards/") ||
+      key.startsWith("Ebook/")
+    );
+
+  })
+  .map(obj => ({
+    nombre: obj.key,
+    url: `${R2_BASE_URL}/${obj.key}`
+  }));
+
+  return json({
+    success: true,
+    images: imagenes,
+    total: imagenes.length
+  });
+
+}
+
+// =====================================
+// GALERÍA CATEGORÍA
+// =====================================
+
+async function listarCategoria(env, data, json) {
+
+  const categoria = data.categoria;
+
+  console.log("DATA:", data);
+  console.log("Categoría:", categoria);
+
+  const lista = await env.IMAGES.list({
+    prefix: `${categoria}/`
+  });
+
+  const archivos = lista.objects.map(obj => ({
+    nombre: obj.key,
+    url: `${R2_BASE_URL}/${obj.key}`
+  }));
+
+  return json({
+    success: true,
+    categoria,
+    prefix: `${categoria}/`,
+    archivos,
+    total: archivos.length
+  });
+
+}
+
+// =====================================
+// GENERADOR DE PROMPTS (GEMINI)
+// =====================================
+async function generarPrompts(data, env, json) {
+
+  let tema = data.tema || "";
+  const formato = data.formato || "";
+
+  // Detecta cantidad SOLO si el número está al principio
+  const match = tema.match(/^\s*(\d+)\s+/);
+
+  let cantidad = 1;
+
+  if (match) {
+    cantidad = Math.min(parseInt(match[1]), 20);
+    tema = tema.replace(match[0], "").trim();
+  }
+
+  // =====================================
+  // CASO ESPECIAL: EBOOK
+  // =====================================
+  if (formato.toLowerCase() === "ebook") {
+
+    const prompt = `
+You are one of the world's best AI prompt engineers.
+
+Transform the user's request into ONE professional master prompt for an AI ebook generation engine.
+
+Rules:
+- Keep the user's original topic.
+- Never change the title.
+- Never invent a title.
+- Never invent a target audience.
+- Never invent ages.
+- Never invent professions.
+- Never invent experience levels.
+- Never invent chapters.
+- Never invent the ebook length.
+- Expand ONLY the information provided by the user.
+- Return ONLY ONE prompt.
+- English only.
+- Do not number anything.
+- Do not explain anything.
+- Do not use markdown.
+
+The prompt must preserve the user's original request.
+If the user omitted details, keep them generic.
+
+User request:
+${tema}
+`;
+
+    const resultado = await gemini(env, prompt);
+
+   if (typeof json !== "function") {
+    return {
+        success: true,
+        resultado
+    };
+}
+
+return json({
+    success: true,
+    resultado
+});
+  }
+
+  // =====================================
+  // REGLAS POR FORMATO
+  // =====================================
+  let reglas = "";
+
+  switch (formato.toLowerCase()) {
+
+    case "tiktok":
+      reglas = `
+Generate professional AI prompts for viral TikTok videos.
+- Vertical 9:16
+- Short-form content
+- Strong visual impact
+- Cinematic quality
+- High engagement
+`;
+      break;
+
+    case "instagram":
+      reglas = `
+Generate professional AI prompts for Instagram content.
+- Reels or posts
+- Visually attractive
+- Premium aesthetic
+- Cinematic composition
+`;
+      break;
+
+    case "facebook":
+      reglas = `
+Generate professional AI prompts for Facebook content.
+- Engaging
+- Shareable
+- Realistic
+- Professional quality
+`;
+      break;
+
+    case "blog":
+      reglas = `
+Generate professional writing prompts for blog articles.
+- SEO oriented
+- Educational
+- Structured
+- Professional writing
+`;
+      break;
+
+    default:
+      reglas = `
+Generate universal AI prompts.
+- Professional
+- High quality
+- Adaptable
+`;
+  }
+
+  const instruccionesCantidad = cantidad === 1
+    ? `
+Generate ONE prompt ONLY.
+
+CRITICAL:
+- Return exactly ONE prompt.
+- Do NOT number the output.
+- Do NOT generate multiple prompts.
+`
+    : `
+Generate EXACTLY ${cantidad} prompts.
+
+CRITICAL:
+- Number every prompt.
+- One prompt per line or separated clearly.
+- No extra text.
+`;
+
+  const prompt = `
+You are one of the world's best AI prompt engineers.
+
+${instruccionesCantidad}
+
+${reglas}
+
+GLOBAL RULES:
+- Return ONLY prompts.
+- English only.
+- No explanations.
+- No markdown.
+- No titles.
+- No introductions.
+
+User request:
+${tema}
+`;
+
+  const resultado = await gemini(env, prompt);
+
+  if (typeof json !== "function") {
+    return {
+        success: true,
+        resultado
+    };
+}
+
+return json({
+    success: true,
+    resultado
+});
+}
+// =====================================
+// GUARDAR PROMT
+// =====================================
+async function guardarPrompts(data, env, json) {
+
+  const contenido =
+    data.contenido || "";
+
+  const prompts = contenido
+    .split(/\n\s*\n/)
+    .map(p => p.trim())
+    .filter(Boolean);
+
+  let guardados = 0;
+
+  for (const prompt of prompts) {
+
+    const nombre =
+      `prompts/${Date.now()}-${guardados + 1}.txt`;
+
+    await env.IMAGES.put(
+      nombre,
+      prompt
+    );
+
+    guardados++;
+
+  }
+
+  return json({
+    mensaje: `✅ ${guardados} prompts guardados`
+  });
+
+}
+
+
+// =====================================
+// GENERADOR DE VISUALES (GEMINI)
+// =====================================
+async function generarVisualesPrompts(data, env, json) {
+
+  const tema = data.tema || "";
+
+  const prompt = `
+You are a world-class AI image prompt engineer.
+
+Your job is to convert any user request into a professional image-generation prompt.
+
+CRITICAL RULES:
+- Return ONLY the final prompt.
+- English only.
+- Never explain anything.
+- Never add titles.
+- Never add numbering.
+- Never add introductions.
+- Never use markdown.
+- Never ask questions.
+
+PROMPT RULES:
+- Preserve the user's original intent.
+- Do not change the subject.
+- Do not invent important objects, people or animals.
+- If the user specifies text, letters, numbers or symbols, preserve them exactly.
+- If the user specifies a style, preserve it.
+- If no style is specified, choose the most appropriate style.
+- Improve composition, lighting, colors, camera angle, realism and quality only when appropriate.
+- Add useful artistic and photographic details without changing the request.
+- Produce a single optimized prompt ready for Stable Diffusion XL, Flux, Midjourney or similar models.
+
+User request:
+${tema}
+`;
+
+  const resultado = await gemini(env, prompt);
+
+  // Si se usa como función interna
+  if (typeof json !== "function") {
+    return resultado;
+  }
+
+  // Si se llama desde el endpoint /visual
+  return json({
+    success: true,
+    resultado
+  });
+}
+//GUARDAR Visuales 
+async function guardarVisuales(data, env, json) {
+
+  const contenido = data.contenido || "";
+
+  const items = contenido
+    .split(/\n(?=\d+-)/)
+    .map(i => i.trim())
+    .filter(Boolean);
+
+  let guardados = 0;
+
+  for (const item of items) {
+
+    const nombre = `visuals/${Date.now()}-${guardados + 1}.txt`;
+
+    await env.IMAGES.put(nombre, item);
+
+    guardados++;
+  }
+
+  return json({
+    mensaje: `✅ ${guardados} visual prompts guardados`
+  });
+
+}
+
+// =====================================
+// GENERADOR DE GUIONES (GEMINI PRO)
+// =====================================
+async function generarGuion(data, env, json) {
+
+  const formato = (data.formato || "").toLowerCase();
+
+  let reglas = "";
+
+  switch (formato) {
+
+    case "automático":
+      reglas = `
+Choose automatically the best script style according to the topic.
+`;
+      break;
+
+    case "tiktok / reels":
+      reglas = `
+Write a viral TikTok/Reels script.
+
+STRICT STRUCTURE (mandatory):
+
+1. HOOK (0–3 seconds)
+- Must be direct, shocking or curiosity-driven
+- No poetry, no abstract phrases
+
+2. BODY (fast pacing)
+- 2 to 5 short lines max
+- Clear idea or transformation
+- Simple language
+
+3. ENDING
+- Strong closing line OR CTA
+
+FORMAT RULES:
+- Short lines
+- Optional VOICE / MUSIC directions allowed
+- No intros, no storytelling fluff
+`;
+      break;
+
+    case "youtube":
+      reglas = `
+Write a YouTube video script.
+
+STRUCTURE (mandatory):
+
+1. INTRO (Hook + context)
+2. DEVELOPMENT (clear explanation or storytelling)
+3. CONCLUSION (summary + closing impact)
+
+RULES:
+- Natural narration
+- No unnecessary fluff
+- Clear progression of ideas
+`;
+      break;
+
+    case "cinematográfico":
+      reglas = `
+Write a professional cinematic screenplay.
+
+FORMAT:
+- Scene-based structure (SCENE 1, SCENE 2...)
+- Action descriptions
+- Character dialogue
+- Optional camera directions
+
+RULES:
+- Cinematic tone
+- No marketing language
+- No abstract poetry unless required by scene
+`;
+      break;
+
+    case "podcast":
+      reglas = `
+Write a podcast script.
+
+FORMAT:
+- Host narration
+- Optional dialogue between speakers
+- Natural conversational flow
+
+RULES:
+- Audio-focused
+- No stage directions unless necessary
+`;
+      break;
+
+    case "novela":
+      reglas = `
+Write a novel chapter.
+
+FORMAT:
+- Narrative prose
+
+RULES:
+- Rich descriptions
+- Character emotions
+- Story-driven flow
+- No screenplay format
+`;
+      break;
+
+    case "teatro":
+      reglas = `
+Write a theater play.
+
+FORMAT:
+- Characters
+- Dialogue
+- Stage directions
+
+RULES:
+- Theatrical structure
+- Clear acts or scenes
+`;
+      break;
+
+    default:
+      reglas = `
+Choose automatically the best writing style.
+`;
+  }
+
+  const prompt = `
+You are PIXELLAB45 Script Engine.
+
+Generate professional scripts.
+
+${reglas}
+
+GLOBAL RULES:
+- Return ONLY the script.
+- Must include spoken lines (dialogue or narration when applicable).
+- Must feel like a real production-ready script.
+- NEVER write explanations.
+- NEVER write educational/meta content about AI or tools.
+- NEVER mention ChatGPT, OpenAI, or prompt engineering.
+- NEVER use markdown.
+- NEVER add introductions or conclusions outside the script.
+- Be coherent from beginning to end.
+
+Topic:
+${data.tema}
+
+Duration:
+${data.duracion}
+`;
+
+  const resultado = await gemini(env, prompt);
+
+  return json({
+    success: true,
+    resultado
+  });
+}
+//Guardar guion 
+async function guardarGuion(data, elista =
     await env.IMAGES.list();
 
   const imagenes = lista.objects
