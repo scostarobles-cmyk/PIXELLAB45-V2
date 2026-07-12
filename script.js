@@ -1176,6 +1176,7 @@ projectIdActual = proyecto.projectId;
 
 btn.classList.add("completo");
 btn.innerHTML = "✅ Proyecto creado";
+await verificarProyecto();
 
   }
   catch (err) {
@@ -1656,7 +1657,7 @@ const btn = document.getElementById("btnPlan");
 btn.classList.add("completo");
 btn.innerHTML = "✅ Plan generado";
 btn.disabled = true;
-
+await verificarProyecto();
     } catch (error) {
 
         console.error(error);
@@ -1890,7 +1891,7 @@ async function generarLegales() {
             actualizarEstadoProyecto("legales", "creado");
         }
 
-
+await verificarProyecto();
     } catch (error) {
 
         console.error(error);
@@ -1942,7 +1943,7 @@ async function generarIntroduccion() {
             );
         }
 
-
+await verificarProyecto();
     } catch (error) {
 
         console.error(error);
@@ -2002,10 +2003,11 @@ async function generarCapitulos() {
 
 } else {
 
-   await verificarProyecto();
+ //  await verificarProyecto();
     await generarCapitulos();
 
 }
+await verificarProyecto();
 
     } catch (error) {
 
