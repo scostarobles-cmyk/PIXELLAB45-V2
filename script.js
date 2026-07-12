@@ -1316,7 +1316,7 @@ async function verificarProyecto() {
     monitor("📁 No existe un proyecto.", true);
     monitor("👉 Cree un proyecto.");
 
-    restaurarInterfaz();
+    //restaurarInterfaz();
 
     return;
 
