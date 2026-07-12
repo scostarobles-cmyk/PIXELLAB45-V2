@@ -2002,7 +2002,7 @@ async function generarCapitulos() {
 
 } else {
 
-    await generarCapitulos();
+   await verificarProyecto()
 
 }
 
