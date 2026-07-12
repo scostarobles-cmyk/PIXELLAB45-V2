@@ -2003,10 +2003,17 @@ async function generarCapitulos() {
             `✅ Capítulo ${resultado.numero} generado correctamente.`
         );
     
-        preguntarSiguienteCapitulo();
-             await verificarProyecto();
-        // Acá después agregaremos
-        // el modal Continuar / Pausar
+        if (generacionCapitulosAutomatica) {
+
+    await generarCapitulos();
+
+} else {
+
+    preguntarSiguienteCapitulo();
+
+}
+
+await verificarProyecto();
         
 
     } catch (error) {
