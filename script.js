@@ -1491,7 +1491,7 @@ const plan = await cargarJSON(
 //------------------------------------
 // CAPÍTULOS
 //------------------------------------
-
+preguntarSiguienteCapitulo();
 if (proyectoActual.estructura.capitulos === "pendiente") {
 
     actualizarIndicador("estadoCapitulos", "azul");
@@ -1520,7 +1520,7 @@ if (proyectoActual.estructura.capitulos === "produccion") {
 
     }
 
-preguntarSiguienteCapitulo();
+
     for (const capitulo of plan.capitulos) {
 
         if (capitulo.estado !== "creado") {
