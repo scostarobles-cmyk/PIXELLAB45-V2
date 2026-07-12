@@ -1347,7 +1347,7 @@ async function verificarProyecto() {
             actualizarIndicador("estadoPlan", "verde");
             actualizarIndicador("estadoIndice", "verde");
             actualizarIndicador("estadoLegales", "verde");
-            actualizarIndicador("estadoIntroduccion", "verde");
+            actualizarIndicador("estadoIntro", "verde");
             actualizarIndicador("estadoCapitulos", "verde");
             actualizarIndicador("estadoConclusion", "verde");
 
