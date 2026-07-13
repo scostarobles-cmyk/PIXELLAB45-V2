@@ -1563,7 +1563,7 @@ if (proyectoActual.estructura.capitulos === "creado") {
 
             monitor("✅ Conclusión generada.");
             monitor("🎉 eBook finalizado.");
-            restaurarInterfaz();
+          
              
         } else {
 
@@ -1598,12 +1598,17 @@ window.addEventListener("load", async () => {
 function monitor(texto, limpiar = false) {
 
     const monitor = document.getElementById("monitorIA");
+    const monitorBotonera = document.getElementById("monitorBotonera");
 
     if (limpiar) {
+
         monitor.innerHTML = "";
+        monitorBotonera.innerHTML = "";
+
     }
 
     monitor.innerHTML += texto + "<br>";
+    monitorBotonera.innerHTML += texto + "<br>";
 
 }
 
