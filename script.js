@@ -1814,7 +1814,7 @@ function botonAzul(id) {
 
     if (!boton) return;
 
-    boton.classList.remove("verde", "amarillo");
+    boton.classList.remove("blanco", "verde", "amarillo", "rojo");
     boton.classList.add("azul");
 
 }
