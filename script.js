@@ -1332,17 +1332,25 @@ async function verificarProyecto() {
 
         }
 
-        //------------------------------------
-        // PROYECTO EN PRODUCCIÓN
-        //------------------------------------
+ //------------------------------------
+// PROYECTO EN PRODUCCIÓN
+//------------------------------------
 
-        if (proyectoProduccion) {
+if (proyectoProduccion) {
 
-            proyectoActual = proyectoProduccion;
-            projectIdActual = proyectoActual.projectId;
+    proyectoActual = proyectoProduccion;
+    projectIdActual = proyectoActual.projectId;
 
-        }
 
+    //------------------------------------
+    // PROYECTO
+    //------------------------------------
+
+    actualizarIndicador("estadoProyecto", "verde");
+    botonVerde("btnProyecto");
+    deshabilitarBoton("btnProyecto");
+
+}
         //------------------------------------
         // SIN PROYECTOS
         //------------------------------------
@@ -1353,6 +1361,7 @@ async function verificarProyecto() {
             monitor("👉 Cree un proyecto para comenzar.");
 
         }
+        
 
     } catch (error) {
 
