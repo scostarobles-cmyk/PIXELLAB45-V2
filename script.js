@@ -1312,86 +1312,39 @@ async function verificarProyecto() {
 
         const datos = await respuesta.json();
 
-        //------------------------------------
-        // VARIABLES LOCALES
-        //------------------------------------
-
-        const proyectoCreado = datos.proyectoCreado;
-        const proyectoProduccion = datos.proyectoProduccion;
-
-        //------------------------------------
-        // PROYECTO CREADO
-        //------------------------------------
-
-        if (proyectoCreado) {
-
-            monitor("✅ Proyecto creado exitosamente.");
-            monitor("🆔 ID: " + proyectoCreado.projectId);
-            monitor("📖 " + proyectoCreado.titulo);
-            monitor("👉 Genere un nuevo proyecto para continuar.");
-
-        }
-
- //------------------------------------
-// PROYECTO EN PRODUCCIÓN
+//------------------------------------
+// DATOS DEL WORKER
 //------------------------------------
 
-if (proyectoProduccion) {
-
-    proyectoActual = proyectoProduccion;
-    projectIdActual = proyectoActual.projectId;
+const proyectoCreado = datos.proyectoCreado;
+const proyectoProduccion = datos.proyectoProduccion;
 
 
-    //------------------------------------
-    // PROYECTO
-    //------------------------------------
+//------------------------------------
+// PROYECTO CREADO
+//------------------------------------
 
-    actualizarIndicador("estadoProyecto", "verde");
-    botonVerde("btnProyecto");
-    deshabilitarBoton("btnProyecto");
+if (proyectoCreado) {
+
+    monitor("✅ Proyecto creado exitosamente.");
+    monitor("🆔 ID: " + proyectoCreado.projectId);
+    monitor("📖 " + proyectoCreado.titulo);
+
+    return;
 
 }
+
+
 //------------------------------------
-// PLAN
+// SIN PROYECTO
 //------------------------------------
 
-if (proyectoActual.estructura.plan === "creado") {
+if (!proyectoCreado && !proyectoProduccion) {
 
-    actualizarIndicador("estadoPlan", "verde");
-    botonVerde("btnPlan");
-    deshabilitarBoton("btnPlan");
+    monitor("🆕 No existe ningún proyecto.");
+    monitor("👉 Cree un proyecto para comenzar.");
 
-    monitor("✅ Plan generado.");
-
-} else {
-
-    actualizarIndicador("estadoPlan", "azul");
-    botonAzul("btnPlan");
-    habilitarBoton("btnPlan");
-
-    monitor("👉 Falta generar el plan.");
-
-}
-        //------------------------------------
-        // SIN PROYECTOS
-        //------------------------------------
-
-        if (!proyectoCreado && !proyectoProduccion) {
-
-            monitor("🆕 No existe ningún proyecto.");
-            monitor("👉 Cree un proyecto para comenzar.");
-
-        }
-        
-
-    } catch (error) {
-
-        console.error(error);
-
-        monitor("❌ Error verificando proyecto.");
-        monitor(error.message);
-
-    }
+    return;
 
 }
 
