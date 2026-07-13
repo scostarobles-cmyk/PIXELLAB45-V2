@@ -1481,7 +1481,7 @@ if (proyectoActual.estructura.capitulos === "pendiente") {
 
     monitor("👉 Falta generar los capítulos.");
 
- 
+ return
 
 }
 
