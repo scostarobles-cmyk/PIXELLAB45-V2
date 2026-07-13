@@ -1351,6 +1351,27 @@ if (proyectoProduccion) {
     deshabilitarBoton("btnProyecto");
 
 }
+//------------------------------------
+// PLAN
+//------------------------------------
+
+if (proyectoActual.estructura.plan === "creado") {
+
+    actualizarIndicador("estadoPlan", "verde");
+    botonVerde("btnPlan");
+    deshabilitarBoton("btnPlan");
+
+    monitor("✅ Plan generado.");
+
+} else {
+
+    actualizarIndicador("estadoPlan", "azul");
+    botonAzul("btnPlan");
+    habilitarBoton("btnPlan");
+
+    monitor("👉 Falta generar el plan.");
+
+}
         //------------------------------------
         // SIN PROYECTOS
         //------------------------------------
