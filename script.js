@@ -1409,6 +1409,7 @@ if (proyectoActual.estructura.plan === "creado") {
                 habilitarBoton("btnIndice");
 
                 monitor("👉 Falta generar el índice.");
+                return
 
             }
              //------------------------------------
@@ -1432,7 +1433,7 @@ if (proyectoActual.estructura.legales === "creado") {
     monitor("👉 Falta generar las legales.");
     monitor("➡️ Próximo paso: Generar legales.");
 
-
+return
 
 }
 //------------------------------------
@@ -1456,7 +1457,7 @@ if (proyectoActual.estructura.introduccion === "creado") {
     monitor("👉 Falta generar la introducción.");
     monitor("➡️ Próximo paso: Generar introducción.");
 
-  
+  return
 
 }
 //------------------------------------
@@ -1569,9 +1570,9 @@ if (proyectoActual.estructura.conclusion === "creado") {
     monitor("👉 Falta generar la conclusión.");
     monitor("➡️ Próximo paso: Generar conclusión.");
 
-
+return
 }
-            return;
+            
 
         } // FIN PROYECTO PRODUCCIÓN
 
