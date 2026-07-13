@@ -1536,7 +1536,30 @@ if (proyectoActual.estructura.capitulos === "creado") {
     monitor("✅ Capítulos generados.");
 
 }
+//------------------------------------
+// CONCLUSIÓN
+//------------------------------------
 
+if (proyectoActual.estructura.conclusion === "creado") {
+
+    actualizarIndicador("estadoConclusion", "verde");
+    botonVerde("btnConclusion");
+    deshabilitarBoton("btnConclusion");
+
+    monitor("✅ Conclusión generada.");
+
+} else {
+
+    actualizarIndicador("estadoConclusion", "azul");
+    botonAzul("btnConclusion");
+    habilitarBoton("btnConclusion");
+
+    monitor("👉 Falta generar la conclusión.");
+    monitor("➡️ Próximo paso: Generar conclusión.");
+
+    return;
+
+}
             return;
 
         } // FIN PROYECTO PRODUCCIÓN
