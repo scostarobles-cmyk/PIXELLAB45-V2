@@ -1366,8 +1366,9 @@ async function buscarProyectoActivo(env) {
 async function generarPlan2(env) {
 
 
-    const proyecto = await buscarProyectoActivo(env);
+    const resultado = await buscarProyectoActivo(env);
 
+const proyecto = resultado.proyectoProduccion;
 
     if (!proyecto) {
 
