@@ -1447,6 +1447,30 @@ if (proyectoActual.estructura.introduccion === "creado") {
     return;
 
 }
+//------------------------------------
+// CAPÍTULOS
+//------------------------------------
+
+if (proyectoActual.estructura.capitulos === "creado") {
+
+    actualizarIndicador("estadoCapitulos", "verde");
+    botonVerde("btnCapitulos");
+    deshabilitarBoton("btnCapitulos");
+
+    monitor("✅ Capítulos generados.");
+
+} else {
+
+    actualizarIndicador("estadoCapitulos", "azul");
+    botonAzul("btnCapitulos");
+    habilitarBoton("btnCapitulos");
+
+    monitor("👉 Falta generar los capítulos.");
+    monitor("➡️ Próximo paso: Generar capítulos.");
+
+    return;
+
+}
 
             return;
 
