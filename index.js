@@ -133,9 +133,9 @@ try {
     const resultado = await buscarProyectoActivo(env);
 
     return json({
-        ok: resultado !== null,
-        proyecto: resultado?.proyecto || null,
-        creado: resultado?.creado || false
+        ok: true,
+        proyectoCreado: resultado.proyectoCreado,
+        proyectoProduccion: resultado.proyectoProduccion
     });
 
 }
@@ -1296,42 +1296,9 @@ async function cargarJSON(env, ruta) {
     return await archivo.json();
 
 }
-async function buscarProyectoCreado(env) {
-
-    const lista = await env.EBOOKS.list({
-        prefix: "proyectos/"
-    });
-
-    for (const archivo of lista.objects) {
-
-        if (!archivo.key.endsWith("proyecto.json")) {
-            continue;
-        }
-
-        const proyecto = await cargarJSON(
-            env,
-            archivo.key
-        );
-
-        // PRUEBA: devolver el primer proyecto encontrado
-        if (proyecto) {
-            return proyecto;
-        }
-
-    }
-
-    return null;
-
-}
-//=====================================================
-// FUNCIÓN: buscarProyectoActivo()
-// Descripción:
-// Busca en R2 el proyecto actual.
-// Recorre la carpeta proyectos/,
-// encuentra el archivo proyecto.json
-// cuyo estado sea "produccion".
-// Retorna el proyecto activo.
-//=====================================================
+//=====================================
+// BUSCAR PROYECTO
+//=====================================
 
 async function buscarProyectoActivo(env) {
 
@@ -1340,6 +1307,7 @@ async function buscarProyectoActivo(env) {
     });
 
     let proyectoCreado = null;
+    let proyectoProduccion = null;
 
     for (const archivo of lista.objects) {
 
@@ -1353,31 +1321,40 @@ async function buscarProyectoActivo(env) {
             continue;
         }
 
-        // Si hay uno en producción, tiene prioridad
-        if (proyecto.estado === "produccion") {
-            return {
-                proyecto,
-                creado: false
-            };
-        }
+        //------------------------------------
+        // ÚLTIMO PROYECTO CREADO
+        //------------------------------------
 
-        // Guardamos el creado por si no hay uno en producción
         if (proyecto.estado === "creado") {
-            proyectoCreado = proyecto;
+
+            if (
+                !proyectoCreado ||
+                new Date(proyecto.fecha) > new Date(proyectoCreado.fecha)
+            ) {
+                proyectoCreado = proyecto;
+            }
+
+        }
+
+        //------------------------------------
+        // PROYECTO EN PRODUCCIÓN
+        //------------------------------------
+
+        if (proyecto.estado === "produccion") {
+
+            proyectoProduccion = proyecto;
+
         }
 
     }
 
-    if (proyectoCreado) {
-        return {
-            proyecto: proyectoCreado,
-            creado: true
-        };
-    }
-
-    return null;
+    return {
+        proyectoCreado,
+        proyectoProduccion
+    };
 
 }
+
 //=====================================================
 // FUNCIÓN: generarPlan2()
 // Descripción:
