@@ -1313,11 +1313,6 @@ async function verificarProyecto() {
 
         const datos = await respuesta.json();
 
-
-        monitor("📦 Respuesta Worker:");
-        monitor(JSON.stringify(datos));
-
-
         const proyectoCreado = datos.proyectoCreado;
         const proyectoProduccion = datos.proyectoProduccion;
 
@@ -1355,6 +1350,10 @@ async function verificarProyecto() {
     botonVerde("btnProyecto");
     deshabilitarBoton("btnProyecto");
     
+    monitor("⚙️ Proyecto en producción cargado.");
+    monitor("🆔 ID: " + projectIdActual);
+    monitor("📖 " + proyectoActual.titulo);
+    
     //------------------------------------
 // PLAN
 //------------------------------------
@@ -1378,9 +1377,7 @@ if (proyectoActual.estructura.plan === "creado") {
 }
 
 
-    monitor("⚙️ Proyecto en producción cargado.");
-    monitor("🆔 ID: " + projectIdActual);
-    monitor("📖 " + proyectoActual.titulo);
+    
 
 
     return;
