@@ -1391,12 +1391,10 @@ const proyecto = resultado.proyectoProduccion;
 
     return {
         ok: false,
-        mensaje: "DEBUG PAGINAS",
-        paginas,
-        tipo: typeof proyecto.paginas
+        mensaje: "Cantidad de páginas inválida."
     };
 
-}
+} 
 
 
     // Calcular capítulos
@@ -1518,7 +1516,9 @@ const proyecto = resultado.proyectoProduccion;
 async function generarIndice(env,) {
 
     // Buscar proyecto activo
-    const proyecto = await buscarProyectoActivo(env);
+    const resultado = await buscarProyectoActivo(env);
+
+const proyecto = resultado.proyectoProduccion;
 
     if (!proyecto) {
         return {
