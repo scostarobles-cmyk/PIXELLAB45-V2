@@ -1310,49 +1310,66 @@ async function verificarProyecto() {
             })
         });
 
+
         const datos = await respuesta.json();
 
-//------------------------------------
-// DATOS DEL WORKER
-//------------------------------------
 
-const proyectoCreado = datos.proyectoCreado;
-const proyectoProduccion = datos.proyectoProduccion;
+        monitor("📦 Respuesta Worker:");
+        monitor(JSON.stringify(datos));
 
 
-//------------------------------------
-// PROYECTO CREADO
-//------------------------------------
+        const proyectoCreado = datos.proyectoCreado;
+        const proyectoProduccion = datos.proyectoProduccion;
 
-if (proyectoCreado) {
 
-    monitor("✅ Proyecto creado exitosamente.");
-    monitor("🆔 ID: " + proyectoCreado.projectId);
-    monitor("📖 " + proyectoCreado.titulo);
+        //------------------------------------
+        // PROYECTO CREADO
+        //------------------------------------
 
-    return;
+        if (proyectoCreado) {
+
+            monitor("✅ Proyecto creado exitosamente.");
+            monitor("🆔 ID: " + proyectoCreado.projectId);
+            monitor("📖 " + proyectoCreado.titulo);
+
+            return;
+
+        }
+
+
+        //------------------------------------
+        // PROYECTO PRODUCCIÓN
+        //------------------------------------
+
+        if (proyectoProduccion) {
+
+            monitor("⚙️ Proyecto en producción.");
+            monitor("🆔 ID: " + proyectoProduccion.projectId);
+            monitor("📖 " + proyectoProduccion.titulo);
+
+            return;
+
+        }
+
+
+        //------------------------------------
+        // NO EXISTE NINGÚN PROYECTO
+        //------------------------------------
+
+        monitor("🆕 No existe ningún proyecto.");
+        monitor("👉 Cree un proyecto para comenzar.");
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        monitor("❌ Error verificando proyecto.");
+        monitor(error.message);
+
+    }
 
 }
-
-
-//------------------------------------
-// SIN PROYECTO
-//------------------------------------
-
-if (!proyectoCreado && !proyectoProduccion) {
-
-    monitor("🆕 No existe ningún proyecto.");
-    monitor("👉 Cree un proyecto para comenzar.");
-
-    return;
-
-}
-
-window.addEventListener("load", async () => {
-
-    await verificarProyecto();
-
-});
 
 //=====================================================
 // FUNCIÓN: monitor()
