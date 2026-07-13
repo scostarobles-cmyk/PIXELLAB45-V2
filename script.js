@@ -1595,7 +1595,7 @@ if (!proyectoCreado && !proyectoProduccion) {
 }
 window.addEventListener("load", async () => {
 
-    limpiarMonitor();
+    
 
     monitor("🚀 Entrando a verificar");
 
