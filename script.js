@@ -2402,6 +2402,20 @@ function toggleMenu() {
   menu.classList.toggle("active");
 
 }
+function limpiarMonitores() {
+
+    const monitorIA = document.getElementById("monitorIA");
+    const monitorBotonera = document.getElementById("monitorBotonera");
+
+    if (monitorIA) {
+        monitorIA.innerHTML = "";
+    }
+
+    if (monitorBotonera) {
+        monitorBotonera.innerHTML = "";
+    }
+
+}
 
 
 // INICIO
