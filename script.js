@@ -1610,7 +1610,7 @@ window.addEventListener("load", async () => {
     monitor("🚀 Entrando a verificar");
 
     await verificarProyecto();
-    limpiarMonitor();
+    //limpiarMonitor();
 
 });
 
