@@ -1099,6 +1099,13 @@ async function generarImagenPuter() {
 //=====================================================
 
 async function crearProyecto() {
+	
+	botonVerde("btnProyecto");
+actualizarIndicador("estadoProyecto", "verde");
+
+botonAzul("btnPlan");
+actualizarIndicador("estadoPlan", "azul");
+habilitarBoton("btnPlan");
 
   const btn = document.getElementById("btnProyecto");
   const estado = document.getElementById("estadoProyecto");
@@ -1792,7 +1799,7 @@ function botonVerde(id) {
 
     if (!boton) return;
 
-    boton.classList.remove("amarillo", "azul");
+    boton.classList.remove("blanco", "azul", "amarillo", "rojo");
     boton.classList.add("verde");
 
 }
@@ -1803,7 +1810,7 @@ function botonAmarillo(id) {
 
     if (!boton) return;
 
-    boton.classList.remove("verde", "azul");
+    boton.classList.remove("blanco", "azul", "verde", "rojo");
     boton.classList.add("amarillo");
 
 }
@@ -1814,7 +1821,7 @@ function botonAzul(id) {
 
     if (!boton) return;
 
-    boton.classList.remove("blanco", "verde", "amarillo", "rojo");
+    boton.classList.remove("blanco", "amarillo", "verde", "rojo");
     boton.classList.add("azul");
 
 }
@@ -1825,10 +1832,8 @@ function botonNormal(id) {
 
     if (!boton) return;
 
-    boton.classList.remove("verde", "amarillo", "azul");
-
-    boton.style.background = "";
-    boton.style.color = "";
+    boton.classList.remove("azul", "amarillo", "verde", "rojo");
+    boton.classList.add("blanco");
 
 }
 //=====================================
