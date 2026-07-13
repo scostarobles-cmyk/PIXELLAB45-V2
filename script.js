@@ -1397,6 +1397,9 @@ if (proyectoActual.estructura.indice === "creado") {
     habilitarBoton("btnIndice");
 
     monitor("👉 Falta generar el índice.");
+    
+    
+    return
 
 }
         //------------------------------------
