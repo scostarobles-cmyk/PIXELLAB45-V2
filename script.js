@@ -1587,7 +1587,7 @@ if (proyectoActual.estructura.capitulos === "creado") {
 
 }
 window.addEventListener("load", async () => {
-	alert("entro a ver si hay creado");
+
 	const existeCreado = await verificarProyectoCreado();
 
 if (!existeCreado) {
@@ -2376,7 +2376,10 @@ async function verificarProyectoCreado() {
 
         const datos = await respuesta.json();
 
+        monitor(JSON.stringify(datos));
+
         if (!datos.ok || !datos.proyecto) {
+            monitor("❌ No encontró proyecto creado.");
             return false;
         }
 
@@ -2388,7 +2391,7 @@ async function verificarProyectoCreado() {
 
     } catch (error) {
 
-        console.error(error);
+        monitor(error.message);
         return false;
 
     }
