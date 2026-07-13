@@ -1364,27 +1364,30 @@ if (proyectoCreado) {
             monitor("📖 " + proyectoActual.titulo);
 
 
-            //------------------------------------
-            // PLAN
-            //------------------------------------
+      //------------------------------------
+// PLAN
+//------------------------------------
 
-            if (proyectoActual.estructura.plan === "creado") {
+if (proyectoActual.estructura.plan === "creado") {
 
-                actualizarIndicador("estadoPlan", "verde");
-                botonVerde("btnPlan");
-                deshabilitarBoton("btnPlan");
+    actualizarIndicador("estadoPlan", "verde");
+    botonVerde("btnPlan");
+    deshabilitarBoton("btnPlan");
 
-                monitor("✅ Plan generado.");
+    monitor("✅ Plan generado.");
 
-            } else {
+} else {
 
-                actualizarIndicador("estadoPlan", "azul");
-                botonAzul("btnPlan");
-                habilitarBoton("btnPlan");
+    actualizarIndicador("estadoPlan", "azul");
+    botonAzul("btnPlan");
+    habilitarBoton("btnPlan");
 
-                monitor("👉 Falta generar el plan.");
+    monitor("👉 Falta generar el plan.");
+    monitor("➡️ Próximo paso: Generar plan.");
 
-            }
+    return;
+
+}
 
 
             //------------------------------------
