@@ -1180,7 +1180,7 @@ limpiarMonitor();
 
 await verificarProyecto();
 
-
+return
   }
   catch (err) {
 
