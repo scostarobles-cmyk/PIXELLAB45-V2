@@ -1398,8 +1398,7 @@ if (proyectoActual.estructura.indice === "creado") {
 
     monitor("👉 Falta generar el índice.");
     
-    
-    return
+   
 
 }
         //------------------------------------
