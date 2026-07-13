@@ -175,9 +175,10 @@ case "buscar-proyecto-creado": {
     const proyecto = await buscarProyectoCreado(env);
 
     return Response.json({
-    ok: true,
-    proyecto
-});
+        ok: true,
+        proyecto,
+        debug: proyecto?.estado
+    });
 
 }
     default:
