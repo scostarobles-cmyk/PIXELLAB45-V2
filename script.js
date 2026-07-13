@@ -1607,10 +1607,10 @@ if (!proyectoCreado && !proyectoProduccion) {
 window.addEventListener("load", async () => {
 
     
-
     monitor("🚀 Entrando a verificar");
 
     await verificarProyecto();
+    limpiarMonitor();
 
 });
 
@@ -1690,7 +1690,7 @@ const btn = document.getElementById("btnPlan");
 btn.classList.add("completo");
 btn.innerHTML = "✅ Plan generado";
 btn.disabled = true;
-limpiarMonitores();
+limpiarMonitor();
 
     await verificarProyecto();
 
@@ -1732,7 +1732,7 @@ async function generarIndice() {
 btn.classList.add("completo");
 btn.innerHTML = "✅ Índice generado";
 btn.disabled = true;
-limpiarMonitores();
+limpiarMonitor();
 
     await verificarProyecto();
 
@@ -1890,7 +1890,7 @@ function restaurarInterfaz() {
     // Mensaje final
     //==========================
     // Limpiar el monitor
-document.getElementById("monitor").innerHTML = "";
+//document.getElementById("monitor").innerHTML = "";
 
 // Mostrar el nuevo mensaje
 monitor("🎉 Sistema listo para crear un nuevo Ebook.");
@@ -1940,7 +1940,7 @@ async function generarLegales() {
         if (typeof actualizarEstadoProyecto === "function") {
             actualizarEstadoProyecto("legales", "creado");
         }
-
+limpiarMonitor() ;
 await verificarProyecto();
     } catch (error) {
 
@@ -1992,7 +1992,7 @@ async function generarIntroduccion() {
                 "creado"
             );
         }
-
+limpiarMonitor();
 await verificarProyecto();
     } catch (error) {
 
@@ -2105,7 +2105,7 @@ async function generarCapitulos() {
                     "✅ Todos los capítulos fueron generados."
                 );
 
-
+limpiarMonitor() ;
                 await verificarProyecto();
 
             }
@@ -2376,6 +2376,7 @@ async function generarConclusion() {
             );
 
         }
+        limpiarMonitor() ;
         await verificarProyecto();
 
     } catch (error) {
@@ -2402,20 +2403,7 @@ function toggleMenu() {
   menu.classList.toggle("active");
 
 }
-function limpiarMonitores() {
 
-    const monitorIA = document.getElementById("monitorIA");
-    const monitorBotonera = document.getElementById("monitorBotonera");
-
-    if (monitorIA) {
-        monitorIA.innerHTML = "";
-    }
-
-    if (monitorBotonera) {
-        monitorBotonera.innerHTML = "";
-    }
-
-}
 
 
 // INICIO
