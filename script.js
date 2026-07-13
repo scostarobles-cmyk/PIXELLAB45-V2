@@ -1732,7 +1732,7 @@ async function generarIndice() {
 btn.classList.add("completo");
 btn.innerHTML = "✅ Índice generado";
 btn.disabled = true;
-limpiarMonitor();
+//limpiarMonitor();
 
     await verificarProyecto();
 
