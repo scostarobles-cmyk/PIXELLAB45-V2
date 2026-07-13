@@ -1338,69 +1338,74 @@ async function verificarProyecto() {
 
         if (proyectoProduccion) {
 
-    proyectoActual = proyectoProduccion;
-    projectIdActual = proyectoActual.projectId;
+            proyectoActual = proyectoProduccion;
+            projectIdActual = proyectoActual.projectId;
 
 
-    //------------------------------------
-    // PROYECTO
-    //------------------------------------
+            //------------------------------------
+            // PROYECTO
+            //------------------------------------
 
-    actualizarIndicador("estadoProyecto", "verde");
-    botonVerde("btnProyecto");
-    deshabilitarBoton("btnProyecto");
-    
-    monitor("⚙️ Proyecto en producción cargado.");
-    monitor("🆔 ID: " + projectIdActual);
-    monitor("📖 " + proyectoActual.titulo);
-    
-    //------------------------------------
-// PLAN
-//------------------------------------
+            actualizarIndicador("estadoProyecto", "verde");
+            botonVerde("btnProyecto");
+            deshabilitarBoton("btnProyecto");
 
-if (proyectoActual.estructura.plan === "creado") {
+            monitor("⚙️ Proyecto en producción cargado.");
+            monitor("🆔 ID: " + projectIdActual);
+            monitor("📖 " + proyectoActual.titulo);
 
-    actualizarIndicador("estadoPlan", "verde");
-    botonVerde("btnPlan");
-    deshabilitarBoton("btnPlan");
 
-    monitor("✅ Plan generado.");
+            //------------------------------------
+            // PLAN
+            //------------------------------------
 
-} else {
+            if (proyectoActual.estructura.plan === "creado") {
 
-    actualizarIndicador("estadoPlan", "azul");
-    botonAzul("btnPlan");
-    habilitarBoton("btnPlan");
+                actualizarIndicador("estadoPlan", "verde");
+                botonVerde("btnPlan");
+                deshabilitarBoton("btnPlan");
 
-    monitor("👉 Falta generar el plan.");
+                monitor("✅ Plan generado.");
 
-}
+            } else {
 
-}
+                actualizarIndicador("estadoPlan", "azul");
+                botonAzul("btnPlan");
+                habilitarBoton("btnPlan");
 
-//------------------------------------
-// INDICE
-//------------------------------------
+                monitor("👉 Falta generar el plan.");
 
-if (proyectoActual.estructura.indice === "creado") {
+            }
 
-    actualizarIndicador("estadoIndice", "verde");
-    botonVerde("btnIndice");
-    deshabilitarBoton("btnIndice");
 
-    monitor("✅ Índice generado.");
+            //------------------------------------
+            // INDICE
+            //------------------------------------
 
-} else {
+            if (proyectoActual.estructura.indice === "creado") {
 
-    actualizarIndicador("estadoIndice", "azul");
-    botonAzul("btnIndice");
-    habilitarBoton("btnIndice");
+                actualizarIndicador("estadoIndice", "verde");
+                botonVerde("btnIndice");
+                deshabilitarBoton("btnIndice");
 
-    monitor("👉 Falta generar el índice.");
-    
-   
+                monitor("✅ Índice generado.");
 
-}
+            } else {
+
+                actualizarIndicador("estadoIndice", "azul");
+                botonAzul("btnIndice");
+                habilitarBoton("btnIndice");
+
+                monitor("👉 Falta generar el índice.");
+
+            }
+
+
+            return;
+
+        } // FIN PROYECTO PRODUCCIÓN
+
+
         //------------------------------------
         // NO EXISTE NINGÚN PROYECTO
         //------------------------------------
