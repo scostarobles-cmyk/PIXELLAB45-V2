@@ -1792,6 +1792,9 @@ function botonNormal(id) {
 
     boton.classList.remove("verde", "amarillo", "azul");
 
+    boton.style.background = "";
+    boton.style.color = "";
+
 }
 //=====================================
 // RESTAURAR INTERFAZ
