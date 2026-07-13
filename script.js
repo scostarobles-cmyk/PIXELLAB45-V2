@@ -1338,6 +1338,9 @@ if (proyectoCreado) {
 
     monitor("➡️ Abra este Ebook en el editor.");
     monitor("🆕 O genere un proyecto nuevo.");
+    actualizarIndicador("estadoProyecto", "azul");
+botonAzul("btnProyecto");
+habilitarBoton("btnProyecto");
 
 }
 
@@ -2377,8 +2380,9 @@ async function generarConclusion() {
 
         }
 //        limpiarMonitor() ;
+botonAmarillo(btnConclusion);
         await verificarProyecto();
-
+        restaurarInterfaz();
     } catch (error) {
 
         console.error(error);
