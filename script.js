@@ -1587,7 +1587,14 @@ if (proyectoActual.estructura.capitulos === "creado") {
 
 }
 window.addEventListener("load", async () => {
+	const existeCreado = await verificarProyectoCreado();
+
+if (!existeCreado) {
+
     await verificarProyecto();
+
+}
+    
 });
 
 //=====================================================
@@ -2347,6 +2354,41 @@ async function generarConclusion() {
         monitor(
             "❌ Error de conexión al generar conclusión."
         );
+
+    }
+
+}
+
+async function verificarProyectoCreado() {
+
+    try {
+
+        const respuesta = await fetch(WORKER_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                action: "buscar-proyecto-creado"
+            })
+        });
+
+        const datos = await respuesta.json();
+
+        if (!datos.ok || !datos.proyecto) {
+            return false;
+        }
+
+        monitor("✅ Proyecto creado exitosamente.");
+        monitor("🆔 " + datos.proyecto.projectId);
+        monitor("👉 Cree un nuevo proyecto para continuar.");
+
+        return true;
+
+    } catch (error) {
+
+        console.error(error);
+        return false;
 
     }
 
