@@ -1370,6 +1370,11 @@ async function verificarProyecto() {
     }
 
 }
+window.addEventListener("load", () => {
+
+    monitor("🚀 PÁGINA CARGADA");
+
+});
 
 //=====================================================
 // FUNCIÓN: monitor()
