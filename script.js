@@ -1176,7 +1176,7 @@ btn.classList.add("completo");
 btn.innerHTML = "✅ Proyecto creado";
 // terminó correctamente
 
-limpiarMonitor();
+//limpiarMonitor();
 
 await verificarProyecto();
 
@@ -1690,7 +1690,7 @@ const btn = document.getElementById("btnPlan");
 btn.classList.add("completo");
 btn.innerHTML = "✅ Plan generado";
 btn.disabled = true;
-limpiarMonitor();
+//limpiarMonitor();
 
     await verificarProyecto();
 
@@ -1940,7 +1940,7 @@ async function generarLegales() {
         if (typeof actualizarEstadoProyecto === "function") {
             actualizarEstadoProyecto("legales", "creado");
         }
-limpiarMonitor() ;
+//limpiarMonitor() ;
 await verificarProyecto();
     } catch (error) {
 
@@ -1992,7 +1992,7 @@ async function generarIntroduccion() {
                 "creado"
             );
         }
-limpiarMonitor();
+//limpiarMonitor();
 await verificarProyecto();
     } catch (error) {
 
@@ -2105,7 +2105,7 @@ async function generarCapitulos() {
                     "✅ Todos los capítulos fueron generados."
                 );
 
-limpiarMonitor() ;
+//limpiarMonitor() ;
                 await verificarProyecto();
 
             }
@@ -2376,7 +2376,7 @@ async function generarConclusion() {
             );
 
         }
-        limpiarMonitor() ;
+//        limpiarMonitor() ;
         await verificarProyecto();
 
     } catch (error) {
