@@ -1399,7 +1399,30 @@ async function verificarProyecto() {
                 monitor("👉 Falta generar el índice.");
 
             }
+             //------------------------------------
+// LEGALES
+//------------------------------------
 
+if (proyectoActual.estructura.legales === "creado") {
+
+    actualizarIndicador("estadoLegales", "verde");
+    botonVerde("btnLegales");
+    deshabilitarBoton("btnLegales");
+
+    monitor("✅ Legales generadas.");
+
+} else {
+
+    actualizarIndicador("estadoLegales", "azul");
+    botonAzul("btnLegales");
+    habilitarBoton("btnLegales");
+
+    monitor("👉 Falta generar las legales.");
+    monitor("➡️ Próximo paso: Generar legales.");
+
+    return;
+
+}
 
             return;
 
