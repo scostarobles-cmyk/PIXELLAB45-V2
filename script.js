@@ -1370,9 +1370,11 @@ async function verificarProyecto() {
     }
 
 }
-window.addEventListener("load", () => {
+window.addEventListener("load", async () => {
 
-    monitor("🚀 PÁGINA CARGADA");
+    monitor("🚀 Entrando a verificar");
+
+    await verificarProyecto();
 
 });
 
