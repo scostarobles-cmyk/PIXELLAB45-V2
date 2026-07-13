@@ -1448,7 +1448,83 @@ if (proyectoActual.estructura.introduccion === "creado") {
 
 }
 //------------------------------------
+// CARGAR PLAN (antes de capítulos)
+//------------------------------------
+
+const plan = await cargarJSON(
+    `proyectos/${projectIdActual}/plan.json`
+);
+
+
+//------------------------------------
 // CAPÍTULOS
+//------------------------------------
+
+if (proyectoActual.estructura.capitulos === "pendiente") {
+
+    actualizarIndicador("estadoCapitulos", "azul");
+    botonAzul("btnCapitulos");
+    habilitarBoton("btnCapitulos");
+
+    monitor("👉 Falta generar los capítulos.");
+
+    return;
+
+}
+
+
+if (proyectoActual.estructura.capitulos === "produccion") {
+
+    actualizarIndicador("estadoCapitulos", "amarillo");
+    botonAmarillo("btnCapitulos");
+    habilitarBoton("btnCapitulos");
+
+
+    if (!plan || !plan.capitulos) {
+
+        monitor("❌ No se recibió el plan.");
+
+        return;
+
+    }
+
+
+    for (const capitulo of plan.capitulos) {
+
+        if (capitulo.estado !== "creado") {
+
+            monitor("🟡 Capítulos en producción.");
+            monitor(
+                `👉 Próximo capítulo pendiente: ${capitulo.numero} - ${capitulo.titulo}`
+            );
+
+
+            //------------------------------------
+            // CONTINUAR FLUJO DE CAPÍTULOS
+            //------------------------------------
+
+            if (
+                typeof preguntarSiguienteCapitulo === "function"
+                &&
+                preguntarContinuarCapitulos
+            ) {
+
+                preguntarSiguienteCapitulo();
+
+            }
+
+
+            return;
+
+        }
+
+    }
+
+}
+
+
+//------------------------------------
+// TODOS LOS CAPÍTULOS TERMINADOS
 //------------------------------------
 
 if (proyectoActual.estructura.capitulos === "creado") {
@@ -1458,17 +1534,6 @@ if (proyectoActual.estructura.capitulos === "creado") {
     deshabilitarBoton("btnCapitulos");
 
     monitor("✅ Capítulos generados.");
-
-} else {
-
-    actualizarIndicador("estadoCapitulos", "azul");
-    botonAzul("btnCapitulos");
-    habilitarBoton("btnCapitulos");
-
-    monitor("👉 Falta generar los capítulos.");
-    monitor("➡️ Próximo paso: Generar capítulos.");
-
-    return;
 
 }
 
