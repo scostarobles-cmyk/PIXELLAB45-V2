@@ -1369,6 +1369,11 @@ async function generarPlan2(env) {
     const resultado = await buscarProyectoActivo(env);
 
 const proyecto = resultado.proyectoProduccion;
+return {
+    ok: false,
+    mensaje: "DEBUG PROYECTO",
+    proyecto
+};
 
     if (!proyecto) {
 
