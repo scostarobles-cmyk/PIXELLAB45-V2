@@ -1568,7 +1568,6 @@ if (proyectoActual.estructura.conclusion === "creado") {
     monitor("👉 Falta generar la conclusión.");
     monitor("➡️ Próximo paso: Generar conclusión.");
 
-    return;
 
 }
             return;
@@ -1582,8 +1581,13 @@ if (proyectoActual.estructura.conclusion === "creado") {
 
 if (!proyectoCreado && !proyectoProduccion) {
 
+    actualizarIndicador("estadoProyecto", "azul");
+    botonAzul("btnProyecto");
+    habilitarBoton("btnProyecto");
+
     monitor("🆕 No existe ningún proyecto.");
     monitor("👉 Cree un proyecto para comenzar.");
+    monitor("➡️ Próximo paso: Generar proyecto.");
 
 }
 
