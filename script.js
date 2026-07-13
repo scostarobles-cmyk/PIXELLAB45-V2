@@ -1595,6 +1595,8 @@ if (!proyectoCreado && !proyectoProduccion) {
 }
 window.addEventListener("load", async () => {
 
+    limpiarMonitor();
+
     monitor("🚀 Entrando a verificar");
 
     await verificarProyecto();
@@ -1874,6 +1876,12 @@ document.getElementById("monitor").innerHTML = "";
 
 // Mostrar el nuevo mensaje
 monitor("🎉 Sistema listo para crear un nuevo Ebook.");
+
+}
+
+function limpiarMonitor() {
+
+    document.getElementById("monitor").innerHTML = "";
 
 }
 
