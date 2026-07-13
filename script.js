@@ -1721,7 +1721,7 @@ async function generarIndice() {
         const data = await response.json();
 
         if (data.ok) {
-            monitor(JSON.stringify(data, null, 2));
+          
             monitor("✅ Índice generado correctamente.");
             const btn = document.getElementById("btnIndice");
 
