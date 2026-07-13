@@ -1369,11 +1369,7 @@ async function generarPlan2(env) {
     const resultado = await buscarProyectoActivo(env);
 
 const proyecto = resultado.proyectoProduccion;
-return {
-    ok: false,
-    mensaje: "DEBUG PROYECTO",
-    proyecto
-};
+
 
     if (!proyecto) {
 
@@ -1393,12 +1389,14 @@ return {
 
     if (!paginas || paginas <= 0) {
 
-        return {
-            ok: false,
-            mensaje: "Cantidad de páginas inválida."
-        };
+    return {
+        ok: false,
+        mensaje: "DEBUG PAGINAS",
+        paginas,
+        tipo: typeof proyecto.paginas
+    };
 
-    }
+}
 
 
     // Calcular capítulos
