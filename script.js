@@ -1346,9 +1346,20 @@ async function verificarProyecto() {
     proyectoActual = proyectoProduccion;
     projectIdActual = proyectoActual.projectId;
 
+
+    //------------------------------------
+    // PROYECTO
+    //------------------------------------
+
+    actualizarIndicador("estadoProyecto", "verde");
+    botonVerde("btnProyecto");
+    deshabilitarBoton("btnProyecto");
+
+
     monitor("⚙️ Proyecto en producción cargado.");
     monitor("🆔 ID: " + projectIdActual);
     monitor("📖 " + proyectoActual.titulo);
+
 
     return;
 
