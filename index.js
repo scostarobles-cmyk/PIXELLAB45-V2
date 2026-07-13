@@ -175,9 +175,9 @@ case "buscar-proyecto-creado": {
     const proyecto = await buscarProyectoCreado(env);
 
     return Response.json({
-        ok: !!proyecto,
-        proyecto
-    });
+    ok: true,
+    proyecto
+});
 
 }
     default:
@@ -204,32 +204,7 @@ case "buscar-proyecto-creado": {
 
 }; // cierre de export default
 
-async function buscarProyectoCreado(env) {
 
-    const lista = await env.EBOOKS.list({
-        prefix: "proyectos/"
-    });
-
-    for (const archivo of lista.objects) {
-
-        if (!archivo.key.endsWith("proyecto.json")) {
-            continue;
-        }
-
-        const proyecto = await cargarJSON(
-            env,
-            archivo.key
-        );
-
-        if (proyecto && proyecto.estado === "creado") {
-            return proyecto;
-        }
-
-    }
-
-    return null;
-
-}
 // ====================================
 // GEMINI
 // =====================================
@@ -1327,6 +1302,32 @@ async function cargarJSON(env, ruta) {
     }
 
     return await archivo.json();
+
+}
+async function buscarProyectoCreado(env) {
+
+    const lista = await env.EBOOKS.list({
+        prefix: "proyectos/"
+    });
+
+    for (const archivo of lista.objects) {
+
+        if (!archivo.key.endsWith("proyecto.json")) {
+            continue;
+        }
+
+        const proyecto = await cargarJSON(
+            env,
+            archivo.key
+        );
+
+        if (proyecto && proyecto.estado === "creado") {
+            return proyecto;
+        }
+
+    }
+
+    return null;
 
 }
 //=====================================================
