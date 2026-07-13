@@ -1994,8 +1994,6 @@ async function generarIntroduccion() {
         }
 limpiarMonitor();
 await verificarProyecto();
-restaurarInterfaz();
-await verificarProyecto();
     } catch (error) {
 
         console.error(error);
