@@ -1690,7 +1690,11 @@ const btn = document.getElementById("btnPlan");
 btn.classList.add("completo");
 btn.innerHTML = "✅ Plan generado";
 btn.disabled = true;
-await verificarProyecto();
+limpiarMonitores();
+
+    await verificarProyecto();
+
+    return;
     } catch (error) {
 
         console.error(error);
@@ -1728,8 +1732,11 @@ async function generarIndice() {
 btn.classList.add("completo");
 btn.innerHTML = "✅ Índice generado";
 btn.disabled = true;
+limpiarMonitores();
 
-            await verificarProyecto();
+    await verificarProyecto();
+
+   
 
         } else {
 
