@@ -1311,11 +1311,7 @@ async function verificarProyecto() {
         });
 
         const datos = await respuesta.json();
-monitor("📦 proyectoCreado:");
-monitor(JSON.stringify(datos.proyectoCreado));
 
-monitor("📦 proyectoProduccion:");
-monitor(JSON.stringify(datos.proyectoProduccion));
         //------------------------------------
         // VARIABLES LOCALES
         //------------------------------------
