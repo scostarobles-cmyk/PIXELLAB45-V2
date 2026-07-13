@@ -1343,13 +1343,16 @@ async function verificarProyecto() {
 
         if (proyectoProduccion) {
 
-            monitor("⚙️ Proyecto en producción.");
-            monitor("🆔 ID: " + proyectoProduccion.projectId);
-            monitor("📖 " + proyectoProduccion.titulo);
+    proyectoActual = proyectoProduccion;
+    projectIdActual = proyectoActual.projectId;
 
-            return;
+    monitor("⚙️ Proyecto en producción cargado.");
+    monitor("🆔 ID: " + projectIdActual);
+    monitor("📖 " + proyectoActual.titulo);
 
-        }
+    return;
+
+}
 
 
         //------------------------------------
