@@ -1423,6 +1423,30 @@ if (proyectoActual.estructura.legales === "creado") {
     return;
 
 }
+//------------------------------------
+// INTRODUCCIÓN
+//------------------------------------
+
+if (proyectoActual.estructura.introduccion === "creado") {
+
+    actualizarIndicador("estadoIntro", "verde");
+    botonVerde("btnIntroduccion");
+    deshabilitarBoton("btnIntroduccion");
+
+    monitor("✅ Introducción generada.");
+
+} else {
+
+    actualizarIndicador("estadoIntro", "azul");
+    botonAzul("btnIntroduccion");
+    habilitarBoton("btnIntroduccion");
+
+    monitor("👉 Falta generar la introducción.");
+    monitor("➡️ Próximo paso: Generar introducción.");
+
+    return;
+
+}
 
             return;
 
