@@ -1322,6 +1322,7 @@ async function verificarProyecto() {
 
 
         const datos = await respuesta.json();
+limpiarMonitor();
 
         const proyectoCreado = datos.proyectoCreado;
         const proyectoProduccion = datos.proyectoProduccion;
@@ -2021,6 +2022,8 @@ await verificarProyecto();
 async function generarCapitulos() {
 
     monitor("📖 Generando capítulo...");
+    botonAmarillo("btnCapitulos");
+actualizarIndicador("estadoCapitulos", "amarillo");
 
     try {
 
@@ -2376,18 +2379,20 @@ async function generarConclusion() {
 
         monitor("✅ Conclusión creada correctamente.");
 
-        if (typeof actualizarEstadoProyecto === "function") {
+if (typeof actualizarEstadoProyecto === "function") {
 
-            actualizarEstadoProyecto(
-                "conclusion",
-                "creado"
-            );
+    actualizarEstadoProyecto(
+        "conclusion",
+        "creado"
+    );
 
-        }
-//        limpiarMonitor() ;
-botonAmarillo(btnConclusion);
-        await verificarProyecto();
-        restaurarInterfaz();
+}
+
+botonVerde("btnConclusion");
+actualizarIndicador("estadoConclusion", "verde");
+
+await verificarProyecto();
+        
     } catch (error) {
 
         console.error(error);
