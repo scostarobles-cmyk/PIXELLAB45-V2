@@ -1170,8 +1170,6 @@ async function crearProyecto() {
 projectIdActual = proyecto.projectId;
 
     monitor.innerHTML += "✅ Proyecto creado correctamente.<br>";
-    monitor.innerHTML += "<pre>" + JSON.stringify(proyecto, null, 2) + "</pre>";
-
     estado.innerHTML = "🟢 Proyecto creado";
 
 btn.classList.add("completo");
@@ -1890,7 +1888,8 @@ monitor("🎉 Sistema listo para crear un nuevo Ebook.");
 
 function limpiarMonitor() {
 
-    document.getElementById("monitor").innerHTML = "";
+    document.getElementById("monitorBotonera").innerHTML = "";
+    document.getElementById("monitorIA").innerHTML = "";
 
 }
 
