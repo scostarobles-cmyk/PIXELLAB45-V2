@@ -1587,6 +1587,7 @@ if (proyectoActual.estructura.capitulos === "creado") {
 
 }
 window.addEventListener("load", async () => {
+	alert("entro a ver si hay creado");
 	const existeCreado = await verificarProyectoCreado();
 
 if (!existeCreado) {
