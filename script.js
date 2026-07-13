@@ -1317,20 +1317,26 @@ async function verificarProyecto() {
         const proyectoProduccion = datos.proyectoProduccion;
 
 
-        //------------------------------------
-        // PROYECTO CREADO
-        //------------------------------------
+     //------------------------------------
+// PROYECTO CREADO
+//------------------------------------
 
-        if (proyectoCreado) {
+if (proyectoCreado) {
 
-            monitor("✅ Proyecto creado exitosamente.");
-            monitor("🆔 ID: " + proyectoCreado.projectId);
-            monitor("📖 " + proyectoCreado.titulo);
+    monitor("✅ Proyecto finalizado disponible.");
+    monitor("📖 " + proyectoCreado.titulo);
+    monitor("🆔 ID: " + proyectoCreado.projectId);
 
-            return;
+    if (proyectoCreado.fecha) {
 
-        }
+        monitor("📅 Fecha: " + proyectoCreado.fecha);
 
+    }
+
+    monitor("➡️ Abra este Ebook en el editor.");
+    monitor("🆕 O genere un proyecto nuevo.");
+
+}
 
         //------------------------------------
         // PROYECTO PRODUCCIÓN
@@ -1566,11 +1572,15 @@ if (proyectoActual.estructura.conclusion === "creado") {
 
 
         //------------------------------------
-        // NO EXISTE NINGÚN PROYECTO
-        //------------------------------------
+// NO EXISTE NINGÚN PROYECTO
+//------------------------------------
 
-        monitor("🆕 No existe ningún proyecto.");
-        monitor("👉 Cree un proyecto para comenzar.");
+if (!proyectoCreado && !proyectoProduccion) {
+
+    monitor("🆕 No existe ningún proyecto.");
+    monitor("👉 Cree un proyecto para comenzar.");
+
+}
 
 
     } catch (error) {
