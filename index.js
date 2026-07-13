@@ -1677,14 +1677,18 @@ Format:
 async function generarLegales(env) {
 
     // Buscar proyecto activo
-    const proyecto = await buscarProyectoActivo(env);
+    const resultado = await buscarProyectoActivo(env);
 
-    if (!proyecto) {
-        return {
-            ok: false,
-            error: "No existe un proyecto activo."
-        };
-    }
+const proyecto = resultado.proyectoProduccion;
+
+if (!proyecto) {
+
+    return {
+        ok: false,
+        error: "No existe un proyecto activo."
+    };
+
+}
 
 
     // Generar prompt maestro usando generador de prompts
@@ -1794,14 +1798,18 @@ Format:
 async function generarIntroduccion(env) {
 
     // Buscar proyecto activo
-    const proyecto = await buscarProyectoActivo(env);
+    const resultado = await buscarProyectoActivo(env);
 
-    if (!proyecto) {
-        return {
-            ok: false,
-            error: "No existe un proyecto activo."
-        };
-    }
+const proyecto = resultado.proyectoProduccion;
+
+if (!proyecto) {
+
+    return {
+        ok: false,
+        error: "No existe un proyecto activo."
+    };
+
+}
 
 
     // Generar prompt maestro usando generador de prompts
@@ -1908,14 +1916,18 @@ async function generarCapitulo(env) {
 
     // Buscar proyecto activo
 
-    const proyecto = await buscarProyectoActivo(env);
+    const resultado = await buscarProyectoActivo(env);
 
-    if (!proyecto) {
-        return {
-            ok: false,
-            error: "No existe un proyecto activo."
-        };
-    }
+const proyecto = resultado.proyectoProduccion;
+
+if (!proyecto) {
+
+    return {
+        ok: false,
+        error: "No existe un proyecto activo."
+    };
+
+}
 
 
     // Cargar plan
@@ -2277,14 +2289,18 @@ Return EXACTLY this structure:
 async function generarConclusion(env) {
 
     // Buscar proyecto activo
-    const proyecto = await buscarProyectoActivo(env);
+    const resultado = await buscarProyectoActivo(env);
 
-    if (!proyecto) {
-        return {
-            ok: false,
-            error: "No existe un proyecto activo."
-        };
-    }
+const proyecto = resultado.proyectoProduccion;
+
+if (!proyecto) {
+
+    return {
+        ok: false,
+        error: "No existe un proyecto activo."
+    };
+
+}
 
 
     // Generar prompt maestro
