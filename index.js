@@ -130,14 +130,15 @@ try {
 
     case "verificar-proyecto": {
 
-      const proyecto = await buscarProyectoActivo(env);
+    const resultado = await buscarProyectoActivo(env);
 
-      return json({
-        ok: true,
-        proyecto: proyecto
-      });
+    return json({
+        ok: resultado !== null,
+        proyecto: resultado?.proyecto || null,
+        creado: resultado?.creado || false
+    });
 
-    }
+}
 
 case "generar-plan": {
 
@@ -170,17 +171,7 @@ case "generar-conclusion": {
 
 }
 
-case "buscar-proyecto-creado": {
 
-    const proyecto = await buscarProyectoCreado(env);
-
-    return Response.json({
-        ok: true,
-        proyecto,
-        debug: proyecto?.estado
-    });
-
-}
     default:
 
       return json({
@@ -1348,25 +1339,45 @@ async function buscarProyectoActivo(env) {
         prefix: "proyectos/"
     });
 
+    let proyectoCreado = null;
+
     for (const archivo of lista.objects) {
 
         if (!archivo.key.endsWith("proyecto.json")) {
             continue;
         }
 
-        const proyecto = await cargarJSON(
-            env,
-            archivo.key
-        );
+        const proyecto = await cargarJSON(env, archivo.key);
 
-        if (proyecto && proyecto.estado === "produccion") {
-            return proyecto;
+        if (!proyecto) {
+            continue;
         }
+
+        // Si hay uno en producción, tiene prioridad
+        if (proyecto.estado === "produccion") {
+            return {
+                proyecto,
+                creado: false
+            };
+        }
+
+        // Guardamos el creado por si no hay uno en producción
+        if (proyecto.estado === "creado") {
+            proyectoCreado = proyecto;
+        }
+
+    }
+
+    if (proyectoCreado) {
+        return {
+            proyecto: proyectoCreado,
+            creado: true
+        };
     }
 
     return null;
-}
 
+}
 //=====================================================
 // FUNCIÓN: generarPlan2()
 // Descripción:

@@ -1313,18 +1313,21 @@ async function verificarProyecto() {
  
         const datos = await respuesta.json();
 
-if (!datos.ok || !datos.proyecto) {
+// ← AQUÍ VA
 
-    monitor("📁 No existe un proyecto.", true);
-    monitor("👉 Cree un proyecto.");
+if (datos.creado) {
+
+    monitor("✅ Proyecto creado exitosamente.");
+    monitor("🆔 " + datos.proyecto.projectId);
+    monitor("👉 Cree un nuevo proyecto para continuar.");
 
     return;
 
 }
 
-// Proyecto encontrado
-
+// Sigue el flujo normal
 proyectoActual = datos.proyecto;
+
 projectIdActual = proyectoActual.projectId;
 
 monitor("✅ Proyecto encontrado.");
@@ -2360,43 +2363,7 @@ async function generarConclusion() {
 
 }
 
-async function verificarProyectoCreado() {
 
-    try {
-
-        const respuesta = await fetch(WORKER_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                action: "buscar-proyecto-creado"
-            })
-        });
-
-        const datos = await respuesta.json();
-
-        monitor(JSON.stringify(datos));
-
-        if (!datos.ok || !datos.proyecto) {
-            monitor("❌ No encontró proyecto creado.");
-            return false;
-        }
-
-        monitor("✅ Proyecto creado exitosamente.");
-        monitor("🆔 " + datos.proyecto.projectId);
-        monitor("👉 Cree un nuevo proyecto para continuar.");
-
-        return true;
-
-    } catch (error) {
-
-        monitor(error.message);
-        return false;
-
-    }
-
-}
 
 // MENÚ MÓVIL
 function toggleMenu() {
