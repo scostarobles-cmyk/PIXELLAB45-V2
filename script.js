@@ -1176,7 +1176,12 @@ projectIdActual = proyecto.projectId;
 
 btn.classList.add("completo");
 btn.innerHTML = "✅ Proyecto creado";
+// terminó correctamente
+
+limpiarMonitor();
+
 await verificarProyecto();
+
 
   }
   catch (err) {
