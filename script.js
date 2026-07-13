@@ -1376,15 +1376,29 @@ if (proyectoActual.estructura.plan === "creado") {
 
 }
 
-
-    
-
-
-    return;
-
 }
 
+//------------------------------------
+// INDICE
+//------------------------------------
 
+if (proyectoActual.estructura.indice === "creado") {
+
+    actualizarIndicador("estadoIndice", "verde");
+    botonVerde("btnIndice");
+    deshabilitarBoton("btnIndice");
+
+    monitor("✅ Índice generado.");
+
+} else {
+
+    actualizarIndicador("estadoIndice", "azul");
+    botonAzul("btnIndice");
+    habilitarBoton("btnIndice");
+
+    monitor("👉 Falta generar el índice.");
+
+}
         //------------------------------------
         // NO EXISTE NINGÚN PROYECTO
         //------------------------------------
