@@ -1322,7 +1322,8 @@ async function buscarProyectoCreado(env) {
             archivo.key
         );
 
-        if (proyecto && proyecto.estado === "creado") {
+        // PRUEBA: devolver el primer proyecto encontrado
+        if (proyecto) {
             return proyecto;
         }
 
