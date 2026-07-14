@@ -2546,7 +2546,7 @@ async function cargarBibliotecaEditorial() {
             "Editorial",
             "Respuesta recibida del Worker"
         );
-         return;
+       
 
         if (!datos.ok) {
 
@@ -2601,14 +2601,16 @@ script.js
 =================================================
 */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
+window.addEventListener("load", async () => {
 
-        cargarBibliotecaEditorial();
+    monitorPIXELLAB(
+        "Editorial",
+        "Entró al window load biblioteca"
+    );
 
-    }
-);
+    await cargarBibliotecaEditorial();
+
+});
 
 /*
 =================================================
