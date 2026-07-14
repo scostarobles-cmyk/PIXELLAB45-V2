@@ -1163,17 +1163,16 @@ async function guardarImagen(data, env) {
 
   try {
 
-    const categoria = data.categoria || "imagenes";
     const base64 = data.imagen;
 
     if (!base64) {
       return new Response(JSON.stringify({
-  ok: false,
-  error: "Imagen no recibida"
-}), {
-  status: 400,
-  headers: CORS_HEADERS
-});
+        ok: false,
+        error: "Imagen no recibida"
+      }), {
+        status: 400,
+        headers: CORS_HEADERS
+      });
     }
 
     // Base64 → bytes
@@ -1182,11 +1181,32 @@ async function guardarImagen(data, env) {
       c => c.charCodeAt(0)
     );
 
+    let ruta;
+
     const nombre =
       `${Date.now()}-${crypto.randomUUID()}.png`;
 
+
+    // Imagen de portada editorial
+    if (data.tipo === "portada" && data.projectId) {
+
+      ruta =
+      `proyectos/${data.projectId}/portada.png`;
+
+    } else {
+
+      // comportamiento actual AI Lab
+      const categoria =
+        data.categoria || "imagenes";
+
+      ruta =
+      `${categoria}/${nombre}`;
+
+    }
+
+
     await env.IMAGES.put(
-      `${categoria}/${nombre}`,
+      ruta,
       bytes,
       {
         httpMetadata: {
@@ -1195,22 +1215,24 @@ async function guardarImagen(data, env) {
       }
     );
 
+
     return new Response(JSON.stringify({
-  ok: true,
-  nombre
-}), {
-  headers: CORS_HEADERS
-});
+      ok: true,
+      nombre: ruta
+    }), {
+      headers: CORS_HEADERS
+    });
+
 
   } catch (err) {
 
     return new Response(JSON.stringify({
-  ok: false,
-  error: err.message
-}), {
-  status: 500,
-  headers: CORS_HEADERS
-});
+      ok: false,
+      error: err.message
+    }), {
+      status: 500,
+      headers: CORS_HEADERS
+    });
 
   }
 
