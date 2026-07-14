@@ -1675,3 +1675,95 @@ order:-1;
 
 
 } 
+/* ===================================== */
+/* PIXELLAB EDITORIAL - MÓVIL */
+/* ===================================== */
+
+@media (max-width: 900px) {
+
+    .editor-workspace {
+
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+
+    }
+
+    /* Oculta los paneles laterales */
+
+    .editor-panel {
+
+        display: none;
+
+    }
+
+    /* Área de edición */
+
+    .editor-canvas {
+
+        width: 100%;
+        min-height: auto;
+        padding: 15px;
+        order: 1;
+
+    }
+
+    .pagina-editor {
+
+        width: 100%;
+        min-height: 70vh;
+        margin: 0;
+
+    }
+
+    /* Oculta solo el título principal y el subtítulo del Workspace */
+
+    #editorTrabajo > .ai-lab > h2,
+    #editorTrabajo > .ai-lab > .ai-subtitle {
+
+        display: none;
+
+    }
+
+    /* Barra inferior */
+
+    .editor-mobile-toolbar {
+
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        display: flex;
+
+        justify-content: space-around;
+        align-items: center;
+
+        gap: 10px;
+
+        padding: 12px 15px;
+
+        background: #05070d;
+
+        border-top: 1px solid #00d9ff;
+
+        box-shadow: 0 -5px 20px rgba(0,217,255,.30);
+
+        z-index: 9999;
+
+    }
+
+    .editor-mobile-toolbar .boton-accion {
+
+        flex: 1;
+        margin: 0;
+
+    }
+
+    #editorTrabajo {
+
+        padding-bottom: 90px;
+
+    }
+
+}
