@@ -2405,7 +2405,92 @@ await verificarProyecto();
 
 }
 
+/* ==========================================================
+   PIXELLAB Monitor v1.0
+========================================================== */
 
+function limpiarMonitorPIXELLAB(){
+
+    const monitor =
+        document.getElementById("monitorPIXELLAB");
+
+    if(!monitor) return;
+
+    monitor.innerHTML="";
+
+}
+function monitorPIXELLAB(
+    modulo,
+    nivel,
+    operacion,
+    mensaje
+){
+
+    const monitor =
+        document.getElementById("monitorPIXELLAB");
+
+    if(!monitor) return;
+
+    const hora =
+        new Date().toLocaleTimeString();
+
+    monitor.innerHTML += `
+
+<div class="monitor-evento">
+
+    <div class="monitor-header">
+
+        <span>${hora}</span>
+
+        <span class="monitor-modulo">
+
+            ${modulo}
+
+        </span>
+
+    </div>
+
+    <div class="monitor-operacion">
+
+        ${nivel} ${operacion}
+
+    </div>
+
+    <div class="monitor-mensaje">
+
+        ${mensaje}
+
+    </div>
+
+</div>
+
+`;
+
+    monitor.scrollTop =
+        monitor.scrollHeight;
+
+}
+
+monitorPIXELLAB(
+    "Sistema",
+    "ℹ️",
+    "Inicio",
+    "PIXELLAB Monitor inicializado."
+);
+
+monitorPIXELLAB(
+    "Editorial",
+    "🔄",
+    "Biblioteca",
+    "Buscando proyectos..."
+);
+
+monitorPIXELLAB(
+    "Editorial",
+    "✅",
+    "Biblioteca",
+    "Monitor funcionando correctamente."
+);
 
 // MENÚ MÓVIL
 function toggleMenu() {
