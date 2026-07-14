@@ -2493,26 +2493,19 @@ function monitorPIXELLAB(
 }
 /*
 =================================================
-PIXELLAB45 EDITORIAL
+PIXELLAB45 FRONTEND
 
 Función:
 cargarBibliotecaEditorial()
 
 Descripción:
-- Inicializa la Biblioteca Editorial.
-- Envía eventos al Monitor PIXELLAB.
-- Consulta al Worker los proyectos disponibles.
-- Recibe proyectos desde R2 EBOOKS.
-- Envía los datos al generador de tarjetas.
+- Solicita la biblioteca editorial al Worker.
+- Envía action para entrar al case.
+- Recibe proyectos.
+- Genera tarjetas en la galería editorial.
 
-Flujo:
-Frontend
-   ↓
-Worker
-   ↓
-case biblioteca-editorial
-   ↓
-R2 EBOOKS
+Archivo:
+script.js
 
 =================================================
 */
@@ -2521,30 +2514,39 @@ async function cargarBibliotecaEditorial() {
 
 
     monitorPIXELLAB(
-        "🔄 Editorial",
-        "Inicializando Biblioteca..."
+        "Editorial",
+        "Cargando Biblioteca..."
     );
 
 
     try {
 
 
-        monitorPIXELLAB(
-            "🔄 Editorial",
-            "Buscando proyectos..."
-        );
+        const respuesta = await fetch(WORKER_URL, {
 
+            method: "POST",
 
-        const respuesta = await fetch(
-            `${WORKER_URL}?tipo=biblioteca-editorial`
-        );
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+
+                action: "biblioteca-editorial"
+
+            })
+
+        });
 
 
         const datos = await respuesta.json();
-monitorPIXELLAB(
-    "Editorial",
-    "Datos recibidos: " + JSON.stringify(datos)
-);
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "Respuesta recibida del Worker"
+        );
+
 
         if (!datos.ok) {
 
@@ -2557,7 +2559,8 @@ monitorPIXELLAB(
 
         monitorPIXELLAB(
             "Editorial",
-            `${datos.proyectos.length} proyectos encontrados.`
+            datos.proyectos.length +
+            " proyectos encontrados."
         );
 
 
@@ -2576,7 +2579,7 @@ monitorPIXELLAB(
 
 
         monitorPIXELLAB(
-            "Editorial",
+            "Error",
             error.message
         );
 
@@ -2584,7 +2587,6 @@ monitorPIXELLAB(
     }
 
 }
-
 /*
 =================================================
 PIXELLAB45 FRONTEND
