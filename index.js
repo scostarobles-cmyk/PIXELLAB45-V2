@@ -44,10 +44,7 @@ export default {
 
     const tipo = data.action || "";
     
-return json({
-    recibido: data.action,
-    tipo: tipo
-});
+
 try {
 
   switch (tipo) {
@@ -104,12 +101,13 @@ try {
     }
     case "biblioteca-editorial": {
 
-    return json({
-        ok: true,
-        prueba: "ENTRO AL CASE biblioteca-editorial"
-    });
+    const resultado = await cargarBibliotecaEditorial(env);
+
+    return json(resultado);
 
 }
+
+
  
     case "cargar-json": {
 
