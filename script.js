@@ -1,6 +1,8 @@
 
 monitorPIXELLAB(
     "Sistema",
+    "info",
+    "Carga",
     "script.js iniciado"
 );
 //Variable global worker 
@@ -2612,9 +2614,11 @@ script.js
 window.addEventListener("load", async () => {
 
     monitorPIXELLAB(
-        "Editorial",
-        "Entró al window load biblioteca"
-    );
+    "Editorial",
+    "proceso",
+    "Inicio",
+    "Entró al window load biblioteca"
+);
 
     await cargarBibliotecaEditorial();
 
