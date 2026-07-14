@@ -2587,28 +2587,7 @@ monitorPIXELLAB(
     }
 
 }
-/*
-=================================================
-PIXELLAB45 FRONTEND
-Inicio Biblioteca Editorial
 
-Descripción:
-Se ejecuta cuando la página termina de cargar.
-Inicia la carga de proyectos editoriales.
-
-Archivo:
-script.js
-=================================================
-*/
-
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-
-        cargarBibliotecaEditorial();
-
-    }
-);
 
 /*
 =================================================
