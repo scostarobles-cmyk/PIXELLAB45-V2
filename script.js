@@ -2634,7 +2634,10 @@ function mostrarProyectosEditorial(proyectos) {
 
     contenedor.innerHTML = "";
 
-
+monitorPIXELLAB(
+    "Editorial",
+    "Datos recibidos: " + JSON.stringify(proyectos)
+);
     proyectos.forEach(proyecto => {
 
 
