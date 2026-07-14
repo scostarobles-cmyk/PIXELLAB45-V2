@@ -1621,7 +1621,7 @@ window.addEventListener("load", async () => {
     monitor("🚀 Entrando a verificar");
 
     await verificarProyecto();
-    //limpiarMonitor();
+    await cargarBibliotecaEditorial();
 
 });
 
@@ -2491,27 +2491,211 @@ function monitorPIXELLAB(
         monitor.scrollHeight;
 
 }
+/*
+=================================================
+PIXELLAB45 EDITORIAL
 
-monitorPIXELLAB(
-    "Editorial",
-    "ok",
-    "Biblioteca",
-    "12 proyectos encontrados."
+Función:
+cargarBibliotecaEditorial()
+
+Descripción:
+- Inicializa la Biblioteca Editorial.
+- Envía eventos al Monitor PIXELLAB.
+- Consulta al Worker los proyectos disponibles.
+- Recibe proyectos desde R2 EBOOKS.
+- Envía los datos al generador de tarjetas.
+
+Flujo:
+Frontend
+   ↓
+Worker
+   ↓
+case biblioteca-editorial
+   ↓
+R2 EBOOKS
+
+=================================================
+*/
+
+async function cargarBibliotecaEditorial() {
+
+
+    monitorPIXELLAB(
+        "🔄 Editorial",
+        "Inicializando Biblioteca..."
+    );
+
+
+    try {
+
+
+        monitorPIXELLAB(
+            "🔄 Editorial",
+            "Buscando proyectos..."
+        );
+
+
+        const respuesta = await fetch(
+            `${WORKER_URL}?tipo=biblioteca-editorial`
+        );
+
+
+        const datos = await respuesta.json();
+
+
+        if (!datos.ok) {
+
+            throw new Error(
+                "Error cargando biblioteca"
+            );
+
+        }
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            `${datos.proyectos.length} proyectos encontrados.`
+        );
+
+
+        mostrarProyectosEditorial(
+            datos.proyectos
+        );
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "Biblioteca lista."
+        );
+
+
+    } catch(error) {
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            error.message
+        );
+
+
+    }
+
+}
+
+/*
+=================================================
+PIXELLAB45 FRONTEND
+Inicio Biblioteca Editorial
+
+Descripción:
+Se ejecuta cuando la página termina de cargar.
+Inicia la carga de proyectos editoriales.
+
+Archivo:
+script.js
+=================================================
+*/
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        cargarBibliotecaEditorial();
+
+    }
 );
 
-monitorPIXELLAB(
-    "Editorial",
-    "proceso",
-    "Biblioteca",
-    "Buscando proyectos..."
-);
+/*
+=================================================
+PIXELLAB45 FRONTEND
+Módulo: Biblioteca Editorial
 
-monitorPIXELLAB(
-    "Editorial",
-    "error",
-    "Abrir proyecto",
-    "No existe proyecto.json"
-);
+Función:
+cargarBibliotecaEditorial()
+
+Descripción:
+Carga la biblioteca desde el Worker
+y actualiza la interfaz del usuario.
+
+Archivo:
+script.js
+
+=================================================
+*/
+
+function mostrarProyectosEditorial(proyectos) {
+
+
+    const contenedor =
+        document.getElementById(
+            "bibliotecaEditorial"
+        );
+
+
+    contenedor.innerHTML = "";
+
+
+    proyectos.forEach(proyecto => {
+
+
+        const tarjeta =
+        document.createElement(
+            "article"
+        );
+
+
+        tarjeta.className =
+            "editorial-card";
+
+
+        tarjeta.innerHTML = `
+
+        <div class="editorial-cover">
+
+        </div>
+
+
+        <div class="editorial-info">
+
+
+        <h3>
+        ${proyecto.titulo}
+        </h3>
+
+
+        <p>
+        Ebook • ${proyecto.autor}
+        </p>
+
+
+        <span>
+        PIXELLAB Editorial
+        </span>
+
+
+        <button
+        class="boton-accion"
+        onclick="seleccionarProyectoEditorial('${proyecto.projectId}')">
+
+        ✏️ Editar
+
+        </button>
+
+
+        </div>
+
+        `;
+
+
+        contenedor.appendChild(
+            tarjeta
+        );
+
+
+    });
+
+
+}
 
 // MENÚ MÓVIL
 function toggleMenu() {

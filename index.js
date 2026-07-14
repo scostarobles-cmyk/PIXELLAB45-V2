@@ -99,7 +99,13 @@ try {
       });
 
     }
-    
+    case "biblioteca-editorial": {
+
+    const resultado = await cargarBibliotecaEditorial(env);
+
+    return json(resultado);
+
+}
  
     case "cargar-json": {
 
@@ -2406,6 +2412,111 @@ Format:
     return {
         ok: true,
         conclusion
+    };
+
+}
+/* ==========================================================
+   BIBLIOTECA EDITORIAL
+   ----------------------------------------------------------
+   Recorre todos los proyectos almacenados en R2 y devuelve
+   únicamente los proyectos válidos con estado "creado".
+
+   Salida:
+   {
+       ok: true,
+       proyectos: [
+           {
+               projectId,
+               titulo,
+               autor,
+               estado,
+               fecha,
+               directorio
+           }
+       ]
+   }
+
+   Utiliza:
+   - env.EBOOKS.list()
+   - cargarJSON()
+
+   Próximas mejoras:
+   - Monitor Editorial
+   - Estadísticas
+   - Códigos de error
+   - Portadas automáticas
+========================================================== */
+
+async function cargarBibliotecaEditorial(env) {
+
+    const biblioteca = [];
+
+    const lista = await env.EBOOKS.list({
+        prefix: "proyectos/"
+    });
+
+    for (const archivo of lista.objects) {
+
+        if (!archivo.key.endsWith("proyecto.json")) {
+            continue;
+        }
+
+        try {
+
+            const proyecto = await cargarJSON(
+                env,
+                archivo.key
+            );
+
+            if (!proyecto) {
+                continue;
+            }
+
+            if (proyecto.estado !== "creado") {
+                continue;
+            }
+
+            biblioteca.push({
+
+                projectId: proyecto.projectId,
+
+                titulo: proyecto.titulo,
+
+                autor: proyecto.autor,
+
+                estado: proyecto.estado,
+
+                fecha: proyecto.fecha,
+
+                directorio: archivo.key.replace(
+                    "proyecto.json",
+                    ""
+                )
+
+            });
+
+        } catch (err) {
+
+            console.error(
+                "Proyecto omitido:",
+                archivo.key,
+                err
+            );
+
+        }
+
+    }
+
+    biblioteca.sort((a, b) =>
+        new Date(b.fecha) - new Date(a.fecha)
+    );
+
+    return {
+
+        ok: true,
+
+        proyectos: biblioteca
+
     };
 
 }

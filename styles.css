@@ -1767,3 +1767,89 @@ order:-1;
     }
 
 }
+/* ==========================================================
+   PIXELLAB Monitor
+========================================================== */
+
+.monitor-evento{
+
+    border-left:4px solid #00d9ff;
+
+    background:#111827;
+
+    border-radius:8px;
+
+    padding:12px;
+
+    margin-bottom:12px;
+
+}
+
+.monitor-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-bottom:8px;
+
+    font-size:12px;
+
+    color:#9ca3af;
+
+}
+
+.monitor-modulo{
+
+    color:#00d9ff;
+
+    font-weight:bold;
+
+}
+
+.monitor-operacion{
+
+    font-weight:bold;
+
+    color:white;
+
+    margin-bottom:6px;
+
+}
+
+.monitor-mensaje{
+
+    color:#d1d5db;
+
+    line-height:1.5;
+
+}
+.monitor-info{
+
+    border-left-color:#3b82f6;
+
+}
+
+.monitor-proceso{
+
+    border-left-color:#00d9ff;
+
+}
+
+.monitor-ok{
+
+    border-left-color:#22c55e;
+
+}
+
+.monitor-aviso{
+
+    border-left-color:#facc15;
+
+}
+
+.monitor-error{
+
+    border-left-color:#ef4444;
+
+}
