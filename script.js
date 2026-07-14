@@ -2518,14 +2518,16 @@ script.js
 async function cargarBibliotecaEditorial() {
 
 
-    monitorPIXELLAB(
-        "Editorial",
-        "Cargando Biblioteca..."
-    );
+    
 
 
     try {
-
+monitorPIXELLAB(
+    "Editorial",
+    "proceso",
+    "Worker",
+    "Enviando solicitud biblioteca-editorial..."
+);
 
         const respuesta = await fetch(WORKER_URL, {
 
@@ -2548,10 +2550,11 @@ async function cargarBibliotecaEditorial() {
 
 
         monitorPIXELLAB(
-            "Editorial",
-            "Respuesta recibida del Worker"
-        );
-       
+    "Editorial",
+    "info",
+    "Respuesta",
+    JSON.stringify(datos)
+);
 
         if (!datos.ok) {
 
