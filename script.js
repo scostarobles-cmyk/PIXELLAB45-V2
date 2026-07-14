@@ -2568,10 +2568,12 @@ monitorPIXELLAB(
 
 
         monitorPIXELLAB(
-            "Editorial",
-            datos.proyectos.length +
-            " proyectos encontrados."
-        );
+    "Editorial",
+    "info",
+    "Biblioteca",
+    datos.proyectos.length +
+    " proyectos encontrados."
+);
 
 
         mostrarProyectosEditorial(

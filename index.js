@@ -2457,6 +2457,12 @@ async function cargarBibliotecaEditorial(env) {
     });
 
     for (const archivo of lista.objects) {
+    	const rutaPortada =
+    `proyectos/${proyecto.projectId}/portada.png`;
+
+const portada = await env.IMAGES.head(
+    rutaPortada
+);
 
         if (!archivo.key.endsWith("proyecto.json")) {
             continue;
@@ -2479,22 +2485,25 @@ async function cargarBibliotecaEditorial(env) {
 
             biblioteca.push({
 
-                projectId: proyecto.projectId,
+    projectId: proyecto.projectId,
 
-                titulo: proyecto.titulo,
+    titulo: proyecto.titulo,
 
-                autor: proyecto.autor,
+    autor: proyecto.autor,
 
-                estado: proyecto.estado,
+    estado: proyecto.estado,
 
-                fecha: proyecto.fecha,
+    fecha: proyecto.fecha,
 
-                directorio: archivo.key.replace(
-                    "proyecto.json",
-                    ""
-                )
+    tienePortada: portada !== null,
 
-            });
+    portada: portada
+        ? `${env.R2_BASE_URL}/${rutaPortada}`
+        : null
+
+});
+
+            
 
         } catch (err) {
 
