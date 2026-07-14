@@ -2580,18 +2580,22 @@ monitorPIXELLAB(
 
 
         monitorPIXELLAB(
-            "Editorial",
-            "Biblioteca lista."
-        );
+    "Editorial",
+    "ok",
+    "Estado",
+    "Biblioteca lista."
+);
 
 
     } catch(error) {
 
 
         monitorPIXELLAB(
-            "Error",
-            error.message
-        );
+    "Editorial",
+    "error",
+    "Error",
+    error.message
+);
 
 
     }
