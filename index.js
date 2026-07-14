@@ -1168,12 +1168,12 @@ async function guardarImagen(data, env) {
 
     if (!base64) {
       return new Response(JSON.stringify({
-  ok: false,
-  error: "Imagen no recibida"
-}), {
-  status: 400,
-  headers: CORS_HEADERS
-});
+        ok: false,
+        error: "Imagen no recibida"
+      }), {
+        status: 400,
+        headers: CORS_HEADERS
+      });
     }
 
     // Base64 → bytes
@@ -1186,35 +1186,39 @@ async function guardarImagen(data, env) {
       `${Date.now()}-${crypto.randomUUID()}.png`;
 
     const ruta = data.ruta
-    ? data.ruta
-    : `${categoria}/${nombre}`;
+      ? data.ruta
+      : `${categoria}/${nombre}`;
 
 
-await env.IMAGES.put(
-  ruta,
-  bytes,
-  {
-    httpMetadata: {
-      contentType: "image/png"
-    }
-  }
-);
+    await env.IMAGES.put(
+      ruta,
+      bytes,
+      {
+        httpMetadata: {
+          contentType: "image/png"
+        }
+      }
+    );
+
 
     return new Response(JSON.stringify({
-  ok: true,
-  nombre,
-  ruta
-}), 
+      ok: true,
+      nombre,
+      ruta
+    }), {
+      headers: CORS_HEADERS
+    });
+
 
   } catch (err) {
 
     return new Response(JSON.stringify({
-  ok: false,
-  error: err.message
-}), {
-  status: 500,
-  headers: CORS_HEADERS
-});
+      ok: false,
+      error: err.message
+    }), {
+      status: 500,
+      headers: CORS_HEADERS
+    });
 
   }
 
