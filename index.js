@@ -103,7 +103,10 @@ try {
 
     const resultado = await cargarBibliotecaEditorial(env);
 
-    return json(resultado);
+    return json({
+        ok: true,
+        biblioteca: resultado
+    });
 
 }
  
