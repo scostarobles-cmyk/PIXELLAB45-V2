@@ -2419,6 +2419,10 @@ function limpiarMonitorPIXELLAB(){
     monitor.innerHTML="";
 
 }
+/* ==========================================================
+   PIXELLAB Monitor v1.1
+========================================================== */
+
 function monitorPIXELLAB(
     modulo,
     nivel,
@@ -2433,6 +2437,23 @@ function monitorPIXELLAB(
 
     const hora =
         new Date().toLocaleTimeString();
+
+    const niveles = {
+
+        info: "ℹ️",
+
+        proceso: "🔄",
+
+        ok: "✅",
+
+        aviso: "⚠️",
+
+        error: "❌"
+
+    };
+
+    const icono =
+        niveles[nivel] || "•";
 
     monitor.innerHTML += `
 
@@ -2452,7 +2473,7 @@ function monitorPIXELLAB(
 
     <div class="monitor-operacion">
 
-        ${nivel} ${operacion}
+        ${icono} ${operacion}
 
     </div>
 
@@ -2472,24 +2493,24 @@ function monitorPIXELLAB(
 }
 
 monitorPIXELLAB(
-    "Sistema",
-    "ℹ️",
-    "Inicio",
-    "PIXELLAB Monitor inicializado."
+    "Editorial",
+    "ok",
+    "Biblioteca",
+    "12 proyectos encontrados."
 );
 
 monitorPIXELLAB(
     "Editorial",
-    "🔄",
+    "proceso",
     "Biblioteca",
     "Buscando proyectos..."
 );
 
 monitorPIXELLAB(
     "Editorial",
-    "✅",
-    "Biblioteca",
-    "Monitor funcionando correctamente."
+    "error",
+    "Abrir proyecto",
+    "No existe proyecto.json"
 );
 
 // MENÚ MÓVIL
