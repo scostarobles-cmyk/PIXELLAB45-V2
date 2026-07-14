@@ -2541,7 +2541,10 @@ async function cargarBibliotecaEditorial() {
 
 
         const datos = await respuesta.json();
-
+monitorPIXELLAB(
+    "Editorial",
+    "Datos recibidos: " + JSON.stringify(datos)
+);
 
         if (!datos.ok) {
 
@@ -2634,10 +2637,7 @@ function mostrarProyectosEditorial(proyectos) {
 
     contenedor.innerHTML = "";
 
-monitorPIXELLAB(
-    "Editorial",
-    "Datos recibidos: " + JSON.stringify(proyectos)
-);
+
     proyectos.forEach(proyecto => {
 
 
