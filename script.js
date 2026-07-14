@@ -1621,7 +1621,7 @@ window.addEventListener("load", async () => {
     monitor("🚀 Entrando a verificar");
 
     await verificarProyecto();
-    await cargarBibliotecaEditorial();
+    
 
 });
 
@@ -2513,15 +2513,15 @@ script.js
 async function cargarBibliotecaEditorial() {
 
 
- 
-    try {
-
-monitorPIXELLAB(
+    monitorPIXELLAB(
         "Editorial",
-        "ENTRÓ cargarBibliotecaEditorial()"
+        "Cargando Biblioteca..."
     );
 
-    // resto de la función...
+
+    try {
+
+
         const respuesta = await fetch(WORKER_URL, {
 
             method: "POST",
@@ -2543,9 +2543,9 @@ monitorPIXELLAB(
 
 
         monitorPIXELLAB(
-    "Editorial",
-    datos.mensaje
-);
+            "Editorial",
+            "Respuesta recibida del Worker"
+        );
 
 
         if (!datos.ok) {
@@ -2587,7 +2587,28 @@ monitorPIXELLAB(
     }
 
 }
+/*
+=================================================
+PIXELLAB45 FRONTEND
+Inicio Biblioteca Editorial
 
+Descripción:
+Se ejecuta cuando la página termina de cargar.
+Inicia la carga de proyectos editoriales.
+
+Archivo:
+script.js
+=================================================
+*/
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        cargarBibliotecaEditorial();
+
+    }
+);
 
 /*
 =================================================
