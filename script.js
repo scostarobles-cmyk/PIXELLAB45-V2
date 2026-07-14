@@ -2513,12 +2513,7 @@ script.js
 async function cargarBibliotecaEditorial() {
 
 
-    monitorPIXELLAB(
-        "Editorial",
-        "Cargando Biblioteca..."
-    );
-
-
+ 
     try {
 
 
@@ -2543,9 +2538,9 @@ async function cargarBibliotecaEditorial() {
 
 
         monitorPIXELLAB(
-            "Editorial",
-            "Respuesta recibida del Worker"
-        );
+    "Editorial",
+    datos.mensaje
+);
 
 
         if (!datos.ok) {
