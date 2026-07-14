@@ -2546,7 +2546,7 @@ async function cargarBibliotecaEditorial() {
             "Editorial",
             "Respuesta recibida del Worker"
         );
-
+         return;
 
         if (!datos.ok) {
 
