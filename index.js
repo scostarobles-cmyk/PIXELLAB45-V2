@@ -44,7 +44,10 @@ export default {
 
     const tipo = data.action || "";
     
-
+return json({
+    recibido: data.action,
+    tipo: tipo
+});
 try {
 
   switch (tipo) {
