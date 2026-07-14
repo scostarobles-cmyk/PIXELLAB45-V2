@@ -2457,7 +2457,7 @@ function monitorPIXELLAB(
 
     monitor.innerHTML += `
 
-<div class="monitor-evento">
+<div class="monitor-evento monitor-${nivel}">
 
     <div class="monitor-header">
 
