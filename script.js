@@ -2516,7 +2516,12 @@ async function cargarBibliotecaEditorial() {
  
     try {
 
+monitorPIXELLAB(
+        "Editorial",
+        "ENTRÓ cargarBibliotecaEditorial()"
+    );
 
+    // resto de la función...
         const respuesta = await fetch(WORKER_URL, {
 
             method: "POST",
