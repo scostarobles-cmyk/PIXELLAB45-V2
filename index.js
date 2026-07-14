@@ -101,11 +101,9 @@ try {
     }
     case "biblioteca-editorial": {
 
-    const resultado = await cargarBibliotecaEditorial(env);
-
     return json({
         ok: true,
-        biblioteca: resultado
+        prueba: "ENTRO AL CASE biblioteca-editorial"
     });
 
 }
