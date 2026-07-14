@@ -986,7 +986,7 @@ if (!guardar.ok) {
 
 }
 
-async function generarImagenPuter(proyecto = null) { 
+async function generarImagenPuter( ) { 
 
   let prompt;
 let categoria;
