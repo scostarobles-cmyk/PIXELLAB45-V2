@@ -2525,29 +2525,8 @@ async function cargarGaleriaEditorial() {
             "Editorial",
             "proceso",
             "Inicio",
-            "Entró a cargar galería editorial"
+            "Solicitando lista de eBooks"
         );
-
-
-        const contenedor =
-            document.getElementById(
-                "bibliotecaEditorial"
-            );
-
-        if (contenedor) {
-
-            contenedor.innerHTML = "";
-
-        }
-
-
-        monitorPIXELLAB(
-            "Editorial",
-            "proceso",
-            "R2",
-            "Listando proyectos"
-        );
-
 
         const respuesta = await fetch(
             WORKER_URL,
@@ -2557,138 +2536,24 @@ async function cargarGaleriaEditorial() {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    action: "listar-proyectos"
+                    action: "listar-ebooks"
                 })
             }
         );
 
-
         const data = await respuesta.json();
 
-
-        const lista =
-            data.proyectos ||
-            data.archivos ||
-            data.objects ||
-            data.lista ||
-            [];
-
-
         monitorPIXELLAB(
             "Editorial",
             "estado",
-            "Listado recibido",
-            "Registros encontrados: " + lista.length
+            "Lista generada",
+            "Se encontraron " +
+            data.ebooks.length +
+            " registros."
         );
-
-
-        const proyectos = [];
-
-        let creados = 0;
-        let descartados = 0;
-
-
-        for (const item of lista) {
-
-
-            monitorPIXELLAB(
-                "Editorial",
-                "proceso",
-                "Leyendo proyecto",
-                item.key || item.ruta || item.nombre || "Proyecto"
-            );
-
-
-            const respuestaProyecto =
-                await fetch(
-                    WORKER_URL,
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            action: "leer-proyecto",
-                            ruta: item.key || item.ruta
-                        })
-                    }
-                );
-
-
-            const proyecto =
-                await respuestaProyecto.json();
-
-
-            if (proyecto.estado === "creado") {
-
-                proyectos.push(proyecto);
-                creados++;
-
-            } else {
-
-                descartados++;
-
-            }
-
-        }
-
-
-        monitorPIXELLAB(
-            "Editorial",
-            "estado",
-            "Filtro aplicado",
-            "Proyectos creados: " + creados
-        );
-
-
-        monitorPIXELLAB(
-            "Editorial",
-            "estado",
-            "Descartados",
-            "Otros estados: " + descartados
-        );
-
-
-        if (proyectos.length === 0) {
-
-            monitorPIXELLAB(
-                "Editorial",
-                "estado",
-                "Sin proyectos",
-                "No hay proyectos para editar"
-            );
-
-
-            if (contenedor) {
-
-                contenedor.innerHTML =
-                    "<p>No hay proyectos para editar.</p>";
-
-            }
-
-            return;
-
-        }
-
-
-        monitorPIXELLAB(
-            "Editorial",
-            "proceso",
-            "Render",
-            "Mostrando proyectos en la galería"
-        );
-
 
         mostrarProyectosEditorial(
-            proyectos
-        );
-
-
-        monitorPIXELLAB(
-            "Editorial",
-            "estado",
-            "Finalizado",
-            "Galería cargada correctamente"
+            data.ebooks
         );
 
     } catch (error) {
@@ -2699,8 +2564,6 @@ async function cargarGaleriaEditorial() {
             "Carga galería",
             error.message
         );
-
-        console.error(error);
 
     }
 

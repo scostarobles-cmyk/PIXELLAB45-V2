@@ -99,15 +99,7 @@ try {
       });
 
     }
-    case "biblioteca-editorial": {
-
-    const resultado = await cargarBibliotecaEditorial(env);
-
-    return json(resultado);
-
-}
-
- 
+    
     case "cargar-json": {
 
       const archivo = await cargarJSON(env, data.ruta);
@@ -177,6 +169,8 @@ case "generar-conclusion": {
     return json(resultado);
 
 }
+case "listar-ebooks":
+    return await listarEbooks(data, env);
 
 
     default:
@@ -2435,117 +2429,44 @@ Format:
     };
 
 }
-/* ==========================================================
-   BIBLIOTECA EDITORIAL
-   ----------------------------------------------------------
-   Recorre todos los proyectos almacenados en R2 y devuelve
-   únicamente los proyectos válidos con estado "creado".
 
-   Salida:
-   {
-       ok: true,
-       proyectos: [
-           {
-               projectId,
-               titulo,
-               autor,
-               estado,
-               fecha,
-               directorio
-           }
-       ]
-   }
 
-   Utiliza:
-   - env.EBOOKS.list()
-   - cargarJSON()
 
-   Próximas mejoras:
-   - Monitor Editorial
-   - Estadísticas
-   - Códigos de error
-   - Portadas automáticas
-========================================================== */
+async function listarEbooks(data, env) {
 
-async function cargarBibliotecaEditorial(env) {
+    try {
 
-    const biblioteca = [];
+        const carpeta =
+            data.carpeta || "proyectos/";
 
-    const lista = await env.EBOOKS.list({
-        prefix: "proyectos/"
-    });
+        const lista =
+            await env.EBOOKS.list({
+                prefix: carpeta
+            });
 
-    for (const archivo of lista.objects) {
-    	const rutaPortada =
-    `proyectos/${proyecto.projectId}/portada.png`;
-
-const portada = await env.IMAGES.head(
-    rutaPortada
-);
-
-        if (!archivo.key.endsWith("proyecto.json")) {
-            continue;
-        }
-
-        try {
-
-            const proyecto = await cargarJSON(
-                env,
-                archivo.key
-            );
-
-            if (!proyecto) {
-                continue;
+        return new Response(
+            JSON.stringify({
+                ok: true,
+                ebooks: lista.objects
+            }),
+            {
+                headers: CORS_HEADERS
             }
+        );
 
-            if (proyecto.estado !== "creado") {
-                continue;
+    } catch (err) {
+
+        return new Response(
+            JSON.stringify({
+                ok: false,
+                error: err.message
+            }),
+            {
+                status: 500,
+                headers: CORS_HEADERS
             }
-
-            biblioteca.push({
-
-    projectId: proyecto.projectId,
-
-    titulo: proyecto.titulo,
-
-    autor: proyecto.autor,
-
-    estado: proyecto.estado,
-
-    fecha: proyecto.fecha,
-
-    tienePortada: portada !== null,
-
-    portada: portada
-        ? `${env.R2_BASE_URL}/${rutaPortada}`
-        : null
-
-});
-
-            
-
-        } catch (err) {
-
-            console.error(
-                "Proyecto omitido:",
-                archivo.key,
-                err
-            );
-
-        }
+        );
 
     }
-
-    biblioteca.sort((a, b) =>
-        new Date(b.fecha) - new Date(a.fecha)
-    );
-
-    return {
-
-        ok: true,
-
-        proyectos: biblioteca
-
-    };
 
 }
