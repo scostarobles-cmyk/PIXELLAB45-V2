@@ -2556,19 +2556,19 @@ async function cargarGaleriaEditorial() {
 
 
         const proyectosEncontrados =
-            data.proyectos || [];
+            data.proyectos || data || [];
 
 
         monitorPIXELLAB(
             "Editorial",
             "estado",
             "Lectura completada",
-            "Array cargado correctamente. Total encontrados: "
+            "Registros recibidos desde R2: "
             + proyectosEncontrados.length
         );
 
 
-        const proyectosValidos = [];
+        let proyectosValidos = [];
         let descartados = 0;
 
 
@@ -2592,7 +2592,7 @@ async function cargarGaleriaEditorial() {
         monitorPIXELLAB(
             "Editorial",
             "estado",
-            "Filtro aplicado",
+            "Separación completada",
             "Proyectos creados para editar: "
             + proyectosValidos.length
         );
@@ -2624,8 +2624,12 @@ async function cargarGaleriaEditorial() {
                 );
 
 
-            contenedor.innerHTML =
-                "<p>No hay proyectos para editar</p>";
+            if (contenedor) {
+
+                contenedor.innerHTML =
+                    "<p>No hay proyectos para editar</p>";
+
+            }
 
 
             return;
