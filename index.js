@@ -1182,32 +1182,43 @@ async function guardarImagen(data, env) {
       c => c.charCodeAt(0)
     );
 
-    const nombre =
-      `${Date.now()}-${crypto.randomUUID()}.png`;
+    let ruta;
+let nombre = "";
 
-    const ruta = data.ruta
-      ? data.ruta
-      : `${categoria}/${nombre}`;
+if (data.ruta) {
 
+    // Editor: usa la ruta completa recibida
+    ruta = data.ruta;
 
-    await env.IMAGES.put(
-      ruta,
-      bytes,
-      {
+} else {
+
+    // AI Lab: sigue funcionando exactamente igual
+    const categoria = data.categoria || "imagenes";
+
+    nombre =
+        `${Date.now()}-${crypto.randomUUID()}.png`;
+
+    ruta = `${categoria}/${nombre}`;
+}
+
+await env.IMAGES.put(
+    ruta,
+    bytes,
+    {
         httpMetadata: {
-          contentType: "image/png"
+            contentType: "image/png"
         }
-      }
-    );
+    }
+);
 
 
     return new Response(JSON.stringify({
-      ok: true,
-      nombre,
-      ruta
-    }), {
-      headers: CORS_HEADERS
-    });
+    ok: true,
+    nombre,
+    ruta
+}), {
+    headers: CORS_HEADERS
+});
 
 
   } catch (err) {
