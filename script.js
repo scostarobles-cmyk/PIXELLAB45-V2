@@ -2529,62 +2529,106 @@ async function cargarGaleriaEditorial() {
         );
 
 
+        const contenedor =
+            document.getElementById(
+                "bibliotecaEditorial"
+            );
+
+        if (contenedor) {
+
+            contenedor.innerHTML = "";
+
+        }
+
+
         monitorPIXELLAB(
             "Editorial",
             "proceso",
             "R2",
-            "Solicitando proyectos al Worker"
+            "Listando proyectos"
         );
 
 
-        const respuesta = await fetch(WORKER_URL, {
-
-            method: "POST",
-
-            headers: {
-                "Content-Type": "application/json"
-            },
-
-            body: JSON.stringify({
-                action: "listar-proyectos"
-            })
-
-        });
+        const respuesta = await fetch(
+            WORKER_URL,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    action: "listar-proyectos"
+                })
+            }
+        );
 
 
         const data = await respuesta.json();
 
 
-        const proyectosEncontrados =
-            data.proyectos || data || [];
+        const lista =
+            data.proyectos ||
+            data.archivos ||
+            data.objects ||
+            data.lista ||
+            [];
 
 
         monitorPIXELLAB(
             "Editorial",
             "estado",
-            "Lectura completada",
-            "Registros recibidos desde R2: "
-            + proyectosEncontrados.length
+            "Listado recibido",
+            "Registros encontrados: " + lista.length
         );
 
 
-        let proyectosValidos = [];
+        const proyectos = [];
+
+        let creados = 0;
         let descartados = 0;
 
 
-        for (const proyecto of proyectosEncontrados) {
+        for (const item of lista) {
 
 
-            if (proyecto.estado !== "creado") {
+            monitorPIXELLAB(
+                "Editorial",
+                "proceso",
+                "Leyendo proyecto",
+                item.key || item.ruta || item.nombre || "Proyecto"
+            );
+
+
+            const respuestaProyecto =
+                await fetch(
+                    WORKER_URL,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            action: "leer-proyecto",
+                            ruta: item.key || item.ruta
+                        })
+                    }
+                );
+
+
+            const proyecto =
+                await respuestaProyecto.json();
+
+
+            if (proyecto.estado === "creado") {
+
+                proyectos.push(proyecto);
+                creados++;
+
+            } else {
 
                 descartados++;
 
-                continue;
-
             }
-
-
-            proyectosValidos.push(proyecto);
 
         }
 
@@ -2592,9 +2636,8 @@ async function cargarGaleriaEditorial() {
         monitorPIXELLAB(
             "Editorial",
             "estado",
-            "Separación completada",
-            "Proyectos creados para editar: "
-            + proyectosValidos.length
+            "Filtro aplicado",
+            "Proyectos creados: " + creados
         );
 
 
@@ -2602,13 +2645,11 @@ async function cargarGaleriaEditorial() {
             "Editorial",
             "estado",
             "Descartados",
-            "Proyectos fuera de estado creado: "
-            + descartados
+            "Otros estados: " + descartados
         );
 
 
-        if (proyectosValidos.length === 0) {
-
+        if (proyectos.length === 0) {
 
             monitorPIXELLAB(
                 "Editorial",
@@ -2618,19 +2659,12 @@ async function cargarGaleriaEditorial() {
             );
 
 
-            const contenedor =
-                document.getElementById(
-                    "bibliotecaEditorial"
-                );
-
-
             if (contenedor) {
 
                 contenedor.innerHTML =
-                    "<p>No hay proyectos para editar</p>";
+                    "<p>No hay proyectos para editar.</p>";
 
             }
-
 
             return;
 
@@ -2641,12 +2675,12 @@ async function cargarGaleriaEditorial() {
             "Editorial",
             "proceso",
             "Render",
-            "Enviando proyectos a mostrarProyectosEditorial"
+            "Mostrando proyectos en la galería"
         );
 
 
         mostrarProyectosEditorial(
-            proyectosValidos
+            proyectos
         );
 
 
@@ -2657,9 +2691,7 @@ async function cargarGaleriaEditorial() {
             "Galería cargada correctamente"
         );
 
-
-    } catch(error) {
-
+    } catch (error) {
 
         monitorPIXELLAB(
             "Editorial",
@@ -2667,7 +2699,6 @@ async function cargarGaleriaEditorial() {
             "Carga galería",
             error.message
         );
-
 
         console.error(error);
 
