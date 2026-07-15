@@ -2436,18 +2436,46 @@ async function listarEbooks(data, env) {
 
     try {
 
-        const carpeta =
-            data.carpeta || "proyectos/";
+        const lista = await env.EBOOKS.list({
+            prefix: "proyectos/"
+        });
 
-        const lista =
-            await env.EBOOKS.list({
-                prefix: carpeta
+        const ebooks = [];
+
+        for (const archivo of lista.objects) {
+
+            if (!archivo.key.endsWith("proyecto.json")) {
+                continue;
+            }
+
+            const objeto = await env.EBOOKS.get(
+                archivo.key
+            );
+
+            if (!objeto) {
+                continue;
+            }
+
+            const proyecto =
+                await objeto.json();
+
+            if (
+                proyecto.estado !== "creado"
+            ) {
+                continue;
+            }
+
+            ebooks.push({
+                ruta: archivo.key,
+                proyecto
             });
+
+        }
 
         return new Response(
             JSON.stringify({
                 ok: true,
-                ebooks: lista.objects
+                ebooks
             }),
             {
                 headers: CORS_HEADERS
