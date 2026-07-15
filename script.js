@@ -2517,91 +2517,34 @@ script.js
 =================================================
 */
 
-async function cargarBibliotecaEditorial() {
+async function cargarGaleriaEditorial() {
 
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Inicio",
+        "Cargando biblioteca editorial"
+    );
 
-    
+    const proyectos = await obtenerProyectos();
 
+    for (const proyecto of proyectos) {
 
-    try {
-monitorPIXELLAB(
-    "Editorial",
-    "proceso",
-    "Worker",
-    "Enviando solicitud biblioteca-editorial..."
-);
+        if (!proyecto.portada) {
 
-        const respuesta = await fetch(WORKER_URL, {
-
-            method: "POST",
-
-            headers: {
-                "Content-Type": "application/json"
-            },
-
-            body: JSON.stringify({
-
-                action: "biblioteca-editorial"
-
-            })
-
-        });
-
-
-        const datos = await respuesta.json();
-
-
-        monitorPIXELLAB(
-    "Editorial",
-    "info",
-    "Respuesta",
-    JSON.stringify(datos)
-);
-
-        if (!datos.ok) {
-
-            throw new Error(
-                "Error cargando biblioteca"
-            );
+            await generarPortadaProyecto(proyecto);
 
         }
 
-
-        monitorPIXELLAB(
-    "Editorial",
-    "info",
-    "Biblioteca",
-    datos.proyectos.length +
-    " proyectos encontrados."
-);
-
-
-        mostrarProyectosEditorial(
-            datos.proyectos
-        );
-
-
-        monitorPIXELLAB(
-    "Editorial",
-    "ok",
-    "Estado",
-    "Biblioteca lista."
-);
-
-
-    } catch(error) {
-
-
-        monitorPIXELLAB(
-    "Editorial",
-    "error",
-    "Error",
-    error.message
-);
-
-
+        mostrarProyectoEditorial(proyecto);
     }
 
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Finalizado",
+        "Biblioteca editorial cargada"
+    );
 }
 /*
 =================================================
@@ -2719,6 +2662,146 @@ function mostrarProyectosEditorial(proyectos) {
 
     });
 
+
+}
+async function generarPortadaProyecto(proyecto) {
+
+    try {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Inicio",
+            "Comenzó la generación de portada del proyecto"
+        );
+
+        // 1. Crear prompt
+        const prompt =
+            `Genera una portada profesional de eBook relacionada con el título:
+            "${proyecto.titulo}".
+            Sin texto, sin logotipos, estilo editorial moderno.`;
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Creando prompt",
+            "Prompt base de portada generado"
+        );
+
+        // 2. Mejorar prompt con Visuales
+        const resVisual = await fetch(WORKER_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                action: "visual",
+                tema: prompt
+            })
+        });
+
+        const dataVisual = await resVisual.json();
+
+        if (!dataVisual.resultado) {
+            throw new Error("Visuales no devolvió un prompt.");
+        }
+
+        const promptVisual = dataVisual.resultado;
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Prompt visual generado",
+            "Prompt mejorado por módulo Visuales"
+        );
+
+        // 3. Generar imagen con Puter
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Generando imagen",
+            "Enviando prompt a Puter Imagen 4"
+        );
+
+        const imagen = await puter.ai.txt2img(
+            promptVisual,
+            {
+                provider: "gemini",
+                model: "google/imagen-4.0-fast"
+            }
+        );
+
+        // 4. Convertir a Base64
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Procesando imagen",
+            "Convirtiendo imagen a Base64"
+        );
+
+        const canvas = document.createElement("canvas");
+
+        canvas.width = imagen.naturalWidth;
+        canvas.height = imagen.naturalHeight;
+
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(imagen, 0, 0);
+
+        const imagenBase64 = canvas
+            .toDataURL("image/png")
+            .split(",")[1];
+
+
+        // 5. Guardar en R2
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Guardando imagen",
+            "Enviando portada a R2"
+        );
+
+        const guardar = await fetch(WORKER_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                action: "guardar-imagen",
+                ruta: `proyectos/${proyecto.projectId}/imagenes/portada.png`,
+                imagen: imagenBase64
+            })
+        });
+
+        const dataGuardar = await guardar.json();
+
+        if (!dataGuardar.ok) {
+            throw new Error(dataGuardar.error);
+        }
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Finalizado",
+            "Portada generada y guardada correctamente"
+        );
+
+        return dataGuardar.ruta;
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Generación portada fallida",
+            error.message
+        );
+
+        return null;
+
+    }
 
 }
 
