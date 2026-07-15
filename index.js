@@ -2448,9 +2448,10 @@ async function listarEbooks(data, env) {
                 continue;
             }
 
-            const objeto = await env.EBOOKS.get(
-                archivo.key
-            );
+            const objeto =
+                await env.EBOOKS.get(
+                    archivo.key
+                );
 
             if (!objeto) {
                 continue;
@@ -2466,16 +2467,36 @@ async function listarEbooks(data, env) {
             }
 
             ebooks.push({
-                ruta: archivo.key,
-                proyecto
+
+                projectId:
+                    proyecto.projectId,
+
+                titulo:
+                    proyecto.titulo,
+
+                autor:
+                    proyecto.autor,
+
+                estado:
+                    proyecto.estado,
+
+                ruta:
+                    archivo.key,
+
+                portada:
+                    proyecto.portada || ""
+
             });
 
         }
 
         return new Response(
             JSON.stringify({
+
                 ok: true,
+
                 ebooks
+
             }),
             {
                 headers: CORS_HEADERS
@@ -2486,8 +2507,11 @@ async function listarEbooks(data, env) {
 
         return new Response(
             JSON.stringify({
+
                 ok: false,
+
                 error: err.message
+
             }),
             {
                 status: 500,

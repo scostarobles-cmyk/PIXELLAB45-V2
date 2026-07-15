@@ -2543,17 +2543,32 @@ async function cargarGaleriaEditorial() {
 
         const data = await respuesta.json();
 
+        if (!data.ok) {
+
+            throw new Error(
+                data.error || "No se pudo obtener la lista."
+            );
+
+        }
+
         monitorPIXELLAB(
             "Editorial",
             "estado",
             "Lista generada",
             "Se encontraron " +
             data.ebooks.length +
-            " registros."
+            " eBooks."
         );
 
         mostrarProyectosEditorial(
             data.ebooks
+        );
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Render",
+            "Enviando eBooks al renderizador"
         );
 
     } catch (error) {
@@ -2564,6 +2579,8 @@ async function cargarGaleriaEditorial() {
             "Carga galería",
             error.message
         );
+
+        console.error(error);
 
     }
 
