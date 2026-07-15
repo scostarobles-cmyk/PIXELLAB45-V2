@@ -2533,32 +2533,49 @@ async function cargarGaleriaEditorial() {
             "Editorial",
             "proceso",
             "R2",
-            "Consultando proyectos"
+            "Solicitando proyectos al Worker"
         );
 
 
-        // AQUÍ VA TU CÓDIGO EXISTENTE QUE CARGA LOS PROYECTOS
-        // NO CAMBIAR
+        const respuesta = await fetch(WORKER_URL, {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                action: "listar-proyectos"
+            })
+
+        });
+
+
+        const data = await respuesta.json();
+
+
+        const proyectosEncontrados =
+            data.proyectos || [];
 
 
         monitorPIXELLAB(
             "Editorial",
             "estado",
             "Lectura completada",
-            "Array cargado correctamente. Total encontrados: " + proyectos.length
+            "Array cargado correctamente. Total encontrados: " 
+            + proyectosEncontrados.length
         );
 
 
-        let validos = 0;
+        let proyectosValidos = [];
         let descartados = 0;
         let conPortada = 0;
         let sinPortada = 0;
 
 
-        for (const proyecto of proyectos) {
+        for (const proyecto of proyectosEncontrados) {
 
-
-            // criterio existente de producción/completo
 
             if (
                 proyecto.estado !== "produccion" &&
@@ -2572,7 +2589,7 @@ async function cargarGaleriaEditorial() {
             }
 
 
-            validos++;
+            proyectosValidos.push(proyecto);
 
 
             if (proyecto.portada) {
@@ -2583,16 +2600,23 @@ async function cargarGaleriaEditorial() {
 
                 sinPortada++;
 
-
                 monitorPIXELLAB(
                     "Editorial",
                     "proceso",
                     "Portada pendiente",
-                    "Generando portada para proyecto"
+                    "Generando portada automáticamente"
                 );
 
 
-                await generarPortadaProyecto(proyecto);
+                const portada =
+                    await generarPortadaProyecto(proyecto);
+
+
+                if (portada) {
+
+                    proyecto.portada = portada;
+
+                }
 
             }
 
@@ -2603,7 +2627,7 @@ async function cargarGaleriaEditorial() {
             "Editorial",
             "estado",
             "Filtro aplicado",
-            "Proyectos válidos: " + validos
+            "Proyectos válidos: " + proyectosValidos.length
         );
 
 
@@ -2639,7 +2663,9 @@ async function cargarGaleriaEditorial() {
         );
 
 
-        mostrarProyectosEditorial(proyectos);
+        mostrarProyectosEditorial(
+            proyectosValidos
+        );
 
 
         monitorPIXELLAB(
@@ -2650,7 +2676,7 @@ async function cargarGaleriaEditorial() {
         );
 
 
-    } catch (error) {
+    } catch(error) {
 
 
         monitorPIXELLAB(
