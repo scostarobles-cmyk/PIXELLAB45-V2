@@ -986,46 +986,11 @@ if (!guardar.ok) {
 
 }
 
-async function generarImagenPuter(proyecto = null  ) { 
+async function generarImagenPuter() {
 
-  let prompt;
-let categoria;
-
-if (proyecto) {
-
-    prompt =
-    `Crear portada de eBook profesional relacionada con el título:
-    "${proyecto.titulo}"
-
-    Tipo de imagen: portada editorial.
-    Estilo moderno, alta calidad, sin texto ni logotipos.`;
-
-    categoria = "portadas";
-    monitorPIXELLAB(
-    "Puter",
-    "info",
-    "Generar imagen",
-    "Entró a generarImagenPuter() desde editor "
-);
-
-} else {
-
-    prompt = document
-        .getElementById("promptImagen")
-        .value
-        .trim();
-
-    categoria = document
-        .getElementById("categoriaImagen")
-        .value;
-        
-        monitorPIXELLAB(
-    "Puter",
-    "info",
-    "Generar imagen",
-    "Entró a generarImagenPuter() desde ailab"
-);
-}
+  const prompt = document.getElementById("promptImagen").value.trim();
+  const categoria = document.getElementById("categoriaImagen").value;
+  const resultado = document.getElementById("resultadoImagen");
 
   if (!prompt) {
     resultado.innerHTML = "⚠️ Escribe un prompt.";
@@ -1096,12 +1061,10 @@ if (proyecto) {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-    action: "guardar-imagen",
-    categoria,
-    tipo: proyecto ? "portada" : "normal",
-    projectId: proyecto ? proyecto.projectId : null,
-    imagen: imagenBase64
-})
+        action: "guardar-imagen",
+        categoria,
+        imagen: imagenBase64
+      })
     });
 
 
@@ -2692,7 +2655,7 @@ function mostrarProyectosEditorial(proyectos) {
         document.getElementById(
             "bibliotecaEditorial"
         );
-generarImagenPuter(proyectos) 
+generarImagenPuter(proyectos = null) {
 
     contenedor.innerHTML = "";
 
