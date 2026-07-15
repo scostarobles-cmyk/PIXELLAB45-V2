@@ -2732,100 +2732,102 @@ async function mostrarProyectosEditorial(proyectos) {
 
 
         const tarjeta =
-    document.createElement(
-        "article"
-    );
+            document.createElement(
+                "article"
+            );
 
 
-tarjeta.className =
-    "editorial-card";
+        tarjeta.className =
+            "editorial-card";
 
 
-tarjeta.innerHTML = `
+        tarjeta.innerHTML = `
 
-<div class="editorial-cover">
+        <div class="editorial-cover">
 
-<img class="portada-editorial">
+            <img class="portada-editorial">
 
-</div>
-
-
-<div class="editorial-info">
-
-<h3>
-${proyecto.titulo}
-</h3>
+        </div>
 
 
-<p>
-Ebook • ${proyecto.autor}
-</p>
+        <div class="editorial-info">
 
 
-<span>
-PIXELLAB Editorial
-</span>
+            <h3>
+                ${proyecto.titulo}
+            </h3>
 
 
-<button
-class="boton-accion"
-onclick="seleccionarProyectoEditorial('${proyecto.projectId}')">
-
-✏️ Editar
-
-</button>
+            <p>
+                Ebook • ${proyecto.autor}
+            </p>
 
 
-</div>
-
-`;
-
-
-contenedor.appendChild(
-    tarjeta
-);
+            <span>
+                PIXELLAB Editorial
+            </span>
 
 
-const imagen =
-    tarjeta.querySelector(
-        ".portada-editorial"
-    );
+            <button
+            class="boton-accion"
+            onclick="seleccionarProyectoEditorial('${proyecto.projectId}')">
+
+                ✏️ Editar
+
+            </button>
 
 
-if (proyecto.tienePortada) {
+        </div>
 
-    imagen.src =
-        `${R2_BASE_URL}/proyectos/${proyecto.projectId}/imagenes/portada.png`;
-
-
-} else {
+        `;
 
 
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Portada faltante",
-        "Generando portada para: " + proyecto.titulo
-    );
-
-
-    const nuevaPortada =
-        await generarPortadaProyecto(
-            proyecto
+        contenedor.appendChild(
+            tarjeta
         );
 
 
-    if (nuevaPortada) {
+        const imagen =
+            tarjeta.querySelector(
+                ".portada-editorial"
+            );
 
-        imagen.src =
-            `${R2_BASE_URL}/${nuevaPortada}`;
+
+        if (proyecto.tienePortada) {
+
+
+            imagen.src =
+                `${R2_BASE_URL}/proyectos/${proyecto.projectId}/imagenes/portada.png`;
+
+
+        } else {
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "proceso",
+                "Portada faltante",
+                "Generando portada para: " + proyecto.titulo
+            );
+
+
+            const nuevaPortada =
+                await generarPortadaProyecto(
+                    proyecto
+                );
+
+
+            if (nuevaPortada) {
+
+                imagen.src =
+                    `${R2_BASE_URL}/${nuevaPortada}`;
+
+            }
+
+        }
+
 
     }
-
-}
-
-
-    });
 
 
     monitorPIXELLAB(
