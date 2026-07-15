@@ -2563,24 +2563,19 @@ async function cargarGaleriaEditorial() {
             "Editorial",
             "estado",
             "Lectura completada",
-            "Array cargado correctamente. Total encontrados: " 
+            "Array cargado correctamente. Total encontrados: "
             + proyectosEncontrados.length
         );
 
 
-        let proyectosValidos = [];
+        const proyectosValidos = [];
         let descartados = 0;
-        let conPortada = 0;
-        let sinPortada = 0;
 
 
         for (const proyecto of proyectosEncontrados) {
 
 
-            if (
-                proyecto.estado !== "produccion" &&
-                proyecto.estado !== "completo"
-            ) {
+            if (proyecto.estado !== "creado") {
 
                 descartados++;
 
@@ -2591,35 +2586,6 @@ async function cargarGaleriaEditorial() {
 
             proyectosValidos.push(proyecto);
 
-
-            if (proyecto.portada) {
-
-                conPortada++;
-
-            } else {
-
-                sinPortada++;
-
-                monitorPIXELLAB(
-                    "Editorial",
-                    "proceso",
-                    "Portada pendiente",
-                    "Generando portada automáticamente"
-                );
-
-
-                const portada =
-                    await generarPortadaProyecto(proyecto);
-
-
-                if (portada) {
-
-                    proyecto.portada = portada;
-
-                }
-
-            }
-
         }
 
 
@@ -2627,7 +2593,8 @@ async function cargarGaleriaEditorial() {
             "Editorial",
             "estado",
             "Filtro aplicado",
-            "Proyectos válidos: " + proyectosValidos.length
+            "Proyectos creados para editar: "
+            + proyectosValidos.length
         );
 
 
@@ -2635,24 +2602,35 @@ async function cargarGaleriaEditorial() {
             "Editorial",
             "estado",
             "Descartados",
-            "Fuera de producción/completo: " + descartados
+            "Proyectos fuera de estado creado: "
+            + descartados
         );
 
 
-        monitorPIXELLAB(
-            "Editorial",
-            "estado",
-            "Portadas",
-            "Con portada: " + conPortada
-        );
+        if (proyectosValidos.length === 0) {
 
 
-        monitorPIXELLAB(
-            "Editorial",
-            "estado",
-            "Portadas pendientes",
-            "Sin portada: " + sinPortada
-        );
+            monitorPIXELLAB(
+                "Editorial",
+                "estado",
+                "Sin proyectos",
+                "No hay proyectos para editar"
+            );
+
+
+            const contenedor =
+                document.getElementById(
+                    "bibliotecaEditorial"
+                );
+
+
+            contenedor.innerHTML =
+                "<p>No hay proyectos para editar</p>";
+
+
+            return;
+
+        }
 
 
         monitorPIXELLAB(
@@ -2779,6 +2757,26 @@ function mostrarProyectosEditorial(proyectos) {
     contenedor.innerHTML = "";
 
 
+    if (!proyectos || proyectos.length === 0) {
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Sin datos",
+            "No hay proyectos para mostrar"
+        );
+
+
+        contenedor.innerHTML =
+            "<p>No hay proyectos para editar</p>";
+
+
+        return;
+
+    }
+
+
     monitorPIXELLAB(
         "Editorial",
         "proceso",
@@ -2805,9 +2803,9 @@ function mostrarProyectosEditorial(proyectos) {
 
 
         const tarjeta =
-        document.createElement(
-            "article"
-        );
+            document.createElement(
+                "article"
+            );
 
 
         tarjeta.className =
