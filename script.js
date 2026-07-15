@@ -2644,7 +2644,7 @@ script.js
 =================================================
 */
 
-function mostrarProyectosEditorial(proyectos) {
+async function mostrarProyectosEditorial(proyectos) {
 
 
     monitorPIXELLAB(
