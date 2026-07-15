@@ -2689,7 +2689,7 @@ window.addEventListener("load", async () => {
     "Entró al window load biblioteca"
 );
 
-    await cargarBibliotecaEditorial();
+    await cargarGaleriaEditorial();
 
 });
 
