@@ -2655,7 +2655,7 @@ function mostrarProyectosEditorial(proyectos) {
         document.getElementById(
             "bibliotecaEditorial"
         );
-generarImagenPuter(proyectos = null) {
+//generarImagenPuter(proyectos = null) ;
 
     contenedor.innerHTML = "";
 
