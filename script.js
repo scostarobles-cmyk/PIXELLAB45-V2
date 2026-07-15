@@ -2717,7 +2717,7 @@ async function mostrarProyectosEditorial(proyectos) {
     let cantidad = 0;
 
 
-    proyectos.forEach(proyecto => {
+    for (const proyecto of proyectos) {
 
 
         cantidad++;
