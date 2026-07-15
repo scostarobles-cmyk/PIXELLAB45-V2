@@ -986,7 +986,7 @@ if (!guardar.ok) {
 
 }
 
-async function generarImagenPuter( ) { 
+async function generarImagenPuter(proyecto = null  ) { 
 
   let prompt;
 let categoria;
@@ -1001,6 +1001,12 @@ if (proyecto) {
     Estilo moderno, alta calidad, sin texto ni logotipos.`;
 
     categoria = "portadas";
+    monitorPIXELLAB(
+    "Puter",
+    "info",
+    "Generar imagen",
+    "Entró a generarImagenPuter() desde editor "
+);
 
 } else {
 
@@ -1012,6 +1018,13 @@ if (proyecto) {
     categoria = document
         .getElementById("categoriaImagen")
         .value;
+        
+        monitorPIXELLAB(
+    "Puter",
+    "info",
+    "Generar imagen",
+    "Entró a generarImagenPuter() desde ailab"
+);
 }
 
   if (!prompt) {
@@ -2679,7 +2692,7 @@ function mostrarProyectosEditorial(proyectos) {
         document.getElementById(
             "bibliotecaEditorial"
         );
-
+generarImagenPuter(proyectos) 
 
     contenedor.innerHTML = "";
 
