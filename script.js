@@ -3141,23 +3141,21 @@ function cargarPaginaPortada(proyecto) {
 
     editor.innerHTML = `
 
-        <div class="pagina portada">
+        <div class="pagina">
 
             <img
                 src="${portada}"
                 style="
+                    display:block;
                     width:100%;
                     max-width:420px;
-                    display:block;
                     margin:0 auto 30px;
                     border-radius:12px;
                 ">
 
-            <h1>
-                ${proyecto.titulo}
-            </h1>
+            <h1>${proyecto.titulo}</h1>
 
-            <p>
+            <p style="text-align:center;">
                 ${proyecto.autor}
             </p>
 
@@ -3166,7 +3164,6 @@ function cargarPaginaPortada(proyecto) {
     `;
 
 }
-
 // =========================
 // MENÚ HAMBURGUESA
 // =========================
