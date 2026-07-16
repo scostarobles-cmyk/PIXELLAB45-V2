@@ -4,13 +4,13 @@ monitorPIXELLAB(
     "info",
     "Carga",
     "script.js iniciado"
-); 
+);
 //Variable global worker 
 const WORKER_URL =
   "https://pixellab45-v2.scostarobles.workers.dev/";
   const R2_BASE_URL =
   "https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev";
-  const R2_EBOOKS_URL = 
+  const = 
   "https://pub-f8d04d55cd564959a5957c416b3c6de9.r2.dev";
 //Función global 
 const FETCH_CONFIG = {
@@ -2677,26 +2677,10 @@ async function mostrarProyectosEditorial(proyectos) {
     }
 
 
-    monitorPIXELLAB(
-        "Editorial",
-        "estado",
-        "Contenedor encontrado",
-        "Preparando biblioteca editorial"
-    );
-
-
     contenedor.innerHTML = "";
 
 
     if (!proyectos || proyectos.length === 0) {
-
-
-        monitorPIXELLAB(
-            "Editorial",
-            "estado",
-            "Sin datos",
-            "No hay proyectos para mostrar"
-        );
 
 
         contenedor.innerHTML =
@@ -2706,14 +2690,6 @@ async function mostrarProyectosEditorial(proyectos) {
         return;
 
     }
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Limpiando biblioteca",
-        "Contenedor reiniciado"
-    );
 
 
     let cantidad = 0;
@@ -2753,7 +2729,6 @@ async function mostrarProyectosEditorial(proyectos) {
 
 
         <div class="editorial-info">
-
 
             <h3>
                 ${proyecto.titulo}
@@ -2795,21 +2770,68 @@ async function mostrarProyectosEditorial(proyectos) {
             );
 
 
-        if (proyecto.tienePortada) {
+        const rutaPortada =
+            `proyectos/${proyecto.projectId}/imagenes/portada.png`;
 
 
-            imagen.src =
-                `${R2_EBOOKS_URL}/proyectos/${proyecto.projectId}/imagenes/portada.png`;
+        const urlPortada =
+            `${R2_EBOOKS_URL}/${rutaPortada}`;
 
 
-        } else {
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Verificando portada",
+            urlPortada
+        );
+
+
+        try {
+
+
+            const respuesta =
+                await fetch(
+                    urlPortada,
+                    {
+                        method: "HEAD"
+                    }
+                );
+
+
+            if (respuesta.ok) {
+
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "estado",
+                    "Portada encontrada",
+                    proyecto.titulo
+                );
+
+
+                imagen.src =
+                    urlPortada;
+
+
+            } else {
+
+
+                throw new Error(
+                    "Portada no encontrada"
+                );
+
+
+            }
+
+
+        } catch(error) {
 
 
             monitorPIXELLAB(
                 "Editorial",
                 "proceso",
-                "Portada faltante",
-                "Generando portada para: " + proyecto.titulo
+                "Generando portada",
+                proyecto.titulo
             );
 
 
@@ -2821,10 +2843,21 @@ async function mostrarProyectosEditorial(proyectos) {
 
             if (nuevaPortada) {
 
+
                 imagen.src =
                     `${R2_EBOOKS_URL}/${nuevaPortada}`;
 
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "estado",
+                    "Portada cargada",
+                    nuevaPortada
+                );
+
+
             }
+
 
         }
 
