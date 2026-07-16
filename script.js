@@ -3146,7 +3146,20 @@ async function seleccionarProyectoEditorial(projectId) {
     const dataEditor =
         await respuestaEditor.json();
 
+if (dataEditor.logs) {
 
+    dataEditor.logs.forEach(log => {
+
+        monitorPIXELLAB(
+            log.modulo,
+            log.tipo,
+            "Editor",
+            log.mensaje
+        );
+
+    });
+
+}
 
     if (dataEditor.error) {
 
