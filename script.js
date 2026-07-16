@@ -3110,7 +3110,7 @@ async function seleccionarProyectoEditorial(projectId) {
     ).textContent =
         "✏️ " + proyecto.titulo;
         cargarPaginaPortada(proyecto);
-        document.querySelector(".ai-grid").style.display = "none";
+      //  document.querySelector(".ai-grid").style.display = "none";
 
 document.getElementById("editorTrabajo").style.display = "block";
 document.getElementById("editorTrabajo").style.width = "100%";
