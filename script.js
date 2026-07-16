@@ -3178,7 +3178,7 @@ monitorPIXELLAB(
     ruta: rutaEbooks
 };
 
-        }
+        
 
     } catch(error) {
 
