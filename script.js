@@ -3062,9 +3062,9 @@ document.addEventListener(
   }
 );
 
-/* =====================================
-   ABRIR PROYECTO EDITORIAL
-===================================== */
+// =====================================
+// ABRIR PROYECTO EDITORIAL
+// =====================================
 
 let proyectoEditorialActivo = null;
 
@@ -3101,21 +3101,29 @@ async function seleccionarProyectoEditorial(projectId) {
         "bibliotecaEditorial"
     ).style.display = "none";
 
-    document.getElementById(
-        "editorTrabajo"
-    ).style.display = "block";
+    const editor =
+        document.getElementById(
+            "editorTrabajo"
+        );
+
+    editor.style.display = "block";
+
+    editor.style.position = "relative";
+    editor.style.left = "50%";
+    editor.style.transform = "translateX(-50%)";
+
+    editor.style.width = "100vw";
+    editor.style.maxWidth = "100vw";
+
+    editor.style.margin = "0";
+    editor.style.padding = "10px";
 
     document.querySelector(
         "#editorTrabajo h2"
     ).textContent =
         "✏️ " + proyecto.titulo;
-        cargarPaginaPortada(proyecto);
-      //  document.querySelector(".ai-grid").style.display = "none";
 
-document.getElementById("editorTrabajo").style.display = "block";
-document.getElementById("editorTrabajo").style.width = "100%";
-document.getElementById("editorTrabajo").style.maxWidth = "100%";
-        
+    cargarPaginaPortada(proyecto);
 
     monitorPIXELLAB(
         "Editorial",
