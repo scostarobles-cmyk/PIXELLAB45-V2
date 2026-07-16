@@ -2891,35 +2891,7 @@ if (rutaPortada) {
     }
 
 }
-
-
-            monitorPIXELLAB(
-                "Editorial",
-                "proceso",
-                "Portada faltante",
-                "Generando portada para: " + proyecto.titulo
-            );
-
-
-            const nuevaPortada =
-                await generarPortadaProyecto(
-                    proyecto
-                );
-
-
-            if (nuevaPortada) {
-
-                imagen.src =
-                    `${R2_BASE_URL}/${nuevaPortada}`;
-
-            }
-
-        }
-
-
     }
-
-
     monitorPIXELLAB(
         "Editorial",
         "estado",
