@@ -1883,3 +1883,40 @@ order:-1;
     display:block;
 
 }
+/* =====================================
+   EDITOR RESPONSIVE
+===================================== */
+
+@media (max-width:768px){
+
+    .pagina{
+
+        width:100%;
+
+        min-height:auto;
+
+        padding:20px;
+
+        margin:0;
+
+    }
+
+    .portada{
+
+        width:100%;
+
+        min-height:auto;
+
+        padding:20px;
+
+        margin-top:90px;
+
+    }
+
+    .portada-contenido{
+
+        max-width:100%;
+
+    }
+
+}
