@@ -3241,12 +3241,26 @@ if (dataEditor.logs) {
     // Muestra editor
 
     const editor =
-        document.getElementById(
-            "editorTrabajo"
-        );
+    document.getElementById(
+        "editorTrabajo"
+    );
 
 
-    editor.style.display = "block";
+if (!editor) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "error",
+        "Editor",
+        "No existe el contenedor editorTrabajo"
+    );
+
+    return;
+
+}
+
+
+editor.style.display = "block";
     editor.style.width = "100%";
     editor.style.maxWidth = "100%";
     editor.style.margin = "0";
