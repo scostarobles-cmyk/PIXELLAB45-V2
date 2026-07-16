@@ -174,10 +174,23 @@ case "listar-ebooks":
 
 case "crear-editor":
 
-    return await crearEditor(
-        data,
-        env
-    );
+    try {
+
+        return await crearEditor(
+            data,
+            env
+        );
+
+    } catch(error) {
+
+        return respuestaJSON({
+
+            error:
+                error.message
+
+        });
+
+    }
 
 break;
 
