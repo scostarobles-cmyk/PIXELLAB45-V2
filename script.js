@@ -2683,16 +2683,16 @@ async function migrarPortadasInicio() {
             datos.mensaje
         );
 
-    } catch (error) {
+} catch (error) {
 
-        monitorPIXELLAB(
-            "Editorial",
-            "error",
-            "Migración",
-            error.message
-        );
+    monitorPIXELLAB(
+        "Editorial",
+        "error",
+        "Migración",
+        error.stack || error.message || String(error)
+    );
 
-    }
+}
 
 }
 
