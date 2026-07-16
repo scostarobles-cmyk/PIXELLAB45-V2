@@ -2682,10 +2682,8 @@ async function mostrarProyectosEditorial(proyectos) {
 
     if (!proyectos || proyectos.length === 0) {
 
-
         contenedor.innerHTML =
             "<p>No hay proyectos para editar</p>";
-
 
         return;
 
@@ -2753,7 +2751,6 @@ async function mostrarProyectosEditorial(proyectos) {
 
             </button>
 
-
         </div>
 
         `;
@@ -2777,13 +2774,7 @@ async function mostrarProyectosEditorial(proyectos) {
         const urlPortada =
             `${R2_EBOOKS_URL}/${rutaPortada}`;
 
-monitorPIXELLAB(
-            "Editorial",
-           urlportada
-            "Verificando portada",
-            urlPortada
-        );
-        
+
         monitorPIXELLAB(
             "Editorial",
             "proceso",
@@ -2792,19 +2783,10 @@ monitorPIXELLAB(
         );
 
 
-        try {
+        await new Promise((resolve) => {
 
 
-            const respuesta =
-                await fetch(
-                    urlPortada,
-                    {
-                        method: "HEAD"
-                    }
-                );
-
-
-            if (respuesta.ok) {
+            imagen.onload = () => {
 
 
                 monitorPIXELLAB(
@@ -2815,57 +2797,54 @@ monitorPIXELLAB(
                 );
 
 
-                imagen.src =
-                    urlPortada;
+                resolve();
+
+            };
 
 
-            } else {
-
-
-                throw new Error(
-                    "Portada no encontrada"
-                );
-
-
-            }
-
-
-        } catch(error) {
-
-
-            monitorPIXELLAB(
-                "Editorial",
-                "proceso",
-                "Generando portada",
-                proyecto.titulo
-            );
-
-
-            const nuevaPortada =
-                await generarPortadaProyecto(
-                    proyecto
-                );
-
-
-            if (nuevaPortada) {
-
-
-                imagen.src =
-                    `${R2_EBOOKS_URL}/${nuevaPortada}`;
+            imagen.onerror = async () => {
 
 
                 monitorPIXELLAB(
                     "Editorial",
-                    "estado",
-                    "Portada cargada",
-                    nuevaPortada
+                    "proceso",
+                    "Generando portada",
+                    proyecto.titulo
                 );
 
 
-            }
+                const nuevaPortada =
+                    await generarPortadaProyecto(
+                        proyecto
+                    );
 
 
-        }
+                if (nuevaPortada) {
+
+
+                    imagen.src =
+                        `${R2_EBOOKS_URL}/${nuevaPortada}`;
+
+
+                    monitorPIXELLAB(
+                        "Editorial",
+                        "estado",
+                        "Portada cargada",
+                        nuevaPortada
+                    );
+
+                }
+
+
+                resolve();
+
+            };
+
+
+            imagen.src = urlPortada;
+
+
+        });
 
 
     }
@@ -2879,7 +2858,7 @@ monitorPIXELLAB(
     );
 
 
-} 
+}
 async function generarPortadaProyecto(proyecto) {
 
     try {
