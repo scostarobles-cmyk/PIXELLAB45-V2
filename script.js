@@ -3097,26 +3097,23 @@ async function seleccionarProyectoEditorial(projectId) {
 
     }
 
-    document.getElementById(
-        "bibliotecaEditorial"
-    ).style.display = "none";
+    // Oculta todos los paneles del dashboard
+    document.querySelectorAll(".ai-card").forEach(card => {
+        card.style.display = "none";
+    });
 
+    // Muestra solamente el editor
     const editor =
-        document.getElementById(
-            "editorTrabajo"
-        );
+        document.getElementById("editorTrabajo");
 
     editor.style.display = "block";
-
-    editor.style.position = "relative";
-    editor.style.left = "50%";
-    editor.style.transform = "translateX(-50%)";
-
-    editor.style.width = "100vw";
-    editor.style.maxWidth = "100vw";
-
+    editor.style.width = "100%";
+    editor.style.maxWidth = "100%";
     editor.style.margin = "0";
     editor.style.padding = "10px";
+    editor.style.position = "static";
+    editor.style.transform = "none";
+    editor.style.left = "auto";
 
     document.querySelector(
         "#editorTrabajo h2"
