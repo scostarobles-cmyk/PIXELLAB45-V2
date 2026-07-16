@@ -2559,16 +2559,34 @@ async function crearEditor(data, env) {
         projectId
     } = data;
 
-    monitorPIXELLAB(
-        "Editorial",
+
+    const logs = [];
+
+
+    function log(tipo, mensaje) {
+
+        logs.push({
+
+            modulo: "Editorial",
+            tipo,
+            mensaje
+
+        });
+
+    }
+
+
+
+    log(
         "proceso",
-        "Crear editor",
         "Iniciando creación de editor.json"
     );
 
 
+
     const editorKey =
         `proyectos/${projectId}/editor.json`;
+
 
 
     // 1 - Verificar si ya existe
@@ -2577,7 +2595,9 @@ async function crearEditor(data, env) {
         await env.EBOOKS.head(editorKey);
 
 
+
     if (existe) {
+
 
         const editor =
             await cargarJSON(
@@ -2586,27 +2606,30 @@ async function crearEditor(data, env) {
             );
 
 
-        monitorPIXELLAB(
-            "Editorial",
+
+        log(
             "ok",
-            "Editor existente",
-            "Se cargó editor.json"
+            "Editor existente, se cargó editor.json"
         );
 
 
+
         return respuestaJSON({
+
             existe:true,
-            editor
+
+            editor,
+
+            logs
+
         });
 
     }
 
 
 
-    monitorPIXELLAB(
-        "Editorial",
+    log(
         "proceso",
-        "Creando editor",
         "Leyendo proyecto.json"
     );
 
@@ -2622,43 +2645,56 @@ async function crearEditor(data, env) {
 
     if (!proyecto) {
 
-        monitorPIXELLAB(
-            "Editorial",
+
+        log(
             "error",
-            "Proyecto no encontrado",
-            projectId
+            "No existe proyecto.json para " + projectId
         );
 
 
+
         return respuestaJSON({
-            error:"No existe proyecto"
+
+            error:"No existe proyecto",
+
+            logs
+
         });
 
     }
 
 
 
+    log(
+        "ok",
+        "proyecto.json cargado"
+    );
+
+
+
     const editor = {
 
-        proyectoId,
+
+        proyectoId: projectId,
+
 
         titulo:
             proyecto.titulo || "",
 
-        estado:"edicion",
 
-        estructura:[]
+        estado:
+            "edicion",
+
+
+        estructura: []
 
     };
 
 
 
     /*
-       Aquí se interpreta
-       proyecto.json
-
-       y cuando encuentre capítulos
-       se consulta plan.json
+       Interpretar estructura del proyecto
+       Capítulos salen desde plan.json
     */
 
 
@@ -2668,9 +2704,18 @@ async function crearEditor(data, env) {
     ) {
 
 
+
         if (
             item.tipo === "capitulo"
         ) {
+
+
+
+            log(
+                "proceso",
+                "Leyendo plan.json"
+            );
+
 
 
             const plan =
@@ -2680,10 +2725,20 @@ async function crearEditor(data, env) {
                 );
 
 
+
             if (
                 plan &&
                 plan.capitulos
             ) {
+
+
+
+                log(
+                    "ok",
+                    "Capítulos encontrados: " +
+                    plan.capitulos.length
+                );
+
 
 
                 for (
@@ -2691,48 +2746,84 @@ async function crearEditor(data, env) {
                 ) {
 
 
+
                     editor.estructura.push({
+
 
                         orden:
                             editor.estructura.length + 1,
 
-                        tipo:"capitulo",
+
+                        tipo:
+                            "capitulo",
+
 
                         numero:
                             capitulo.numero,
 
+
                         titulo:
                             capitulo.titulo,
+
 
                         archivo:
                             capitulo.archivo
 
+
                     });
+
 
                 }
 
+
+
+            } else {
+
+
+                log(
+                    "error",
+                    "No se encontró plan.json o capítulos"
+                );
+
+
             }
+
 
 
         } else {
 
 
+
             editor.estructura.push({
+
 
                 orden:
                     editor.estructura.length + 1,
 
+
                 tipo:
                     item.tipo,
+
 
                 archivo:
                     item.archivo || null
 
+
             });
+
+
 
         }
 
+
     }
+
+
+
+    log(
+        "proceso",
+        "Guardando editor.json en R2"
+    );
 
 
 
@@ -2744,21 +2835,26 @@ async function crearEditor(data, env) {
 
 
 
-    monitorPIXELLAB(
-        "Editorial",
+    log(
         "ok",
-        "Editor creado",
-        "editor.json guardado en R2"
+        "editor.json guardado correctamente"
     );
 
 
 
     return respuestaJSON({
 
+
         creado:true,
 
-        editor
+
+        editor,
+
+
+        logs
+
 
     });
+
 
 }
