@@ -2551,13 +2551,21 @@ async function listarEbooks(data, env) {
 }
 
 async function crearEditor(data, env) {
+	
+	const logs = [];
+
+    logs.push({
+        modulo:"Editorial",
+        tipo:"debug",
+        mensaje: env ? "env recibido" : "env undefined"
+    });
 
     const {
         projectId
     } = data;
 
 
-    const logs = [];
+    
 
 
     function log(tipo, mensaje) {
