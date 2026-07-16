@@ -2863,16 +2863,21 @@ async function mostrarProyectosEditorial(proyectos) {
             );
 
 
-        const rutaPortada =
+        const portada =
     await obtenerRutaPortada(
         proyecto.projectId
     );
 
+if (portada) {
 
-if (rutaPortada) {
+    imagen.src = portada.ruta;
 
-    imagen.src = rutaPortada;
-
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Portada cargada",
+        portada.origen
+    );
 
 } else {
 
@@ -2891,7 +2896,7 @@ if (rutaPortada) {
     }
 
 }
-    }
+}
     monitorPIXELLAB(
         "Editorial",
         "estado",
@@ -3125,7 +3130,10 @@ async function obtenerRutaPortada(projectId) {
                 "Encontrada en IMAGES"
             );
 
-            return rutaImagen;
+            return {
+    origen: "IMAGES",
+    ruta: rutaImagen
+};
 
         }
 
@@ -3158,7 +3166,10 @@ async function obtenerRutaPortada(projectId) {
                 "Encontrada en EBOOKS"
             );
 
-            return rutaEbooks;
+            return {
+    origen: "EBOOKS",
+    ruta: rutaEbooks
+};
 
         }
 
