@@ -2554,7 +2554,7 @@ async function cargarGaleriaEditorial() {
         const data =
             await respuesta.json();
 
-
+proyectosEditorial = data;
         if (!data.ok) {
 
             throw new Error(
