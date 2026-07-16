@@ -2070,3 +2070,25 @@ order:-1;
     }
 
 }
+#paginaEditor .pagina{
+
+    width:100%;
+    min-height:100%;
+
+    padding:20px;
+
+    margin:0;
+
+    box-sizing:border-box;
+}
+@media (max-width:768px){
+
+    #paginaEditor .pagina{
+
+        width:100%;
+        min-height:auto;
+
+        padding:15px;
+    }
+
+}
