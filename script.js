@@ -3050,6 +3050,167 @@ async function generarPortadaProyecto(proyecto) {
     }
 
 }
+
+/*
+=================================================
+PIXELLAB45 EDITORIAL
+
+Función:
+seleccionarProyectoEditorial()
+
+Descripción:
+Abre el editor del eBook seleccionado desde
+la biblioteca editorial.
+
+Proceso:
+- Guarda el proyecto activo.
+- Oculta la biblioteca.
+- Muestra el área de edición.
+- Carga la portada en la primera página A4.
+
+Estado:
+Versión inicial del editor.
+
+Archivo:
+script.js
+
+=================================================
+*/
+
+let proyectoEditorialActivo = null;
+
+
+async function seleccionarProyectoEditorial(projectId) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Abriendo proyecto",
+        projectId
+    );
+
+
+    proyectoEditorialActivo = projectId;
+
+
+    const proyecto =
+        proyectosEditorial.find(
+            p => p.projectId === projectId
+        );
+
+
+    if (!proyecto) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Proyecto",
+            "No encontrado"
+        );
+
+        return;
+
+    }
+
+
+    document.querySelectorAll(".ai-card")
+    .forEach(card => {
+
+        card.style.display = "none";
+
+    });
+
+
+    const editor =
+        document.getElementById(
+            "editorTrabajo"
+        );
+
+
+    if (!editor) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Editor",
+            "No existe editorTrabajo"
+        );
+
+        return;
+
+    }
+
+
+    editor.style.display = "block";
+
+
+    document.querySelector(
+        "#editorTrabajo h2"
+    ).textContent =
+        "✏️ " + proyecto.titulo;
+
+
+    cargarPaginaPortada(proyecto);
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Editor abierto",
+        proyecto.titulo
+    );
+
+}
+
+
+/*
+=================================================
+PIXELLAB45 EDITORIAL
+
+Función:
+cargarPaginaPortada()
+
+Descripción:
+Carga la portada del eBook dentro de la
+primera página del editor en formato A4.
+
+Proceso:
+- Busca el contenedor páginaEditor.
+- Genera la ruta de portada en R2.
+- Renderiza la imagen dentro de la hoja.
+
+Archivo:
+script.js
+
+=================================================
+*/
+
+function cargarPaginaPortada(proyecto) {
+
+    const pagina =
+        document.getElementById(
+            "paginaEditor"
+        );
+
+
+    if (!pagina) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Página editor",
+            "No existe paginaEditor"
+        );
+
+        return;
+
+    }
+
+
+    const portada =
+        `${R2_EBOOKS_URL}/proyectos/${
+
+
 // =========================
 // INICIO
 // =========================
@@ -3058,7 +3219,7 @@ document.addEventListener(
   () => {
     cargarGaleriaCompleta();
   }
-);
+)
 
 // =========================
 // MENÚ HAMBURGUESA
