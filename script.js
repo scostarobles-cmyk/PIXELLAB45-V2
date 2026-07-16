@@ -2845,10 +2845,10 @@ async function mostrarProyectosEditorial(proyectos) {
 
 
                 imagen.src =
-                    `${R2_EBOOKS_URL}/proyecros/${nuevaPortada}`;
+                    `${R2_EBOOKS_URL}/@${nuevaPortada}`;
 
 
-                monitorPIXELLAB
+                monitorPIXELLAB(
                     "Editorial",
                     "estado",
                     "Portada cargada",
@@ -2873,7 +2873,7 @@ async function mostrarProyectosEditorial(proyectos) {
     );
 
 
-} ,,,
+} 
 async function generarPortadaProyecto(proyecto) {
 
     try {
@@ -3065,15 +3065,25 @@ async function generarPortadaProyecto(proyecto) {
     }
 
 }
+// =========================
+// INICIO
+// =========================
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+    cargarGaleriaCompleta();
+  }
+);
 
-// MENÚ MÓVIL
+// =========================
+// MENÚ HAMBURGUESA
+// =========================
 function toggleMenu() {
 
-
-  const menu =
-    document.querySelector(".nav-links");
-
-  menu.classList.toggle("active");
+  document
+    .querySelector(".nav-links")
+    .classList
+    .toggle("active");
 
 }
 
