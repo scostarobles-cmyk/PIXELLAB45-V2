@@ -2930,3 +2930,19 @@ async function crearEditor(data, env) {
 
 
 }
+// ==============================
+// RESPUESTAS JSON
+// ==============================
+
+function respuestaJSON(data) {
+
+    return new Response(
+        JSON.stringify(data),
+        {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }
+    );
+
+}
