@@ -3109,6 +3109,7 @@ async function seleccionarProyectoEditorial(projectId) {
         "#editorTrabajo h2"
     ).textContent =
         "✏️ " + proyecto.titulo;
+        cargarPaginaPortada(proyecto);
 
     monitorPIXELLAB(
         "Editorial",
@@ -3116,6 +3117,47 @@ async function seleccionarProyectoEditorial(projectId) {
         "Proyecto cargado",
         proyecto.titulo
     );
+
+}
+function cargarPaginaPortada(proyecto) {
+
+    const editor =
+        document.getElementById(
+            "paginaEditor"
+        );
+
+    if (!editor) {
+        return;
+    }
+
+    const portada =
+        `${R2_EBOOKS_URL}/proyectos/${proyecto.projectId}/imagenes/portada.png`;
+
+    editor.innerHTML = `
+
+        <div class="pagina portada">
+
+            <img
+                src="${portada}"
+                style="
+                    width:100%;
+                    max-width:420px;
+                    display:block;
+                    margin:0 auto 30px;
+                    border-radius:12px;
+                ">
+
+            <h1>
+                ${proyecto.titulo}
+            </h1>
+
+            <p>
+                ${proyecto.autor}
+            </p>
+
+        </div>
+
+    `;
 
 }
 
