@@ -8,6 +8,8 @@ monitorPIXELLAB(
 //Variable global worker 
 const WORKER_URL =
   "https://pixellab45-v2.scostarobles.workers.dev/";
+  const R2_BASE_URL =
+  "https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev";
 //Función global 
 const FETCH_CONFIG = {
   method: "POST",
@@ -2521,49 +2523,78 @@ async function cargarGaleriaEditorial() {
 
     try {
 
+
         monitorPIXELLAB(
             "Editorial",
             "proceso",
             "Inicio",
-            "Solicitando lista de eBooks"
+            "Solicitando eBooks al Worker"
         );
 
-        const respuesta = await fetch(
-            WORKER_URL,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    action: "listar-ebooks"
-                })
-            }
-        );
 
-        const data = await respuesta.json();
+        const respuesta =
+            await fetch(
+                WORKER_URL,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        action: "listar-ebooks"
+                    })
+                }
+            );
+
+
+        const data =
+            await respuesta.json();
+
+
+        if (!data.ok) {
+
+            throw new Error(
+                data.error ||
+                "Error listando eBooks"
+            );
+
+        }
+
 
         monitorPIXELLAB(
             "Editorial",
             "estado",
             "Lista generada",
-            "Se encontraron " +
-            data.ebooks.length +
-            " registros."
+            "eBooks encontrados: " +
+            data.ebooks.length
         );
+
 
         mostrarProyectosEditorial(
             data.ebooks
         );
 
-    } catch (error) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Enviado a mostrar",
+            "Datos enviados a tarjetas editoriales"
+        );
+
+
+    } catch(error) {
+
 
         monitorPIXELLAB(
             "Editorial",
             "error",
-            "Carga galería",
+            "Carga galería editorial",
             error.message
         );
+
+
+        console.error(error);
 
     }
 
@@ -2613,7 +2644,7 @@ script.js
 =================================================
 */
 
-function mostrarProyectosEditorial(proyectos) {
+async function mostrarProyectosEditorial(proyectos) {
 
 
     monitorPIXELLAB(
@@ -2686,7 +2717,7 @@ function mostrarProyectosEditorial(proyectos) {
     let cantidad = 0;
 
 
-    proyectos.forEach(proyecto => {
+    for (const proyecto of proyectos) {
 
 
         cantidad++;
@@ -2701,57 +2732,97 @@ function mostrarProyectosEditorial(proyectos) {
 
 
         const tarjeta =
-            document.createElement(
-                "article"
-            );
+    document.createElement(
+        "article"
+    );
 
 
-        tarjeta.className =
-            "editorial-card";
+tarjeta.className =
+    "editorial-card";
 
 
-        tarjeta.innerHTML = `
+tarjeta.innerHTML = `
 
-        <div class="editorial-cover">
+<div class="editorial-cover">
 
-        </div>
+<img class="portada-editorial">
 
-
-        <div class="editorial-info">
-
-
-        <h3>
-        ${proyecto.titulo}
-        </h3>
+</div>
 
 
-        <p>
-        Ebook • ${proyecto.autor}
-        </p>
+<div class="editorial-info">
+
+<h3>
+${proyecto.titulo}
+</h3>
 
 
-        <span>
-        PIXELLAB Editorial
-        </span>
+<p>
+Ebook • ${proyecto.autor}
+</p>
 
 
-        <button
-        class="boton-accion"
-        onclick="seleccionarProyectoEditorial('${proyecto.projectId}')">
-
-        ✏️ Editar
-
-        </button>
+<span>
+PIXELLAB Editorial
+</span>
 
 
-        </div>
+<button
+class="boton-accion"
+onclick="seleccionarProyectoEditorial('${proyecto.projectId}')">
 
-        `;
+✏️ Editar
+
+</button>
 
 
-        contenedor.appendChild(
-            tarjeta
+</div>
+
+`;
+
+
+contenedor.appendChild(
+    tarjeta
+);
+
+
+const imagen =
+    tarjeta.querySelector(
+        ".portada-editorial"
+    );
+
+
+if (proyecto.tienePortada) {
+
+    imagen.src =
+        `${R2_BASE_URL}/proyectos/${proyecto.projectId}/imagenes/portada.png`;
+
+
+} else {
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Portada faltante",
+        "Generando portada para: " + proyecto.titulo
+    );
+
+
+    const nuevaPortada =
+        await generarPortadaProyecto(
+            proyecto
         );
+
+
+    if (nuevaPortada) {
+
+        imagen.src =
+            `${R2_BASE_URL}/${nuevaPortada}`;
+
+    }
+
+}
 
 
     });

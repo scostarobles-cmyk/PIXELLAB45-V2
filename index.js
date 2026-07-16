@@ -2436,36 +2436,105 @@ async function listarEbooks(data, env) {
 
     try {
 
-        const carpeta =
-            data.carpeta || "proyectos/";
+        const lista = await env.EBOOKS.list({
+            prefix: "proyectos/"
+        });
 
-        const lista =
-            await env.EBOOKS.list({
-                prefix: carpeta
+
+        const ebooks = [];
+
+
+        for (const archivo of lista.objects) {
+
+
+            if (!archivo.key.endsWith("proyecto.json")) {
+                continue;
+            }
+
+
+            const objeto =
+                await env.EBOOKS.get(
+                    archivo.key
+                );
+
+
+            if (!objeto) {
+                continue;
+            }
+
+
+            const proyecto =
+                await objeto.json();
+
+
+            if (
+                proyecto.estado !== "creado"
+            ) {
+                continue;
+            }
+
+
+            const projectId =
+                archivo.key.split("/")[1];
+
+
+            const rutaPortada =
+                `proyectos/${projectId}/portada.png`;
+
+
+            const portada =
+                await env.EBOOKS.head(
+                    rutaPortada
+                );
+
+
+            ebooks.push({
+
+                projectId,
+
+                titulo:
+                    proyecto.titulo || "",
+
+                autor:
+                    proyecto.autor || "",
+
+                ruta:
+                    archivo.key,
+
+                tienePortada:
+                    portada !== null
+
             });
+
+
+        }
+
 
         return new Response(
             JSON.stringify({
                 ok: true,
-                ebooks: lista.objects
+                ebooks
             }),
             {
                 headers: CORS_HEADERS
             }
         );
 
-    } catch (err) {
+
+    } catch (error) {
+
 
         return new Response(
             JSON.stringify({
                 ok: false,
-                error: err.message
+                error: error.message
             }),
             {
                 status: 500,
                 headers: CORS_HEADERS
             }
         );
+
 
     }
 
