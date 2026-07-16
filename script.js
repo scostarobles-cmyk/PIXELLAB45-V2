@@ -23,6 +23,8 @@ let proyectoActual = null;
 let projectIdActual = null; 
 let continuarCapitulosAutomatico = false;
 let preguntarContinuarCapitulos = true;
+let proyectosEditorial = [];
+
 
 //Galería completa 
 async function cargarGaleriaCompleta() {
@@ -3059,6 +3061,63 @@ document.addEventListener(
     cargarGaleriaCompleta();
   }
 );
+
+/* =====================================
+   ABRIR PROYECTO EDITORIAL
+===================================== */
+
+let proyectoEditorialActivo = null;
+
+async function seleccionarProyectoEditorial(projectId) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Abriendo proyecto",
+        projectId
+    );
+
+    proyectoEditorialActivo = projectId;
+
+    const proyecto =
+        proyectosEditorial.find(
+            p => p.projectId === projectId
+        );
+
+    if (!proyecto) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Proyecto",
+            "No encontrado"
+        );
+
+        return;
+
+    }
+
+    document.getElementById(
+        "bibliotecaEditorial"
+    ).style.display = "none";
+
+    document.getElementById(
+        "editorTrabajo"
+    ).style.display = "block";
+
+    document.querySelector(
+        "#editorTrabajo h2"
+    ).textContent =
+        "✏️ " + proyecto.titulo;
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Proyecto cargado",
+        proyecto.titulo
+    );
+
+}
 
 // =========================
 // MENÚ HAMBURGUESA
