@@ -2980,13 +2980,15 @@ async function generarPortadaProyecto(proyecto) {
 
             body: JSON.stringify({
 
-                action: "guardar-imagen",
+    action: "guardar-imagen",
 
-                ruta: ruta,
+    tipo: "ebook",
 
-                imagen: imagenBase64
+    ruta: ruta,
 
-            })
+    imagen: imagenBase64
+
+})
         });
 
 

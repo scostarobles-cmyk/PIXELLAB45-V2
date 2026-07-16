@@ -1195,7 +1195,12 @@ if (data.ruta) {
     ruta = `${categoria}/${nombre}`;
 }
 
-await env.IMAGES.put(
+const bucket = data.tipo === "ebook"
+    ? env.EBOOKS
+    : env.IMAGES;
+
+
+await bucket.put(
     ruta,
     bytes,
     {
