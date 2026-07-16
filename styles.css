@@ -2092,3 +2092,31 @@ order:-1;
     }
 
 }
+@media (max-width:768px){
+
+    #paginaEditor .pagina{
+
+        width:100% !important;
+        max-width:100% !important;
+        min-height:auto !important;
+
+        padding:15px !important;
+
+    }
+
+    #paginaEditor h1{
+
+        font-size:2rem !important;
+        word-break:break-word;
+        overflow-wrap:anywhere;
+
+    }
+
+    #paginaEditor img{
+
+        max-width:100% !important;
+        height:auto;
+
+    }
+
+}
