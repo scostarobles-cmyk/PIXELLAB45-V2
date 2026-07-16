@@ -2845,10 +2845,10 @@ async function mostrarProyectosEditorial(proyectos) {
 
 
                 imagen.src =
-                    `${R2_EBOOKS_URL}/${nuevaPortada}`;
+                    `${R2_EBOOKS_URL}/proyecros/${nuevaPortada}`;
 
 
-                monitorPIXELLAB(
+                monitorPIXELLAB
                     "Editorial",
                     "estado",
                     "Portada cargada",
@@ -2873,7 +2873,7 @@ async function mostrarProyectosEditorial(proyectos) {
     );
 
 
-}
+} ,,,
 async function generarPortadaProyecto(proyecto) {
 
     try {
