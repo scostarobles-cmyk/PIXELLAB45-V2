@@ -3068,7 +3068,9 @@ document.addEventListener(
 
 let proyectoEditorialActivo = null;
 
+
 async function seleccionarProyectoEditorial(projectId) {
+
 
     monitorPIXELLAB(
         "Editorial",
@@ -3077,14 +3079,126 @@ async function seleccionarProyectoEditorial(projectId) {
         projectId
     );
 
+
     proyectoEditorialActivo = projectId;
+
+
+
+    // =====================================
+    // NUEVO PASO:
+    // Inicializar editor.json
+    // =====================================
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Editor",
+        "Solicitando creación/carga de editor.json"
+    );
+
+
+    let respuestaEditor;
+
+
+    try {
+
+
+        respuestaEditor =
+            await fetch(
+                WORKER_URL,
+                {
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":"application/json"
+                    },
+
+                    body:JSON.stringify({
+
+                        action:"crear-editor",
+
+                        projectId:projectId
+
+                    })
+
+                }
+            );
+
+
+    } catch(error) {
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Worker editor",
+            error.message
+        );
+
+
+        return;
+
+    }
+
+
+
+    const dataEditor =
+        await respuestaEditor.json();
+
+
+
+    if (dataEditor.error) {
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Creando editor",
+            dataEditor.error
+        );
+
+
+        return;
+
+    }
+
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Editor JSON listo",
+        "Estructura recibida correctamente"
+    );
+
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "datos",
+        "Contenido editor.json",
+        JSON.stringify(
+            dataEditor.editor
+        )
+    );
+
+
+
+    // =====================================
+    // Continúa flujo actual
+    // =====================================
+
+
 
     const proyecto =
         proyectosEditorial.find(
             p => p.projectId === projectId
         );
 
+
     if (!proyecto) {
+
 
         monitorPIXELLAB(
             "Editorial",
@@ -3093,18 +3207,31 @@ async function seleccionarProyectoEditorial(projectId) {
             "No encontrado"
         );
 
+
         return;
 
     }
 
-    // Oculta todos los paneles del dashboard
-    document.querySelectorAll(".ai-card").forEach(card => {
+
+
+    // Oculta paneles actuales
+
+    document.querySelectorAll(".ai-card")
+    .forEach(card => {
+
         card.style.display = "none";
+
     });
 
-    // Muestra solamente el editor
+
+
+    // Muestra editor
+
     const editor =
-        document.getElementById("editorTrabajo");
+        document.getElementById(
+            "editorTrabajo"
+        );
+
 
     editor.style.display = "block";
     editor.style.width = "100%";
@@ -3115,12 +3242,20 @@ async function seleccionarProyectoEditorial(projectId) {
     editor.style.transform = "none";
     editor.style.left = "auto";
 
+
+
     document.querySelector(
         "#editorTrabajo h2"
     ).textContent =
         "✏️ " + proyecto.titulo;
 
+
+
+    // Por ahora dejamos la prueba de portada
+
     cargarPaginaPortada(proyecto);
+
+
 
     monitorPIXELLAB(
         "Editorial",
@@ -3128,6 +3263,7 @@ async function seleccionarProyectoEditorial(projectId) {
         "Proyecto cargado",
         proyecto.titulo
     );
+
 
 }
 function cargarPaginaPortada(proyecto) {

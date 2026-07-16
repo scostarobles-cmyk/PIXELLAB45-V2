@@ -172,6 +172,12 @@ case "generar-conclusion": {
 case "listar-ebooks":
     return await listarEbooks(data, env);
 
+case "crear-editor":
+
+    return await crearEditor(
+        request,
+        env
+    );
 
     default:
 
@@ -2542,5 +2548,215 @@ async function listarEbooks(data, env) {
 
 
     }
+
+}
+
+async function crearEditor(request, env) {
+
+    const { projectId } =
+        await request.json();
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Crear editor",
+        "Iniciando creación de editor.json"
+    );
+
+
+    const editorKey =
+        `proyectos/${projectId}/editor.json`;
+
+
+    // 1 - Verificar si ya existe
+
+    const existe =
+        await env.EBOOKS.head(editorKey);
+
+
+    if (existe) {
+
+        const editor =
+            await cargarJSON(
+                env,
+                editorKey
+            );
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Editor existente",
+            "Se cargó editor.json"
+        );
+
+
+        return respuestaJSON({
+            existe:true,
+            editor
+        });
+
+    }
+
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Creando editor",
+        "Leyendo proyecto.json"
+    );
+
+
+
+    const proyecto =
+        await cargarJSON(
+            env,
+            `proyectos/${projectId}/proyecto.json`
+        );
+
+
+
+    if (!proyecto) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Proyecto no encontrado",
+            projectId
+        );
+
+
+        return respuestaJSON({
+            error:"No existe proyecto"
+        });
+
+    }
+
+
+
+    const editor = {
+
+        proyectoId,
+
+        titulo:
+            proyecto.titulo || "",
+
+        estado:"edicion",
+
+        estructura:[]
+
+    };
+
+
+
+    /*
+       Aquí se interpreta
+       proyecto.json
+
+       y cuando encuentre capítulos
+       se consulta plan.json
+    */
+
+
+
+    for (
+        const item of proyecto.estructura
+    ) {
+
+
+        if (
+            item.tipo === "capitulo"
+        ) {
+
+
+            const plan =
+                await cargarJSON(
+                    env,
+                    `proyectos/${projectId}/plan.json`
+                );
+
+
+            if (
+                plan &&
+                plan.capitulos
+            ) {
+
+
+                for (
+                    const capitulo of plan.capitulos
+                ) {
+
+
+                    editor.estructura.push({
+
+                        orden:
+                            editor.estructura.length + 1,
+
+                        tipo:"capitulo",
+
+                        numero:
+                            capitulo.numero,
+
+                        titulo:
+                            capitulo.titulo,
+
+                        archivo:
+                            capitulo.archivo
+
+                    });
+
+                }
+
+            }
+
+
+        } else {
+
+
+            editor.estructura.push({
+
+                orden:
+                    editor.estructura.length + 1,
+
+                tipo:
+                    item.tipo,
+
+                archivo:
+                    item.archivo || null
+
+            });
+
+        }
+
+    }
+
+
+
+    await guardarJSON(
+        env,
+        editorKey,
+        editor
+    );
+
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Editor creado",
+        "editor.json guardado en R2"
+    );
+
+
+
+    return respuestaJSON({
+
+        creado:true,
+
+        editor
+
+    });
 
 }
