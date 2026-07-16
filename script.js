@@ -2777,7 +2777,13 @@ async function mostrarProyectosEditorial(proyectos) {
         const urlPortada =
             `${R2_EBOOKS_URL}/${rutaPortada}`;
 
-
+monitorPIXELLAB(
+            "Editorial",
+           urlportada
+            "Verificando portada",
+            urlPortada
+        );
+        
         monitorPIXELLAB(
             "Editorial",
             "proceso",
@@ -2845,7 +2851,7 @@ async function mostrarProyectosEditorial(proyectos) {
 
 
                 imagen.src =
-                    `${R2_EBOOKS_URL}/@${nuevaPortada}`;
+                    `${R2_EBOOKS_URL}/${nuevaPortada}`;
 
 
                 monitorPIXELLAB(
