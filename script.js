@@ -3148,16 +3148,9 @@ function cargarPaginaPortada(proyecto) {
                 style="
                     display:block;
                     width:100%;
-                    max-width:420px;
-                    margin:0 auto 30px;
+                    height:auto;
                     border-radius:12px;
                 ">
-
-            <h1>${proyecto.titulo}</h1>
-
-            <p style="text-align:center;">
-                ${proyecto.autor}
-            </p>
 
         </div>
 
