@@ -3154,7 +3154,7 @@ async function obtenerRutaPortada(projectId) {
     "Editorial",
     "proceso",
     "Buscando en EBOOKS",
-    proyecto.projectId
+    projectId
 );
 
         monitorPIXELLAB(
