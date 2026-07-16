@@ -3150,6 +3150,12 @@ async function obtenerRutaPortada(projectId) {
 
     // 2) Buscar en EBOOKS
     try {
+    	monitorPIXELLAB(
+    "Editorial",
+    "proceso",
+    "Buscando en EBOOKS",
+    proyecto.projectId
+);
 
         const respuestaEbooks =
             await fetch(rutaEbooks, {
