@@ -3109,12 +3109,13 @@ async function seleccionarProyectoEditorial(projectId) {
         "#editorTrabajo h2"
     ).textContent =
         "✏️ " + proyecto.titulo;
+        cargarPaginaPortada(proyecto);
         document.querySelector(".ai-grid").style.display = "none";
 
 document.getElementById("editorTrabajo").style.display = "block";
 document.getElementById("editorTrabajo").style.width = "100%";
 document.getElementById("editorTrabajo").style.maxWidth = "100%";
-        cargarPaginaPortada(proyecto);
+        
 
     monitorPIXELLAB(
         "Editorial",
