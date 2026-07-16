@@ -172,7 +172,9 @@ case "generar-conclusion": {
 case "listar-ebooks":
     return await listarEbooks(data, env);
 
-
+case "migrar-portadas":
+    return await migrarPortadas(env);
+    
     default:
 
       return json({
@@ -2537,5 +2539,78 @@ async function listarEbooks(data, env) {
 
 
     }
+
+}
+
+async function migrarPortadas(env) {
+
+    const listado = await env.IMAGES.list({
+        prefix: "proyectos/"
+    });
+
+    // ¿Hay archivos en proyectos?
+    if (!listado.objects || listado.objects.length === 0) {
+
+        return Response.json({
+            ok: true,
+            mensaje: "No existen archivos en proyectos."
+        });
+
+    }
+
+    const portadas = listado.objects.filter(obj =>
+        obj.key.endsWith("/imagenes/portada.png")
+    );
+
+    // ¿Hay portadas para migrar?
+    if (portadas.length === 0) {
+
+        return Response.json({
+            ok: true,
+            mensaje: "No hay portadas para migrar."
+        });
+
+    }
+
+    for (const portada of portadas) {
+
+        // ¿Existe realmente el archivo?
+        const archivo = await env.IMAGES.get(portada.key);
+
+        if (!archivo) {
+            continue;
+        }
+
+        const nuevaRuta = portada.key.replace(
+            "/imagenes/portada.png",
+            "/portada.png"
+        );
+
+        // Copiar a EBOOKS
+        await env.EBOOKS.put(
+            nuevaRuta,
+            archivo.body,
+            {
+                httpMetadata: archivo.httpMetadata,
+                customMetadata: archivo.customMetadata
+            }
+        );
+
+        // ¿La copia quedó guardada?
+        const copia = await env.EBOOKS.get(nuevaRuta);
+
+        if (!copia) {
+            continue;
+        }
+
+        // Eliminar la original
+        await env.IMAGES.delete(portada.key);
+
+    }
+
+    return Response.json({
+        ok: true,
+        mensaje: "Migración finalizada."
+    });
 
 }

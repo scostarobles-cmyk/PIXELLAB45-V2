@@ -10,6 +10,8 @@ const WORKER_URL =
   "https://pixellab45-v2.scostarobles.workers.dev/";
   const R2_BASE_URL =
   "https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev";
+  const R2_EBOOKS_URL =
+  https://pub-f8d04d55cd564959a5957c416b3c6de9.r2.dev;
 //Función global 
 const FETCH_CONFIG = {
   method: "POST",
@@ -2615,6 +2617,15 @@ script.js
 
 window.addEventListener("load", async () => {
 
+monitorPIXELLAB(
+    "Editorial",
+    "proceso",
+    "Inicio",
+    "Entró al window load migrar portadas "
+);
+
+await migrarPortadasInicio();
+
     monitorPIXELLAB(
     "Editorial",
     "proceso",
@@ -2625,6 +2636,65 @@ window.addEventListener("load", async () => {
     await cargarGaleriaEditorial();
 
 });
+async function migrarPortadasInicio() {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Migración",
+        "Verificando portadas pendientes..."
+    );
+
+    try {
+
+        const respuesta = await fetch(WORKER_URL, {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                action: "migrar-portadas"
+            })
+
+        });
+
+        const datos = await respuesta.json();
+
+        if (!datos.ok) {
+
+            monitorPIXELLAB(
+                "Editorial",
+                "error",
+                "Migración",
+                datos.error || "Error desconocido"
+            );
+
+            return;
+
+        }
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Migración",
+            datos.mensaje
+        );
+
+    } catch (error) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Migración",
+            error.message
+        );
+
+    }
+
+}
 
 /*
 =================================================
@@ -2793,14 +2863,34 @@ async function mostrarProyectosEditorial(proyectos) {
             );
 
 
-        if (proyecto.tienePortada) {
+        const rutaPortada =
+    await obtenerRutaPortada(
+        proyecto.projectId
+    );
 
 
-            imagen.src =
-                `${R2_BASE_URL}/proyectos/${proyecto.projectId}/imagenes/portada.png`;
+if (rutaPortada) {
+
+    imagen.src = rutaPortada;
 
 
-        } else {
+} else {
+
+
+    const nuevaPortada =
+        await generarPortadaProyecto(
+            proyecto
+        );
+
+
+    if (nuevaPortada) {
+
+        imagen.src =
+            `${R2_BASE_URL}/${nuevaPortada}`;
+
+    }
+
+}
 
 
             monitorPIXELLAB(
@@ -3026,6 +3116,101 @@ async function generarPortadaProyecto(proyecto) {
         return null;
 
     }
+
+}
+async function obtenerRutaPortada(projectId) {
+
+    const rutaImagen =
+        `${R2_BASE_URL}/proyectos/${projectId}/imagenes/portada.png`;
+
+    const rutaEbooks =
+        `${R2_EBOOKS_URL}/proyectos/${projectId}/portada.png`;
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Buscando portada",
+        "Proyecto: " + projectId
+    );
+
+
+    // 1) Buscar en IMAGES
+    try {
+
+        const respuestaImagen =
+            await fetch(rutaImagen, {
+                method: "GET"
+            });
+
+
+        if (respuestaImagen.ok) {
+
+            monitorPIXELLAB(
+                "Editorial",
+                "estado",
+                "Portada encontrada",
+                "Encontrada en IMAGES"
+            );
+
+            return rutaImagen;
+
+        }
+
+    } catch(error) {
+
+        console.log(
+            "No encontrada en IMAGES",
+            error
+        );
+
+    }
+
+
+
+    // 2) Buscar en EBOOKS
+    try {
+
+        const respuestaEbooks =
+            await fetch(rutaEbooks, {
+                method: "GET"
+            });
+
+
+        if (respuestaEbooks.ok) {
+
+            monitorPIXELLAB(
+                "Editorial",
+                "estado",
+                "Portada encontrada",
+                "Encontrada en EBOOKS"
+            );
+
+            return rutaEbooks;
+
+        }
+
+    } catch(error) {
+
+        console.log(
+            "No encontrada en EBOOKS",
+            error
+        );
+
+    }
+
+
+
+    // 3) No existe en ningún bucket
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Sin portada",
+        "No existe en IMAGES ni en EBOOKS"
+    );
+
+
+    return null;
 
 }
 
