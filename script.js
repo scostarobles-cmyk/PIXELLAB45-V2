@@ -8,10 +8,6 @@ monitorPIXELLAB(
 //Variable global worker 
 const WORKER_URL =
   "https://pixellab45-v2.scostarobles.workers.dev/";
-  const R2_BASE_URL =
-  "https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev";
-  const R2_EBOOKS_URL =
-  "https://pub-f8d04d55cd564959a5957c416b3c6de9.r2.dev";
 //Función global 
 const FETCH_CONFIG = {
   method: "POST",
@@ -2525,78 +2521,49 @@ async function cargarGaleriaEditorial() {
 
     try {
 
-
         monitorPIXELLAB(
             "Editorial",
             "proceso",
             "Inicio",
-            "Solicitando eBooks al Worker"
+            "Solicitando lista de eBooks"
         );
 
+        const respuesta = await fetch(
+            WORKER_URL,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    action: "listar-ebooks"
+                })
+            }
+        );
 
-        const respuesta =
-            await fetch(
-                WORKER_URL,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        action: "listar-ebooks"
-                    })
-                }
-            );
-
-
-        const data =
-            await respuesta.json();
-
-
-        if (!data.ok) {
-
-            throw new Error(
-                data.error ||
-                "Error listando eBooks"
-            );
-
-        }
-
+        const data = await respuesta.json();
 
         monitorPIXELLAB(
             "Editorial",
             "estado",
             "Lista generada",
-            "eBooks encontrados: " +
-            data.ebooks.length
+            "Se encontraron " +
+            data.ebooks.length +
+            " registros."
         );
-
 
         mostrarProyectosEditorial(
             data.ebooks
         );
 
-
-        monitorPIXELLAB(
-            "Editorial",
-            "estado",
-            "Enviado a mostrar",
-            "Datos enviados a tarjetas editoriales"
-        );
-
-
-    } catch(error) {
-
+    } catch (error) {
 
         monitorPIXELLAB(
             "Editorial",
             "error",
-            "Carga galería editorial",
+            "Carga galería",
             error.message
         );
-
-
-        console.error(error);
 
     }
 
@@ -2617,15 +2584,6 @@ script.js
 
 window.addEventListener("load", async () => {
 
-monitorPIXELLAB(
-    "Editorial",
-    "proceso",
-    "Inicio",
-    "Entró al window load migrar portadas "
-);
-
-await migrarPortadasInicio();
-
     monitorPIXELLAB(
     "Editorial",
     "proceso",
@@ -2636,65 +2594,6 @@ await migrarPortadasInicio();
     await cargarGaleriaEditorial();
 
 });
-async function migrarPortadasInicio() {
-
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Migración",
-        "Verificando portadas pendientes..."
-    );
-
-    try {
-
-        const respuesta = await fetch(WORKER_URL, {
-
-            method: "POST",
-
-            headers: {
-                "Content-Type": "application/json"
-            },
-
-            body: JSON.stringify({
-                action: "migrar-portadas"
-            })
-
-        });
-
-        const datos = await respuesta.json();
-
-        if (!datos.ok) {
-
-            monitorPIXELLAB(
-                "Editorial",
-                "error",
-                "Migración",
-                datos.error || "Error desconocido"
-            );
-
-            return;
-
-        }
-
-        monitorPIXELLAB(
-            "Editorial",
-            "estado",
-            "Migración",
-            datos.mensaje
-        );
-
-} catch (error) {
-
-    monitorPIXELLAB(
-        "Editorial",
-        "error",
-        "Migración",
-        error.stack || error.message || String(error)
-    );
-
-}
-
-}
 
 /*
 =================================================
@@ -2714,7 +2613,7 @@ script.js
 =================================================
 */
 
-async function mostrarProyectosEditorial(proyectos) {
+function mostrarProyectosEditorial(proyectos) {
 
 
     monitorPIXELLAB(
@@ -2787,7 +2686,7 @@ async function mostrarProyectosEditorial(proyectos) {
     let cantidad = 0;
 
 
-    for (const proyecto of proyectos) {
+    proyectos.forEach(proyecto => {
 
 
         cantidad++;
@@ -2815,36 +2714,34 @@ async function mostrarProyectosEditorial(proyectos) {
 
         <div class="editorial-cover">
 
-            <img class="portada-editorial">
-
         </div>
 
 
         <div class="editorial-info">
 
 
-            <h3>
-                ${proyecto.titulo}
-            </h3>
+        <h3>
+        ${proyecto.titulo}
+        </h3>
 
 
-            <p>
-                Ebook • ${proyecto.autor}
-            </p>
+        <p>
+        Ebook • ${proyecto.autor}
+        </p>
 
 
-            <span>
-                PIXELLAB Editorial
-            </span>
+        <span>
+        PIXELLAB Editorial
+        </span>
 
 
-            <button
-            class="boton-accion"
-            onclick="seleccionarProyectoEditorial('${proyecto.projectId}')">
+        <button
+        class="boton-accion"
+        onclick="seleccionarProyectoEditorial('${proyecto.projectId}')">
 
-                ✏️ Editar
+        ✏️ Editar
 
-            </button>
+        </button>
 
 
         </div>
@@ -2857,46 +2754,9 @@ async function mostrarProyectosEditorial(proyectos) {
         );
 
 
-        const imagen =
-            tarjeta.querySelector(
-                ".portada-editorial"
-            );
+    });
 
 
-        const portada =
-    await obtenerRutaPortada(
-        proyecto.projectId
-    );
-
-if (portada) {
-
-    imagen.src = portada.ruta;
-
-    monitorPIXELLAB(
-        "Editorial",
-        "estado",
-        "Portada cargada",
-        portada.origen
-    );
-
-} else {
-
-
-    const nuevaPortada =
-        await generarPortadaProyecto(
-            proyecto
-        );
-
-
-    if (nuevaPortada) {
-
-        imagen.src =
-            `${R2_BASE_URL}/${nuevaPortada}`;
-
-    }
-
-}
-}
     monitorPIXELLAB(
         "Editorial",
         "estado",
@@ -2986,7 +2846,7 @@ async function generarPortadaProyecto(proyecto) {
             promptVisual,
             {
                 provider: "gemini",
-model: "google/imagen-4.0"
+                model: "google/imagen-4.0-fast"
             }
         );
 
@@ -3093,114 +2953,6 @@ model: "google/imagen-4.0"
         return null;
 
     }
-
-}
-async function obtenerRutaPortada(projectId) {
-
-    const rutaImagen =
-        `${R2_BASE_URL}/proyectos/${projectId}/imagenes/portada.png`;
-
-    const rutaEbooks =
-        `${R2_EBOOKS_URL}/proyectos/${projectId}/portada.png`;
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Buscando portada",
-        "Proyecto: " + projectId
-    );
-
-
-    // 1) Buscar en IMAGES
-    try {
-
-        const respuestaImagen =
-            await fetch(rutaImagen, {
-                method: "GET"
-            });
-
-
-        if (respuestaImagen.ok) {
-
-            monitorPIXELLAB(
-                "Editorial",
-                "estado",
-                "Portada encontrada",
-                "Encontrada en IMAGES"
-            );
-
-            return {
-    origen: "IMAGES",
-    ruta: rutaImagen
-};
-
-        }
-
-    } catch(error) {
-
-        console.log(
-            "No encontrada en IMAGES",
-            error
-        );
-
-    }
-
-
-
-    // 2) Buscar en EBOOKS
-    try {
-    	monitorPIXELLAB(
-    "Editorial",
-    "proceso",
-    "Buscando en EBOOKS",
-    projectId
-);
-
-        monitorPIXELLAB(
-    "Editorial",
-    "proceso",
-    "Probando EBOOKS",
-    rutaEbooks
-);
-
-const respuestaEbooks = await fetch(rutaEbooks);
-
-monitorPIXELLAB(
-    "Editorial",
-    "proceso",
-    "HTTP EBOOKS",
-    respuestaEbooks.status + " - " + respuestaEbooks.statusText
-);
-
-            return {
-    origen: "EBOOKS",
-    ruta: rutaEbooks
-};
-
-        
-
-    } catch(error) {
-
-        console.log(
-            "No encontrada en EBOOKS",
-            error
-        );
-
-    }
-
-
-
-    // 3) No existe en ningún bucket
-    monitorPIXELLAB(
-        "Editorial",
-        "estado",
-        "Sin portada",
-        "No existe en IMAGES ni en EBOOKS"
-    );
-
-
-    return null;
 
 }
 
