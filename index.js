@@ -174,7 +174,7 @@ case "listar-ebooks":
 
 case "crear-editor":{
 
-    const resultado = await crearEditor(env);
+    const resultado = await crearEditor(data,env);
 
     return json(resultado);
 }
