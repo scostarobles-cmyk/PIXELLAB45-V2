@@ -2589,7 +2589,7 @@ async function crearEditor(data, env) {
 
 
 
-    // 1 - Verificar si ya existe
+    // Verificar si ya existe
 
     const existe =
         await env.EBOOKS.head(editorKey);
@@ -2652,7 +2652,6 @@ async function crearEditor(data, env) {
         );
 
 
-
         return respuestaJSON({
 
             error:"No existe proyecto",
@@ -2674,17 +2673,13 @@ async function crearEditor(data, env) {
 
     const editor = {
 
-
         proyectoId: projectId,
-
 
         titulo:
             proyecto.titulo || "",
 
-
         estado:
             "edicion",
-
 
         estructura: []
 
@@ -2694,127 +2689,208 @@ async function crearEditor(data, env) {
 
     /*
        Interpretar estructura del proyecto
-       Capítulos salen desde plan.json
+
+       proyecto.estructura es un objeto:
+
+       {
+          indice,
+          plan,
+          legales,
+          introduccion,
+          capitulos,
+          conclusion
+       }
+
     */
 
 
 
-    for (
-        const item of proyecto.estructura
-    ) {
+    const estructura =
+        proyecto.estructura;
 
 
 
-        if (
-            item.tipo === "capitulo"
-        ) {
+    if (!estructura) {
+
+
+        log(
+            "error",
+            "El proyecto no tiene estructura"
+        );
+
+
+        return respuestaJSON({
+
+            error:"Proyecto sin estructura",
+
+            logs
+
+        });
+
+    }
 
 
 
-            log(
-                "proceso",
-                "Leyendo plan.json"
+    // Índice
+
+    if (estructura.indice) {
+
+
+        editor.estructura.push({
+
+            orden:
+                editor.estructura.length + 1,
+
+            tipo:
+                "indice",
+
+            archivo:
+                "indice.json"
+
+        });
+
+    }
+
+
+
+    // Legales
+
+    if (estructura.legales) {
+
+
+        editor.estructura.push({
+
+            orden:
+                editor.estructura.length + 1,
+
+            tipo:
+                "legales",
+
+            archivo:
+                "legales.json"
+
+        });
+
+    }
+
+
+
+    // Introducción
+
+    if (estructura.introduccion) {
+
+
+        editor.estructura.push({
+
+            orden:
+                editor.estructura.length + 1,
+
+            tipo:
+                "introduccion",
+
+            archivo:
+                "introduccion.json"
+
+        });
+
+    }
+
+
+
+    // Capítulos desde plan.json
+
+    if (estructura.capitulos) {
+
+
+        log(
+            "proceso",
+            "Leyendo plan.json"
+        );
+
+
+
+        const plan =
+            await cargarJSON(
+                env,
+                `proyectos/${projectId}/plan.json`
             );
 
 
 
-            const plan =
-                await cargarJSON(
-                    env,
-                    `proyectos/${projectId}/plan.json`
-                );
+        if (
+            plan &&
+            plan.capitulos
+        ) {
+
+
+            log(
+                "ok",
+                "Capítulos encontrados: " +
+                plan.capitulos.length
+            );
 
 
 
-            if (
-                plan &&
-                plan.capitulos
+            for (
+                const capitulo of plan.capitulos
             ) {
 
 
+                editor.estructura.push({
 
-                log(
-                    "ok",
-                    "Capítulos encontrados: " +
-                    plan.capitulos.length
-                );
+                    orden:
+                        editor.estructura.length + 1,
 
+                    tipo:
+                        "capitulo",
 
+                    numero:
+                        capitulo.numero,
 
-                for (
-                    const capitulo of plan.capitulos
-                ) {
+                    titulo:
+                        capitulo.titulo,
 
+                    archivo:
+                        capitulo.archivo
 
-
-                    editor.estructura.push({
-
-
-                        orden:
-                            editor.estructura.length + 1,
-
-
-                        tipo:
-                            "capitulo",
-
-
-                        numero:
-                            capitulo.numero,
-
-
-                        titulo:
-                            capitulo.titulo,
-
-
-                        archivo:
-                            capitulo.archivo
-
-
-                    });
-
-
-                }
-
-
-
-            } else {
-
-
-                log(
-                    "error",
-                    "No se encontró plan.json o capítulos"
-                );
+                });
 
 
             }
 
 
-
         } else {
 
 
-
-            editor.estructura.push({
-
-
-                orden:
-                    editor.estructura.length + 1,
-
-
-                tipo:
-                    item.tipo,
-
-
-                archivo:
-                    item.archivo || null
-
-
-            });
-
-
+            log(
+                "error",
+                "No se encontró plan.json o capítulos"
+            );
 
         }
 
+
+    }
+
+
+
+    // Conclusión
+
+    if (estructura.conclusion) {
+
+
+        editor.estructura.push({
+
+            orden:
+                editor.estructura.length + 1,
+
+            tipo:
+                "conclusion",
+
+            archivo:
+                "conclusion.json"
+
+        });
 
     }
 
@@ -2844,15 +2920,11 @@ async function crearEditor(data, env) {
 
     return respuestaJSON({
 
-
         creado:true,
-
 
         editor,
 
-
         logs
-
 
     });
 
