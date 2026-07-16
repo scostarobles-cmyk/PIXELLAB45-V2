@@ -3157,20 +3157,21 @@ async function obtenerRutaPortada(projectId) {
     proyecto.projectId
 );
 
-        const respuestaEbooks =
-            await fetch(rutaEbooks, {
-                method: "GET"
-            });
+        monitorPIXELLAB(
+    "Editorial",
+    "proceso",
+    "Probando EBOOKS",
+    rutaEbooks
+);
 
+const respuestaEbooks = await fetch(rutaEbooks);
 
-        if (respuestaEbooks.ok) {
-
-            monitorPIXELLAB(
-                "Editorial",
-                "estado",
-                "Portada encontrada",
-                "Encontrada en EBOOKS"
-            );
+monitorPIXELLAB(
+    "Editorial",
+    "proceso",
+    "HTTP EBOOKS",
+    respuestaEbooks.status + " - " + respuestaEbooks.statusText
+);
 
             return {
     origen: "EBOOKS",
