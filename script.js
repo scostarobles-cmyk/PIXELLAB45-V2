@@ -2825,7 +2825,7 @@ if (proyecto.tienePortada) {
 }
 
 
-    });
+    }
 
 
     monitorPIXELLAB(
