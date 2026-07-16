@@ -174,7 +174,7 @@ case "listar-ebooks":
 
 case "crear-editor":{
 
-    const resultado = await crearEditor(data,env);
+    const resultado = await crearEditor(env,data);
 
     return json(resultado);
 }
@@ -2550,22 +2550,15 @@ async function listarEbooks(data, env) {
 
 }
 
-async function crearEditor(data, env) {
+async function crearEditor(env,data) {
 	
-	const logs = [];
-
-    logs.push({
-        modulo:"Editorial",
-        tipo:"debug",
-        mensaje: env ? "env recibido" : "env undefined"
-    });
 
     const {
         projectId
     } = data;
 
 
-    
+    const logs = [];
 
 
     function log(tipo, mensaje) {
