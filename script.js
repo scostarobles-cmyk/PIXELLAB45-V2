@@ -2986,7 +2986,7 @@ async function generarPortadaProyecto(proyecto) {
             promptVisual,
             {
                 provider: "gemini",
-                model: "google/imagen-4.0-fast"
+model: "google/imagen-4.0"
             }
         );
 
