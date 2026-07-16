@@ -175,9 +175,11 @@ case "listar-ebooks":
 case "crear-editor":
 
     return await crearEditor(
-        request,
+        data,
         env
     );
+
+break;
 
     default:
 
@@ -2551,11 +2553,11 @@ async function listarEbooks(data, env) {
 
 }
 
-async function crearEditor(request, env) {
+async function crearEditor(data, env) {
 
-    const { projectId } =
-        await request.json();
-
+    const {
+        projectId
+    } = data;
 
     monitorPIXELLAB(
         "Editorial",
