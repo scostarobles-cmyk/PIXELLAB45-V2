@@ -172,22 +172,12 @@ case "generar-conclusion": {
 case "listar-ebooks":
     return await listarEbooks(data, env);
 
-case "crear-editor":
+case "crear-editor":{
 
-    return new Response(
-        JSON.stringify({
-            ok:true,
-            mensaje:"crear-editor llega al Worker"
-        }),
-        {
-            headers:{
-                "Content-Type":"application/json"
-            }
-        }
-    );
+    const resultado = await crearEditor(env);
 
-break;
-
+    return json(resultado);
+}
     default:
 
       return json({
