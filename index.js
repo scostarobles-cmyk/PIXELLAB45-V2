@@ -174,13 +174,17 @@ case "listar-ebooks":
 
 case "crear-editor":
 
-    return respuestaJSON({
-
-        ok:true,
-
-        mensaje:"Case crear-editor funcionando"
-
-    });
+    return new Response(
+        JSON.stringify({
+            ok:true,
+            mensaje:"crear-editor llega al Worker"
+        }),
+        {
+            headers:{
+                "Content-Type":"application/json"
+            }
+        }
+    );
 
 break;
 
