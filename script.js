@@ -965,10 +965,17 @@ async function generarImagenPuter() {
 // =========================
 function toggleMenu() {
 
-  document
-    .querySelector(".nav-links")
-    .classList
-    .toggle("active");
+    monitorPIXELLAB(
+        "Core",
+        "proceso",
+        "Menú",
+        "Se presionó el botón hamburguesa"
+    );
+
+    document
+        .querySelector(".nav-links")
+        .classList
+        .toggle("active");
 
 }
 
