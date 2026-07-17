@@ -3109,7 +3109,7 @@ script.js
 =================================================
 */
 
-let proyectoEditorialActivo = null;
+
 
 
 async function seleccionarProyectoEditorial(projectId) {
