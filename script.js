@@ -3109,7 +3109,7 @@ script.js
 =================================================
 */
 
-
+let proyectoEditorialActivo = null;
 
 
 async function seleccionarProyectoEditorial(projectId) {
@@ -3431,9 +3431,8 @@ script.js
 =================================================
 */
 
-let proyectoEditorialActivo = null;
 
-/*async function seleccionarProyectoEditorial(projectId) {
+async function seleccionarProyectoEditorial(projectId) {
 
     monitorPIXELLAB(
         "Editorial",
@@ -3452,7 +3451,12 @@ let proyectoEditorialActivo = null;
             p => p.projectId === projectId
         );
 
-
+monitorPIXELLAB(
+    "Editorial",
+    "proceso",
+    "Paso 1",
+    "Proyecto encontrado"
+);
     if (!proyecto) {
 
         monitorPIXELLAB(
@@ -3498,7 +3502,12 @@ let proyectoEditorialActivo = null;
             }
         );
 
-
+monitorPIXELLAB(
+    "Editorial",
+    "proceso",
+    "Paso 2",
+    "Llamando verificar-editor"
+);
     const data =
         await respuesta.json();
 
@@ -3546,7 +3555,7 @@ let proyectoEditorialActivo = null;
         proyecto.titulo
     );
 
-}*/
+}
 // =========================
 // INICIO
 // =========================
