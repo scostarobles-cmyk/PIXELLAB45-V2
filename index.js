@@ -173,7 +173,7 @@ case "listar-ebooks":
 
 case "verificar-editor":
 
-    return await verificarEditor(
+    return await verificarEditor2(
         data,
         env
     );
@@ -2572,7 +2572,7 @@ Si no existe, lo crea.
 =================================================
 */
 
-async function verificarEditor(
+async function verificarEditor2(
     data,
     env
 ) {
