@@ -3525,7 +3525,7 @@ function cargarPaginaPortada(proyecto) {
 
 async function verificarEditorProyecto(projectId) {
 
-    const respuesta = await fetch(
+  /*  const respuesta = await fetch(
         WORKER_URL,
         {
             method: "POST",
@@ -3545,7 +3545,15 @@ async function verificarEditorProyecto(projectId) {
         }
     );
 
-    return await respuesta.json();
+    return await respuesta.json();*/
+    
+
+    return {
+        ok: true,
+        creado: false
+    };
+
+
 
 }
 // =========================
