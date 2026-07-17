@@ -173,15 +173,12 @@ case "listar-ebooks":
 
 case "verificar-editor":
 
-    return Response.json({
+    return json({
 
-        ok: true,
+        success: true,
 
-        mensaje:
-            "ENTRO CORRECTAMENTE AL CASE verificar-editor",
-
-        projectId:
-            data.projectId
+        ideas:
+            "ENTRO CORRECTAMENTE AL CASE verificar-editor"
 
     });
     default:
