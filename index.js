@@ -186,10 +186,20 @@ case "verificar-editor":
     });
     default:
 
-      return json({
+    return json({
+
         ok: false,
-        error: "Acción no reconocida: " + tipo
-      }, 400);
+
+        error:
+            "Acción no reconocida",
+
+        tipoRecibido:
+            tipo,
+
+        dataRecibida:
+            data
+
+    }, 400);
 
   }
 
