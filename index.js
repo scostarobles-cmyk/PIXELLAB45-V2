@@ -172,7 +172,12 @@ case "generar-conclusion": {
 case "listar-ebooks":
     return await listarEbooks(data, env);
 
+case "verificar-editor":
 
+    return await verificarEditor(
+        body,
+        env
+    );
     default:
 
       return json({
@@ -2540,6 +2545,141 @@ async function listarEbooks(data, env) {
             }
         );
 
+
+    }
+
+}
+/*
+=================================================
+PIXELLAB45 WORKER
+
+Función:
+verificarEditor()
+
+Descripción:
+Verifica si existe editor.json.
+Si no existe, lo crea.
+
+=================================================
+*/
+
+async function verificarEditor(
+    body,
+    env
+) {
+
+    try {
+
+        const {
+            projectId
+        } = body;
+
+
+        if (!projectId) {
+
+            return Response.json({
+
+                ok: false,
+
+                error:
+                    "Falta projectId."
+
+            });
+
+        }
+
+
+        const ruta =
+            `proyectos/${projectId}/editor.json`;
+
+
+        const editor =
+            await cargarJSON(
+                env,
+                ruta
+            );
+
+
+        if (editor) {
+
+            return Response.json({
+
+                ok: true,
+
+                existe: true,
+
+                creado: false,
+
+                editor
+
+            });
+
+        }
+
+
+        const editorInicial = {
+
+            projectId,
+
+            version: 1,
+
+            estado: "edicion",
+
+            paginaActual: "portada",
+
+            paginaVisible: 1,
+
+            zoom: 100,
+
+            seleccion: null,
+
+            historial: [],
+
+            fechaCreacion:
+                new Date().toISOString(),
+
+            ultimaEdicion:
+                new Date().toISOString()
+
+        };
+
+
+        await guardarJSON(
+
+            env,
+
+            ruta,
+
+            editorInicial
+
+        );
+
+
+        return Response.json({
+
+            ok: true,
+
+            existe: false,
+
+            creado: true,
+
+            editor: editorInicial
+
+        });
+
+    }
+
+    catch(error) {
+
+        console.error(error);
+
+        return Response.json({
+
+            ok: false,
+
+            error: error.message
+
+        });
 
     }
 

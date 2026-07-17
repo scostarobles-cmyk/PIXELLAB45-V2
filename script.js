@@ -3408,6 +3408,145 @@ async function generarPortadaProyecto(proyecto) {
     }
 
 }
+/*
+=================================================
+PIXELLAB45 EDITORIAL
+
+Función:
+seleccionarProyectoEditorial()
+
+Descripción:
+Abre un proyecto editorial.
+
+Proceso:
+- Busca el proyecto en la biblioteca.
+- Verifica editor.json.
+- Si no existe lo crea.
+- Informa el resultado al monitor.
+- Continúa con la apertura del editor.
+
+Archivo:
+script.js
+
+=================================================
+*/
+
+let proyectoEditorialActivo = null;
+
+async function seleccionarProyectoEditorial(projectId) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Abriendo proyecto",
+        projectId
+    );
+
+
+    proyectoEditorialActivo =
+        projectId;
+
+
+    const proyecto =
+        bibliotecaEditorial.find(
+            p => p.projectId === projectId
+        );
+
+
+    if (!proyecto) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Proyecto",
+            "No encontrado"
+        );
+
+        return;
+
+    }
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Editor",
+        "Verificando editor.json..."
+    );
+
+
+    const respuesta =
+        await fetch(
+            WORKER_URL,
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    action:
+                        "verificar-editor",
+
+                    projectId
+
+                })
+
+            }
+        );
+
+
+    const data =
+        await respuesta.json();
+
+
+    if (!data.ok) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Editor",
+            data.error
+        );
+
+        return;
+
+    }
+
+
+    if (data.existe) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Editor",
+            "editor.json encontrado."
+        );
+
+    }
+    else {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Editor",
+            "editor.json creado."
+        );
+
+    }
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Proyecto listo",
+        proyecto.titulo
+    );
+
+}
 // =========================
 // INICIO
 // =========================
