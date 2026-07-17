@@ -1,43 +1,44 @@
-/*
-====================================================
-FUNCIÓN: iniciarEditorial()
+monitorPIXELLAB(
+    "Editorial",
+    "info",
+    "Carga script",
+    "editorial.js comenzó a ejecutarse",
+    "monitorBotonera"
+);
+// =====================================
+// ARRANQUE DEL MÓDULO EDITORIAL
+// =====================================
 
-DESCRIPCIÓN:
-Función de inicio del módulo PIXELLAB Editorial.
+async function iniciarCargaEditorial() {
 
-Se ejecuta automáticamente cuando carga la página.
-Su objetivo es iniciar el flujo del generador de eBooks.
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Módulo Editorial iniciado"
+    );
 
-PROCESO:
-1. Detecta que Editorial está cargado.
-2. Ejecuta la verificación del proyecto activo.
-3. Llama a verificarProyecto() para buscar proyectos existentes.
-4. Determina si existe un proyecto en producción o terminado.
-5. Prepara el estado inicial del generador.
+    await iniciarEditorial();
 
-DEPENDENCIAS:
-- verificarProyecto()
-- conexión con Worker
-- monitor actual del sistema
+}
 
-UBICACIÓN:
-editorial.js
 
-NOTA:
-Esta función no genera páginas ni modifica contenido del libro.
-Solamente inicia el flujo Editorial y verifica el proyecto disponible.
+window.addEventListener(
+    "load",
+    iniciarCargaEditorial
+);
 
-====================================================
-*/
-window.addEventListener("load", async () => {
 
-    
-    monitor("🚀 Entrando a verificar");
+// =====================================
+// RESTO DE FUNCIONES EDITORIALES
+// =====================================
 
-    await verificarProyecto();
-    
+// iniciarEditorial()
+// verificarProyecto()
+// cargarProyecto()
+// generar...
+await verificarProyecto();
 
-});
+
 /*
 //=====================================================
 // FUNCIÓN: verificarProyecto()
@@ -48,7 +49,11 @@ window.addEventListener("load", async () => {
 
 async function verificarProyecto() {
 
-    monitor("🔍 Verificando proyecto...");
+    monitorPIXELLAB(
+    "Editorial",
+    "proceso",
+    "Entró a verificarProyecto"
+);
 
     try {
 
