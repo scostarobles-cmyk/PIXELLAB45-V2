@@ -3125,10 +3125,24 @@ async function seleccionarProyectoEditorial(projectId) {
     proyectoEditorialActivo = projectId;
 
 
-    const proyecto =
-        proyectosEditorial.find(
-            p => p.projectId === projectId
-        );
+    monitorPIXELLAB(
+    "Editorial",
+    "proceso",
+    "DEBUG",
+    "Antes del find"
+);
+
+const proyecto =
+    proyectosEditorial.find(
+        p => p.projectId === projectId
+    );
+
+monitorPIXELLAB(
+    "Editorial",
+    "proceso",
+    "DEBUG",
+    "Después del find: " + JSON.stringify(proyecto)
+);
 
 
     monitorPIXELLAB(
