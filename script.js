@@ -3433,7 +3433,7 @@ script.js
 
 let proyectoEditorialActivo = null;
 
-async function seleccionarProyectoEditorial(projectId) {
+/*async function seleccionarProyectoEditorial(projectId) {
 
     monitorPIXELLAB(
         "Editorial",
@@ -3546,7 +3546,7 @@ async function seleccionarProyectoEditorial(projectId) {
         proyecto.titulo
     );
 
-}
+}*/
 // =========================
 // INICIO
 // =========================
