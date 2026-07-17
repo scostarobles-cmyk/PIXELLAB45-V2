@@ -171,7 +171,7 @@ case "generar-conclusion": {
 case "listar-ebooks":
     return await listarEbooks(data, env);
 
-case "verificar-editor":
+case "verificar":
 
     return await verificarEditor(
         data,

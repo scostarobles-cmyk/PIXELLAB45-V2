@@ -3525,33 +3525,22 @@ function cargarPaginaPortada(proyecto) {
 
 async function verificarEditorProyecto(projectId) {
 
-  /*  const respuesta = await fetch(
-        WORKER_URL,
-        {
+      const resVisual = await fetch(WORKER_URL, {
             method: "POST",
-
             headers: {
                 "Content-Type": "application/json"
             },
-
             body: JSON.stringify({
-
-                action: "verificar-editor",
-
-                projectId
-
+                action: "prueba",
+                tema: projectId
             })
+        });
 
-        }
-    );
 
-    return await respuesta.json();*/
+    return await respuesta.json();
     
 
-    return {
-        ok: true,
-        creado: false
-    };
+    
 
 
 
