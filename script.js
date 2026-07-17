@@ -3474,6 +3474,73 @@ document.addEventListener(
   }
 )
 
+function cargarPaginaPortada(proyecto) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Portada",
+        "Entró a cargarPaginaPortada"
+    );
+
+    const pagina =
+        document.getElementById("paginaEditor");
+
+    if (!pagina) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Portada",
+            "No existe paginaEditor"
+        );
+
+        return;
+
+    }
+
+    pagina.innerHTML = "";
+
+    const img =
+        document.createElement("img");
+
+    img.src = proyecto.portada;
+    img.alt = proyecto.titulo;
+
+    img.className = "portada-editor";
+
+    img.onload = () => {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Portada",
+            "Imagen cargada correctamente"
+        );
+
+    };
+
+    img.onerror = () => {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Portada",
+            "No se pudo cargar la imagen"
+        );
+
+    };
+
+    pagina.appendChild(img);
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Portada",
+        "Imagen agregada a paginaEditor"
+    );
+
+}
 // =========================
 // MENÚ HAMBURGUESA
 // =========================
