@@ -171,7 +171,7 @@ case "generar-conclusion": {
 case "listar-ebooks":
     return await listarEbooks(data, env);
 
-case "verificar-editor":
+case "verificar-editor2":
 
     return await verificarEditor(
         data,
@@ -2572,7 +2572,7 @@ Si no existe, lo crea.
 =================================================
 */
 
-async function verificarEditor(data, env) {
+async function verificarEditor2(data, env) {
 
     let etapa = "inicio";
 
