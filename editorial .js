@@ -9,7 +9,7 @@ monitorPIXELLAB(
 // ARRANQUE DEL MÓDULO EDITORIAL
 // =====================================
 
-async function iniciarCargaEditorial() {
+/*async function iniciarCargaEditorial() {
 
     monitorPIXELLAB(
         "Editorial",
@@ -51,7 +51,7 @@ window.addEventListener(
 // en R2 y continúa según el estado del proyecto.
 //=====================================================*/
 
-async function verificarProyecto() {
+/*async function verificarProyecto() {
 
     monitorPIXELLAB(
     "Editorial",
@@ -366,3 +366,4 @@ if (!proyectoCreado && !proyectoProduccion) {
     }
 
 }
+*/
