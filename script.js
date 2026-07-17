@@ -3152,7 +3152,9 @@ async function seleccionarProyectoEditorial(projectId) {
 
     const data =
         await verificarEditorProyecto(
-            projectId
+            projectId,
+            env
+            
         );
 
     if (!data.ok) {
@@ -3523,7 +3525,7 @@ function cargarPaginaPortada(proyecto) {
 
 }
 
-async function verificarEditorProyecto(projectId) {
+async function verificarEditorProyecto(data,env) {
 
       const resVisual = await fetch(WORKER_URL, {
             method: "POST",
@@ -3532,12 +3534,12 @@ async function verificarEditorProyecto(projectId) {
             },
             body: JSON.stringify({
                 action: "verificar-editor",
-                projectId,
+                data,
                 env
             })
         });
 
-const data = await respuesta.json();
+const projecto = await respuesta.json();
 
 monitorPIXELLAB(
     "Editorial",
@@ -3546,7 +3548,7 @@ monitorPIXELLAB(
     JSON.stringify(data)
 );
 
-return data;
+
     return await respuesta.json();
     
 
