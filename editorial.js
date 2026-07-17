@@ -1,3 +1,10 @@
+
+monitorPIXELLAB(
+    "Editorial",
+    "info",
+    "Carga",
+    "editorial.js ejecutándose"
+);
 // =====================================
 // PIXELLAB EDITORIAL
 // VARIABLES DEL EDITOR

@@ -24,7 +24,12 @@ const FETCH_CONFIG = {
   }
 
 };
-
+monitorPIXELLAB(
+    "CORE",
+    "info",
+    "Carga",
+    "pixellab45-core.js ejecutándose"
+);
 /* ==========================================================
    PIXELLAB Monitor v1.2
    Monitor reutilizable con destino configurable

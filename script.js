@@ -1,8 +1,8 @@
 monitorPIXELLAB(
-    "Sistema",
+    "AI Lab",
     "info",
     "Carga",
-    "script.js iniciado"
+    "script.js ejecutándose"
 );
 //Variable global worker 
 const WORKER_URL =
@@ -958,30 +958,6 @@ async function generarImagenPuter() {
   }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // =========================
