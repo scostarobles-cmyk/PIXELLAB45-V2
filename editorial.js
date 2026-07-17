@@ -35,7 +35,7 @@ async function iniciarCargaEditorial() {
         "Editorial",
         "proceso",
         "Módulo Editorial iniciado",
-        "..................."
+        ".................,.........................."
     );
 
   
@@ -113,13 +113,13 @@ async function verificarProyecto() {
 
         limpiarMonitorPIXELLAB();
 
+ocultarErrorEditorial();
 
-        const proyectoCreado =
-            datos.proyectoCreado;
+const proyectoCreado =
+    datos.proyectoCreado;
 
-
-        const proyectoProduccion =
-            datos.proyectoProduccion;
+const proyectoProduccion =
+    datos.proyectoProduccion;
 
 
 
@@ -198,7 +198,21 @@ async function verificarProyecto() {
             habilitarBoton(
                 "btnProyecto"
             );
+mostrarEstadoEditorial(`
 
+<h3>📚 Último eBook generado</h3>
+
+<p><b>${proyectoCreado.titulo}</b></p>
+
+<p>🆔 ${proyectoCreado.projectId}</p>
+
+<p>📅 ${proyectoCreado.fecha || ""}</p>
+
+<hr>
+
+<p>🆕 Puede generar un nuevo proyecto.</p>
+
+`);
 
         }
 
@@ -263,7 +277,21 @@ async function verificarProyecto() {
                 proyectoActual.titulo
             );
 
+mostrarEstadoEditorial(`
 
+<h3>📚 Proyecto en producción</h3>
+
+<p><b>${proyectoActual.titulo}</b></p>
+
+<p>🆔 ${projectIdActual}</p>
+
+<p>📅 ${proyectoActual.fecha || ""}</p>
+
+<hr>
+
+<p>⚙️ Continúe desde la botonera.</p>
+
+`);
 
             //------------------------------------
             // PLAN
@@ -847,7 +875,17 @@ async function verificarProyecto() {
                 "Siguiente paso",
                 "Crear un nuevo proyecto"
             );
+mostrarEstadoEditorial(`
 
+<h3>📚 Estado Editorial</h3>
+
+<p>🆕 No existe ningún proyecto.</p>
+
+<hr>
+
+<p>➡️ Genere un nuevo proyecto para comenzar.</p>
+
+`);
 
         }
 
@@ -3458,5 +3496,152 @@ function cargarPaginaPortada(proyecto) {
     );
 
 }
+//=====================================
+// MOSTRAR ESTADO EDITORIAL
+//=====================================
+
+function mostrarEstadoEditorial(html) {
+
+    const panel =
+        document.getElementById("estadoEditorial");
+
+    if (!panel) return;
+
+    panel.innerHTML = html;
+
+}
 
 
+
+//=====================================
+// MOSTRAR ÚLTIMO ERROR
+//=====================================
+
+function mostrarErrorEditorial(
+    seccion,
+    funcion,
+    mensaje,
+    stack = ""
+) {
+
+    const panel =
+        document.getElementById("errorEditorial");
+
+    if (!panel) return;
+
+
+    panel.style.display = "block";
+
+
+    panel.innerHTML = `
+
+        <div class="tituloError">
+            ⚠️ Último error detectado
+        </div>
+
+        <div class="detalleError">
+
+            <b>Sección:</b><br>
+            ${seccion}<br><br>
+
+            <b>Función:</b><br>
+            ${funcion}<br><br>
+
+            <b>Error:</b><br>
+            ${mensaje}<br><br>
+
+            ${
+                stack
+                ?
+                `<b>Detalle:</b><br>${stack}`
+                :
+                ""
+            }
+
+            <br>
+
+            <b>Hora:</b><br>
+            ${new Date().toLocaleString()}
+
+        </div>
+
+    `;
+
+}
+
+
+
+//=====================================
+// PANEL ESTADO EDITORIAL
+//=====================================
+
+function mostrarEstadoEditorial(html) {
+
+    const panel =
+        document.getElementById("estadoEditorial");
+
+    if (!panel) return;
+
+    panel.innerHTML = html;
+
+}
+
+
+
+//=====================================
+// PANEL ÚLTIMO ERROR
+//=====================================
+
+function mostrarErrorEditorial(
+    seccion,
+    funcion,
+    mensaje,
+    detalle = ""
+) {
+
+    const panel =
+        document.getElementById("errorEditorial");
+
+    if (!panel) return;
+
+    panel.style.display = "block";
+
+    panel.innerHTML = `
+
+        <h3>⚠️ Último error detectado</h3>
+
+        <p><b>Sección:</b><br>${seccion}</p>
+
+        <p><b>Función:</b><br>${funcion}</p>
+
+        <p><b>Error:</b><br>${mensaje}</p>
+
+        ${
+            detalle
+                ? `<p><b>Detalle:</b><br>${detalle}</p>`
+                : ""
+        }
+
+        <p><b>Hora:</b><br>${new Date().toLocaleString()}</p>
+
+    `;
+
+}
+
+
+
+//=====================================
+// OCULTAR PANEL ERROR
+//=====================================
+
+function ocultarErrorEditorial() {
+
+    const panel =
+        document.getElementById("errorEditorial");
+
+    if (!panel) return;
+
+    panel.style.display = "none";
+    panel.innerHTML = "";
+
+}
