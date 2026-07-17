@@ -1,3 +1,4 @@
+
 monitorPIXELLAB(
     "Sistema",
     "info",
@@ -3563,88 +3564,77 @@ No aplica estilos.
 =========================================================
 */
 
-async function cargarLegales() {
+async function cargarPaginaLegales(proyecto) {
 
     monitorPIXELLAB(
         "Editorial",
         "proceso",
         "Legales",
-        "Iniciando carga de legales"
+        "Entró a cargarPaginaLegales"
     );
 
 
-    if (!proyectoIdActual) {
+    monitorPIXELLAB(
+        "Editorial",
+        "debug",
+        "Legales proyecto",
+        JSON.stringify(proyecto)
+    );
+
+
+    const rutaLegales =
+        `proyectos/${proyecto}/legales.json`;
+
+
+    monitorPIXELLAB( 
+        "Editorial",
+        "debug",
+        "Legales ruta",
+        rutaLegales || "RUTA VACÍA"
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Legales",
+        "Antes de cargarJSON"
+    );
+
+
+    const legales = await cargarJSON(
+        WORKER_URL,
+        rutaLegales
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "debug",
+        "Legales respuesta",
+        JSON.stringify(legales)
+    );
+
+
+    if (!legales) {
 
         monitorPIXELLAB(
             "Editorial",
             "error",
             "Legales",
-            "No existe proyectoIdActual"
+            "No devolvió JSON"
         );
 
         return;
     }
 
 
-    const ruta =
-        `proyectos/${proyectoIdActual}/legales.json`;
-
-
     monitorPIXELLAB(
         "Editorial",
-        "proceso",
+        "estado",
         "Legales",
-        "Ruta: " + ruta
+        "JSON cargado correctamente"
     );
-
-
-    try {
-
-        const legales =
-            await cargarJSON(ruta);
-
-
-        if (!legales) {
-
-            monitorPIXELLAB(
-                "Editorial",
-                "error",
-                "Legales",
-                "No devolvió datos JSON"
-            );
-
-            return;
-        }
-
-
-        monitorPIXELLAB(
-            "Editorial",
-            "ok",
-            "Legales",
-            "JSON cargado correctamente"
-        );
-
-
-        // Aquí continúa la carga visual de legales
-        // usando el contenido recibido
-
-        if (typeof mostrarLegales === "function") {
-
-            mostrarLegales(legales);
-
-        }
-
-
-    } catch (error) {
-
-        monitorPIXELLAB(
-            "Editorial",
-            "error",
-            "Legales",
-            error.message
-        );
-
-    }
 
 }
 // =========================
