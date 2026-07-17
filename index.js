@@ -2568,18 +2568,26 @@ async function verificarEditor(
     env
 ) {
 
+    let etapa = "inicio";
+
     try {
+
+        etapa = "recibiendo datos";
 
         const {
             projectId
         } = data;
 
 
+        etapa = "validando projectId";
+
         if (!projectId) {
 
             return Response.json({
 
                 ok: false,
+
+                etapa,
 
                 error:
                     "Falta projectId."
@@ -2589,9 +2597,13 @@ async function verificarEditor(
         }
 
 
+        etapa = "creando ruta editor.json";
+
         const ruta =
             `proyectos/${projectId}/editor.json`;
 
+
+        etapa = "cargando editor.json";
 
         const editor =
             await cargarJSON(
@@ -2600,11 +2612,18 @@ async function verificarEditor(
             );
 
 
+        etapa = "editor.json cargado";
+
+
         if (editor) {
+
+            etapa = "editor existente";
 
             return Response.json({
 
                 ok: true,
+
+                etapa,
 
                 existe: true,
 
@@ -2615,6 +2634,9 @@ async function verificarEditor(
             });
 
         }
+
+
+        etapa = "creando editor inicial";
 
 
         const editorInicial = {
@@ -2644,6 +2666,9 @@ async function verificarEditor(
         };
 
 
+        etapa = "guardando editor.json";
+
+
         await guardarJSON(
 
             env,
@@ -2655,9 +2680,14 @@ async function verificarEditor(
         );
 
 
+        etapa = "editor.json guardado";
+
+
         return Response.json({
 
             ok: true,
+
+            etapa,
 
             existe: false,
 
@@ -2667,17 +2697,19 @@ async function verificarEditor(
 
         });
 
+
     }
 
     catch(error) {
-
-        console.error(error);
 
         return Response.json({
 
             ok: false,
 
-            error: error.message
+            etapa,
+
+            error:
+                error.message
 
         });
 
