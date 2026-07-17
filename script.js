@@ -3225,9 +3225,20 @@ monitorPIXELLAB(
         "Antes de cargar portada"
     );
 
-
+monitorPIXELLAB(
+    "Editorial",
+    "proceso",
+    "DEBUG",
+    "Proyecto enviado a portada: " + JSON.stringify(proyecto)
+);
     cargarPaginaPortada(proyecto);
 
+monitorPIXELLAB(
+    "Editorial",
+    "proceso",
+    "DEBUG",
+    "Después de cargar portada"
+);
 
     monitorPIXELLAB(
         "Editorial",
