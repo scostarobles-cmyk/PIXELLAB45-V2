@@ -3470,7 +3470,15 @@ monitorPIXELLAB(
 
     }
 
-
+monitorPIXELLAB(
+    "Editorial",
+    "proceso",
+    "DEBUG",
+    JSON.stringify({
+        action:"verificar-editor",
+        projectId
+    })
+);
     monitorPIXELLAB(
         "Editorial",
         "proceso",
