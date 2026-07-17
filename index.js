@@ -175,7 +175,7 @@ case "listar-ebooks":
 case "verificar-editor":
 
     return await verificarEditor(
-        body,
+        data,
         env
     );
     default:
@@ -2564,7 +2564,7 @@ Si no existe, lo crea.
 */
 
 async function verificarEditor(
-    body,
+    data,
     env
 ) {
 
@@ -2572,7 +2572,7 @@ async function verificarEditor(
 
         const {
             projectId
-        } = body;
+        } = data;
 
 
         if (!projectId) {
