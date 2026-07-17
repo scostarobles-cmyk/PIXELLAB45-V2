@@ -2103,78 +2103,7 @@ function limpiarMonitorPIXELLAB(){
     monitor.innerHTML="";
 
 }
-/* ==========================================================
-   PIXELLAB Monitor v1.1
-========================================================== */
 
-function monitorPIXELLAB(
-    modulo,
-    nivel,
-    operacion,
-    mensaje
-){
-
-    const monitor =
-        document.getElementById("monitorPIXELLAB");
-
-    if(!monitor) return;
-
-    const hora =
-        new Date().toLocaleTimeString();
-
-    const niveles = {
-
-        info: "ℹ️",
-
-        proceso: "🔄",
-
-        ok: "✅",
-
-        aviso: "⚠️",
-
-        error: "❌"
-
-    };
-
-    const icono =
-        niveles[nivel] || "•";
-
-    monitor.innerHTML += `
-
-<div class="monitor-evento monitor-${nivel}">
-
-    <div class="monitor-header">
-
-        <span>${hora}</span>
-
-        <span class="monitor-modulo">
-
-            ${modulo}
-
-        </span>
-
-    </div>
-
-    <div class="monitor-operacion">
-
-        ${icono} ${operacion}
-
-    </div>
-
-    <div class="monitor-mensaje">
-
-        ${mensaje}
-
-    </div>
-
-</div>
-
-`;
-
-    monitor.scrollTop =
-        monitor.scrollHeight;
-
-}
 /*
 =================================================
 PIXELLAB45 FRONTEND

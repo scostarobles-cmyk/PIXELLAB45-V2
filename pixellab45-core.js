@@ -1,3 +1,87 @@
+/* ==========================================================
+   PIXELLAB Monitor v1.2
+   Monitor reutilizable con destino configurable
+========================================================== */
+
+function monitorPIXELLAB(
+    modulo,
+    nivel,
+    operacion,
+    mensaje,
+    destino = "monitorPIXELLAB"
+){
+
+    const monitor =
+        document.getElementById(destino);
+
+    if(!monitor) return;
+
+
+    const hora =
+        new Date().toLocaleTimeString();
+
+
+    const niveles = {
+
+        info: "ℹ️",
+
+        proceso: "🔄",
+
+        ok: "✅",
+
+        aviso: "⚠️",
+
+        error: "❌"
+
+    };
+
+
+    const icono =
+        niveles[nivel] || "•";
+
+
+    monitor.innerHTML += `
+
+<div class="monitor-evento monitor-${nivel}">
+
+    <div class="monitor-header">
+
+        <span>${hora}</span>
+
+        <span class="monitor-modulo">
+
+            ${modulo}
+
+        </span>
+
+    </div>
+
+
+    <div class="monitor-operacion">
+
+        ${icono} ${operacion}
+
+    </div>
+
+
+    <div class="monitor-mensaje">
+
+        ${mensaje}
+
+    </div>
+
+
+</div>
+
+`;
+
+
+    monitor.scrollTop =
+        monitor.scrollHeight;
+
+}
+
+
 //====================================================
 // PIXELLAB45 CORE
 // CONTROL DE VERSIÓN Y LIMPIEZA DE CACHÉ
