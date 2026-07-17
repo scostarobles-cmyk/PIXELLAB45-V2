@@ -3117,8 +3117,8 @@ async function seleccionarProyectoEditorial(projectId) {
     monitorPIXELLAB(
         "Editorial",
         "proceso",
-        "Abriendo proyecto",
-        projectId
+        "DEBUG",
+        "Entró seleccionarProyectoEditorial: " + projectId
     );
 
 
@@ -3131,6 +3131,14 @@ async function seleccionarProyectoEditorial(projectId) {
         );
 
 
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "DEBUG",
+        "Proyecto: " + JSON.stringify(proyecto)
+    );
+
+
     if (!proyecto) {
 
         monitorPIXELLAB(
@@ -3141,22 +3149,21 @@ async function seleccionarProyectoEditorial(projectId) {
         );
 
         return;
-
     }
-
-
-    document.querySelectorAll(".ai-card")
-    .forEach(card => {
-
-        card.style.display = "none";
-
-    });
 
 
     const editor =
         document.getElementById(
             "editorTrabajo"
         );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "DEBUG",
+        "editorTrabajo: " + editor
+    );
 
 
     if (!editor) {
@@ -3169,17 +3176,32 @@ async function seleccionarProyectoEditorial(projectId) {
         );
 
         return;
-
     }
 
 
     editor.style.display = "block";
 
 
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "DEBUG",
+        "Mostrando editor"
+    );
+
+
     document.querySelector(
         "#editorTrabajo h2"
     ).textContent =
         "✏️ " + proyecto.titulo;
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "DEBUG",
+        "Antes de cargar portada"
+    );
 
 
     cargarPaginaPortada(proyecto);
