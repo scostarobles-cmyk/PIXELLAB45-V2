@@ -3152,8 +3152,7 @@ async function seleccionarProyectoEditorial(projectId) {
 
     const data =
         await verificarEditorProyecto(
-            projectId,
-            env
+            projectId
         );
 
     if (!data.ok) {
@@ -3533,7 +3532,7 @@ async function verificarEditorProyecto(projectId) {
             },
             body: JSON.stringify({
                 action: "verificar-editor",
-                tema: projectId
+                projectId
             })
         });
 
