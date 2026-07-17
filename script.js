@@ -3173,13 +3173,110 @@ async function seleccionarProyectoEditorial(projectId) {
     ).textContent =
         "✏️ " + proyecto.titulo;
 
-    cargarPaginaPortada(proyecto);
+    await cargarLibroCompleto(proyecto);
 
     monitorPIXELLAB(
         "Editorial",
         "estado",
         "Editor abierto",
         proyecto.titulo
+    );
+
+}
+
+/*
+=========================================
+PIXELLAB Editorial
+Carga completa del libro en memoria
+
+Etapa 1
+
+Reconstruye el eBook completo leyendo
+todos los archivos JSON del proyecto.
+
+Orden de carga:
+
+1. Portada
+2. Legales
+3. Índice
+4. Introducción
+5. Capítulos
+6. Conclusión
+
+En esta etapa únicamente carga el
+contenido.
+
+No aplica estilos.
+No guarda cambios.
+No realiza edición.
+
+=========================================
+*/
+
+async function cargarLibroCompleto(proyecto) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Libro",
+        "Comenzando carga completa"
+    );
+
+    // 1. Portada
+    cargarPaginaPortada(proyecto);
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Portada",
+        "Cargada"
+    );
+
+    // 2. Legales
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Legales",
+        "Pendiente"
+    );
+
+    // 3. Índice
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Índice",
+        "Pendiente"
+    );
+
+    // 4. Introducción
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Introducción",
+        "Pendiente"
+    );
+
+    // 5. Capítulos
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Capítulos",
+        "Pendiente"
+    );
+
+    // 6. Conclusión
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Conclusión",
+        "Pendiente"
+    );
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Libro",
+        "Carga completa finalizada"
     );
 
 }
