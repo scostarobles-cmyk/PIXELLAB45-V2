@@ -2644,7 +2644,7 @@ script.js
 
 =================================================
 */
-
+let bibliotecaEditorial = [];
 async function mostrarProyectosEditorial(proyectos) {
 
 
@@ -2690,9 +2690,26 @@ async function mostrarProyectosEditorial(proyectos) {
 
 
     let cantidad = 0;
-
+bibliotecaEditorial = [];
 
     for (const proyecto of proyectos) {
+    	
+    bibliotecaEditorial.push({
+
+    projectId: proyecto.projectId,
+
+    titulo: proyecto.titulo,
+
+    autor: proyecto.autor,
+
+    paginas: proyecto.paginas,
+
+    portada:
+        `${R2_EBOOKS_URL}/proyectos/${proyecto.projectId}/imagenes/portada.png`,
+
+    estructura: proyecto.estructura
+
+});
 
 
         cantidad++;
@@ -2847,7 +2864,23 @@ async function mostrarProyectosEditorial(proyectos) {
 
 
     }
+monitorPIXELLAB(
+    "Editorial",
+    "ok",
+    "Array Editorial",
+    `${bibliotecaEditorial.length} eBooks cargados en memoria`
+);
 
+for (const libro of bibliotecaEditorial) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "info",
+        libro.projectId,
+        `${libro.titulo} | ${libro.paginas} páginas`
+    );
+
+}
 
     monitorPIXELLAB(
         "Editorial",
