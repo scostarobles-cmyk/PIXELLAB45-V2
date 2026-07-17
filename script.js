@@ -3525,7 +3525,7 @@ function cargarPaginaPortada(proyecto) {
 
 }
 
-async function verificarEditorProyecto(data,env) {
+async function verificarEditorProyecto(env,data,json) {
 
       const resVisual = await fetch(WORKER_URL, {
             method: "POST",
@@ -3534,12 +3534,12 @@ async function verificarEditorProyecto(data,env) {
             },
             body: JSON.stringify({
                 action: "verificar-editor",
-                data,
-                env
+                data: projectId,
+                json
             })
         });
 
-const projecto = await respuesta.json();
+
 
 monitorPIXELLAB(
     "Editorial",
@@ -3549,7 +3549,7 @@ monitorPIXELLAB(
 );
 
 
-    return await respuesta.json();
+    return await resVisual.json();
     
 
     

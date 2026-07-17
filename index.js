@@ -2578,7 +2578,7 @@ Si no existe, lo crea.
 =================================================
 */
 
-async function verificarEditor(data, env) {
+async function verificarEditor(env, data, json) {
 
     let etapa = "inicio";
 
