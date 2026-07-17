@@ -173,14 +173,10 @@ case "listar-ebooks":
 
 case "verificar-editor":
 
-    return json({
-
-        success: true,
-
-        ideas:
-            "ENTRO CORRECTAMENTE AL CASE verificar-editor"
-
-    });
+    return await verificarEditor(
+        data,
+        env
+    );
     default:
 
     return json({
@@ -2576,104 +2572,31 @@ Si no existe, lo crea.
 =================================================
 */
 
-async function verificarEditor(
-    data,
-    env
-) {
+async function verificarEditor(data, env) {
+
+    let etapa = "inicio";
 
     try {
 
-        const {
-            projectId
-        } = data;
+        etapa = "Entró a verificarEditor";
 
-        if (!projectId) {
+        return json({
 
-            return Response.json({
+            success: true,
 
-                ok: false,
-
-                error:
-                    "Falta projectId."
-
-            });
-
-        }
-
-        const ruta =
-            `proyectos/${projectId}/editor.json`;
-
-        let editor =
-            await cargarJSON(
-                env,
-                ruta
-            );
-
-        if (!editor) {
-
-            editor = {
-
-                version: 1,
-
-                projectId,
-
-                estado: "edicion",
-
-                paginaActual: "portada",
-
-                paginaVisible: 1,
-
-                zoom: 100,
-
-                seleccion: null,
-
-                historial: [],
-
-                fechaCreacion:
-                    new Date().toISOString(),
-
-                ultimaEdicion:
-                    new Date().toISOString()
-
-            };
-
-            await guardarJSON(
-                env,
-                ruta,
-                editor
-            );
-
-            return Response.json({
-
-                ok: true,
-
-                creado: true,
-
-                editor
-
-            });
-
-        }
-
-        return Response.json({
-
-            ok: true,
-
-            creado: false,
-
-            editor
+            ideas: etapa
 
         });
 
-    }
-    catch(error) {
 
-        return Response.json({
+    } catch(error) {
 
-            ok: false,
+        return json({
 
-            error:
-                error.message
+            success: false,
+
+            ideas:
+                etapa + " | ERROR: " + error.message
 
         });
 
