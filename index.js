@@ -173,17 +173,10 @@ case "listar-ebooks":
 
 case "verificar-editor":
 
-    return json({
-
-        ok: true,
-
-        mensaje:
-            "Entró al case verificar-editor",
-
-        recibido:
-            data
-
-    });
+    return await verificarEditor(
+        data,
+        env
+    );
     default:
 
     return json({

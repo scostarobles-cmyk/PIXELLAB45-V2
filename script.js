@@ -3111,55 +3111,19 @@ script.js
 
 let proyectoEditorialActivo = null;
 
-
 async function seleccionarProyectoEditorial(projectId) {
 
     monitorPIXELLAB(
         "Editorial",
         "proceso",
-        "DEBUG",
-        "Entró seleccionarProyectoEditorial: " + projectId
+        "Abriendo proyecto",
+        projectId
     );
 
-
-    proyectoEditorialActivo = projectId;
-
-
-    monitorPIXELLAB(
-    "Editorial",
-    "proceso",
-    "DEBUG",
-    "Antes del find"
-);
-
-monitorPIXELLAB(
-    "Editorial",
-    "proceso",
-    "DEBUG",
-    "proyectosEditorial tipo: " + typeof proyectosEditorial
-);
-
-
-const proyecto =
-    bibliotecaEditorial.find(
-        p => p.projectId === projectId
-    );
-
-monitorPIXELLAB(
-    "Editorial",
-    "proceso",
-    "DEBUG",
-    "Después del find: " + JSON.stringify(proyecto)
-);
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "DEBUG",
-        "Proyecto: " + JSON.stringify(proyecto)
-    );
-
+    const proyecto =
+        bibliotecaEditorial.find(
+            p => p.projectId === projectId
+        );
 
     if (!proyecto) {
 
@@ -3171,22 +3135,87 @@ monitorPIXELLAB(
         );
 
         return;
+
     }
 
+
+    // ==========================
+    // Verificar editor.json
+    // ==========================
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Editor",
+        "Verificando editor.json..."
+    );
+
+    const respuesta = await fetch(
+        WORKER_URL,
+        {
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+
+                action: "verificar-editor",
+
+                projectId
+
+            })
+
+        }
+    );
+
+    const data = await respuesta.json();
+
+    if (!data.ok) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Editor",
+            data.error
+        );
+
+        return;
+
+    }
+
+    if (data.creado) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Editor",
+            "editor.json creado"
+        );
+
+    } else {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Editor",
+            "editor.json encontrado"
+        );
+
+    }
+
+
+    // ==========================
+    // Abrir editor
+    // ==========================
+
+    proyectoEditorialActivo = projectId;
 
     const editor =
         document.getElementById(
             "editorTrabajo"
         );
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "DEBUG",
-        "editorTrabajo: " + editor
-    );
-
 
     if (!editor) {
 
@@ -3198,47 +3227,17 @@ monitorPIXELLAB(
         );
 
         return;
+
     }
 
-
     editor.style.display = "block";
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "DEBUG",
-        "Mostrando editor"
-    );
-
 
     document.querySelector(
         "#editorTrabajo h2"
     ).textContent =
         "✏️ " + proyecto.titulo;
 
-
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "DEBUG",
-        "Antes de cargar portada"
-    );
-
-monitorPIXELLAB(
-    "Editorial",
-    "proceso",
-    "DEBUG",
-    "Proyecto enviado a portada: " + JSON.stringify(proyecto)
-);
     cargarPaginaPortada(proyecto);
-
-monitorPIXELLAB(
-    "Editorial",
-    "proceso",
-    "DEBUG",
-    "Después de cargar portada"
-);
 
     monitorPIXELLAB(
         "Editorial",
@@ -3248,7 +3247,6 @@ monitorPIXELLAB(
     );
 
 }
-
 
 /*
 =================================================
