@@ -71,25 +71,31 @@ window.addEventListener(
 // en R2 y continúa según el estado del proyecto.
 //=====================================================*/
 
+
 async function verificarProyecto() {
 
     monitorPIXELLAB(
         "Editorial",
         "proceso",
-        "Proyecto",
+        "Verificación",
         "Entró a verificarProyecto"
     );
+
 
     try {
 
         const respuesta = await fetch(WORKER_URL, {
+
             method: "POST",
+
             headers: {
                 "Content-Type": "application/json"
             },
+
             body: JSON.stringify({
                 action: "verificar-proyecto"
             })
+
         });
 
 
@@ -104,8 +110,16 @@ async function verificarProyecto() {
         );
 
 
-        const proyectoCreado = datos.proyectoCreado;
-        const proyectoProduccion = datos.proyectoProduccion;
+        limpiarMonitorPIXELLAB();
+
+
+        const proyectoCreado =
+            datos.proyectoCreado;
+
+
+        const proyectoProduccion =
+            datos.proyectoProduccion;
+
 
 
         //------------------------------------
@@ -114,34 +128,58 @@ async function verificarProyecto() {
 
         if (proyectoCreado) {
 
-            monitor(
-                "✅ Proyecto finalizado disponible."
+
+            monitorPIXELLAB(
+                "Editorial",
+                "estado",
+                "Proyecto creado",
+                "Proyecto finalizado disponible"
             );
 
-            monitor(
-                "📖 " + proyectoCreado.titulo
+
+            monitorPIXELLAB(
+                "Editorial",
+                "info",
+                "Título",
+                proyectoCreado.titulo
             );
 
-            monitor(
-                "🆔 ID: " + proyectoCreado.projectId
+
+            monitorPIXELLAB(
+                "Editorial",
+                "info",
+                "ID",
+                proyectoCreado.projectId
             );
 
 
             if (proyectoCreado.fecha) {
 
-                monitor(
-                    "📅 Fecha: " + proyectoCreado.fecha
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "info",
+                    "Fecha",
+                    proyectoCreado.fecha
                 );
+
 
             }
 
 
-            monitor(
-                "➡️ Abra este Ebook en el editor."
+            monitorPIXELLAB(
+                "Editorial",
+                "proceso",
+                "Proyecto",
+                "Abra este Ebook en el editor"
             );
 
-            monitor(
-                "🆕 O genere un proyecto nuevo."
+
+            monitorPIXELLAB(
+                "Editorial",
+                "proceso",
+                "Proyecto",
+                "Puede generar un nuevo proyecto"
             );
 
 
@@ -150,16 +188,687 @@ async function verificarProyecto() {
                 "azul"
             );
 
+
             botonAzul(
                 "btnProyecto"
             );
+
 
             habilitarBoton(
                 "btnProyecto"
             );
 
+
         }
 
+
+
+        //------------------------------------
+        // PROYECTO PRODUCCIÓN
+        //------------------------------------
+
+        if (proyectoProduccion) {
+
+
+            proyectoActual =
+                proyectoProduccion;
+
+
+            projectIdActual =
+                proyectoActual.projectId;
+
+
+
+            //------------------------------------
+            // PROYECTO
+            //------------------------------------
+
+            actualizarIndicador(
+                "estadoProyecto",
+                "verde"
+            );
+
+
+            botonVerde(
+                "btnProyecto"
+            );
+
+
+            deshabilitarBoton(
+                "btnProyecto"
+            );
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "estado",
+                "Proyecto",
+                "Proyecto en producción cargado"
+            );
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "info",
+                "ID",
+                projectIdActual
+            );
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "info",
+                "Título",
+                proyectoActual.titulo
+            );
+
+
+
+            //------------------------------------
+            // PLAN
+            //------------------------------------
+
+            if (
+                proyectoActual.estructura.plan === "creado"
+            ) {
+
+
+                actualizarIndicador(
+                    "estadoPlan",
+                    "verde"
+                );
+
+
+                botonVerde(
+                    "btnPlan"
+                );
+
+
+                deshabilitarBoton(
+                    "btnPlan"
+                );
+
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "estado",
+                    "Plan",
+                    "Plan generado"
+                );
+
+
+            } else {
+
+
+                actualizarIndicador(
+                    "estadoPlan",
+                    "azul"
+                );
+
+
+                botonAzul(
+                    "btnPlan"
+                );
+
+
+                habilitarBoton(
+                    "btnPlan"
+                );
+
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "proceso",
+                    "Plan",
+                    "Falta generar el plan"
+                );
+
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "proceso",
+                    "Siguiente paso",
+                    "Generar plan"
+                );
+
+
+                return;
+
+            }
+            //------------------------------------
+            // INDICE
+            //------------------------------------
+
+            if (
+                proyectoActual.estructura.indice === "creado"
+            ) {
+
+
+                actualizarIndicador(
+                    "estadoIndice",
+                    "verde"
+                );
+
+
+                botonVerde(
+                    "btnIndice"
+                );
+
+
+                deshabilitarBoton(
+                    "btnIndice"
+                );
+
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "estado",
+                    "Índice",
+                    "Índice generado"
+                );
+
+
+            } else {
+
+
+                actualizarIndicador(
+                    "estadoIndice",
+                    "azul"
+                );
+
+
+                botonAzul(
+                    "btnIndice"
+                );
+
+
+                habilitarBoton(
+                    "btnIndice"
+                );
+
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "proceso",
+                    "Índice",
+                    "Falta generar el índice"
+                );
+
+
+                return;
+
+            }
+
+
+
+            //------------------------------------
+            // LEGALES
+            //------------------------------------
+
+            if (
+                proyectoActual.estructura.legales === "creado"
+            ) {
+
+
+                actualizarIndicador(
+                    "estadoLegales",
+                    "verde"
+                );
+
+
+                botonVerde(
+                    "btnLegales"
+                );
+
+
+                deshabilitarBoton(
+                    "btnLegales"
+                );
+
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "estado",
+                    "Legales",
+                    "Legales generadas"
+                );
+
+
+            } else {
+
+
+                actualizarIndicador(
+                    "estadoLegales",
+                    "azul"
+                );
+
+
+                botonAzul(
+                    "btnLegales"
+                );
+
+
+                habilitarBoton(
+                    "btnLegales"
+                );
+
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "proceso",
+                    "Legales",
+                    "Falta generar las legales"
+                );
+
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "proceso",
+                    "Siguiente paso",
+                    "Generar legales"
+                );
+
+
+                return;
+
+            }
+
+
+
+
+            //------------------------------------
+            // INTRODUCCIÓN
+            //------------------------------------
+
+            if (
+                proyectoActual.estructura.introduccion === "creado"
+            ) {
+
+
+                actualizarIndicador(
+                    "estadoIntro",
+                    "verde"
+                );
+
+
+                botonVerde(
+                    "btnIntroduccion"
+                );
+
+
+                deshabilitarBoton(
+                    "btnIntroduccion"
+                );
+
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "estado",
+                    "Introducción",
+                    "Introducción generada"
+                );
+
+
+            } else {
+
+
+                actualizarIndicador(
+                    "estadoIntro",
+                    "azul"
+                );
+
+
+                botonAzul(
+                    "btnIntroduccion"
+                );
+
+
+                habilitarBoton(
+                    "btnIntroduccion"
+                );
+
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "proceso",
+                    "Introducción",
+                    "Falta generar introducción"
+                );
+
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "proceso",
+                    "Siguiente paso",
+                    "Generar introducción"
+                );
+
+
+                return;
+
+            }
+
+
+
+
+            //------------------------------------
+            // CARGAR PLAN ANTES DE CAPÍTULOS
+            //------------------------------------
+
+            const plan = await cargarJSON(
+                `proyectos/${projectIdActual}/plan.json`
+            );
+
+
+
+
+            //------------------------------------
+            // CAPÍTULOS
+            //------------------------------------
+
+            if (
+                proyectoActual.estructura.capitulos === "pendiente"
+            ) {
+
+
+                actualizarIndicador(
+                    "estadoCapitulos",
+                    "azul"
+                );
+
+
+                botonAzul(
+                    "btnCapitulos"
+                );
+
+
+                habilitarBoton(
+                    "btnCapitulos"
+                );
+
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "proceso",
+                    "Capítulos",
+                    "Falta generar capítulos"
+                );
+
+
+                return;
+
+            }
+
+
+
+            if (
+                proyectoActual.estructura.capitulos === "produccion"
+            ) {
+
+
+                actualizarIndicador(
+                    "estadoCapitulos",
+                    "amarillo"
+                );
+
+
+                botonAmarillo(
+                    "btnCapitulos"
+                );
+
+
+                habilitarBoton(
+                    "btnCapitulos"
+                );
+
+
+                if (
+                    !plan ||
+                    !plan.capitulos
+                ) {
+
+
+                    monitorPIXELLAB(
+                        "Editorial",
+                        "error",
+                        "Capítulos",
+                        "No se recibió el plan"
+                    );
+
+
+                    return;
+
+                }
+
+
+
+                for (
+                    const capitulo of plan.capitulos
+                ) {
+
+
+                    if (
+                        capitulo.estado !== "creado"
+                    ) {
+
+
+                        monitorPIXELLAB(
+                            "Editorial",
+                            "proceso",
+                            "Capítulos",
+                            "Capítulos en producción"
+                        );
+
+
+                        monitorPIXELLAB(
+                            "Editorial",
+                            "info",
+                            "Próximo capítulo",
+                            `${capitulo.numero} - ${capitulo.titulo}`
+                        );
+
+
+
+                        if (
+                            typeof preguntarSiguienteCapitulo === "function"
+                            &&
+                            preguntarContinuarCapitulos
+                        ) {
+
+
+                            preguntarSiguienteCapitulo();
+
+
+                        }
+
+
+                        return;
+
+                    }
+
+                }
+
+            }
+            //------------------------------------
+            // TODOS LOS CAPÍTULOS TERMINADOS
+            //------------------------------------
+
+            if (
+                proyectoActual.estructura.capitulos === "creado"
+            ) {
+
+
+                actualizarIndicador(
+                    "estadoCapitulos",
+                    "verde"
+                );
+
+
+                botonVerde(
+                    "btnCapitulos"
+                );
+
+
+                deshabilitarBoton(
+                    "btnCapitulos"
+                );
+
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "estado",
+                    "Capítulos",
+                    "Capítulos generados"
+                );
+
+
+            }
+
+
+
+
+            //------------------------------------
+            // CONCLUSIÓN
+            //------------------------------------
+
+            if (
+                proyectoActual.estructura.conclusion === "creado"
+            ) {
+
+
+                actualizarIndicador(
+                    "estadoConclusion",
+                    "verde"
+                );
+
+
+                botonVerde(
+                    "btnConclusion"
+                );
+
+
+                deshabilitarBoton(
+                    "btnConclusion"
+                );
+
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "estado",
+                    "Conclusión",
+                    "Conclusión generada"
+                );
+
+
+            } else {
+
+
+                actualizarIndicador(
+                    "estadoConclusion",
+                    "azul"
+                );
+
+
+                botonAzul(
+                    "btnConclusion"
+                );
+
+
+                habilitarBoton(
+                    "btnConclusion"
+                );
+
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "proceso",
+                    "Conclusión",
+                    "Falta generar la conclusión"
+                );
+
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "proceso",
+                    "Siguiente paso",
+                    "Generar conclusión"
+                );
+
+
+                return;
+
+            }
+
+
+        } // FIN PROYECTO PRODUCCIÓN
+
+
+
+
+
+        //------------------------------------
+        // NO EXISTE NINGÚN PROYECTO
+        //------------------------------------
+
+        if (
+            !proyectoCreado &&
+            !proyectoProduccion
+        ) {
+
+
+            actualizarIndicador(
+                "estadoProyecto",
+                "azul"
+            );
+
+
+            botonAzul(
+                "btnProyecto"
+            );
+
+
+            habilitarBoton(
+                "btnProyecto"
+            );
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "estado",
+                "Proyecto",
+                "No existe ningún proyecto"
+            );
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "proceso",
+                "Siguiente paso",
+                "Crear un nuevo proyecto"
+            );
+
+
+        }
+
+
+
+    } catch (error) {
+
+
+        console.error(error);
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Verificar proyecto",
+            error.message
+        );
+
+
+    }
+
+}
 
 /*
 =========================================================
