@@ -3139,57 +3139,7 @@ async function seleccionarProyectoEditorial(projectId) {
     }
 
 
-    // ==========================
-    // Verificar editor.json
-    // ==========================
 
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Editor",
-        "Verificando editor.json..."
-    );
-
-    const data =
-        await verificarEditorProyecto(
-            projectId,
-            env
-            
-        );
-
-    if (!data.ok) {
-
-        monitorPIXELLAB(
-            "Editorial",
-            "error",
-            "Editor",
-            data.error
-        );
-
-        return;
-
-    }
-
-    if (data.creado) {
-
-        monitorPIXELLAB(
-            "Editorial",
-            "estado",
-            "Editor",
-            "editor.json creado"
-        );
-
-    }
-    else {
-
-        monitorPIXELLAB(
-            "Editorial",
-            "estado",
-            "Editor",
-            "editor.json encontrado"
-        );
-
-    }
 
 
     // ==========================
@@ -3525,38 +3475,7 @@ function cargarPaginaPortada(proyecto) {
 
 }
 
-async function verificarEditorProyecto(env,data,json) {
 
-      const resVisual = await fetch(WORKER_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                action: "verificar-editor",
-                data: projectId,
-                json
-            })
-        });
-
-
-
-monitorPIXELLAB(
-    "Editorial",
-    "DEBUG",
-    "Respuesta Worker",
-    JSON.stringify(data)
-);
-
-
-    return await resVisual.json();
-    
-
-    
-
-
-
-}
 // =========================
 // MENÚ HAMBURGUESA
 // =========================

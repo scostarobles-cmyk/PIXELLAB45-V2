@@ -172,17 +172,6 @@ case "listar-ebooks":
     return await listarEbooks(data, env);
 
 
-
-    case "verificar-editor":
-
-    return json({
-
-        success: true,
-
-        ideas:
-            "ENTRO AL CASE VERIFICAR-EDITOR"
-
-    });
     default:
 
     return json({
@@ -2560,51 +2549,6 @@ async function listarEbooks(data, env) {
             }
         );
 
-
-    }
-
-}
-/*
-=================================================
-PIXELLAB45 WORKER
-
-Función:
-verificarEditor()
-
-Descripción:
-Verifica si existe editor.json.
-Si no existe, lo crea.
-
-=================================================
-*/
-
-async function verificarEditor(env, data, json) {
-
-    let etapa = "inicio";
-
-    try {
-
-        etapa = "Entró a verificarEditor";
-
-        return json({
-
-            success: true,
-
-            ideas: etapa
-
-        });
-
-
-    } catch(error) {
-
-        return json({
-
-            success: false,
-
-            ideas:
-                etapa + " | ERROR: " + error.message
-
-        });
 
     }
 
