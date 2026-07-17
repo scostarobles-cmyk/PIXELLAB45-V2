@@ -3152,7 +3152,8 @@ async function seleccionarProyectoEditorial(projectId) {
 
     const data =
         await verificarEditorProyecto(
-            projectId
+            projectId,
+            env
         );
 
     if (!data.ok) {
