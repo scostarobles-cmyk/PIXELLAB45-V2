@@ -34,8 +34,8 @@ async function iniciarCargaEditorial() {
     monitorPIXELLAB(
         "Editorial",
         "proceso",
-        "Módulo Editorial iniciado"
-        ".................,.........................."
+        "Módulo Editorial iniciado",
+        "..................."
     );
 
   
