@@ -3546,7 +3546,6 @@ async function generarPortadaProyecto(proyecto) {
     }
 
 }
-
 /*
 =========================================================
 PIXELLAB Editorial
@@ -3558,11 +3557,8 @@ Responsabilidad:
 • Crear la página de legales
 • Agregar la página al paginaEditor
 
-Esta función solamente carga la hoja.
-
 No guarda cambios.
 No aplica estilos.
-No modifica contenido.
 
 =========================================================
 */
@@ -3573,18 +3569,39 @@ async function cargarPaginaLegales(proyecto) {
         "Editorial",
         "proceso",
         "Legales",
-        "Entró a cargarPaginaLegales"
+        "Cargando legales.json"
     );
+
+    const legales = await cargarJSON(
+        WORKER_URL,
+        proyecto.rutas.legales
+    );
+
+    if (!legales) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Legales",
+            "No se pudo cargar legales.json"
+        );
+
+        return;
+
+    }
 
     monitorPIXELLAB(
         "Editorial",
         "estado",
         "Legales",
-        "Función ejecutada"
+        "JSON cargado correctamente"
     );
 
-}
+    // Próximo paso:
+    // Crear el HTML de la hoja
+    // e insertarlo en paginaEditor.
 
+}
 // =========================
 // INICIO
 // =========================
