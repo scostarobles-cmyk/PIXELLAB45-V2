@@ -3141,7 +3141,7 @@ monitorPIXELLAB(
 
 
 const proyecto =
-    proyectosEditorial.find(
+    bibliotecaEditorial.find(
         p => p.projectId === projectId
     );
 
