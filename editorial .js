@@ -18,6 +18,8 @@ async function iniciarCargaEditorial() {
     );
 
     await iniciarEditorial();
+    
+    await verificarProyecto();
 
 }
 
@@ -36,7 +38,7 @@ window.addEventListener(
 // verificarProyecto()
 // cargarProyecto()
 // generar...
-await verificarProyecto();
+
 
 
 /*
