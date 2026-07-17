@@ -44,7 +44,11 @@ export default {
 
     const tipo = data.action || "";
     
-
+return json({
+    ok: true,
+    mensaje: "Llegó al router del Worker",
+    actionRecibido: data.action
+});
 try {
 
   switch (tipo) {
@@ -2567,7 +2571,6 @@ async function verificarEditor(
     data,
     env
 ) {
-    let etapa = "inicio";
 
     try {
 
