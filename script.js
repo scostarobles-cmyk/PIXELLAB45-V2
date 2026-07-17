@@ -1,4 +1,3 @@
-
 monitorPIXELLAB(
     "Sistema",
     "info",
@@ -3582,30 +3581,24 @@ async function cargarPaginaLegales(proyecto) {
     );
 
 
-    const rutaLegales =
-        `proyectos/${proyecto}/legales.json`;
+    const respuesta = await fetch(WORKER_URL, {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        action: "cargar-json",
+        ruta: rutaLegales
+    })
+});
+
+const legales = await respuesta.json();
 
 
-    monitorPIXELLAB( 
-        "Editorial",
-        "debug",
-        "Legales ruta",
-        rutaLegales || "RUTA VACÍA"
-    );
+    
 
 
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Legales",
-        "Antes de cargarJSON"
-    );
-
-
-    const legales = await cargarJSON(
-        WORKER_URL,
-        rutaLegales
-    );
+    
 
 
     monitorPIXELLAB(
