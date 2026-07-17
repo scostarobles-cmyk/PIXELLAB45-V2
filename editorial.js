@@ -35,6 +35,7 @@ async function iniciarCargaEditorial() {
         "Editorial",
         "proceso",
         "Módulo Editorial iniciado"
+        ".................,.........................."
     );
 
   
@@ -917,13 +918,6 @@ async function cargarPaginaLegales(proyecto) {
 });
 
 const legales = await respuesta.json();
-
-
-    
-
-
-    
-
 
     monitorPIXELLAB(
         "Editorial",
