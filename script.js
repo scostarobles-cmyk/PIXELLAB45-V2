@@ -3531,7 +3531,7 @@ async function verificarEditorProyecto(projectId) {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                action: "prueba",
+                action: "verificar-editor",
                 tema: projectId
             })
         });
