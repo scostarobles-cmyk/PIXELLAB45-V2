@@ -40,7 +40,7 @@ function monitorPIXELLAB(
         niveles[nivel] || "•";
 
 
-    monitor.innerHTML += `
+    const evento = `
 
 <div class="monitor-evento monitor-${nivel}">
 
@@ -49,39 +49,52 @@ function monitorPIXELLAB(
         <span>${hora}</span>
 
         <span class="monitor-modulo">
-
             ${modulo}
-
         </span>
 
     </div>
 
-
     <div class="monitor-operacion">
-
         ${icono} ${operacion}
-
     </div>
-
 
     <div class="monitor-mensaje">
-
         ${mensaje}
-
     </div>
-
 
 </div>
 
 `;
 
 
-    monitor.scrollTop =
-        monitor.scrollHeight;
+/* Monitor principal */
+
+const monitorPrincipal =
+    document.getElementById("monitorPIXELLAB");
+
+if (monitorPrincipal) {
+
+    monitorPrincipal.innerHTML += evento;
+
+    monitorPrincipal.scrollTop =
+        monitorPrincipal.scrollHeight;
 
 }
 
 
+/* Monitor superior */
+
+const monitorBotonera =
+    document.getElementById("monitorBotonera");
+
+if (monitorBotonera) {
+
+    monitorBotonera.innerHTML += evento;
+
+    monitorBotonera.scrollTop =
+        monitorBotonera.scrollHeight;
+
+}
 //====================================================
 // PIXELLAB45 CORE
 // CONTROL DE VERSIÓN Y LIMPIEZA DE CACHÉ
