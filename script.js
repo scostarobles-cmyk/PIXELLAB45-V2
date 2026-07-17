@@ -3185,16 +3185,15 @@ async function seleccionarProyectoEditorial(projectId) {
 }
 
 /*
-=========================================
+=========================================================
 PIXELLAB Editorial
-Carga completa del libro en memoria
+ETAPA 1 · Carga completa del libro
 
-Etapa 1
+Objetivo:
+Reconstruir completamente el eBook en memoria
+leyendo todos los archivos JSON del proyecto.
 
-Reconstruye el eBook completo leyendo
-todos los archivos JSON del proyecto.
-
-Orden de carga:
+Flujo:
 
 1. Portada
 2. Legales
@@ -3203,15 +3202,31 @@ Orden de carga:
 5. Capítulos
 6. Conclusión
 
-En esta etapa únicamente carga el
-contenido.
+Cada hoja tendrá su propia función de carga.
 
-No aplica estilos.
-No guarda cambios.
-No realiza edición.
+La única excepción son los capítulos, que se
+recorrerán automáticamente leyendo plan.json.
 
-=========================================
+En esta etapa:
+
+✓ Carga contenido
+✗ No aplica estilos
+✗ No guarda cambios
+✗ No realiza edición
+
+=========================================================
 */
+
+
+const SECCIONES_LIBRO = [
+    "portada",
+    "legales",
+    "indice",
+    "introduccion",
+    "capitulos",
+    "conclusion"
+];
+
 
 async function cargarLibroCompleto(proyecto) {
 
@@ -3222,55 +3237,27 @@ async function cargarLibroCompleto(proyecto) {
         "Comenzando carga completa"
     );
 
-    // 1. Portada
-    cargarPaginaPortada(proyecto);
+    for (const seccion of SECCIONES_LIBRO) {
 
-    monitorPIXELLAB(
-        "Editorial",
-        "estado",
-        "Portada",
-        "Cargada"
-    );
+        if (seccion === "capitulos") {
 
-    // 2. Legales
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Legales",
-        "Pendiente"
-    );
+            monitorPIXELLAB(
+                "Editorial",
+                "proceso",
+                "Capítulos",
+                "Pendiente"
+            );
 
-    // 3. Índice
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Índice",
-        "Pendiente"
-    );
+            continue;
 
-    // 4. Introducción
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Introducción",
-        "Pendiente"
-    );
+        }
 
-    // 5. Capítulos
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Capítulos",
-        "Pendiente"
-    );
+        await cargarSeccion(
+            proyecto,
+            seccion
+        );
 
-    // 6. Conclusión
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Conclusión",
-        "Pendiente"
-    );
+    }
 
     monitorPIXELLAB(
         "Editorial",
@@ -3280,6 +3267,75 @@ async function cargarLibroCompleto(proyecto) {
     );
 
 }
+
+
+async function cargarSeccion(
+    proyecto,
+    seccion
+) {
+
+    switch (seccion) {
+
+        case "portada":
+
+            cargarPaginaPortada(
+                proyecto
+            );
+
+            break;
+
+
+        case "legales":
+
+            monitorPIXELLAB(
+                "Editorial",
+                "proceso",
+                "Legales",
+                "Pendiente"
+            );
+
+            break;
+
+
+        case "indice":
+
+            monitorPIXELLAB(
+                "Editorial",
+                "proceso",
+                "Índice",
+                "Pendiente"
+            );
+
+            break;
+
+
+        case "introduccion":
+
+            monitorPIXELLAB(
+                "Editorial",
+                "proceso",
+                "Introducción",
+                "Pendiente"
+            );
+
+            break;
+
+
+        case "conclusion":
+
+            monitorPIXELLAB(
+                "Editorial",
+                "proceso",
+                "Conclusión",
+                "Pendiente"
+            );
+
+            break;
+
+    }
+
+}
+
 /*
 =================================================
 PIXELLAB45 EDITORIAL
