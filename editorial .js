@@ -20,6 +20,8 @@ async function iniciarCargaEditorial() {
     await iniciarEditorial();
     
     await verificarProyecto();
+    
+    await cargarGaleriaEditorial();
 
 }
 
