@@ -173,7 +173,7 @@ case "listar-ebooks":
 
 case "verificar-editor":
 
-    return await verificarEditor2(
+    return await verificarEditor(
         data,
         env
     );
@@ -2572,31 +2572,22 @@ Si no existe, lo crea.
 =================================================
 */
 
-async function verificarEditor2(
+async function verificarEditor(
     data,
     env
 ) {
-	
-    let etapa = "inicio";
 
     try {
-
-        etapa = "recibiendo datos";
 
         const {
             projectId
         } = data;
-
-
-        etapa = "validando projectId";
 
         if (!projectId) {
 
             return Response.json({
 
                 ok: false,
-
-                etapa,
 
                 error:
                     "Falta projectId."
@@ -2605,38 +2596,54 @@ async function verificarEditor2(
 
         }
 
-
-        etapa = "creando ruta editor.json";
-
         const ruta =
             `proyectos/${projectId}/editor.json`;
 
-
-        etapa = "cargando editor.json";
-
-        const editor =
+        let editor =
             await cargarJSON(
                 env,
                 ruta
             );
 
+        if (!editor) {
 
-        etapa = "editor.json cargado";
+            editor = {
 
+                version: 1,
 
-        if (editor) {
+                projectId,
 
-            etapa = "editor existente";
+                estado: "edicion",
+
+                paginaActual: "portada",
+
+                paginaVisible: 1,
+
+                zoom: 100,
+
+                seleccion: null,
+
+                historial: [],
+
+                fechaCreacion:
+                    new Date().toISOString(),
+
+                ultimaEdicion:
+                    new Date().toISOString()
+
+            };
+
+            await guardarJSON(
+                env,
+                ruta,
+                editor
+            );
 
             return Response.json({
 
                 ok: true,
 
-                etapa,
-
-                existe: true,
-
-                creado: false,
+                creado: true,
 
                 editor
 
@@ -2644,78 +2651,22 @@ async function verificarEditor2(
 
         }
 
-
-        etapa = "creando editor inicial";
-
-
-        const editorInicial = {
-
-            projectId,
-
-            version: 1,
-
-            estado: "edicion",
-
-            paginaActual: "portada",
-
-            paginaVisible: 1,
-
-            zoom: 100,
-
-            seleccion: null,
-
-            historial: [],
-
-            fechaCreacion:
-                new Date().toISOString(),
-
-            ultimaEdicion:
-                new Date().toISOString()
-
-        };
-
-
-        etapa = "guardando editor.json";
-
-
-        await guardarJSON(
-
-            env,
-
-            ruta,
-
-            editorInicial
-
-        );
-
-
-        etapa = "editor.json guardado";
-
-
         return Response.json({
 
             ok: true,
 
-            etapa,
+            creado: false,
 
-            existe: false,
-
-            creado: true,
-
-            editor: editorInicial
+            editor
 
         });
 
-
     }
-
     catch(error) {
 
         return Response.json({
 
             ok: false,
-
-            etapa,
 
             error:
                 error.message

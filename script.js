@@ -3150,27 +3150,10 @@ async function seleccionarProyectoEditorial(projectId) {
         "Verificando editor.json..."
     );
 
-    const respuesta = await fetch(
-        WORKER_URL,
-        {
-            method: "POST",
-
-            headers: {
-                "Content-Type": "application/json"
-            },
-
-            body: JSON.stringify({
-
-                action: "verificar-editor",
-
-                projectId
-
-            })
-
-        }
-    );
-
-    const data = await respuesta.json();
+    const data =
+        await verificarEditorProyecto(
+            projectId
+        );
 
     if (!data.ok) {
 
@@ -3194,7 +3177,8 @@ async function seleccionarProyectoEditorial(projectId) {
             "editor.json creado"
         );
 
-    } else {
+    }
+    else {
 
         monitorPIXELLAB(
             "Editorial",
@@ -3247,7 +3231,6 @@ async function seleccionarProyectoEditorial(projectId) {
     );
 
 }
-
 /*
 =================================================
 PIXELLAB45 EDITORIAL
@@ -3537,6 +3520,32 @@ function cargarPaginaPortada(proyecto) {
         "Portada",
         "Imagen agregada a paginaEditor"
     );
+
+}
+
+async function verificarEditorProyecto(projectId) {
+
+    const respuesta = await fetch(
+        WORKER_URL,
+        {
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+
+                action: "verificar-editor",
+
+                projectId
+
+            })
+
+        }
+    );
+
+    return await respuesta.json();
 
 }
 // =========================
