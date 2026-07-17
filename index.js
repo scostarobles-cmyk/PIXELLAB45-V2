@@ -44,11 +44,6 @@ export default {
 
     const tipo = data.action || "";
     
-return json({
-    ok: true,
-    mensaje: "Llegó al router del Worker",
-    actionRecibido: data.action
-});
 try {
 
   switch (tipo) {
@@ -178,10 +173,17 @@ case "listar-ebooks":
 
 case "verificar-editor":
 
-    return await verificarEditor(
-        data,
-        env
-    );
+    return json({
+
+        ok: true,
+
+        mensaje:
+            "Entró al case verificar-editor",
+
+        recibido:
+            data
+
+    });
     default:
 
       return json({
@@ -2571,6 +2573,8 @@ async function verificarEditor(
     data,
     env
 ) {
+	
+    let etapa = "inicio";
 
     try {
 
