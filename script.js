@@ -3597,9 +3597,41 @@ async function cargarPaginaLegales(proyecto) {
         "JSON cargado correctamente"
     );
 
-    // Próximo paso:
-    // Crear el HTML de la hoja
-    // e insertarlo en paginaEditor.
+  const paginaEditor =
+    document.getElementById(
+        "paginaEditor"
+    );
+
+const hoja =
+    document.createElement(
+        "section"
+    );
+
+hoja.className =
+    "pagina-editor";
+
+hoja.innerHTML = `
+
+<h1>Legales</h1>
+
+<div class="contenido-editor">
+
+${legales.contenido || ""}
+
+</div>
+
+`;
+
+paginaEditor.appendChild(
+    hoja
+);
+
+monitorPIXELLAB(
+    "Editorial",
+    "estado",
+    "Legales",
+    "Hoja agregada al editor"
+);
 
 }
 // =========================
