@@ -3531,13 +3531,22 @@ async function verificarEditorProyecto(projectId) {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                action: "verificar-editor2",
+                action: "verificar-editor",
                 projectId,
                 env
             })
         });
 
+const data = await respuesta.json();
 
+monitorPIXELLAB(
+    "Editorial",
+    "DEBUG",
+    "Respuesta Worker",
+    JSON.stringify(data)
+);
+
+return data;
     return await respuesta.json();
     
 
