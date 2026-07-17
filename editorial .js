@@ -1,3 +1,16 @@
+// =====================================
+// PIXELLAB EDITORIAL
+// VARIABLES DEL EDITOR
+// =====================================
+
+let proyectoActual = null;
+
+let projectIdActual = null;
+
+let continuarCapitulosAutomatico = false;
+
+let preguntarContinuarCapitulos = true;
+
 monitorPIXELLAB(
     "Editorial",
     "info",
@@ -9,7 +22,7 @@ monitorPIXELLAB(
 // ARRANQUE DEL MÓDULO EDITORIAL
 // =====================================
 
-/*async function iniciarCargaEditorial() {
+async function iniciarCargaEditorial() {
 
     monitorPIXELLAB(
         "Editorial",
@@ -17,7 +30,7 @@ monitorPIXELLAB(
         "Módulo Editorial iniciado"
     );
 
-    await iniciarEditorial();
+  
     
     await verificarProyecto();
     
@@ -51,7 +64,7 @@ window.addEventListener(
 // en R2 y continúa según el estado del proyecto.
 //=====================================================*/
 
-/*async function verificarProyecto() {
+async function verificarProyecto() {
 
     monitorPIXELLAB(
     "Editorial",
@@ -366,4 +379,2601 @@ if (!proyectoCreado && !proyectoProduccion) {
     }
 
 }
+
+
+/*
+=========================================================
+PIXELLAB Editorial
+Hoja · Legales
+
+Responsabilidad:
+
+• Cargar legales.json
+• Crear la página de legales
+• Agregar la página al paginaEditor
+
+No guarda cambios.
+No aplica estilos.
+
+=========================================================
 */
+
+async function cargarPaginaLegales(proyecto) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Legales",
+        "Entró a cargarPaginaLegales"
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "debug",
+        "Legales proyecto",
+        JSON.stringify(proyecto)
+    );
+
+
+    const respuesta = await fetch(WORKER_URL, {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        action: "cargar-json",
+        ruta: rutaLegales
+    })
+});
+
+const legales = await respuesta.json();
+
+
+    
+
+
+    
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "debug",
+        "Legales respuesta",
+        JSON.stringify(legales)
+    );
+
+
+    if (!legales) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Legales",
+            "No devolvió JSON"
+        );
+
+        return;
+    }
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Legales",
+        "JSON cargado correctamente"
+    );
+
+}
+
+/*
+=================================================
+PIXELLAB45 EDITORIAL
+
+Función:
+seleccionarProyectoEditorial()
+
+Descripción:
+Abre el editor del eBook seleccionado desde
+la biblioteca editorial.
+
+Proceso:
+- Guarda el proyecto activo.
+- Oculta la biblioteca.
+- Muestra el área de edición.
+- Carga la portada en la primera página A4.
+
+Estado:
+Versión inicial del editor.
+
+Archivo:
+script.js
+
+=================================================
+*/
+
+let proyectoEditorialActivo = null;
+
+async function seleccionarProyectoEditorial(projectId) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Abriendo proyecto",
+        projectId
+    );
+
+    const proyecto =
+        bibliotecaEditorial.find(
+            p => p.projectId === projectId
+        );
+
+    if (!proyecto) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Proyecto",
+            "No encontrado"
+        );
+
+        return;
+
+    }
+
+
+
+
+
+    // ==========================
+    // Abrir editor
+    // ==========================
+
+    proyectoEditorialActivo = projectId;
+
+    const editor =
+        document.getElementById(
+            "editorTrabajo"
+        );
+
+    if (!editor) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Editor",
+            "No existe editorTrabajo"
+        );
+
+        return;
+
+    }
+
+    editor.style.display = "block";
+
+    document.querySelector(
+        "#editorTrabajo h2"
+    ).textContent =
+        "✏️ " + proyecto.titulo;
+
+    await cargarLibroCompleto(proyecto);
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Editor abierto",
+        proyecto.titulo
+    );
+
+}
+async function generarConclusion() {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Conclusión",
+        "Iniciando generación de conclusión"
+    );
+
+
+    try {
+
+
+        const respuesta = await fetch(WORKER_URL, {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                action: "generar-conclusion"
+            })
+
+        });
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Conclusión",
+            "Respuesta recibida del Worker"
+        );
+
+
+        const resultado =
+            await respuesta.json();
+
+
+
+        if (!resultado.ok) {
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "error",
+                "Conclusión",
+                "Error generando conclusión: " +
+                resultado.error
+            );
+
+
+            return;
+
+        }
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Conclusión",
+            "Conclusión creada correctamente"
+        );
+
+
+
+        if (
+            typeof actualizarEstadoProyecto === "function"
+        ) {
+
+            actualizarEstadoProyecto(
+                "conclusion",
+                "creado"
+            );
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "proceso",
+                "Estado proyecto",
+                "Conclusión marcada como creada"
+            );
+
+        }
+
+
+
+        if (
+            typeof botonVerde === "function"
+        ) {
+
+            botonVerde(
+                "btnConclusion"
+            );
+
+        }
+
+
+        if (
+            typeof actualizarIndicador === "function"
+        ) {
+
+            actualizarIndicador(
+                "estadoConclusion",
+                "verde"
+            );
+
+        }
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Verificación",
+            "Actualizando estado del proyecto"
+        );
+
+
+        await verificarProyecto();
+
+
+
+    } catch (error) {
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Conclusión",
+            "Error de conexión: " + error.message
+        );
+
+
+        console.error(error);
+
+    }
+
+}
+
+
+
+//=====================================================
+// FUNCIÓN: crearProyecto()
+// Descripción:
+// Crea un nuevo proyecto editorial y lo guarda en R2.
+//=====================================================
+
+async function crearProyecto() {
+
+
+    botonVerde("btnProyecto");
+    actualizarIndicador(
+        "estadoProyecto",
+        "verde"
+    );
+
+
+    botonAzul("btnPlan");
+    actualizarIndicador(
+        "estadoPlan",
+        "azul"
+    );
+
+    habilitarBoton(
+        "btnPlan"
+    );
+
+
+    const btn =
+        document.getElementById(
+            "btnProyecto"
+        );
+
+
+    const estado =
+        document.getElementById(
+            "estadoProyecto"
+        );
+
+
+    const tema =
+        document.getElementById(
+            "temaEbook"
+        ).value.trim();
+
+
+    const autor =
+        document.getElementById(
+            "autorEbook"
+        ).value.trim();
+
+
+    const paginas =
+        parseInt(
+            document.getElementById(
+                "paginasEbook"
+            ).value
+        );
+
+
+    const idioma =
+        document.getElementById(
+            "idiomaEbook"
+        ).value;
+
+
+    const tono =
+        document.getElementById(
+            "tonoEbook"
+        ).value;
+
+
+    const publico =
+        document.getElementById(
+            "publicoEbook"
+        ).value;
+
+
+
+    if (!tema) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Proyecto",
+            "Debe ingresar el título del eBook"
+        );
+
+        return;
+
+    }
+
+
+    if (!autor) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Proyecto",
+            "Debe ingresar el autor"
+        );
+
+        return;
+
+    }
+
+
+
+    btn.disabled = true;
+
+    btn.innerHTML =
+        "📁 Generando proyecto...";
+
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Proyecto",
+        "Creando proyecto..."
+    );
+
+
+
+    try {
+
+
+        const projectId =
+            "PROY-" + Date.now();
+
+
+
+        const proyecto = {
+
+
+            projectId,
+
+
+            titulo: tema,
+
+            autor,
+
+            paginas,
+
+            idioma,
+
+            tono,
+
+            publico,
+
+
+            estado:
+                "produccion",
+
+
+            estructura: {
+
+                indice:
+                    "pendiente",
+
+                plan:
+                    "pendiente",
+
+                legales:
+                    "pendiente",
+
+                introduccion:
+                    "pendiente",
+
+                capitulos:
+                    "pendiente",
+
+                conclusion:
+                    "pendiente"
+
+            },
+
+
+            fecha:
+                new Date().toISOString()
+
+        };
+
+
+
+        await guardarJSON(
+            `proyectos/${projectId}/proyecto.json`,
+            proyecto
+        );
+
+
+
+        proyectoActual =
+            proyecto;
+
+
+        projectIdActual =
+            proyecto.projectId;
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Proyecto",
+            "Proyecto creado correctamente: " +
+            projectId
+        );
+
+
+
+        estado.innerHTML =
+            "🟢 Proyecto creado";
+
+
+
+        btn.classList.add(
+            "completo"
+        );
+
+
+        btn.innerHTML =
+            "✅ Proyecto creado";
+
+
+
+        await verificarProyecto();
+
+
+
+    } catch(err) {
+
+
+        console.error(err);
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Proyecto",
+            err.message
+        );
+
+
+        estado.innerHTML =
+            "🔴 Error";
+
+
+        btn.innerHTML =
+            "❌ Error";
+
+
+        btn.disabled = false;
+
+    }
+
+}
+//=====================================================
+// FUNCIÓN: cargarJSON()
+// Descripción:
+// Carga cualquier archivo JSON desde R2.
+//=====================================================
+
+async function cargarJSON(ruta) {
+
+
+    const respuesta = await fetch(
+        WORKER_URL,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                action: "cargar-json",
+                ruta: ruta
+            })
+        }
+    );
+
+
+    const datos =
+        await respuesta.json();
+
+
+    if (!datos.ok) {
+
+        monitorPIXELLAB(
+            "Core",
+            "error",
+            "cargarJSON",
+            "No se pudo cargar: " + ruta
+        );
+
+        return null;
+
+    }
+
+
+    return datos.json;
+
+}
+// =====================================================
+// FUNCIÓN: guardarJSON()
+// Descripción:
+// Toma una ruta y un objeto JSON,
+// y guarda el objeto en R2.
+// =====================================================
+
+async function guardarJSON(ruta, datos) {
+
+
+    const respuesta = await fetch(
+        WORKER_URL,
+        {
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                action: "guardar-json",
+                ruta: ruta,
+                json: datos
+            })
+        }
+    );
+
+
+    const resultado =
+        await respuesta.json();
+
+
+    if (!resultado.ok) {
+
+
+        monitorPIXELLAB(
+            "Core",
+            "error",
+            "guardarJSON",
+            "Error guardando: " + ruta
+        );
+
+
+        return false;
+
+    }
+
+
+    monitorPIXELLAB(
+        "Core",
+        "ok",
+        "guardarJSON",
+        "Guardado correctamente: " + ruta
+    );
+
+
+    return true;
+
+}
+//=====================================
+// GENERAR PLAN
+//=====================================
+
+async function generarPlan2() {
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Plan",
+        "Iniciando generación de plan"
+    );
+
+
+    try {
+
+
+        const respuesta = await fetch(
+            WORKER_URL,
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    action: "generar-plan"
+                })
+
+            }
+        );
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Plan",
+            "Respuesta recibida del Worker"
+        );
+
+
+
+        const datos =
+            await respuesta.json();
+
+
+
+        if (!datos.ok) {
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "error",
+                "Plan",
+                "Error generando plan"
+            );
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "info",
+                "Respuesta Worker",
+                JSON.stringify(datos)
+            );
+
+
+            return;
+
+        }
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Plan",
+            "Plan generado correctamente"
+        );
+
+
+
+        actualizarIndicador(
+            "estadoPlan",
+            "verde"
+        );
+
+
+
+        const btn =
+            document.getElementById(
+                "btnPlan"
+            );
+
+
+        if (btn) {
+
+            btn.classList.add(
+                "completo"
+            );
+
+            btn.innerHTML =
+                "✅ Plan generado";
+
+            btn.disabled = true;
+
+        }
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Verificación",
+            "Actualizando estado del proyecto"
+        );
+
+
+        await verificarProyecto();
+
+
+
+    } catch (error) {
+
+
+        console.error(error);
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Plan",
+            "Error comunicando con el Worker: " +
+            error.message
+        );
+
+
+    }
+
+}
+//=====================================
+// GENERAR ÍNDICE
+//=====================================
+
+async function generarIndice() {
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Índice",
+        "Iniciando generación de índice"
+    );
+
+
+    try {
+
+
+        const response = await fetch(
+            WORKER_URL,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    action: "generar-indice"
+                })
+            }
+        );
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Índice",
+            "Respuesta recibida del Worker"
+        );
+
+
+
+        const data =
+            await response.json();
+
+
+
+        if (data.ok) {
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "ok",
+                "Índice",
+                "Índice generado correctamente"
+            );
+
+
+
+            const btn =
+                document.getElementById(
+                    "btnIndice"
+                );
+
+
+
+            if (btn) {
+
+                btn.classList.add(
+                    "completo"
+                );
+
+                btn.innerHTML =
+                    "✅ Índice generado";
+
+                btn.disabled = true;
+
+            }
+
+
+
+            await verificarProyecto();
+
+
+
+        } else {
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "error",
+                "Índice",
+                "Error generando índice"
+            );
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "debug",
+                "Respuesta Worker",
+                JSON.stringify(data)
+            );
+
+
+        }
+
+
+
+    } catch (error) {
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Índice",
+            "Error de conexión: " +
+            error.message
+        );
+
+
+    }
+
+}
+//=====================================
+// RESTAURAR INTERFAZ
+//=====================================
+
+function restaurarInterfaz() {
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Restaurar",
+        "Restaurando interfaz editorial"
+    );
+
+
+
+    //==========================
+    // Limpiar variables globales
+    //==========================
+
+    proyectoActual = null;
+    plan = null;
+
+
+
+    //==========================
+    // Restaurar indicadores
+    //==========================
+
+    actualizarIndicador(
+        "estadoProyecto",
+        "blanco"
+    );
+
+    actualizarIndicador(
+        "estadoPlan",
+        "blanco"
+    );
+
+    actualizarIndicador(
+        "estadoIndice",
+        "blanco"
+    );
+
+    actualizarIndicador(
+        "estadoLegales",
+        "blanco"
+    );
+
+    actualizarIndicador(
+        "estadoIntro",
+        "blanco"
+    );
+
+    actualizarIndicador(
+        "estadoCapitulos",
+        "blanco"
+    );
+
+    actualizarIndicador(
+        "estadoConclusion",
+        "blanco"
+    );
+
+
+
+    //==========================
+    // Restaurar botones
+    //==========================
+
+    botonNormal("btnProyecto");
+    botonNormal("btnPlan");
+    botonNormal("btnIndice");
+    botonNormal("btnLegales");
+    botonNormal("btnIntroduccion");
+    botonNormal("btnCapitulos");
+    botonNormal("btnConclusion");
+
+
+
+    //==========================
+    // Habilitar / Deshabilitar
+    //==========================
+
+    habilitarBoton(
+        "btnProyecto"
+    );
+
+
+    deshabilitarBoton("btnPlan");
+    deshabilitarBoton("btnIndice");
+    deshabilitarBoton("btnLegales");
+    deshabilitarBoton("btnIntroduccion");
+    deshabilitarBoton("btnCapitulos");
+    deshabilitarBoton("btnConclusion");
+
+
+
+    //==========================
+    // Mensaje final
+    //==========================
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Restaurar",
+        "Sistema listo para crear un nuevo Ebook"
+    );
+
+}
+//=====================================
+// GENERAR LEGALES
+//=====================================
+
+async function generarLegales() {
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Legales",
+        "Iniciando generación de legales"
+    );
+
+
+    try {
+
+
+        const respuesta = await fetch(
+            WORKER_URL,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    action: "generar-legales"
+                })
+            }
+        );
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Legales",
+            "Respuesta recibida del Worker"
+        );
+
+
+
+        const resultado =
+            await respuesta.json();
+
+
+
+        if (!resultado.ok) {
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "error",
+                "Legales",
+                "Error generando legales: " +
+                resultado.error
+            );
+
+
+            return;
+
+        }
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Legales",
+            "Página de legales creada correctamente"
+        );
+
+
+
+        if (
+            typeof actualizarEstadoProyecto === "function"
+        ) {
+
+
+            actualizarEstadoProyecto(
+                "legales",
+                "creado"
+            );
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "proceso",
+                "Estado proyecto",
+                "Legales marcado como creado"
+            );
+
+        }
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Verificación",
+            "Actualizando estado del proyecto"
+        );
+
+
+        await verificarProyecto();
+
+
+
+    } catch (error) {
+
+
+        console.error(error);
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Legales",
+            "Error de conexión: " +
+            error.message
+        );
+
+
+    }
+
+}
+//=====================================
+// GENERAR INTRODUCCIÓN
+//=====================================
+
+async function generarIntroduccion() {
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Introducción",
+        "Iniciando generación de introducción"
+    );
+
+
+    try {
+
+
+        const respuesta = await fetch(
+            WORKER_URL,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    action: "generar-introduccion"
+                })
+            }
+        );
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Introducción",
+            "Respuesta recibida del Worker"
+        );
+
+
+
+        const resultado =
+            await respuesta.json();
+
+
+
+        if (!resultado.ok) {
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "error",
+                "Introducción",
+                "Error generando introducción: " +
+                resultado.error
+            );
+
+
+            return;
+
+        }
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Introducción",
+            "Introducción creada correctamente"
+        );
+
+
+
+        if (
+            typeof actualizarEstadoProyecto === "function"
+        ) {
+
+
+            actualizarEstadoProyecto(
+                "introduccion",
+                "creado"
+            );
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "proceso",
+                "Estado proyecto",
+                "Introducción marcada como creada"
+            );
+
+        }
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Verificación",
+            "Actualizando estado del proyecto"
+        );
+
+
+        await verificarProyecto();
+
+
+
+    } catch (error) {
+
+
+        console.error(error);
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Introducción",
+            "Error de conexión: " +
+            error.message
+        );
+
+
+    }
+
+}
+//=====================================
+// GENERAR CAPÍTULOS
+//=====================================
+
+async function generarCapitulos() {
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Capítulos",
+        "Generando capítulo"
+    );
+
+
+    if (typeof botonAmarillo === "function") {
+
+        botonAmarillo(
+            "btnCapitulos"
+        );
+
+    }
+
+
+    if (typeof actualizarIndicador === "function") {
+
+        actualizarIndicador(
+            "estadoCapitulos",
+            "amarillo"
+        );
+
+    }
+
+
+
+    try {
+
+
+        const respuesta = await fetch(
+            WORKER_URL,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    action: "generar-capitulo"
+                })
+            }
+        );
+
+
+
+        const resultado =
+            await respuesta.json();
+
+
+
+        if (!resultado.ok) {
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "error",
+                "Capítulos",
+                "Error generando capítulo: " +
+                resultado.error
+            );
+
+
+            return;
+
+        }
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Capítulos",
+            `Capítulo ${resultado.numero} generado correctamente`
+        );
+
+
+
+        //------------------------------------
+        // CONTROL MANUAL / AUTOMÁTICO
+        //------------------------------------
+
+        if (preguntarContinuarCapitulos) {
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "proceso",
+                "Capítulos",
+                "Esperando confirmación del usuario"
+            );
+
+
+            preguntarSiguienteCapitulo();
+
+
+
+        } else {
+
+
+
+            //------------------------------------
+            // CARGAR PLAN TEMPORALMENTE
+            //------------------------------------
+
+            const plan = await cargarJSON(
+                `proyectos/${projectIdActual}/plan.json`
+            );
+
+
+
+            if (!plan || !plan.capitulos) {
+
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "error",
+                    "Capítulos",
+                    "No se pudo cargar el plan"
+                );
+
+
+                return;
+
+            }
+
+
+
+            const quedanPendientes =
+                plan.capitulos.some(
+                    capitulo =>
+                        capitulo.estado !== "creado"
+                );
+
+
+
+            //------------------------------------
+            // SI QUEDAN CAPÍTULOS, CONTINÚA
+            //------------------------------------
+
+            if (quedanPendientes) {
+
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "proceso",
+                    "Capítulos",
+                    "Hay capítulos pendientes. Continuando..."
+                );
+
+
+                await generarCapitulos();
+
+
+
+            } else {
+
+
+
+                //------------------------------------
+                // TODOS LOS CAPÍTULOS TERMINADOS
+                //------------------------------------
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "ok",
+                    "Capítulos",
+                    "Todos los capítulos fueron generados"
+                );
+
+
+
+                await verificarProyecto();
+
+
+            }
+
+        }
+
+
+
+    } catch (error) {
+
+
+        console.error(error);
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Capítulos",
+            "Error generando capítulo: " +
+            error.message
+        );
+
+
+    }
+
+}
+function preguntarSiguienteCapitulo() {
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Capítulos",
+        "Mostrando ventana de continuación"
+    );
+
+
+    // Evitar duplicar el modal
+    if (document.getElementById("modalCapitulos")) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "aviso",
+            "Capítulos",
+            "Modal ya existente"
+        );
+
+        return;
+    }
+
+
+
+    // Agregar estilos una sola vez
+    if (!document.getElementById("estiloModalCapitulos")) {
+
+
+        const style = document.createElement("style");
+
+        style.id = "estiloModalCapitulos";
+
+
+        style.textContent = `
+
+#modalCapitulos{
+
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.75);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    z-index:99999;
+
+    backdrop-filter:blur(4px);
+
+}
+
+#modalCapitulos .ventana{
+
+    width:420px;
+    max-width:90%;
+
+    background:#111827;
+
+    border:2px solid #00d9ff;
+    border-radius:16px;
+
+    padding:25px;
+
+    box-shadow:0 0 30px rgba(0,217,255,.45);
+
+    color:#fff;
+
+    font-family:Arial,sans-serif;
+
+}
+
+#modalCapitulos h2{
+
+    margin:0 0 15px;
+
+    color:#00d9ff;
+
+    text-align:center;
+
+}
+
+#modalCapitulos p{
+
+    text-align:center;
+    line-height:1.5;
+
+}
+
+#modalCapitulos label{
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    margin:20px 0;
+
+}
+
+#modalCapitulos .botones{
+
+    display:flex;
+    justify-content:center;
+    gap:15px;
+
+    margin-top:20px;
+
+}
+
+#modalCapitulos button{
+
+    padding:10px 20px;
+
+    border:none;
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-size:15px;
+    font-weight:bold;
+
+}
+
+#btnContinuarCapitulo{
+
+    background:#00d9ff;
+    color:#000;
+
+}
+
+#btnPausarCapitulo{
+
+    background:#444;
+    color:#fff;
+
+}
+
+#modalCapitulos button:hover{
+
+    transform:scale(1.05);
+
+}
+
+`;
+
+        document.head.appendChild(style);
+
+    }
+
+
+
+    const overlay = document.createElement("div");
+
+    overlay.id = "modalCapitulos";
+
+
+    overlay.innerHTML = `
+
+<div class="ventana">
+
+<h2>📖 Capítulo generado</h2>
+
+<p>
+El capítulo se generó correctamente.<br><br>
+¿Desea continuar con el siguiente capítulo?
+</p>
+
+
+<label>
+
+<input
+type="checkbox"
+id="chkNoPreguntarCapitulos"
+>
+
+No volver a preguntar durante este Ebook
+
+</label>
+
+
+<div class="botones">
+
+
+<button id="btnContinuarCapitulo">
+
+▶ Continuar
+
+</button>
+
+
+<button id="btnPausarCapitulo">
+
+⏸ Pausar
+
+</button>
+
+
+</div>
+
+</div>
+
+`;
+
+
+
+    document.body.appendChild(overlay);
+
+
+
+    //-------------------------------
+    // CONTINUAR
+    //-------------------------------
+
+    document.getElementById(
+        "btnContinuarCapitulo"
+    ).onclick = async () => {
+
+
+        const chk =
+            document.getElementById(
+                "chkNoPreguntarCapitulos"
+            );
+
+
+        if (chk.checked) {
+
+            preguntarContinuarCapitulos = false;
+
+            continuarCapitulosAutomatico = true;
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "estado",
+                "Capítulos",
+                "Modo automático activado"
+            );
+
+        }
+
+
+        overlay.remove();
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Capítulos",
+            "Continuando generación"
+        );
+
+
+        await generarCapitulos();
+
+    };
+
+
+
+    //-------------------------------
+    // PAUSAR
+    //-------------------------------
+
+    document.getElementById(
+        "btnPausarCapitulo"
+    ).onclick = () => {
+
+
+        overlay.remove();
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "aviso",
+            "Capítulos",
+            "Generación pausada por usuario"
+        );
+
+
+    };
+
+
+}
+/* ==========================================================
+   PIXELLAB Monitor v1.0
+========================================================== */
+
+function limpiarMonitorPIXELLAB(){
+
+    const monitor =
+        document.getElementById("monitorPIXELLAB");
+
+    if(!monitor) return;
+
+    monitor.innerHTML="";
+
+}
+
+
+
+/*
+=================================================
+PIXELLAB45 FRONTEND
+
+Función:
+cargarBibliotecaEditorial()
+
+Descripción:
+- Solicita la biblioteca editorial al Worker.
+- Envía action para entrar al case.
+- Recibe proyectos.
+- Genera tarjetas en la galería editorial.
+
+Archivo:
+script.js
+
+=================================================
+*/
+
+async function cargarGaleriaEditorial() {
+
+    try {
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Inicio",
+            "Solicitando eBooks al Worker"
+        );
+
+
+        const respuesta =
+            await fetch(
+                WORKER_URL,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        action: "listar-ebooks"
+                    })
+                }
+            );
+
+
+        const data =
+            await respuesta.json();
+
+
+        if (!data.ok) {
+
+            throw new Error(
+                data.error ||
+                "Error listando eBooks"
+            );
+
+        }
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Lista generada",
+            "eBooks encontrados: " +
+            data.ebooks.length
+        );
+
+
+        mostrarProyectosEditorial(
+            data.ebooks
+        );
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Enviado a mostrar",
+            "Datos enviados a tarjetas editoriales"
+        );
+
+
+    } catch(error) {
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Carga galería editorial",
+            error.message
+        );
+
+
+        console.error(error);
+
+    }
+
+}
+
+/*
+=================================================
+PIXELLAB45 FRONTEND
+Módulo: Biblioteca Editorial
+
+Función:
+cargarBibliotecaEditorial()
+
+Descripción:
+Carga la biblioteca desde el Worker
+y actualiza la interfaz del usuario.
+
+Archivo:
+script.js
+
+=================================================
+*/
+let bibliotecaEditorial = [];
+async function mostrarProyectosEditorial(proyectos) {
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Inicio",
+        "Entró a mostrar proyectos editoriales"
+    );
+
+
+    const contenedor =
+        document.getElementById(
+            "bibliotecaEditorial"
+        );
+
+
+    if (!contenedor) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Contenedor no encontrado",
+            "No existe bibliotecaEditorial"
+        );
+
+        return;
+
+    }
+
+
+    contenedor.innerHTML = "";
+
+
+    if (!proyectos || proyectos.length === 0) {
+
+        contenedor.innerHTML =
+            "<p>No hay proyectos para editar</p>";
+
+        return;
+
+    }
+
+
+    let cantidad = 0;
+bibliotecaEditorial = [];
+
+    for (const proyecto of proyectos) {
+    	
+    bibliotecaEditorial.push({
+
+    projectId: proyecto.projectId,
+
+    titulo: proyecto.titulo,
+
+    autor: proyecto.autor,
+
+    paginas: proyecto.paginas,
+
+    portada:
+        `${R2_EBOOKS_URL}/proyectos/${proyecto.projectId}/imagenes/portada.png`,
+
+    estructura: proyecto.estructura
+
+});
+
+
+        cantidad++;
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Creando tarjeta",
+            proyecto.titulo
+        );
+
+
+        const tarjeta =
+            document.createElement(
+                "article"
+            );
+
+
+        tarjeta.className =
+            "editorial-card";
+
+
+        tarjeta.innerHTML = `
+
+        <div class="editorial-cover">
+
+            <img class="portada-editorial">
+
+        </div>
+
+
+        <div class="editorial-info">
+
+            <h3>
+                ${proyecto.titulo}
+            </h3>
+
+
+            <p>
+                Ebook • ${proyecto.autor}
+            </p>
+
+
+            <span>
+                PIXELLAB Editorial
+            </span>
+
+
+            <button
+            class="boton-accion"
+            onclick="seleccionarProyectoEditorial('${proyecto.projectId}')">
+
+                ✏️ Editar
+
+            </button>
+
+        </div>
+
+        `;
+
+
+        contenedor.appendChild(
+            tarjeta
+        );
+
+
+        const imagen =
+            tarjeta.querySelector(
+                ".portada-editorial"
+            );
+
+
+        const rutaPortada =
+            `proyectos/${proyecto.projectId}/imagenes/portada.png`;
+
+
+        const urlPortada =
+            `${R2_EBOOKS_URL}/${rutaPortada}`;
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Verificando portada",
+            urlPortada
+        );
+
+
+        await new Promise((resolve) => {
+
+
+            imagen.onload = () => {
+
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "estado",
+                    "Portada encontrada",
+                    proyecto.titulo
+                );
+
+
+                resolve();
+
+            };
+
+
+            imagen.onerror = async () => {
+
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "proceso",
+                    "Generando portada",
+                    proyecto.titulo
+                );
+
+
+                const nuevaPortada =
+                    await generarPortadaProyecto(
+                        proyecto
+                    );
+
+
+                if (nuevaPortada) {
+
+
+                    imagen.src =
+                        `${R2_EBOOKS_URL}/${nuevaPortada}`;
+
+
+                    monitorPIXELLAB(
+                        "Editorial",
+                        "estado",
+                        "Portada cargada",
+                        nuevaPortada
+                    );
+
+                }
+
+
+                resolve();
+
+            };
+
+
+            imagen.src = urlPortada;
+
+
+        });
+
+
+    }
+monitorPIXELLAB(
+    "Editorial",
+    "ok",
+    "Array Editorial",
+    `${bibliotecaEditorial.length} eBooks cargados en memoria`
+);
+
+for (const libro of bibliotecaEditorial) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "info",
+        libro.projectId,
+        `${libro.titulo} | ${libro.paginas} páginas`
+    );
+
+}
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Biblioteca mostrada",
+        "Cantidad de eBooks renderizados: " + cantidad
+    );
+
+
+}
+
+async function generarPortadaProyecto(proyecto) {
+
+    try {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Inicio",
+            "Comenzando generación de portada para: " + proyecto.titulo
+        );
+
+
+        // 1. Crear prompt base
+        const prompt =
+            `Genera una portada profesional de eBook relacionada con el título:
+            "${proyecto.titulo}".
+            Sin texto, sin logotipos, estilo editorial moderno.`;
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Prompt creado",
+            "Prompt base generado para portada"
+        );
+
+
+        // 2. Mejorar prompt con Visuales
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Visuales",
+            "Enviando prompt al generador de visuales"
+        );
+
+
+        const resVisual = await fetch(WORKER_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                action: "visual",
+                tema: prompt
+            })
+        });
+
+
+        const dataVisual = await resVisual.json();
+
+
+        if (!dataVisual.resultado) {
+            throw new Error("Visuales no devolvió un prompt.");
+        }
+
+
+        const promptVisual = dataVisual.resultado;
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Visual generado",
+            "Prompt visual recibido correctamente"
+        );
+
+
+        // 3. Generar imagen
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Generando imagen",
+            "Enviando solicitud a Imagen 4"
+        );
+
+
+        const imagen = await puter.ai.txt2img(
+            promptVisual,
+            {
+                provider: "gemini",
+                model: "google/imagen-4.0-fast"
+            }
+        );
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Imagen recibida",
+            "Imagen generada correctamente"
+        );
+
+
+        // 4. Convertir a Base64
+        const canvas = document.createElement("canvas");
+
+        canvas.width = imagen.naturalWidth;
+        canvas.height = imagen.naturalHeight;
+
+
+        const ctx = canvas.getContext("2d");
+
+        ctx.drawImage(imagen, 0, 0);
+
+
+        const imagenBase64 = canvas
+            .toDataURL("image/png")
+            .split(",")[1];
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Conversión",
+            "Imagen convertida a Base64"
+        );
+
+
+        // 5. Guardar en R2
+        const ruta =
+            `proyectos/${proyecto.projectId}/imagenes/portada.png`;
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Guardando",
+            ruta
+        );
+
+
+        const guardar = await fetch(WORKER_URL, {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+
+    action: "guardar-imagen",
+
+    tipo: "ebook",
+
+    ruta: ruta,
+
+    imagen: imagenBase64
+
+})
+        });
+
+
+        const dataGuardar = await guardar.json();
+
+
+        if (!dataGuardar.ok) {
+            throw new Error(dataGuardar.error);
+        }
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Finalizado",
+            "Portada guardada correctamente"
+        );
+
+
+        return ruta;
+
+
+    } catch(error) {
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Generación portada",
+            error.message
+        );
+
+
+        console.error(error);
+
+
+        return null;
+
+    }
+
+}
+/*
+=========================================================
+PIXELLAB Editorial
+ETAPA 1 · Carga completa del libro
+
+Objetivo:
+Reconstruir completamente el eBook en memoria
+leyendo todos los archivos JSON del proyecto.
+
+Flujo:
+
+1. Portada
+2. Legales
+3. Índice
+4. Introducción
+5. Capítulos
+6. Conclusión
+
+Cada hoja tendrá su propia función de carga.
+
+La única excepción son los capítulos, que se
+recorrerán automáticamente leyendo plan.json.
+
+En esta etapa:
+
+✓ Carga contenido
+✗ No aplica estilos
+✗ No guarda cambios
+✗ No realiza edición
+
+=========================================================
+*/
+const SECCIONES_LIBRO = [
+    "portada",
+    "legales",
+    "indice",
+    "introduccion",
+    "capitulos",
+    "conclusion"
+];
+/* ==========================
+   CARGA DEL LIBRO
+========================== */
+
+async function cargarLibroCompleto(proyecto) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Libro",
+        "Comenzando carga completa"
+    );
+
+    for (const seccion of SECCIONES_LIBRO) {
+
+        if (seccion === "capitulos") {
+
+            monitorPIXELLAB(
+                "Editorial",
+                "proceso",
+                "Capítulos",
+                "Pendiente"
+            );
+
+            continue;
+
+        }
+
+        await cargarSeccion(
+            proyecto,
+            seccion
+        );
+
+    }
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Libro",
+        "Carga completa finalizada"
+    );
+
+}
+async function cargarSeccion(
+    proyecto,
+    seccion
+) {
+
+    switch (seccion) {
+
+        case "portada":
+
+            await cargarPaginaPortada(
+                proyecto
+            );
+
+            break;
+
+
+        case "legales":
+
+            await cargarPaginaLegales(
+                proyecto
+            );
+
+            break;
+
+
+        case "indice":
+
+            monitorPIXELLAB(
+                "Editorial",
+                "proceso",
+                "Índice",
+                "Pendiente"
+            );
+
+            break;
+
+
+        case "introduccion":
+
+            monitorPIXELLAB(
+                "Editorial",
+                "proceso",
+                "Introducción",
+                "Pendiente"
+            );
+
+            break;
+
+
+        case "conclusion":
+
+            monitorPIXELLAB(
+                "Editorial",
+                "proceso",
+                "Conclusión",
+                "Pendiente"
+            );
+
+            break;
+
+    }
+
+}
+
+function cargarPaginaPortada(proyecto) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Portada",
+        "Entró a cargarPaginaPortada"
+    );
+
+    const pagina =
+        document.getElementById("paginaEditor");
+
+    if (!pagina) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Portada",
+            "No existe paginaEditor"
+        );
+
+        return;
+
+    }
+
+    pagina.innerHTML = "";
+
+    const img =
+        document.createElement("img");
+
+    img.src = proyecto.portada;
+    img.alt = proyecto.titulo;
+
+    img.className = "portada-editor";
+
+    img.onload = () => {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Portada",
+            "Imagen cargada correctamente"
+        );
+
+    };
+
+    img.onerror = () => {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Portada",
+            "No se pudo cargar la imagen"
+        );
+
+    };
+
+    pagina.appendChild(img);
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Portada",
+        "Imagen agregada a paginaEditor"
+    );
+
+}
+
+

@@ -1,3 +1,30 @@
+// =====================================
+// PIXELLAB45 CORE
+// CONFIGURACIÓN GLOBAL
+// =====================================
+
+const WORKER_URL =
+  "https://pixellab45-v2.scostarobles.workers.dev/";
+
+const R2_BASE_URL =
+  "https://pub-e461375551fb4e4086818d0c485c5fd4.r2.dev";
+
+const R2_EBOOKS_URL =
+  "https://pub-f8d04d55cd564959a5957c416b3c6de9.r2.dev";
+
+
+// Configuración común para fetch
+
+const FETCH_CONFIG = {
+
+  method: "POST",
+
+  headers: {
+    "Content-Type": "application/json"
+  }
+
+};
+
 /* ==========================================================
    PIXELLAB Monitor v1.2
    Monitor reutilizable con destino configurable
@@ -95,6 +122,200 @@ if (monitorBotonera) {
         monitorBotonera.scrollHeight;
 
 }
+}
+
+// =====================================
+// PIXELLAB CORE
+// UTILIDADES DE INTERFAZ
+// =====================================
+
+function habilitarBoton(id) {
+
+    const boton =
+        document.getElementById(id);
+
+    if (!boton) return;
+
+    boton.disabled = false;
+
+}
+
+
+function deshabilitarBoton(id) {
+
+    const boton =
+        document.getElementById(id);
+
+    if (!boton) return;
+
+    boton.disabled = true;
+
+}
+
+
+function botonVerde(id) {
+
+    const boton =
+        document.getElementById(id);
+
+    if (!boton) return;
+
+    boton.classList.remove(
+        "blanco",
+        "azul",
+        "amarillo",
+        "rojo"
+    );
+
+    boton.classList.add("verde");
+
+}
+
+
+function botonAmarillo(id) {
+
+    const boton =
+        document.getElementById(id);
+
+    if (!boton) return;
+
+    boton.classList.remove(
+        "blanco",
+        "azul",
+        "verde",
+        "rojo"
+    );
+
+    boton.classList.add("amarillo");
+
+}
+
+
+function botonAzul(id) {
+
+    const boton =
+        document.getElementById(id);
+
+    if (!boton) return;
+
+    boton.classList.remove(
+        "blanco",
+        "amarillo",
+        "verde",
+        "rojo"
+    );
+
+    boton.classList.add("azul");
+
+}
+
+
+function botonNormal(id) {
+
+    const boton =
+        document.getElementById(id);
+
+    if (!boton) return;
+
+    boton.classList.remove(
+        "azul",
+        "amarillo",
+        "verde",
+        "rojo"
+    );
+
+    boton.classList.add("blanco");
+
+}
+
+
+
+//=====================================================
+// FUNCIÓN: cargarJSON()
+// Descripción:
+// Carga cualquier archivo JSON desde R2.
+//=====================================================
+
+async function cargarJSON(ruta) {
+
+
+    const respuesta = await fetch(
+        WORKER_URL,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                action: "cargar-json",
+                ruta: ruta
+            })
+        }
+    );
+
+
+    const datos =
+        await respuesta.json();
+
+
+    if (!datos.ok) {
+
+        monitorPIXELLAB(
+            "Core",
+            "error",
+            "cargarJSON",
+            "No se pudo cargar: " + ruta
+        );
+
+        return null;
+
+    }
+
+
+    return datos.json;
+
+}
+//=====================================
+// ACTUALIZAR INDICADOR PIPELINE
+//=====================================
+
+function actualizarIndicador(id, estado = "verde") {
+
+    const indicador =
+        document.getElementById(id);
+
+    if (!indicador) return;
+
+
+    let texto =
+        indicador.textContent;
+
+
+    texto =
+        texto.replace(/^⚪|^🟢|^🔵/, "");
+
+
+    let circulo = "⚪";
+
+
+    if (estado === "verde") {
+        circulo = "🟢";
+    }
+
+
+    if (estado === "azul") {
+        circulo = "🔵";
+    }
+
+
+    if (estado === "blanco") {
+        circulo = "⚪";
+    }
+
+
+    indicador.textContent =
+        circulo + texto;
+
 }
 //====================================================
 // PIXELLAB45 CORE
