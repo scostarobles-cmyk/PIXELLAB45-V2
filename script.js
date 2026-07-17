@@ -3132,6 +3132,14 @@ async function seleccionarProyectoEditorial(projectId) {
     "Antes del find"
 );
 
+monitorPIXELLAB(
+    "Editorial",
+    "proceso",
+    "DEBUG",
+    "proyectosEditorial tipo: " + typeof proyectosEditorial
+);
+
+
 const proyecto =
     proyectosEditorial.find(
         p => p.projectId === projectId
