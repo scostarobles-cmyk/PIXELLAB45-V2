@@ -2567,7 +2567,12 @@ async function verificarEditor(
     data,
     env
 ) {
+return Response.json({
 
+        ok: true,
+
+        mensaje:
+            "Entró a verificarEditor"
     let etapa = "inicio";
 
     try {
