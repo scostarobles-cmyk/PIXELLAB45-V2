@@ -3569,13 +3569,51 @@ async function cargarPaginaLegales(proyecto) {
         "Editorial",
         "proceso",
         "Legales",
-        "Cargando legales.json"
+        "Entró a cargarPaginaLegales"
     );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "debug",
+        "Legales proyecto",
+        JSON.stringify(proyecto)
+    );
+
+
+    const rutaLegales =
+        proyecto.rutas?.legales;
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "debug",
+        "Legales ruta",
+        rutaLegales || "RUTA VACÍA"
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Legales",
+        "Antes de cargarJSON"
+    );
+
 
     const legales = await cargarJSON(
         WORKER_URL,
-        proyecto.rutas.legales
+        rutaLegales
     );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "debug",
+        "Legales respuesta",
+        JSON.stringify(legales)
+    );
+
 
     if (!legales) {
 
@@ -3583,12 +3621,12 @@ async function cargarPaginaLegales(proyecto) {
             "Editorial",
             "error",
             "Legales",
-            "No se pudo cargar legales.json"
+            "No devolvió JSON"
         );
 
         return;
-
     }
+
 
     monitorPIXELLAB(
         "Editorial",
@@ -3596,42 +3634,6 @@ async function cargarPaginaLegales(proyecto) {
         "Legales",
         "JSON cargado correctamente"
     );
-
-  const paginaEditor =
-    document.getElementById(
-        "paginaEditor"
-    );
-
-const hoja =
-    document.createElement(
-        "section"
-    );
-
-hoja.className =
-    "pagina-editor";
-
-hoja.innerHTML = `
-
-<h1>Legales</h1>
-
-<div class="contenido-editor">
-
-${legales.contenido || ""}
-
-</div>
-
-`;
-
-paginaEditor.appendChild(
-    hoja
-);
-
-monitorPIXELLAB(
-    "Editorial",
-    "estado",
-    "Legales",
-    "Hoja agregada al editor"
-);
 
 }
 // =========================
