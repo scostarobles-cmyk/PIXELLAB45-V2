@@ -95,6 +95,7 @@ if (monitorBotonera) {
         monitorBotonera.scrollHeight;
 
 }
+}
 //====================================================
 // PIXELLAB45 CORE
 // CONTROL DE VERSIÓN Y LIMPIEZA DE CACHÉ
