@@ -3230,7 +3230,7 @@ async function cargarLibroCompleto(proyecto) {
                 "Pendiente"
             );
 
-            continue;
+           // continue;
 
         }
 
