@@ -916,9 +916,9 @@ Hoja ¬∑ Legales
 
 Responsabilidad:
 
-‚Ä¢ Cargar legales.json
-‚Ä¢ Crear la p√°gina de legales
-‚Ä¢ Agregar la p√°gina al paginaEditor
+‚ÄÑ1§7 Cargar legales.json
+‚ÄÑ1§7 Crear la p√°gina de legales
+‚ÄÑ1§7 Agregar la p√°gina al paginaEditor
 
 No guarda cambios.
 No aplica estilos.
@@ -1452,7 +1452,7 @@ async function crearProyecto() {
 
 
         btn.innerHTML =
-            "‚úÖ Proyecto creado";
+            "‚úÑ1§7 Proyecto creado";
 
 
 
@@ -1479,7 +1479,7 @@ async function crearProyecto() {
 
 
         btn.innerHTML =
-            "‚ùå Error";
+            "‚ùÑ1§7 Error";
 
 
         btn.disabled = false;
@@ -1695,7 +1695,7 @@ async function generarPlan2() {
             );
 
             btn.innerHTML =
-                "‚úÖ Plan generado";
+                "‚úÑ1§7 Plan generado";
 
             btn.disabled = true;
 
@@ -1806,7 +1806,7 @@ async function generarIndice() {
                 );
 
                 btn.innerHTML =
-                    "‚úÖ √çndice generado";
+                    "‚úÑ1§7 √çndice generado";
 
                 btn.disabled = true;
 
@@ -2612,14 +2612,14 @@ No volver a preguntar durante este Ebook
 
 <button id="btnContinuarCapitulo">
 
-‚ñ∂ Continuar
+‚ñÑ1§7 Continuar
 
 </button>
 
 
 <button id="btnPausarCapitulo">
 
-‚è∏ Pausar
+‚èÑ1§7 Pausar
 
 </button>
 
@@ -2949,7 +2949,7 @@ bibliotecaEditorial = [];
 
 
             <p>
-                Ebook ‚Ä¢ ${proyecto.autor}
+                Ebook ‚ÄÑ1§7 ${proyecto.autor}
             </p>
 
 
@@ -3307,10 +3307,10 @@ recorrer√°n autom√°ticamente leyendo plan.json.
 
 En esta etapa:
 
-‚úì Carga contenido
-‚úó No aplica estilos
-‚úó No guarda cambios
-‚úó No realiza edici√≥n
+‚úÑ1§7 Carga contenido
+‚úÑ1§7 No aplica estilos
+‚úÑ1§7 No guarda cambios
+‚úÑ1§7 No realiza edici√≥n
 
 =========================================================
 */
@@ -3494,6 +3494,120 @@ function cargarPaginaPortada(proyecto) {
         "Portada",
         "Imagen agregada a paginaEditor"
     );
+
+}
+/*
+=========================================================
+PIXELLAB Editorial
+ETAPA 1 °™ Carga de p®¢gina de Legales
+
+Objetivo:
+Solicitar al Worker el archivo legales.json
+correspondiente al proyecto que se est®¢ editando.
+
+Flujo:
+
+1. Construir la ruta usando el projectId.
+2. Enviar la solicitud al Worker.
+3. Recibir el objeto JSON.
+4. Abrir el objeto JSON.
+5. Extraer el texto.
+6. Mostrar el contenido en la hoja de Legales.
+
+En esta etapa:
+
+Å7Ω7 Solo carga el JSON.
+Å7Ω7 No aplica estilos.
+Å7Ω7 No guarda cambios.
+Å7Ω7 No modifica el contenido.
+
+=========================================================
+*/
+async function cargarPaginaLegales(proyecto) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Legales",
+        "Solicitando legales.json"
+    );
+
+    const ruta =
+    "proyectos/" +
+    proyecto.projectId +
+    "/legales.json";
+
+    try {
+
+        const res = await fetch(WORKER_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                action: "cargar-json",
+                ruta
+            })
+        });
+
+        const legales = await res.json();
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Legales",
+            "JSON recibido correctamente"
+        );
+
+        const pagina =
+            document.getElementById("paginaEditor");
+
+        if (!pagina) {
+
+            monitorPIXELLAB(
+                "Editorial",
+                "error",
+                "Legales",
+                "No existe paginaEditor"
+            );
+
+            return;
+
+        }
+
+        pagina.innerHTML = "";
+
+        const hoja =
+            document.createElement("div");
+
+        hoja.className = "hoja-editor";
+
+        hoja.innerHTML = `
+            <h1>Legales</h1>
+            <div class="contenido-editor">
+                ${legales.contenido.replace(/\n/g, "<br><br>")}
+            </div>
+        `;
+
+        pagina.appendChild(hoja);
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Legales",
+            "P®¢gina de legales cargada correctamente"
+        );
+
+    } catch (error) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Legales",
+            error.message
+        );
+
+    }
 
 }
 //=====================================
