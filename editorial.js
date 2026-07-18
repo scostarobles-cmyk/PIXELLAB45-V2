@@ -3287,14 +3287,11 @@ async function cargarSeccion(
 
         case "introduccion":
 
-            monitorPIXELLAB(
-                "Editorial",
-                "proceso",
-                "Introducción",
-                "Pendiente"
-            );
+    await cargarPaginaIntroduccion(
+        proyecto
+    );
 
-            break;
+    break;
 
 
         case "conclusion":
@@ -3773,6 +3770,178 @@ async function cargarPaginaIndice(proyecto) {
             "Editorial",
             "error",
             "Índice",
+            error.message
+        );
+
+    }
+
+}
+async function cargarPaginaIntroduccion(proyecto) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Introducción",
+        "Entró a cargarPaginaIntroduccion"
+    );
+
+    try {
+
+        const ruta =
+            `proyectos/${proyecto.projectId}/introduccion.json`;
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Introducción",
+            "Cargando: " + ruta
+        );
+
+        const respuesta =
+            await fetch(WORKER_URL, {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    action: "cargar-json",
+
+                    ruta: ruta
+
+                })
+
+            });
+
+        const datos =
+            await respuesta.json();
+
+        if (!datos.ok) {
+
+            throw new Error(
+                "No se pudo cargar introducción"
+            );
+
+        }
+
+        const introduccion =
+            datos.json;
+
+        if (!introduccion) {
+
+            throw new Error(
+                "JSON introducción vacío"
+            );
+
+        }
+
+        const contenedor =
+            document.getElementById(
+                "paginaEditor"
+            );
+
+        if (!contenedor) {
+
+            throw new Error(
+                "No existe paginaEditor"
+            );
+
+        }
+
+        // Crear hoja nueva
+
+        const hoja =
+            document.createElement(
+                "div"
+            );
+
+        hoja.className =
+            "pagina-editor";
+
+        // Estilos de prueba visual
+
+        hoja.style.background =
+            "#ffffff";
+
+        hoja.style.color =
+            "#000000";
+
+        hoja.style.padding =
+            "40px";
+
+        hoja.style.marginBottom =
+            "20px";
+
+        hoja.style.minHeight =
+            "900px";
+
+        // Crear título
+
+        const titulo =
+            document.createElement(
+                "h1"
+            );
+
+        titulo.textContent =
+            introduccion.titulo;
+
+        titulo.style.color =
+            "#000000";
+
+        // Crear contenido
+
+        const texto =
+            document.createElement(
+                "div"
+            );
+
+        texto.textContent =
+            introduccion.contenido;
+
+        texto.style.whiteSpace =
+            "pre-line";
+
+        texto.style.color =
+            "#000000";
+
+        texto.style.lineHeight =
+            "1.6";
+
+        texto.style.fontSize =
+            "18px";
+
+        // Armar hoja
+
+        hoja.appendChild(
+            titulo
+        );
+
+        hoja.appendChild(
+            texto
+        );
+
+        // Agregar debajo de lo existente
+
+        contenedor.appendChild(
+            hoja
+        );
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Introducción",
+            "Página cargada correctamente"
+        );
+
+    } catch(error) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Introducción",
             error.message
         );
 
