@@ -3551,6 +3551,13 @@ async function cargarPaginaLegales(proyecto) {
         });
 
         const legales = await res.json();
+       
+       monitorPIXELLAB(
+    "Editorial",
+    "proceso",
+    "Legales",
+    JSON.stringify(legales)
+);
 
         monitorPIXELLAB(
             "Editorial",
