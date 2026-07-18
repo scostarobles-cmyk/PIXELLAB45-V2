@@ -34,8 +34,7 @@ async function iniciarCargaEditorial() {
     monitorPIXELLAB(
         "Editorial",
         "proceso",
-        "Módulo Editorial iniciado",
-        ".................,.........................."
+        "Módulo Editorial iniciado"
     );
 
   
@@ -113,13 +112,13 @@ async function verificarProyecto() {
 
         limpiarMonitorPIXELLAB();
 
-ocultarErrorEditorial();
 
-const proyectoCreado =
-    datos.proyectoCreado;
+        const proyectoCreado =
+            datos.proyectoCreado;
 
-const proyectoProduccion =
-    datos.proyectoProduccion;
+
+        const proyectoProduccion =
+            datos.proyectoProduccion;
 
 
 
@@ -198,21 +197,7 @@ const proyectoProduccion =
             habilitarBoton(
                 "btnProyecto"
             );
-mostrarEstadoEditorial(`
 
-<h3>📚 Último eBook generado</h3>
-
-<p><b>${proyectoCreado.titulo}</b></p>
-
-<p>🆔 ${proyectoCreado.projectId}</p>
-
-<p>📅 ${proyectoCreado.fecha || ""}</p>
-
-<hr>
-
-<p>🆕 Puede generar un nuevo proyecto.</p>
-
-`);
 
         }
 
@@ -277,21 +262,7 @@ mostrarEstadoEditorial(`
                 proyectoActual.titulo
             );
 
-mostrarEstadoEditorial(`
 
-<h3>📚 Proyecto en producción</h3>
-
-<p><b>${proyectoActual.titulo}</b></p>
-
-<p>🆔 ${projectIdActual}</p>
-
-<p>📅 ${proyectoActual.fecha || ""}</p>
-
-<hr>
-
-<p>⚙️ Continúe desde la botonera.</p>
-
-`);
 
             //------------------------------------
             // PLAN
@@ -875,17 +846,7 @@ mostrarEstadoEditorial(`
                 "Siguiente paso",
                 "Crear un nuevo proyecto"
             );
-mostrarEstadoEditorial(`
 
-<h3>📚 Estado Editorial</h3>
-
-<p>🆕 No existe ningún proyecto.</p>
-
-<hr>
-
-<p>➡️ Genere un nuevo proyecto para comenzar.</p>
-
-`);
 
         }
 
@@ -916,9 +877,9 @@ Hoja · Legales
 
 Responsabilidad:
 
- 1�7 Cargar legales.json
- 1�7 Crear la página de legales
- 1�7 Agregar la página al paginaEditor
+• Cargar legales.json
+• Crear la página de legales
+• Agregar la página al paginaEditor
 
 No guarda cambios.
 No aplica estilos.
@@ -956,6 +917,13 @@ async function cargarPaginaLegales(proyecto) {
 });
 
 const legales = await respuesta.json();
+
+
+    
+
+
+    
+
 
     monitorPIXELLAB(
         "Editorial",
@@ -1452,7 +1420,7 @@ async function crearProyecto() {
 
 
         btn.innerHTML =
-            "✄1�7 Proyecto creado";
+            "✅ Proyecto creado";
 
 
 
@@ -1479,7 +1447,7 @@ async function crearProyecto() {
 
 
         btn.innerHTML =
-            "❄1�7 Error";
+            "❌ Error";
 
 
         btn.disabled = false;
@@ -1695,7 +1663,7 @@ async function generarPlan2() {
             );
 
             btn.innerHTML =
-                "✄1�7 Plan generado";
+                "✅ Plan generado";
 
             btn.disabled = true;
 
@@ -1806,7 +1774,7 @@ async function generarIndice() {
                 );
 
                 btn.innerHTML =
-                    "✄1�7 Índice generado";
+                    "✅ Índice generado";
 
                 btn.disabled = true;
 
@@ -2612,14 +2580,14 @@ No volver a preguntar durante este Ebook
 
 <button id="btnContinuarCapitulo">
 
-▄1�7 Continuar
+▶ Continuar
 
 </button>
 
 
 <button id="btnPausarCapitulo">
 
-⏄1�7 Pausar
+⏸ Pausar
 
 </button>
 
@@ -2797,7 +2765,7 @@ async function cargarGaleriaEditorial() {
 
 
         mostrarProyectosEditorial(
-            data.ebooksa
+            data.ebooks
         );
 
 
@@ -2949,7 +2917,7 @@ bibliotecaEditorial = [];
 
 
             <p>
-                Ebook  1�7 ${proyecto.autor}
+                Ebook • ${proyecto.autor}
             </p>
 
 
@@ -3307,10 +3275,10 @@ recorrerán automáticamente leyendo plan.json.
 
 En esta etapa:
 
-✄1�7 Carga contenido
-✄1�7 No aplica estilos
-✄1�7 No guarda cambios
-✄1�7 No realiza edición
+✓ Carga contenido
+✗ No aplica estilos
+✗ No guarda cambios
+✗ No realiza edición
 
 =========================================================
 */
@@ -3496,269 +3464,5 @@ function cargarPaginaPortada(proyecto) {
     );
 
 }
-/*
-=========================================================
-PIXELLAB Editorial
-ETAPA 1 �� Carga de p��gina de Legales
 
-Objetivo:
-Solicitar al Worker el archivo legales.json
-correspondiente al proyecto que se est�� editando.
 
-Flujo:
-
-1. Construir la ruta usando el projectId.
-2. Enviar la solicitud al Worker.
-3. Recibir el objeto JSON.
-4. Abrir el objeto JSON.
-5. Extraer el texto.
-6. Mostrar el contenido en la hoja de Legales.
-
-En esta etapa:
-
-�7�7 Solo carga el JSON.
-�7�7 No aplica estilos.
-�7�7 No guarda cambios.
-�7�7 No modifica el contenido.
-
-=========================================================
-*/
-async function cargarPaginaLegales(proyecto) {
-
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Legales",
-        "Solicitando legales.json"
-    );
-
-    const ruta =
-    "proyectos/" +
-    proyecto.projectId +
-    "/legales.json";
-
-    try {
-
-        const res = await fetch(WORKER_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                action: "cargar-json",
-                proyecto,
-                ruta
-            })
-        });
-
-        const legales = await res.json();
-       
-       
-
-        monitorPIXELLAB(
-            "Editorial",
-            "estado",
-            "Legales",
-            "JSON recibido correctamente"
-        );
-
-        const pagina =
-            document.getElementById("paginaEditor");
-
-        if (!pagina) {
-
-            monitorPIXELLAB(
-                "Editorial",
-                "error",
-                "Legales",
-                "No existe paginaEditor"
-            );
-
-            return;
-
-        }
-
-        pagina.innerHTML = "";
-
-        const hoja =
-            document.createElement("div");
-
-        hoja.className = "hoja-editor";
-
-        hoja.innerHTML = `
-            <h1>Legales</h1>
-            <div class="contenido-editor">
-                ${legales.contenido.replace(/\n/g, "<br><br>")}
-            </div>
-        `;
-
-        pagina.appendChild(hoja);
-
-        monitorPIXELLAB(
-            "Editorial",
-            "estado",
-            "Legales",
-            "P��gina de legales cargada correctamente"
-        );
-
-    } catch (error) {
-
-        monitorPIXELLAB(
-            "Editorial",
-            "error",
-            "Legales",
-            error.message
-        );
-
-    }
-
-}
-//=====================================
-// MOSTRAR ESTADO EDITORIAL
-//=====================================
-
-function mostrarEstadoEditorial(html) {
-
-    const panel =
-        document.getElementById("estadoEditorial");
-
-    if (!panel) return;
-
-    panel.innerHTML = html;
-
-}
-
-
-
-//=====================================
-// MOSTRAR ÚLTIMO ERROR
-//=====================================
-
-function mostrarErrorEditorial(
-    seccion,
-    funcion,
-    mensaje,
-    stack = ""
-) {
-
-    const panel =
-        document.getElementById("errorEditorial");
-
-    if (!panel) return;
-
-
-    panel.style.display = "block";
-
-
-    panel.innerHTML = `
-
-        <div class="tituloError">
-            ⚠️ Último error detectado
-        </div>
-
-        <div class="detalleError">
-
-            <b>Sección:</b><br>
-            ${seccion}<br><br>
-
-            <b>Función:</b><br>
-            ${funcion}<br><br>
-
-            <b>Error:</b><br>
-            ${mensaje}<br><br>
-
-            ${
-                stack
-                ?
-                `<b>Detalle:</b><br>${stack}`
-                :
-                ""
-            }
-
-            <br>
-
-            <b>Hora:</b><br>
-            ${new Date().toLocaleString()}
-
-        </div>
-
-    `;
-
-}
-
-
-
-//=====================================
-// PANEL ESTADO EDITORIAL
-//=====================================
-
-function mostrarEstadoEditorial(html) {
-
-    const panel =
-        document.getElementById("estadoEditorial");
-
-    if (!panel) return;
-
-    panel.innerHTML = html;
-
-}
-
-
-
-//=====================================
-// PANEL ÚLTIMO ERROR
-//=====================================
-
-function mostrarErrorEditorial(
-    seccion,
-    funcion,
-    mensaje,
-    detalle = ""
-) {
-
-    const panel =
-        document.getElementById("errorEditorial");
-
-    if (!panel) return;
-
-    panel.style.display = "block";
-
-    panel.innerHTML = `
-
-        <h3>⚠️ Último error detectado</h3>
-
-        <p><b>Sección:</b><br>${seccion}</p>
-
-        <p><b>Función:</b><br>${funcion}</p>
-
-        <p><b>Error:</b><br>${mensaje}</p>
-
-        ${
-            detalle
-                ? `<p><b>Detalle:</b><br>${detalle}</p>`
-                : ""
-        }
-
-        <p><b>Hora:</b><br>${new Date().toLocaleString()}</p>
-
-    `;
-
-}
-
-
-
-//=====================================
-// OCULTAR PANEL ERROR
-//=====================================
-
-function ocultarErrorEditorial() {
-
-    const panel =
-        document.getElementById("errorEditorial");
-
-    if (!panel) return;
-
-    panel.style.display = "none";
-    panel.innerHTML = "";
-
-}
