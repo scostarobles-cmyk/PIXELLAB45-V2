@@ -3586,6 +3586,7 @@ async function cargarPaginaLegales(proyecto) {
 ========================== */
 
 async function cargarPaginaIndice(proyecto) {
+
     monitorPIXELLAB(
         "Editorial",
         "proceso",
@@ -3605,40 +3606,19 @@ async function cargarPaginaIndice(proyecto) {
             "Cargando: " + ruta
         );
 
-        const respuesta = await fetch(WORKER_URL, {
-
-            method: "POST",
-
-            headers: {
-                "Content-Type": "application/json"
-            },
-
-            body: JSON.stringify({
-
-                action: "cargar-json",
-                ruta: ruta
-
-            })
-
-        });
-
-        const datos = await respuesta.json();
-
-        if (!datos.ok) {
-
-            throw new Error(
-                "No se pudo cargar índice"
-            );
-
-        }
-
-        const indice = datos.json;
+        const indice =
+            await cargarJSON(ruta);
 
         if (!indice) {
 
-            throw new Error(
-                "JSON índice vacío"
+            monitorPIXELLAB(
+                "Editorial",
+                "error",
+                "Índice",
+                "No se pudo cargar el JSON"
             );
+
+            return;
 
         }
 
@@ -3649,9 +3629,14 @@ async function cargarPaginaIndice(proyecto) {
 
         if (!contenedor) {
 
-            throw new Error(
+            monitorPIXELLAB(
+                "Editorial",
+                "error",
+                "Índice",
                 "No existe paginaEditor"
             );
+
+            return;
 
         }
 
@@ -3663,22 +3648,7 @@ async function cargarPaginaIndice(proyecto) {
         hoja.className =
             "pagina-editor";
 
-        hoja.style.background =
-            "#ffffff";
-
-        hoja.style.color =
-            "#000000";
-
-        hoja.style.padding =
-            "40px";
-
-        hoja.style.marginBottom =
-            "20px";
-
-        hoja.style.minHeight =
-            "297mm";
-
-        // Crear título
+        // Título
 
         const titulo =
             document.createElement("h1");
@@ -3686,28 +3656,54 @@ async function cargarPaginaIndice(proyecto) {
         titulo.textContent =
             "Índice";
 
-        // Crear contenido
-
-        const contenido =
-            document.createElement("div");
-
-        contenido.textContent =
-            indice.contenido;
-
-        contenido.style.whiteSpace =
-            "pre-line";
-
-        // Armar hoja
-
         hoja.appendChild(
             titulo
         );
 
+        // Contenido
+
+        const contenido =
+            document.createElement("div");
+
+        if (
+            indice.capitulos &&
+            indice.capitulos.length > 0
+        ) {
+
+            for (const capitulo of indice.capitulos) {
+
+                const linea =
+                    document.createElement("p");
+
+                linea.textContent =
+                    `${capitulo.numero}. ${capitulo.titulo}`;
+
+                linea.style.marginBottom =
+                    "10px";
+
+                contenido.appendChild(
+                    linea
+                );
+
+            }
+
+        } else {
+
+            const vacio =
+                document.createElement("p");
+
+            vacio.textContent =
+                "No hay capítulos disponibles.";
+
+            contenido.appendChild(
+                vacio
+            );
+
+        }
+
         hoja.appendChild(
             contenido
         );
-
-        // Agregar al libro
 
         contenedor.appendChild(
             hoja
