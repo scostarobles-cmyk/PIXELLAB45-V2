@@ -969,7 +969,7 @@ function toggleMenu() {
         "Core",
         "proceso",
         "Menú",
-        "Se presionó el botón hamburguesa"
+        "Botón hamburguesa presionado"
     );
 
     document
