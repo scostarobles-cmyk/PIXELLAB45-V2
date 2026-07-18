@@ -4094,6 +4094,57 @@ async function cargarPaginaConclusion(proyecto) {
 
     try {
 
+        const ruta =
+            `proyectos/${proyecto.projectId}/conclusion.json`;
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Conclusión",
+            "Cargando: " + ruta
+        );
+
+        const respuesta =
+            await fetch(WORKER_URL, {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    action: "cargar-json",
+
+                    ruta: ruta
+
+                })
+
+            });
+
+        const datos =
+            await respuesta.json();
+
+        if (!datos.ok) {
+
+            throw new Error(
+                "No se pudo cargar conclusión"
+            );
+
+        }
+
+        const conclusion =
+            datos.json;
+
+        if (!conclusion) {
+
+            throw new Error(
+                "JSON conclusión vacío"
+            );
+
+        }
+
         const contenedor =
             document.getElementById(
                 "paginaEditor"
@@ -4142,7 +4193,7 @@ async function cargarPaginaConclusion(proyecto) {
             );
 
         titulo.textContent =
-            "Conclusión";
+            conclusion.titulo;
 
         titulo.style.color =
             "#000000";
@@ -4154,8 +4205,46 @@ async function cargarPaginaConclusion(proyecto) {
                 "div"
             );
 
+        let contenido = "";
+
+        contenido +=
+            conclusion.agradecimiento + "\n\n";
+
+        contenido +=
+            conclusion.resumen + "\n\n";
+
+        contenido +=
+            "Aprendizajes clave:\n\n";
+
+        conclusion.aprendizajesClave.forEach(
+
+            item => {
+
+                contenido +=
+                    "• " + item + "\n";
+
+            }
+
+        );
+
+        contenido +=
+            "\n" +
+            conclusion.proximosPasos +
+            "\n\n";
+
+        contenido +=
+            conclusion.motivacionFinal +
+            "\n\n";
+
+        contenido +=
+            conclusion.llamadoALaAccion +
+            "\n\n";
+
+        contenido +=
+            conclusion.despedida;
+
         texto.textContent =
-            "Contenido de la conclusión pendiente";
+            contenido;
 
         texto.style.whiteSpace =
             "pre-line";
