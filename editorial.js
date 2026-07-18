@@ -3581,8 +3581,11 @@ async function cargarPaginaLegales(proyecto) {
     }
 
 }
-async function cargarPaginaIndice(proyecto) {
+/* ==========================
+   PÁGINA ÍNDICE
+========================== */
 
+async function cargarPaginaIndice(proyecto) {
     monitorPIXELLAB(
         "Editorial",
         "proceso",
@@ -3590,12 +3593,10 @@ async function cargarPaginaIndice(proyecto) {
         "Entró a cargarPaginaIndice"
     );
 
-
     try {
 
         const ruta =
             `proyectos/${proyecto.projectId}/indice.json`;
-
 
         monitorPIXELLAB(
             "Editorial",
@@ -3604,29 +3605,24 @@ async function cargarPaginaIndice(proyecto) {
             "Cargando: " + ruta
         );
 
+        const respuesta = await fetch(WORKER_URL, {
 
-        const respuesta =
-            await fetch(WORKER_URL, {
+            method: "POST",
 
-                method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
 
-                headers: {
-                    "Content-Type": "application/json"
-                },
+            body: JSON.stringify({
 
-                body: JSON.stringify({
+                action: "cargar-json",
+                ruta: ruta
 
-                    action: "cargar-json",
-                    ruta: ruta
+            })
 
-                })
+        });
 
-            });
-
-
-        const datos =
-            await respuesta.json();
-
+        const datos = await respuesta.json();
 
         if (!datos.ok) {
 
@@ -3636,16 +3632,20 @@ async function cargarPaginaIndice(proyecto) {
 
         }
 
+        const indice = datos.json;
 
-        const indice =
-            datos.json;
+        if (!indice) {
 
+            throw new Error(
+                "JSON índice vacío"
+            );
+
+        }
 
         const contenedor =
             document.getElementById(
                 "paginaEditor"
             );
-
 
         if (!contenedor) {
 
@@ -3655,55 +3655,63 @@ async function cargarPaginaIndice(proyecto) {
 
         }
 
+        // Crear hoja
 
         const hoja =
-            document.createElement(
-                "div"
-            );
-
+            document.createElement("div");
 
         hoja.className =
             "pagina-editor";
 
+        hoja.style.background =
+            "#ffffff";
+
+        hoja.style.color =
+            "#000000";
+
+        hoja.style.padding =
+            "40px";
+
+        hoja.style.marginBottom =
+            "20px";
+
+        hoja.style.minHeight =
+            "297mm";
+
+        // Crear título
 
         const titulo =
-            document.createElement(
-                "h1"
-            );
-
+            document.createElement("h1");
 
         titulo.textContent =
             "Índice";
 
+        // Crear contenido
 
         const contenido =
-            document.createElement(
-                "div"
-            );
-
+            document.createElement("div");
 
         contenido.textContent =
-            indice.contenido || "";
-
+            indice.contenido;
 
         contenido.style.whiteSpace =
             "pre-line";
 
+        // Armar hoja
 
         hoja.appendChild(
             titulo
         );
 
-
         hoja.appendChild(
             contenido
         );
 
+        // Agregar al libro
 
         contenedor.appendChild(
             hoja
         );
-
 
         monitorPIXELLAB(
             "Editorial",
@@ -3712,9 +3720,7 @@ async function cargarPaginaIndice(proyecto) {
             "Página cargada correctamente"
         );
 
-
     } catch(error) {
-
 
         monitorPIXELLAB(
             "Editorial",
@@ -3726,5 +3732,3 @@ async function cargarPaginaIndice(proyecto) {
     }
 
 }
-
-
