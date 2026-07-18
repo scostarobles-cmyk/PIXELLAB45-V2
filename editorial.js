@@ -3594,137 +3594,122 @@ async function cargarPaginaIndice(proyecto) {
         "Entró a cargarPaginaIndice"
     );
 
-    try {
+    const ruta =
+        `proyectos/${proyecto.projectId}/indice.json`;
 
-        const ruta =
-            `proyectos/${proyecto.projectId}/indice.json`;
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Índice",
+        "Cargando: " + ruta
+    );
 
-        monitorPIXELLAB(
-            "Editorial",
-            "proceso",
-            "Índice",
-            "Cargando: " + ruta
-        );
+    const indice =
+        await cargarJSON(ruta);
 
-        const indice =
-            await cargarJSON(ruta);
-
-        if (!indice) {
-
-            monitorPIXELLAB(
-                "Editorial",
-                "error",
-                "Índice",
-                "No se pudo cargar el JSON"
-            );
-
-            return;
-
-        }
-
-        const contenedor =
-            document.getElementById(
-                "paginaEditor"
-            );
-
-        if (!contenedor) {
-
-            monitorPIXELLAB(
-                "Editorial",
-                "error",
-                "Índice",
-                "No existe paginaEditor"
-            );
-
-            return;
-
-        }
-
-        // Crear hoja
-
-        const hoja =
-            document.createElement("div");
-
-        hoja.className =
-            "pagina-editor";
-
-        // Título
-
-        const titulo =
-            document.createElement("h1");
-
-        titulo.textContent =
-            "Índice";
-
-        hoja.appendChild(
-            titulo
-        );
-
-        // Contenido
-
-        const contenido =
-            document.createElement("div");
-
-        if (
-            indice.capitulos &&
-            indice.capitulos.length > 0
-        ) {
-
-            for (const capitulo of indice.capitulos) {
-
-                const linea =
-                    document.createElement("p");
-
-                linea.textContent =
-                    `${capitulo.numero}. ${capitulo.titulo}`;
-
-                linea.style.marginBottom =
-                    "10px";
-
-                contenido.appendChild(
-                    linea
-                );
-
-            }
-
-        } else {
-
-            const vacio =
-                document.createElement("p");
-
-            vacio.textContent =
-                "No hay capítulos disponibles.";
-
-            contenido.appendChild(
-                vacio
-            );
-
-        }
-
-        hoja.appendChild(
-            contenido
-        );
-
-        contenedor.appendChild(
-            hoja
-        );
-
-        monitorPIXELLAB(
-            "Editorial",
-            "estado",
-            "Índice",
-            "Página cargada correctamente"
-        );
-
-    } catch(error) {
+    if (!indice) {
 
         monitorPIXELLAB(
             "Editorial",
             "error",
             "Índice",
-            error.message
+            "No se pudo cargar el JSON"
         );
 
+        return;
+
     }
+
+    const contenedor =
+        document.getElementById(
+            "paginaEditor"
+        );
+
+    if (!contenedor) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Índice",
+            "No existe paginaEditor"
+        );
+
+        return;
+
+    }
+
+    // ==========================
+    // Crear hoja
+    // ==========================
+
+    const hoja =
+        document.createElement("div");
+
+    hoja.className =
+        "pagina-editor";
+
+    // ==========================
+    // Título
+    // ==========================
+
+    const titulo =
+        document.createElement("h1");
+
+    titulo.textContent =
+        "Índice";
+
+    hoja.appendChild(
+        titulo
+    );
+
+    // ==========================
+    // Contenido
+    // ==========================
+
+    const contenido =
+        document.createElement("div");
+
+    contenido.style.whiteSpace =
+        "pre-line";
+
+    if (
+        indice.capitulos &&
+        indice.capitulos.length > 0
+    ) {
+
+        for (const capitulo of indice.capitulos) {
+
+            const linea =
+                document.createElement("p");
+
+            linea.textContent =
+                `${capitulo.numero}. ${capitulo.titulo}`;
+
+            contenido.appendChild(
+                linea
+            );
+
+        }
+
+    }
+
+    hoja.appendChild(
+        contenido
+    );
+
+    // ==========================
+    // Agregar hoja al libro
+    // ==========================
+
+    contenedor.appendChild(
+        hoja
+    );
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Índice",
+        "Página cargada correctamente"
+    );
 
 }
