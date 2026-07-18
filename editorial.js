@@ -916,9 +916,9 @@ Hoja · Legales
 
 Responsabilidad:
 
- 1�7 Cargar legales.json
- 1�7 Crear la página de legales
- 1�7 Agregar la página al paginaEditor
+ 1�7 Cargar legales.json
+ 1�7 Crear la página de legales
+ 1�7 Agregar la página al paginaEditor
 
 No guarda cambios.
 No aplica estilos.
@@ -1452,7 +1452,7 @@ async function crearProyecto() {
 
 
         btn.innerHTML =
-            "✄1�7 Proyecto creado";
+            "✄1�7 Proyecto creado";
 
 
 
@@ -1479,7 +1479,7 @@ async function crearProyecto() {
 
 
         btn.innerHTML =
-            "❄1�7 Error";
+            "❄1�7 Error";
 
 
         btn.disabled = false;
@@ -1695,7 +1695,7 @@ async function generarPlan2() {
             );
 
             btn.innerHTML =
-                "✄1�7 Plan generado";
+                "✄1�7 Plan generado";
 
             btn.disabled = true;
 
@@ -1806,7 +1806,7 @@ async function generarIndice() {
                 );
 
                 btn.innerHTML =
-                    "✄1�7 Índice generado";
+                    "✄1�7 Índice generado";
 
                 btn.disabled = true;
 
@@ -2612,14 +2612,14 @@ No volver a preguntar durante este Ebook
 
 <button id="btnContinuarCapitulo">
 
-▄1�7 Continuar
+▄1�7 Continuar
 
 </button>
 
 
 <button id="btnPausarCapitulo">
 
-⏄1�7 Pausar
+⏄1�7 Pausar
 
 </button>
 
@@ -2797,7 +2797,7 @@ async function cargarGaleriaEditorial() {
 
 
         mostrarProyectosEditorial(
-            data.ebooks
+            data.ebooksa
         );
 
 
@@ -2949,7 +2949,7 @@ bibliotecaEditorial = [];
 
 
             <p>
-                Ebook  1�7 ${proyecto.autor}
+                Ebook  1�7 ${proyecto.autor}
             </p>
 
 
@@ -3307,10 +3307,10 @@ recorrerán automáticamente leyendo plan.json.
 
 En esta etapa:
 
-✄1�7 Carga contenido
-✄1�7 No aplica estilos
-✄1�7 No guarda cambios
-✄1�7 No realiza edición
+✄1�7 Carga contenido
+✄1�7 No aplica estilos
+✄1�7 No guarda cambios
+✄1�7 No realiza edición
 
 =========================================================
 */
@@ -3499,11 +3499,11 @@ function cargarPaginaPortada(proyecto) {
 /*
 =========================================================
 PIXELLAB Editorial
-ETAPA 1 �� Carga de p��gina de Legales
+ETAPA 1 �� Carga de p��gina de Legales
 
 Objetivo:
 Solicitar al Worker el archivo legales.json
-correspondiente al proyecto que se est�� editando.
+correspondiente al proyecto que se est�� editando.
 
 Flujo:
 
@@ -3516,10 +3516,10 @@ Flujo:
 
 En esta etapa:
 
-�7�7 Solo carga el JSON.
-�7�7 No aplica estilos.
-�7�7 No guarda cambios.
-�7�7 No modifica el contenido.
+�7�7 Solo carga el JSON.
+�7�7 No aplica estilos.
+�7�7 No guarda cambios.
+�7�7 No modifica el contenido.
 
 =========================================================
 */
@@ -3534,7 +3534,7 @@ async function cargarPaginaLegales(proyecto) {
 
     const ruta =
     "proyectos/" +
-    proyecto.projectId +
+    $(proyecto.projectId) +
     "/legales.json";
 
     try {
@@ -3598,7 +3598,7 @@ async function cargarPaginaLegales(proyecto) {
             "Editorial",
             "estado",
             "Legales",
-            "P��gina de legales cargada correctamente"
+            "P��gina de legales cargada correctamente"
         );
 
     } catch (error) {
