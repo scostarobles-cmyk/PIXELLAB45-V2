@@ -3313,7 +3313,7 @@ async function cargarSeccion(
 
 }
 
-function cargarPaginaPortada(proyecto) {
+async function cargarPaginaPortada(proyecto) {
 
     monitorPIXELLAB(
         "Editorial",
