@@ -3267,10 +3267,10 @@ async function cargarSeccion(
 
         case "legales":
 
-            await cargarPaginaLegales(
+         /* await cargarPaginaLegales(
                 proyecto
             );
-
+*/
             break;
 
 
@@ -3313,7 +3313,7 @@ async function cargarSeccion(
 
 }
 
-async function cargarPaginaPortada(proyecto) {
+function cargarPaginaPortada(proyecto) {
 
     monitorPIXELLAB(
         "Editorial",
