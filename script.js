@@ -8,7 +8,7 @@ const WORKER_URL =
 async function cargarGaleriaCompleta() {
 
   const contenedor =
-    document.getElementById("galeriaCompleta");
+     document.getElementById("galeriaCompleta");
 
   contenedor.innerHTML =
     "⏳ Cargando galería..."; 
