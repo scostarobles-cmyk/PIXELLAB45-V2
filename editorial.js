@@ -3276,12 +3276,11 @@ async function cargarSeccion(
 
         case "indice":
 
-            monitorPIXELLAB(
-                "Editorial",
-                "proceso",
-                "Índice",
-                "Pendiente"
-            );
+    await cargarPaginaIndice(
+        proyecto
+    );
+
+    break;
 
             break;
 
@@ -3578,6 +3577,151 @@ async function cargarPaginaLegales(proyecto) {
             error.message
         );
 
+
+    }
+
+}
+async function cargarPaginaIndice(proyecto) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Índice",
+        "Entró a cargarPaginaIndice"
+    );
+
+
+    try {
+
+        const ruta =
+            `proyectos/${proyecto.projectId}/indice.json`;
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Índice",
+            "Cargando: " + ruta
+        );
+
+
+        const respuesta =
+            await fetch(WORKER_URL, {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    action: "cargar-json",
+                    ruta: ruta
+
+                })
+
+            });
+
+
+        const datos =
+            await respuesta.json();
+
+
+        if (!datos.ok) {
+
+            throw new Error(
+                "No se pudo cargar índice"
+            );
+
+        }
+
+
+        const indice =
+            datos.json;
+
+
+        const contenedor =
+            document.getElementById(
+                "paginaEditor"
+            );
+
+
+        if (!contenedor) {
+
+            throw new Error(
+                "No existe paginaEditor"
+            );
+
+        }
+
+
+        const hoja =
+            document.createElement(
+                "div"
+            );
+
+
+        hoja.className =
+            "pagina-editor";
+
+
+        const titulo =
+            document.createElement(
+                "h1"
+            );
+
+
+        titulo.textContent =
+            "Índice";
+
+
+        const contenido =
+            document.createElement(
+                "div"
+            );
+
+
+        contenido.textContent =
+            indice.contenido || "";
+
+
+        contenido.style.whiteSpace =
+            "pre-line";
+
+
+        hoja.appendChild(
+            titulo
+        );
+
+
+        hoja.appendChild(
+            contenido
+        );
+
+
+        contenedor.appendChild(
+            hoja
+        );
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Índice",
+            "Página cargada correctamente"
+        );
+
+
+    } catch(error) {
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Índice",
+            error.message
+        );
 
     }
 
