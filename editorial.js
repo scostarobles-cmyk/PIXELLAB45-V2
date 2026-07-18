@@ -3594,13 +3594,10 @@ async function cargarPaginaIndice(proyecto) {
         "Entró a cargarPaginaIndice"
     );
 
-
     try {
-
 
         const ruta =
             `proyectos/${proyecto.projectId}/indice.json`;
-
 
         monitorPIXELLAB(
             "Editorial",
@@ -3608,7 +3605,6 @@ async function cargarPaginaIndice(proyecto) {
             "Índice",
             "Cargando: " + ruta
         );
-
 
         const respuesta =
             await fetch(WORKER_URL, {
@@ -3629,10 +3625,8 @@ async function cargarPaginaIndice(proyecto) {
 
             });
 
-
         const datos =
             await respuesta.json();
-
 
         if (!datos.ok) {
 
@@ -3642,10 +3636,8 @@ async function cargarPaginaIndice(proyecto) {
 
         }
 
-
         const indice =
             datos.json;
-
 
         if (!indice) {
 
@@ -3655,12 +3647,10 @@ async function cargarPaginaIndice(proyecto) {
 
         }
 
-
         const contenedor =
             document.getElementById(
                 "paginaEditor"
             );
-
 
         if (!contenedor) {
 
@@ -3670,7 +3660,6 @@ async function cargarPaginaIndice(proyecto) {
 
         }
 
-
         // Crear hoja nueva
 
         const hoja =
@@ -3678,10 +3667,8 @@ async function cargarPaginaIndice(proyecto) {
                 "div"
             );
 
-
         hoja.className =
             "pagina-editor";
-
 
         // Estilos de prueba visual
 
@@ -3700,7 +3687,6 @@ async function cargarPaginaIndice(proyecto) {
         hoja.style.minHeight =
             "900px";
 
-
         // Crear título
 
         const titulo =
@@ -3708,10 +3694,11 @@ async function cargarPaginaIndice(proyecto) {
                 "h1"
             );
 
-
         titulo.textContent =
             "Índice";
 
+        titulo.style.color =
+            "#000000";
 
         // Crear contenido
 
@@ -3720,10 +3707,11 @@ async function cargarPaginaIndice(proyecto) {
                 "div"
             );
 
-
         texto.style.whiteSpace =
             "pre-line";
 
+        texto.style.color =
+            "#000000";
 
         if (
             indice.capitulos &&
@@ -3740,6 +3728,15 @@ async function cargarPaginaIndice(proyecto) {
                 linea.textContent =
                     `${capitulo.numero}. ${capitulo.titulo}`;
 
+                linea.style.color =
+                    "#000000";
+
+                linea.style.fontSize =
+                    "18px";
+
+                linea.style.margin =
+                    "0 0 12px 0";
+
                 texto.appendChild(
                     linea
                 );
@@ -3748,25 +3745,20 @@ async function cargarPaginaIndice(proyecto) {
 
         }
 
-
         // Armar hoja
 
         hoja.appendChild(
-            titulo
-        );
-
+            titulo);
 
         hoja.appendChild(
             texto
         );
-
 
         // Agregar debajo de lo existente
 
         contenedor.appendChild(
             hoja
         );
-
 
         monitorPIXELLAB(
             "Editorial",
@@ -3775,9 +3767,7 @@ async function cargarPaginaIndice(proyecto) {
             "Página cargada correctamente"
         );
 
-
     } catch(error) {
-
 
         monitorPIXELLAB(
             "Editorial",
@@ -3785,7 +3775,6 @@ async function cargarPaginaIndice(proyecto) {
             "Índice",
             error.message
         );
-
 
     }
 
