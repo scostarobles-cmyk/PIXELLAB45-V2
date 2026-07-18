@@ -3295,7 +3295,7 @@ async function cargarSeccion(
 case "capitulos":
 
     await cargarPaginaCapitulo(proyecto)
-    );
+    
 
     break;
 
