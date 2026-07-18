@@ -3305,15 +3305,11 @@ monitorPIXELLAB(
 
         case "conclusion":
 
-            monitorPIXELLAB(
-                "Editorial",
-                "proceso",
-                "Conclusión",
-                "Pendiente"
-            );
+    await cargarPaginaConclusion(
+        proyecto
+    );
 
-            break;
-
+    break;
     }
 
 }
@@ -4083,6 +4079,127 @@ async function cargarPaginaCapitulo(proyecto) {
             error.message
         );
 
+
+    }
+
+}
+async function cargarPaginaConclusion(proyecto) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Conclusión",
+        "Entró a cargarPaginaConclusion"
+    );
+
+    try {
+
+        const contenedor =
+            document.getElementById(
+                "paginaEditor"
+            );
+
+        if (!contenedor) {
+
+            throw new Error(
+                "No existe paginaEditor"
+            );
+
+        }
+
+        // Crear hoja nueva
+
+        const hoja =
+            document.createElement(
+                "div"
+            );
+
+        hoja.className =
+            "pagina-editor";
+
+        // Estilos de prueba visual
+
+        hoja.style.background =
+            "#ffffff";
+
+        hoja.style.color =
+            "#000000";
+
+        hoja.style.padding =
+            "40px";
+
+        hoja.style.marginBottom =
+            "20px";
+
+        hoja.style.minHeight =
+            "900px";
+
+        // Crear título
+
+        const titulo =
+            document.createElement(
+                "h1"
+            );
+
+        titulo.textContent =
+            "Conclusión";
+
+        titulo.style.color =
+            "#000000";
+
+        // Crear contenido
+
+        const texto =
+            document.createElement(
+                "div"
+            );
+
+        texto.textContent =
+            "Contenido de la conclusión pendiente";
+
+        texto.style.whiteSpace =
+            "pre-line";
+
+        texto.style.color =
+            "#000000";
+
+        texto.style.lineHeight =
+            "1.6";
+
+        texto.style.fontSize =
+            "18px";
+
+        // Armar hoja
+
+        hoja.appendChild(
+            titulo
+        );
+
+        hoja.appendChild(
+            texto
+        );
+
+        // Agregar debajo de lo existente
+
+        contenedor.appendChild(
+            hoja
+        );
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Conclusión",
+            "Página cargada correctamente"
+        );
+
+    } catch(error) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Conclusión",
+            error.message
+        );
 
     }
 
