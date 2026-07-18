@@ -3292,7 +3292,13 @@ async function cargarSeccion(
     );
 
     break;
+case "capitulo":
 
+    await cargarPaginaCapitulo(
+        proyecto
+    );
+
+    break;
 
         case "conclusion":
 
@@ -3944,6 +3950,136 @@ async function cargarPaginaIntroduccion(proyecto) {
             "Introducción",
             error.message
         );
+
+    }
+
+}
+
+async function cargarPaginaCapitulo(proyecto) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Capítulo",
+        "Entró a cargarPaginaCapitulo"
+    );
+
+    try {
+
+        const contenedor =
+            document.getElementById(
+                "paginaEditor"
+            );
+
+
+        if (!contenedor) {
+
+            throw new Error(
+                "No existe paginaEditor"
+            );
+
+        }
+
+
+        const hoja =
+            document.createElement(
+                "div"
+            );
+
+
+        hoja.className =
+            "pagina-editor";
+
+
+        hoja.style.background =
+            "#ffffff";
+
+
+        hoja.style.color =
+            "#000000";
+
+
+        hoja.style.padding =
+            "40px";
+
+
+        hoja.style.marginBottom =
+            "20px";
+
+
+        hoja.style.minHeight =
+            "900px";
+
+
+        const titulo =
+            document.createElement(
+                "h1"
+            );
+
+
+        titulo.textContent =
+            "Capítulo 1";
+
+
+        titulo.style.color =
+            "#000000";
+
+
+        const texto =
+            document.createElement(
+                "div"
+            );
+
+
+        texto.textContent =
+            "Contenido del capítulo pendiente";
+
+
+        texto.style.color =
+            "#000000";
+
+
+        texto.style.fontSize =
+            "18px";
+
+
+        texto.style.whiteSpace =
+            "pre-line";
+
+
+        hoja.appendChild(
+            titulo
+        );
+
+
+        hoja.appendChild(
+            texto
+        );
+
+
+        contenedor.appendChild(
+            hoja
+        );
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Capítulo",
+            "Página de prueba cargada correctamente"
+        );
+
+
+    } catch(error) {
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Capítulo",
+            error.message
+        );
+
 
     }
 
