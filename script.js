@@ -8,7 +8,7 @@ const WORKER_URL =
 async function cargarGaleriaCompleta() {
 
   const contenedor =
-     document.getElementById("galeriaCompleta");
+    document.getElementById("galeriaCompleta");
 
   contenedor.innerHTML =
     "⏳ Cargando galería..."; 
@@ -954,32 +954,4 @@ async function generarImagenPuter() {
 
 }
 
-
-// =========================
-// MENÚ HAMBURGUESA
-// =========================
-function toggleMenu() {
-
-    monitorPIXELLAB(
-        "Core",
-        "proceso",
-        "Menú",
-        "Botón hamburguesa presionado"
-    );
-
-    document
-        .querySelector(".nav-links")
-        .classList
-        .toggle("active");
-
-}
-
-
-
-// INICIO
-window.onload = () => {
-
-  cargarGaleriaCompleta();
-
-};
 

@@ -386,4 +386,33 @@ const PIXELLAB45_VERSION = "__VERSION__";
 
   }
 
-})();
+})
+
+// =========================
+// MENÚ HAMBURGUESA
+// =========================
+function toggleMenu() {
+
+    monitorPIXELLAB(
+        "Core",
+        "proceso",
+        "Menú",
+        "Botón hamburguesa presionado"
+    );
+
+    document
+        .querySelector(".nav-links")
+        .classList
+        .toggle("active");
+
+}
+
+
+
+// INICIO
+window.onload = () => {
+
+  cargarGaleriaCompleta();
+
+};
+
