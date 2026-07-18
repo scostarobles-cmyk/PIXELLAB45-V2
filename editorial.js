@@ -3534,7 +3534,7 @@ async function cargarPaginaLegales(proyecto) {
 
     const ruta =
     "proyectos/" +
-    $(proyecto.projectId) +
+    proyecto.projectId +
     "/legales.json";
 
     try {
