@@ -3267,10 +3267,10 @@ async function cargarSeccion(
 
         case "legales":
 
-         /* await cargarPaginaLegales(
+         await cargarPaginaLegales(
                 proyecto
             );
-*/
+            
             break;
 
 
