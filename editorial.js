@@ -3957,128 +3957,613 @@ async function cargarPaginaIntroduccion(proyecto) {
 async function cargarPaginaCapitulo(proyecto) {
 
     monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Capítulo",
-        "Entró a cargarPaginaCapitulo"
-    );
+    "Editorial",
+    "proceso",
+    "Capítulo",
+    "Entró a cargarPaginaCapitulo"
+);
 
     try {
 
-        const contenedor =
-            document.getElementById(
-                "paginaEditor"
+        /* ======================================================
+           1. CARGAR JSON DEL CAPÍTULO
+        ====================================================== */
+
+    const ruta =
+    `proyectos/${proyecto.projectId}/capitulos/capitulo-001.json`;
+
+monitorPIXELLAB(
+    "Editorial",
+    "proceso",
+    "Capítulo",
+    "Cargando: " + ruta
+);
+
+const respuesta =
+    await fetch(WORKER_URL, {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+
+            action: "cargar-json",
+
+            ruta: ruta
+
+        })
+
+    });
+
+const datos =
+    await respuesta.json();
+
+if (!datos.ok) {
+
+    throw new Error(
+        "No se pudo cargar el capítulo"
+    );
+
+}
+
+const capitulo =
+    datos.json;
+
+if (!capitulo) {
+
+    throw new Error(
+        "JSON capítulo vacío"
+    );
+
+}
+
+
+        /* ======================================================
+           2. OBTENER paginaEditor
+        ====================================================== */
+
+   const contenedor =
+    document.getElementById(
+        "paginaEditor"
+    );
+
+if (!contenedor) {
+
+    throw new Error(
+        "No existe paginaEditor"
+    );
+
+}
+
+
+        /* ======================================================
+           3. CREAR HOJA
+        ====================================================== */
+
+   const hoja =
+    document.createElement(
+        "div"
+    );
+
+hoja.className =
+    "pagina-editor";
+
+hoja.style.background =
+    "#ffffff";
+
+hoja.style.color =
+    "#000000";
+
+hoja.style.padding =
+    "40px";
+
+hoja.style.marginBottom =
+    "20px";
+
+hoja.style.minHeight =
+    "900px";
+
+
+        /* ======================================================
+           4. TÍTULO DEL CAPÍTULO
+        ====================================================== */
+
+ const titulo =
+    document.createElement(
+        "h1"
+    );
+
+titulo.textContent =
+    capitulo.titulo;
+
+titulo.style.color =
+    "#000000";
+
+hoja.appendChild(
+    titulo
+);
+
+
+        /* ======================================================
+           5. INTRODUCCIÓN
+        ====================================================== */
+
+const introduccion =
+    document.createElement(
+        "div"
+    );
+
+introduccion.textContent =
+    capitulo.introduccion;
+
+introduccion.style.color =
+    "#000000";
+
+introduccion.style.fontSize =
+    "18px";
+
+introduccion.style.lineHeight =
+    "1.6";
+
+introduccion.style.whiteSpace =
+    "pre-line";
+
+introduccion.style.marginBottom =
+    "30px";
+
+hoja.appendChild(
+    introduccion
+);
+
+
+        /* ======================================================
+           6. SECCIONES
+        ====================================================== */
+
+  for (const seccion of capitulo.secciones) {
+
+    const subtitulo =
+        document.createElement(
+            "h2"
+        );
+
+    subtitulo.textContent =
+        `${seccion.numero}. ${seccion.titulo}`;
+
+    subtitulo.style.color =
+        "#000000";
+
+    subtitulo.style.marginTop =
+        "30px";
+
+    hoja.appendChild(
+        subtitulo
+    );
+
+
+    const contenido =
+        document.createElement(
+            "div"
+        );
+
+    contenido.textContent =
+        seccion.contenido;
+
+    contenido.style.color =
+        "#000000";
+
+    contenido.style.fontSize =
+        "18px";
+
+    contenido.style.lineHeight =
+        "1.6";
+
+    contenido.style.whiteSpace =
+        "pre-line";
+
+    hoja.appendChild(
+        contenido
+    );
+
+}
+
+
+        /* ======================================================
+           7. EJEMPLOS
+        ====================================================== */
+
+  if (
+    capitulo.ejemplos &&
+    capitulo.ejemplos.length > 0
+) {
+
+    const tituloEjemplos =
+        document.createElement(
+            "h2"
+        );
+
+    tituloEjemplos.textContent =
+        "Ejemplos";
+
+    tituloEjemplos.style.color =
+        "#000000";
+
+    tituloEjemplos.style.marginTop =
+        "30px";
+
+    hoja.appendChild(
+        tituloEjemplos
+    );
+
+
+    for (const ejemplo of capitulo.ejemplos) {
+
+        const subtitulo =
+            document.createElement(
+                "h3"
             );
 
+        subtitulo.textContent =
+            ejemplo.titulo;
 
-        if (!contenedor) {
+        subtitulo.style.color =
+            "#000000";
 
-            throw new Error(
-                "No existe paginaEditor"
-            );
-
-        }
+        hoja.appendChild(
+            subtitulo
+        );
 
 
-        const hoja =
+        const contenido =
             document.createElement(
                 "div"
             );
 
+        contenido.textContent =
+            ejemplo.contenido;
 
-        hoja.className =
-            "pagina-editor";
-
-
-        hoja.style.background =
-            "#ffffff";
-
-
-        hoja.style.color =
+        contenido.style.color =
             "#000000";
 
-
-        hoja.style.padding =
-            "40px";
-
-
-        hoja.style.marginBottom =
-            "20px";
-
-
-        hoja.style.minHeight =
-            "900px";
-
-
-        const titulo =
-            document.createElement(
-                "h1"
-            );
-
-
-        titulo.textContent =
-            "Capítulo 1";
-
-
-        titulo.style.color =
-            "#000000";
-
-
-        const texto =
-            document.createElement(
-                "div"
-            );
-
-
-        texto.textContent =
-            "Contenido del capítulo pendiente";
-
-
-        texto.style.color =
-            "#000000";
-
-
-        texto.style.fontSize =
+        contenido.style.fontSize =
             "18px";
 
+        contenido.style.lineHeight =
+            "1.6";
 
-        texto.style.whiteSpace =
+        contenido.style.whiteSpace =
             "pre-line";
 
-
         hoja.appendChild(
-            titulo
+            contenido
         );
 
+    }
 
-        hoja.appendChild(
-            texto
+}
+
+
+        /* ======================================================
+           8. CONSEJOS
+        ====================================================== */
+
+if (
+    capitulo.consejos &&
+    capitulo.consejos.length > 0
+) {
+
+    const tituloConsejos =
+        document.createElement(
+            "h2"
         );
 
+    tituloConsejos.textContent =
+        "Consejos";
 
-        contenedor.appendChild(
-            hoja
+    tituloConsejos.style.color =
+        "#000000";
+
+    tituloConsejos.style.marginTop =
+        "30px";
+
+    hoja.appendChild(
+        tituloConsejos
+    );
+
+
+    const lista =
+        document.createElement(
+            "ul"
         );
 
+    lista.style.color =
+        "#000000";
 
-        monitorPIXELLAB(
-            "Editorial",
-            "estado",
-            "Capítulo",
-            "Página de prueba cargada correctamente"
+    lista.style.fontSize =
+        "18px";
+
+    lista.style.lineHeight =
+        "1.6";
+
+
+    for (const consejo of capitulo.consejos) {
+
+        const item =
+            document.createElement(
+                "li"
+            );
+
+        item.textContent =
+            consejo;
+
+        lista.appendChild(
+            item
         );
 
+    }
+
+
+        /* ======================================================
+           9. ERRORES COMUNES
+        ====================================================== */
+
+ if (
+    capitulo.erroresComunes &&
+    capitulo.erroresComunes.length > 0
+) {
+
+    const tituloErrores =
+        document.createElement(
+            "h2"
+        );
+
+    tituloErrores.textContent =
+        "Errores comunes";
+
+    tituloErrores.style.color =
+        "#000000";
+
+    tituloErrores.style.marginTop =
+        "30px";
+
+    hoja.appendChild(
+        tituloErrores
+    );
+
+
+    const lista =
+        document.createElement(
+            "ul"
+        );
+
+    lista.style.color =
+        "#000000";
+
+    lista.style.fontSize =
+        "18px";
+
+    lista.style.lineHeight =
+        "1.6";
+
+
+    for (const errorComun of capitulo.erroresComunes) {
+
+        const item =
+            document.createElement(
+                "li"
+            );
+
+        item.textContent =
+            errorComun;
+
+        lista.appendChild(
+            item
+        );
+
+    }
+
+
+    hoja.appendChild(
+        lista
+    );
+
+}
+
+
+        /* ======================================================
+           10. RESUMEN
+        ====================================================== */
+
+   if (capitulo.resumen) {
+
+    const tituloResumen =
+        document.createElement(
+            "h2"
+        );
+
+    tituloResumen.textContent =
+        "Resumen";
+
+    tituloResumen.style.color =
+        "#000000";
+
+    tituloResumen.style.marginTop =
+        "30px";
+
+    hoja.appendChild(
+        tituloResumen
+    );
+
+
+    const resumen =
+        document.createElement(
+            "div"
+        );
+
+    resumen.textContent =
+        capitulo.resumen;
+
+    resumen.style.color =
+        "#000000";
+
+    resumen.style.fontSize =
+        "18px";
+
+    resumen.style.lineHeight =
+        "1.6";
+
+    resumen.style.whiteSpace =
+        "pre-line";
+
+    hoja.appendChild(
+        resumen
+    );
+
+}
+
+
+        /* ======================================================
+           11. EJERCICIO
+        ====================================================== */
+
+if (capitulo.ejercicio) {
+
+    const tituloEjercicio =
+        document.createElement(
+            "h2"
+        );
+
+    tituloEjercicio.textContent =
+        "Ejercicio";
+
+    tituloEjercicio.style.color =
+        "#000000";
+
+    tituloEjercicio.style.marginTop =
+        "30px";
+
+    hoja.appendChild(
+        tituloEjercicio
+    );
+
+
+    const nombreEjercicio =
+        document.createElement(
+            "h3"
+        );
+
+    nombreEjercicio.textContent =
+        capitulo.ejercicio.titulo;
+
+    nombreEjercicio.style.color =
+        "#000000";
+
+    hoja.appendChild(
+        nombreEjercicio
+    );
+
+
+    const descripcion =
+        document.createElement(
+            "div"
+        );
+
+    descripcion.textContent =
+        capitulo.ejercicio.descripcion;
+
+    descripcion.style.color =
+        "#000000";
+
+    descripcion.style.fontSize =
+        "18px";
+
+    descripcion.style.lineHeight =
+        "1.6";
+
+    descripcion.style.whiteSpace =
+        "pre-line";
+
+    hoja.appendChild(
+        descripcion
+    );
+
+}
+
+
+        /* ======================================================
+           12. FRASE FINAL
+        ====================================================== */
+
+  if (capitulo.fraseFinal) {
+
+    const fraseFinal =
+        document.createElement(
+            "div"
+        );
+
+    fraseFinal.textContent =
+        capitulo.fraseFinal;
+
+    fraseFinal.style.color =
+        "#000000";
+
+    fraseFinal.style.fontSize =
+        "20px";
+
+    fraseFinal.style.fontStyle =
+        "italic";
+
+    fraseFinal.style.fontWeight =
+        "bold";
+
+    fraseFinal.style.lineHeight =
+        "1.6";
+
+    fraseFinal.style.marginTop =
+        "40px";
+
+    fraseFinal.style.paddingTop =
+        "20px";
+
+    fraseFinal.style.borderTop =
+        "2px solid #cccccc";
+
+    hoja.appendChild(
+        fraseFinal
+    );
+
+}
+
+
+        /* ======================================================
+           13. AGREGAR LA HOJA AL EDITOR
+        ====================================================== */
+
+   contenedor.appendChild(
+    hoja
+);
+
+monitorPIXELLAB(
+    "Editorial",
+    "estado",
+    "Capítulo",
+    "Página cargada correctamente"
+);
+
+
+}  
 
     } catch(error) {
 
-
         monitorPIXELLAB(
-            "Editorial",
-            "error",
-            "Capítulo",
-            error.message
-        );
-
+    "Editorial",
+    "error",
+    "Capítulo",
+    error.message
+);
 
     }
 
