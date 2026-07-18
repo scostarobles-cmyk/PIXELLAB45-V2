@@ -3556,7 +3556,7 @@ async function cargarPaginaLegales(proyecto) {
     "Editorial",
     "proceso",
     "Legales",
-    JSON.stringify(legales)
+    JSON.stringify(res)
 );
 
         monitorPIXELLAB(
