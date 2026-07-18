@@ -3292,10 +3292,9 @@ async function cargarSeccion(
     );
 
     break;
-case "capitulo":
+case "capitulos":
 
-    await cargarPaginaCapitulo(
-        proyecto
+    await cargarPaginaCapitulo(proyecto)
     );
 
     break;
