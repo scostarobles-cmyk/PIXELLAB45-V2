@@ -3293,9 +3293,13 @@ async function cargarSeccion(
 
     break;
 case "capitulos":
-
+monitorPIXELLAB(
+                "Editorial",
+                "proceso",
+                "Capitulos",
+                "Pendiente"
+            );
     await cargarPaginaCapitulo(proyecto);
-    
 
     break;
 
