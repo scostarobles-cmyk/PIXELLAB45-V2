@@ -870,90 +870,6 @@ async function verificarProyecto() {
 
 }
 
-/*
-=========================================================
-PIXELLAB Editorial
-Hoja · Legales
-
-Responsabilidad:
-
-• Cargar legales.json
-• Crear la página de legales
-• Agregar la página al paginaEditor
-
-No guarda cambios.
-No aplica estilos.
-
-=========================================================
-*/
-
-async function cargarPaginaLegales(proyecto) {
-
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Legales",
-        "Entró a cargarPaginaLegales"
-    );
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "debug",
-        "Legales proyecto",
-        JSON.stringify(proyecto)
-    );
-
-
-    const respuesta = await fetch(WORKER_URL, {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-        action: "cargar-json",
-        ruta: rutaLegales
-    })
-});
-
-const legales = await respuesta.json();
-
-
-    
-
-
-    
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "debug",
-        "Legales respuesta",
-        JSON.stringify(legales)
-    );
-
-
-    if (!legales) {
-
-        monitorPIXELLAB(
-            "Editorial",
-            "error",
-            "Legales",
-            "No devolvió JSON"
-        );
-
-        return;
-    }
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "estado",
-        "Legales",
-        "JSON cargado correctamente"
-    );
-
-}
 
 /*
 =================================================
@@ -3461,6 +3377,116 @@ function cargarPaginaPortada(proyecto) {
         "proceso",
         "Portada",
         "Imagen agregada a paginaEditor"
+    );
+
+}
+/*
+=========================================================
+PIXELLAB Editorial
+Hoja · Legales
+
+Responsabilidad:
+
+• Cargar legales.json
+• Crear la página de legales
+• Agregar la página al paginaEditor
+
+No guarda cambios.
+No aplica estilos.
+
+=========================================================
+*/
+
+async function cargarPaginaLegales(proyecto) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Legales",
+        "Entró a cargarPaginaLegales"
+    );
+
+
+    const pagina =
+        document.getElementById("paginaEditor");
+
+
+    if (!pagina) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Legales",
+            "No existe paginaEditor"
+        );
+
+        return;
+
+    }
+
+
+    const ruta =
+        `proyectos/${proyecto.projectId}/legales.json`;
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Legales",
+        "Cargando: " + ruta
+    );
+
+
+    const legales =
+        await cargarJSON(ruta);
+
+
+    if (!legales) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Legales",
+            "No se pudo cargar legales.json"
+        );
+
+        return;
+
+    }
+
+
+    pagina.innerHTML = "";
+
+
+    const hoja =
+        document.createElement("div");
+
+
+    hoja.className =
+        "pagina-editor";
+
+
+    hoja.innerHTML = `
+
+        <h1>
+            Legales
+        </h1>
+
+        <div class="contenido-editor">
+            ${legales.contenido.replace(/\n/g, "<br><br>")}
+        </div>
+
+    `;
+
+
+    pagina.appendChild(hoja);
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Legales",
+        "Página cargada correctamente"
     );
 
 }
