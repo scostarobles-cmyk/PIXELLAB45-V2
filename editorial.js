@@ -1,5 +1,5 @@
 
-monitorPIXELLAB( 
+monitorPIXELLAB(
     "Editorial",
     "info",
     "Carga",
@@ -3219,20 +3219,62 @@ async function cargarLibroCompleto(proyecto) {
         "Comenzando carga completa"
     );
 
-    for (const seccion of SECCIONES_LIBRO) {
+    for (const seccion of capitulo.secciones) {
 
-        if (seccion === "capitulos") {
+    const bloqueSeccion =
+        document.createElement(
+            "div"
+        );
 
-            monitorPIXELLAB(
-                "Editorial",
-                "proceso",
-                "Capítulos",
-                "Pendiente"
-            );
+    const subtitulo =
+        document.createElement(
+            "h2"
+        );
 
-           // continue;
+    subtitulo.textContent =
+        `${seccion.numero}. ${seccion.titulo}`;
 
-        }
+    subtitulo.style.color =
+        "#000000";
+
+    subtitulo.style.marginTop =
+        "30px";
+
+    bloqueSeccion.appendChild(
+        subtitulo
+    );
+
+
+    const contenido =
+        document.createElement(
+            "div"
+        );
+
+    contenido.textContent =
+        seccion.contenido;
+
+    contenido.style.color =
+        "#000000";
+
+    contenido.style.fontSize =
+        "18px";
+
+    contenido.style.lineHeight =
+        "1.6";
+
+    contenido.style.whiteSpace =
+        "pre-line";
+
+    bloqueSeccion.appendChild(
+        contenido
+    );
+
+
+    agregarBloquePagina(
+        bloqueSeccion
+    );
+
+}
 
         await cargarSeccion(
             proyecto,
@@ -3248,7 +3290,7 @@ async function cargarLibroCompleto(proyecto) {
         "Carga completa finalizada"
     );
 
-}
+
 async function cargarSeccion(
     proyecto,
     seccion
@@ -3267,18 +3309,14 @@ async function cargarSeccion(
 
         case "legales":
 
-         await cargarPaginaLegales(
-                proyecto
-            );
+      //   await cargarPaginaLegales(proyecto);
             
             break;
 
 
         case "indice":
 
-    await cargarPaginaIndice(
-        proyecto
-    );
+    //await cargarPaginaIndice(proyecto);
 
     break;
 
@@ -3287,9 +3325,7 @@ async function cargarSeccion(
 
         case "introduccion":
 
-    await cargarPaginaIntroduccion(
-        proyecto
-    );
+    await cargarPaginaIntroduccion(proyecto);
 
     break;
 case "capitulos":
@@ -3299,15 +3335,13 @@ monitorPIXELLAB(
                 "Capitulos",
                 "Pendiente"
             );
-    await cargarPaginaCapitulo(proyecto);
+    //await cargarPaginaCapitulo(proyecto,1,8);
 
     break;
 
         case "conclusion":
 
-    await cargarPaginaConclusion(
-        proyecto
-    );
+    //await cargarPaginaConclusion(proyecto);
 
     break;
     }
@@ -3954,7 +3988,11 @@ async function cargarPaginaIntroduccion(proyecto) {
 
 }
 
-async function cargarPaginaCapitulo(proyecto) {
+async function cargarPaginaCapitulo(
+    proyecto,
+    numeroCapitulo,
+    paginasPlan
+) {
 
     monitorPIXELLAB(
     "Editorial",
@@ -3969,9 +4007,12 @@ async function cargarPaginaCapitulo(proyecto) {
            1. CARGAR JSON DEL CAPÍTULO
         ====================================================== */
 
-    const ruta =
-    `proyectos/${proyecto.projectId}/capitulos/capitulo-001.json`;
+    const archivo =
+    `capitulo-${String(numeroCapitulo).padStart(3,"0")}.json`;
 
+const ruta =
+    `proyectos/${proyecto.projectId}/capitulos/${archivo}`;
+    
 monitorPIXELLAB(
     "Editorial",
     "proceso",
@@ -4039,33 +4080,123 @@ if (!contenedor) {
 }
 
 
-        /* ======================================================
-           3. CREAR HOJA
-        ====================================================== */
+// ===============================
+// CONFIGURACIÓN DE PÁGINA A4
+// ===============================
 
-   const hoja =
-    document.createElement(
-        "div"
+const altoPagina =
+    900;
+
+const margenPagina =
+    40;
+
+let paginaActual =
+    null;
+
+let altoUsado =
+    0;
+
+let numeroPagina =
+    1;
+
+
+// ===============================
+// CREAR NUEVA PÁGINA
+// ===============================
+
+function crearNuevaPagina() {
+
+    const nuevaHoja =
+        document.createElement(
+            "div"
+        );
+
+    nuevaHoja.className =
+        "pagina-editor";
+
+
+    nuevaHoja.style.background =
+        "#ffffff";
+
+
+    nuevaHoja.style.color =
+        "#000000";
+
+
+    nuevaHoja.style.padding =
+        margenPagina + "px";
+
+
+    nuevaHoja.style.marginBottom =
+        "20px";
+
+
+    nuevaHoja.style.minHeight =
+        altoPagina + "px";
+
+
+    contenedor.appendChild(
+        nuevaHoja
     );
 
-hoja.className =
-    "pagina-editor";
 
-hoja.style.background =
-    "#ffffff";
+    paginaActual =
+        nuevaHoja;
 
-hoja.style.color =
-    "#000000";
 
-hoja.style.padding =
-    "40px";
+    altoUsado =
+        0;
 
-hoja.style.marginBottom =
-    "20px";
 
-hoja.style.minHeight =
-    "900px";
+    numeroPagina++;
 
+}
+
+
+// Crear primera página
+
+crearNuevaPagina();
+// ===============================
+// AGREGAR CONTENIDO A LA PÁGINA
+// ===============================
+
+function agregarBloquePagina(elemento) {
+
+    // Agrega el bloque
+    paginaActual.appendChild(elemento);
+
+    // Mide la altura ocupada
+    const altoUsado = paginaActual.scrollHeight;
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Maquetación",
+        "Alto usado: " + altoUsado
+    );
+
+    // ¿Se pasó de la hoja?
+    if (altoUsado > altoPagina) {
+
+        // Sacar el bloque
+        paginaActual.removeChild(elemento);
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Maquetación",
+            "Nueva página"
+        );
+
+        // Crear hoja nueva
+        crearNuevaPagina();
+
+        // Volver a agregar el bloque completo
+        paginaActual.appendChild(elemento);
+
+    }
+
+}
 
         /* ======================================================
            4. TÍTULO DEL CAPÍTULO
@@ -4082,7 +4213,7 @@ titulo.textContent =
 titulo.style.color =
     "#000000";
 
-hoja.appendChild(
+agregarBloquePagina(
     titulo
 );
 
@@ -4114,7 +4245,7 @@ introduccion.style.whiteSpace =
 introduccion.style.marginBottom =
     "30px";
 
-hoja.appendChild(
+agregarBloquePagina(
     introduccion
 );
 
@@ -4125,47 +4256,39 @@ hoja.appendChild(
 
   for (const seccion of capitulo.secciones) {
 
+    const bloqueSeccion =
+        document.createElement("div");
+
     const subtitulo =
-        document.createElement(
-            "h2"
-        );
+        document.createElement("h2");
 
     subtitulo.textContent =
         `${seccion.numero}. ${seccion.titulo}`;
 
-    subtitulo.style.color =
-        "#000000";
+    subtitulo.style.color = "#000000";
+    subtitulo.style.marginTop = "30px";
 
-    subtitulo.style.marginTop =
-        "30px";
-
-    hoja.appendChild(
+    bloqueSeccion.appendChild(
         subtitulo
     );
 
-
     const contenido =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
     contenido.textContent =
         seccion.contenido;
 
-    contenido.style.color =
-        "#000000";
+    contenido.style.color = "#000000";
+    contenido.style.fontSize = "18px";
+    contenido.style.lineHeight = "1.6";
+    contenido.style.whiteSpace = "pre-line";
 
-    contenido.style.fontSize =
-        "18px";
-
-    contenido.style.lineHeight =
-        "1.6";
-
-    contenido.style.whiteSpace =
-        "pre-line";
-
-    hoja.appendChild(
+    bloqueSeccion.appendChild(
         contenido
+    );
+
+    agregarBloquePagina(
+        bloqueSeccion
     );
 
 }
@@ -4194,9 +4317,9 @@ hoja.appendChild(
     tituloEjemplos.style.marginTop =
         "30px";
 
-    hoja.appendChild(
-        tituloEjemplos
-    );
+    agregarBloquePagina(
+    tituloEjemplos
+);
 
 
     for (const ejemplo of capitulo.ejemplos) {
@@ -4212,9 +4335,9 @@ hoja.appendChild(
         subtitulo.style.color =
             "#000000";
 
-        hoja.appendChild(
-            subtitulo
-        );
+        agregarBloquePagina(
+    subtitulo
+);
 
 
         const contenido =
@@ -4237,9 +4360,9 @@ hoja.appendChild(
         contenido.style.whiteSpace =
             "pre-line";
 
-        hoja.appendChild(
-            contenido
-        );
+        agregarBloquePagina(
+    contenido
+);
 
     }
 
@@ -4269,9 +4392,9 @@ if (
     tituloConsejos.style.marginTop =
         "30px";
 
-    hoja.appendChild(
-        tituloConsejos
-    );
+    agregarBloquePagina(
+    tituloConsejos
+);
 
 
     const lista =
@@ -4329,9 +4452,9 @@ if (
     tituloErrores.style.marginTop =
         "30px";
 
-    hoja.appendChild(
-        tituloErrores
-    );
+    agregarBloquePagina(
+    tituloErrores
+);
 
 
     const lista =
@@ -4366,9 +4489,10 @@ if (
     }
 
 
-    hoja.appendChild(
-        lista
-    );
+    agregarBloquePagina(
+    lista
+);
+
 
 }
 
@@ -4393,9 +4517,9 @@ if (
     tituloResumen.style.marginTop =
         "30px";
 
-    hoja.appendChild(
-        tituloResumen
-    );
+    agregarBloquePagina(
+    tituloResumen
+);
 
 
     const resumen =
@@ -4418,9 +4542,9 @@ if (
     resumen.style.whiteSpace =
         "pre-line";
 
-    hoja.appendChild(
-        resumen
-    );
+    agregarBloquePagina(
+    resumen
+);
 
 }
 
@@ -4445,9 +4569,9 @@ if (capitulo.ejercicio) {
     tituloEjercicio.style.marginTop =
         "30px";
 
-    hoja.appendChild(
-        tituloEjercicio
-    );
+    agregarBloquePagina(
+    tituloEjercicio
+);
 
 
     const nombreEjercicio =
@@ -4461,9 +4585,9 @@ if (capitulo.ejercicio) {
     nombreEjercicio.style.color =
         "#000000";
 
-    hoja.appendChild(
-        nombreEjercicio
-    );
+    agregarBloquePagina(
+    nombreEjercicio
+);
 
 
     const descripcion =
@@ -4486,9 +4610,9 @@ if (capitulo.ejercicio) {
     descripcion.style.whiteSpace =
         "pre-line";
 
-    hoja.appendChild(
-        descripcion
-    );
+    agregarBloquePagina(
+    descripcion
+);
 
 }
 
@@ -4531,9 +4655,9 @@ if (capitulo.ejercicio) {
     fraseFinal.style.borderTop =
         "2px solid #cccccc";
 
-    hoja.appendChild(
-        fraseFinal
-    );
+    agregarBloquePagina(
+    fraseFinal
+);
 
 }
 
@@ -4542,9 +4666,7 @@ if (capitulo.ejercicio) {
            13. AGREGAR LA HOJA AL EDITOR
         ====================================================== */
 
-   contenedor.appendChild(
-    hoja
-);
+   
 
 monitorPIXELLAB(
     "Editorial",
@@ -4554,7 +4676,7 @@ monitorPIXELLAB(
 );
 
 
-}  
+       } 
 
     } catch(error) {
 
