@@ -3452,6 +3452,12 @@ if (canvas) {
         "Portada",
         "Imagen cargada correctamente"
     );
+    monitorPIXELLAB(
+    "Editorial",
+    "info",
+    "Resolución",
+    `${proyecto.portsda.naturalWidth} x ${proyecto.portada.naturalHeight}`
+);
 
 
     const canvas =
