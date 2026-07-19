@@ -1956,26 +1956,6 @@ order:-1;
 
 }
 
-.pagina-editor{
-
-    width:210mm;
-    min-height:297mm;
-
-    margin:20px auto;
-
-    padding:20mm;
-
-    box-sizing:border-box;
-
-    background:#ffffff;
-
-    color:#000000;
-
-    border:1px solid #cccccc;
-
-    box-shadow:0 4px 12px rgba(0,0,0,.20);
-
-}
 
 
 /* ==========================
@@ -2014,15 +1994,7 @@ order:-1;
 
     }
 
-    .pagina-editor{
-
-        width:100%;
-
-        min-height:calc(100vh - 180px);
-
-        padding:20px;
-
-    }
+    .
 
 }
 /* ===========================
@@ -2088,45 +2060,7 @@ order:-1;
 
     box-sizing:border-box;
 }
-@media (max-width:768px){
 
-    #paginaEditor .pagina{
-
-        width:100%;
-        min-height:auto;
-
-        padding:15px;
-    }
-
-}
-@media (max-width:768px){
-
-    #paginaEditor .pagina{
-
-        width:100% !important;
-        max-width:100% !important;
-        min-height:auto !important;
-
-        padding:15px !important;
-
-    }
-
-    #paginaEditor h1{
-
-        font-size:2rem !important;
-        word-break:break-word;
-        overflow-wrap:anywhere;
-
-    }
-
-    #paginaEditor img{
-
-        max-width:100% !important;
-        height:auto;
-
-    }
-
-}
 
 #paginaEditor img{
 
@@ -2150,5 +2084,21 @@ order:-1;
     justify-content:center;
 
     align-items:center;
+
+}
+.pagina-editor{
+
+    width:210mm;
+    height:297mm;
+
+    aspect-ratio:210 / 297;
+
+    background:#ffffff;
+
+    margin:20px auto;
+
+    padding:0;
+
+    box-sizing:border-box;
 
 }
