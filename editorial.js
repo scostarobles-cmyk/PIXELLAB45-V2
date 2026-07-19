@@ -3068,28 +3068,26 @@ Tema:
     promptVisual +
     `
 
-Generar una ilustración digital vertical.
-
-Tema:
-"${proyecto.titulo}"
-
 Formato final:
-210 × 297 mm (A4 vertical).
+A4 vertical (210 × 297 mm).
 
-La ilustración debe ocupar toda la página de borde a borde (a sangre).
+Resolución objetivo:
+2480 × 3508 píxeles (300 dpi).
 
+Diseño a sangrado completo (full bleed).
+
+La ilustración debe cubrir completamente toda la página de borde a borde.
+
+Sin marcos.
+Sin bordes blancos.
+Sin márgenes.
+Sin zonas vacías.
 Sin texto.
 Sin logotipos.
 
-No representar un libro.
-No representar una portada.
-No representar una hoja de papel.
-No representar un mockup.
-No dejar márgenes blancos.
-No dejar bordes.
-No dejar zonas vacías.
+Arte gráfico final listo para impresión y eBook.
 
-Arte gráfico final listo para impresión.
+--ar 3:4
 `;
 
 monitorPIXELLAB(
