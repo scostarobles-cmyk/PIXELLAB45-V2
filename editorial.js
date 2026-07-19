@@ -2989,7 +2989,7 @@ async function generarPortadaProyecto(proyecto) {
 
         // 1. Crear prompt base
         const prompt = `
-Genera un prompt visual para crear el ARTE FINAL de la cubierta de un eBook.
+Genera un prompt visual para crear el ARTE FINAL
 
 No describas un libro físico.
 No describas una hoja de papel.
@@ -3068,7 +3068,11 @@ Tema:
     promptVisual +
     `
 
-Crear una portada profesional de eBook.
+Ilustración digital vertical.
+Formato A4.
+Full bleed.
+Sin texto.
+Sin logotipos.
 
 Formato obligatorio:
 - Portada vertical.
