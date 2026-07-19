@@ -3063,6 +3063,19 @@ Formato obligatorio:
 - Diseño editorial profesional.
 - Sin formato cuadrado.
 - Preparada para mostrarse como una hoja de libro.
+La imagen debe ocupar el lienzo completo.
+
+NO mostrar una hoja de papel.
+NO mostrar márgenes blancos.
+NO mostrar bordes.
+NO mostrar sombra.
+NO mostrar fondo alrededor.
+NO mostrar la portada apoyada sobre una superficie.
+NO crear un mockup.
+NO simular una impresión.
+
+Generar exclusivamente el diseño de la portada ocupando el 100% del lienzo vertical con proporción A4.
+El resultado debe ser una portada lista para imprimir o usar digitalmente, a sangre (full bleed)
 `;
 
 
