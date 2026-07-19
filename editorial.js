@@ -3068,6 +3068,12 @@ Formato obligatorio:
 - Sin logotipos.
 `;
 
+monitorPIXELLAB(
+    "Editorial",
+    "info",
+    "Prompt portada",
+    promptImagenFinal
+);
 const imagen = await puter.ai.txt2img(
     promptImagenFinal,
     {
