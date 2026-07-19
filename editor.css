@@ -1,3 +1,984 @@
+/* ===========================
+   PORTADA
+=========================== */
+
+.portada{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    width:100%;
+    min-height:100vh;
+
+    padding:60px;
+
+    background:transparent;
+    color:#d9d9d9;
+
+    text-align:center;
+}
+
+.portada-contenido{
+    max-width:700px;
+    width:100%;
+    color: #fff;
+}
+
+.pagina h1{
+    font-size:34px;
+    text-align:center;
+
+    color:#00e5ff;
+
+    margin-bottom:35px;
+
+    text-transform:uppercase;
+    letter-spacing:2px;
+
+    border-bottom:3px solid #00e5ff;
+
+    padding-bottom:15px;
+}
+
+.pagina h2{
+    font-size:24px;
+    color:#00bcd4;
+    margin-bottom:25px;
+}
+
+
+.portada .descripcion{
+    font-size:18px;
+    line-height:1.7;
+    color:#444;
+    margin-bottom:40px;
+}
+
+.portada .autor{
+    font-size:20px;
+    font-weight:bold;
+    margin-top:40px;
+}
+
+.portada .marca{
+    margin-top:10px;
+    font-size:18px;
+    letter-spacing:2px;
+}
+
+.portada .fecha{
+    margin-top:10px;
+    color:#777;
+}
+.portada{
+    margin-top:120px;
+}
+.titulo-separador{
+    width:120px;
+    height:4px;
+    background:#00e5ff;
+    margin:20px auto 40px;
+    border-radius:20px;
+}
+/* ===========================
+   PÁGINA BASE
+=========================== */
+
+.pagina{
+
+    width:210mm;
+    min-height:297mm;
+
+    margin:0 auto;
+    padding:25mm;
+
+    background:transparent;
+    color:#d9d9d9;
+
+    box-sizing:border-box;
+
+    page-break-after:always;
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+/* ===========================
+   AVISO LEGAL
+=========================== */
+
+.legal{
+    background:transparent;
+    color:#d9d9d9;
+}
+
+.legal h1{
+    text-align:center;
+    font-size:30px;
+    margin-bottom:40px;
+    color:#00e5ff;
+}
+
+.legal-text{
+    font-size:15px;
+    line-height:1.8;
+    text-align:justify;
+    color:#cfcfcf;
+}
+
+
+.ebook .pagina {
+  background: #0b0f14 !important;
+  color: #d9d9d9 !important;
+  font-family: Inter, Roboto, "Segoe UI", Arial, sans-serif;
+}
+
+.ebook .portada {
+  background: #0b0f14 !important;
+  color: #d9d9d9 !important;
+}
+.ebook .pagina p{
+
+    text-align: justify;
+
+    text-justify: inter-word;
+
+    line-height: 1.8;
+
+    margin-bottom: 18px;
+
+}
+/* Botones del generador */
+.gallery-filters button {
+    transition: all .3s ease;
+}
+
+/* Estado completado */
+.gallery-filters button.completo {
+    background: #00ff66;
+    color: #000;
+    box-shadow: 0 0 15px #00ff66;
+}
+
+/* Estado en proceso */
+.gallery-filters button.proceso {
+    background: #009dff;
+    color: white;
+    box-shadow: 0 0 15px #009dff;
+}
+
+/* Estado bloqueado */
+.gallery-filters button:disabled {
+    cursor: not-allowed;
+    opacity: 0.85;
+}
+/* Estado verde de botones */
+.gallery-filters button.verde {
+    background: lime !important;
+    color: black !important;
+}
+#btnProyecto.verde {
+    background: #00b050 !important;
+    color: #000 !important;
+    box-shadow: 0 0 15px #00b050 !important;
+}
+/* Estado azul de botones */
+.gallery-filters button.azul {
+    background: #009dff;
+    color: white;
+    box-shadow: 0 0 15px #009dff;
+}
+
+/* Estado amarillo de botones */
+.gallery-filters button.amarillo {
+    background: #ffc107;
+    color: #000;
+    box-shadow: 0 0 15px #ffc107;
+}
+@keyframes fadeUp{
+
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+/* ===================================== */
+/* PIXELLAB EDITORIAL - BIBLIOTECA */
+/* ===================================== */
+
+
+.biblioteca-grid {
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit, minmax(260px, 1fr));
+
+gap:20px;
+
+margin-top:20px;
+
+}
+
+
+/* TARJETA EDITORIAL */
+
+.editorial-card {
+
+background:#05070d;
+
+border:1px solid #00d9ff;
+
+border-radius:15px;
+
+overflow:hidden;
+
+box-shadow:
+0 0 15px rgba(0,217,255,0.35);
+
+transition:0.3s;
+
+}
+
+
+.editorial-card:hover {
+
+transform:translateY(-5px);
+
+box-shadow:
+0 0 25px rgba(0,217,255,0.7);
+
+}
+
+
+
+/* ESPACIO PARA PORTADA */
+
+.editorial-cover {
+
+height:180px;
+
+background:
+linear-gradient(
+180deg,
+rgba(0,217,255,0.15),
+transparent
+);
+
+border-bottom:
+1px solid #00d9ff;
+
+}
+
+
+
+/* INFORMACIÓN */
+
+.editorial-info {
+
+padding:20px;
+
+text-align:center;
+
+}
+
+
+.editorial-info h3 {
+
+color:#00d9ff;
+
+font-size:22px;
+
+margin-bottom:10px;
+
+}
+
+
+.editorial-info p {
+
+color:white;
+
+font-size:15px;
+
+}
+
+
+.editorial-info span {
+
+display:block;
+
+color:#00d9ff;
+
+margin:15px 0;
+
+font-size:13px;
+
+letter-spacing:1px;
+
+}
+
+
+
+/* EDITOR ACTIVO */
+
+#editorTrabajo {
+
+margin-top:25px;
+
+}
+
+
+/* RESPONSIVE */
+
+@media(max-width:768px){
+
+
+.biblioteca-grid {
+
+grid-template-columns:
+1fr;
+
+}
+
+
+.editorial-card {
+
+width:100%;
+
+}
+
+
+}
+/* ===================================== */
+/* PIXELLAB EDITORIAL WORKSPACE */
+/* ===================================== */
+
+
+.editor-workspace {
+
+display:grid;
+
+grid-template-columns:
+220px 1fr 240px;
+
+gap:20px;
+
+margin-top:25px;
+
+}
+
+
+
+/* PANELES LATERALES */
+
+.editor-panel {
+
+background:#05070d;
+
+border:1px solid #00d9ff;
+
+border-radius:15px;
+
+padding:20px;
+
+box-shadow:
+0 0 15px rgba(0,217,255,0.25);
+
+}
+
+
+
+.editor-panel h3 {
+
+color:#00d9ff;
+
+margin-bottom:20px;
+
+}
+
+
+
+
+.editor-menu {
+
+display:block;
+
+width:100%;
+
+margin-bottom:12px;
+
+padding:12px;
+
+background:#05070d;
+
+border:1px solid #00d9ff;
+
+border-radius:8px;
+
+color:white;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+
+
+.editor-menu:hover {
+
+background:#00d9ff;
+
+color:#05070d;
+
+}
+
+
+
+/* ZONA CENTRAL */
+
+.editor-canvas {
+
+background:#05070d;
+
+border:1px solid #00d9ff;
+
+border-radius:15px;
+
+padding:25px;
+
+min-height:550px;
+
+box-shadow:
+0 0 20px rgba(0,217,255,0.25);
+
+}
+
+
+
+.editor-canvas h3 {
+
+color:#00d9ff;
+
+}
+
+
+
+
+.pagina-editor {
+
+margin-top:25px;
+
+background:white;
+
+color:#111;
+
+border-radius:10px;
+
+padding:35px;
+
+min-height:400px;
+
+}
+
+
+
+.pagina-editor h2 {
+
+color:#111;
+
+}
+
+
+
+/* PIPELINE */
+
+.pipeline-editor p {
+
+color:white;
+
+padding:8px;
+
+border-bottom:
+1px solid rgba(0,217,255,.2);
+
+}
+
+
+
+/* RESPONSIVE */
+
+@media(max-width:900px){
+
+
+.editor-workspace {
+
+grid-template-columns:
+1fr;
+
+}
+
+
+.editor-canvas {
+
+order:-1;
+
+}
+
+
+} 
+/* ===================================== */
+/* PIXELLAB EDITORIAL - MÓVIL */
+/* ===================================== */
+
+@media (max-width: 900px) {
+
+    .editor-workspace {
+
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+
+    }
+
+    /* Oculta los paneles laterales */
+
+    .editor-panel {
+
+        display: none;
+
+    }
+
+    /* Área de edición */
+
+    .editor-canvas {
+
+        width: 100%;
+        min-height: auto;
+        padding: 15px;
+        order: 1;
+
+    }
+
+    .pagina-editor {
+
+        width: 100%;
+        min-height: 70vh;
+        margin: 0;
+
+    }
+
+    /* Oculta solo el título principal y el subtítulo del Workspace */
+
+    #editorTrabajo > .ai-lab > h2,
+    #editorTrabajo > .ai-lab > .ai-subtitle {
+
+        display: none;
+
+    }
+
+    /* Barra inferior */
+
+    .editor-mobile-toolbar {
+
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        display: flex;
+
+        justify-content: space-around;
+        align-items: center;
+
+        gap: 10px;
+
+        padding: 12px 15px;
+
+        background: #05070d;
+
+        border-top: 1px solid #00d9ff;
+
+        box-shadow: 0 -5px 20px rgba(0,217,255,.30);
+
+        z-index: 9999;
+
+    }
+
+    .editor-mobile-toolbar .boton-accion {
+
+        flex: 1;
+        margin: 0;
+
+    }
+
+    #editorTrabajo {
+
+        padding-bottom: 90px;
+
+    }
+
+}
+/* ==========================================================
+   PIXELLAB Monitor
+========================================================== */
+
+.monitor-evento{
+
+    border-left:4px solid #00d9ff;
+
+    background:#111827;
+
+    border-radius:8px;
+
+    padding:12px;
+
+    margin-bottom:12px;
+
+}
+
+.monitor-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-bottom:8px;
+
+    font-size:12px;
+
+    color:#9ca3af;
+
+}
+
+.monitor-modulo{
+
+    color:#00d9ff;
+
+    font-weight:bold;
+
+}
+
+.monitor-operacion{
+
+    font-weight:bold;
+
+    color:white;
+
+    margin-bottom:6px;
+
+}
+
+.monitor-mensaje{
+
+    color:#d1d5db;
+
+    line-height:1.5;
+
+}
+.monitor-info{
+
+    border-left-color:#3b82f6;
+
+}
+
+.monitor-proceso{
+
+    border-left-color:#00d9ff;
+
+}
+
+.monitor-ok{
+
+    border-left-color:#22c55e;
+
+}
+
+.monitor-aviso{
+
+    border-left-color:#facc15;
+
+}
+
+.monitor-error{
+
+    border-left-color:#ef4444;
+
+}
+.editorial-cover {
+
+    height:180px;
+
+    background:
+    linear-gradient(
+    180deg,
+    rgba(0,217,255,0.15),
+    transparent
+    );
+
+    border-bottom:
+    1px solid #00d9ff;
+
+    overflow:hidden;
+
+}
+
+
+.portada-editorial {
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    display:block;
+
+}
+/* =====================================
+   EDITOR RESPONSIVE
+===================================== */
+
+@media (max-width:768px){
+
+    .pagina{
+
+        width:100%;
+
+        min-height:auto;
+
+        padding:20px;
+
+        margin:0;
+
+    }
+
+    .portada{
+
+        width:100%;
+
+        min-height:auto;
+
+        padding:20px;
+
+        margin-top:90px;
+
+    }
+
+    .portada-contenido{
+
+        max-width:100%;
+
+    }
+
+}
+/* =====================================
+   PIXELLAB EDITORIAL WORKSPACE
+===================================== */
+
+.editor-workspace{
+
+    display:flex;
+
+    gap:20px;
+
+    width:100%;
+
+    align-items:flex-start;
+
+}
+
+.editor-panel{
+
+    width:260px;
+
+    flex-shrink:0;
+
+}
+
+.editor-canvas{
+
+    flex:1;
+
+    width:100%;
+
+}
+
+.pagina-editor{
+
+    width:100%;
+
+    min-height:85vh;
+
+    padding:30px;
+
+    border:1px solid #00d9ff;
+
+    border-radius:15px;
+
+    background:#0b0f14;
+
+    overflow:auto;
+
+}
+
+
+/* ==========================
+   MODO CELULAR
+========================== */
+
+@media (max-width:768px){
+
+    #editorTrabajo{
+
+        width:100vw;
+
+        max-width:none;
+
+        margin-left:calc(50% - 50vw);
+
+        border-radius:0;
+
+    }
+
+    .editor-workspace{
+
+        flex-direction:column;
+
+    }
+
+    .editor-panel{
+
+        width:100%;
+
+    }
+
+    .editor-canvas{
+
+        width:100%;
+
+    }
+
+    .pagina-editor{
+
+        width:100%;
+
+        min-height:calc(100vh - 180px);
+
+        padding:20px;
+
+    }
+
+}
+/* ===========================
+   WORKSPACE EDITOR
+=========================== */
+
+#editorTrabajo{
+    width:100%;
+    max-width:100%;
+    margin:0;
+    padding:0;
+}
+
+#editorTrabajo .ai-lab{
+    width:100%;
+    max-width:100%;
+}
+
+.editor-workspace{
+    display:flex;
+    width:100%;
+    min-height:calc(100vh - 140px);
+}
+
+.editor-canvas{
+    flex:1;
+    width:100%;
+}
+
+.pagina-editor{
+    width:100%;
+    min-height:100%;
+}
+@media (max-width:768px){
+
+    #editorTrabajo{
+
+        background:#05070d;
+        border:none;
+        box-shadow:none;
+        border-radius:0;
+
+        width:100vw;
+        max-width:100vw;
+
+        margin:0;
+        padding:10px;
+
+        position:relative;
+        left:50%;
+        transform:translateX(-50%);
+    }
+
+}
+#paginaEditor .pagina{
+
+    width:100%;
+    min-height:100%;
+
+    padding:20px;
+
+    margin:0;
+
+    box-sizing:border-box;
+}
+@media (max-width:768px){
+
+    #paginaEditor .pagina{
+
+        width:100%;
+        min-height:auto;
+
+        padding:15px;
+    }
+
+}
+@media (max-width:768px){
+
+    #paginaEditor .pagina{
+
+        width:100% !important;
+        max-width:100% !important;
+        min-height:auto !important;
+
+        padding:15px !important;
+
+    }
+
+    #paginaEditor h1{
+
+        font-size:2rem !important;
+        word-break:break-word;
+        overflow-wrap:anywhere;
+
+    }
+
+    #paginaEditor img{
+
+        max-width:100% !important;
+        height:auto;
+
+    }
+
+}
 /* =====================================
    PIXELLAB EDITOR
 ===================================== */
