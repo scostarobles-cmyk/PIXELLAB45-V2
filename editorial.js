@@ -3391,15 +3391,44 @@ if (canvas) {
 
     img.onload = () => {
 
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Portada",
+        "Imagen cargada correctamente"
+    );
+
+
+    const canvas =
+        document.querySelector(".editor-canvas");
+
+
+    if (canvas && hoja.offsetWidth > 0) {
+
+
+        const escala =
+            (canvas.clientWidth - 40) /
+            hoja.offsetWidth;
+
+
+        hoja.style.transformOrigin =
+            "top center";
+
+
+        hoja.style.transform =
+            `scale(${Math.min(1, escala)})`;
+
+
         monitorPIXELLAB(
             "Editorial",
-            "estado",
+            "info",
             "Portada",
-            "Imagen cargada correctamente"
+            "Escala aplicada: " + escala
         );
 
-    };
+    }
 
+};
 
     img.onerror = () => {
 
