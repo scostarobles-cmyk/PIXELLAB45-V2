@@ -1946,27 +1946,34 @@ order:-1;
 
 .editor-canvas{
 
-    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
 
-    width:100%;
+    overflow:auto;
+
+    padding:20px;
 
 }
 
 .pagina-editor{
 
-    width:100%;
+    width:210mm;
+    min-height:297mm;
 
-    min-height:85vh;
+    margin:20px auto;
 
-    padding:30px;
+    padding:20mm;
 
-    border:1px solid #00d9ff;
+    box-sizing:border-box;
 
-    border-radius:15px;
+    background:#ffffff;
 
-    background:#0b0f14;
+    color:#000000;
 
-    overflow:auto;
+    border:1px solid #cccccc;
+
+    box-shadow:0 4px 12px rgba(0,0,0,.20);
 
 }
 
