@@ -2988,10 +2988,23 @@ async function generarPortadaProyecto(proyecto) {
 
 
         // 1. Crear prompt base
-        const prompt =
-            `Genera una portada profesional de eBook relacionada con el título:
-            "${proyecto.titulo}".
-            Sin texto, sin logotipos, estilo editorial moderno.`;
+        const prompt = `
+Genera un prompt visual para crear el ARTE FINAL de la cubierta de un eBook.
+
+No describas un libro físico.
+No describas una hoja de papel.
+No describas una portada impresa.
+No describas un mockup.
+No describas una fotografía.
+
+Describe únicamente la ilustración que debe ocupar completamente un lienzo vertical A4, lista para usarse directamente como portada digital.
+
+Sin texto.
+Sin logotipos.
+
+Tema:
+"${proyecto.titulo}"
+`;
 
 
         monitorPIXELLAB(
