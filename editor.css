@@ -994,14 +994,11 @@ width:100%;
 
 
 
-.editor-canvas {
-
+..editor-canvas{
     width:100%;
-
-    padding:10px;
-
-    overflow:hidden;
-
+    max-width:100%;
+    padding:0;
+    margin:0 auto;
 }
 
 
