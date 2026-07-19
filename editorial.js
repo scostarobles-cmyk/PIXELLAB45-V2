@@ -1,5 +1,5 @@
 
-monitorPIXELLAB(
+monitorPIXELLAB( 
     "Editorial",
     "info",
     "Carga",
