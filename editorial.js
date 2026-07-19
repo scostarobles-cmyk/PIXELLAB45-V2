@@ -3418,21 +3418,7 @@ if (canvas) {
 
     pagina.appendChild(hoja);
 
-hoja.style.transformOrigin = "top center";
 
-const canvas =
-    document.querySelector(".editor-canvas");
-
-if (canvas) {
-
-    const escala =
-        (canvas.clientWidth - 40) /
-        hoja.offsetWidth;
-
-    hoja.style.transform =
-        `scale(${escala})`;
-
-}
 
     monitorPIXELLAB(
         "Editorial",
