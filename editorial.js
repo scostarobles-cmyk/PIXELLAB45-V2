@@ -3313,6 +3313,12 @@ function cargarPaginaPortada(proyecto) {
 
     const img =
         document.createElement("img");
+        monitorPIXELLAB(
+    "Editorial",
+    "info",
+    "Portada",
+    proyecto.portada
+);
 
     img.src = proyecto.portada;
     img.alt = proyecto.titulo;
