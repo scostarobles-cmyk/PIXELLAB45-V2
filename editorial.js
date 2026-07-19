@@ -3219,62 +3219,7 @@ async function cargarLibroCompleto(proyecto) {
         "Comenzando carga completa"
     );
 
-    for (const seccion of capitulo.secciones) {
-
-    const bloqueSeccion =
-        document.createElement(
-            "div"
-        );
-
-    const subtitulo =
-        document.createElement(
-            "h2"
-        );
-
-    subtitulo.textContent =
-        `${seccion.numero}. ${seccion.titulo}`;
-
-    subtitulo.style.color =
-        "#000000";
-
-    subtitulo.style.marginTop =
-        "30px";
-
-    bloqueSeccion.appendChild(
-        subtitulo
-    );
-
-
-    const contenido =
-        document.createElement(
-            "div"
-        );
-
-    contenido.textContent =
-        seccion.contenido;
-
-    contenido.style.color =
-        "#000000";
-
-    contenido.style.fontSize =
-        "18px";
-
-    contenido.style.lineHeight =
-        "1.6";
-
-    contenido.style.whiteSpace =
-        "pre-line";
-
-    bloqueSeccion.appendChild(
-        contenido
-    );
-
-
-    agregarBloquePagina(
-        bloqueSeccion
-    );
-
-}
+    for (const seccion of SECCIONES_LIBRO) {
 
         await cargarSeccion(
             proyecto,
@@ -3289,62 +3234,6 @@ async function cargarLibroCompleto(proyecto) {
         "Libro",
         "Carga completa finalizada"
     );
-
-
-async function cargarSeccion(
-    proyecto,
-    seccion
-) {
-
-    switch (seccion) {
-
-        case "portada":
-
-            await cargarPaginaPortada(
-                proyecto
-            );
-
-            break;
-
-
-        case "legales":
-
-       await cargarPaginaLegales(proyecto);
-            
-            break;
-
-
-        case "indice":
-
-    await cargarPaginaIndice(proyecto);
-
-    break;
-
-            break;
-
-
-        case "introduccion":
-
-    await cargarPaginaIntroduccion(proyecto);
-
-    break;
-case "capitulos":
-monitorPIXELLAB(
-                "Editorial",
-                "proceso",
-                "Capitulos",
-                "Pendiente"
-            );
-    await cargarPaginaCapitulo(proyecto,1,8);
-
-    break;
-
-        case "conclusion":
-
-    await cargarPaginaConclusion(proyecto);
-
-    break;
-    }
 
 }
 
