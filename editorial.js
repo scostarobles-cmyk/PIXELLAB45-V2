@@ -3367,7 +3367,7 @@ if (canvas) {
 
                 display: block;
 
-                object-fit: contain;
+                object-fit: cover;
 
             }
 
