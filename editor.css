@@ -356,274 +356,274 @@ width:100%;
 
 
 }
-/* ===================================== */
-/* PIXELLAB EDITORIAL WORKSPACE */
-/* ===================================== */
+/* =====================================
+   PIXELLAB EDITORIAL WORKSPACE
+   NUEVA ESTRUCTURA
+===================================== */
 
+
+/* CONTENEDOR DEL EDITOR */
+
+#editorTrabajo {
+
+    width:100%;
+
+    max-width:100%;
+
+    padding:20px;
+
+    box-sizing:border-box;
+
+}
+
+
+
+/* CONTENEDOR GENERAL */
 
 .editor-workspace {
 
-display:grid;
+    width:100%;
 
-grid-template-columns:
-220px 1fr 240px;
+    display:flex;
 
-gap:20px;
+    flex-direction:column;
 
-margin-top:25px;
-
-}
-
-
-
-/* PANELES LATERALES */
-
-.editor-panel {
-
-background:#05070d;
-
-border:1px solid #00d9ff;
-
-border-radius:15px;
-
-padding:20px;
-
-box-shadow:
-0 0 15px rgba(0,217,255,0.25);
+    gap:20px;
 
 }
 
 
 
-.editor-panel h3 {
+/* ==============================
+   BOTONERA SUPERIOR
+============================== */
 
-color:#00d9ff;
+.editor-toolbar-editor {
 
-margin-bottom:20px;
+    display:flex;
+
+    flex-direction:row;
+
+    gap:12px;
+
+    width:100%;
+
+    overflow-x:auto;
+
+    padding:10px 0;
 
 }
-
 
 
 
 .editor-menu {
 
-display:block;
+    flex:0 0 auto;
 
-width:100%;
+    width:auto;
 
-margin-bottom:12px;
+    white-space:nowrap;
 
-padding:12px;
+    padding:12px 18px;
 
-background:#05070d;
+    background:#05070d;
 
-border:1px solid #00d9ff;
+    border:1px solid #00d9ff;
 
-border-radius:8px;
+    border-radius:8px;
 
-color:white;
+    color:white;
 
-cursor:pointer;
+    cursor:pointer;
 
-transition:.3s;
+    transition:.3s;
 
 }
-
 
 
 .editor-menu:hover {
 
-background:#00d9ff;
+    background:#00d9ff;
 
-color:#05070d;
+    color:#05070d;
 
 }
 
 
 
-/* ZONA CENTRAL */
+/* ==============================
+   PIPELINE SUPERIOR
+============================== */
+
+.pipeline-editor {
+
+    width:100%;
+
+    background:#05070d;
+
+    border:1px solid #00d9ff;
+
+    border-radius:15px;
+
+    padding:15px;
+
+}
+
+
+
+.pipeline-editor h3 {
+
+    color:#00d9ff;
+
+    margin-bottom:10px;
+
+}
+
+
+
+.pipeline-items {
+
+    display:flex;
+
+    flex-direction:row;
+
+    gap:15px;
+
+    overflow-x:auto;
+
+}
+
+
+
+.pipeline-items p {
+
+    flex:0 0 auto;
+
+    white-space:nowrap;
+
+    color:white;
+
+    padding:8px 15px;
+
+    border-radius:8px;
+
+    border:1px solid rgba(0,217,255,.2);
+
+}
+
+
+
+/* ==============================
+   CANVAS CENTRAL
+============================== */
 
 .editor-canvas {
 
-background:#05070d;
+    width:100%;
 
-border:1px solid #00d9ff;
+    min-height:calc(100vh - 250px);
 
-border-radius:15px;
+    display:flex;
 
-padding:25px;
+    justify-content:center;
 
-min-height:550px;
+    align-items:flex-start;
 
-box-shadow:
-0 0 20px rgba(0,217,255,0.25);
+    overflow:auto;
 
-}
+    padding:30px;
 
+    box-sizing:border-box;
 
+    background:#05070d;
 
-.editor-canvas h3 {
+    border:1px solid #00d9ff;
 
-color:#00d9ff;
-
-}
-
-
-
-
-.pagina-editor {
-
-margin-top:25px;
-
-background:white;
-
-color:#111;
-
-border-radius:10px;
-
-padding:35px;
-
-min-height:400px;
+    border-radius:15px;
 
 }
 
 
 
-.pagina-editor h2 {
+/*
+   CONTENEDOR VACÍO
+   RECIBE LAS PÁGINAS
+*/
 
-color:#111;
+#paginaEditor {
 
-}
+    width:100%;
 
+    min-height:100%;
 
+    display:flex;
 
-/* PIPELINE */
+    justify-content:center;
 
-.pipeline-editor p {
-
-color:white;
-
-padding:8px;
-
-border-bottom:
-1px solid rgba(0,217,255,.2);
+    align-items:flex-start;
 
 }
 
 
 
-/* RESPONSIVE */
+/* ==============================
+   MÓVIL
+============================== */
 
-@media(max-width:900px){
+@media(max-width:768px){
+
+
+#editorTrabajo {
+
+    width:100%;
+
+    padding:10px;
+
+}
+
 
 
 .editor-workspace {
 
-grid-template-columns:
-1fr;
+    gap:15px;
 
 }
+
+
+
+.editor-toolbar-editor {
+
+    overflow-x:auto;
+
+}
+
+
+
+.pipeline-items {
+
+    overflow-x:auto;
+
+}
+
 
 
 .editor-canvas {
 
-order:-1;
+    min-height:calc(100vh - 180px);
+
+    padding:10px;
 
 }
 
 
-} 
-/* ===================================== */
-/* PIXELLAB EDITORIAL - MÓVIL */
-/* ===================================== */
 
-@media (max-width: 900px) {
+#paginaEditor {
 
-    .editor-workspace {
+    width:100%;
 
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
+}
 
-    }
 
-    /* Oculta los paneles laterales */
-
-    .editor-panel {
-
-        display: none;
-
-    }
-
-    /* Área de edición */
-
-    .editor-canvas {
-
-        width: 100%;
-        min-height: auto;
-        padding: 15px;
-        order: 1;
-
-    }
-
-    .pagina-editor {
-
-        width: 100%;
-        min-height: 70vh;
-        margin: 0;
-
-    }
-
-    /* Oculta solo el título principal y el subtítulo del Workspace */
-
-    #editorTrabajo > .ai-lab > h2,
-    #editorTrabajo > .ai-lab > .ai-subtitle {
-
-        display: none;
-
-    }
-
-    /* Barra inferior */
-
-    .editor-mobile-toolbar {
-
-        position: fixed;
-        left: 0;
-        right: 0;
-        bottom: 0;
-
-        display: flex;
-
-        justify-content: space-around;
-        align-items: center;
-
-        gap: 10px;
-
-        padding: 12px 15px;
-
-        background: #05070d;
-
-        border-top: 1px solid #00d9ff;
-
-        box-shadow: 0 -5px 20px rgba(0,217,255,.30);
-
-        z-index: 9999;
-
-    }
-
-    .editor-mobile-toolbar .boton-accion {
-
-        flex: 1;
-        margin: 0;
-
-    }
-
-    #editorTrabajo {
-
-        padding-bottom: 90px;
-
-    }
 
 }
 /* ==========================================================
