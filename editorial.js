@@ -3051,21 +3051,28 @@ async function generarPortadaProyecto(proyecto) {
         );
 
 
-        const imagen = await puter.ai.txt2img(
-            promptVisual,
-            {
-                provider: "gemini",
-                model: "google/imagen-4.0-fast"
-            }
-        );
+        const promptImagenFinal =
+    promptVisual +
+    `
+
+Formato obligatorio:
+- Portada vertical de ebook.
+- Tamaño A4 vertical.
+- Relación de aspecto aproximada 2:3.
+- La composición debe ocupar toda la página.
+- Diseño editorial profesional.
+- Sin formato cuadrado.
+- Preparada para mostrarse como una hoja de libro.
+`;
 
 
-        monitorPIXELLAB(
-            "Editorial",
-            "proceso",
-            "Imagen recibida",
-            "Imagen generada correctamente"
-        );
+const imagen = await puter.ai.txt2img(
+    promptImagenFinal,
+    {
+        provider: "gemini",
+        model: "google/imagen-4.0-fast"
+    }
+);
 
 
         // 4. Convertir a Base64
