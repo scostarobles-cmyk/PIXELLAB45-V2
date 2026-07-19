@@ -2997,7 +2997,7 @@ No describas una portada impresa.
 No describas un mockup.
 No describas una fotografía.
 
-Describe únicamente la ilustración que debe ocupar completamente un lienzo vertical A4, lista para usarse directamente como portada digital.
+Describe únicamente la ilustración que debe ocupar completamente un lienzo vertical A4.
 
 Sin texto.
 Sin logotipos.
@@ -3068,29 +3068,28 @@ Tema:
     promptVisual +
     `
 
-Título:
+Generar una ilustración digital vertical.
+
+Tema:
 "${proyecto.titulo}"
 
-Autor:
-"${proyecto.autor}"
-
 Formato final:
-A4 vertical (210 × 297 mm).
+210 × 297 mm (A4 vertical).
 
-Tamaño de referencia:
-2480 × 3508 píxeles (300 dpi).
+La ilustración debe ocupar toda la página de borde a borde (a sangre).
 
-Portada a sangre.
-
-La ilustración y el fondo deben cubrir completamente toda la página, de borde a borde.
-
-No dejar márgenes blancos.
-No dejar bordes.
-No dejar zonas vacías.
 Sin texto.
 Sin logotipos.
 
-Arte final listo para impresión y eBook.
+No representar un libro.
+No representar una portada.
+No representar una hoja de papel.
+No representar un mockup.
+No dejar márgenes blancos.
+No dejar bordes.
+No dejar zonas vacías.
+
+Arte gráfico final listo para impresión.
 `;
 
 monitorPIXELLAB(
