@@ -3200,11 +3200,11 @@ En esta etapa:
 */
 const SECCIONES_LIBRO = [
     "portada",
-    "legales",
-    "indice",
-    "introduccion",
-    "capitulos",
-    "conclusion"
+  //  "legales",
+  //  "indice",
+ //  "introduccion",
+    //"capitulos",
+  //  "conclusion"
 ];
 /* ==========================
    CARGA DEL LIBRO
