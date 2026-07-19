@@ -939,3 +939,96 @@ width:100%;
     
 
 }
+/* =====================================
+   EDITOR MOBILE AJUSTE FINO
+===================================== */
+
+@media(max-width:768px){
+
+
+.editor-toolbar-editor {
+
+    gap:8px;
+
+    padding:5px 0;
+
+}
+
+
+.editor-menu {
+
+    padding:8px 12px;
+
+    font-size:13px;
+
+    border-radius:6px;
+
+}
+
+
+
+.pipeline-editor {
+
+    padding:10px;
+
+}
+
+
+
+.pipeline-items {
+
+    gap:8px;
+
+}
+
+
+
+.pipeline-items p {
+
+    padding:6px 10px;
+
+    font-size:12px;
+
+}
+
+
+
+
+.editor-canvas {
+
+    width:100%;
+
+    padding:10px;
+
+    overflow:hidden;
+
+}
+
+
+
+/*
+   ESCALA DE LA HOJA
+*/
+
+#paginaEditor {
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:center;
+
+}
+
+
+
+/* cualquier página A4 generada */
+
+#paginaEditor .pagina {
+
+    transform-origin:top center;
+
+}
+
+
+}

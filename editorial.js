@@ -3360,7 +3360,7 @@ if (canvas) {
 
                 display: block;
 
-                object-fit: cover;
+                object-fit: contain;
 
             }
 
