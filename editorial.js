@@ -3309,14 +3309,14 @@ async function cargarSeccion(
 
         case "legales":
 
-      //   await cargarPaginaLegales(proyecto);
+       await cargarPaginaLegales(proyecto);
             
             break;
 
 
         case "indice":
 
-    //await cargarPaginaIndice(proyecto);
+    await cargarPaginaIndice(proyecto);
 
     break;
 
@@ -3335,13 +3335,13 @@ monitorPIXELLAB(
                 "Capitulos",
                 "Pendiente"
             );
-    //await cargarPaginaCapitulo(proyecto,1,8);
+    await cargarPaginaCapitulo(proyecto,1,8);
 
     break;
 
         case "conclusion":
 
-    //await cargarPaginaConclusion(proyecto);
+    await cargarPaginaConclusion(proyecto);
 
     break;
     }
