@@ -3346,6 +3346,11 @@ function cargarPaginaPortada(proyecto) {
         );
 
     };
+    
+    img.style.width = "100%";
+img.style.height = "100%";
+img.style.display = "block";
+img.style.objectFit = "cover";
 
     pagina.appendChild(img);
 
