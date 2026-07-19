@@ -3296,7 +3296,20 @@ function cargarPaginaPortada(proyecto) {
 
     const pagina =
         document.getElementById("paginaEditor");
+const canvas =
+    document.querySelector(".editor-canvas");
 
+if (canvas) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "info",
+        "Editor",
+        "Ancho canvas: " + canvas.clientWidth +
+        " | Alto canvas: " + canvas.clientHeight
+    );
+
+}
 
     if (!pagina) {
 
