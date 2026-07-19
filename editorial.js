@@ -3236,6 +3236,53 @@ async function cargarLibroCompleto(proyecto) {
     );
 
 }
+async function cargarSeccion(
+    proyecto,
+    seccion
+) {
+
+    switch (seccion) {
+
+        case "portada":
+            await cargarPaginaPortada(proyecto);
+            break;
+
+        case "legales":
+            await cargarPaginaLegales(proyecto);
+            break;
+
+        case "indice":
+            await cargarPaginaIndice(proyecto);
+            break;
+
+        case "introduccion":
+            await cargarPaginaIntroduccion(proyecto);
+            break;
+
+        case "capitulos":
+
+            monitorPIXELLAB(
+                "Editorial",
+                "proceso",
+                "Capitulos",
+                "Pendiente"
+            );
+
+            await cargarPaginaCapitulo(
+                proyecto,
+                1,
+                8
+            );
+
+            break;
+
+        case "conclusion":
+            await cargarPaginaConclusion(proyecto);
+            break;
+
+    }
+
+}
 
 function cargarPaginaPortada(proyecto) {
 
