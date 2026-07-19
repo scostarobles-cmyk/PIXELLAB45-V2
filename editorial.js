@@ -3068,27 +3068,29 @@ Tema:
     promptVisual +
     `
 
-Título del eBook:
+Título:
 "${proyecto.titulo}"
 
 Autor:
 "${proyecto.autor}"
 
-Ilustración digital vertical.
-Formato A4.
-Full bleed.
+Formato final:
+A4 vertical (210 × 297 mm).
+
+Tamaño de referencia:
+2480 × 3508 píxeles (300 dpi).
+
+Portada a sangre.
+
+La ilustración y el fondo deben cubrir completamente toda la página, de borde a borde.
+
+No dejar márgenes blancos.
+No dejar bordes.
+No dejar zonas vacías.
 Sin texto.
 Sin logotipos.
 
-Formato obligatorio:
-- Portada vertical.
-- Tamaño A4 vertical.
-- Relación de aspecto aproximada 2:3.
-- Diseño editorial moderno.
-- Imagen a sangre (full bleed).
-- La ilustración debe ocupar el 100% del lienzo.
-- Sin texto.
-- Sin logotipos.
+Arte final listo para impresión y eBook.
 `;
 
 monitorPIXELLAB(
