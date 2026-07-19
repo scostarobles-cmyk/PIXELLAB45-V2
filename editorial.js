@@ -3055,35 +3055,42 @@ async function generarPortadaProyecto(proyecto) {
     promptVisual +
     `
 
+Crear una portada profesional de eBook.
+
 Formato obligatorio:
-- Portada vertical de ebook.
+- Portada vertical.
 - Tamaño A4 vertical.
 - Relación de aspecto aproximada 2:3.
-- La composición debe ocupar toda la página.
-- Diseño editorial profesional.
-- Sin formato cuadrado.
-- Preparada para mostrarse como una hoja de libro.
-La imagen debe ocupar el lienzo completo.
-
-NO mostrar una hoja de papel.
-NO mostrar márgenes blancos.
-NO mostrar bordes.
-NO mostrar sombra.
-NO mostrar fondo alrededor.
-NO mostrar la portada apoyada sobre una superficie.
-NO crear un mockup.
-NO simular una impresión.
-
-Generar exclusivamente el diseño de la portada ocupando el 100% del lienzo vertical con proporción A4.
-El resultado debe ser una portada lista para imprimir o usar digitalmente, a sangre (full bleed)
+- Diseño editorial moderno.
+- Imagen a sangre (full bleed).
+- La ilustración debe ocupar el 100% del lienzo.
+- Sin texto.
+- Sin logotipos.
 `;
-
 
 const imagen = await puter.ai.txt2img(
     promptImagenFinal,
     {
         provider: "gemini",
-        model: "google/imagen-4.0-fast"
+        model: "google/imagen-4.0-fast",
+
+        negative_prompt: `
+mockup,
+book mockup,
+sheet of paper,
+page,
+printed page,
+white border,
+white margin,
+frame,
+drop shadow,
+page shadow,
+background,
+paper texture,
+book cover on table,
+floating book,
+isolated object
+`
     }
 );
 
