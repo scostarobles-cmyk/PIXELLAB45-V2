@@ -3293,8 +3293,10 @@ function cargarPaginaPortada(proyecto) {
         "Entró a cargarPaginaPortada"
     );
 
+
     const pagina =
         document.getElementById("paginaEditor");
+
 
     if (!pagina) {
 
@@ -3309,21 +3311,70 @@ function cargarPaginaPortada(proyecto) {
 
     }
 
+
     pagina.innerHTML = "";
+
+
+    const hoja = document.createElement("div");
+
+    hoja.className = "pl45-hoja-portada";
+
+
+    hoja.innerHTML = `
+
+        <style>
+
+            #paginaEditor .pl45-hoja-portada {
+
+                width: 210mm;
+                height: 297mm;
+
+                position: relative;
+
+                overflow: hidden;
+
+                margin: auto;
+
+                background: white;
+
+            }
+
+
+            #paginaEditor .pl45-hoja-portada img {
+
+                width: 100%;
+                height: 100%;
+
+                display: block;
+
+                object-fit: cover;
+
+            }
+
+
+        </style>
+
+    `;
+
 
     const img =
         document.createElement("img");
-        monitorPIXELLAB(
-    "Editorial",
-    "info",
-    "Portada",
-    proyecto.portada
-);
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "info",
+        "Portada",
+        proyecto.portada
+    );
+
 
     img.src = proyecto.portada;
+
     img.alt = proyecto.titulo;
 
     img.className = "portada-editor";
+
 
     img.onload = () => {
 
@@ -3336,6 +3387,7 @@ function cargarPaginaPortada(proyecto) {
 
     };
 
+
     img.onerror = () => {
 
         monitorPIXELLAB(
@@ -3346,19 +3398,19 @@ function cargarPaginaPortada(proyecto) {
         );
 
     };
-    
-    img.style.width = "100%";
-img.style.height = "100%";
-img.style.display = "block";
-img.style.objectFit = "cover";
 
-    pagina.appendChild(img);
+
+    hoja.appendChild(img);
+
+
+    pagina.appendChild(hoja);
+
 
     monitorPIXELLAB(
         "Editorial",
         "proceso",
         "Portada",
-        "Imagen agregada a paginaEditor"
+        "Hoja A4 de portada agregada a paginaEditor"
     );
 
 }
