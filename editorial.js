@@ -2997,11 +2997,6 @@ No describas una portada impresa.
 No describas un mockup.
 No describas una fotografía.
 
-Describe únicamente la ilustración que debe ocupar completamente un lienzo vertical A4.
-
-Sin texto.
-Sin logotipos.
-
 Tema:
 "${proyecto.titulo}"
 `;
@@ -3068,26 +3063,7 @@ Tema:
     promptVisual +
     `
 
-Formato final:
-A4 vertical (210 × 297 mm).
-
-Resolución objetivo:
-2480 × 3508 píxeles (300 dpi).
-
-Diseño a sangrado completo (full bleed).
-
-La ilustración debe cubrir completamente toda la página de borde a borde.
-
-Sin marcos.
-Sin bordes blancos.
-Sin márgenes.
-Sin zonas vacías.
-Sin texto.
-Sin logotipos.
-
-Arte gráfico final listo para impresión y eBook.
-
---ar 3:4
+​], composición vertical, diseño a sangrado completo, de borde a borde, ocupando todo el lienzo sin marcos ni bordes blancos --ar 3:4
 `;
 
 monitorPIXELLAB(
@@ -3452,12 +3428,7 @@ if (canvas) {
         "Portada",
         "Imagen cargada correctamente"
     );
-    monitorPIXELLAB(
-    "Editorial",
-    "info",
-    "Resolución",
-    `${proyecto.portsda.naturalWidth} x ${proyecto.portada.naturalHeight}`
-);
+    
 
 
     const canvas =
