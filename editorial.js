@@ -2989,7 +2989,7 @@ async function generarPortadaProyecto(proyecto) {
 
         // 1. Crear prompt base
         const prompt = `
-Genera un prompt visual para crear el ARTE FINAL
+Genera un prompt visual para crear el ARTE FINAL.
 
 No describas un libro físico.
 No describas una hoja de papel.
@@ -3067,6 +3067,12 @@ Tema:
         const promptImagenFinal =
     promptVisual +
     `
+
+Título del eBook:
+"${proyecto.titulo}"
+
+Autor:
+"${proyecto.autor}"
 
 Ilustración digital vertical.
 Formato A4.
