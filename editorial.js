@@ -3329,6 +3329,13 @@ function cargarPaginaPortada(proyecto) {
         document.getElementById("paginaEditor");
 const canvas =
     document.querySelector(".editor-canvas");
+    monitorPIXELLAB(
+    "Editorial",
+    "info",
+    "Medidas",
+    "Canvas: " + canvas.clientWidth +
+    " | Hoja: " + hoja.offsetWidth
+);
 
 if (canvas) {
 
@@ -3444,7 +3451,33 @@ if (esMovil) {
     
 
 
-    
+    const canvas =
+    document.querySelector(".editor-canvas");
+
+if (canvas && hoja.offsetWidth > 0) {
+
+    const esMovil = window.innerWidth <= 768;
+
+    const margen = esMovil ? 8 : 40;
+
+    const escala =
+        (canvas.clientWidth - margen * 2) /
+        hoja.offsetWidth;
+
+    hoja.style.transformOrigin =
+        "top center";
+
+    hoja.style.transform =
+        `scale(${Math.min(1, escala)})`;
+
+    monitorPIXELLAB(
+        "Editorial",
+        "info",
+        "Portada",
+        "Escala aplicada: " + escala
+    );
+
+}
 
 };
 
