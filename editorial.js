@@ -3019,16 +3019,21 @@ Tema:
         );
 
 
-        const resVisual = await fetch(WORKER_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                action: "visual",
-                tema: prompt
-            })
-        });
+        // Suponiendo que querés usar el modelo 2, por ejemplo:
+const modeloElegido = 3; 
+
+const resVisual = await fetch(WORKER_URL, {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        action: "visual",
+        tema: prompt,
+        modelo: modeloElegido // <--- Acá agregás el dato para la función de visuales
+    })
+});
+
 
 
         const dataVisual = await resVisual.json();

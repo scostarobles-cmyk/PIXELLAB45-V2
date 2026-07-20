@@ -794,12 +794,11 @@ async function guardarPrompts(data, env, json) {
 // GENERADOR DE VISUALES (GEMINI)
 // =====================================
 async function generarVisualesPrompts(data, env, json) {
-
   const tema = data.tema || "";
+  const modeloSeleccionado = data.modelo || 0;
 
   const prompt = `
 You are a world-class AI image prompt engineer.
-
 Your job is to convert any user request into a professional image-generation prompt.
 
 CRITICAL RULES:
@@ -827,19 +826,18 @@ User request:
 ${tema}
 `;
 
-  const resultado = await gemini(env, prompt);
+  const resultado = await gemini(env, prompt, modeloSeleccionado);
 
-  // Si se usa como función interna
   if (typeof json !== "function") {
     return resultado;
   }
 
-  // Si se llama desde el endpoint /visual
   return json({
     success: true,
     resultado
-  });
+  }); 
 }
+
 //GUARDAR Visuales 
 async function guardarVisuales(data, env, json) {
 
