@@ -114,6 +114,13 @@
     display: none !important;
 }
 
+.pagina {
+    background-image: none !important;
+}
+
+
+
+
 /* 3. EL ESCALADO PARA EL CELULAR */
 @media (max-width: 768px) {
     .pagina {
