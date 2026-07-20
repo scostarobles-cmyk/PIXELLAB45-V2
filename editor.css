@@ -1008,13 +1008,9 @@ width:100%;
 */
 
 #paginaEditor {
-
-    width:100%;
-
-    display:flex;
-
-    justify-content:center;
-
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
 }
 
 

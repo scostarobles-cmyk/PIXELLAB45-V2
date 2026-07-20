@@ -3319,10 +3319,9 @@ async function cargarSeccion(
 // FUNCIÓN: Cargar página de portada en editor A4
 // UBICACIÓN: Editor de eBooks
 // CREA: Hoja A4 (210x297mm) + imagen de portada
-// ADAPTA: Escala para vista móvil sin cortar contenido
+// ADAPTA: Vista móvil manteniendo proporción A4
 // BUSCAR: PORTADA A4
 // =====================================================
-
 
 function cargarPaginaPortada(proyecto) {
 
@@ -3385,7 +3384,7 @@ function cargarPaginaPortada(proyecto) {
         width: "100%",
         height: "100%",
         display: "block",
-        objectFit: "fill"
+        objectFit: "cover"
 
     });
 
@@ -3407,13 +3406,10 @@ function cargarPaginaPortada(proyecto) {
 
 
             const anchoHoja = hoja.offsetWidth;
+            const anchoDisponible = canvas.clientWidth - 20;
 
 
-            if (anchoHoja > 0) {
-
-
-                const anchoDisponible =
-                    canvas.clientWidth - 20;
+            if (anchoHoja > 0 && anchoDisponible > 0) {
 
 
                 const escala =
@@ -3437,11 +3433,15 @@ function cargarPaginaPortada(proyecto) {
 
             }
 
+
         } else {
+
 
             hoja.style.transform = "scale(1)";
 
+
         }
+
 
     };
 
