@@ -969,7 +969,7 @@ async function seleccionarProyectoEditorial(projectId) {
         "Editor abierto",
         proyecto.titulo
     );
-//cerrarEditorCompleto();
+
 }
 async function generarConclusion() {
 
@@ -4988,9 +4988,5 @@ function abrirEditorCompleto() {
     }
 }
 
-function cerrarEditorCompleto() {
-    document.getElementById('sector-header').style.display = 'block';
-    document.getElementById('sector-generador-monitor').style.display = 'block';
-    document.getElementById('editorTrabajo').style.display = 'none';
-}
+
 
