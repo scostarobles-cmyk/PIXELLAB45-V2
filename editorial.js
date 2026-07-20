@@ -3281,7 +3281,7 @@ async function cargarSeccion(
 
         case "portada":
             await cargarPaginaPortada(proyecto);
-            abrirEditorCompleto();
+            abrirEditorCompleto;
             break;
 
         case "legales":
@@ -4977,7 +4977,7 @@ function abrirEditorCompleto() {
                 "Editorial",
                 "proceso",
                 "ocultar paneles",
-                "ok"
+                "Pendiente"
             );
     document.getElementById('sector-header').style.display = 'none';
     document.getElementById('sector-generador-monitor').style.display = 'none';
@@ -4991,9 +4991,9 @@ function abrirEditorCompleto() {
         botonRegresar.className = 'boton-accion';
         botonRegresar.innerText = '⬅️ Volver';
         botonRegresar.onclick = cerrarEditorCompleto;
-        editor.prepend(botonRegresar);
+        editor.querySelector('.ai-lab').prepend(botonRegresar);
     }
 }
 
-abrirEditorCompleto;
+
 
