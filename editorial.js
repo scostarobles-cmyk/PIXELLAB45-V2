@@ -3063,7 +3063,7 @@ Tema:
     promptVisual +
     `
 
-​], composición vertical, diseño a sangrado completo, de borde a borde, ocupando todo el lienzo sin marcos ni bordes blancos --ar 2:3
+​], composición vertical, diseño a sangrado completo, de borde a borde, ocupando todo el lienzo sin marcos ni bordes blancos --ar 3:4
 `;
 
 monitorPIXELLAB(
@@ -3077,7 +3077,7 @@ const imagen = await puter.ai.txt2img(
     {
         provider: "gemini",
         model: "google/imagen-4.0-fast",
-
+         aspect_ratio: "3:4",
         negative_prompt: `
 mockup,
 book mockup,
