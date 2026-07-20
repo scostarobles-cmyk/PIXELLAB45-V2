@@ -85,7 +85,7 @@
 =========================== */
 
 ./* 1. REGLA BASE (Actualizada con el punto de anclaje) */
-pagina {
+.pagina {
     width: 210mm;
     min-height: 297mm;
     margin: 0 auto;
