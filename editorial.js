@@ -3247,7 +3247,7 @@ const SECCIONES_LIBRO = [
 ========================== */
 
 async function cargarLibroCompleto(proyecto) {
-
+cerrarEditorCompleto();
     monitorPIXELLAB(
         "Editorial",
         "proceso",
