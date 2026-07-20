@@ -3281,7 +3281,7 @@ async function cargarSeccion(
 
         case "portada":
             await cargarPaginaPortada(proyecto);
-                 abrirEditorCompleto();
+            abrirEditorCompleto();
             break;
 
         case "legales":
@@ -4973,6 +4973,12 @@ async function cargarPaginaConclusion(proyecto) {
 }
 
 function abrirEditorCompleto() {
+    monitorPIXELLAB(
+                "Editorial",
+                "proceso",
+                "ocultar paneles",
+                "ok"
+            );
     document.getElementById('sector-header').style.display = 'none';
     document.getElementById('sector-generador-monitor').style.display = 'none';
     
