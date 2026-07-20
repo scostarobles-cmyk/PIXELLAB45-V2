@@ -3394,7 +3394,7 @@ function cargarPaginaPortada(proyecto) {
 
     });
 
-
+img.style.dispay = "none":
     img.onload = () => {
     	monitorPIXELLAB(
     "Editorial",
