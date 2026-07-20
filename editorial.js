@@ -969,7 +969,7 @@ async function seleccionarProyectoEditorial(projectId) {
         "Editor abierto",
         proyecto.titulo
     );
-cerrarEditorCompleto();
+//cerrarEditorCompleto();
 }
 async function generarConclusion() {
 
