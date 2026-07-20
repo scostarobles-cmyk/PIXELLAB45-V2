@@ -8,7 +8,12 @@ monitorPIXELLAB(
 function abrirEditor() {
 
     document.getElementById("editorTrabajo").style.display = "block";
-
+monitorPIXELLAB(
+    "Editorial",
+    "estado",
+    "Editor",
+    "Editor cargado correctamente (oculto)"
+);
 }
 
 // =====================================
