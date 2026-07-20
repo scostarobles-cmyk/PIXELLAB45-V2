@@ -3063,7 +3063,7 @@ Tema:
     promptVisual +
     `
 
-​], composición vertical, diseño a sangrado completo, de borde a borde, ocupando todo el lienzo sin marcos ni bordes blancos --ar 3:4
+​], composición vertical, diseño a sangrado completo, de borde a borde, ocupando todo el lienzo sin marcos ni bordes blancos --ar 2:3
 `;
 
 monitorPIXELLAB(
