@@ -4965,3 +4965,28 @@ async function cargarPaginaConclusion(proyecto) {
     }
 
 }
+
+function abrirEditorCompleto() {
+    document.getElementById('sector-header').style.display = 'none';
+    document.getElementById('sector-generador-monitor').style.display = 'none';
+    
+    const editor = document.getElementById('editorTrabajo');
+    editor.style.display = 'block';
+
+    if (!document.getElementById('btnRegresar')) {
+        const botonRegresar = document.createElement('button');
+        botonRegresar.id = 'btnRegresar';
+        botonRegresar.className = 'boton-accion';
+        botonRegresar.innerText = '⬅️ Volver';
+        botonRegresar.onclick = cerrarEditorCompleto;
+        editor.querySelector('.ai-lab').prepend(botonRegresar);
+    }
+}
+
+function cerrarEditorCompleto() {
+    document.getElementById('sector-header').style.display = 'block';
+    document.getElementById('sector-generador-monitor').style.display = 'block';
+    document.getElementById('editorTrabajo').style.display = 'none';
+}
+
+abrirEditorCompleto();
