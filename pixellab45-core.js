@@ -413,6 +413,19 @@ function toggleMenu() {
 window.onload = () => {
 
   cargarGaleriaCompleta();
+  document.addEventListener("DOMContentLoaded", () => {
+    // Declaras tu variable de versión (GitHub reemplazará el valor en el deploy)
+    const versionSistema = "__VERSION__"; 
+    
+    // Buscamos el elemento por su ID y le asignamos el valor
+    const elementoVersion = document.getElementById("versionSistema");
+    if (elementoVersion) {
+        elementoVersion.textContent = `Versión: ${versionSistema}`;
+    }
+});
+
+
 
 };
+// Esperamos a que el contenido de la página esté cargado
 
