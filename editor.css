@@ -343,7 +343,9 @@ margin-top:25px;
 .biblioteca-grid {
 
 grid-template-columns:
-1fr;
+repeat(2, 1fr);
+
+gap: 12px;
 
 }
 
