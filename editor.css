@@ -85,22 +85,34 @@
 =========================== */
 
 ./* 1. REGLA BASE (Actualizada con el punto de anclaje) */
-.pagina {
+..pagina {
     width: 210mm;
     min-height: 297mm;
+    
+    /* Forzamos el fondo blanco de papel y un borde gris para ver los límites */
+    background: #ffffff !important; 
+    border: 1px solid #cccccc !important;
+    
+    /* Cambiamos el texto a oscuro para que se lea sobre el blanco */
+    color: #000000 !important; 
+    
     margin: 0 auto;
-    padding: 25mm;
-    background: transparent;
-    color: #d9d9d9;
     box-sizing: border-box;
-    page-break-after: always;
     position: relative;
     overflow: hidden;
     
-    /* Añadimos esto para que al achicarse en el móvil no se desplace */
     transform-origin: top center;
     transition: transform 0.2s ease;
 }
+
+/* El media query para el celu */
+@media (max-width: 768px) {
+    .pagina {
+        transform: scale(0.45); 
+        margin-bottom: -160mm; 
+    }
+}
+
 
 /* 2. NUEVO BLOQUE MEDIA PARA MÓVILES (Mantiene la proporción A4 a escala) */
 @media (max-width: 768px) {
