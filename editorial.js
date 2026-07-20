@@ -9,9 +9,9 @@ monitorPIXELLAB(
 // PIXELLAB EDITORIAL
 // VARIABLES DEL EDITOR
 // =====================================
- 
+
 let proyectoActual = null;
- 
+
 let projectIdActual = null;
 
 let continuarCapitulosAutomatico = false;
@@ -3315,162 +3315,7 @@ async function cargarSeccion(
 
 }
 
-function cargarPaginaPortada(proyecto) {
 
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Portada",
-        "Entró a cargarPaginaPortada"
-    );
-
-
-    const pagina = document.getElementById("paginaEditor");
-    const canvas = document.querySelector(".editor-canvas");
-
-
-    if (!pagina) {
-
-        monitorPIXELLAB(
-            "Editorial",
-            "error",
-            "Portada",
-            "No existe paginaEditor"
-        );
-
-        return;
-    }
-
-
-    if (canvas) {
-
-        monitorPIXELLAB(
-            "Editorial",
-            "info",
-            "Editor",
-            "Ancho canvas: " + canvas.clientWidth +
-            " | Alto canvas: " + canvas.clientHeight
-        );
-
-    }
-
-
-    pagina.innerHTML = "";
-
-
-    const hoja = document.createElement("div");
-
-    hoja.className = "pl45-hoja-portada";
-
-
-    Object.assign(hoja.style, {
-
-        width: "210mm",
-        height: "297mm",
-        position: "relative",
-        overflow: "hidden",
-        margin: "auto",
-        background: "white",
-        transformOrigin: "top center"
-
-    });
-
-
-    const img = document.createElement("img");
-
-
-    img.src = proyecto.portada;
-    img.alt = proyecto.titulo || "Portada";
-    img.className = "portada-editor";
-
-
-    Object.assign(img.style, {
-
-        width: "100%",
-        height: "100%",
-        display: "block",
-        objectFit: "cover"
-
-    });
-
-
-    img.onload = () => {
-
-
-        monitorPIXELLAB(
-            "Editorial",
-            "estado",
-            "Portada",
-            "Imagen cargada correctamente"
-        );
-
-
-        const esMovil = window.innerWidth <= 768;
-
-
-        if (canvas && esMovil) {
-
-
-            const anchoDisponible = canvas.clientWidth - 20;
-
-            const anchoHoja = hoja.offsetWidth;
-
-
-            const escala = anchoDisponible / anchoHoja;
-
-
-            hoja.style.transform =
-                `scale(${escala})`;
-
-
-            hoja.style.marginBottom =
-                `-${hoja.offsetHeight * (1 - escala)}px`;
-
-
-            monitorPIXELLAB(
-                "Editorial",
-                "info",
-                "Portada",
-                "Escala móvil aplicada: " + escala
-            );
-
-
-        } else {
-
-            hoja.style.transform = "scale(1)";
-
-        }
-
-
-    };
-
-
-    img.onerror = () => {
-
-        monitorPIXELLAB(
-            "Editorial",
-            "error",
-            "Portada",
-            "No se pudo cargar la imagen"
-        );
-
-    };
-
-
-    hoja.appendChild(img);
-
-
-    pagina.appendChild(hoja);
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Portada",
-        "Hoja A4 de portada agregada a paginaEditor"
-    );
-
-}
 /*
 =========================================================
 PIXELLAB Editorial
