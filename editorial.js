@@ -3325,30 +3325,9 @@ function cargarPaginaPortada(proyecto) {
     );
 
 
-    const pagina =
-        document.getElementById("paginaEditor");
-const canvas =
-    document.querySelector(".editor-canvas");
-    
-);
+    const pagina = document.getElementById("paginaEditor");
+    const canvas = document.querySelector(".editor-canvas");
 
-if (canvas) {
-
-    monitorPIXELLAB(
-        "Editorial",
-        "info",
-        "Editor",
-        "Ancho canvas: " + canvas.clientWidth +
-        " | Alto canvas: " + canvas.clientHeight
-    );
-    monitorPIXELLAB(
-    "Editorial",
-    "info",
-    "Medidas",
-    "Canvas: " + canvas.clientWidth +
-    " | Hoja: " + pagina.offsetWidth
-
-}
 
     if (!pagina) {
 
@@ -3360,6 +3339,18 @@ if (canvas) {
         );
 
         return;
+    }
+
+
+    if (canvas) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "info",
+            "Editor",
+            "Ancho canvas: " + canvas.clientWidth +
+            " | Alto canvas: " + canvas.clientHeight
+        );
 
     }
 
@@ -3372,115 +3363,87 @@ if (canvas) {
     hoja.className = "pl45-hoja-portada";
 
 
-    hoja.innerHTML = `
+    Object.assign(hoja.style, {
 
-        <style>
+        width: "210mm",
+        height: "297mm",
+        position: "relative",
+        overflow: "hidden",
+        margin: "auto",
+        background: "white",
+        transformOrigin: "top center"
 
-            #paginaEditor .pl45-hoja-portada {
-
-                width: 210mm;
-                height: 297mm;
-
-                position: relative;
-
-                overflow: hidden;
-
-                margin: auto;
-
-                background: white;
-
-            }
+    });
 
 
-            #paginaEditor .pl45-hoja-portada img {
-
-                width: 100%;
-                height: 100%;
-
-                display: block;
-
-                object-fit: cover;
-
-            }
-
-
-        </style>
-
-    `;
-
-const esMovil = window.innerWidth <= 768;
-
-if (esMovil) {
-
-    hoja.style.width = "100%";
-    hoja.style.aspectRatio = "210 / 297";
-    hoja.style.height = "auto";
-
-} else {
-
-    hoja.style.width = "210mm";
-    hoja.style.height = "297mm";
-
-}
-    const img =
-        document.createElement("img");
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "info",
-        "Portada",
-        proyecto.portada
-    );
+    const img = document.createElement("img");
 
 
     img.src = proyecto.portada;
-
-    img.alt = proyecto.titulo;
-
+    img.alt = proyecto.titulo || "Portada";
     img.className = "portada-editor";
+
+
+    Object.assign(img.style, {
+
+        width: "100%",
+        height: "100%",
+        display: "block",
+        objectFit: "cover"
+
+    });
 
 
     img.onload = () => {
 
-    monitorPIXELLAB(
-        "Editorial",
-        "estado",
-        "Portada",
-        "Imagen cargada correctamente"
-    );
-    
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Portada",
+            "Imagen cargada correctamente"
+        );
 
 
-    const canvas =
-    document.querySelector(".editor-canvas");
+        const esMovil = window.innerWidth <= 768;
 
-if (canvas && hoja.offsetWidth > 0) {
 
-    const esMovil = window.innerWidth <= 768;
+        if (canvas && esMovil) {
 
-    const margen = esMovil ? 8 : 40;
 
-    const escala =
-        (canvas.clientWidth - margen * 2) /
-        hoja.offsetWidth;
+            const anchoDisponible = canvas.clientWidth - 20;
 
-    hoja.style.transformOrigin =
-        "top center";
+            const anchoHoja = hoja.offsetWidth;
 
-    hoja.style.transform =
-        `scale(${Math.min(1, escala)})`;
 
-    monitorPIXELLAB(
-        "Editorial",
-        "info",
-        "Portada",
-        "Escala aplicada: " + escala
-    );
+            const escala = anchoDisponible / anchoHoja;
 
-}
 
-};
+            hoja.style.transform =
+                `scale(${escala})`;
+
+
+            hoja.style.marginBottom =
+                `-${hoja.offsetHeight * (1 - escala)}px`;
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "info",
+                "Portada",
+                "Escala móvil aplicada: " + escala
+            );
+
+
+        } else {
+
+            hoja.style.transform = "scale(1)";
+
+        }
+
+
+    };
+
 
     img.onerror = () => {
 
@@ -3498,7 +3461,6 @@ if (canvas && hoja.offsetWidth > 0) {
 
 
     pagina.appendChild(hoja);
-
 
 
     monitorPIXELLAB(
