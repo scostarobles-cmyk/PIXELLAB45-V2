@@ -3329,12 +3329,7 @@ function cargarPaginaPortada(proyecto) {
         document.getElementById("paginaEditor");
 const canvas =
     document.querySelector(".editor-canvas");
-    monitorPIXELLAB(
-    "Editorial",
-    "info",
-    "Medidas",
-    "Canvas: " + canvas.clientWidth +
-    " | Hoja: " + hoja.offsetWidth
+    
 );
 
 if (canvas) {
@@ -3346,6 +3341,12 @@ if (canvas) {
         "Ancho canvas: " + canvas.clientWidth +
         " | Alto canvas: " + canvas.clientHeight
     );
+    monitorPIXELLAB(
+    "Editorial",
+    "info",
+    "Medidas",
+    "Canvas: " + canvas.clientWidth +
+    " | Hoja: " + pagina.offsetWidth
 
 }
 
