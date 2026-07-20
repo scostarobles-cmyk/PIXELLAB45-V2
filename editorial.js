@@ -3281,6 +3281,7 @@ async function cargarSeccion(
 
         case "portada":
             await cargarPaginaPortada(proyecto);
+                 abrirEditorCompleto();
             break;
 
         case "legales":
