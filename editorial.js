@@ -5,18 +5,6 @@ monitorPIXELLAB(
     "Carga",
     "editorial.js ejecutándose"
 );
-function abrirEditor() {
-
-    document.getElementById("editorTrabajo").style.display = "block";
-monitorPIXELLAB(
-    "Editorial",
-    "estado",
-    "Editor",
-    "Editor cargado correctamente (visible )"
-);
-await cargarLibroCompleto(proyecto);
-}
-
 // =====================================
 // PIXELLAB EDITORIAL
 // VARIABLES DEL EDITOR
@@ -2854,11 +2842,13 @@ bibliotecaEditorial = [];
             </span>
 
 
-        <button
-    class="boton-accion"
-    onclick="abrirEditor()">
-    ✏️ Editar
-</button>
+            <button
+            class="boton-accion"
+            onclick="seleccionarProyectoEditorial('${proyecto.projectId}')">
+
+                ✏️ Editar
+
+            </button>
 
         </div>
 
@@ -2984,9 +2974,6 @@ for (const libro of bibliotecaEditorial) {
 
 
 }
-/*≠========================================
-// GENERAR PORTADA
-//=============≠=============={*/
 
 async function generarPortadaProyecto(proyecto) {
 
