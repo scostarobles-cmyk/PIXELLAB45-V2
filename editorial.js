@@ -3324,7 +3324,7 @@ async function cargarSeccion(
 // =====================================================
 
 function cargarPaginaPortada(proyecto) {
-
+abrirEditorCompleto();
     monitorPIXELLAB(
         "Editorial",
         "proceso",
@@ -4989,4 +4989,3 @@ function cerrarEditorCompleto() {
     document.getElementById('editorTrabajo').style.display = 'none';
 }
 
-abrirEditorCompleto();
