@@ -3385,12 +3385,13 @@ function cargarPaginaPortada(proyecto) {
 
         Object.assign(img.style, {
 
-            width: "100%",
-            height: "100%",
-            display: "block",
-            objectFit: "cover"
+    width: "100%",
+    height: "100%",
+    display: "block",
+    objectFit: "contain",
+    background: "white"
 
-        });
+});
 
 
         img.onload = function () {
