@@ -3084,7 +3084,7 @@ const imagen = await puter.ai.txt2img(
     {
         provider: "gemini",
         model: "google/imagen-4.0-fast",
-         aspect_ratio: "3:4"
+         aspect_ratio: "3:4",
         negative_prompt: `
 mockup,
 book mockup,
