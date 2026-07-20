@@ -3390,6 +3390,15 @@ function cargarPaginaPortada(proyecto) {
 
 
     img.onload = () => {
+    	monitorPIXELLAB(
+    "Editorial",
+    "info",
+    "Medidas imagen",
+    "Imagen real: " +
+    img.naturalWidth +
+    " x " +
+    img.naturalHeight
+);
 
         monitorPIXELLAB(
             "Editorial",
