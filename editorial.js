@@ -3324,7 +3324,7 @@ async function cargarSeccion(
 // =====================================================
 
 function cargarPaginaPortada(proyecto) {
-abrirEditorCompleto();
+//abrirEditorCompleto();
     monitorPIXELLAB(
         "Editorial",
         "proceso",
