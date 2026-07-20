@@ -189,6 +189,28 @@
     <script src="pixellab45-core.js?v=__VERSION__"></script>
     <script src="editorial.js?v=__VERSION__"></script>
     <script src="ailab.js?v=__VERSION__"></script>
+    script>
+  (function() {
+    // Genera un número único basado en milisegundos (ej: 1719834512345)
+    var numeroVersion = new Date().getTime(); 
+
+    // 1. Mostrar el número en el Footer
+    var elementoFooter = document.getElementById('versionSistema');
+    if (elementoFooter) {
+      elementoFooter.textContent = "Versión: " + numeroVersion;
+    }
+
+    // 2. Cargar editorial.js sin caché
+    var scriptEditorial = document.createElement('script');
+    scriptEditorial.src = "editorial.js?v=" + numeroVersion;
+    document.body.appendChild(scriptEditorial);
+
+    // 3. Cargar ailab.js sin caché
+    var scriptAiLab = document.createElement('script');
+    scriptAiLab.src = "ailab.js?v=" + numeroVersion;
+    document.body.appendChild(scriptAiLab);
+  })();
+</script>
 
 </body>
 </html>
