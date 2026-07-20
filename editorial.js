@@ -3281,7 +3281,7 @@ async function cargarSeccion(
 
         case "portada":
             await cargarPaginaPortada(proyecto);
-            abrirEditorCompleto;
+            
             break;
 
         case "legales":
@@ -4971,29 +4971,4 @@ async function cargarPaginaConclusion(proyecto) {
     }
 
 }
-
-function abrirEditorCompleto() {
-    monitorPIXELLAB(
-                "Editorial",
-                "proceso",
-                "ocultar paneles",
-                "Pendiente"
-            );
-    document.getElementById('sector-header').style.display = 'none';
-    document.getElementById('sector-generador-monitor').style.display = 'none';
-    
-    const editor = document.getElementById('editorTrabajo');
-    editor.style.display = 'block';
-
-    if (!document.getElementById('btnRegresar')) {
-        const botonRegresar = document.createElement('button');
-        botonRegresar.id = 'btnRegresar';
-        botonRegresar.className = 'boton-accion';
-        botonRegresar.innerText = '⬅️ Volver';
-        botonRegresar.onclick = cerrarEditorCompleto;
-        editor.querySelector('.ai-lab').prepend(botonRegresar);
-    }
-}
-
-
 
