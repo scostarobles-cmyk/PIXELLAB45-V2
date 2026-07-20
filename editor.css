@@ -1025,3 +1025,39 @@ width:100%;
 
 
 }
+/* =====================================================
+   PIXELLAB45 - AJUSTE EDITOR MÓVIL
+   Centrar hoja A4 en pantalla pequeña
+   ===================================================== */
+
+@media (max-width: 768px) {
+
+    .editor-canvas {
+
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+
+        overflow-x: hidden;
+
+    }
+
+
+    #paginaEditor {
+
+        width: 100%;
+        max-width: 100%;
+
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+
+        margin: 0 auto;
+
+    }
+
+}
