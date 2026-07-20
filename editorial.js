@@ -3400,7 +3400,20 @@ if (canvas) {
 
     `;
 
+const esMovil = window.innerWidth <= 768;
 
+if (esMovil) {
+
+    hoja.style.width = "100%";
+    hoja.style.aspectRatio = "210 / 297";
+    hoja.style.height = "auto";
+
+} else {
+
+    hoja.style.width = "210mm";
+    hoja.style.height = "297mm";
+
+}
     const img =
         document.createElement("img");
 
