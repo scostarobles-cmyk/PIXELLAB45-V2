@@ -11,7 +11,7 @@ monitorPIXELLAB(
 // =====================================
 
 let proyectoActual = null;
-
+ 
 let projectIdActual = null;
 
 let continuarCapitulosAutomatico = false;
