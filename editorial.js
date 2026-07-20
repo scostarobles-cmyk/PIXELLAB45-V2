@@ -12,8 +12,9 @@ monitorPIXELLAB(
     "Editorial",
     "estado",
     "Editor",
-    "Editor cargado correctamente (oculto)"
+    "Editor cargado correctamente (visible )"
 );
+await cargarLibroCompleto(proyecto);
 }
 
 // =====================================
