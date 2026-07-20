@@ -339,26 +339,23 @@ margin-top:25px;
 
 @media(max-width:768px){
 
+    .biblioteca-grid {
 
-.biblioteca-grid {
+        width:100%;
+        max-width:100%;
 
-    width: 100%;
-    max-width: 100%;
+        grid-template-columns:repeat(2, 1fr);
 
-    grid-template-columns:
-    repeat(2, 1fr);
+        gap:12px;
 
-    gap: 12px;
-
-}
+    }
 
 
-.editorial-card {
+    .editorial-card {
 
-    width:100%;
+        width:100%;
 
-}
-
+    }
 
 }
 /* =====================================
@@ -784,117 +781,6 @@ margin-top:25px;
     }
 
 }
-/* =====================================
-   PIXELLAB EDITORIAL WORKSPACE
-   NUEVA ARQUITECTURA
-===================================== */
-
-
-/* CONTENEDOR GENERAL DEL EDITOR */
-
-#editorTrabajo {
-
-    width:100%;
-
-    max-width:100%;
-
-    padding:20px;
-
-    box-sizing:border-box;
-
-}
-
-
-
-/* TRES ZONAS:
-   IZQUIERDA | CENTRO | DERECHA */
-
-.editor-workspace {
-
-    display:grid;
-
-    grid-template-columns:220px minmax(0,1fr) 240px;
-
-    gap:20px;
-
-    width:100%;
-
-    min-height:calc(100vh - 140px);
-
-    align-items:start;
-
-}
-
-
-
-/* PANELES LATERALES */
-
-.editor-panel {
-
-    background:#05070d;
-
-    border:1px solid #00d9ff;
-
-    border-radius:15px;
-
-    padding:20px;
-
-    flex-shrink:0;
-
-}
-
-
-
-/* ZONA CENTRAL DEL EDITOR */
-
-.editor-canvas {
-
-    width:100%;
-
-    min-width:0;
-
-    min-height:calc(100vh - 140px);
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:flex-start;
-
-    overflow:auto;
-
-    padding:30px;
-
-    box-sizing:border-box;
-
-    background:#05070d;
-
-    border:1px solid #00d9ff;
-
-    border-radius:15px;
-
-}
-
-
-
-/*
-   CONTENEDOR VACÍO
-   RECIBE LAS PÁGINAS GENERADAS
-*/
-
-#paginaEditor {
-
-    width:100%;
-
-    min-height:100%;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:flex-start;
-
-}
 
 
 
@@ -905,17 +791,17 @@ margin-top:25px;
 @media(max-width:768px){
 
 
-    #editorTrabajo {
+  #editorTrabajo {
 
-        width:100vw;
+    width:100%;
 
-        max-width:100vw;
+    max-width:100%;
 
-        padding:10px;
+    padding:10px;
 
-        margin:0;
+    margin:0;
 
-    }
+}
 
 
     .editor-workspace {
