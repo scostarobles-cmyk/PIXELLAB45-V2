@@ -969,7 +969,7 @@ async function seleccionarProyectoEditorial(projectId) {
         "Editor abierto",
         proyecto.titulo
     );
-
+cerrarEditorCompleto();
 }
 async function generarConclusion() {
 
@@ -3242,12 +3242,12 @@ const SECCIONES_LIBRO = [
     //"capitulos",
   //  "conclusion"
 ];
-/* ==========================
+/* ===========aa===============
    CARGA DEL LIBRO
 ========================== */
 
 async function cargarLibroCompleto(proyecto) {
-//cerrarEditorCompleto();
+
     monitorPIXELLAB(
         "Editorial",
         "proceso",
