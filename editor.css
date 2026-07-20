@@ -85,45 +85,46 @@
 =========================== */
 
 ./* 1. REGLA BASE (Actualizada con el punto de anclaje) */
-..pagina {
+/* 1. LA HOJA GENERADA (Forzada a verse como papel blanco) */
+.pagina {
     width: 210mm;
     min-height: 297mm;
-    
-    /* Forzamos el fondo blanco de papel y un borde gris para ver los límites */
-    background: #ffffff !important; 
-    border: 1px solid #cccccc !important;
-    
-    /* Cambiamos el texto a oscuro para que se lea sobre el blanco */
-    color: #000000 !important; 
-    
     margin: 0 auto;
+    padding: 25mm;
+    
+    /* Forzamos el blanco de fondo y el texto oscuro para que puedas diseñar */
+    background: #ffffff !important; 
+    color: #000000 !important;
+    
+    /* Le agregamos un borde gris oscuro para ver bien los límites de la hoja */
+    border: 2px dashed #555555 !important; 
+    
     box-sizing: border-box;
+    page-break-after: always;
     position: relative;
     overflow: hidden;
-    
+
     transform-origin: top center;
     transition: transform 0.2s ease;
 }
 
-/* El media query para el celu */
+/* 2. OCULTAMOS LA IMAGEN TEMPORALMENTE */
+/* El script la va a cargar en el fondo, pero el CSS no la deja mostrarse */
+.pagina img {
+    display: none !important;
+}
+
+/* 3. EL ESCALADO PARA EL CELULAR */
 @media (max-width: 768px) {
     .pagina {
-        transform: scale(0.45); 
-        margin-bottom: -160mm; 
-    }
-}
-
-
-/* 2. NUEVO BLOQUE MEDIA PARA MÓVILES (Mantiene la proporción A4 a escala) */
-@media (max-width: 768px) {
-    pagina {
-        /* Reduce la hoja al 45% de su tamaño original de forma proporcional */
+        /* Encoge la hoja en blanco al 45% para que entre en el editor del celu */
         transform: scale(0.45); 
         
-        /* Recorta el espacio en blanco sobrante que el navegador genera abajo */
+        /* Elimina el espacio vacío vertical */
         margin-bottom: -160mm; 
     }
 }
+
 
 /* ===========================
    AVISO LEGAL
