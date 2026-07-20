@@ -84,24 +84,33 @@
    PÁGINA BASE
 =========================== */
 
-.pagina{
+./* 1. REGLA BASE (Actualizada con el punto de anclaje) */
+pagina {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    padding: 25mm;
+    background: transparent;
+    color: #d9d9d9;
+    box-sizing: border-box;
+    page-break-after: always;
+    position: relative;
+    overflow: hidden;
+    
+    /* Añadimos esto para que al achicarse en el móvil no se desplace */
+    transform-origin: top center;
+    transition: transform 0.2s ease;
+}
 
-    width:210mm;
-    min-height:297mm;
-
-    margin:0 auto;
-    padding:25mm;
-
-    background:transparent;
-    color:#d9d9d9;
-
-    box-sizing:border-box;
-
-    page-break-after:always;
-
-    position:relative;
-
-    overflow:hidden;
+/* 2. NUEVO BLOQUE MEDIA PARA MÓVILES (Mantiene la proporción A4 a escala) */
+@media (max-width: 768px) {
+    pagina {
+        /* Reduce la hoja al 45% de su tamaño original de forma proporcional */
+        transform: scale(0.45); 
+        
+        /* Recorta el espacio en blanco sobrante que el navegador genera abajo */
+        margin-bottom: -160mm; 
+    }
 }
 
 /* ===========================
