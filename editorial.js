@@ -9,7 +9,7 @@ monitorPIXELLAB(
 // PIXELLAB EDITORIAL
 // VARIABLES DEL EDITOR
 // =====================================
-
+ 
 let proyectoActual = null;
  
 let projectIdActual = null;
