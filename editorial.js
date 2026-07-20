@@ -4991,7 +4991,7 @@ function abrirEditorCompleto() {
         botonRegresar.className = 'boton-accion';
         botonRegresar.innerText = '⬅️ Volver';
         botonRegresar.onclick = cerrarEditorCompleto;
-        editor.querySelector('.ai-lab').prepend(botonRegresar);
+        editor.prepend(botonRegresar);
     }
 }
 
