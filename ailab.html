@@ -6,728 +6,363 @@
   <title>PIXELLAB45 AI LAB</title>
 
   <link rel="stylesheet" href="styles.css?v=1">
-<script src="https://js.puter.com/v2/"></script>
-  <link rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://js.puter.com/v2/"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
 <header class="navbar">
-
-  <button
-    class="menu-toggle"
-    onclick="toggleMenu()">
+  <button class="menu-toggle" onclick="toggleMenu()">
     ☰
   </button>
-
   <nav class="nav-links">
-
-    <a href="index.html">
-      🏠 Inicio
-    </a>
-
-    <a href="#galeria">
-      🖼️ Galería IA
-    </a>
-
-    <a href="#avatares">
-      👤 Avatares
-    </a>
-
-    <a href="#logos">
-      🎯 Logos
-    </a>
-
-    <a href="#fondos">
-      🌌 Fondos
-    </a>
-
+    <a href="index.html">🏠 Inicio</a>
+    <a href="#galeria">🖼️ Galería IA</a>
+    <a href="#avatares">👤 Avatares</a>
+    <a href="#logos">🎯 Logos</a>
+    <a href="#fondos">🌌 Fondos</a>
   </nav>
-
 </header>
 
 <div class="divider"></div>
 
 <section class="ailab-hero">
-
   <h1>🚀 PIXELLAB45 AI LAB</h1>
-
-  <p>
-    Galería inteligente de imágenes generadas con IA.
-  </p>
-
+  <p>Galería inteligente de imágenes generadas con IA.</p>
 </section>
-
-
-  
 
 <section id="galeria" class="ai-gallery">
   <div class="gallery-filters">
     <h3>📸 Todas las imágenes</h3>
-
-<div
-  id="galeriaCompleta"
-  class="gallery-grid">
-</div>
+    <div id="galeriaCompleta" class="gallery-grid"></div>
   </div>
 
   <h2>🖼️ Galería IA</h2>
-
-  <p class="ai-subtitle">
-    Explora tus imágenes organizadas por categorías.
-  </p>
+  <p class="ai-subtitle">Explora tus imágenes organizadas por categorías.</p>
 
   <div class="gallery-filters">
-
-    <button onclick="cargarCategoria('avatares')">
-      👤 Avatares
-    </button>
-
-    <button onclick="cargarCategoria('logos')">
-      🎯 Logos
-    </button>
-
-    <button onclick="cargarCategoria('fondos')">
-      🌌 Fondos
-    </button>
-
-    <button onclick="cargarCategoria('personajes')">
-      🤖 Personajes
-    </button>
-
-    <button onclick="cargarCategoria('miniaturas')">
-      📺 Miniaturas
-    </button>
-
-    <button onclick="cargarCategoria('experimentos')">
-      🧪 Experimentos
-    </button>
-    <button onclick="cargarCategoria('videos')">
-  🎥 Videos
-    </button>
-
-  </div>
-<div class="section-divider"></div>
-  <div
-    id="galeriaCategoria"
-    class="gallery-grid">
-
+    <button onclick="cargarCategoria('avatares')">👤 Avatares</button>
+    <button onclick="cargarCategoria('logos')">🎯 Logos</button>
+    <button onclick="cargarCategoria('fondos')">🌌 Fondos</button>
+    <button onclick="cargarCategoria('personajes')">🤖 Personajes</button>
+    <button onclick="cargarCategoria('miniaturas')">📺 Miniaturas</button>
+    <button onclick="cargarCategoria('experimentos')">🧪 Experimentos</button>
+    <button onclick="cargarCategoria('videos')">🎥 Videos</button>
   </div>
 
+  <div class="section-divider"></div>
+  <div id="galeriaCategoria" class="gallery-grid"></div>
 </section>
 
 <!-- ===================================== -->
-<!-- GENERADOR DE IDEAS 
+<!-- GENERADOR DE IDEAS -->
 <!-- ===================================== -->
 <div class="ai-grid">
 
   <!-- 💡 IDEAS -->
-<div class="ai-card">
-  <section class="ai-lab">
+  <div class="ai-card">
+    <section class="ai-lab">
+      <h3>💡 Generador de Ideas</h3>
+      <input type="text" id="tema" placeholder="Escribe un tema">
+      <button onclick="generarIdeas()">Generar Ideas</button>
+      <button onclick="guardarIdeas()">💾 Guardar Ideas</button>
+      
+      <div id="mensajeIdeasCopiadas"></div>
 
-    <h3>💡 Generador de Ideas</h3>
-
-    <input
-      type="text"
-      id="tema"
-      placeholder="Escribe un tema">
-
-    <button onclick="generarIdeas()">
-      Generar Ideas
-    </button>
-
-    <button onclick="guardarIdeas()">
-      💾 Guardar Ideas
-    </button>
-
-    <div id="mensajeIdeasCopiadas"></div>
-
-    <div id="loadingIdeas" style="display:none;">
-
-      <p id="estadoIdeas">🧠 Iniciando...</p>
-
-      <div style="
-        width:100%;
-        height:10px;
-        background:#222;
-        border-radius:5px;
-        overflow:hidden;
-        margin-top:10px;
-      ">
-
-        <div
-          id="barraIdeas"
-          style="
-            width:0%;
-            height:100%;
-            background:#00ffcc;
-            transition:width .4s ease;
-          ">
+      <div id="loadingIdeas" style="display:none;">
+        <p id="estadoIdeas">🧠 Iniciando...</p>
+        <div style="width:100%; height:10px; background:#222; border-radius:5px; overflow:hidden; margin-top:10px;">
+          <div id="barraIdeas" style="width:0%; height:100%; background:#00ffcc; transition:width .4s ease;"></div>
         </div>
-
       </div>
 
-    </div>
-
-    <div id="resultadoIdeas" class="scroll-box"></div>
-
-  </section>
-</div>
+      <div id="resultadoIdeas" class="scroll-box"></div>
+    </section>
+  </div>
 
   <!-- ===================================== -->
-<!-- GENERADOR DE PROMPT 
-<!-- ===================================== -->
-
-  <!-- ✍️ PROMPTS (SOLO DISEÑO) -->
+  <!-- GENERADOR DE PROMPT -->
+  <!-- ===================================== -->
   <div class="ai-card">
-  <section class="ai-lab">
+    <section class="ai-lab">
+      <h3>✍️ Generador de Prompts</h3>
+      <input type="text" id="temaPrompt" placeholder="Tema del contenido">
+      <select id="tipoContenido">
+        <option value="TikTok">TikTok</option>
+        <option value="YouTube">YouTube</option>
+        <option value="Instagram">Instagram</option>
+        <option value="Blog">Blog</option>
+        <option value="Ebook">Ebook</option>
+        <option value="General">General</option>
+      </select>
+      <button onclick="generarPrompt()">Generar</button>
+      <button onclick="guardarPrompts()">📋 Guardar Prompt</button>
 
-    <h3>✍️ Generador de Prompts</h3>
+      <div id="mensajeCopiado"></div>
 
-    <input
-      type="text"
-      id="temaPrompt"
-      placeholder="Tema del contenido">
-
-    <select id="tipoContenido">
-      <option value="TikTok">TikTok</option>
-      <option value="YouTube">YouTube</option>
-      <option value="Instagram">Instagram</option>
-      <option value="Blog">Blog</option>
-      <option value="Ebook">Ebook</option>
-      <option value="General">General</option>
-    </select>
-
-    <button onclick="generarPrompt()">
-      Generar
-    </button>
-
-    <button onclick="guardarPrompts()">
-      📋 Guardar Prompt
-    </button>
-
-    <div id="mensajeCopiado"></div>
-
-    <!-- LOADING PROMPTS -->
-    <div id="loadingPrompt" style="display:none;">
-
-      <p id="estadoPrompt">
-        ✍️ Iniciando...
-      </p>
-
-      <div style="
-        width:100%;
-        height:10px;
-        background:#222;
-        border-radius:5px;
-        overflow:hidden;
-        margin-top:10px;
-      ">
-
-        <div
-          id="barraPrompt"
-          style="
-            width:0%;
-            height:100%;
-            background:#00ffcc;
-            transition:width .4s ease;
-          ">
+      <div id="loadingPrompt" style="display:none;">
+        <p id="estadoPrompt">✍️ Iniciando...</p>
+        <div style="width:100%; height:10px; background:#222; border-radius:5px; overflow:hidden; margin-top:10px;">
+          <div id="barraPrompt" style="width:0%; height:100%; background:#00ffcc; transition:width .4s ease;"></div>
         </div>
-
       </div>
 
-    </div>
-
-    <div id="resultadoPrompt" class="scroll-box"></div>
-
-  </section>
-</div>
-
-<!-- ===================================== -->
-<!-- GENERADOR DE PROMPT VISUALES-->
-<!-- ===================================== -->
-<div class="ai-card">
-  <section class="ai-lab">
-
-    <h3>🖼️ Prompts Visuales IA</h3>
-
-    <input
-      type="text"
-      id="temaVisual"
-      placeholder="Tema visual">
-
-    <button onclick="generarVisuales()">
-      Generar Prompts
-    </button>
-
-    <button onclick="guardarVisuales()">
-💾 Guardar Visuales
-</button>
-
-    <div id="mensajeVisual"></div>
-
-    <!-- LOADING VISUAL -->
-    <div id="loadingVisual" style="display:none;">
-
-      <p id="estadoVisual">
-        🎨 Iniciando...
-      </p>
-
-      <div style="
-        width:100%;
-        height:10px;
-        background:#222;
-        border-radius:5px;
-        overflow:hidden;
-        margin-top:10px;
-      ">
-
-        <div id="barraVisual" style="
-          width:0%;
-          height:100%;
-          background:#00ffcc;
-          transition:width .4s ease;
-        ">
-        </div>
-
-      </div>
-
-    </div>
-
-    <!-- RESULTADO -->
-    <div id="resultadoVisual" class="scroll-box"></div>
-
-  </section>
-</div>
-
-<div class="ai-card">
-  <section class="ai-lab">
-  <h3>🎬 Generador de Guiones IA</h3>
-
-  <input
-    type="text"
-    id="temaGuion"
-    placeholder="Tema del video">
-
-  <select id="duracionGuion">
-    <option>15 segundos</option>
-    <option>30 segundos</option>
-    <option>60 segundos</option>
-  </select>
-
-  <select id="formatoGuion">
-    <option value="automatico">🤖 Automático</option>
-    <option value="tiktok">📱 TikTok / Reels</option>
-    <option value="youtube">📺 YouTube</option>
-    <option value="cine">🎬 Cinematográfico</option>
-    <option value="podcast">🎙️ Podcast</option>
-    <option value="novela">📖 Novela</option>
-    <option value="teatro">🎭 Teatro</option>
-  </select>
-
-  <button onclick="generarGuion()">
-    Generar Guion
-  </button>
-
-  <button onclick="guardarGuion()">
-    📋 Guardar Guion
-  </button>
-  <button onclick="copiarGuion()">
-  📋 Copiar Guion
-</button>
-
-<div id="mensajeGuionCopiado"></div>
-
-  <div id="mensajeGuionCopiado"></div>
-
-  <!-- LOADING -->
-  <div id="loadingGuion" style="display:none;">
-
-    <p id="estadoGuion">
-      🎬 Generando guion...
-    </p>
-
-    <div style="
-      width:100%;
-      height:10px;
-      background:#333;
-      border-radius:5px;
-      overflow:hidden;
-      margin-top:10px;
-    ">
-
-      <div id="barraGuion" style="
-        width:0%;
-        height:100%;
-        background:#00ffcc;
-        transition:width .4s ease;
-      ">
-      </div>
-
-    </div>
-
+      <div id="resultadoPrompt" class="scroll-box"></div>
+    </section>
   </div>
 
-  <div id="resultadoGuion" class="scroll-box"></div>
-</section>
-</div>
-
+  <!-- ===================================== -->
+  <!-- GENERADOR DE PROMPT VISUALES -->
+  <!-- ===================================== -->
   <div class="ai-card">
-  <section class="ai-lab">
-  <h3>🎬 Storyboard Generator</h3>
+    <section class="ai-lab">
+      <h3>🖼️ Prompts Visuales IA</h3>
+      <input type="text" id="temaVisual" placeholder="Tema visual">
+      <button onclick="generarVisuales()">Generar Prompts</button>
+      <button onclick="guardarVisuales()">💾 Guardar Visuales</button>
 
-  <textarea
-    id="textoStoryboard"
-    placeholder="Pega aquí el guion..."
-    rows="6">
-  </textarea>
+      <div id="mensajeVisual"></div>
 
-  <select id="cantidadEscenas">
-    <option value="4">4 escenas</option>
-    <option value="6">6 escenas</option>
-    <option value="8" selected>8 escenas</option>
-    <option value="10">10 escenas</option>
-    <option value="12">12 escenas</option>
-  </select>
-
-  <select id="estiloStoryboard">
-
-  <option value="automatico">🤖 Automático</option>
-
-  <option value="realista">📷 Realista</option>
-
-  <option value="cinematografico">🎬 Cinematográfico</option>
-
-  <option value="pixellab45">🚀 Futurista PIXELLAB45</option>
-
-  <option value="cyberpunk">🌆 Cyberpunk</option>
-
-  <option value="anime">🎌 Anime</option>
-
-  <option value="pixar">🧸 Pixar 3D</option>
-
-  <option value="comic">💥 Cómic</option>
-
-  <option value="noir">🕵️ Film Noir</option>
-
-  <option value="fantasia">🧙 Fantasía</option>
-
-  <option value="acuarela">🎨 Acuarela</option>
-
-  <option value="oleo">🖼️ Pintura al óleo</option>
-
-  <option value="lowpoly">🔷 Low Poly</option>
-
-  <option value="isometrico">📐 Isométrico</option>
-
-  <option value="pixelart">👾 Pixel Art</option>
-
-</select>
-
-  <button onclick="generarStoryboard()">
-    🎬 Generar Storyboard
-  </button>
-
-  <button onclick="guardarStoryboard()">
-    💾 Guardar Storyboard
-  </button>
-
-  <button onclick="copiarStoryboard()">
-    📋 Copiar Storyboard
-  </button>
-
-  <div id="mensajeStoryboard"></div>
-
-  <div id="loadingStoryboard" style="display:none;">
-
-    <p id="estadoStoryboard">🎬 Iniciando...</p>
-
-    <div style="
-      width:100%;
-      height:10px;
-      background:#222;
-      border-radius:5px;
-      overflow:hidden;
-      margin-top:10px;
-    ">
-
-      <div id="barraStoryboard" style="
-        width:0%;
-        height:100%;
-        background:#00ffcc;
-        transition:width .4s ease;
-      ">
+      <div id="loadingVisual" style="display:none;">
+        <p id="estadoVisual">🎨 Iniciando...</p>
+        <div style="width:100%; height:10px; background:#222; border-radius:5px; overflow:hidden; margin-top:10px;">
+          <div id="barraVisual" style="width:0%; height:100%; background:#00ffcc; transition:width .4s ease;"></div>
+        </div>
       </div>
 
-    </div>
-
+      <div id="resultadoVisual" class="scroll-box"></div>
+    </section>
   </div>
 
-  <div id="resultadoStoryboard" class="scroll-box"></div>
-  </section>
-</div>
+  <!-- GENERADOR DE GUIONES -->
+  <div class="ai-card">
+    <section class="ai-lab">
+      <h3>🎬 Generador de Guiones IA</h3>
+      <input type="text" id="temaGuion" placeholder="Tema del video">
+      
+      <select id="duracionGuion">
+        <option>15 segundos</option>
+        <option>30 segundos</option>
+        <option>60 segundos</option>
+      </select>
 
-<div class="ai-card">
-  <section class="ai-lab">
-  <h3>🎨 PIXELLAB45 Image Studio</h3>
+      <select id="formatoGuion">
+        <option value="automatico">🤖 Automático</option>
+        <option value="tiktok">📱 TikTok / Reels</option>
+        <option value="youtube">📺 YouTube</option>
+        <option value="cine">🎬 Cinematográfico</option>
+        <option value="podcast">🎙️ Podcast</option>
+        <option value="novela">📖 Novela</option>
+        <option value="teatro">🎭 Teatro</option>
+      </select>
 
-  <input
-    type="text"
-    id="promptImagen"
-    placeholder="Describe la imagen">
+      <button onclick="generarGuion()">Generar Guion</button>
+      <button onclick="guardarGuion()">📋 Guardar Guion</button>
+      <button onclick="copiarGuion()">📋 Copiar Guion</button>
 
-  <select id="categoriaImagen">
-    <option value="avatares">Avatares</option>
-    <option value="fondos">Fondos</option>
-    <option value="miniaturas">Miniaturas</option>
-    <option value="storyboards">Storyboards</option>
-    <option value="personajes">Personajes</option>
-    <option value="logos">Logos</option>
-    <option value="experimentos">Experimentos</option>
-    <option value="videos">Videos</option>
-  </select>
+      <div id="mensajeGuionCopiado"></div>
 
-  <button onclick="generarImagenPuter()">
-    Generar Imagen
-  </button>
+      <div id="loadingGuion" style="display:none;">
+        <p id="estadoGuion">🎬 Generando guion...</p>
+        <div style="width:100%; height:10px; background:#333; border-radius:5px; overflow:hidden; margin-top:10px;">
+          <div id="barraGuion" style="width:0%; height:100%; background:#00ffcc; transition:width .4s ease;"></div>
+        </div>
+      </div>
 
-<div id="loadingImagen" style="display:none;">
-
-  <p id="estadoImagen">🎨 Iniciando...</p>
-
-  <div style="
-    width:100%;
-    height:10px;
-    background:#222;
-    border-radius:5px;
-    overflow:hidden;
-    margin-top:10px;
-  ">
-
-    <div id="barraImagen" style="
-      width:0%;
-      height:100%;
-      background:#00ffcc;
-      transition:width .4s ease;
-    ">
-    </div>
-
+      <div id="resultadoGuion" class="scroll-box"></div>
+    </section>
   </div>
 
-</div>
+  <!-- STORYBOARD GENERATOR -->
+  <div class="ai-card">
+    <section class="ai-lab">
+      <h3>🎬 Storyboard Generator</h3>
+      <textarea id="textoStoryboard" placeholder="Pega aquí el guion..." rows="6"></textarea>
 
-<div id="resultadoImagen" class="scroll-box"></div>
+      <select id="cantidadEscenas">
+        <option value="4">4 escenas</option>
+        <option value="6">6 escenas</option>
+        <option value="8" selected>8 escenas</option>
+        <option value="10">10 escenas</option>
+        <option value="12">12 escenas</option>
+      </select>
 
-  </section>
-</div>
+      <select id="estiloStoryboard">
+        <option value="automatico">🤖 Automático</option>
+        <option value="realista">📷 Realista</option>
+        <option value="cinematografico">🎬 Cinematográfico</option>
+        <option value="pixellab45">🚀 Futurista PIXELLAB45</option>
+        <option value="cyberpunk">🌆 Cyberpunk</option>
+        <option value="anime">🎌 Anime</option>
+        <option value="pixar">🧸 Pixar 3D</option>
+        <option value="comic">💥 Cómic</option>
+        <option value="noir">🕵️ Film Noir</option>
+        <option value="fantasia">🧙 Fantasía</option>
+        <option value="acuarela">🎨 Acuarela</option>
+        <option value="oleo">🖼️ Pintura al óleo</option>
+        <option value="lowpoly">🔷 Low Poly</option>
+        <option value="isometrico">📐 Isométrico</option>
+        <option value="pixelart">👾 Pixel Art</option>
+      </select>
+
+      <button onclick="generarStoryboard()">🎬 Generar Storyboard</button>
+      <button onclick="guardarStoryboard()">💾 Guardar Storyboard</button>
+      <button onclick="copiarStoryboard()">📋 Copiar Storyboard</button>
+
+      <div id="mensajeStoryboard"></div>
+
+      <div id="loadingStoryboard" style="display:none;">
+        <p id="estadoStoryboard">🎬 Iniciando...</p>
+        <div style="width:100%; height:10px; background:#222; border-radius:5px; overflow:hidden; margin-top:10px;">
+          <div id="barraStoryboard" style="width:0%; height:100%; background:#00ffcc; transition:width .4s ease;"></div>
+        </div>
+      </div>
+
+      <div id="resultadoStoryboard" class="scroll-box"></div>
+    </section>
+  </div>
+
+  <!-- IMAGE STUDIO -->
+  <div class="ai-card">
+    <section class="ai-lab">
+      <h3>🎨 PIXELLAB45 Image Studio</h3>
+      <input type="text" id="promptImagen" placeholder="Describe la imagen">
+
+      <select id="categoriaImagen">
+        <option value="avatares">Avatares</option>
+        <option value="fondos">Fondos</option>
+        <option value="miniaturas">Miniaturas</option>
+        <option value="storyboards">Storyboards</option>
+        <option value="personajes">Personajes</option>
+        <option value="logos">Logos</option>
+        <option value="experimentos">Experimentos</option>
+        <option value="videos">Videos</option>
+      </select>
+
+      <button onclick="generarImagenPuter()">Generar Imagen</button>
+
+      <div id="loadingImagen" style="display:none;">
+        <p id="estadoImagen">🎨 Iniciando...</p>
+        <div style="width:100%; height:10px; background:#222; border-radius:5px; overflow:hidden; margin-top:10px;">
+          <div id="barraImagen" style="width:0%; height:100%; background:#00ffcc; transition:width .4s ease;"></div>
+        </div>
+      </div>
+
+      <div id="resultadoImagen" class="scroll-box"></div>
+    </section>
+  </div>
   
+  <!-- VIDEO GENERATOR (KLING) -->
   <div class="ai-card">
-<section class="ai-lab">
-  <h3>🎬 Generador de Video IA (Kling)</h3>
+    <section class="ai-lab">
+      <h3>🎬 Generador de Video IA (Kling)</h3>
+      <p class="ai-subtitle">Genera videos con IA directamente dentro de PIXELLAB45</p>
 
-  <p class="ai-subtitle">
-    Genera videos con IA directamente dentro de PIXELLAB45
-  </p>
-
-  <!-- ACCIONES -->
-  <div class="frame-actions">
-    <button onclick="openFullscreenKling()">⛶PANTALLA COMPLETA</button>
-<button onclick="reloadKling()">🔄RECARGAR</button>
-  </div>
-
-  <!-- IFRAME -->
-  <iframe
-    id="klingFrame"
-    src="https://kling.ai/app"
-    style="width:100%; height:520px; border:0; border-radius:12px;">
-  </iframe>
-
-  <!-- AYUDA -->
-  <div class="kling-help">
-    ⚠️ Flujo de uso:
-    <br>1. Generá el video en Kling
-    <br>2. Esperá el render
-    <br>3. Copiá el link o resultado
-    <br>4. Importalo en PIXELLAB45
-  </div>
-
-  <!-- IMPORTACIÓN VISUAL (sin lógica aún) -->
-  <h4>📥 Importar video</h4>
-
-  <input
-    type="text"
-    placeholder="Pegá la URL del video"
-  />
-
-  <button>
-    🎬 Previsualizar
-  </button>
-
-  <button>
-    ☁️ Guardar en PIXELLAB45
-  </button>
-
-  <div id="klingPreview"></div>
-  </section>
-</div>
-  </section>
-<div class="ai-card">
-  <section class="ai-lab">
-
-    <h2>📘 Generador de Ebook</h2>
-
-    <input
-      id="temaEbook"
-      placeholder="Escribe el tema del ebook">
-<input
-    id="autorEbook"
-    placeholder="Nombre del autor (opcional)">
-    
-    <input
-      id="paginasEbook"
-      type="number"
-      value="30"
-      min="10"
-      max="500">
-
-    <select id="idiomaEbook">
-      <option value="Español">🇪🇸 Español</option>
-      <option value="English">🇺🇸 English</option>
-      <option value="Português">🇧🇷 Português</option>
-      <option value="Français">🇫🇷 Français</option>
-      <option value="Italiano">🇮🇹 Italiano</option>
-      <option value="Deutsch">🇩🇪 Deutsch</option>
-    </select>
-
-    <select id="tonoEbook">
-
-      <option value="Profesional">
-        Profesional
-      </option>
-
-      <option value="Formal">
-        Formal
-      </option>
-
-      <option value="Académico">
-        Académico
-      </option>
-
-      <option value="Educativo">
-        Educativo
-      </option>
-
-      <option value="Informal">
-        Informal
-      </option>
-
-      <option value="Inspirador">
-        Inspirador
-      </option>
-
-      <option value="Motivacional">
-        Motivacional
-      </option>
-
-      <option value="Técnico">
-        Técnico
-      </option>
-
-    </select>
-
-    <select id="publicoEbook">
-
-      <option value="General">
-        Público General
-      </option>
-
-      <option value="Principiantes">
-        Principiantes
-      </option>
-
-      <option value="Intermedio">
-        Intermedio
-      </option>
-
-      <option value="Avanzado">
-        Avanzado
-      </option>
-
-      <option value="Profesionales">
-        Profesionales
-      </option>
-
-      <option value="Empresas">
-        Empresas
-      </option>
-
-      <option value="Estudiantes">
-        Estudiantes
-      </option>
-
-    </select>
-
-    <button onclick="generarEbook()">
-      📘 Generar Ebook
-    </button>
-
-    <div id="loadingEbook" class="loading" style="display:none;">
-
-      <div class="barra-container">
-        <div id="barraEbook" class="barra"></div>
+      <div class="frame-actions">
+        <button onclick="openFullscreenKling()">⛶PANTALLA COMPLETA</button>
+        <button onclick="reloadKling()">🔄RECARGAR</button>
       </div>
 
-      <div id="estadoEbook">
-        📘 Iniciando...
+      <iframe id="klingFrame" src="https://kling.ai/app" style="width:100%; height:520px; border:0; border-radius:12px;"></iframe>
+
+      <div class="kling-help">
+        ⚠️ Flujo de uso:
+        <br>1. Generá el video en Kling
+        <br>2. Esperá el render
+        <br>3. Copiá el link o resultado
+        <br>4. Importalo en PIXELLAB45
       </div>
 
-    </div>
+      <h4>📥 Importar video</h4>
+      <input type="text" placeholder="Pegá la URL del video"/>
+      <button>🎬 Previsualizar</button>
+      <button>☁️ Guardar en PIXELLAB45</button>
 
-    <div id="resultadoEbook" class="resultado"></div>
+      <div id="klingPreview"></div>
+    </section>
+  </div>
 
-  </section>
+  <!-- GENERADOR DE EBOOK -->
+  <div class="ai-card">
+    <section class="ai-lab">
+      <h2>📘 Generador de Ebook</h2>
+      <input id="temaEbook" placeholder="Escribe el tema del ebook">
+      <input id="autorEbook" placeholder="Nombre del autor (opcional)">
+      <input id="paginasEbook" type="number" value="30" min="10" max="500">
+
+      <select id="idiomaEbook">
+        <option value="Español">🇪🇸 Español</option>
+        <option value="English">🇺🇸 English</option>
+        <option value="Português">🇧🇷 Português</option>
+        <option value="Français">🇫🇷 Français</option>
+        <option value="Italiano">🇮🇹 Italiano</option>
+        <option value="Deutsch">🇩🇪 Deutsch</option>
+      </select>
+
+      <select id="tonoEbook">
+        <option value="Profesional">Profesional</option>
+        <option value="Formal">Formal</option>
+        <option value="Académico">Académico</option>
+        <option value="Educativo">Educativo</option>
+        <option value="Informal">Informal</option>
+        <option value="Inspirador">Inspirador</option>
+        <option value="Motivacional">Motivacional</option>
+        <option value="Técnico">Técnico</option>
+      </select>
+
+      <select id="publicoEbook">
+        <option value="General">Público General</option>
+        <option value="Principiantes">Principiantes</option>
+        <option value="Intermedio">Intermedio</option>
+        <option value="Avanzado">Avanzado</option>
+        <option value="Profesionales">Profesionales</option>
+        <option value="Empresas">Empresas</option>
+        <option value="Estudiantes">Estudiantes</option>
+      </select>
+
+      <button onclick="generarEbook()">📘 Generar Ebook</button>
+
+      <div id="loadingEbook" class="loading" style="display:none;">
+        <div class="barra-container">
+          <div id="barraEbook" class="barra"></div>
+        </div>
+        <div id="estadoEbook">📘 Iniciando...</div>
+      </div>
+
+      <div id="resultadoEbook" class="resultado"></div>
+    </section>
+  </div>
+
+  <!-- EDITOR EBOOK V2 -->
+  <div class="ai-card">
+    <section class="ai-lab">
+      <h3>📚 Editor Ebook V2</h3>
+      <select id="ebookSeleccion">
+        <option value="">📖 Seleccionar Ebook...</option>
+      </select>
+      <button onclick="cargarEbook()">📥 Cargar Ebook</button>
+      <button onclick="disenarEbook()">🎨 Diseñar Ebook</button>
+      <button onclick="crearPDF()">📄 Crear PDF</button>
+
+      <div id="mensajeEditor"></div>
+      <div id="resultadoEditor" class="scroll-box"></div>
+    </section>
+  </div>
+
 </div>
 
-<div class="ai-card">
-  <section class="ai-lab">
-
-    <h3>📚 Editor Ebook V2</h3>
-
-    <select id="ebookSeleccion">
-      <option value="">📖 Seleccionar Ebook...</option>
-    </select>
-
-    <button onclick="cargarEbook()">📥 Cargar Ebook</button>
-    <button onclick="disenarEbook()">🎨 Diseñar Ebook</button>
-    <button onclick="crearPDF()">📄 Crear PDF</button>
-
-    <div id="mensajeEditor"></div>
-
-    <div id="resultadoEditor" class="scroll-box"></div>
-
-  </section>
-</div>
-</div>
 <div class="section-divider"></div>
-<!-- ===================================== -->
+
 <!-- FOOTER -->
-<!-- ===================================== -->
-
 <footer class="footer">
-
-  <h3>
-    PIXELLAB45
-  </h3>
-
-  <p>
-    Inteligencia Artificial • Tecnología • Automatización • Innovación
-    <p id="versionSistema">Versión: __VERSION__</p>
-  </p>
-
+  <h3>PIXELLAB45</h3>
+  <p>Inteligencia Artificial • Tecnología • Automatización • Innovación</p>
+  <p id="versionSistema">Versión: 1.0.0</p>
 </footer>
 
-<script src="pixellab45-core.js?v=__VERSION__"></script>
-<script src="editorial.js?v=__VERSION__"></script>
-<script src="ailab.js?v=__VERSION__"></script>
+<!-- SCRIPTS -->
+<script src="pixellab45-core.js?v=1.0.0"></script>
+<script src="editorial.js?v=1.0.0"></script>
+<script src="ailab.js?v=1.0.0"></script>
 </body>
 </html>
