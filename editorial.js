@@ -3432,33 +3432,32 @@ if (canvas) {
 
 
     const canvas =
-        document.querySelector(".editor-canvas");
+    document.querySelector(".editor-canvas");
 
+if (canvas && hoja.offsetWidth > 0) {
 
-    if (canvas && hoja.offsetWidth > 0) {
+    const esMovil = window.innerWidth <= 768;
 
+    const margen = esMovil ? 8 : 40;
 
-        const escala =
-            (canvas.clientWidth - 40) /
-            hoja.offsetWidth;
+    const escala =
+        (canvas.clientWidth - margen * 2) /
+        hoja.offsetWidth;
 
+    hoja.style.transformOrigin =
+        "top center";
 
-        hoja.style.transformOrigin =
-            "top center";
+    hoja.style.transform =
+        `scale(${Math.min(1, escala)})`;
 
+    monitorPIXELLAB(
+        "Editorial",
+        "info",
+        "Portada",
+        "Escala aplicada: " + escala
+    );
 
-        hoja.style.transform =
-            `scale(${Math.min(1, escala)})`;
-
-
-        monitorPIXELLAB(
-            "Editorial",
-            "info",
-            "Portada",
-            "Escala aplicada: " + escala
-        );
-
-    }
+}
 
 };
 
