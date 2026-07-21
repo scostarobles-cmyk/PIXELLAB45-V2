@@ -43,6 +43,17 @@
     document.head.appendChild(script);
   });
 })();
+  // La variable con tu versión actual
+const VERSION = "v1.0.0"; // o la variable/constante que ya estés calculando
+
+// Insertar la versión en el footer cuando el DOM esté listo
+document.addEventListener("DOMContentLoaded", () => {
+  const versionElement = document.getElementById("app-version");
+  if (versionElement) {
+    versionElement.textContent = `Versión ${VERSION}`;
+  }
+});
+
 
   </script>
 </head>
