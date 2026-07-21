@@ -2,290 +2,197 @@
 <html lang="es">
 
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PIXELLAB45 eBook Studio</title>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <script src="https://js.puter.com/v2/"></script>
 
-<title>PIXELLAB45 eBook Studio</title>
+  <!-- Carga directa y segura de scripts -->
+  <script src="pixellab45-core.js" defer></script>
+  <script src="ailab.js" defer></script>
+  <script src="editor.js" defer></script>
 
-<link rel="stylesheet" href="styles.css?v=1">
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<script src="https://js.puter.com/v2/"></script>
-
-<script>
-(function cargarScriptsConVersion() {
-  const ahora = new Date();
-  const anio = ahora.getFullYear();
-  const mes = String(ahora.getMonth() + 1).padStart(2, '0');
-  const dia = String(ahora.getDate()).padStart(2, '0');
-  const horas = String(ahora.getHours()).padStart(2, '0');
-  const minutos = String(ahora.getMinutes()).padStart(2, '0');
-  const segundos = String(ahora.getSeconds()).padStart(2, '0');
-  const ms = String(ahora.getMilliseconds()).padStart(3, '0');
-
-  const versionID = `${anio}${mes}${dia}_${horas}${minutos}${segundos}_${ms}`;
-
-  const misScripts = [
-    'editor.js',
-    'ailab.js',
-    'pixellab45-core.js'
-  ];
-
-  misScripts.forEach(nombreScript => {
-    const script = document.createElement('script');
-    script.src = `${nombreScript}?v=${versionID}`;
-    script.async = false;
-    document.head.appendChild(script);
-  });
-})();
-
-// Inserción segura de la versión
-document.addEventListener("DOMContentLoaded", () => {
-  const versionElement = document.getElementById("app-version");
-  if (versionElement) {
-    versionElement.textContent = "Versión v1.0.0";
-  }
-});
-</script>
-
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const versionElement = document.getElementById("app-version");
+      if (versionElement) {
+        versionElement.textContent = "v1.0.0";
+      }
+    });
+  </script>
 </head>
 
 <body>
 
-<header class="navbar">
+  <header class="navbar">
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <nav class="nav-links">
+      <a href="index.html">🏠 Inicio</a>
+      <a href="#">📚 eBook Studio</a>
+      <a href="#">📖 Biblioteca</a>
+      <a href="#">⚙️ Proyectos</a>
+    </nav>
+  </header>
 
-<button class="menu-toggle" onclick="toggleMenu()">
-☰
-</button>
+  <div class="divider"></div>
 
-<nav class="nav-links">
+  <section class="ailab-hero">
+    <h1>📚 PIXELLAB45 eBook Studio</h1>
+    <p>AI Publishing Workstation</p>
+  </section>
 
-<a href="index.html">
-🏠 Inicio
-</a>
+  <div class="ai-grid">
+    <div class="ai-card">
+      <section class="ai-lab">
+        <h2>🚀 Nuevo Proyecto</h2>
+        <p class="ai-subtitle">Crea la estructura completa de un eBook mediante Inteligencia Artificial.</p>
 
-<a href="#">
-📚 eBook Studio
-</a>
+        <input id="temaEbook" type="text" placeholder="Tema del eBook">
+        <input id="autorEbook" type="text" placeholder="Autor">
+        <input id="paginasEbook" type="number" value="100" min="10" max="1000">
 
-<a href="#">
-📖 Biblioteca
-</a>
+        <select id="idiomaEbook">
+          <option value="Español">🇪🇸 Español</option>
+          <option value="English">🇺🇸 English</option>
+          <option value="Português">🇧🇷 Português</option>
+          <option value="Français">🇫🇷 Français</option>
+          <option value="Italiano">🇮🇹 Italiano</option>
+        </select>
 
-<a href="#">
-⚙️ Proyectos
-</a>
+        <select id="tonoEbook">
+          <option>Profesional</option>
+          <option>Técnico</option>
+          <option>Académico</option>
+          <option>Inspirador</option>
+          <option>Educativo</option>
+        </select>
 
-</nav>
+        <select id="publicoEbook">
+          <option>General</option>
+          <option>Principiantes</option>
+          <option>Intermedio</option>
+          <option>Avanzado</option>
+          <option>Profesionales</option>
+        </select>
 
-</header>
+        <div class="section-divider"></div>
 
-<div class="divider"></div>
+        <h3>⚙️ Motores IA</h3>
 
-<section class="ailab-hero">
-
-<h1>
-📚 PIXELLAB45 eBook Studio
-</h1>
-
-<p>
-AI Publishing Workstation
-</p>
-
-</section>
-
-<div class="ai-grid">
-
-<div class="ai-card">
-
-<section class="ai-lab">
-
-<h2>
-🚀 Nuevo Proyecto
-</h2>
-
-<p class="ai-subtitle">
-Crea la estructura completa de un eBook mediante Inteligencia Artificial.
-</p>
-
-<input id="temaEbook" type="text" placeholder="Tema del eBook">
-
-<input id="autorEbook" type="text" placeholder="Autor">
-
-<input id="paginasEbook" type="number" value="100" min="10" max="1000">
-
-<select id="idiomaEbook">
-  <option value="Español">🇪🇸 Español</option>
-  <option value="English">🇺🇸 English</option>
-  <option value="Português">🇧🇷 Português</option>
-  <option value="Français">🇫🇷 Français</option>
-  <option value="Italiano">🇮🇹 Italiano</option>
-</select>
-
-<select id="tonoEbook">
-  <option>Profesional</option>
-  <option>Técnico</option>
-  <option>Académico</option>
-  <option>Inspirador</option>
-  <option>Educativo</option>
-</select>
-
-<select id="publicoEbook">
-  <option>General</option>
-  <option>Principiantes</option>
-  <option>Intermedio</option>
-  <option>Avanzado</option>
-  <option>Profesionales</option>
-</select>
-
-<div class="section-divider"></div>
-
-<h3>
-⚙️ Motores IA
-</h3>
-
-<div class="gallery-filters">
-
-<button id="btnProyecto" class="boton-accion" onclick="crearProyecto()">
-📁 Crear Proyecto
-</button>
-
-<button id="btnPlan" class="boton-accion" onclick="generarPlan2()">
-📋 Generar Plan
-</button>
-
-<button id="btnIndice" class="boton-accion" onclick="generarIndice()">
-📑 Índice
-</button>
-
-<button id="btnLegales" class="boton-accion" onclick="generarLegales()">
-⚖️ Legales
-</button>
-
-<button id="btnIntroduccion" class="boton-accion" onclick="generarIntroduccion()">
-📝 Introducción
-</button>
-
-<button id="btnCapitulos" class="boton-accion" onclick="generarCapitulos()">
-📖 Capítulos
-</button>
-
-<button id="btnConclusion" class="boton-accion" onclick="generarConclusion()">
-🏁 Conclusión
-</button>
-
-</div>
-
-<!-- PANEL ESTADO EDITORIAL -->
-<div id="estadoEditorial" class="estado-editorial"></div>
-
-<!-- PANEL ÚLTIMO ERROR -->
-<div id="errorEditorial" class="error-editorial" style="display:none;"></div>
-
-<div class="section-divider"></div>
-
-<div class="ai-grid">
-
-  <!-- PIPELINE -->
-  <div class="ai-card">
-    <section class="ai-lab">
-      <h2>📊 Pipeline IA</h2>
-      <p class="ai-subtitle">Estado de los motores del proyecto</p>
-      <div class="scroll-box">
-        <p id="estadoProyecto">⚪ Proyecto</p>
-        <p id="estadoPlan">⚪ Planificador</p>
-        <p id="estadoIndice">⚪ Índice</p>
-        <p id="estadoLegales">⚪ Legales</p>
-        <p id="estadoIntro">⚪ Introducción</p>
-        <p id="estadoCapitulos">⚪ Capítulos</p>
-        <p id="estadoConclusion">⚪ Conclusión</p>
-      </div>
-    </section>
-  </div>
-
-  <!-- MONITOR -->
-  <div class="ai-card">
-    <section class="ai-lab">
-      <div class="gallery-filters">
-        <button class="boton-accion" onclick="limpiarMonitorPIXELLAB()">🗑 Limpiar</button>
-      </div>
-      <div id="monitorPIXELLAB" class="scroll-box" style="height:350px;"></div>
-    </section>
-  </div>
-
-</div>
-
-<div class="section-divider"></div>
-
-<!-- PIXELLAB EDITORIAL -->
-<div class="ai-card">
-  <section class="ai-lab">
-    <h2>📚 Biblioteca Editorial</h2>
-    <p class="ai-subtitle">Proyectos listos para edición.</p>
-    <div id="bibliotecaEditorial" class="biblioteca-grid">
-      <article class="editorial-card">
-        <div class="editorial-cover"></div>
-        <div class="editorial-info">
-          <h3>ChatGPT desde Cero</h3>
-          <p>Ebook • Inteligencia Artificial</p>
-          <span>PIXELLAB Editorial</span>
-          <button class="boton-accion">✏️ Editar</button>
+        <div class="gallery-filters">
+          <button id="btnProyecto" class="boton-accion" onclick="crearProyecto()">📁 Crear Proyecto</button>
+          <button id="btnPlan" class="boton-accion" onclick="generarPlan2()">📋 Generar Plan</button>
+          <button id="btnIndice" class="boton-accion" onclick="generarIndice()">📑 Índice</button>
+          <button id="btnLegales" class="boton-accion" onclick="generarLegales()">⚖️ Legales</button>
+          <button id="btnIntroduccion" class="boton-accion" onclick="generarIntroduccion()">📝 Introducción</button>
+          <button id="btnCapitulos" class="boton-accion" onclick="generarCapitulos()">📖 Capítulos</button>
+          <button id="btnConclusion" class="boton-accion" onclick="generarConclusion()">🏁 Conclusión</button>
         </div>
-      </article>
+
+        <div id="estadoEditorial" class="estado-editorial"></div>
+        <div id="errorEditorial" class="error-editorial" style="display:none;"></div>
+
+        <div class="section-divider"></div>
+
+        <div class="ai-grid">
+          <div class="ai-card">
+            <section class="ai-lab">
+              <h2>📊 Pipeline IA</h2>
+              <p class="ai-subtitle">Estado de los motores del proyecto</p>
+              <div class="scroll-box">
+                <p id="estadoProyecto">⚪ Proyecto</p>
+                <p id="estadoPlan">⚪ Planificador</p>
+                <p id="estadoIndice">⚪ Índice</p>
+                <p id="estadoLegales">⚪ Legales</p>
+                <p id="estadoIntro">⚪ Introducción</p>
+                <p id="estadoCapitulos">⚪ Capítulos</p>
+                <p id="estadoConclusion">⚪ Conclusión</p>
+              </div>
+            </section>
+          </div>
+
+          <div class="ai-card">
+            <section class="ai-lab">
+              <div class="gallery-filters">
+                <button class="boton-accion" onclick="limpiarMonitorPIXELLAB()">🗑 Limpiar</button>
+              </div>
+              <div id="monitorPIXELLAB" class="scroll-box" style="height:350px;"></div>
+            </section>
+          </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="ai-card">
+          <section class="ai-lab">
+            <h2>📚 Biblioteca Editorial</h2>
+            <p class="ai-subtitle">Proyectos listos para edición.</p>
+            <div id="bibliotecaEditorial" class="biblioteca-grid">
+              <article class="editorial-card">
+                <div class="editorial-cover"></div>
+                <div class="editorial-info">
+                  <h3>ChatGPT desde Cero</h3>
+                  <p>Ebook • Inteligencia Artificial</p>
+                  <span>PIXELLAB Editorial</span>
+                  <button class="boton-accion">✏️ Editar</button>
+                </div>
+              </article>
+            </div>
+          </section>
+        </div>
+
+        <div id="editorTrabajo" class="ai-card" style="display:block;">
+          <section class="ai-lab">
+            <h2>✏️ PIXELLAB Editorial Workspace</h2>
+            <p class="ai-subtitle">Editor profesional de publicaciones digitales.</p>
+
+            <div class="editor-toolbar-editor">
+              <button class="editor-menu">📄 Portada</button>
+              <button class="editor-menu">⚖️ Legales</button>
+              <button class="editor-menu">📑 Índice</button>
+              <button class="editor-menu">📝 Capítulos</button>
+              <button class="editor-menu">🖼️ Imágenes</button>
+              <button class="editor-menu">🎨 Diseño</button>
+            </div>
+
+            <div class="pipeline-editor">
+              <h3>⚙️ Pipeline Editorial</h3>
+              <div class="pipeline-items">
+                <p>⚪ Proyecto cargado</p>
+                <p>⚪ Texto</p>
+                <p>⚪ Imágenes</p>
+                <p>⚪ Diseño</p>
+                <p>⚪ Revisión</p>
+                <p>⚪ Exportación</p>
+              </div>
+            </div>
+
+            <div class="editor-canvas">
+              <div id="paginaEditor">
+                <div class="hoja"></div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+      </section>
     </div>
-  </section>
-</div>
-
-<!-- AREA DEL EDITOR -->
-<div id="editorTrabajo" class="ai-card" style="display:block;">
-  <section class="ai-lab">
-    <h2>✏️ PIXELLAB Editorial Workspace</h2>
-    <p class="ai-subtitle">Editor profesional de publicaciones digitales.</p>
-
-    <div class="editor-toolbar-editor">
-      <button class="editor-menu">📄 Portada</button>
-      <button class="editor-menu">⚖️ Legales</button>
-      <button class="editor-menu">📑 Índice</button>
-      <button class="editor-menu">📝 Capítulos</button>
-      <button class="editor-menu">🖼️ Imágenes</button>
-      <button class="editor-menu">🎨 Diseño</button>
-    </div>
-
-    <div class="pipeline-editor">
-      <h3>⚙️ Pipeline Editorial</h3>
-      <div class="pipeline-items">
-        <p>⚪ Proyecto cargado</p>
-        <p>⚪ Texto</p>
-        <p>⚪ Imágenes</p>
-        <p>⚪ Diseño</p>
-        <p>⚪ Revisión</p>
-        <p>⚪ Exportación</p>
-      </div>
-    </div>
-
-    <div class="editor-canvas">
-      <div id="paginaEditor">
-        <div class="hoja"></div>
-      </div>
-    </div>
-  </section>
-</div>
-
-</section>
-</div>
-</div>
-
-<div class="section-divider"></div>
-
-<footer>
-  <div class="footer-content">
-    <h3>PIXELLAB45</h3>
-    <p>Inteligencia Artificial • Tecnología • Innovación</p>
-    <p class="footer-copy">© 2026 Sergio Costa | Todos los derechos reservados</p>
-    <p><span id="app-version"></span></p>
   </div>
-</footer>
+
+  <div class="section-divider"></div>
+
+  <footer>
+    <div class="footer-content">
+      <h3>PIXELLAB45</h3>
+      <p>Inteligencia Artificial • Tecnología • Innovación</p>
+      <p class="footer-copy">© 2026 Sergio Costa | Todos los derechos reservados</p>
+      <p><span id="app-version"></span></p>
+    </div>
+  </footer>
 
 </body>
 
