@@ -960,94 +960,37 @@ margin-top:25px;
 
     }
 
-}/* =====================================================
-   AJUSTE AUTOMÁTICO A4 EN MÓVIL (ZOOM / ESCALA)
-   ===================================================== */
-
-@media (max-width: 768px) {
-
-    /* El contenedor no debe dejar que nada se salga */
-    .editor-canvas, #paginaEditor {
-        width: 100% !important;
-        max-width: 100vw !important;
-        overflow-x: hidden !important;
-        padding: 10px 0 !important;
-    }
-
-    /* Mantenemos la hoja en tamaño A4 real pero la achicamos proporcionalmente */
-    .pagina {
-        width: 210mm !important;
-        min-height: 297mm !important;
-        padding: 20px !important;
-
-        /* Achica la hoja completa para que entre exacta en pantallas de celular */
-        transform: scale(0.42);
-        transform-origin: top center;
-
-        /* Compensa el espacio sobrante alrededor tras escalar */
-        margin-bottom: -160mm !important;
-    }
-
-    .portada {
-        margin-top: 0 !important;
-    }
 }
 /* =====================================================
-   ESCALA DINÁMICA A4 PARA MÓVIL
+   AJUSTE EXCLUSIVO PARA MÓVIL (NO AFECTA ESCRITORIO)
    ===================================================== */
 
 @media (max-width: 768px) {
 
     .editor-canvas {
-
         width: 100% !important;
-
-        max-width: 100% !important;
-
-        overflow-x: hidden !important;
-
+        height: auto !important;
+        max-height: 80vh !important;
         padding: 10px 0 !important;
-
+        overflow: hidden !important;
         display: flex !important;
-
         justify-content: center !important;
-
+        align-items: flex-start !important;
     }
 
     #paginaEditor {
-
         width: 100% !important;
-
         display: flex !important;
-
-        flex-direction: column !important;
-
-        align-items: center !important;
-
+        justify-content: center !important;
     }
 
-    /* La hoja sigue midiendo A4 exactamente */
+    /* Reducimos la hoja completa para que quepa en la pantallita del celu */
     .pagina {
-
-        width: 210mm !important;
-
-        min-height: 297mm !important;
-
-        /* Escala dinámica basada en el ancho de la pantalla */
-        transform: scale(calc((100vw - 30px) / 794)) !important;
-
-        transform-origin: top center !important;
-
-        /* Compensa el espacio sobrante que deja el scale */
-        margin-bottom: calc(-297mm * (1 - ((100vw - 30px) / 794))) !important;
-
+        zoom: 0.42 !important; /* Achica la hoja A4 entera proporcionalmente */
+        margin: 0 auto !important;
     }
 
     .portada {
-
         margin-top: 0 !important;
-
     }
-
 }
-
