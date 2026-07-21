@@ -983,4 +983,62 @@ margin-top:25px;
         margin-top: 0 !important;
     }
 }
+/* =====================================================
+   ESCALA DINÁMICA A4 PARA MÓVIL
+   ===================================================== */
+
+@media (max-width: 768px) {
+
+    .editor-canvas {
+
+        width: 100% !important;
+
+        max-width: 100% !important;
+
+        overflow-x: hidden !important;
+
+        padding: 10px 0 !important;
+
+        display: flex !important;
+
+        justify-content: center !important;
+
+    }
+
+    #paginaEditor {
+
+        width: 100% !important;
+
+        display: flex !important;
+
+        flex-direction: column !important;
+
+        align-items: center !important;
+
+    }
+
+    /* La hoja sigue midiendo A4 exactamente */
+    .pagina {
+
+        width: 210mm !important;
+
+        min-height: 297mm !important;
+
+        /* Escala dinámica basada en el ancho de la pantalla */
+        transform: scale(calc((100vw - 30px) / 794)) !important;
+
+        transform-origin: top center !important;
+
+        /* Compensa el espacio sobrante que deja el scale */
+        margin-bottom: calc(-297mm * (1 - ((100vw - 30px) / 794))) !important;
+
+    }
+
+    .portada {
+
+        margin-top: 0 !important;
+
+    }
+
+}
 
