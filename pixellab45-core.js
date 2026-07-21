@@ -403,7 +403,7 @@ function toggleMenu() {
     document
         .querySelector(".nav-links")
         .classList
-        .remove("active");
+        .toggle("active");
 
 }
 
