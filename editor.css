@@ -926,42 +926,41 @@ margin-top:25px;
 
 }
 /* =====================================================
-   PANTALLA COMPLETA REINOCADA PARA MÓVIL
+   PANTALLA COMPLETA EN MÓVIL + BOTÓN SALIR
    ===================================================== */
 
 @media (max-width: 768px) {
 
-    /* Ocultamos elementos superiores que ocupan espacio */
-    .editor-toolbar-editor,
-    .pipeline-editor {
+    /* 1. Ocultamos el generador y encabezados cuando la clase 'modo-full' está activa */
+    body.editor-fullscreen .gallery-filters,
+    body.editor-fullscreen .editor-toolbar-editor,
+    body.editor-fullscreen .pipeline-editor,
+    body.editor-fullscreen header,
+    body.editor-fullscreen nav,
+    body.editor-fullscreen .generador {
         display: none !important;
     }
 
-    /* Forzamos al contenedor del editor a ocupar el 100% real de la pantalla */
-    #editorTrabajo {
+    /* 2. Fijamos el editor solo en pantalla completa */
+    body.editor-fullscreen #editorTrabajo {
         position: fixed !important;
         top: 0 !important;
         left: 0 !important;
         width: 100vw !important;
         height: 100vh !important;
-        z-index: 99999 !important;
+        z-index: 999999 !important;
         background: #05070d !important;
         padding: 0 !important;
         margin: 0 !important;
+        overflow: hidden !important;
     }
 
-    .editor-workspace {
-        width: 100% !important;
-        height: 100% !important;
-        gap: 0 !important;
-    }
-
-    .editor-canvas {
+    body.editor-fullscreen .editor-canvas {
         width: 100vw !important;
         height: 100vh !important;
         border: none !important;
         border-radius: 0 !important;
-        padding: 20px 0 !important;
+        padding: 50px 0 20px 0 !important; /* Espacio arriba para el botón */
         margin: 0 !important;
         background: #05070d !important;
 
@@ -972,27 +971,43 @@ margin-top:25px;
         overflow-x: hidden !important;
     }
 
-    #paginaEditor {
+    body.editor-fullscreen #paginaEditor {
         width: 100% !important;
         display: flex !important;
         justify-content: center !important;
     }
 
-    /* La hoja A4 mantiene su proporción pero escala al ancho del celular */
-    .pagina {
+    /* 3. Escala A4 móvil */
+    body.editor-fullscreen .pagina {
         width: 210mm !important;
         min-height: 297mm !important;
 
-        /* Escala la hoja A4 para que calce perfecto en los bordes del celu */
         transform: scale(calc((100vw - 16px) / 794)) !important;
         transform-origin: top center !important;
 
-        /* Elimina el espacio fantasma vertical que deja la transformación */
         margin-bottom: calc(-297mm * (1 - ((100vw - 16px) / 794))) !important;
         margin-top: 0 !important;
     }
 
-    .portada {
-        margin-top: 0 !important;
+    /* 4. Estilo del Botón Volver */
+    #btnSalirEditor {
+        display: none; /* Oculto por defecto en escritorio */
+    }
+
+    body.editor-fullscreen #btnSalirEditor {
+        display: flex !important;
+        position: fixed;
+        top: 12px;
+        right: 12px;
+        z-index: 1000000;
+        background: #ff0055;
+        color: #ffffff;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 13px;
+        box-shadow: 0 0 10px rgba(255, 0, 85, 0.6);
+        cursor: pointer;
     }
 }
