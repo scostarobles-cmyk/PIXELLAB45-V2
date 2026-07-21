@@ -911,7 +911,9 @@ margin-top:25px;
 #paginaEditor .pagina {
 
     transform-origin:top center;
-
+    transform: scale(0.7);
+    
+    
 }
 
 
