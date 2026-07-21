@@ -2,213 +2,317 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>PIXELLAB45 eBook Studio</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: Arial, sans-serif;
-      background-color: #121212;
-      color: #ffffff;
-      margin: 0;
-      padding: 15px;
-    }
-    .navbar {
-      background-color: #1e1e1e;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #0d0d0d;
+      color: #e0e0e0;
       padding: 12px;
-      display: flex;
-      gap: 10px;
-      border-radius: 6px;
-      margin-bottom: 15px;
+    }
+    header {
+      background-color: #1a1a1a;
+      padding: 15px;
+      border-radius: 8px;
       border: 1px solid #333;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 { font-size: 18px; color: #007bff; }
+    header span { font-size: 11px; background: #222; padding: 4px 8px; border-radius: 4px; color: #888; }
+    
+    /* NAV TABS */
+    .nav-tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
     }
     .tab-btn {
-      background-color: #2a2a2a;
-      color: #ccc;
-      border: 1px solid #444;
-      padding: 10px 15px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: bold;
       flex: 1;
+      padding: 12px 5px;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      color: #aaa;
+      font-weight: bold;
+      font-size: 13px;
+      border-radius: 6px;
+      cursor: pointer;
+      text-align: center;
     }
     .tab-btn.active {
-      background-color: #007bff;
+      background: #007bff;
       color: #fff;
       border-color: #0056b3;
     }
-    .panel {
-      display: none;
-      background-color: #1e1e1e;
-      padding: 20px;
-      border-radius: 8px;
-      border: 1px solid #333;
-    }
-    .panel.active {
-      display: block;
-    }
-    h2 {
-      margin-top: 0;
-      color: #007bff;
-    }
-    label {
-      display: block;
-      margin-top: 12px;
-      font-weight: bold;
-      font-size: 14px;
-      color: #ddd;
-    }
+
+    /* PANELS */
+    .panel { display: none; background: #161616; padding: 15px; border-radius: 8px; border: 1px solid #2a2a2a; }
+    .panel.active { display: block; }
+
+    label { display: block; margin-top: 10px; font-size: 12px; font-weight: bold; color: #bbb; text-transform: uppercase; letter-spacing: 0.5px; }
     input, select, textarea {
       width: 100%;
       padding: 10px;
       margin-top: 5px;
-      background-color: #2a2a2a;
-      border: 1px solid #444;
-      color: #ffffff;
-      border-radius: 4px;
+      background: #222;
+      border: 1px solid #333;
+      color: #fff;
+      border-radius: 5px;
       font-size: 14px;
     }
-    textarea {
-      resize: vertical;
-      min-height: 120px;
-    }
-    .boton-accion {
-      background-color: #007bff;
-      color: #ffffff;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 15px;
-      margin-top: 15px;
+    textarea { resize: vertical; min-height: 100px; font-family: inherit; }
+    
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    /* BUTTONS */
+    .btn {
       width: 100%;
-    }
-    .boton-accion:active {
-      background-color: #0056b3;
-    }
-    .scroll-box {
-      background-color: #000000;
       padding: 12px;
+      margin-top: 12px;
+      border: none;
       border-radius: 5px;
-      min-height: 100px;
-      font-family: monospace;
-      border: 1px solid #333;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+      background: #007bff;
+      color: #fff;
+    }
+    .btn:active { opacity: 0.8; }
+    .btn-success { background: #28a745; }
+    .btn-warning { background: #ffc107; color: #000; }
+    .btn-secondary { background: #333; color: #ccc; }
+
+    /* CONSOLE LOG */
+    .console-box {
+      background: #050505;
+      border: 1px solid #222;
+      padding: 10px;
+      border-radius: 5px;
       margin-top: 15px;
-      font-size: 13px;
+      font-family: monospace;
+      font-size: 11px;
       color: #00ff66;
+      max-height: 120px;
+      overflow-y: auto;
     }
-    .editor-area {
-      min-height: 250px;
-      font-family: Georgia, serif;
-      line-height: 1.6;
-    }
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
+
+    /* EDITOR SPECIAL */
+    .editor-controls { display: flex; gap: 5px; margin-top: 10px; flex-wrap: wrap; }
+    .editor-controls button { padding: 6px 10px; background: #252525; border: 1px solid #3d3d3d; color: #fff; border-radius: 4px; font-size: 12px; }
+    #editorArea { min-height: 220px; font-family: Georgia, serif; line-height: 1.6; }
+
+    /* PREVIEW CONTAINER */
+    .preview-card {
+      background: #fff;
+      color: #111;
+      padding: 20px;
+      border-radius: 5px;
+      margin-top: 15px;
+      min-height: 180px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
     }
   </style>
 </head>
 <body>
 
-  <nav class="navbar">
-    <button class="tab-btn active" onclick="cambiarPestana('generador')">⚡ Generador</button>
-    <button class="tab-btn" onclick="cambiarPestana('editor')">📝 Editor</button>
+  <header>
+    <h1>PIXELLAB45</h1>
+    <span>v2.5 Studio</span>
+  </header>
+
+  <nav class="nav-tabs">
+    <button class="tab-btn active" onclick="switchTab('generador', event)">⚡ Generador</button>
+    <button class="tab-btn" onclick="switchTab('editor', event)">📝 Editor</button>
+    <button class="tab-btn" onclick="switchTab('exportar', event)">📥 Exportar</button>
   </nav>
 
-  <!-- SECCIÓN GENERADOR -->
+  <!-- PANEL GENERADOR -->
   <section id="panel-generador" class="panel active">
-    <h2>⚡ Generador de eBooks</h2>
+    <h3>⚡ Generador de Contenido IA</h3>
     
-    <label for="temaEbook">Tema o Idea Principal:</label>
-    <input id="temaEbook" type="text" placeholder="Ej: Historias de terror urbano">
+    <label>Título del eBook / Proyecto:</label>
+    <input type="text" id="genTitle" placeholder="Ej: Relatos de Ultratumba">
 
     <div class="grid-2">
       <div>
-        <label for="autorEbook">Autor:</label>
-        <input id="autorEbook" type="text" placeholder="Tu nombre">
+        <label>Autor:</label>
+        <input type="text" id="genAuthor" placeholder="Tu Nombre">
       </div>
       <div>
-        <label for="capitulos">Capítulos:</label>
-        <input id="capitulos" type="number" min="1" value="5">
+        <label>N° Capítulos:</label>
+        <input type="number" id="genChapters" value="5" min="1" max="20">
       </div>
     </div>
 
-    <label for="motorIA">Motor de IA:</label>
-    <select id="motorIA">
-      <option value="gemini">Gemini AI Engine</option>
-      <option value="gpt">GPT Engine</option>
+    <label>Motor de IA:</label>
+    <select id="genEngine">
+      <option value="gemini-1.5-pro">Gemini Pro AI</option>
+      <option value="gpt-4o">GPT-4o Engine</option>
     </select>
 
-    <label for="promptDetallado">Prompt / Instrucciones Generales:</label>
-    <textarea id="promptDetallado" placeholder="Escribe detalles del estilo, tono, tipo de público..."></textarea>
+    <label>Instrucciones / Prompt del Libro:</label>
+    <textarea id="genPrompt" placeholder="Describe la trama, el estilo narrativo, los personajes principales y la atmósfera deseada..."></textarea>
 
-    <button class="boton-accion" onclick="generarEbook()">🚀 Generar eBook</button>
+    <button class="btn" onclick="runGenerator()">🚀 Generar Estructura y Capítulos</button>
 
-    <div id="monitorGenerador" class="scroll-box">
-      > Sistema Generador: Listo...
+    <div class="console-box" id="genConsole">
+      > PIXELLAB45 Engine listo para procesar...
     </div>
   </section>
 
-  <!-- SECCIÓN EDITOR -->
+  <!-- PANEL EDITOR -->
   <section id="panel-editor" class="panel">
-    <h2>📝 Editor de Contenido</h2>
+    <h3>📝 Editor de Texto</h3>
 
-    <label for="tituloCapitulo">Título de Capítulo / Sección:</label>
-    <input id="tituloCapitulo" type="text" placeholder="Capítulo 1: El comienzo">
+    <label>Capítulo Actual:</label>
+    <select id="selectChapter" onchange="loadChapter()">
+      <option value="1">Capítulo 1: Introducción</option>
+    </select>
 
-    <label for="contenidoEditor">Cuerpo del Texto:</label>
-    <textarea id="contenidoEditor" class="editor-area" placeholder="Escribe o edita el texto aquí..."></textarea>
+    <label>Título del Capítulo:</label>
+    <input type="text" id="chapterTitle" value="Capítulo 1: El Comienzo">
 
-    <div class="grid-2">
-      <button class="boton-accion" onclick="guardarBorrador()">💾 Guardar</button>
-      <button class="boton-accion" style="background-color: #28a745;" onclick="exportarEbook()">📥 Exportar</button>
+    <div class="editor-controls">
+      <button onclick="addFormat('b')"><b>B</b></button>
+      <button onclick="addFormat('i')"><i>I</i></button>
+      <button onclick="addFormat('h2')">H2</button>
+      <button onclick="addFormat('quote')">Cita</button>
     </div>
 
-    <div id="monitorEditor" class="scroll-box">
-      > Editor: Esperando borrador...
+    <label>Contenido del Capítulo:</label>
+    <textarea id="editorArea" placeholder="Escribe o edita el texto de tu capítulo aquí..."></textarea>
+
+    <div class="grid-2">
+      <button class="btn btn-secondary" onclick="saveDraft()">💾 Guardar Borrador</button>
+      <button class="btn btn-warning" onclick="newChapter()">➕ Nuevo Capítulo</button>
+    </div>
+
+    <div class="console-box" id="editConsole">
+      > Editor activo. No hay cambios pendientes.
+    </div>
+  </section>
+
+  <!-- PANEL EXPORTAR -->
+  <section id="panel-exportar" class="panel">
+    <h3>📥 Vista Previa y Exportación</h3>
+    
+    <div class="preview-card" id="previewBox">
+      <h2 id="prevTitle" style="margin-bottom:5px;">Título del eBook</h2>
+      <p><i id="prevAuthor">Por Autor</i></p>
+      <hr style="margin:10px 0;">
+      <div id="prevContent">Selecciona o genera contenido para previsualizar aquí el formato final...</div>
+    </div>
+
+    <label>Formato de Salida:</label>
+    <select id="exportFormat">
+      <option value="pdf">Documento PDF (.pdf)</option>
+      <option value="epub">Libro Electrónico EPUB (.epub)</option>
+      <option value="txt">Texto Plano (.txt)</option>
+    </select>
+
+    <button class="btn btn-success" onclick="exportFile()">📥 Descargar eBook Completo</button>
+
+    <div class="console-box" id="exportConsole">
+      > Compilador listo.
     </div>
   </section>
 
   <script>
-    function cambiarPestana(nombrePestana) {
+    // Gestión de Pestañas
+    function switchTab(tabId, event) {
       document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-
-      if (nombrePestana === 'generador') {
-        document.getElementById('panel-generador').classList.add('active');
-        event.target.classList.add('active');
-      } else {
-        document.getElementById('panel-editor').classList.add('active');
-        event.target.classList.add('active');
-      }
+      
+      document.getElementById('panel-' + tabId).classList.add('active');
+      if (event) event.target.classList.add('active');
+      
+      if(tabId === 'exportar') updatePreview();
     }
 
-    function generarEbook() {
-      const tema = document.getElementById('temaEbook').value || 'Sin título';
-      const motor = document.getElementById('motorIA').value;
-      const monitor = document.getElementById('monitorGenerador');
+    // Funciones del Generador
+    function runGenerator() {
+      const title = document.getElementById('genTitle').value || 'Sin Título';
+      const author = document.getElementById('genAuthor').value || 'Anónimo';
+      const engine = document.getElementById('genEngine').value;
+      const consoleBox = document.getElementById('genConsole');
 
-      monitor.innerHTML += `<br>[+] Procesando con ${motor.toUpperCase()}...`;
-      monitor.innerHTML += `<br>[OK] Generación iniciada para: "${tema}"`;
-
-      // Carga borrador inicial en el editor
-      document.getElementById('tituloCapitulo').value = `Capítulo 1: ${tema}`;
-      document.getElementById('contenidoEditor').value = `Borrador generado para "${tema}"...\n\nAquí va el texto completo del capítulo.`;
+      consoleBox.innerHTML += `<br>[+] Conectando con ${engine}...`;
+      consoleBox.innerHTML += `<br>[+] Creando estructura para: "${title}" (${author})`;
+      consoleBox.innerHTML += `<br>[OK] Capítulos generados con éxito. Trasládate al Editor.`;
+      
+      document.getElementById('prevTitle').innerText = title;
+      document.getElementById('prevAuthor').innerText = 'Por ' + author;
+      document.getElementById('chapterTitle').value = 'Capítulo 1: ' + title;
+      document.getElementById('editorArea').value = `Borrador inicial generado para "${title}".\n\nComienza a desarrollar la historia desde el editor.`;
     }
 
-    function guardarBorrador() {
-      const titulo = document.getElementById('tituloCapitulo').value;
-      const monitor = document.getElementById('monitorEditor');
-      monitor.innerHTML += `<br>[OK] Guardado borrador: "${titulo}"`;
+    // Funciones del Editor
+    function addFormat(type) {
+      const area = document.getElementById('editorArea');
+      const start = area.selectionStart;
+      const end = area.selectionEnd;
+      const selected = area.value.substring(start, end);
+
+      let formatted = selected;
+      if (type === 'b') formatted = `<b>${selected}</b>`;
+      if (type === 'i') formatted = `<i>${selected}</i>`;
+      if (type === 'h2') formatted = `\n<h2>${selected}</h2>\n`;
+      if (type === 'quote') formatted = `\n<blockquote>${selected}</blockquote>\n`;
+
+      area.value = area.value.substring(0, start) + formatted + area.value.substring(end);
     }
 
-    function exportarEbook() {
-      const monitor = document.getElementById('monitorEditor');
-      monitor.innerHTML += `<br>[PDF/EPUB] Listo para descarga.`;
+    function saveDraft() {
+      const title = document.getElementById('chapterTitle').value;
+      const consoleBox = document.getElementById('editConsole');
+      consoleBox.innerHTML += `<br>[OK] Guardado borrador: ${title}`;
+    }
+
+    function newChapter() {
+      const select = document.getElementById('selectChapter');
+      const count = select.options.length + 1;
+      const option = document.createElement('option');
+      option.value = count;
+      option.text = `Capítulo ${count}`;
+      select.add(option);
+      select.value = count;
+      document.getElementById('chapterTitle').value = `Capítulo ${count}`;
+      document.getElementById('editorArea').value = '';
+    }
+
+    function loadChapter() {
+      const select = document.getElementById('selectChapter');
+      document.getElementById('chapterTitle').value = select.options[select.selectedIndex].text;
+    }
+
+    // Funciones de Exportación
+    function updatePreview() {
+      const title = document.getElementById('genTitle').value || 'Título del eBook';
+      const author = document.getElementById('genAuthor').value || 'Autor';
+      const content = document.getElementById('editorArea').value || 'Sin contenido aún...';
+
+      document.getElementById('prevTitle').innerText = title;
+      document.getElementById('prevAuthor').innerText = 'Por ' + author;
+      document.getElementById('prevContent').innerHTML = content.replace(/\n/g, '<br>');
+    }
+
+    function exportFile() {
+      const format = document.getElementById('exportFormat').value;
+      const title = document.getElementById('genTitle').value || 'eBook';
+      const content = document.getElementById('editorArea').value;
+      const consoleBox = document.getElementById('exportConsole');
+
+      const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `${title.replace(/\s+/g, '_')}.${format === 'pdf' ? 'txt' : format}`;
+      link.click();
+
+      consoleBox.innerHTML += `<br>[OK] Descarga iniciada: ${link.download}`;
     }
   </script>
 
