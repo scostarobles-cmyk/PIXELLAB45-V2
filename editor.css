@@ -516,34 +516,31 @@ margin-top:25px;
 
 
 /* ==============================
-   CANVAS CENTRAL
+   CANVAS CENTRAL (CORREGIDO)
 ============================== */
 
 .editor-canvas {
+    width: 100%;
+    /* En vez de min-height, le damos una altura contenida */
+    height: calc(100vh - 280px); 
+    max-height: 800px; /* Limite máximo para no salirse */
 
-    width:100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
 
-    min-height:calc(100vh - 250px);
+    /* Activa la barra de desplazamiento INTERNA si la hoja A4 es más alta */
+    overflow-y: auto; 
+    overflow-x: auto;
 
-    display:flex;
+    padding: 30px;
+    box-sizing: border-box;
 
-    justify-content:center;
-
-    align-items:flex-start;
-
-    overflow:auto;
-
-    padding:30px;
-
-    box-sizing:border-box;
-
-    background:#05070d;
-
-    border:1px solid #00d9ff;
-
-    border-radius:15px;
-
+    background: #05070d;
+    border: 1px solid #00d9ff;
+    border-radius: 15px;
 }
+
 
 
 
