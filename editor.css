@@ -951,4 +951,36 @@ margin-top:25px;
 
     }
 
+}/* =====================================================
+   AJUSTE AUTOMÁTICO A4 EN MÓVIL (ZOOM / ESCALA)
+   ===================================================== */
+
+@media (max-width: 768px) {
+
+    /* El contenedor no debe dejar que nada se salga */
+    .editor-canvas, #paginaEditor {
+        width: 100% !important;
+        max-width: 100vw !important;
+        overflow-x: hidden !important;
+        padding: 10px 0 !important;
+    }
+
+    /* Mantenemos la hoja en tamaño A4 real pero la achicamos proporcionalmente */
+    .pagina {
+        width: 210mm !important;
+        min-height: 297mm !important;
+        padding: 20px !important;
+
+        /* Achica la hoja completa para que entre exacta en pantallas de celular */
+        transform: scale(0.42);
+        transform-origin: top center;
+
+        /* Compensa el espacio sobrante alrededor tras escalar */
+        margin-bottom: -160mm !important;
+    }
+
+    .portada {
+        margin-top: 0 !important;
+    }
 }
+
