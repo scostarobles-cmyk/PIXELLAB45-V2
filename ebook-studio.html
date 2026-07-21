@@ -1,347 +1,182 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>PIXELLAB45 eBook Studio</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: #0d0d0d;
-      color: #e0e0e0;
-      padding: 12px;
-    }
-    header {
-      background-color: #1a1a1a;
-      padding: 15px;
-      border-radius: 8px;
-      border: 1px solid #333;
-      margin-bottom: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    header h1 { font-size: 18px; color: #007bff; }
-    header span { font-size: 11px; background: #222; padding: 4px 8px; border-radius: 4px; color: #888; }
-    
-    .nav-tabs {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 12px;
-    }
-    .tab-btn {
-      flex: 1;
-      padding: 12px 5px;
-      background: #1a1a1a;
-      border: 1px solid #333;
-      color: #aaa;
-      font-weight: bold;
-      font-size: 13px;
-      border-radius: 6px;
-      cursor: pointer;
-      text-align: center;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .tab-btn.active {
-      background: #007bff;
-      color: #fff;
-      border-color: #0056b3;
-    }
-
-    .panel { display: none; background: #161616; padding: 15px; border-radius: 8px; border: 1px solid #2a2a2a; }
-    .panel.active { display: block; }
-
-    label { display: block; margin-top: 10px; font-size: 12px; font-weight: bold; color: #bbb; text-transform: uppercase; letter-spacing: 0.5px; }
-    input, select, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      background: #222;
-      border: 1px solid #333;
-      color: #fff;
-      border-radius: 5px;
-      font-size: 14px;
-    }
-    textarea { resize: vertical; min-height: 120px; font-family: inherit; }
-    
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-
-    .btn {
-      width: 100%;
-      padding: 12px;
-      margin-top: 12px;
-      border: none;
-      border-radius: 5px;
-      font-weight: bold;
-      font-size: 14px;
-      cursor: pointer;
-      background: #007bff;
-      color: #fff;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .btn:active { opacity: 0.8; }
-    .btn-success { background: #28a745; }
-    .btn-warning { background: #ffc107; color: #000; }
-    .btn-secondary { background: #333; color: #ccc; }
-
-    .console-box {
-      background: #050505;
-      border: 1px solid #222;
-      padding: 10px;
-      border-radius: 5px;
-      margin-top: 15px;
-      font-family: monospace;
-      font-size: 11px;
-      color: #00ff66;
-      max-height: 120px;
-      overflow-y: auto;
-    }
-
-    .editor-controls { display: flex; gap: 5px; margin-top: 10px; flex-wrap: wrap; }
-    .editor-controls button { padding: 8px 12px; background: #252525; border: 1px solid #3d3d3d; color: #fff; border-radius: 4px; font-size: 12px; cursor: pointer; }
-    #editorArea { min-height: 220px; font-family: Georgia, serif; line-height: 1.6; }
-
-    .preview-card {
-      background: #fff;
-      color: #111;
-      padding: 20px;
-      border-radius: 5px;
-      margin-top: 15px;
-      min-height: 180px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PIXELLAB45 eBook Studio</title>
+    <link rel="stylesheet" href="styles.css?v=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://js.puter.com/v2/"></script>
 </head>
+
 <body>
 
-  <header>
-    <h1>PIXELLAB45</h1>
-    <span>v2.5 Studio</span>
-  </header>
+    <header class="navbar">
+        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+        <nav class="nav-links" id="navLinks">
+            <a href="index.html">🏠 Inicio</a>
+            <a href="#">📚 eBook Studio</a>
+            <a href="#">📖 Biblioteca</a>
+            <a href="#">⚙️ Proyectos</a>
+        </nav>
+    </header>
 
-  <nav class="nav-tabs">
-    <button class="tab-btn active" id="btn-tab-generador" onclick="switchTab('generador')">⚡ Generador</button>
-    <button class="tab-btn" id="btn-tab-editor" onclick="switchTab('editor')">📝 Editor</button>
-    <button class="tab-btn" id="btn-tab-exportar" onclick="switchTab('exportar')">📥 Exportar</button>
-  </nav>
+    <div class="divider"></div>
 
-  <!-- PANEL GENERADOR -->
-  <section id="panel-generador" class="panel active">
-    <h3>⚡ Generador de Contenido IA</h3>
-    
-    <label>Título del eBook / Proyecto:</label>
-    <input type="text" id="genTitle" placeholder="Ej: Relatos de Ultratumba">
+    <section class="ailab-hero">
+        <h1>📚 PIXELLAB45 eBook Studio</h1>
+        <p>AI Publishing Workstation</p>
+    </section>
 
-    <div class="grid-2">
-      <div>
-        <label>Autor:</label>
-        <input type="text" id="genAuthor" placeholder="Tu Nombre">
-      </div>
-      <div>
-        <label>N° Capítulos:</label>
-        <input type="number" id="genChapters" value="5" min="1" max="20">
-      </div>
+    <div class="ai-grid">
+
+        <div class="ai-card">
+            <section class="ai-lab">
+                <h2>🚀 Nuevo Proyecto</h2>
+                <p class="ai-subtitle">Crea la estructura completa de un eBook mediante Inteligencia Artificial.</p>
+
+                <input id="temaEbook" type="text" placeholder="Tema del eBook">
+                <input id="autorEbook" type="text" placeholder="Autor">
+                <input id="paginasEbook" type="number" value="100" min="10" max="1000">
+
+                <select id="idiomaEbook">
+                    <option value="Español">🇪🇸 Español</option>
+                    <option value="English">🇺🇸 English</option>
+                    <option value="Português">🇧🇷 Português</option>
+                    <option value="Français">🇫🇷 Français</option>
+                    <option value="Italiano">🇮🇹 Italiano</option>
+                </select>
+
+                <select id="tonoEbook">
+                    <option>Profesional</option>
+                    <option>Técnico</option>
+                    <option>Académico</option>
+                    <option>Inspirador</option>
+                    <option>Educativo</option>
+                </select>
+
+                <select id="publicoEbook">
+                    <option>General</option>
+                    <option>Principiantes</option>
+                    <option>Intermedio</option>
+                    <option>Avanzado</option>
+                    <option>Profesionales</option>
+                </select>
+
+                <div class="section-divider"></div>
+
+                <h3>⚙️ Motores IA</h3>
+
+                <div class="gallery-filters">
+                    <button id="btnProyecto" class="boton-accion" onclick="crearProyecto()">📁 Crear Proyecto</button>
+                    <button id="btnPlan" class="boton-accion" onclick="generarPlan2()">📋 Generar Plan</button>
+                    <button id="btnIndice" class="boton-accion" onclick="generarIndice()">📑 Índice</button>
+                    <button id="btnLegales" class="boton-accion" onclick="generarLegales()">⚖️ Legales</button>
+                    <button id="btnIntroduccion" class="boton-accion" onclick="generarIntroduccion()">📝 Introducción</button>
+                    <button id="btnCapitulos" class="boton-accion" onclick="generarCapitulos()">📖 Capítulos</button>
+                    <button id="btnConclusion" class="boton-accion" onclick="generarConclusion()">🏁 Conclusión</button>
+                </div>
+                
+                <div id="monitorBotonera"></div>
+            </section>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="ai-grid">
+            <!-- PIPELINE -->
+            <div class="ai-card">
+                <section class="ai-lab">
+                    <h2>📊 Pipeline IA</h2>
+                    <p class="ai-subtitle">Estado de los motores del proyecto</p>
+                    <div class="scroll-box">
+                        <p id="estadoProyecto">⚪ Proyecto</p>
+                        <p id="estadoPlan">⚪ Planificador</p>
+                        <p id="estadoIndice">⚪ Índice</p>
+                        <p id="estadoLegales">⚪ Legales</p>
+                        <p id="estadoIntro">⚪ Introducción</p>
+                        <p id="estadoCapitulos">⚪ Capítulos</p>
+                        <p id="estadoConclusion">⚪ Conclusión</p>
+                    </div>
+                </section>
+            </div>
+
+            <!-- MONITOR -->
+            <div class="ai-card">
+                <section class="ai-lab">
+                    <h2>🖥 Monitor PIXELLAB</h2>
+                    <div class="gallery-filters">
+                        <button class="boton-accion" onclick="limpiarMonitorPIXELLAB()">🗑 Limpiar</button>
+                    </div>
+                    <div id="monitorPIXELLAB" class="scroll-box" style="height:350px;"></div>
+                </section>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- BIBLIOTECA EDITORIAL -->
+        <div class="ai-card">
+            <section class="ai-lab">
+                <h2>📚 Biblioteca Editorial</h2>
+                <p class="ai-subtitle">Proyectos listos para edición.</p>
+                <div id="bibliotecaEditorial" class="biblioteca-grid"></div>
+            </section>
+        </div>
+
+        <!-- AREA DEL EDITOR -->
+        <div id="editorTrabajo" class="ai-card" style="display:block;">
+            <div class="editor-mobile-toolbar">
+                <button class="boton-accion">📚 Proyecto</button>
+                <button class="boton-accion">⚙️ Pipeline</button>
+            </div>
+
+            <section class="ai-lab">
+                <h2>✏️ PIXELLAB Editorial Workspace</h2>
+                <p class="ai-subtitle">Editor profesional de publicaciones digitales.</p>
+
+                <div class="editor-workspace">
+                    <!-- PANEL IZQUIERDO -->
+                    <div class="editor-panel">
+                        <h3>📚 Proyecto</h3>
+                        <button class="editor-menu">📄 Portada</button>
+                        <button class="editor-menu">⚖️ Legales</button>
+                        <button class="editor-menu">📑 Índice</button>
+                        <button class="editor-menu">📝 Capítulos</button>
+                        <button class="editor-menu">🖼️ Imágenes</button>
+                        <button class="editor-menu">🎨 Diseño</button>
+                    </div>
+
+                    <!-- ZONA CENTRAL -->
+                    <div class="editor-canvas">
+                        <h3>📖 Área de Maquetación</h3>
+                        <div id="paginaEditor" class="pagina-editor"></div>
+                    </div>
+
+                    <!-- PANEL DERECHO -->
+                    <div class="editor-panel pipeline-editor">
+                        <h3>⚙️ Pipeline Editorial</h3>
+                        <p>⚪ Proyecto cargado</p>
+                        <p>⚪ Texto</p>
+                        <p>⚪ Imágenes</p>
+                        <p>⚪ Diseño</p>
+                        <p>⚪ Revisión</p>
+                        <p>⚪ Exportación</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
     </div>
 
-    <label>Motor de IA:</label>
-    <select id="genEngine">
-      <option value="Gemini Pro AI">Gemini Pro AI</option>
-      <option value="GPT-4o Engine">GPT-4o Engine</option>
-    </select>
-
-    <label>Instrucciones / Prompt del Libro:</label>
-    <textarea id="genPrompt" placeholder="Describe la trama, el estilo narrativo, los personajes principales y la atmósfera deseada..."></textarea>
-
-    <button class="btn" onclick="runGenerator()">🚀 Generar Estructura y Capítulos</button>
-
-    <div class="console-box" id="genConsole">
-      > PIXELLAB45 Engine listo para procesar...
-    </div>
-  </section>
-
-  <!-- PANEL EDITOR -->
-  <section id="panel-editor" class="panel">
-    <h3>📝 Editor de Texto</h3>
-
-    <label>Capítulo Actual:</label>
-    <select id="selectChapter" onchange="loadChapter()">
-      <option value="1">Capítulo 1: Introducción</option>
-    </select>
-
-    <label>Título del Capítulo:</label>
-    <input type="text" id="chapterTitle" value="Capítulo 1: Introducción">
-
-    <div class="editor-controls">
-      <button type="button" onclick="addFormat('b')"><b>B</b></button>
-      <button type="button" onclick="addFormat('i')"><i>I</i></button>
-      <button type="button" onclick="addFormat('h2')">H2</button>
-      <button type="button" onclick="addFormat('quote')">Cita</button>
-    </div>
-
-    <label>Contenido del Capítulo:</label>
-    <textarea id="editorArea" placeholder="Escribe o edita el texto de tu capítulo aquí..."></textarea>
-
-    <div class="grid-2">
-      <button class="btn btn-secondary" onclick="saveDraft()">💾 Guardar Borrador</button>
-      <button class="btn btn-warning" onclick="newChapter()">➕ Nuevo Capítulo</button>
-    </div>
-
-    <div class="console-box" id="editConsole">
-      > Editor activo. No hay cambios pendientes.
-    </div>
-  </section>
-
-  <!-- PANEL EXPORTAR -->
-  <section id="panel-exportar" class="panel">
-    <h3>📥 Vista Previa y Exportación</h3>
-    
-    <div class="preview-card" id="previewBox">
-      <h2 id="prevTitle" style="margin-bottom:5px;">Título del eBook</h2>
-      <p><i id="prevAuthor">Por Autor</i></p>
-      <hr style="margin:10px 0;">
-      <div id="prevContent">Selecciona o genera contenido para previsualizar aquí el formato final...</div>
-    </div>
-
-    <label>Formato de Salida:</label>
-    <select id="exportFormat">
-      <option value="txt">Texto Plano (.txt)</option>
-      <option value="html">Documento HTML (.html)</option>
-    </select>
-
-    <button class="btn btn-success" onclick="exportFile()">📥 Descargar eBook Completo</button>
-
-    <div class="console-box" id="exportConsole">
-      > Compilador listo.
-    </div>
-  </section>
-
-  <script>
-    // Memoria simple de capítulos
-    const ebookData = {
-      1: { title: "Capítulo 1: Introducción", content: "" }
-    };
-
-    function switchTab(tabId) {
-      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      
-      document.getElementById('panel-' + tabId).classList.add('active');
-      document.getElementById('btn-tab-' + tabId).classList.add('active');
-      
-      if (tabId === 'exportar') updatePreview();
-    }
-
-    function runGenerator() {
-      const title = document.getElementById('genTitle').value.trim() || 'Sin Título';
-      const author = document.getElementById('genAuthor').value.trim() || 'Anónimo';
-      const engine = document.getElementById('genEngine').value;
-      const consoleBox = document.getElementById('genConsole');
-
-      consoleBox.innerHTML += `<br>[+] Conectando con ${engine}...`;
-      consoleBox.innerHTML += `<br>[+] Estructura creada: "${title}" por ${author}`;
-      consoleBox.innerHTML += `<br>[OK] Proyecto listo. Trasládate a la pestaña Editor.`;
-      
-      document.getElementById('chapterTitle').value = 'Capítulo 1: ' + title;
-      const initialText = `Borrador inicial para "${title}".\n\nAquí puedes escribir el desarrollo del libro.`;
-      document.getElementById('editorArea').value = initialText;
-      
-      ebookData[1] = { title: 'Capítulo 1: ' + title, content: initialText };
-    }
-
-    function addFormat(type) {
-      const area = document.getElementById('editorArea');
-      const start = area.selectionStart;
-      const end = area.selectionEnd;
-      const selected = area.value.substring(start, end);
-
-      let formatted = selected;
-      if (type === 'b') formatted = `<b>${selected}</b>`;
-      if (type === 'i') formatted = `<i>${selected}</i>`;
-      if (type === 'h2') formatted = `\n<h2>${selected}</h2>\n`;
-      if (type === 'quote') formatted = `\n<blockquote>${selected}</blockquote>\n`;
-
-      area.value = area.value.substring(0, start) + formatted + area.value.substring(end);
-      area.focus();
-    }
-
-    function saveDraft() {
-      const select = document.getElementById('selectChapter');
-      const currentVal = select.value;
-      const title = document.getElementById('chapterTitle').value;
-      const content = document.getElementById('editorArea').value;
-
-      ebookData[currentVal] = { title: title, content: content };
-      select.options[select.selectedIndex].text = title;
-
-      const consoleBox = document.getElementById('editConsole');
-      consoleBox.innerHTML += `<br>[OK] Guardado borrador: ${title}`;
-    }
-
-    function newChapter() {
-      const select = document.getElementById('selectChapter');
-      const count = select.options.length + 1;
-      
-      const option = document.createElement('option');
-      option.value = count;
-      option.text = `Capítulo ${count}`;
-      select.add(option);
-      select.value = count;
-
-      document.getElementById('chapterTitle').value = `Capítulo ${count}`;
-      document.getElementById('editorArea').value = '';
-      
-      ebookData[count] = { title: `Capítulo ${count}`, content: '' };
-    }
-
-    function loadChapter() {
-      const select = document.getElementById('selectChapter');
-      const currentVal = select.value;
-      
-      if (ebookData[currentVal]) {
-        document.getElementById('chapterTitle').value = ebookData[currentVal].title;
-        document.getElementById('editorArea').value = ebookData[currentVal].content;
-      }
-    }
-
-    function updatePreview() {
-      const title = document.getElementById('genTitle').value.trim() || 'Título del eBook';
-      const author = document.getElementById('genAuthor').value.trim() || 'Autor';
-      
-      document.getElementById('prevTitle').innerText = title;
-      document.getElementById('prevAuthor').innerText = 'Por ' + author;
-
-      let fullContent = '';
-      for (const key in ebookData) {
-        if (ebookData[key].content) {
-          fullContent += `<h3>${ebookData[key].title}</h3><p>${ebookData[key].content.replace(/\n/g, '<br>')}</p><br>`;
+    <script>
+        function toggleMenu() {
+            const nav = document.getElementById('navLinks');
+            if (nav) nav.classList.toggle('active');
         }
-      }
-
-      document.getElementById('prevContent').innerHTML = fullContent || 'El editor está vacío. Añade contenido en la pestaña Editor.';
-    }
-
-    function exportFile() {
-      const format = document.getElementById('exportFormat').value;
-      const title = document.getElementById('genTitle').value.trim() || 'eBook';
-      const consoleBox = document.getElementById('exportConsole');
-
-      let outputText = `=== ${title} ===\n\n`;
-      for (const key in ebookData) {
-        outputText += `${ebookData[key].title}\n${'-'.repeat(20)}\n${ebookData[key].content}\n\n`;
-      }
-
-      const blob = new Blob([outputText], { type: 'text/plain;charset=utf-8' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = `${title.replace(/\s+/g, '_')}.${format}`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-      consoleBox.innerHTML += `<br>[OK] Archivo descargado: ${link.download}`;
-    }
-  </script>
-
+    </script>
+    <script src="pixellab45-core.js?v=1" onerror="console.warn('pixellab45-core.js no detectado, usando fallbacks.')"></script>
+    <script src="script.js?v=1"></script>
 </body>
 </html>
