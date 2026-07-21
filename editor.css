@@ -926,88 +926,64 @@ margin-top:25px;
 
 }
 /* =====================================================
-   PANTALLA COMPLETA EN MÓVIL + BOTÓN SALIR
+   VISTA MÓVIL AISLADA (MENÚ + EDITOR + FOOTER)
    ===================================================== */
 
 @media (max-width: 768px) {
 
-    /* 1. Ocultamos el generador y encabezados cuando la clase 'modo-full' está activa */
-    body.editor-fullscreen .gallery-filters,
-    body.editor-fullscreen .editor-toolbar-editor,
-    body.editor-fullscreen .pipeline-editor,
-    body.editor-fullscreen header,
-    body.editor-fullscreen nav,
-    body.editor-fullscreen .generador {
+    /* 1. Ocultamos el título Hero y todas las tarjetas excepto el Editor */
+    .ailab-hero,
+    .ai-card:not(#editorTrabajo) {
         display: none !important;
     }
 
-    /* 2. Fijamos el editor solo en pantalla completa */
-    body.editor-fullscreen #editorTrabajo {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100vw !important;
-        height: 100vh !important;
-        z-index: 999999 !important;
-        background: #05070d !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        overflow: hidden !important;
+    /* 2. El editor pasa a ser el contenedor principal visible */
+    #editorTrabajo {
+        width: 100% !important;
+        margin: 10px 0 !important;
+        padding: 10px !important;
+        box-sizing: border-box !important;
     }
 
-    body.editor-fullscreen .editor-canvas {
-        width: 100vw !important;
-        height: 100vh !important;
-        border: none !important;
-        border-radius: 0 !important;
-        padding: 50px 0 20px 0 !important; /* Espacio arriba para el botón */
-        margin: 0 !important;
-        background: #05070d !important;
-
+    /* 3. Ajustamos el canvas para que aproveche todo el ancho */
+    .editor-canvas {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        min-height: 500px !important;
+        border: 1px solid #00d9ff !important;
+        border-radius: 12px !important;
+        padding: 15px 0 !important;
+        margin: 0 auto !important;
+        
         display: flex !important;
         justify-content: center !important;
         align-items: flex-start !important;
+        overflow-x: auto !important;
         overflow-y: auto !important;
-        overflow-x: hidden !important;
     }
 
-    body.editor-fullscreen #paginaEditor {
+    #paginaEditor {
         width: 100% !important;
         display: flex !important;
         justify-content: center !important;
     }
 
-    /* 3. Escala A4 móvil */
-    body.editor-fullscreen .pagina {
+    /* 4. Escalado exacto de la hoja A4 al ancho de tu pantalla móvil */
+    .pagina {
         width: 210mm !important;
         min-height: 297mm !important;
 
-        transform: scale(calc((100vw - 16px) / 794)) !important;
+        /* Escala la hoja A4 según el ancho real de la pantalla */
+        transform: scale(calc((100vw - 40px) / 794)) !important;
         transform-origin: top center !important;
 
-        margin-bottom: calc(-297mm * (1 - ((100vw - 16px) / 794))) !important;
+        /* Remueve el espacio sobrante inferior del transform */
+        margin-bottom: calc(-297mm * (1 - ((100vw - 40px) / 794))) !important;
         margin-top: 0 !important;
     }
 
-    /* 4. Estilo del Botón Volver */
-    #btnSalirEditor {
-        display: none; /* Oculto por defecto en escritorio */
-    }
-
-    body.editor-fullscreen #btnSalirEditor {
-        display: flex !important;
-        position: fixed;
-        top: 12px;
-        right: 12px;
-        z-index: 1000000;
-        background: #ff0055;
-        color: #ffffff;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 20px;
-        font-weight: bold;
-        font-size: 13px;
-        box-shadow: 0 0 10px rgba(255, 0, 85, 0.6);
-        cursor: pointer;
+    .portada {
+        margin-top: 0 !important;
     }
 }
