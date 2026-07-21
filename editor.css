@@ -926,18 +926,18 @@ margin-top:25px;
 
 }
 /* =====================================================
-   VISTA MÓVIL AISLADA (MENÚ + EDITOR + FOOTER)
+   VISTA MÓVIL (SE OCULTA SOLO CUANDO EL EDITOR ESTÁ ACTIVO)
    ===================================================== */
 
 @media (max-width: 768px) {
 
-    /* 1. Ocultamos el título Hero y todas las tarjetas excepto el Editor */
-    .ailab-hero,
-    .ai-card:not(#editorTrabajo) {
+    /* Solo se ocultan los módulos superiores si la clase 'modo-editor-activo' está en el body */
+    body.modo-editor-activo .ailab-hero,
+    body.modo-editor-activo .ai-card:not(#editorTrabajo) {
         display: none !important;
     }
 
-    /* 2. El editor pasa a ser el contenedor principal visible */
+    /* Estilos para el editor en celular cuando está abierto */
     #editorTrabajo {
         width: 100% !important;
         margin: 10px 0 !important;
@@ -945,7 +945,6 @@ margin-top:25px;
         box-sizing: border-box !important;
     }
 
-    /* 3. Ajustamos el canvas para que aproveche todo el ancho */
     .editor-canvas {
         width: 100% !important;
         max-width: 100% !important;
@@ -969,16 +968,14 @@ margin-top:25px;
         justify-content: center !important;
     }
 
-    /* 4. Escalado exacto de la hoja A4 al ancho de tu pantalla móvil */
+    /* Escalado exacto de la hoja A4 */
     .pagina {
         width: 210mm !important;
         min-height: 297mm !important;
 
-        /* Escala la hoja A4 según el ancho real de la pantalla */
         transform: scale(calc((100vw - 40px) / 794)) !important;
         transform-origin: top center !important;
 
-        /* Remueve el espacio sobrante inferior del transform */
         margin-bottom: calc(-297mm * (1 - ((100vw - 40px) / 794))) !important;
         margin-top: 0 !important;
     }
