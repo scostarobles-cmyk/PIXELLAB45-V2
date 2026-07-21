@@ -44,7 +44,16 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     document.head.appendChild(script);
   });
 })();
+  </script>
 
+  <!-- MOSTRAR VERSIÓN EN EL FOOTER -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const versionElement = document.getElementById("app-version");
+      if (versionElement) {
+        versionElement.textContent = "Versión v1.0.0";
+      }
+    });
   </script>
 </head>
 
@@ -223,7 +232,7 @@ max="1000">
 
 <div
     id="errorEditorial"
-    class="error-editorial"a
+    class="error-editorial"
     style="display:none;">
 </div>
 
@@ -486,9 +495,13 @@ Editor profesional de publicaciones digitales.
 
 </div>
 
+</div>
+</div>
+
 <div class="section-divider"></div>
  
-  <  <div class="footer-content">
+<footer>
+  <div class="footer-content">
 
     <h3>PIXELLAB45</h3>
 
@@ -500,13 +513,11 @@ Editor profesional de publicaciones digitales.
       © 2026 Sergio Costa | Todos los derechos reservados
     </p>
 
-    <!-- AGREGAR ACÁ -->
     <p><span id="app-version"></span></p>
 
   </div>
+</footer>
 
- 
-                  
 </body>
 
 </html>
