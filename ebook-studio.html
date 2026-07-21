@@ -10,12 +10,11 @@
 
 <link rel="stylesheet" href="styles.css?v=1">
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://js.puter.com/v2/"></script>
-    <script>
-    (function cargarScriptsConVersion() {
-  // 1. Generar el ID único basado en la fecha y milisegundos de hoy
+
+<script>
+(function cargarScriptsConVersion() {
   const ahora = new Date();
   const anio = ahora.getFullYear();
   const mes = String(ahora.getMonth() + 1).padStart(2, '0');
@@ -27,34 +26,29 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
 
   const versionID = `${anio}${mes}${dia}_${horas}${minutos}${segundos}_${ms}`;
 
-  // 2. Lista de archivos que querés cargar sin caché
   const misScripts = [
     'editor.js',
     'ailab.js',
-    'pixellab45-core.js'      
-    // Agregá acá todos los .js que necesites
+    'pixellab45-core.js'
   ];
 
-  // 3. Crear e inyectar las etiquetas <script> en la página
   misScripts.forEach(nombreScript => {
     const script = document.createElement('script');
-    // Le pega el ID dinámico como parámetro 'v'
     script.src = `${nombreScript}?v=${versionID}`;
-    script.async = false; // Mantiene el orden de ejecución
+    script.async = false;
     document.head.appendChild(script);
   });
 })();
-  </script>
 
-  <!-- MOSTRAR VERSIÓN EN EL FOOTER -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const versionElement = document.getElementById("app-version");
-      if (versionElement) {
-        versionElement.textContent = "Versión v1.0.0";
-      }
-    });
-  </script>
+// Inserción segura de la versión
+document.addEventListener("DOMContentLoaded", () => {
+  const versionElement = document.getElementById("app-version");
+  if (versionElement) {
+    versionElement.textContent = "Versión v1.0.0";
+  }
+});
+</script>
+
 </head>
 
 <body>
@@ -115,71 +109,34 @@ AI Publishing Workstation
 Crea la estructura completa de un eBook mediante Inteligencia Artificial.
 </p>
 
-<input
-id="temaEbook"
-type="text"
-placeholder="Tema del eBook">
+<input id="temaEbook" type="text" placeholder="Tema del eBook">
 
-<input
-id="autorEbook"
-type="text"
-placeholder="Autor">
+<input id="autorEbook" type="text" placeholder="Autor">
 
-<input
-id="paginasEbook"
-type="number"
-value="100"
-min="10"
-max="1000">
+<input id="paginasEbook" type="number" value="100" min="10" max="1000">
 
 <select id="idiomaEbook">
-
-<option value="Español">🇪🇸 Español</option>
-
-<option value="English">
-🇺🇸 English
-</option>
-
-<option value="Português">
-🇧🇷 Português
-</option>
-
-<option value="Français">
-🇫🇷 Français
-</option>
-
-<option value="Italiano">
-🇮🇹 Italiano
-</option>
-
+  <option value="Español">🇪🇸 Español</option>
+  <option value="English">🇺🇸 English</option>
+  <option value="Português">🇧🇷 Português</option>
+  <option value="Français">🇫🇷 Français</option>
+  <option value="Italiano">🇮🇹 Italiano</option>
 </select>
 
 <select id="tonoEbook">
-
-<option>Profesional</option>
-
-<option>Técnico</option>
-
-<option>Académico</option>
-
-<option>Inspirador</option>
-
-<option>Educativo</option>
-
+  <option>Profesional</option>
+  <option>Técnico</option>
+  <option>Académico</option>
+  <option>Inspirador</option>
+  <option>Educativo</option>
 </select>
 
 <select id="publicoEbook">
-
-<option>General</option>
-
-<option>Principiantes</option>
-
-<option>Intermedio</option>
-
-<option>Avanzado</option>
-
-<option>Profesionales</option>
-
+  <option>General</option>
+  <option>Principiantes</option>
+  <option>Intermedio</option>
+  <option>Avanzado</option>
+  <option>Profesionales</option>
 </select>
 
 <div class="section-divider"></div>
@@ -219,302 +176,114 @@ max="1000">
 </button>
 
 </div>
-<!-- ===================================== -->
-<!-- PANEL ESTADO EDITORIAL -->
-<!-- ===================================== -->
 
+<!-- PANEL ESTADO EDITORIAL -->
 <div id="estadoEditorial" class="estado-editorial"></div>
 
-
-<!-- ===================================== -->
 <!-- PANEL ÚLTIMO ERROR -->
-<!-- ===================================== -->
-
-<div
-    id="errorEditorial"
-    class="error-editorial"
-    style="display:none;">
-</div>
+<div id="errorEditorial" class="error-editorial" style="display:none;"></div>
 
 <div class="section-divider"></div>
 
 <div class="ai-grid">
 
-  <!-- =============================== -->
   <!-- PIPELINE -->
-  <!-- =============================== -->
-
   <div class="ai-card">
-
     <section class="ai-lab">
-
       <h2>📊 Pipeline IA</h2>
-
-      <p class="ai-subtitle">
-        Estado de los motores del proyecto
-      </p>
-
+      <p class="ai-subtitle">Estado de los motores del proyecto</p>
       <div class="scroll-box">
-      
-      <p id="estadoProyecto">⚪ Proyecto</p>
-
+        <p id="estadoProyecto">⚪ Proyecto</p>
         <p id="estadoPlan">⚪ Planificador</p>
-
         <p id="estadoIndice">⚪ Índice</p>
-
         <p id="estadoLegales">⚪ Legales</p>
-
         <p id="estadoIntro">⚪ Introducción</p>
-
         <p id="estadoCapitulos">⚪ Capítulos</p>
-
         <p id="estadoConclusion">⚪ Conclusión</p>
-
       </div>
-
     </section>
-
   </div>
 
-  <!-- =============================== -->
   <!-- MONITOR -->
-  <!-- =============================== -->
-
-<div class="gallery-filters">
-
-    <button
-        class="boton-accion"
-        onclick="limpiarMonitorPIXELLAB()">
-
-        🗑 Limpiar
-
-    </button>
-
-</div>
-
-<div
-    id="monitorPIXELLAB"
-    class="scroll-box"
-    style="height:350px;">
-
-</div>
+  <div class="ai-card">
+    <section class="ai-lab">
+      <div class="gallery-filters">
+        <button class="boton-accion" onclick="limpiarMonitorPIXELLAB()">🗑 Limpiar</button>
+      </div>
+      <div id="monitorPIXELLAB" class="scroll-box" style="height:350px;"></div>
+    </section>
+  </div>
 
 </div>
 
 <div class="section-divider"></div>
 
-<!-- =============================== -->
 <!-- PIXELLAB EDITORIAL -->
-<!-- =============================== -->
-
 <div class="ai-card">
-
-<section class="ai-lab">
-
-<h2>
-📚 Biblioteca Editorial
-</h2>
-
-<p class="ai-subtitle">
-Proyectos listos para edición.
-</p>
-
-
-<div id="bibliotecaEditorial" class="biblioteca-grid">
-
-
-<!-- TARJETA DE PROYECTO -->
-
-<article class="editorial-card">
-
-
-<div class="editorial-cover">
-
-<!--
-Futura portada del libro
--->
-
+  <section class="ai-lab">
+    <h2>📚 Biblioteca Editorial</h2>
+    <p class="ai-subtitle">Proyectos listos para edición.</p>
+    <div id="bibliotecaEditorial" class="biblioteca-grid">
+      <article class="editorial-card">
+        <div class="editorial-cover"></div>
+        <div class="editorial-info">
+          <h3>ChatGPT desde Cero</h3>
+          <p>Ebook • Inteligencia Artificial</p>
+          <span>PIXELLAB Editorial</span>
+          <button class="boton-accion">✏️ Editar</button>
+        </div>
+      </article>
+    </div>
+  </section>
 </div>
 
-
-<div class="editorial-info">
-
-
-<h3>
-ChatGPT desde Cero
-</h3>
-
-
-<p>
-Ebook • Inteligencia Artificial
-</p>
-
-
-<span>
-PIXELLAB Editorial
-</span>
-
-
-<button class="boton-accion">
-✏️ Editar
-</button>
-
-
-</div>
-
-
-</article>
-
-
-</div>
-
-
-</section>
-
-</div>
-
-
-
-<!-- =============================== -->
 <!-- AREA DEL EDITOR -->
-<!-- =============================== -->
+<div id="editorTrabajo" class="ai-card" style="display:block;">
+  <section class="ai-lab">
+    <h2>✏️ PIXELLAB Editorial Workspace</h2>
+    <p class="ai-subtitle">Editor profesional de publicaciones digitales.</p>
 
+    <div class="editor-toolbar-editor">
+      <button class="editor-menu">📄 Portada</button>
+      <button class="editor-menu">⚖️ Legales</button>
+      <button class="editor-menu">📑 Índice</button>
+      <button class="editor-menu">📝 Capítulos</button>
+      <button class="editor-menu">🖼️ Imágenes</button>
+      <button class="editor-menu">🎨 Diseño</button>
+    </div>
 
-<div 
-id="editorTrabajo"
-class="ai-card"
-style="display:block;">
+    <div class="pipeline-editor">
+      <h3>⚙️ Pipeline Editorial</h3>
+      <div class="pipeline-items">
+        <p>⚪ Proyecto cargado</p>
+        <p>⚪ Texto</p>
+        <p>⚪ Imágenes</p>
+        <p>⚪ Diseño</p>
+        <p>⚪ Revisión</p>
+        <p>⚪ Exportación</p>
+      </div>
+    </div>
 
-
-
-<section class="ai-lab">
-
-
-<h2>
-✏️ PIXELLAB Editorial Workspace
-</h2>
-
-
-<p class="ai-subtitle">
-Editor profesional de publicaciones digitales.
-</p>
-
-
-
-<!-- BOTONERA EDITOR -->
-
-<div class="editor-toolbar-editor">
-
-
-<button class="editor-menu">
-📄 Portada
-</button>
-
-
-<button class="editor-menu">
-⚖️ Legales
-</button>
-
-
-<button class="editor-menu">
-📑 Índice
-</button>
-
-
-<button class="editor-menu">
-📝 Capítulos
-</button>
-
-
-<button class="editor-menu">
-🖼️ Imágenes
-</button>
-
-
-<button class="editor-menu">
-🎨 Diseño
-</button>
-
-
+    <div class="editor-canvas">
+      <div id="paginaEditor">
+        <div class="hoja"></div>
+      </div>
+    </div>
+  </section>
 </div>
-
-
-
-
-<!-- PIPELINE HORIZONTAL -->
-
-<div class="pipeline-editor">
-
-
-<h3>
-⚙️ Pipeline Editorial
-</h3>
-
-
-<div class="pipeline-items">
-
-
-<p>⚪ Proyecto cargado</p>
-
-<p>⚪ Texto</p>
-
-<p>⚪ Imágenes</p>
-
-<p>⚪ Diseño</p>
-
-<p>⚪ Revisión</p>
-
-<p>⚪ Exportación</p>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-<!-- ZONA DE TRABAJO -->
-
-<div class="editor-canvas">
-
-
-<div id="paginaEditor">
-<div class="hoja"></div>
-</div>
-
-
-</div>
-
-
 
 </section>
-
-
-</div>
-
 </div>
 </div>
 
 <div class="section-divider"></div>
- 
+
 <footer>
   <div class="footer-content">
-
     <h3>PIXELLAB45</h3>
-
-    <p>
-      Inteligencia Artificial • Tecnología • Innovación
-    </p>
-
-    <p class="footer-copy">
-      © 2026 Sergio Costa | Todos los derechos reservados
-    </p>
-
+    <p>Inteligencia Artificial • Tecnología • Innovación</p>
+    <p class="footer-copy">© 2026 Sergio Costa | Todos los derechos reservados</p>
     <p><span id="app-version"></span></p>
-
   </div>
 </footer>
 
