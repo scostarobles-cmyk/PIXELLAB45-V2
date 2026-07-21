@@ -9,6 +9,39 @@
 <script src="https://js.puter.com/v2/"></script>
   <link rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    (function cargarScriptsConVersion() {
+  // 1. Generar el ID único basado en la fecha y milisegundos de hoy
+  const ahora = new Date();
+  const anio = ahora.getFullYear();
+  const mes = String(ahora.getMonth() + 1).padStart(2, '0');
+  const dia = String(ahora.getDate()).padStart(2, '0');
+  const horas = String(ahora.getHours()).padStart(2, '0');
+  const minutos = String(ahora.getMinutes()).padStart(2, '0');
+  const segundos = String(ahora.getSeconds()).padStart(2, '0');
+  const ms = String(ahora.getMilliseconds()).padStart(3, '0');
+
+  const versionID = `${anio}${mes}${dia}_${horas}${minutos}${segundos}_${ms}`;
+
+  // 2. Lista de archivos que querés cargar sin caché
+  const misScripts = [
+    'editor.js',
+    'ailab.js',
+    'pixellab45-core.js'      
+    // Agregá acá todos los .js que necesites
+  ];
+
+  // 3. Crear e inyectar las etiquetas <script> en la página
+  misScripts.forEach(nombreScript => {
+    const script = document.createElement('script');
+    // Le pega el ID dinámico como parámetro 'v'
+    script.src = `${nombreScript}?v=${versionID}`;
+    script.async = false; // Mantiene el orden de ejecución
+    document.head.appendChild(script);
+  });
+})();
+
+  </script>
 </head>
 <body>
 
@@ -730,10 +763,7 @@
   </div>
 
   </footer>
-  <script src="https://js.puter.com/v2/"></script>
-<script src="pixellab45-core.js"></script>
-<script src="editorial.js?"></script>0
-<script src="ailab.js"></script>
+  
                   
 </body>
 </html>
