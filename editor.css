@@ -926,18 +926,19 @@ margin-top:25px;
 
 }
 /* =====================================================
-   VISTA MÓVIL (SE OCULTA SOLO CUANDO EL EDITOR ESTÁ ACTIVO)
+   ACTIVACIÓN AUTOMÁTICA DE EDITOR EN MÓVIL (100% CSS)
    ===================================================== */
 
 @media (max-width: 768px) {
 
-    /* Solo se ocultan los módulos superiores si la clase 'modo-editor-activo' está en el body */
-    body.modo-editor-activo .ailab-hero,
-    body.modo-editor-activo .ai-card:not(#editorTrabajo) {
+    /* 1. CUANDO EL EDITOR ESTÁ ABIERTO (no tiene display:none):
+       Ocultamos automáticamente las tarjetas superiores (hero, generador, etc.) */
+    body:has(#editorTrabajo:not([style*="display: none"]):not([style*="display:none"])) .ailab-hero,
+    body:has(#editorTrabajo:not([style*="display: none"]):not([style*="display:none"])) .ai-card:not(#editorTrabajo) {
         display: none !important;
     }
 
-    /* Estilos para el editor en celular cuando está abierto */
+    /* 2. El contenedor del editor ocupa TODO el espacio disponible */
     #editorTrabajo {
         width: 100% !important;
         margin: 10px 0 !important;
@@ -945,11 +946,12 @@ margin-top:25px;
         box-sizing: border-box !important;
     }
 
+    /* 3. El canvas rompe las restricciones del cuadrito estrecho */
     .editor-canvas {
         width: 100% !important;
         max-width: 100% !important;
         height: auto !important;
-        min-height: 500px !important;
+        min-height: 520px !important;
         border: 1px solid #00d9ff !important;
         border-radius: 12px !important;
         padding: 15px 0 !important;
@@ -968,15 +970,15 @@ margin-top:25px;
         justify-content: center !important;
     }
 
-    /* Escalado exacto de la hoja A4 */
+    /* 4. Escalado proporcional de la hoja A4 al ancho exacto del teléfono */
     .pagina {
         width: 210mm !important;
         min-height: 297mm !important;
 
-        transform: scale(calc((100vw - 40px) / 794)) !important;
+        transform: scale(calc((100vw - 35px) / 794)) !important;
         transform-origin: top center !important;
 
-        margin-bottom: calc(-297mm * (1 - ((100vw - 40px) / 794))) !important;
+        margin-bottom: calc(-297mm * (1 - ((100vw - 35px) / 794))) !important;
         margin-top: 0 !important;
     }
 
