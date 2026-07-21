@@ -515,30 +515,42 @@ margin-top:25px;
 
 
 
-/* ==============================
-   CANVAS CENTRAL (CORREGIDO)
-============================== */
+/* =====================================================
+   HOJA A4 COMPLETA SIN RECORTES
+   ===================================================== */
 
 .editor-canvas {
     width: 100%;
-    /* En vez de min-height, le damos una altura contenida */
-    height: calc(100vh - 280px); 
-    max-height: 800px; /* Limite máximo para no salirse */
-
+    /* Alto controlado que no rompe el contenedor superior */
+    height: calc(100vh - 250px);
+    
     display: flex;
     justify-content: center;
     align-items: flex-start;
 
-    /* Activa la barra de desplazamiento INTERNA si la hoja A4 es más alta */
-    overflow-y: auto; 
-    overflow-x: auto;
+    /* PERMITE VER LA HOJA COMPLETA MEDIANTE SCROLL INTERNO */
+    overflow-y: auto !important; 
+    overflow-x: auto !important;
 
-    padding: 30px;
+    padding: 20px;
     box-sizing: border-box;
-
     background: #05070d;
     border: 1px solid #00d9ff;
     border-radius: 15px;
+}
+
+.pagina {
+    /* MANTIENE DIMENSIONES A4 REALES */
+    width: 210mm !important;
+    height: 297mm !important; /* Usamos height fija para asegurar la proporción rectangular */
+    min-height: 297mm !important;
+
+    /* EVITA QUE SE RECORTE O SE VUELVA CUADRADA */
+    overflow: visible !important; 
+    box-sizing: border-box !important;
+    
+    margin: 0 auto 30px auto !important;
+    flex-shrink: 0 !important; /* Impide que el flexbox la aplaste */
 }
 
 
