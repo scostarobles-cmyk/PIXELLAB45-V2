@@ -5,44 +5,74 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PIXELLAB45 eBook Studio</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       font-family: Arial, sans-serif;
       background-color: #121212;
       color: #ffffff;
       margin: 0;
-      padding: 20px;
+      padding: 15px;
     }
     .navbar {
       background-color: #1e1e1e;
-      padding: 10px 20px;
+      padding: 12px;
       display: flex;
-      align-items: center;
-      gap: 15px;
+      gap: 10px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      border: 1px solid #333;
+    }
+    .tab-btn {
+      background-color: #2a2a2a;
+      color: #ccc;
+      border: 1px solid #444;
+      padding: 10px 15px;
       border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      flex: 1;
     }
-    .nav-links a {
-      color: #ffffff;
-      text-decoration: none;
-      margin-right: 15px;
+    .tab-btn.active {
+      background-color: #007bff;
+      color: #fff;
+      border-color: #0056b3;
     }
-    .ai-card {
+    .panel {
+      display: none;
       background-color: #1e1e1e;
       padding: 20px;
       border-radius: 8px;
-      margin-top: 20px;
-      border: 1px solid #333333;
+      border: 1px solid #333;
     }
-    input, select {
+    .panel.active {
       display: block;
+    }
+    h2 {
+      margin-top: 0;
+      color: #007bff;
+    }
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: bold;
+      font-size: 14px;
+      color: #ddd;
+    }
+    input, select, textarea {
       width: 100%;
-      max-width: 400px;
       padding: 10px;
-      margin: 10px 0;
+      margin-top: 5px;
       background-color: #2a2a2a;
-      border: 1px solid #444444;
+      border: 1px solid #444;
       color: #ffffff;
       border-radius: 4px;
-      box-sizing: border-box;
+      font-size: 14px;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 120px;
     }
     .boton-accion {
       background-color: #007bff;
@@ -52,53 +82,133 @@
       border-radius: 5px;
       cursor: pointer;
       font-weight: bold;
-      font-size: 16px;
-      display: inline-block;
-      margin-top: 10px;
+      font-size: 15px;
+      margin-top: 15px;
+      width: 100%;
     }
     .boton-accion:active {
       background-color: #0056b3;
     }
     .scroll-box {
       background-color: #000000;
-      padding: 10px;
+      padding: 12px;
       border-radius: 5px;
       min-height: 100px;
       font-family: monospace;
-      border: 1px solid #333333;
+      border: 1px solid #333;
       margin-top: 15px;
+      font-size: 13px;
+      color: #00ff66;
+    }
+    .editor-area {
+      min-height: 250px;
+      font-family: Georgia, serif;
+      line-height: 1.6;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
     }
   </style>
 </head>
 <body>
 
-  <header class="navbar">
-    <nav class="nav-links">
-      <a href="#">🏠 Inicio</a>
-      <a href="#">📚 eBook Studio</a>
-    </nav>
-  </header>
+  <nav class="navbar">
+    <button class="tab-btn active" onclick="cambiarPestana('generador')">⚡ Generador</button>
+    <button class="tab-btn" onclick="cambiarPestana('editor')">📝 Editor</button>
+  </nav>
 
-  <section class="ai-card">
-    <h1>📚 PIXELLAB45 eBook Studio</h1>
-    <p>AI Publishing Workstation</p>
+  <!-- SECCIÓN GENERADOR -->
+  <section id="panel-generador" class="panel active">
+    <h2>⚡ Generador de eBooks</h2>
     
-    <input id="temaEbook" type="text" placeholder="Tema del eBook">
-    <input id="autorEbook" type="text" placeholder="Autor">
+    <label for="temaEbook">Tema o Idea Principal:</label>
+    <input id="temaEbook" type="text" placeholder="Ej: Historias de terror urbano">
 
-    <h3>⚙️ Motores IA</h3>
-    <button id="btnProyecto" class="boton-accion" onclick="crearProyecto()">📁 Crear Proyecto</button>
-    
-    <div id="monitorPIXELLAB" class="scroll-box">
-      > Estado del sistema: Listo...
+    <div class="grid-2">
+      <div>
+        <label for="autorEbook">Autor:</label>
+        <input id="autorEbook" type="text" placeholder="Tu nombre">
+      </div>
+      <div>
+        <label for="capitulos">Capítulos:</label>
+        <input id="capitulos" type="number" min="1" value="5">
+      </div>
+    </div>
+
+    <label for="motorIA">Motor de IA:</label>
+    <select id="motorIA">
+      <option value="gemini">Gemini AI Engine</option>
+      <option value="gpt">GPT Engine</option>
+    </select>
+
+    <label for="promptDetallado">Prompt / Instrucciones Generales:</label>
+    <textarea id="promptDetallado" placeholder="Escribe detalles del estilo, tono, tipo de público..."></textarea>
+
+    <button class="boton-accion" onclick="generarEbook()">🚀 Generar eBook</button>
+
+    <div id="monitorGenerador" class="scroll-box">
+      > Sistema Generador: Listo...
+    </div>
+  </section>
+
+  <!-- SECCIÓN EDITOR -->
+  <section id="panel-editor" class="panel">
+    <h2>📝 Editor de Contenido</h2>
+
+    <label for="tituloCapitulo">Título de Capítulo / Sección:</label>
+    <input id="tituloCapitulo" type="text" placeholder="Capítulo 1: El comienzo">
+
+    <label for="contenidoEditor">Cuerpo del Texto:</label>
+    <textarea id="contenidoEditor" class="editor-area" placeholder="Escribe o edita el texto aquí..."></textarea>
+
+    <div class="grid-2">
+      <button class="boton-accion" onclick="guardarBorrador()">💾 Guardar</button>
+      <button class="boton-accion" style="background-color: #28a745;" onclick="exportarEbook()">📥 Exportar</button>
+    </div>
+
+    <div id="monitorEditor" class="scroll-box">
+      > Editor: Esperando borrador...
     </div>
   </section>
 
   <script>
-    function crearProyecto() {
-      const tema = document.getElementById('temaEbook').value || 'Sin tema';
-      const monitor = document.getElementById('monitorPIXELLAB');
-      monitor.innerHTML += `<br>[OK] Proyecto creado: "${tema}"`;
+    function cambiarPestana(nombrePestana) {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+
+      if (nombrePestana === 'generador') {
+        document.getElementById('panel-generador').classList.add('active');
+        event.target.classList.add('active');
+      } else {
+        document.getElementById('panel-editor').classList.add('active');
+        event.target.classList.add('active');
+      }
+    }
+
+    function generarEbook() {
+      const tema = document.getElementById('temaEbook').value || 'Sin título';
+      const motor = document.getElementById('motorIA').value;
+      const monitor = document.getElementById('monitorGenerador');
+
+      monitor.innerHTML += `<br>[+] Procesando con ${motor.toUpperCase()}...`;
+      monitor.innerHTML += `<br>[OK] Generación iniciada para: "${tema}"`;
+
+      // Carga borrador inicial en el editor
+      document.getElementById('tituloCapitulo').value = `Capítulo 1: ${tema}`;
+      document.getElementById('contenidoEditor').value = `Borrador generado para "${tema}"...\n\nAquí va el texto completo del capítulo.`;
+    }
+
+    function guardarBorrador() {
+      const titulo = document.getElementById('tituloCapitulo').value;
+      const monitor = document.getElementById('monitorEditor');
+      monitor.innerHTML += `<br>[OK] Guardado borrador: "${titulo}"`;
+    }
+
+    function exportarEbook() {
+      const monitor = document.getElementById('monitorEditor');
+      monitor.innerHTML += `<br>[PDF/EPUB] Listo para descarga.`;
     }
   </script>
 
