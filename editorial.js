@@ -701,3 +701,13 @@ function preguntarSiguienteCapitulo() {
     document.getElementById("btnPausarCapitulo").onclick = () => overlay.remove();
 }
 
+// FORZAR MOSTRAR TODO (Para comprobar visibilidad)
+window.addEventListener("DOMContentLoaded", () => {
+    const v1 = document.getElementById("vista-principal");
+    const v2 = document.getElementById("vista-editor");
+    const ed = document.getElementById("paginaEditor");
+
+    if (v1) v1.style.display = "block";
+    if (v2) v2.style.display = "block";
+    if (ed) ed.style.display = "block";
+});
