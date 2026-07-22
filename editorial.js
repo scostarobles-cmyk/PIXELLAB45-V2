@@ -50,9 +50,8 @@ window.addEventListener(
     "load",
     iniciarCargaEditorial
 );
-
 // =====================================
-// VERIFICAR PROYECTO
+// VERIFICAR PROYECTO (CORREGIDO)
 // =====================================
 async function verificarProyecto() {
     monitorPIXELLAB(
@@ -118,7 +117,6 @@ async function verificarProyecto() {
                 actualizarIndicador("estadoPlan", "azul");
                 botonAzul("btnPlan");
                 habilitarBoton("btnPlan");
-                return;
             }
 
             // INDICE
@@ -130,7 +128,6 @@ async function verificarProyecto() {
                 actualizarIndicador("estadoIndice", "azul");
                 botonAzul("btnIndice");
                 habilitarBoton("btnIndice");
-                return;
             }
 
             // LEGALES
@@ -142,7 +139,6 @@ async function verificarProyecto() {
                 actualizarIndicador("estadoLegales", "azul");
                 botonAzul("btnLegales");
                 habilitarBoton("btnLegales");
-                return;
             }
 
             // INTRODUCCION
@@ -154,7 +150,6 @@ async function verificarProyecto() {
                 actualizarIndicador("estadoIntro", "azul");
                 botonAzul("btnIntroduccion");
                 habilitarBoton("btnIntroduccion");
-                return;
             }
 
             const plan = await cargarJSON(`proyectos/${projectIdActual}/plan.json`);
@@ -164,27 +159,22 @@ async function verificarProyecto() {
                 actualizarIndicador("estadoCapitulos", "azul");
                 botonAzul("btnCapitulos");
                 habilitarBoton("btnCapitulos");
-                return;
-            }
-
-            if (proyectoActual.estructura.capitulos === "produccion") {
+            } else if (proyectoActual.estructura.capitulos === "produccion") {
                 actualizarIndicador("estadoCapitulos", "amarillo");
                 botonAmarillo("btnCapitulos");
                 habilitarBoton("btnCapitulos");
 
-                if (!plan || !plan.capitulos) return;
-
-                for (const capitulo of plan.capitulos) {
-                    if (capitulo.estado !== "creado") {
-                        if (typeof preguntarSiguienteCapitulo === "function" && preguntarContinuarCapitulos) {
-                            preguntarSiguienteCapitulo();
+                if (plan && plan.capitulos) {
+                    for (const capitulo of plan.capitulos) {
+                        if (capitulo.estado !== "creado") {
+                            if (typeof preguntarSiguienteCapitulo === "function" && preguntarContinuarCapitulos) {
+                                preguntarSiguienteCapitulo();
+                            }
+                            break;
                         }
-                        return;
                     }
                 }
-            }
-
-            if (proyectoActual.estructura.capitulos === "creado") {
+            } else if (proyectoActual.estructura.capitulos === "creado") {
                 actualizarIndicador("estadoCapitulos", "verde");
                 botonVerde("btnCapitulos");
                 deshabilitarBoton("btnCapitulos");
@@ -199,7 +189,6 @@ async function verificarProyecto() {
                 actualizarIndicador("estadoConclusion", "azul");
                 botonAzul("btnConclusion");
                 habilitarBoton("btnConclusion");
-                return;
             }
         }
 
@@ -214,6 +203,7 @@ async function verificarProyecto() {
         monitorPIXELLAB("Editorial", "error", "Verificar proyecto", error.message);
     }
 }
+
 
 // =====================================
 // NAVEGACIÓN Y VISTAS EDITOR
