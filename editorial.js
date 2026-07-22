@@ -3231,7 +3231,7 @@ En esta etapa:
 */
 const SECCIONES_LIBRO = [
     "portada",
-  //  "legales",
+    "legales",
   //  "indice",
  //  "introduccion",
     //"capitulos",
