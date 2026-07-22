@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PIXELLAB</title>
+  
+  <!-- Estilos originales -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -18,12 +20,12 @@
   <!-- CONTENIDO PRINCIPAL -->
   <main class="main-content">
 
-    <!-- 1. MONITOR (Oculto manteniendo sus IDs y clases originales) -->
+    <!-- 1. MONITOR (Oculto temporalmente) -->
     <div id="seccion-monitor" class="modulo-monitor" style="display: none;">
       <div id="monitorPIXELLAB"></div>
     </div>
 
-    <!-- 2. GENERADOR (Intacto con todas tus clases e IDs originales) -->
+    <!-- 2. GENERADOR (Visible con tu estructura y estilos intactos) -->
     <section id="generador-container" class="modulo-generador">
       
       <div id="estadoEditorial"></div>
@@ -88,7 +90,7 @@
 
     </section>
 
-    <!-- 3. EDITOR (Oculto manteniendo sus IDs y clases originales) -->
+    <!-- 3. EDITOR (Oculto temporalmente) -->
     <div id="seccion-editor" class="modulo-editor" style="display: none;">
       <div class="editor-toolbar-editor">
         <button class="editor-menu">Portada</button>
@@ -102,6 +104,12 @@
   <footer class="footer-principal">
     <p>PIXELLAB Studio &copy; 2026</p>
   </footer>
+
+  <!-- CARGA DE SCRIPTS EN ORDEN EXACTO DE DEPENDENCIAS -->
+  <script src="pixellab45-core.js"></script>
+  <script src="generador.js"></script>
+  <script src="editor.js"></script>
+  <script src="app.js"></script>
 
 </body>
 </html>
