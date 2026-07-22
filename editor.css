@@ -339,23 +339,21 @@ margin-top:25px;
 
 @media(max-width:768px){
 
-    .biblioteca-grid {
 
-        width:100%;
-        max-width:100%;
+.biblioteca-grid {
 
-        grid-template-columns:repeat(1, 1fr);
+grid-template-columns:
+1fr;
 
-        gap:12px;
-
-    }
+}
 
 
-    .editorial-card {
+.editorial-card {
 
-        width:100%;
+width:100%;
 
-    }
+}
+
 
 }
 /* =====================================
@@ -515,44 +513,35 @@ margin-top:25px;
 
 
 
-/* =====================================================
-   HOJA A4 COMPLETA SIN RECORTES
-   ===================================================== */
+/* ==============================
+   CANVAS CENTRAL
+============================== */
 
 .editor-canvas {
-    width: 100%;
-    /* Alto controlado que no rompe el contenedor superior */
-    height: calc(100vh - 250px);
-    
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
 
-    /* PERMITE VER LA HOJA COMPLETA MEDIANTE SCROLL INTERNO */
-    overflow-y: auto !important; 
-    overflow-x: auto !important;
+    width:100%;
 
-    padding: 20px;
-    box-sizing: border-box;
-    background: #05070d;
-    border: 1px solid #00d9ff;
-    border-radius: 15px;
+    min-height:calc(100vh - 250px);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:flex-start;
+
+    overflow:auto;
+
+    padding:30px;
+
+    box-sizing:border-box;
+
+    background:#05070d;
+
+    border:1px solid #00d9ff;
+
+    border-radius:15px;
+
 }
-
-.pagina {
-    /* MANTIENE DIMENSIONES A4 REALES */
-    width: 210mm !important;
-    height: 297mm !important; /* Usamos height fija para asegurar la proporción rectangular */
-    min-height: 297mm !important;
-
-    /* EVITA QUE SE RECORTE O SE VUELVA CUADRADA */
-    overflow: visible !important; 
-    box-sizing: border-box !important;
-    
-    margin: 0 auto 30px auto !important;
-    flex-shrink: 0 !important; /* Impide que el flexbox la aplaste */
-}
-
 
 
 
@@ -790,6 +779,117 @@ margin-top:25px;
     }
 
 }
+/* =====================================
+   PIXELLAB EDITORIAL WORKSPACE
+   NUEVA ARQUITECTURA
+===================================== */
+
+
+/* CONTENEDOR GENERAL DEL EDITOR */
+
+#editorTrabajo {
+
+    width:100%;
+
+    max-width:100%;
+
+    padding:20px;
+
+    box-sizing:border-box;
+
+}
+
+
+
+/* TRES ZONAS:
+   IZQUIERDA | CENTRO | DERECHA */
+
+.editor-workspace {
+
+    display:grid;
+
+    grid-template-columns:220px minmax(0,1fr) 240px;
+
+    gap:20px;
+
+    width:100%;
+
+    min-height:calc(100vh - 140px);
+
+    align-items:start;
+
+}
+
+
+
+/* PANELES LATERALES */
+
+.editor-panel {
+
+    background:#05070d;
+
+    border:1px solid #00d9ff;
+
+    border-radius:15px;
+
+    padding:20px;
+
+    flex-shrink:0;
+
+}
+
+
+
+/* ZONA CENTRAL DEL EDITOR */
+
+.editor-canvas {
+
+    width:100%;
+
+    min-width:0;
+
+    min-height:calc(100vh - 140px);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:flex-start;
+
+    overflow:auto;
+
+    padding:30px;
+
+    box-sizing:border-box;
+
+    background:#05070d;
+
+    border:1px solid #00d9ff;
+
+    border-radius:15px;
+
+}
+
+
+
+/*
+   CONTENEDOR VACÍO
+   RECIBE LAS PÁGINAS GENERADAS
+*/
+
+#paginaEditor {
+
+    width:100%;
+
+    min-height:100%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:flex-start;
+
+}
 
 
 
@@ -800,17 +900,17 @@ margin-top:25px;
 @media(max-width:768px){
 
 
-  #editorTrabajo {
+    #editorTrabajo {
 
-    width:100%;
+        width:100vw;
 
-    max-width:100%;
+        max-width:100vw;
 
-    padding:10px;
+        padding:10px;
 
-    margin:0;
+        margin:0;
 
-}
+    }
 
 
     .editor-workspace {
@@ -926,63 +1026,38 @@ margin-top:25px;
 
 }
 /* =====================================================
-   ACTIVACIÓN AUTOMÁTICA DE EDITOR EN MÓVIL (100% CSS)
+   PIXELLAB45 - AJUSTE EDITOR MÓVIL
+   Centrar hoja A4 en pantalla pequeña
    ===================================================== */
 
 @media (max-width: 768px) {
 
-    /* 1. CUANDO EL EDITOR ESTÁ ABIERTO (no tiene display:none):
-       Ocultamos automáticamente las tarjetas superiores (hero, generador, etc.) */
-    body:has(#editorTrabajo:not([style*="display: none"]):not([style*="display:none"])) .ailab-hero,
-    body:has(#editorTrabajo:not([style*="display: none"]):not([style*="display:none"])) .ai-card:not(#editorTrabajo) {
-        display: none !important;
-    }
-
-    /* 2. El contenedor del editor ocupa TODO el espacio disponible */
-    #editorTrabajo {
-        width: 100% !important;
-        margin: 10px 0 !important;
-        padding: 10px !important;
-        box-sizing: border-box !important;
-    }
-
-    /* 3. El canvas rompe las restricciones del cuadrito estrecho */
     .editor-canvas {
-        width: 100% !important;
-        max-width: 100% !important;
-        height: auto !important;
-        min-height: 520px !important;
-        border: 1px solid #00d9ff !important;
-        border-radius: 12px !important;
-        padding: 15px 0 !important;
-        margin: 0 auto !important;
-        
-        display: flex !important;
-        justify-content: center !important;
-        align-items: flex-start !important;
-        overflow-x: auto !important;
-        overflow-y: auto !important;
+
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+
+        overflow-x: hidden;
+
     }
+
 
     #paginaEditor {
-        width: 100% !important;
-        display: flex !important;
-        justify-content: center !important;
+
+        width: 100%;
+        max-width: 100%;
+
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+
+        margin: 0 auto;
+
     }
 
-    /* 4. Escalado proporcional de la hoja A4 al ancho exacto del teléfono */
-    .pagina {
-        width: 210mm !important;
-        min-height: 297mm !important;
-
-        transform: scale(calc((100vw - 35px) / 794)) !important;
-        transform-origin: top center !important;
-
-        margin-bottom: calc(-297mm * (1 - ((100vw - 35px) / 794))) !important;
-        margin-top: 0 !important;
-    }
-
-    .portada {
-        margin-top: 0 !important;
-    }
 }
