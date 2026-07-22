@@ -19,9 +19,9 @@
         <button class="menu-toggle" onclick="toggleMenu()">☰</button>
         <nav class="nav-links">
             <a href="index.html">🏠 Inicio</a>
-            <a href="#">📚 eBook Studio</a>
-            <a href="#">📖 Biblioteca</a>
-            <a href="#">⚙️ Proyectos</a>
+            <a href="#" onclick="mostrarSeccion('dashboard')">📚 eBook Studio</a>
+            <a href="#" onclick="mostrarSeccion('bloque-biblioteca')">📖 Biblioteca</a>
+            <a href="#" onclick="mostrarSeccion('bloque-monitor')">⚙️ Monitor</a>
         </nav>
     </header>
 
@@ -33,65 +33,132 @@
     </section>
 
     <!-- =================================================== -->
-    <!-- BLOQUE 1: GENERADOR Y MOTORES IA                    -->
+    <!-- MENU PRINCIPAL: 4 TARJETAS                         -->
     <!-- =================================================== -->
-    <div id="bloque-generador" class="ai-card">
-        <section class="ai-lab">
-            <h2>🚀 Nuevo Proyecto</h2>
-            <p class="ai-subtitle">Crea la estructura completa de un eBook mediante Inteligencia Artificial.</p>
+    <main id="dashboard" class="ai-grid" style="padding: 20px; max-width: 1200px; margin: 0 auto;">
 
-            <input id="temaEbook" type="text" placeholder="Tema del eBook">
-            <input id="autorEbook" type="text" placeholder="Autor">
-            <input id="paginasEbook" type="number" value="100" min="10" max="1000">
+        <!-- TARJETA 1: GENERADOR -->
+        <div class="ai-card">
+            <section class="ai-lab" style="text-align: center; height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <div style="font-size: 3rem; margin-bottom: 10px;">🚀</div>
+                    <h2>Generador IA</h2>
+                    <p class="ai-subtitle">Crea la estructura completa de tus eBooks mediante Inteligencia Artificial.</p>
+                </div>
+                <button class="boton-accion" style="margin-top: 20px; width: 100%;" onclick="mostrarSeccion('bloque-generador')">
+                    Abrir Generador
+                </button>
+            </section>
+        </div>
 
-            <select id="idiomaEbook">
-                <option value="Español">🇪🇸 Español</option>
-                <option value="English">🇺🇸 English</option>
-                <option value="Português">🇧🇷 Português</option>
-                <option value="Français">🇫🇷 Français</option>
-                <option value="Italiano">🇮🇹 Italiano</option>
-            </select>
+        <!-- TARJETA 2: MONITOR -->
+        <div class="ai-card">
+            <section class="ai-lab" style="text-align: center; height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <div style="font-size: 3rem; margin-bottom: 10px;">💻</div>
+                    <h2>Monitor de Procesos</h2>
+                    <p class="ai-subtitle">Visualiza los logs, estado del pipeline y ejecuciones en tiempo real.</p>
+                </div>
+                <button class="boton-accion" style="margin-top: 20px; width: 100%;" onclick="mostrarSeccion('bloque-monitor')">
+                    Abrir Monitor
+                </button>
+            </section>
+        </div>
 
-            <select id="tonoEbook">
-                <option>Profesional</option>
-                <option>Técnico</option>
-                <option>Académico</option>
-                <option>Inspirador</option>
-                <option>Educativo</option>
-            </select>
+        <!-- TARJETA 3: BIBLIOTECA -->
+        <div class="ai-card">
+            <section class="ai-lab" style="text-align: center; height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <div style="font-size: 3rem; margin-bottom: 10px;">📚</div>
+                    <h2>Biblioteca Editorial</h2>
+                    <p class="ai-subtitle">Accede a tus proyectos guardados, publicaciones y borradores.</p>
+                </div>
+                <button class="boton-accion" style="margin-top: 20px; width: 100%;" onclick="mostrarSeccion('bloque-biblioteca')">
+                    Abrir Biblioteca
+                </button>
+            </section>
+        </div>
 
-            <select id="publicoEbook">
-                <option>General</option>
-                <option>Principiantes</option>
-                <option>Intermedio</option>
-                <option>Avanzado</option>
-                <option>Profesionales</option>
-            </select>
+        <!-- TARJETA 4: EDITOR -->
+        <div class="ai-card">
+            <section class="ai-lab" style="text-align: center; height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <div style="font-size: 3rem; margin-bottom: 10px;">✏️</div>
+                    <h2>Editor Workspace</h2>
+                    <p class="ai-subtitle">Espacio de trabajo profesional para editar páginas, maquetación y diseño.</p>
+                </div>
+                <button class="boton-accion" style="margin-top: 20px; width: 100%;" onclick="mostrarSeccion('bloque-editor')">
+                    Abrir Editor
+                </button>
+            </section>
+        </div>
 
-            <div class="section-divider"></div>
+    </main>
 
-            <h3>⚙️ Motores IA</h3>
-            <div class="gallery-filters">
-                <button id="btnProyecto" class="boton-accion" onclick="crearProyecto()">📁 Crear Proyecto</button>
-                <button id="btnPlan" class="boton-accion" onclick="generarPlan2()">📋 Generar Plan</button>
-                <button id="btnIndice" class="boton-accion" onclick="generarIndice()">📑 Índice</button>
-                <button id="btnLegales" class="boton-accion" onclick="generarLegales()">⚖️ Legales</button>
-                <button id="btnIntroduccion" class="boton-accion" onclick="generarIntroduccion()">📝 Introducción</button>
-                <button id="btnCapitulos" class="boton-accion" onclick="generarCapitulos()">📖 Capítulos</button>
-                <button id="btnConclusion" class="boton-accion" onclick="generarConclusion()">🏁 Conclusión</button>
-            </div>
+    <!-- =================================================== -->
+    <!-- BLOQUE 1: GENERADOR IA                              -->
+    <!-- =================================================== -->
+    <div id="bloque-generador" class="seccion-modulo" style="display: none; padding: 20px; max-width: 1200px; margin: 0 auto;">
+        <button class="boton-accion" onclick="mostrarSeccion('dashboard')" style="margin-bottom: 15px;">⬅️ Volver al Panel</button>
+        
+        <div class="ai-card">
+            <section class="ai-lab">
+                <h2>🚀 Nuevo Proyecto</h2>
+                <p class="ai-subtitle">Crea la estructura completa de un eBook mediante Inteligencia Artificial.</p>
 
-            <div id="estadoEditorial" class="estado-editorial"></div>
-            <div id="errorEditorial" class="error-editorial" style="display:none;"></div>
-        </section>
+                <input id="temaEbook" type="text" placeholder="Tema del eBook">
+                <input id="autorEbook" type="text" placeholder="Autor">
+                <input id="paginasEbook" type="number" value="100" min="10" max="1000">
+
+                <select id="idiomaEbook">
+                    <option value="Español">🇪🇸 Español</option>
+                    <option value="English">🇺🇸 English</option>
+                    <option value="Português">🇧🇷 Português</option>
+                    <option value="Français">🇫🇷 Français</option>
+                    <option value="Italiano">🇮🇹 Italiano</option>
+                </select>
+
+                <select id="tonoEbook">
+                    <option>Profesional</option>
+                    <option>Técnico</option>
+                    <option>Académico</option>
+                    <option>Inspirador</option>
+                    <option>Educativo</option>
+                </select>
+
+                <select id="publicoEbook">
+                    <option>General</option>
+                    <option>Principiantes</option>
+                    <option>Intermedio</option>
+                    <option>Avanzado</option>
+                    <option>Profesionales</option>
+                </select>
+
+                <div class="section-divider"></div>
+
+                <h3>⚙️ Motores IA</h3>
+                <div class="gallery-filters">
+                    <button id="btnProyecto" class="boton-accion" onclick="crearProyecto()">📁 Crear Proyecto</button>
+                    <button id="btnPlan" class="boton-accion" onclick="generarPlan2()">📋 Generar Plan</button>
+                    <button id="btnIndice" class="boton-accion" onclick="generarIndice()">📑 Índice</button>
+                    <button id="btnLegales" class="boton-accion" onclick="generarLegales()">⚖️ Legales</button>
+                    <button id="btnIntroduccion" class="boton-accion" onclick="generarIntroduccion()">📝 Introducción</button>
+                    <button id="btnCapitulos" class="boton-accion" onclick="generarCapitulos()">📖 Capítulos</button>
+                    <button id="btnConclusion" class="boton-accion" onclick="generarConclusion()">🏁 Conclusión</button>
+                </div>
+
+                <div id="estadoEditorial" class="estado-editorial"></div>
+                <div id="errorEditorial" class="error-editorial" style="display:none;"></div>
+            </section>
+        </div>
     </div>
 
     <!-- =================================================== -->
-    <!-- BLOQUE 2: MONITOR Y GALERÍA / BIBLIOTECA           -->
+    <!-- BLOQUE 2: MONITOR DE PROCESOS                       -->
     <!-- =================================================== -->
-    <div id="bloque-monitor-galeria">
+    <div id="bloque-monitor" class="seccion-modulo" style="display: none; padding: 20px; max-width: 1200px; margin: 0 auto;">
+        <button class="boton-accion" onclick="mostrarSeccion('dashboard')" style="margin-bottom: 15px;">⬅️ Volver al Panel</button>
         
-        <!-- PIPELINE Y MONITOR -->
         <div class="ai-grid">
             <div class="ai-card">
                 <section class="ai-lab">
@@ -119,9 +186,15 @@
                 </section>
             </div>
         </div>
+    </div>
 
-        <!-- BIBLIOTECA EDITORIAL -->
-        <div class="ai-card" style="margin-top: 20px;">
+    <!-- =================================================== -->
+    <!-- BLOQUE 3: BIBLIOTECA EDITORIAL                      -->
+    <!-- =================================================== -->
+    <div id="bloque-biblioteca" class="seccion-modulo" style="display: none; padding: 20px; max-width: 1200px; margin: 0 auto;">
+        <button class="boton-accion" onclick="mostrarSeccion('dashboard')" style="margin-bottom: 15px;">⬅️ Volver al Panel</button>
+        
+        <div class="ai-card">
             <section class="ai-lab">
                 <h2>📚 Biblioteca Editorial</h2>
                 <p class="ai-subtitle">Proyectos listos para edición.</p>
@@ -133,54 +206,81 @@
                             <h3>ChatGPT desde Cero</h3>
                             <p>Ebook • Inteligencia Artificial</p>
                             <span>PIXELLAB Editorial</span>
-                            <button class="boton-accion" onclick="activarModoEditor()">✏️ Editar</button>
+                            <button class="boton-accion" onclick="mostrarSeccion('bloque-editor')">✏️ Editar</button>
                         </div>
                     </article>
                 </div>
             </section>
         </div>
-
     </div>
 
     <!-- =================================================== -->
-    <!-- BLOQUE 3: EDITOR WORKSPACE                         -->
+    <!-- BLOQUE 4: EDITOR WORKSPACE                         -->
     <!-- =================================================== -->
-    <div id="bloque-editor" class="ai-card" style="margin-top: 20px;">
-        <section class="ai-lab">
-            <h2>✏️ PIXELLAB Editorial Workspace</h2>
-            <p class="ai-subtitle">Editor profesional de publicaciones digitales.</p>
+    <div id="bloque-editor" class="seccion-modulo" style="display: none; padding: 20px; max-width: 1200px; margin: 0 auto;">
+        <button class="boton-accion" onclick="mostrarSeccion('dashboard')" style="margin-bottom: 15px;">⬅️ Volver al Panel</button>
+        
+        <div class="ai-card">
+            <section class="ai-lab">
+                <h2>✏️ PIXELLAB Editorial Workspace</h2>
+                <p class="ai-subtitle">Editor profesional de publicaciones digitales.</p>
 
-            <!-- BOTONERA EDITOR -->
-            <div class="editor-toolbar-editor">
-                <button class="editor-menu">📄 Portada</button>
-                <button class="editor-menu">⚖️ Legales</button>
-                <button class="editor-menu">📑 Índice</button>
-                <button class="editor-menu">📝 Capítulos</button>
-                <button class="editor-menu">🖼️ Imágenes</button>
-                <button class="editor-menu">🎨 Diseño</button>
-            </div>
-
-            <!-- PIPELINE HORIZONTAL -->
-            <div class="pipeline-editor">
-                <h3>⚙️ Pipeline Editorial</h3>
-                <div class="pipeline-items">
-                    <p>⚪ Proyecto cargado</p>
-                    <p>⚪ Texto</p>
-                    <p>⚪ Imágenes</p>
-                    <p>⚪ Diseño</p>
-                    <p>⚪ Revisión</p>
-                    <p>⚪ Exportación</p>
+                <!-- BOTONERA EDITOR -->
+                <div class="editor-toolbar-editor">
+                    <button class="editor-menu">📄 Portada</button>
+                    <button class="editor-menu">⚖️ Legales</button>
+                    <button class="editor-menu">📑 Índice</button>
+                    <button class="editor-menu">📝 Capítulos</button>
+                    <button class="editor-menu">🖼️ Imágenes</button>
+                    <button class="editor-menu">🎨 Diseño</button>
                 </div>
-            </div>
 
-            <!-- ZONA DE TRABAJO -->
-            <div class="editor-canvas">
-                <div id="paginaEditor"></div>
-            </div>
-        </section>
+                <!-- PIPELINE HORIZONTAL -->
+                <div class="pipeline-editor">
+                    <h3>⚙️ Pipeline Editorial</h3>
+                    <div class="pipeline-items">
+                        <p>⚪ Proyecto cargado</p>
+                        <p>⚪ Texto</p>
+                        <p>⚪ Imágenes</p>
+                        <p>⚪ Diseño</p>
+                        <p>⚪ Revisión</p>
+                        <p>⚪ Exportación</p>
+                    </div>
+                </div>
+
+                <!-- ZONA DE TRABAJO -->
+                <div class="editor-canvas">
+                    <div id="paginaEditor"></div>
+                </div>
+            </section>
+        </div>
     </div>
 
-    <!-- SCRIPTS -->
+    <!-- SCRIPT DE NAVEGACIÓN ENTRE BLOQUES -->
+    <script>
+        function mostrarSeccion(idSeccion) {
+            // 1. Ocultar el Dashboard principal
+            const dashboard = document.getElementById('dashboard');
+            if (dashboard) dashboard.style.display = 'none';
+
+            // 2. Ocultar todos los módulos
+            const modulos = document.querySelectorAll('.seccion-modulo');
+            modulos.forEach(mod => mod.style.display = 'none');
+
+            // 3. Mostrar la sección solicitada
+            if (idSeccion === 'dashboard') {
+                if (dashboard) dashboard.style.display = 'grid';
+            } else {
+                const destino = document.getElementById(idSeccion);
+                if (destino) destino.style.display = 'block';
+            }
+
+            // Desplazar suavemente arriba
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+
+    <!-- SCRIPTS CORE DEL SISTEMA -->
     <script src="pixellab45-core.js?v=__VERSION__"></script>
     <script src="editorial.js?v=__VERSION__"></script>
     <script src="ailab.js?v=__VERSION__"></script>
