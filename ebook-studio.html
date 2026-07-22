@@ -1,470 +1,111 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>PIXELLAB45 eBook Studio</title>
-
-<link rel="stylesheet" href="styles.css?v=1">
-<link rel="stylesheet" href="editor.css?v=1">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<script src="https://js.puter.com/v2/"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PIXELLAB - Generador</title>
 </head>
-
-<body>
-
-<header class="navbar">
-
-<button class="menu-toggle" onclick="toggleMenu()">
-☰
-</button>
-
-<nav class="nav-links">
-
-<a href="index.html">
-🏠 Inicio
-</a>
-
-<a href="#">
-📚 eBook Studio
-</a>
-
-<a href="#">
-📖 Biblioteca
-</a>
-
-<a href="#">
-⚙️ Proyectos
-</a>
-
-</nav>
-
-</header>
-
-<div class="divider"></div>
-
-<section class="ailab-hero">
-
-<h1>
-📚 PIXELLAB45 eBook Studio
-</h1>
-
-<p>
-AI Publishing Workstation
-</p>
-
-</section>
-
-<div class="ai-grid">
-
-<div class="ai-card">
-
-<section class="ai-lab">
-
-<h2>
-🚀 Nuevo Proyecto
-</h2>
-
-<p class="ai-subtitle">
-Crea la estructura completa de un eBook mediante Inteligencia Artificial.
-</p>
-
-<input
-id="temaEbook"
-type="text"
-placeholder="Tema del eBook">
-
-<input
-id="autorEbook"
-type="text"
-placeholder="Autor">
-
-<input
-id="paginasEbook"
-type="number"
-value="100"
-min="10"
-max="1000">
-
-<select id="idiomaEbook">
-
-<option value="Español">🇪🇸 Español</option>
-
-<option value="English">
-🇺🇸 English
-</option>
-
-<option value="Português">
-🇧🇷 Português
-</option>
-
-<option value="Français">
-🇫🇷 Français
-</option>
-
-<option value="Italiano">
-🇮🇹 Italiano
-</option>
-
-</select>
-
-<select id="tonoEbook">
-
-<option>Profesional</option>
-
-<option>Técnico</option>
-
-<option>Académico</option>
-
-<option>Inspirador</option>
-
-<option>Educativo</option>
-
-</select>
-
-<select id="publicoEbook">
-
-<option>General</option>
-
-<option>Principiantes</option>
-
-<option>Intermedio</option>
-
-<option>Avanzado</option>
-
-<option>Profesionales</option>
-
-</select>
-
-<div class="section-divider"></div>
-
-<h3>
-⚙️ Motores IA
-</h3>
-
-<div class="gallery-filters">
-
-<button id="btnProyecto" class="boton-accion" onclick="crearProyecto()">
-📁 Crear Proyecto
-</button>
-
-<button id="btnPlan" class="boton-accion" onclick="generarPlan2()">
-📋 Generar Plan
-</button>
-
-<button id="btnIndice" class="boton-accion" onclick="generarIndice()">
-📑 Índice
-</button>
-
-<button id="btnLegales" class="boton-accion" onclick="generarLegales()">
-⚖️ Legales
-</button>
-
-<button id="btnIntroduccion" class="boton-accion" onclick="generarIntroduccion()">
-📝 Introducción
-</button>
-
-<button id="btnCapitulos" class="boton-accion" onclick="generarCapitulos()">
-📖 Capítulos
-</button>
-
-<button id="btnConclusion" class="boton-accion" onclick="generarConclusion()">
-🏁 Conclusión
-</button>
-
-</div>
-<!-- ===================================== -->
-<!-- PANEL ESTADO EDITORIAL -->
-<!-- ===================================== -->
-
-<div id="estadoEditorial" class="estado-editorial"></div>
-
-
-<!-- ===================================== -->
-<!-- PANEL ÚLTIMO ERROR -->
-<!-- ===================================== -->
-
-<div
-    id="errorEditorial"
-    class="error-editorial"
-    style="display:none;">
-</div>
-
-<div class="section-divider"></div>
-
-<div class="ai-grid">
-
-  <!-- =============================== -->
-  <!-- PIPELINE -->
-  <!-- =============================== -->
-
-  <div class="ai-card">
-
-    <section class="ai-lab">
-
-      <h2>📊 Pipeline IA</h2>
-
-      <p class="ai-subtitle">
-        Estado de los motores del proyecto
-      </p>
-
-      <div class="scroll-box">
+<body style="margin: 0; padding: 0; font-family: sans-serif; display: flex; flex-direction: column; min-height: 100vh;">
+
+  <!-- HEADER -->
+  <header style="width: 100%; background-color: #1a1a1a; color: #ffffff; padding: 12px 16px; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center;">
+    <h1 style="margin: 0; font-size: 1.2rem; font-weight: bold;">PIXELLAB</h1>
+    <span style="font-size: 0.85rem; color: #aaa;">Módulo Editorial</span>
+  </header>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main style="flex: 1; width: 100%; box-sizing: border-box;">
+
+    <!-- 1. MONITOR PIXELLAB (Oculto temporalmente) -->
+    <section id="seccion-monitor" style="display: none;">
+      <div id="monitorPIXELLAB"></div>
+    </section>
+
+    <!-- 2. MÓDULO GENERADOR (Visible, sin contenedor encajonado) -->
+    <section id="seccion-generador" style="width: 100%; box-sizing: border-box; padding: 12px; margin-bottom: 20px;">
       
-      <p id="estadoProyecto">⚪ Proyecto</p>
+      <!-- Mensajes de Estado del Editorial -->
+      <div id="estadoEditorial" style="display: none; background-color: #d1e7dd; color: #0f5132; padding: 10px; border-radius: 6px; margin-bottom: 12px; font-size: 0.9rem;"></div>
+      <div id="errorEditorial" style="display: none; background-color: #f8d7da; color: #842029; padding: 10px; border-radius: 6px; margin-bottom: 12px; font-size: 0.9rem;"></div>
 
-        <p id="estadoPlan">⚪ Planificador</p>
+      <!-- Formulario de Datos del eBook -->
+      <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px;">
+        
+        <div>
+          <label for="temaEbook" style="display: block; font-weight: bold; margin-bottom: 4px; font-size: 0.9rem;">Tema del eBook:</label>
+          <input type="text" id="temaEbook" placeholder="Ingresa el tema principal" style="width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem;">
+        </div>
 
-        <p id="estadoIndice">⚪ Índice</p>
+        <div>
+          <label for="autorEbook" style="display: block; font-weight: bold; margin-bottom: 4px; font-size: 0.9rem;">Autor:</label>
+          <input type="text" id="autorEbook" placeholder="Nombre del autor" style="width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem;">
+        </div>
 
-        <p id="estadoLegales">⚪ Legales</p>
+        <!-- Opciones secundarias adaptables -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px;">
+          <div>
+            <label for="paginasEbook" style="display: block; font-weight: bold; margin-bottom: 4px; font-size: 0.85rem;">Páginas estimadas:</label>
+            <input type="number" id="paginasEbook" value="100" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px;">
+          </div>
 
-        <p id="estadoIntro">⚪ Introducción</p>
+          <div>
+            <label for="idiomaEbook" style="display: block; font-weight: bold; margin-bottom: 4px; font-size: 0.85rem;">Idioma:</label>
+            <select id="idiomaEbook" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px;">
+              <option value="Español" selected>Español</option>
+              <option value="Inglés">Inglés</option>
+              <option value="Portugués">Portugués</option>
+            </select>
+          </div>
 
-        <p id="estadoCapitulos">⚪ Capítulos</p>
+          <div>
+            <label for="tonoEbook" style="display: block; font-weight: bold; margin-bottom: 4px; font-size: 0.85rem;">Tono:</label>
+            <select id="tonoEbook" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px;">
+              <option value="Profesional" selected>Profesional</option>
+              <option value="Persuasivo">Persuasivo</option>
+              <option value="Educativo">Educativo</option>
+              <option value="Informal">Informal</option>
+            </select>
+          </div>
 
-        <p id="estadoConclusion">⚪ Conclusión</p>
+          <div>
+            <label for="publicoEbook" style="display: block; font-weight: bold; margin-bottom: 4px; font-size: 0.85rem;">Público:</label>
+            <select id="publicoEbook" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px;">
+              <option value="General" selected>General</option>
+              <option value="Principiantes">Principiantes</option>
+              <option value="Avanzado">Avanzado</option>
+            </select>
+          </div>
+        </div>
 
+      </div>
+
+      <!-- Botonera de Procesos IA -->
+      <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+        <button onclick="crearProyecto()" style="flex: 1 1 100%; padding: 12px; background-color: #0d6efd; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">Crear Proyecto</button>
+        <button onclick="generarPlan2()" style="flex: 1 1 calc(50% - 4px); padding: 10px; background-color: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer;">Generar Plan</button>
+        <button onclick="generarIndice()" style="flex: 1 1 calc(50% - 4px); padding: 10px; background-color: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer;">Índice</button>
+        <button onclick="generarLegales()" style="flex: 1 1 calc(50% - 4px); padding: 10px; background-color: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer;">Legales</button>
+        <button onclick="generarIntroduccion()" style="flex: 1 1 calc(50% - 4px); padding: 10px; background-color: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer;">Introducción</button>
+        <button onclick="generarCapitulos()" style="flex: 1 1 calc(50% - 4px); padding: 10px; background-color: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer;">Capítulos</button>
+        <button onclick="generarConclusion()" style="flex: 1 1 calc(50% - 4px); padding: 10px; background-color: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer;">Conclusión</button>
       </div>
 
     </section>
 
-  </div>
-
-  <!-- =============================== -->
-  <!-- MONITOR -->
-  <!-- =============================== -->
-
-<div class="gallery-filters">
-
-    <button
-        class="boton-accion"
-        onclick="limpiarMonitorPIXELLAB()">
-
-        🗑 Limpiar
-
-    </button>
-
-</div>
-
-<div
-    id="monitorPIXELLAB"
-    class="scroll-box"
-    style="height:350px;">
-
-</div>
-
-</div>
-
-<div class="section-divider"></div>
-
-<!-- =============================== -->
-<!-- PIXELLAB EDITORIAL -->
-<!-- =============================== -->
-
-<div class="ai-card">
-
-<section class="ai-lab">
-
-<h2>
-📚 Biblioteca Editorial
-</h2>
-
-<p class="ai-subtitle">
-Proyectos listos para edición.
-</p>
-
-
-<div id="bibliotecaEditorial" class="biblioteca-grid">
-
-
-<!-- TARJETA DE PROYECTO -->
-
-<article class="editorial-card">
-
-
-<div class="editorial-cover">
-
-<!--
-Futura portada del libro
--->
-
-</div>
-
-
-<div class="editorial-info">
-
-
-<h3>
-ChatGPT desde Cero
-</h3>
-
-
-<p>
-Ebook • Inteligencia Artificial
-</p>
-
-
-<span>
-PIXELLAB Editorial
-</span>
-
-
-<button class="boton-accion">
-✏️ Editar
-</button>
-
-
-</div>
-
-
-</article>
-
-
-</div>
-
-
-</section>
-
-</div>
-
-
-
-<!-- =============================== -->
-<!-- AREA DEL EDITOR -->
-<!-- =============================== -->
-
-
-<!-- =============================== -->
-<!-- AREA DEL EDITOR -->
-<!-- =============================== -->
-
-
-<div 
-id="editorTrabajo"
-class="ai-card"
-style="display:block;">
-
-
-
-<section class="ai-lab">
-
-
-<h2>
-✏️ PIXELLAB Editorial Workspace
-</h2>
-
-
-<p class="ai-subtitle">
-Editor profesional de publicaciones digitales.
-</p>
-
-
-
-<!-- BOTONERA EDITOR -->
-
-<div class="editor-toolbar-editor">
-
-
-<button class="editor-menu">
-📄 Portada
-</button>
-
-
-<button class="editor-menu">
-⚖️ Legales
-</button>
-
-
-<button class="editor-menu">
-📑 Índice
-</button>
-
-
-<button class="editor-menu">
-📝 Capítulos
-</button>
-
-
-<button class="editor-menu">
-🖼️ Imágenes
-</button>
-
-
-<button class="editor-menu">
-🎨 Diseño
-</button>
-
-
-</div>
-
-
-
-
-<!-- PIPELINE HORIZONTAL -->
-
-<div class="pipeline-editor">
-
-
-<h3>
-⚙️ Pipeline Editorial
-</h3>
-
-
-<div class="pipeline-items">
-
-
-<p>⚪ Proyecto cargado</p>
-
-<p>⚪ Texto</p>
-
-<p>⚪ Imágenes</p>
-
-<p>⚪ Diseño</p>
-
-<p>⚪ Revisión</p>
-
-<p>⚪ Exportación</p>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-<!-- ZONA DE TRABAJO -->
-
-<div class="editor-canvas">
-
-
-<div id="paginaEditor">
-
-</div>
-
-
-</div>
-
-
-
-</section>
-
-
-</div>
-
-</footer>
-
-<script src="pixellab45-core.js?v=__VERSION__"></script>
-<script src="editorial.js?v=__VERSION__"></script>
-<script src="ailab.js?v=__VERSION__"></script>
+    <!-- 3. MÓDULO EDITOR (Oculto temporalmente) -->
+    <section id="seccion-editor" style="display: none;">
+      <div class="editor-toolbar-editor">
+        <button class="editor-menu">Portada</button>
+      </div>
+      <div id="paginaEditor"></div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer style="width: 100%; background-color: #f8f9fa; border-top: 1px solid #e9ecef; text-align: center; padding: 12px; box-sizing: border-box; font-size: 0.8rem; color: #6c757d;">
+    PIXELLAB Studio &copy; 2026
+  </footer>
 
 </body>
-
 </html>
