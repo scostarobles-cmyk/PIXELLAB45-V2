@@ -1185,7 +1185,7 @@ width:100%;
     justify-content: space-between;
 }
 
-/* Título con Neón Azul */
+/* Título con Neón Azul y Borde Negro */
 .legal-titulo {
     font-size: 38px !important;
     font-weight: 800 !important;
@@ -1195,13 +1195,19 @@ width:100%;
     letter-spacing: 3px !important;
     margin-bottom: 30px !important;
     padding-bottom: 15px !important;
-    /* Efecto Neón Azul */
+    
+    /* Borde Negro al texto */
+    -webkit-text-stroke: 1.5px #000000;
+    
+    /* Resplandor Neón Azul ajustado para contrastar con el borde */
     text-shadow: 
         0 0 5px #00d9ff,
         0 0 10px #00d9ff,
         0 0 20px #00d9ff,
-        0 0 40px #00d9ff !important;
+        0 0 35px #00d9ff,
+        2px 2px 4px rgba(0, 0, 0, 0.8) !important;
 }
+
 
 /* Texto de legales: Tamaño mayor y justificado */
 .legal-texto {
