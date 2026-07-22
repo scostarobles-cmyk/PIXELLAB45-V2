@@ -1097,3 +1097,44 @@ width:100%;
     min-height: initial !important;
     padding-bottom: 15px !important; /* Margen inferior mínimo y prolijo */
 }
+/* ===================================================
+   PROPORCIÓN A4 Y FLUJO CONTINUO DE HOJAS
+   =================================================== */
+
+/* Contenedor principal: apila las hojas una debajo de otra */
+#paginaEditor {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 40px !important;               /* Separación visual entre páginas */
+    padding: 30px 0 !important;
+    width: 100% !important;
+}
+
+/* Formato Estándar de Hoja A4 Proporcional */
+#paginaEditor > div,
+.pagina-editor,
+.pl45-hoja {
+    position: relative !important;      /* Anula el encimado de hojas */
+    width: 100% !important;
+    max-width: 794px !important;        /* Ancho exacto A4 a 96 DPI */
+    min-height: 1123px !important;      /* Alto mínimo A4 (crece si hay más texto/imagen) */
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+    margin: 0 auto !important;
+    padding: 60px !important;           /* Márgenes internos de hoja impresa */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+    border-radius: 2px !important;
+    box-sizing: border-box !important;
+    overflow: hidden;                   /* Mantiene las imágenes dentro de la hoja */
+}
+
+/* Control de Imágenes dentro de la Hoja A4 */
+#paginaEditor img {
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: 900px !important;       /* Fuerza a que la imagen entre completa en la hoja */
+    object-fit: contain !important;
+    display: block;
+    margin: 0 auto;
+}
