@@ -1138,3 +1138,24 @@ width:100%;
     display: block;
     margin: 0 auto;
 }
+/* ===================================================
+   PORTADA A SANGRE (Full Bleed - Sin márgenes blancos)
+   =================================================== */
+
+/* 1. La hoja de la portada remueve el padding interno */
+#paginaEditor > div:first-child,
+.pl45-hoja-portada {
+    padding: 0 !important;             /* Quita los márgenes blancos de la hoja */
+    overflow: hidden !important;        /* Evita que la imagen sobresalga */
+}
+
+/* 2. La imagen de la portada se expande al 100% de la hoja A4 */
+#paginaEditor > div:first-child img,
+.pl45-hoja-portada img {
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 1123px !important;      /* Se estira al alto exacto A4 */
+    object-fit: cover !important;       /* Cubre toda la hoja sin deformarse */
+    margin: 0 !important;
+    display: block !important;
+}
