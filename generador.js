@@ -1,133 +1,123 @@
-import { monitorPIXELLAB, cargarJSON } from './pixellab45-core.js';
-
 // =====================================
-// VARIABLES Y ESTADO DEL GENERADOR
+// MÓDULO GENERADOR (IA & DATOS)
+// PIXELLAB45 eBook Studio
 // =====================================
-let proyectoActual = null;
 
-// =====================================
-// FUNCIONES DE INTERFAZ Y ESTADO
-// =====================================
-function mostrarEstadoEditorial(mensaje, esError = false) {
-    const contenedor = esError ? document.getElementById("errorEditorial") : document.getElementById("estadoEditorial");
-    if (!contenedor) return;
+(function() {
+    "use strict";
 
-    contenedor.textContent = mensaje;
-    contenedor.style.display = "block";
-
-    if (esError) {
-        monitorPIXELLAB(`[ERROR GENERADOR] ${mensaje}`, "error");
-    } else {
-        monitorPIXELLAB(`[GENERADOR] ${mensaje}`, "info");
-    }
-}
-
-function actualizarPipelineIA(idElemento, texto) {
-    const elem = document.getElementById(idElemento);
-    if (elem) elem.textContent = texto;
-}
-
-function obtenerDatosFormulario() {
-    return {
-        tema: document.getElementById("temaEbook")?.value.trim() || "",
-        autor: document.getElementById("autorEbook")?.value.trim() || "",
-        paginas: document.getElementById("paginasEbook")?.value || 100,
-        idioma: document.getElementById("idiomaEbook")?.value || "Español",
-        tono: document.getElementById("tonoEbook")?.value || "Profesional",
-        publico: document.getElementById("publicoEbook")?.value || "General"
+    // Objeto local para almacenar el estado sin contaminar el scope global
+    window.PL45_Generador = {
+        proyectoActual: null
     };
-}
 
-// =====================================
-// MOTORES IA (GENERACIÓN DE CONTENIDO)
-// =====================================
-export async function crearProyecto() {
-    const datos = obtenerDatosFormulario();
-    if (!datos.tema) {
-        mostrarEstadoEditorial("Ingresa un tema para el eBook", true);
-        return;
+    function logGenerador(nivel, operacion, mensaje) {
+        if (typeof window.monitorPIXELLAB === "function") {
+            window.monitorPIXELLAB("GENERADOR", nivel, operacion, mensaje);
+        } else {
+            console.log(`[GENERADOR - ${nivel}] ${operacion}: ${mensaje}`);
+        }
     }
 
-    proyectoActual = { ...datos, id: Date.now() };
-    mostrarEstadoEditorial(`Proyecto "${datos.tema}" creado exitosamente.`);
-    actualizarPipelineIA("estadoProyecto", `🟢 Proyecto: ${datos.tema}`);
-}
-
-export async function generarPlan2() {
-    if (!proyectoActual) {
-        mostrarEstadoEditorial("Crea un proyecto primero", true);
-        return;
+    function mostrarEstadoEditorial(mensaje, esError) {
+        var id = esError ? "errorEditorial" : "estadoEditorial";
+        var contenedor = document.getElementById(id);
+        if (contenedor) {
+            contenedor.textContent = mensaje;
+            contenedor.style.display = "block";
+        }
+        logGenerador(esError ? "error" : "info", "Estado", mensaje);
     }
-    mostrarEstadoEditorial("Generando plan con IA...");
-    actualizarPipelineIA("estadoPlan", "🟡 Generando Plan...");
 
-    // Lógica del motor planificador
-    setTimeout(() => {
-        mostrarEstadoEditorial("Plan de contenidos generado.");
-        actualizarPipelineIA("estadoPlan", "🟢 Plan Listo");
-    }, 1500);
-}
+    function obtenerDatosFormulario() {
+        return {
+            tema: (document.getElementById("temaEbook")?.value || "").trim(),
+            autor: (document.getElementById("autorEbook")?.value || "").trim(),
+            paginas: document.getElementById("paginasEbook")?.value || 100,
+            idioma: document.getElementById("idiomaEbook")?.value || "Español",
+            tono: document.getElementById("tonoEbook")?.value || "Profesional",
+            publico: document.getElementById("publicoEbook")?.value || "General"
+        };
+    }
 
-export async function generarIndice() {
-    if (!proyectoActual) return mostrarEstadoEditorial("Crea un proyecto primero", true);
-    mostrarEstadoEditorial("Generando índice estructurado...");
-    actualizarPipelineIA("estadoIndice", "🟡 Generando Índice...");
+    // Funciones asociadas a los botones del Pipeline IA
+    window.crearProyecto = function() {
+        var datos = obtenerDatosFormulario();
+        if (!datos.tema) {
+            mostrarEstadoEditorial("Ingresa un tema para el eBook", true);
+            return;
+        }
 
-    setTimeout(() => {
-        mostrarEstadoEditorial("Índice completado.");
-        actualizarPipelineIA("estadoIndice", "🟢 Índice Listo");
-    }, 1200);
-}
+        window.PL45_Generador.proyectoActual = Object.assign({}, datos, { id: Date.now() });
+        mostrarEstadoEditorial("Proyecto \"" + datos.tema + "\" creado exitosamente.", false);
+        
+        if (typeof window.actualizarIndicador === "function") {
+            window.actualizarIndicador("estadoProyecto", "verde");
+        }
+    };
 
-export async function generarLegales() {
-    if (!proyectoActual) return mostrarEstadoEditorial("Crea un proyecto primero", true);
-    mostrarEstadoEditorial("Redactando textos legales y copyright...");
-    actualizarPipelineIA("estadoLegales", "🟡 Generando Legales...");
+    window.generarPlan2 = function() {
+        if (!window.PL45_Generador.proyectoActual) {
+            mostrarEstadoEditorial("Crea un proyecto primero", true);
+            return;
+        }
+        mostrarEstadoEditorial("Generando plan con IA...", false);
+        setTimeout(function() {
+            mostrarEstadoEditorial("Plan de contenidos generado.", false);
+            if (typeof window.actualizarIndicador === "function") {
+                window.actualizarIndicador("estadoPlan", "verde");
+            }
+        }, 1200);
+    };
 
-    setTimeout(() => {
-        mostrarEstadoEditorial("Sección de legales terminada.");
-        actualizarPipelineIA("estadoLegales", "🟢 Legales Listo");
-    }, 1000);
-}
+    window.generarIndice = function() {
+        if (!window.PL45_Generador.proyectoActual) return mostrarEstadoEditorial("Crea un proyecto primero", true);
+        mostrarEstadoEditorial("Generando índice estructurado...", false);
+        setTimeout(function() {
+            mostrarEstadoEditorial("Índice completado.", false);
+            if (typeof window.actualizarIndicador === "function") window.actualizarIndicador("estadoIndice", "verde");
+        }, 1000);
+    };
 
-export async function generarIntroduccion() {
-    if (!proyectoActual) return mostrarEstadoEditorial("Crea un proyecto primero", true);
-    mostrarEstadoEditorial("Generando introducción...");
-    actualizarPipelineIA("estadoIntro", "🟡 Generando Introducción...");
+    window.generarLegales = function() {
+        if (!window.PL45_Generador.proyectoActual) return mostrarEstadoEditorial("Crea un proyecto primero", true);
+        mostrarEstadoEditorial("Redactando textos legales...", false);
+        setTimeout(function() {
+            mostrarEstadoEditorial("Sección de legales terminada.", false);
+            if (typeof window.actualizarIndicador === "function") window.actualizarIndicador("estadoLegales", "verde");
+        }, 800);
+    };
 
-    setTimeout(() => {
-        mostrarEstadoEditorial("Introducción lista.");
-        actualizarPipelineIA("estadoIntro", "🟢 Introducción Lista");
-    }, 1500);
-}
+    window.generarIntroduccion = function() {
+        if (!window.PL45_Generador.proyectoActual) return mostrarEstadoEditorial("Crea un proyecto primero", true);
+        mostrarEstadoEditorial("Generando introducción...", false);
+        setTimeout(function() {
+            mostrarEstadoEditorial("Introducción lista.", false);
+            if (typeof window.actualizarIndicador === "function") window.actualizarIndicador("estadoIntro", "verde");
+        }, 1200);
+    };
 
-export async function generarCapitulos() {
-    if (!proyectoActual) return mostrarEstadoEditorial("Crea un proyecto primero", true);
-    mostrarEstadoEditorial("Redactando capítulos en segundo plano...");
-    actualizarPipelineIA("estadoCapitulos", "🟡 Redactando Capítulos...");
+    window.generarCapitulos = function() {
+        if (!window.PL45_Generador.proyectoActual) return mostrarEstadoEditorial("Crea un proyecto primero", true);
+        mostrarEstadoEditorial("Redactando capítulos en segundo plano...", false);
+        setTimeout(function() {
+            mostrarEstadoEditorial("Capítulos generados correctamente.", false);
+            if (typeof window.actualizarIndicador === "function") window.actualizarIndicador("estadoCapitulos", "verde");
+        }, 2000);
+    };
 
-    setTimeout(() => {
-        mostrarEstadoEditorial("Capítulos generados correctamente.");
-        actualizarPipelineIA("estadoCapitulos", "🟢 Capítulos Listos");
-    }, 2500);
-}
+    window.generarConclusion = function() {
+        if (!window.PL45_Generador.proyectoActual) return mostrarEstadoEditorial("Crea un proyecto primero", true);
+        mostrarEstadoEditorial("Sintetizando conclusión...", false);
+        setTimeout(function() {
+            mostrarEstadoEditorial("Conclusión finalizada.", false);
+            if (typeof window.actualizarIndicador === "function") window.actualizarIndicador("estadoConclusion", "verde");
+        }, 800);
+    };
 
-export async function generarConclusion() {
-    if (!proyectoActual) return mostrarEstadoEditorial("Crea un proyecto primero", true);
-    mostrarEstadoEditorial("Sintetizando conclusión...");
-    actualizarPipelineIA("estadoConclusion", "🟡 Generando Conclusión...");
+    window.limpiarMonitorPIXELLAB = function() {
+        var monitor = document.getElementById("monitorPIXELLAB");
+        if (monitor) monitor.innerHTML = "";
+    };
 
-    setTimeout(() => {
-        mostrarEstadoEditorial("Conclusión finalizada.");
-        actualizarPipelineIA("estadoConclusion", "🟢 Conclusión Lista");
-    }, 1000);
-}
-
-// Vinculación explícita al scope global para listeners inline del HTML
-window.crearProyecto = crearProyecto;
-window.generarPlan2 = generarPlan2;
-window.generarIndice = generarIndice;
-window.generarLegales = generarLegales;
-window.generarIntroduccion = generarIntroduccion;
-window.generarCapitulos = generarCapitulos;
-window.generarConclusion = generarConclusion;
+})();
