@@ -1139,23 +1139,33 @@ width:100%;
     margin: 0 auto;
 }
 /* ===================================================
-   PORTADA A SANGRE (Full Bleed - Sin márgenes blancos)
+   PORTADA A BORDES LIBRES (FORZADO AL 100%)
    =================================================== */
 
-/* 1. La hoja de la portada remueve el padding interno */
-#paginaEditor > div:first-child,
-.pl45-hoja-portada {
-    padding: 0 !important;             /* Quita los márgenes blancos de la hoja */
-    overflow: hidden !important;        /* Evita que la imagen sobresalga */
+/* 1. Anular márgenes internos y externos de la primera hoja (Portada) */
+#paginaEditor > div:first-child {
+    padding: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 35px !important;
+    overflow: hidden !important;
 }
 
-/* 2. La imagen de la portada se expande al 100% de la hoja A4 */
-#paginaEditor > div:first-child img,
-.pl45-hoja-portada img {
+/* 2. Anular paddings de CUALQUIER contenedor dentro de la portada */
+#paginaEditor > div:first-child *,
+#paginaEditor > div:first-child .editorial-cover,
+#paginaEditor > div:first-child .portada-container {
+    padding: 0 !important;
+    margin: 0 !important;
     width: 100% !important;
     height: 100% !important;
-    max-height: 1123px !important;      /* Se estira al alto exacto A4 */
-    object-fit: cover !important;       /* Cubre toda la hoja sin deformarse */
-    margin: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* 3. Forzar a la imagen a cubrir la totalidad del A4 */
+#paginaEditor > div:first-child img {
+    width: 100% !important;
+    height: 1123px !important; /* Alto exacto A4 */
+    max-height: 1123px !important;
+    object-fit: cover !important; /* Llena toda la hoja sin deformar */
     display: block !important;
 }
