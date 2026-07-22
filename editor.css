@@ -6,7 +6,7 @@
     display:flex;
     justify-content:center;
     align-items:center;
- 
+
     width:100%;
     min-height:100vh;
 
@@ -1171,29 +1171,45 @@ width:100%;
 }
 
 /* =====================================
-   SECCIÓN LEGALES - ESTILOS
+   SECCIÓN LEGALES
 ===================================== */
 
-/* Hoja A4 y distribución del contenido */
+/* Estructura de la hoja A4 */
 .pagina-legales {
     width: 210mm;
     min-height: 297mm;
-    padding: 25mm;
-    background: #ffffff;
+    padding: 25mm !important;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Aprovecha el espacio vertical de la hoja */
+    justify-content: space-between;
 }
 
-/* Texto justificado y legible */
+/* Título con Neón Azul */
+.legal-titulo {
+    font-size: 38px !important;
+    font-weight: 800 !important;
+    color: #00d9ff !important;
+    text-align: center !important;
+    text-transform: uppercase !important;
+    letter-spacing: 3px !important;
+    margin-bottom: 30px !important;
+    padding-bottom: 15px !important;
+    /* Efecto Neón Azul */
+    text-shadow: 
+        0 0 5px #00d9ff,
+        0 0 10px #00d9ff,
+        0 0 20px #00d9ff,
+        0 0 40px #00d9ff !important;
+}
+
+/* Texto de legales: Tamaño mayor y justificado */
 .legal-texto {
-    font-size: 15px;
-    line-height: 1.8;
-    color: #111827;
-    text-align: justify; /* Justificado */
-    text-justify: inter-word;
-    white-space: pre-line;
+    font-size: 17px !important;
+    line-height: 2.0 !important;
+    color: #111827 !important;
+    text-align: justify !important;
+    text-justify: inter-word !important;
+    white-space: pre-line !important;
     flex-grow: 1;
-    margin-top: 25px;
 }

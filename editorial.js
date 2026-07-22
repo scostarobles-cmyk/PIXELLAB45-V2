@@ -3517,16 +3517,16 @@ async function cargarPaginaLegales(proyecto) {
         const contenedor = document.getElementById("paginaEditor");
         if (!contenedor) throw new Error("No existe paginaEditor");
 
-        // Crear hoja A4 para legales
+        // Contenedor de la hoja
         const hoja = document.createElement("div");
         hoja.className = "pagina-editor pagina-legales";
 
-        // Título con el MISMO estilo del capítulo (asigna aquí la clase exacta de tus capítulos)
+        // Título
         const titulo = document.createElement("h1");
-        titulo.className = "titulo-capitulo"; // <--- Cambia "titulo-capitulo" por la clase que usas en los capítulos
+        titulo.className = "legal-titulo";
         titulo.textContent = "Aviso Legal";
 
-        // Texto Justificado
+        // Texto
         const texto = document.createElement("div");
         texto.className = "legal-texto";
         texto.textContent = legales.contenido;
@@ -3541,7 +3541,6 @@ async function cargarPaginaLegales(proyecto) {
         monitorPIXELLAB("Editorial", "error", "Legales", error.message);
     }
 }
-
 
 /* ==========================
    PÁGINA ÍNDICE
