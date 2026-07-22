@@ -3480,7 +3480,7 @@ function cargarPaginaPortada(proyecto) {
         "Portada",
         "Hoja A4 agregada correctamente"
     );
-alternarItemMenuSalirEditor(true);
+//alternarItemMenuSalirEditor(true);
 }
 /*
 =========================================================
