@@ -3233,9 +3233,9 @@ const SECCIONES_LIBRO = [
     "portada",
     "legales",
     "indice",
- //  "introduccion",
-    //"capitulos",
-  //  "conclusion"
+   "introduccion",
+    "capitulos",
+   "conclusion"
 ];
 /* ==========================
    CARGA DEL LIBRO
