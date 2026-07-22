@@ -3312,7 +3312,7 @@ async function cargarSeccion(
             break;
 
     }
-    alternarItemMenuSalirEditor(true);
+    
 
 
 }
@@ -3480,7 +3480,7 @@ function cargarPaginaPortada(proyecto) {
         "Portada",
         "Hoja A4 agregada correctamente"
     );
-
+alternarItemMenuSalirEditor(true);
 }
 /*
 =========================================================
