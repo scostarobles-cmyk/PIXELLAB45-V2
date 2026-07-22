@@ -60,11 +60,11 @@ AI Publishing Workstation
 
 </section>
 
-<!-- GENERADOR LIBRE -->
-<div class="ai-grid" style="width: 100%; max-width: none; padding: 0 10px; box-sizing: border-box;">
-
+<!-- =============================== -->
+<!-- 1. NUEVO PROYECTO (GENERADOR) -->
+<!-- =============================== -->
+<div class="ai-grid" style="width: 100%; max-width: none; padding: 0 10px; box-sizing: border-box; margin-bottom: 20px;">
 <div class="ai-card" style="width: 100%;">
-
 <section class="ai-lab">
 
 <h2>
@@ -93,53 +93,27 @@ min="10"
 max="1000">
 
 <select id="idiomaEbook">
-
 <option value="Español">🇪🇸 Español</option>
-
-<option value="English">
-🇺🇸 English
-</option>
-
-<option value="Português">
-🇧🇷 Português
-</option>
-
-<option value="Français">
-🇫🇷 Français
-</option>
-
-<option value="Italiano">
-🇮🇹 Italiano
-</option>
-
+<option value="English">🇺🇸 English</option>
+<option value="Português">🇧🇷 Português</option>
+<option value="Français">🇫🇷 Français</option>
+<option value="Italiano">🇮🇹 Italiano</option>
 </select>
 
 <select id="tonoEbook">
-
 <option>Profesional</option>
-
 <option>Técnico</option>
-
 <option>Académico</option>
-
 <option>Inspirador</option>
-
 <option>Educativo</option>
-
 </select>
 
 <select id="publicoEbook">
-
 <option>General</option>
-
 <option>Principiantes</option>
-
 <option>Intermedio</option>
-
 <option>Avanzado</option>
-
 <option>Profesionales</option>
-
 </select>
 
 <div class="section-divider"></div>
@@ -149,63 +123,29 @@ max="1000">
 </h3>
 
 <div class="gallery-filters">
-
-<button id="btnProyecto" class="boton-accion" onclick="crearProyecto()">
-📁 Crear Proyecto
-</button>
-
-<button id="btnPlan" class="boton-accion" onclick="generarPlan2()">
-📋 Generar Plan
-</button>
-
-<button id="btnIndice" class="boton-accion" onclick="generarIndice()">
-📑 Índice
-</button>
-
-<button id="btnLegales" class="boton-accion" onclick="generarLegales()">
-⚖️ Legales
-</button>
-
-<button id="btnIntroduccion" class="boton-accion" onclick="generarIntroduccion()">
-📝 Introducción
-</button>
-
-<button id="btnCapitulos" class="boton-accion" onclick="generarCapitulos()">
-📖 Capítulos
-</button>
-
-<button id="btnConclusion" class="boton-accion" onclick="generarConclusion()">
-🏁 Conclusión
-</button>
-
+<button id="btnProyecto" class="boton-accion" onclick="crearProyecto()">📁 Crear Proyecto</button>
+<button id="btnPlan" class="boton-accion" onclick="generarPlan2()">📋 Generar Plan</button>
+<button id="btnIndice" class="boton-accion" onclick="generarIndice()">📑 Índice</button>
+<button id="btnLegales" class="boton-accion" onclick="generarLegales()">⚖️ Legales</button>
+<button id="btnIntroduccion" class="boton-accion" onclick="generarIntroduccion()">📝 Introducción</button>
+<button id="btnCapitulos" class="boton-accion" onclick="generarCapitulos()">📖 Capítulos</button>
+<button id="btnConclusion" class="boton-accion" onclick="generarConclusion()">🏁 Conclusión</button>
 </div>
-<!-- ===================================== -->
-<!-- PANEL ESTADO EDITORIAL -->
-<!-- ===================================== -->
 
 <div id="estadoEditorial" class="estado-editorial"></div>
 
+<div id="errorEditorial" class="error-editorial" style="display:none;"></div>
 
-<!-- ===================================== -->
-<!-- PANEL ÚLTIMO ERROR -->
-<!-- ===================================== -->
-
-<div
-    id="errorEditorial"
-    class="error-editorial"
-    style="display:none;">
+</section>
+</div>
 </div>
 
-<div class="section-divider"></div>
 
 <!-- =============================== -->
-<!-- PIPELINE & MONITOR (VISIBLES) -->
+<!-- 2. PIPELINE & MONITOR (INDEPENDIENTE) -->
 <!-- =============================== -->
-
-<div class="ai-grid" style="width: 100%; max-width: none;">
-
+<div class="ai-grid" style="width: 100%; max-width: none; padding: 0 10px; box-sizing: border-box; margin-bottom: 20px;">
   <div class="ai-card" style="width: 100%;">
-
     <section class="ai-lab">
 
       <h2>📊 Pipeline IA</h2>
@@ -215,56 +155,35 @@ max="1000">
       </p>
 
       <div class="scroll-box">
-      
-      <p id="estadoProyecto">⚪ Proyecto</p>
-
+        <p id="estadoProyecto">⚪ Proyecto</p>
         <p id="estadoPlan">⚪ Planificador</p>
-
         <p id="estadoIndice">⚪ Índice</p>
-
         <p id="estadoLegales">⚪ Legales</p>
-
         <p id="estadoIntro">⚪ Introducción</p>
-
         <p id="estadoCapitulos">⚪ Capítulos</p>
-
         <p id="estadoConclusion">⚪ Conclusión</p>
-
       </div>
 
+      <div class="section-divider"></div>
+
+      <div class="gallery-filters">
+        <button class="boton-accion" onclick="limpiarMonitorPIXELLAB()">
+          🗑 Limpiar
+        </button>
+      </div>
+
+      <div id="monitorPIXELLAB" class="scroll-box" style="height:350px; width:100%; margin-top: 10px;"></div>
+
     </section>
-
   </div>
-
-  <div class="gallery-filters">
-
-    <button
-        class="boton-accion"
-        onclick="limpiarMonitorPIXELLAB()">
-
-        🗑 Limpiar
-
-    </button>
-
 </div>
 
-<div
-    id="monitorPIXELLAB"
-    class="scroll-box"
-    style="height:350px; width:100%;">
-
-</div>
-
-</div>
-
-<div class="section-divider"></div>
 
 <!-- =============================== -->
-<!-- PIXELLAB EDITORIAL / BIBLIOTECA (VISIBLE) -->
+<!-- 3. BIBLIOTECA EDITORIAL (INDEPENDIENTE) -->
 <!-- =============================== -->
-
-<div class="ai-card" style="width: 100%; max-width: none;">
-
+<div class="ai-grid" style="width: 100%; max-width: none; padding: 0 10px; box-sizing: border-box; margin-bottom: 20px;">
+<div class="ai-card" style="width: 100%;">
 <section class="ai-lab">
 
 <h2>
@@ -275,70 +194,35 @@ max="1000">
 Proyectos listos para edición.
 </p>
 
-
 <div id="bibliotecaEditorial" class="biblioteca-grid">
 
-
-<!-- TARJETA DE PROYECTO -->
-
 <article class="editorial-card">
-
-
 <div class="editorial-cover">
-
-<!--
-Futura portada del libro
--->
-
+<!-- Futura portada del libro -->
 </div>
-
-
 <div class="editorial-info">
-
-
-<h3>
-ChatGPT desde Cero
-</h3>
-
-
-<p>
-Ebook • Inteligencia Artificial
-</p>
-
-
-<span>
-PIXELLAB Editorial
-</span>
-
-
-<button class="boton-accion">
-✏️ Editar
-</button>
-
-
+<h3>ChatGPT desde Cero</h3>
+<p>Ebook • Inteligencia Artificial</p>
+<span>PIXELLAB Editorial</span>
+<button class="boton-accion">✏️ Editar</button>
 </div>
-
-
 </article>
 
-
 </div>
-
 
 </section>
-
+</div>
 </div>
 
-<div class="section-divider"></div>
 
 <!-- =============================== -->
-<!-- AREA DEL EDITOR (VISIBLE) -->
+<!-- 4. ÁREA DEL EDITOR (INDEPENDIENTE) -->
 <!-- =============================== -->
-
+<div class="ai-grid" style="width: 100%; max-width: none; padding: 0 10px; box-sizing: border-box; margin-bottom: 20px;">
 <div 
 id="editorTrabajo"
 class="ai-card"
-style="display: block; width: 100%; max-width: none;">
+style="display: block; width: 100%;">
 
 <section class="ai-lab">
 
@@ -350,81 +234,37 @@ style="display: block; width: 100%; max-width: none;">
 Editor profesional de publicaciones digitales.
 </p>
 
-<!-- BOTONERA EDITOR -->
-
 <div class="editor-toolbar-editor">
-
-<button class="editor-menu">
-📄 Portada
-</button>
-
-<button class="editor-menu">
-⚖️ Legales
-</button>
-
-<button class="editor-menu">
-📑 Índice
-</button>
-
-<button class="editor-menu">
-📝 Capítulos
-</button>
-
-<button class="editor-menu">
-🖼️ Imágenes
-</button>
-
-<button class="editor-menu">
-🎨 Diseño
-</button>
-
+<button class="editor-menu">📄 Portada</button>
+<button class="editor-menu">⚖️ Legales</button>
+<button class="editor-menu">📑 Índice</button>
+<button class="editor-menu">📝 Capítulos</button>
+<button class="editor-menu">🖼️ Imágenes</button>
+<button class="editor-menu">🎨 Diseño</button>
 </div>
-
-<!-- PIPELINE HORIZONTAL -->
 
 <div class="pipeline-editor">
-
-<h3>
-⚙️ Pipeline Editorial
-</h3>
-
+<h3>⚙️ Pipeline Editorial</h3>
 <div class="pipeline-items">
-
 <p>⚪ Proyecto cargado</p>
-
 <p>⚪ Texto</p>
-
 <p>⚪ Imágenes</p>
-
 <p>⚪ Diseño</p>
-
 <p>⚪ Revisión</p>
-
 <p>⚪ Exportación</p>
-
 </div>
-
 </div>
-
-<!-- ZONA DE TRABAJO -->
 
 <div class="editor-canvas">
-
-<div id="paginaEditor">
-
-</div>
-
+<div id="paginaEditor"></div>
 </div>
 
 </section>
 
 </div>
-
-</section>
-</div>
 </div>
 
-<!-- FOOTER ORIGINAL RESTAURADO FUERA DE LOS CONTENEDORES PRINCIPALES -->
+<!-- FOOTER -->
 <footer style="text-align: center; padding: 30px 0; margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.1);">
   <p>PIXELLAB Studio &copy; 2026 - Todos los derechos reservados</p>
 </footer>
