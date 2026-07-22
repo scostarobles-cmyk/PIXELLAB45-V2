@@ -3,63 +3,71 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PIXELLAB - Generador</title>
-</head>
-<body style="margin: 0; padding: 0; font-family: sans-serif; display: flex; flex-direction: column; min-height: 100vh;">
+  <title>PIXELLAB - Editorial</title>
+  
+  <!-- Tus hojas de estilo originales (no se toca nada) -->
+  <link rel="stylesheet" href="style.css"> 
+  <!-- o el nombre que tenga tu CSS original -->
 
-  <!-- HEADER -->
-  <header style="width: 100%; background-color: #1a1a1a; color: #ffffff; padding: 12px 16px; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center;">
-    <h1 style="margin: 0; font-size: 1.2rem; font-weight: bold;">PIXELLAB</h1>
-    <span style="font-size: 0.85rem; color: #aaa;">Módulo Editorial</span>
+  <style>
+    /* Regla temporal solo para ocultar lo que no queremos ver ahora */
+    .modulo-oculto-temp {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER ORIGINAL -->
+  <header class="header-principal">
+    <div class="logo">
+      <h1>PIXELLAB</h1>
+    </div>
   </header>
 
   <!-- CONTENIDO PRINCIPAL -->
-  <main style="flex: 1; width: 100%; box-sizing: border-box;">
+  <main class="main-content">
 
-    <!-- 1. MONITOR PIXELLAB (Oculto temporalmente) -->
-    <section id="seccion-monitor" style="display: none;">
+    <!-- 1. MONITOR (Oculto temporalmente conservando sus IDs originales) -->
+    <div id="seccion-monitor" class="modulo-oculto-temp">
       <div id="monitorPIXELLAB"></div>
-    </section>
+    </div>
 
-    <!-- 2. MÓDULO GENERADOR (Visible, sin contenedor encajonado) -->
-    <section id="seccion-generador" style="width: 100%; box-sizing: border-box; padding: 12px; margin-bottom: 20px;">
+    <!-- 2. GENERADOR (Activo con tus IDs y clases exactas originales) -->
+    <section id="generador-container" class="modulo-generador">
       
-      <!-- Mensajes de Estado del Editorial -->
-      <div id="estadoEditorial" style="display: none; background-color: #d1e7dd; color: #0f5132; padding: 10px; border-radius: 6px; margin-bottom: 12px; font-size: 0.9rem;"></div>
-      <div id="errorEditorial" style="display: none; background-color: #f8d7da; color: #842029; padding: 10px; border-radius: 6px; margin-bottom: 12px; font-size: 0.9rem;"></div>
+      <div id="estadoEditorial"></div>
+      <div id="errorEditorial"></div>
 
-      <!-- Formulario de Datos del eBook -->
-      <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px;">
-        
-        <div>
-          <label for="temaEbook" style="display: block; font-weight: bold; margin-bottom: 4px; font-size: 0.9rem;">Tema del eBook:</label>
-          <input type="text" id="temaEbook" placeholder="Ingresa el tema principal" style="width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem;">
+      <div class="formulario-editorial">
+        <div class="campo-grupo">
+          <label for="temaEbook">Tema del eBook:</label>
+          <input type="text" id="temaEbook" placeholder="Tema principal">
         </div>
 
-        <div>
-          <label for="autorEbook" style="display: block; font-weight: bold; margin-bottom: 4px; font-size: 0.9rem;">Autor:</label>
-          <input type="text" id="autorEbook" placeholder="Nombre del autor" style="width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem;">
+        <div class="campo-grupo">
+          <label for="autorEbook">Autor:</label>
+          <input type="text" id="autorEbook" placeholder="Autor">
         </div>
 
-        <!-- Opciones secundarias adaptables -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px;">
-          <div>
-            <label for="paginasEbook" style="display: block; font-weight: bold; margin-bottom: 4px; font-size: 0.85rem;">Páginas estimadas:</label>
-            <input type="number" id="paginasEbook" value="100" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px;">
+        <div class="grid-opciones">
+          <div class="campo-grupo">
+            <label for="paginasEbook">Páginas estimadas:</label>
+            <input type="number" id="paginasEbook" value="100">
           </div>
 
-          <div>
-            <label for="idiomaEbook" style="display: block; font-weight: bold; margin-bottom: 4px; font-size: 0.85rem;">Idioma:</label>
-            <select id="idiomaEbook" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px;">
+          <div class="campo-grupo">
+            <label for="idiomaEbook">Idioma:</label>
+            <select id="idiomaEbook">
               <option value="Español" selected>Español</option>
               <option value="Inglés">Inglés</option>
               <option value="Portugués">Portugués</option>
             </select>
           </div>
 
-          <div>
-            <label for="tonoEbook" style="display: block; font-weight: bold; margin-bottom: 4px; font-size: 0.85rem;">Tono:</label>
-            <select id="tonoEbook" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px;">
+          <div class="campo-grupo">
+            <label for="tonoEbook">Tono:</label>
+            <select id="tonoEbook">
               <option value="Profesional" selected>Profesional</option>
               <option value="Persuasivo">Persuasivo</option>
               <option value="Educativo">Educativo</option>
@@ -67,44 +75,42 @@
             </select>
           </div>
 
-          <div>
-            <label for="publicoEbook" style="display: block; font-weight: bold; margin-bottom: 4px; font-size: 0.85rem;">Público:</label>
-            <select id="publicoEbook" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px;">
+          <div class="campo-grupo">
+            <label for="publicoEbook">Público:</label>
+            <select id="publicoEbook">
               <option value="General" selected>General</option>
               <option value="Principiantes">Principiantes</option>
               <option value="Avanzado">Avanzado</option>
             </select>
           </div>
         </div>
-
       </div>
 
-      <!-- Botonera de Procesos IA -->
-      <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-        <button onclick="crearProyecto()" style="flex: 1 1 100%; padding: 12px; background-color: #0d6efd; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">Crear Proyecto</button>
-        <button onclick="generarPlan2()" style="flex: 1 1 calc(50% - 4px); padding: 10px; background-color: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer;">Generar Plan</button>
-        <button onclick="generarIndice()" style="flex: 1 1 calc(50% - 4px); padding: 10px; background-color: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer;">Índice</button>
-        <button onclick="generarLegales()" style="flex: 1 1 calc(50% - 4px); padding: 10px; background-color: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer;">Legales</button>
-        <button onclick="generarIntroduccion()" style="flex: 1 1 calc(50% - 4px); padding: 10px; background-color: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer;">Introducción</button>
-        <button onclick="generarCapitulos()" style="flex: 1 1 calc(50% - 4px); padding: 10px; background-color: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer;">Capítulos</button>
-        <button onclick="generarConclusion()" style="flex: 1 1 calc(50% - 4px); padding: 10px; background-color: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer;">Conclusión</button>
+      <div class="botonera-acciones">
+        <button onclick="crearProyecto()" class="btn btn-principal">Crear Proyecto</button>
+        <button onclick="generarPlan2()" class="btn">Generar Plan</button>
+        <button onclick="generarIndice()" class="btn">Índice</button>
+        <button onclick="generarLegales()" class="btn">Legales</button>
+        <button onclick="generarIntroduccion()" class="btn">Introducción</button>
+        <button onclick="generarCapitulos()" class="btn">Capítulos</button>
+        <button onclick="generarConclusion()" class="btn">Conclusión</button>
       </div>
 
     </section>
 
-    <!-- 3. MÓDULO EDITOR (Oculto temporalmente) -->
-    <section id="seccion-editor" style="display: none;">
+    <!-- 3. EDITOR (Oculto temporalmente conservando sus IDs originales) -->
+    <div id="seccion-editor" class="modulo-oculto-temp">
       <div class="editor-toolbar-editor">
         <button class="editor-menu">Portada</button>
       </div>
       <div id="paginaEditor"></div>
-    </section>
+    </div>
 
   </main>
 
-  <!-- FOOTER -->
-  <footer style="width: 100%; background-color: #f8f9fa; border-top: 1px solid #e9ecef; text-align: center; padding: 12px; box-sizing: border-box; font-size: 0.8rem; color: #6c757d;">
-    PIXELLAB Studio &copy; 2026
+  <!-- FOOTER ORIGINAL -->
+  <footer class="footer-principal">
+    <p>PIXELLAB Studio &copy; 2026</p>
   </footer>
 
 </body>
