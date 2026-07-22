@@ -3,18 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PIXELLAB - Editorial</title>
-  
-  <!-- Tus hojas de estilo originales (no se toca nada) -->
-  <link rel="stylesheet" href="style.css"> 
-  <!-- o el nombre que tenga tu CSS original -->
-
-  <style>
-    /* Regla temporal solo para ocultar lo que no queremos ver ahora */
-    .modulo-oculto-temp {
-      display: none !important;
-    }
-  </style>
+  <title>PIXELLAB</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -28,12 +18,12 @@
   <!-- CONTENIDO PRINCIPAL -->
   <main class="main-content">
 
-    <!-- 1. MONITOR (Oculto temporalmente conservando sus IDs originales) -->
-    <div id="seccion-monitor" class="modulo-oculto-temp">
+    <!-- 1. MONITOR (Oculto manteniendo sus IDs y clases originales) -->
+    <div id="seccion-monitor" class="modulo-monitor" style="display: none;">
       <div id="monitorPIXELLAB"></div>
     </div>
 
-    <!-- 2. GENERADOR (Activo con tus IDs y clases exactas originales) -->
+    <!-- 2. GENERADOR (Intacto con todas tus clases e IDs originales) -->
     <section id="generador-container" class="modulo-generador">
       
       <div id="estadoEditorial"></div>
@@ -98,8 +88,8 @@
 
     </section>
 
-    <!-- 3. EDITOR (Oculto temporalmente conservando sus IDs originales) -->
-    <div id="seccion-editor" class="modulo-oculto-temp">
+    <!-- 3. EDITOR (Oculto manteniendo sus IDs y clases originales) -->
+    <div id="seccion-editor" class="modulo-editor" style="display: none;">
       <div class="editor-toolbar-editor">
         <button class="editor-menu">Portada</button>
       </div>
