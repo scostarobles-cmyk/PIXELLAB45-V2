@@ -3312,6 +3312,8 @@ async function cargarSeccion(
             break;
 
     }
+    alternarItemMenuSalirEditor(true);
+
 
 }
 // =====================================================
@@ -4964,4 +4966,37 @@ async function cargarPaginaConclusion(proyecto) {
 
     }
 
+}
+
+// Función para mostrar/ocultar la opción en el menú hamburguesa
+function alternarItemMenuSalirEditor(mostrar) {
+  const menuHamburguesa = document.querySelector('#menu-hamburguesa-lista'); // Ajusta al selector de tu menú
+  let itemSalir = document.querySelector('#item-salir-editor');
+
+  if (mostrar) {
+    if (!itemSalir) {
+      itemSalir = document.createElement('li');
+      itemSalir.id = 'item-salir-editor';
+      itemSalir.innerHTML = '<a href="#" onclick="cerrarEditorPantallaCompleta(); return false;">Cerrar Editor</a>';
+      menuHamburguesa.appendChild(itemSalir);
+    }
+  } else {
+    if (itemSalir) {
+      itemSalir.remove();
+    }
+  }
+}
+
+// Función para restaurar la vista normal
+function cerrarEditorPantallaCompleta() {
+  // Volver a mostrar los componentes ocultos
+  document.querySelector('#generador').style.display = 'block';
+  document.querySelector('#biblioteca').style.display = 'block';
+  document.querySelector('#monitor').style.display = 'block';
+
+  // Ocultar o reajustar el contenedor del editor
+  document.querySelector('#editor').classList.remove('pantalla-completa');
+
+  // Quitar la opción del menú
+  alternarItemMenuSalirEditor(false);
 }

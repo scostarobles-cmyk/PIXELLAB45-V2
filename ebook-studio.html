@@ -3,482 +3,444 @@
 
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>PIXELLAB45 eBook Studio</title>
+  <title>PIXELLAB45 eBook Studio</title>
 
-<link rel="stylesheet" href="styles.css?v=1">
-<link rel="stylesheet" href="editor.css?v=1">
+  <link rel="stylesheet" href="styles.css?v=1">
+  <link rel="stylesheet" href="editor.css?v=1">
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<script src="https://js.puter.com/v2/"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://js.puter.com/v2/"></script>
 </head>
 
 <body>
 
-<header class="navbar">
+  <div class="app-container">
 
-<button class="menu-toggle" onclick="toggleMenu()">
-☰
-</button>
+    <!-- ===================================== -->
+    <!-- HEADER / BOTONERA PRINCIPAL -->
+    <!-- ===================================== -->
+    <header class="navbar app-header">
 
-<nav class="nav-links">
+      <button class="menu-toggle" onclick="toggleMenu()">
+        ☰
+      </button>
 
-<a href="index.html">
-🏠 Inicio
-</a>
+      <nav class="nav-links">
 
-<a href="#">
-📚 eBook Studio
-</a>
+        <a href="index.html">
+          🏠 Inicio
+        </a>
 
-<a href="#">
-📖 Biblioteca
-</a>
+        <a href="#">
+          📚 eBook Studio
+        </a>
 
-<a href="#">
-⚙️ Proyectos
-</a>
+        <a href="#">
+          📖 Biblioteca
+        </a>
 
-</nav>
+        <a href="#">
+          ⚙️ Proyectos
+        </a>
 
-</header>
+      </nav>
 
-<div class="divider"></div>
+    </header>
 
-<section class="ailab-hero">
+    <div class="divider"></div>
 
-<h1>
-📚 PIXELLAB45 eBook Studio
-</h1>
+    <!-- ========================================================= -->
+    <!-- VISTA PRINCIPAL: GENERADOR + PIPELINE + BIBLIOTECA        -->
+    <!-- ========================================================= -->
+    <div id="vista-principal" class="app-main-content">
 
-<p>
-AI Publishing Workstation
-</p>
+      <section class="ailab-hero">
 
-</section>
+        <h1>
+          📚 PIXELLAB45 eBook Studio
+        </h1>
 
-<div class="ai-grid">
+        <p>
+          AI Publishing Workstation
+        </p>
 
-<div class="ai-card">
+      </section>
 
-<section class="ai-lab">
+      <div class="ai-grid">
 
-<h2>
-🚀 Nuevo Proyecto
-</h2>
+        <div class="ai-card">
 
-<p class="ai-subtitle">
-Crea la estructura completa de un eBook mediante Inteligencia Artificial.
-</p>
+          <section class="ai-lab">
 
-<input
-id="temaEbook"
-type="text"
-placeholder="Tema del eBook">
+            <h2>
+              🚀 Nuevo Proyecto
+            </h2>
 
-<input
-id="autorEbook"
-type="text"
-placeholder="Autor">
+            <p class="ai-subtitle">
+              Crea la estructura completa de un eBook mediante Inteligencia Artificial.
+            </p>
 
-<input
-id="paginasEbook"
-type="number"
-value="100"
-min="10"
-max="1000">
+            <input id="temaEbook" type="text" placeholder="Tema del eBook">
 
-<select id="idiomaEbook">
+            <input id="autorEbook" type="text" placeholder="Autor">
 
-<option value="Español">🇪🇸 Español</option>
+            <input id="paginasEbook" type="number" value="100" min="10" max="1000">
 
-<option value="English">
-🇺🇸 English
-</option>
+            <select id="idiomaEbook">
 
-<option value="Português">
-🇧🇷 Português
-</option>
+              <option value="Español">🇪🇸 Español</option>
 
-<option value="Français">
-🇫🇷 Français
-</option>
+              <option value="English">
+                🇺🇸 English
+              </option>
 
-<option value="Italiano">
-🇮🇹 Italiano
-</option>
+              <option value="Português">
+                🇧🇷 Português
+              </option>
 
-</select>
+              <option value="Français">
+                🇫🇷 Français
+              </option>
 
-<select id="tonoEbook">
+              <option value="Italiano">
+                🇮🇹 Italiano
+              </option>
 
-<option>Profesional</option>
+            </select>
 
-<option>Técnico</option>
+            <select id="tonoEbook">
 
-<option>Académico</option>
+              <option>Profesional</option>
 
-<option>Inspirador</option>
+              <option>Técnico</option>
 
-<option>Educativo</option>
+              <option>Académico</option>
 
-</select>
+              <option>Inspirador</option>
 
-<select id="publicoEbook">
+              <option>Educativo</option>
 
-<option>General</option>
+            </select>
 
-<option>Principiantes</option>
+            <select id="publicoEbook">
 
-<option>Intermedio</option>
+              <option>General</option>
 
-<option>Avanzado</option>
+              <option>Principiantes</option>
 
-<option>Profesionales</option>
+              <option>Intermedio</option>
 
-</select>
+              <option>Avanzado</option>
 
-<div class="section-divider"></div>
+              <option>Profesionales</option>
 
-<h3>
-⚙️ Motores IA
-</h3>
+            </select>
 
-<div class="gallery-filters">
+            <div class="section-divider"></div>
 
-<button id="btnProyecto" class="boton-accion" onclick="crearProyecto()">
-📁 Crear Proyecto
-</button>
+            <h3>
+              ⚙️ Motores IA
+            </h3>
 
-<button id="btnPlan" class="boton-accion" onclick="generarPlan2()">
-📋 Generar Plan
-</button>
+            <div class="gallery-filters">
 
-<button id="btnIndice" class="boton-accion" onclick="generarIndice()">
-📑 Índice
-</button>
+              <button id="btnProyecto" class="boton-accion" onclick="crearProyecto()">
+                📁 Crear Proyecto
+              </button>
 
-<button id="btnLegales" class="boton-accion" onclick="generarLegales()">
-⚖️ Legales
-</button>
+              <button id="btnPlan" class="boton-accion" onclick="generarPlan2()">
+                📋 Generar Plan
+              </button>
 
-<button id="btnIntroduccion" class="boton-accion" onclick="generarIntroduccion()">
-📝 Introducción
-</button>
+              <button id="btnIndice" class="boton-accion" onclick="generarIndice()">
+                📑 Índice
+              </button>
 
-<button id="btnCapitulos" class="boton-accion" onclick="generarCapitulos()">
-📖 Capítulos
-</button>
+              <button id="btnLegales" class="boton-accion" onclick="generarLegales()">
+                ⚖️ Legales
+              </button>
 
-<button id="btnConclusion" class="boton-accion" onclick="generarConclusion()">
-🏁 Conclusión
-</button>
+              <button id="btnIntroduccion" class="boton-accion" onclick="generarIntroduccion()">
+                📝 Introducción
+              </button>
 
-</div>
-<!-- ===================================== -->
-<!-- PANEL ESTADO EDITORIAL -->
-<!-- ===================================== -->
+              <button id="btnCapitulos" class="boton-accion" onclick="generarCapitulos()">
+                📖 Capítulos
+              </button>
 
-<div id="estadoEditorial" class="estado-editorial"></div>
+              <button id="btnConclusion" class="boton-accion" onclick="generarConclusion()">
+                🏁 Conclusión
+              </button>
 
+            </div>
+            <!-- ===================================== -->
+            <!-- PANEL ESTADO EDITORIAL -->
+            <!-- ===================================== -->
 
-<!-- ===================================== -->
-<!-- PANEL ÚLTIMO ERROR -->
-<!-- ===================================== -->
+            <div id="estadoEditorial" class="estado-editorial"></div>
 
-<div
-    id="errorEditorial"
-    class="error-editorial"
-    style="display:none;">
-</div>
 
-<div class="section-divider"></div>
+            <!-- ===================================== -->
+            <!-- PANEL ÚLTIMO ERROR -->
+            <!-- ===================================== -->
 
-<div class="ai-grid">
+            <div id="errorEditorial" class="error-editorial" style="display:none;">
+            </div>
 
-  <!-- =============================== -->
-  <!-- PIPELINE -->
-  <!-- =============================== -->
+            <div class="section-divider"></div>
 
-  <div class="ai-card">
+            <div class="ai-grid">
 
-    <section class="ai-lab">
+              <!-- =============================== -->
+              <!-- PIPELINE -->
+              <!-- =============================== -->
 
-      <h2>📊 Pipeline IA</h2>
+              <div class="ai-card">
 
-      <p class="ai-subtitle">
-        Estado de los motores del proyecto
-      </p>
+                <section class="ai-lab">
 
-      <div class="scroll-box">
-      
-      <p id="estadoProyecto">⚪ Proyecto</p>
+                  <h2>📊 Pipeline IA</h2>
 
-        <p id="estadoPlan">⚪ Planificador</p>
+                  <p class="ai-subtitle">
+                    Estado de los motores del proyecto
+                  </p>
 
-        <p id="estadoIndice">⚪ Índice</p>
+                  <div class="scroll-box">
 
-        <p id="estadoLegales">⚪ Legales</p>
+                    <p id="estadoProyecto">⚪ Proyecto</p>
 
-        <p id="estadoIntro">⚪ Introducción</p>
+                    <p id="estadoPlan">⚪ Planificador</p>
 
-        <p id="estadoCapitulos">⚪ Capítulos</p>
+                    <p id="estadoIndice">⚪ Índice</p>
 
-        <p id="estadoConclusion">⚪ Conclusión</p>
+                    <p id="estadoLegales">⚪ Legales</p>
 
-      </div>
+                    <p id="estadoIntro">⚪ Introducción</p>
 
-    </section>
+                    <p id="estadoCapitulos">⚪ Capítulos</p>
 
-  </div>
+                    <p id="estadoConclusion">⚪ Conclusión</p>
 
-  <!-- =============================== -->
-  <!-- MONITOR -->
-  <!-- =============================== -->
+                  </div>
 
-<div class="gallery-filters">
+                </section>
 
-    <button
-        class="boton-accion"
-        onclick="limpiarMonitorPIXELLAB()">
+              </div>
 
-        🗑 Limpiar
+              <!-- =============================== -->
+              <!-- MONITOR -->
+              <!-- =============================== -->
 
-    </button>
+              <div class="gallery-filters">
 
-</div>
+                <button class="boton-accion" onclick="limpiarMonitorPIXELLAB()">
 
-<div
-    id="monitorPIXELLAB"
-    class="scroll-box"
-    style="height:350px;">
+                  🗑 Limpiar
 
-</div>
+                </button>
 
-</div>
+              </div>
 
-<div class="section-divider"></div>
+              <div id="monitorPIXELLAB" class="scroll-box" style="height:350px;">
 
-<!-- =============================== -->
-<!-- PIXELLAB EDITORIAL -->
-<!-- =============================== -->
+              </div>
 
-<div class="ai-card">
+            </div>
 
-<section class="ai-lab">
+            <div class="section-divider"></div>
 
-<h2>
-📚 Biblioteca Editorial
-</h2>
+            <!-- =============================== -->
+            <!-- PIXELLAB EDITORIAL -->
+            <!-- =============================== -->
 
-<p class="ai-subtitle">
-Proyectos listos para edición.
-</p>
+            <div class="ai-card">
 
+              <section class="ai-lab">
 
-<div id="bibliotecaEditorial" class="biblioteca-grid">
+                <h2>
+                  📚 Biblioteca Editorial
+                </h2>
 
+                <p class="ai-subtitle">
+                  Proyectos listos para edición.
+                </p>
 
-<!-- TARJETA DE PROYECTO -->
 
-<article class="editorial-card">
+                <div id="bibliotecaEditorial" class="biblioteca-grid">
 
 
-<div class="editorial-cover">
+                  <!-- TARJETA DE PROYECTO -->
 
-<!--
+                  <article class="editorial-card">
+
+
+                    <div class="editorial-cover">
+
+                      <!--
 Futura portada del libro
 -->
 
-</div>
+                    </div>
 
 
-<div class="editorial-info">
+                    <div class="editorial-info">
 
 
-<h3>
-ChatGPT desde Cero
-</h3>
+                      <h3>
+                        ChatGPT desde Cero
+                      </h3>
 
 
-<p>
-Ebook • Inteligencia Artificial
-</p>
+                      <p>
+                        Ebook • Inteligencia Artificial
+                      </p>
 
 
-<span>
-PIXELLAB Editorial
-</span>
+                      <span>
+                        PIXELLAB Editorial
+                      </span>
 
 
-<button class="boton-accion">
-✏️ Editar
-</button>
+                      <button class="boton-accion" onclick="activarModoEditor()">
+                        ✏️ Editar
+                      </button>
 
 
-</div>
+                    </div>
 
 
-</article>
+                  </article>
 
 
-</div>
+                </div>
 
 
-</section>
+              </section>
 
-</div>
+            </div>
 
+          </section>
 
+        </div>
 
-<!-- =============================== -->
-<!-- AREA DEL EDITOR -->
-<!-- =============================== -->
+      </div>
 
+    </div>
 
-<!-- =============================== -->
-<!-- AREA DEL EDITOR -->
-<!-- =============================== -->
+    <!-- ========================================================= -->
+    <!-- VISTA EDITOR A4 (OCUPA TODO EL ESPACIO RESTANTE EN MÓVIL)  -->
+    <!-- ========================================================= -->
+    <div id="vista-editor" class="editor-viewport" style="display:none;">
 
+      <div id="editorTrabajo" class="ai-card" style="width: 100%;">
 
-<div 
-id="editorTrabajo"
-class="ai-card"
-style="display:none;">
+        <section class="ai-lab">
 
+          <h2>
+            ✏️ PIXELLAB Editorial Workspace
+          </h2>
 
+          <p class="ai-subtitle">
+            Editor profesional de publicaciones digitales.
+          </p>
 
-<section class="ai-lab">
+          <!-- BOTONERA EDITOR -->
 
+          <div class="editor-toolbar-editor">
 
-<h2>
-✏️ PIXELLAB Editorial Workspace
-</h2>
+            <button class="editor-menu">
+              📄 Portada
+            </button>
 
+            <button class="editor-menu">
+              ⚖️ Legales
+            </button>
 
-<p class="ai-subtitle">
-Editor profesional de publicaciones digitales.
-</p>
+            <button class="editor-menu">
+              📑 Índice
+            </button>
 
+            <button class="editor-menu">
+              📝 Capítulos
+            </button>
 
+            <button class="editor-menu">
+              🖼️ Imágenes
+            </button>
 
-<!-- BOTONERA EDITOR -->
+            <button class="editor-menu">
+              🎨 Diseño
+            </button>
 
-<div class="editor-toolbar-editor">
+          </div>
 
+          <!-- PIPELINE HORIZONTAL -->
 
-<button class="editor-menu">
-📄 Portada
-</button>
+          <div class="pipeline-editor">
 
+            <h3>
+              ⚙️ Pipeline Editorial
+            </h3>
 
-<button class="editor-menu">
-⚖️ Legales
-</button>
+            <div class="pipeline-items">
 
+              <p>⚪ Proyecto cargado</p>
 
-<button class="editor-menu">
-📑 Índice
-</button>
+              <p>⚪ Texto</p>
 
+              <p>⚪ Imágenes</p>
 
-<button class="editor-menu">
-📝 Capítulos
-</button>
+              <p>⚪ Diseño</p>
 
+              <p>⚪ Revisión</p>
 
-<button class="editor-menu">
-🖼️ Imágenes
-</button>
+              <p>⚪ Exportación</p>
 
+            </div>
 
-<button class="editor-menu">
-🎨 Diseño
-</button>
+          </div>
 
+          <!-- ZONA DE TRABAJO -->
 
-</div>
+          <div class="editor-canvas">
 
+            <div id="paginaEditor" class="hoja-a4">
 
+            </div>
 
+          </div>
 
-<!-- PIPELINE HORIZONTAL -->
+        </section>
 
-<div class="pipeline-editor">
+      </div>
 
+    </div>
 
-<h3>
-⚙️ Pipeline Editorial
-</h3>
+    <!-- ===================================== -->
+    <!-- FOOTER -->
+    <!-- ===================================== -->
 
+    <footer class="footer app-footer">
 
-<div class="pipeline-items">
+      <h3>
+        PIXELLAB45
+      </h3>
 
+      <p>
+        Inteligencia Artificial • Tecnología • Automatización • Innovación
+      <p id="versionSistema">Versión: __VERSION__</p>
+      </p>
 
-<p>⚪ Proyecto cargado</p>
+    </footer>
 
-<p>⚪ Texto</p>
+  </div>
 
-<p>⚪ Imágenes</p>
-
-<p>⚪ Diseño</p>
-
-<p>⚪ Revisión</p>
-
-<p>⚪ Exportación</p>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-<!-- ZONA DE TRABAJO -->
-
-<div class="editor-canvas">
-
-
-<div id="paginaEditor">
-
-</div>
-
-
-</div>
-
-
-
-</section>
-
-
-</div>
-
-<!-- ===================================== -->
-<!-- FOOTER -->
-<!-- ===================================== -->
-
-<footer class="footer">
-
-  <h3>
-    PIXELLAB45
-  </h3>
-
-  <p>
-    Inteligencia Artificial • Tecnología • Automatización • Innovación
-    <p id="versionSistema">Versión: __VERSION__</p>
-  </p>
-
-</footer>
-
-<script src="pixellab45-core.js?v=__VERSION__"></script>
-<script src="editorial.js?v=__VERSION__"></script>
-<script src="ailab.js?v=__VERSION__"></script>
+  <script src="pixellab45-core.js?v=__VERSION__"></script>
+  <script src="editorial.js?v=__VERSION__"></script>
+  <script src="ailab.js?v=__VERSION__"></script>
 </body>
 
 </html>
