@@ -3521,9 +3521,9 @@ async function cargarPaginaLegales(proyecto) {
         const hoja = document.createElement("div");
         hoja.className = "pagina-editor pagina-legales";
 
-        // Título Neón
+        // Título con el MISMO estilo del capítulo (asigna aquí la clase exacta de tus capítulos)
         const titulo = document.createElement("h1");
-        titulo.className = "legal-titulo";
+        titulo.className = "titulo-capitulo"; // <--- Cambia "titulo-capitulo" por la clase que usas en los capítulos
         titulo.textContent = "Aviso Legal";
 
         // Texto Justificado
@@ -3541,6 +3541,7 @@ async function cargarPaginaLegales(proyecto) {
         monitorPIXELLAB("Editorial", "error", "Legales", error.message);
     }
 }
+
 
 /* ==========================
    PÁGINA ÍNDICE
