@@ -1169,3 +1169,48 @@ width:100%;
     object-fit: cover !important; /* Llena toda la hoja sin deformar */
     display: block !important;
 }
+/* =====================================
+   SECCIÓN LEGALES - ESTILOS
+===================================== */
+
+/* Título con efecto Neón Azul */
+.legal-titulo {
+    font-size: 38px;
+    font-weight: 800;
+    color: #00d9ff;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 35px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #00d9ff;
+    /* Efecto Neón Azul */
+    text-shadow: 
+        0 0 5px #00d9ff,
+        0 0 10px #00d9ff,
+        0 0 20px #00d9ff,
+        0 0 40px #00d9ff;
+}
+
+/* Hoja A4 y distribución del contenido */
+.pagina-legales {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 25mm;
+    background: #ffffff;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribuye el contenido ocupando la hoja */
+}
+
+/* Texto justificado y legible */
+.legal-texto {
+    font-size: 15px;
+    line-height: 1.8;
+    color: #111827;
+    text-align: justify; /* Justificado en lugar de centrado */
+    text-justify: inter-word;
+    white-space: pre-line;
+    flex-grow: 1;
+}

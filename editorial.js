@@ -3498,190 +3498,50 @@ No aplica estilos.
 */
 
 async function cargarPaginaLegales(proyecto) {
-
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Legales",
-        "Entró a cargarPaginaLegales"
-    );
-
+    monitorPIXELLAB("Editorial", "proceso", "Legales", "Entró a cargarPaginaLegales");
 
     try {
+        const ruta = `proyectos/${proyecto.projectId}/legales.json`;
+        const respuesta = await fetch(WORKER_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action: "cargar-json", ruta: ruta })
+        });
 
-
-        const ruta =
-            `proyectos/${proyecto.projectId}/legales.json`;
-
-
-        monitorPIXELLAB(
-            "Editorial",
-            "proceso",
-            "Legales",
-            "Cargando: " + ruta
-        );
-
-
-        const respuesta =
-            await fetch(WORKER_URL, {
-
-                method: "POST",
-
-                headers: {
-                    "Content-Type": "application/json"
-                },
-
-                body: JSON.stringify({
-
-                    action: "cargar-json",
-
-                    ruta: ruta
-
-                })
-
-            });
-
-
-        const datos =
-            await respuesta.json();
-
-
-        if (!datos.ok) {
-
-            throw new Error(
-                "No se pudo cargar legales"
-            );
-
+        const datos = await respuesta.json();
+        if (!datos.ok || !datos.json) {
+            throw new Error("No se pudo cargar el archivo legales.json");
         }
 
+        const legales = datos.json;
+        const contenedor = document.getElementById("paginaEditor");
+        if (!contenedor) throw new Error("No existe paginaEditor");
 
-        const legales =
-            datos.json;
+        // Crear hoja A4 para legales
+        const hoja = document.createElement("div");
+        hoja.className = "pagina-editor pagina-legales";
 
+        // Título Neón
+        const titulo = document.createElement("h1");
+        titulo.className = "legal-titulo";
+        titulo.textContent = "Aviso Legal";
 
-        if (!legales) {
+        // Texto Justificado
+        const texto = document.createElement("div");
+        texto.className = "legal-texto";
+        texto.textContent = legales.contenido;
 
-            throw new Error(
-                "JSON legales vacío"
-            );
+        hoja.appendChild(titulo);
+        hoja.appendChild(texto);
+        contenedor.appendChild(hoja);
 
-        }
-
-
-        const contenedor =
-            document.getElementById(
-                "paginaEditor"
-            );
-
-
-        if (!contenedor) {
-
-            throw new Error(
-                "No existe paginaEditor"
-            );
-
-        }
-
-
-        // Crear hoja nueva
-
-        const hoja =
-            document.createElement(
-                "div"
-            );
-
-
-        hoja.className =
-            "pagina-editor";
-
-
-        // Estilos de prueba visual
-
-        hoja.style.background =
-            "#ffffff";
-
-        hoja.style.color =
-            "#000000";
-
-        hoja.style.padding =
-            "40px";
-
-        hoja.style.marginBottom =
-            "20px";
-
-        hoja.style.minHeight =
-            "900px";
-
-
-        // Crear título
-
-        const titulo =
-            document.createElement(
-                "h1"
-            );
-
-
-        titulo.textContent =
-            "Legales";
-
-
-        // Crear contenido
-
-        const texto =
-            document.createElement(
-                "div"
-            );
-
-
-        texto.textContent =
-            legales.contenido;
-
-
-        texto.style.whiteSpace =
-            "pre-line";
-
-
-        // Armar hoja
-
-        hoja.appendChild(
-            titulo
-        );
-
-
-        hoja.appendChild(
-            texto
-        );
-
-
-        // Agregar debajo de lo existente
-
-        contenedor.appendChild(
-            hoja
-        );
-
-
-        monitorPIXELLAB(
-            "Editorial",
-            "estado",
-            "Legales",
-            "Página cargada correctamente"
-        );
-
+        monitorPIXELLAB("Editorial", "estado", "Legales", "Página cargada con éxito");
 
     } catch(error) {
-
-
-        monitorPIXELLAB(
-            "Editorial",
-            "error",
-            "Legales",
-            error.message
-        );
-
-
+        monitorPIXELLAB("Editorial", "error", "Legales", error.message);
     }
-
 }
+
 /* ==========================
    PÁGINA ÍNDICE
 ========================== */
