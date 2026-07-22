@@ -522,7 +522,7 @@ async function verificarProyecto() {
                     "btnIntroduccion"
                 );
 
-
+                
                 habilitarBoton(
                     "btnIntroduccion"
                 );
@@ -3232,7 +3232,7 @@ En esta etapa:
 const SECCIONES_LIBRO = [
     "portada",
     "legales",
-  //  "indice",
+    "indice",
  //  "introduccion",
     //"capitulos",
   //  "conclusion"
