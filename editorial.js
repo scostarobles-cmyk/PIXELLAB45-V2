@@ -3927,22 +3927,48 @@ async function cargarPaginaCapitulo(
         const contenedor = document.getElementById("paginaEditor");
         if (!contenedor) throw new Error("No existe paginaEditor");
 
-        // 1. Determinar qué capítulos se van a cargar:
-        // Si viene numeroCapitulo, cargamos solo ese.
-        // Si NO viene, leemos la lista desde proyecto.plan.capitulos
         let listaCapitulos = [];
 
+        /* ======================================================
+           1. DETERMINAR CAPÍTULOS A CARGAR
+        ====================================================== */
         if (numeroCapitulo !== null && numeroCapitulo !== undefined) {
+            // Cargar solo un capítulo específico
             listaCapitulos = [{ numero: numeroCapitulo }];
-        } else if (proyecto && proyecto.plan && proyecto.plan.capitulos) {
-            listaCapitulos = proyecto.plan.capitulos;
         } else {
-            throw new Error("No se pudo determinar la lista de capítulos ni se envió un número específico.");
+            // Si no hay numeroCapitulo, cargamos plan.json para obtener todos
+            const rutaPlan = `proyectos/${proyecto.projectId}/plan.json`;
+
+            monitorPIXELLAB(
+                "Editorial",
+                "proceso",
+                "Capítulo",
+                "Cargando plan general: " + rutaPlan
+            );
+
+            const resPlan = await fetch(WORKER_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    action: "cargar-json",
+                    ruta: rutaPlan
+                })
+            });
+
+            const datosPlan = await resPlan.json();
+
+            if (!datosPlan.ok || !datosPlan.json || !datosPlan.json.capitulos) {
+                throw new Error("No se pudo cargar plan.json o no contiene capítulos");
+            }
+
+            listaCapitulos = datosPlan.json.capitulos;
         }
 
-        // 2. Recorremos los capítulos a renderizar
+        /* ======================================================
+           2. RECORRER Y RENDERIZAR CADA CAPÍTULO
+        ====================================================== */
         for (const itemCap of listaCapitulos) {
-            const numCap = itemCap.numero || numeroCapitulo;
+            const numCap = itemCap.numero;
             const archivo = `capitulo-${String(numCap).padStart(3, "0")}.json`;
             const ruta = `proyectos/${proyecto.projectId}/capitulos/${archivo}`;
 
@@ -3966,7 +3992,7 @@ async function cargarPaginaCapitulo(
 
             if (!datos.ok || !datos.json) {
                 console.warn(`No se pudo cargar el capítulo ${numCap}`);
-                continue; // Si falla uno, salta al siguiente
+                continue;
             }
 
             const capitulo = datos.json;
@@ -4149,7 +4175,7 @@ async function cargarPaginaCapitulo(
                 hoja.appendChild(fraseFinal);
             }
 
-            // Agregar la hoja del capítulo actual al contenedor
+            // Agregar la hoja al DOM
             contenedor.appendChild(hoja);
         }
 
@@ -4169,7 +4195,6 @@ async function cargarPaginaCapitulo(
         );
     }
 }
-
 
 
 async function cargarPaginaConclusion(proyecto) {
