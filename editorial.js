@@ -3913,41 +3913,52 @@ async function cargarPaginaIntroduccion(proyecto) {
 
 }
 
-async function cargarCapitulos(proyecto) {
-    monitorPIXELLAB("Editorial", "proceso", "Capitulos", "Entró a cargarCapitulos (Carga continua)");
+async function cargarPaginaCapitulo(proyecto, numeroCapitulo = null, limitePaginas = null) {
+    monitorPIXELLAB("Editorial", "proceso", "Capítulo", "Iniciando carga de capítulos");
 
     try {
         const contenedor = document.getElementById("paginaEditor");
         if (!contenedor) throw new Error("No existe paginaEditor");
 
-        // Recorremos los capítulos del proyecto
-        for (const capitulo of proyecto.capitulos) {
-            
-            // Creamos la hoja base para el capítulo
+        if (!proyecto || !proyecto.capitulos) {
+            throw new Error("El proyecto no contiene capítulos válidos");
+        }
+
+        // Definir qué capítulos se van a renderizar:
+        // Si viene numeroCapitulo, filtra solo ese; si no, toma todos los del array.
+        const listaCapitulos = numeroCapitulo 
+            ? [proyecto.capitulos[numeroCapitulo - 1]].filter(Boolean)
+            : proyecto.capitulos;
+
+        if (listaCapitulos.length === 0) {
+            throw new Error(`No se encontró el capítulo especifico (${numeroCapitulo})`);
+        }
+
+        // Renderizar el/los capítulos de forma continua en el DOM
+        for (const capitulo of listaCapitulos) {
             const hoja = document.createElement("div");
             hoja.className = "pagina-editor pagina-capitulo";
 
-            // Título del Capítulo
             const titulo = document.createElement("h1");
-            titulo.className = "capitulo-titulo"; // Mantiene el estilo original de tu título
-            titulo.textContent = capitulo.titulo;
+            titulo.className = "capitulo-titulo";
+            titulo.textContent = capitulo.titulo || "Capítulo";
 
-            // Contenido completo volcándose de una sola vez
             const cuerpo = document.createElement("div");
             cuerpo.className = "capitulo-contenido";
-            cuerpo.innerHTML = capitulo.contenido; // O capitulo.texto según tu JSON
+            cuerpo.innerHTML = capitulo.contenido || capitulo.texto || "";
 
             hoja.appendChild(titulo);
             hoja.appendChild(cuerpo);
             contenedor.appendChild(hoja);
         }
 
-        monitorPIXELLAB("Editorial", "estado", "Capitulos", "Contenido cargado de una sola vez");
+        monitorPIXELLAB("Editorial", "estado", "Capítulo", "Carga de capítulos completada");
 
     } catch(error) {
-        monitorPIXELLAB("Editorial", "error", "Capitulos", error.message);
+        monitorPIXELLAB("Editorial", "error", "Capítulo", error.message);
     }
 }
+
 
 async function cargarPaginaConclusion(proyecto) {
 
