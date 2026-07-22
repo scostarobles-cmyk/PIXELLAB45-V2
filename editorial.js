@@ -3913,275 +3913,251 @@ async function cargarPaginaIntroduccion(proyecto) {
 
 async function cargarPaginaCapitulo(
     proyecto,
-    numeroCapitulo,
-    paginasPlan
+    numeroCapitulo = null,
+    paginasPlan = null
 ) {
     monitorPIXELLAB(
         "Editorial",
         "proceso",
         "Capítulo",
-        "Entró a cargarPaginaCapitulo (Carga Continua)"
+        "Entró a cargarPaginaCapitulo"
     );
 
     try {
-        /* ======================================================
-           1. CARGAR JSON DEL CAPÍTULO
-        ====================================================== */
-        const archivo =
-            `capitulo-${String(numeroCapitulo).padStart(3, "0")}.json`;
+        const contenedor = document.getElementById("paginaEditor");
+        if (!contenedor) throw new Error("No existe paginaEditor");
 
-        const ruta =
-            `proyectos/${proyecto.projectId}/capitulos/${archivo}`;
+        // 1. Determinar qué capítulos se van a cargar:
+        // Si viene numeroCapitulo, cargamos solo ese.
+        // Si NO viene, leemos la lista desde proyecto.plan.capitulos
+        let listaCapitulos = [];
 
-        monitorPIXELLAB(
-            "Editorial",
-            "proceso",
-            "Capítulo",
-            "Cargando: " + ruta
-        );
+        if (numeroCapitulo !== null && numeroCapitulo !== undefined) {
+            listaCapitulos = [{ numero: numeroCapitulo }];
+        } else if (proyecto && proyecto.plan && proyecto.plan.capitulos) {
+            listaCapitulos = proyecto.plan.capitulos;
+        } else {
+            throw new Error("No se pudo determinar la lista de capítulos ni se envió un número específico.");
+        }
 
-        const respuesta =
-            await fetch(WORKER_URL, {
+        // 2. Recorremos los capítulos a renderizar
+        for (const itemCap of listaCapitulos) {
+            const numCap = itemCap.numero || numeroCapitulo;
+            const archivo = `capitulo-${String(numCap).padStart(3, "0")}.json`;
+            const ruta = `proyectos/${proyecto.projectId}/capitulos/${archivo}`;
+
+            monitorPIXELLAB(
+                "Editorial",
+                "proceso",
+                "Capítulo",
+                "Cargando: " + ruta
+            );
+
+            const respuesta = await fetch(WORKER_URL, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     action: "cargar-json",
                     ruta: ruta
                 })
             });
 
-        const datos =
-            await respuesta.json();
+            const datos = await respuesta.json();
 
-        if (!datos.ok) {
-            throw new Error("No se pudo cargar el capítulo");
-        }
-
-        const capitulo = datos.json;
-
-        if (!capitulo) {
-            throw new Error("JSON capítulo vacío");
-        }
-
-        /* ======================================================
-           2. OBTENER paginaEditor
-        ====================================================== */
-        const contenedor =
-            document.getElementById("paginaEditor");
-
-        if (!contenedor) {
-            throw new Error("No existe paginaEditor");
-        }
-
-        /* ======================================================
-           3. CREAR HOJA CONTINUA
-        ====================================================== */
-        const hoja = document.createElement("div");
-        hoja.className = "pagina-editor";
-
-        hoja.style.background = "#ffffff";
-        hoja.style.color = "#000000";
-        hoja.style.padding = "40px";
-        hoja.style.marginBottom = "20px";
-        hoja.style.minHeight = "900px";
-
-        /* ======================================================
-           4. TÍTULO DEL CAPÍTULO
-        ====================================================== */
-        if (capitulo.titulo) {
-            const titulo = document.createElement("h1");
-            titulo.textContent = capitulo.titulo;
-            titulo.style.color = "#000000";
-            hoja.appendChild(titulo);
-        }
-
-        /* ======================================================
-           5. INTRODUCCIÓN
-        ====================================================== */
-        if (capitulo.introduccion) {
-            const introduccion = document.createElement("div");
-            introduccion.textContent = capitulo.introduccion;
-            introduccion.style.color = "#000000";
-            introduccion.style.fontSize = "18px";
-            introduccion.style.lineHeight = "1.6";
-            introduccion.style.whiteSpace = "pre-line";
-            introduccion.style.marginBottom = "30px";
-            hoja.appendChild(introduccion);
-        }
-
-        /* ======================================================
-           6. SECCIONES
-        ====================================================== */
-        if (capitulo.secciones && capitulo.secciones.length > 0) {
-            for (const seccion of capitulo.secciones) {
-                const bloqueSeccion = document.createElement("div");
-
-                const subtitulo = document.createElement("h2");
-                subtitulo.textContent = `${seccion.numero}. ${seccion.titulo}`;
-                subtitulo.style.color = "#000000";
-                subtitulo.style.marginTop = "30px";
-                bloqueSeccion.appendChild(subtitulo);
-
-                const contenido = document.createElement("div");
-                contenido.textContent = seccion.contenido;
-                contenido.style.color = "#000000";
-                contenido.style.fontSize = "18px";
-                contenido.style.lineHeight = "1.6";
-                contenido.style.whiteSpace = "pre-line";
-                bloqueSeccion.appendChild(contenido);
-
-                hoja.appendChild(bloqueSeccion);
-            }
-        }
-
-        /* ======================================================
-           7. EJEMPLOS
-        ====================================================== */
-        if (capitulo.ejemplos && capitulo.ejemplos.length > 0) {
-            const tituloEjemplos = document.createElement("h2");
-            tituloEjemplos.textContent = "Ejemplos";
-            tituloEjemplos.style.color = "#000000";
-            tituloEjemplos.style.marginTop = "30px";
-            hoja.appendChild(tituloEjemplos);
-
-            for (const ejemplo of capitulo.ejemplos) {
-                const subtitulo = document.createElement("h3");
-                subtitulo.textContent = ejemplo.titulo;
-                subtitulo.style.color = "#000000";
-                hoja.appendChild(subtitulo);
-
-                const contenido = document.createElement("div");
-                contenido.textContent = ejemplo.contenido;
-                contenido.style.color = "#000000";
-                contenido.style.fontSize = "18px";
-                contenido.style.lineHeight = "1.6";
-                contenido.style.whiteSpace = "pre-line";
-                hoja.appendChild(contenido);
-            }
-        }
-
-        /* ======================================================
-           8. CONSEJOS
-        ====================================================== */
-        if (capitulo.consejos && capitulo.consejos.length > 0) {
-            const tituloConsejos = document.createElement("h2");
-            tituloConsejos.textContent = "Consejos";
-            tituloConsejos.style.color = "#000000";
-            tituloConsejos.style.marginTop = "30px";
-            hoja.appendChild(tituloConsejos);
-
-            const lista = document.createElement("ul");
-            lista.style.color = "#000000";
-            lista.style.fontSize = "18px";
-            lista.style.lineHeight = "1.6";
-
-            for (const consejo of capitulo.consejos) {
-                const item = document.createElement("li");
-                item.textContent = consejo;
-                lista.appendChild(item);
-            }
-            hoja.appendChild(lista);
-        }
-
-        /* ======================================================
-           9. ERRORES COMUNES
-        ====================================================== */
-        if (capitulo.erroresComunes && capitulo.erroresComunes.length > 0) {
-            const tituloErrores = document.createElement("h2");
-            tituloErrores.textContent = "Errores comunes";
-            tituloErrores.style.color = "#000000";
-            tituloErrores.style.marginTop = "30px";
-            hoja.appendChild(tituloErrores);
-
-            const lista = document.createElement("ul");
-            lista.style.color = "#000000";
-            lista.style.fontSize = "18px";
-            lista.style.lineHeight = "1.6";
-
-            for (const errorComun of capitulo.erroresComunes) {
-                const item = document.createElement("li");
-                item.textContent = errorComun;
-                lista.appendChild(item);
-            }
-            hoja.appendChild(lista);
-        }
-
-        /* ======================================================
-           10. RESUMEN
-        ====================================================== */
-        if (capitulo.resumen) {
-            const tituloResumen = document.createElement("h2");
-            tituloResumen.textContent = "Resumen";
-            tituloResumen.style.color = "#000000";
-            tituloResumen.style.marginTop = "30px";
-            hoja.appendChild(tituloResumen);
-
-            const resumen = document.createElement("div");
-            resumen.textContent = capitulo.resumen;
-            resumen.style.color = "#000000";
-            resumen.style.fontSize = "18px";
-            resumen.style.lineHeight = "1.6";
-            resumen.style.whiteSpace = "pre-line";
-            hoja.appendChild(resumen);
-        }
-
-        /* ======================================================
-           11. EJERCICIO
-        ====================================================== */
-        if (capitulo.ejercicio) {
-            const tituloEjercicio = document.createElement("h2");
-            tituloEjercicio.textContent = "Ejercicio";
-            tituloEjercicio.style.color = "#000000";
-            tituloEjercicio.style.marginTop = "30px";
-            hoja.appendChild(tituloEjercicio);
-
-            if (capitulo.ejercicio.titulo) {
-                const nombreEjercicio = document.createElement("h3");
-                nombreEjercicio.textContent = capitulo.ejercicio.titulo;
-                nombreEjercicio.style.color = "#000000";
-                hoja.appendChild(nombreEjercicio);
+            if (!datos.ok || !datos.json) {
+                console.warn(`No se pudo cargar el capítulo ${numCap}`);
+                continue; // Si falla uno, salta al siguiente
             }
 
-            if (capitulo.ejercicio.descripcion) {
-                const descripcion = document.createElement("div");
-                descripcion.textContent = capitulo.ejercicio.descripcion;
-                descripcion.style.color = "#000000";
-                descripcion.style.fontSize = "18px";
-                descripcion.style.lineHeight = "1.6";
-                descripcion.style.whiteSpace = "pre-line";
-                hoja.appendChild(descripcion);
+            const capitulo = datos.json;
+
+            /* ======================================================
+               CREAR HOJA CONTINUA PARA EL CAPÍTULO
+            ====================================================== */
+            const hoja = document.createElement("div");
+            hoja.className = "pagina-editor";
+            hoja.style.background = "#ffffff";
+            hoja.style.color = "#000000";
+            hoja.style.padding = "40px";
+            hoja.style.marginBottom = "20px";
+            hoja.style.minHeight = "900px";
+
+            // TÍTULO
+            if (capitulo.titulo) {
+                const titulo = document.createElement("h1");
+                titulo.textContent = capitulo.titulo;
+                titulo.style.color = "#000000";
+                hoja.appendChild(titulo);
             }
-        }
 
-        /* ======================================================
-           12. FRASE FINAL
-        ====================================================== */
-        if (capitulo.fraseFinal) {
-            const fraseFinal = document.createElement("div");
-            fraseFinal.textContent = capitulo.fraseFinal;
-            fraseFinal.style.color = "#000000";
-            fraseFinal.style.fontSize = "20px";
-            fraseFinal.style.fontStyle = "italic";
-            fraseFinal.style.fontWeight = "bold";
-            fraseFinal.style.lineHeight = "1.6";
-            fraseFinal.style.marginTop = "40px";
-            fraseFinal.style.paddingTop = "20px";
-            fraseFinal.style.borderTop = "2px solid #cccccc";
-            hoja.appendChild(fraseFinal);
-        }
+            // INTRODUCCIÓN
+            if (capitulo.introduccion) {
+                const introduccion = document.createElement("div");
+                introduccion.textContent = capitulo.introduccion;
+                introduccion.style.color = "#000000";
+                introduccion.style.fontSize = "18px";
+                introduccion.style.lineHeight = "1.6";
+                introduccion.style.whiteSpace = "pre-line";
+                introduccion.style.marginBottom = "30px";
+                hoja.appendChild(introduccion);
+            }
 
-        /* ======================================================
-           13. AGREGAR LA HOJA AL EDITOR
-        ====================================================== */
-        contenedor.appendChild(hoja);
+            // SECCIONES
+            if (capitulo.secciones && capitulo.secciones.length > 0) {
+                for (const seccion of capitulo.secciones) {
+                    const bloqueSeccion = document.createElement("div");
+
+                    const subtitulo = document.createElement("h2");
+                    subtitulo.textContent = `${seccion.numero}. ${seccion.titulo}`;
+                    subtitulo.style.color = "#000000";
+                    subtitulo.style.marginTop = "30px";
+                    bloqueSeccion.appendChild(subtitulo);
+
+                    const contenido = document.createElement("div");
+                    contenido.textContent = seccion.contenido;
+                    contenido.style.color = "#000000";
+                    contenido.style.fontSize = "18px";
+                    contenido.style.lineHeight = "1.6";
+                    contenido.style.whiteSpace = "pre-line";
+                    bloqueSeccion.appendChild(contenido);
+
+                    hoja.appendChild(bloqueSeccion);
+                }
+            }
+
+            // EJEMPLOS
+            if (capitulo.ejemplos && capitulo.ejemplos.length > 0) {
+                const tituloEjemplos = document.createElement("h2");
+                tituloEjemplos.textContent = "Ejemplos";
+                tituloEjemplos.style.color = "#000000";
+                tituloEjemplos.style.marginTop = "30px";
+                hoja.appendChild(tituloEjemplos);
+
+                for (const ejemplo of capitulo.ejemplos) {
+                    const subtitulo = document.createElement("h3");
+                    subtitulo.textContent = ejemplo.titulo;
+                    subtitulo.style.color = "#000000";
+                    hoja.appendChild(subtitulo);
+
+                    const contenido = document.createElement("div");
+                    contenido.textContent = ejemplo.contenido;
+                    contenido.style.color = "#000000";
+                    contenido.style.fontSize = "18px";
+                    contenido.style.lineHeight = "1.6";
+                    contenido.style.whiteSpace = "pre-line";
+                    hoja.appendChild(contenido);
+                }
+            }
+
+            // CONSEJOS
+            if (capitulo.consejos && capitulo.consejos.length > 0) {
+                const tituloConsejos = document.createElement("h2");
+                tituloConsejos.textContent = "Consejos";
+                tituloConsejos.style.color = "#000000";
+                tituloConsejos.style.marginTop = "30px";
+                hoja.appendChild(tituloConsejos);
+
+                const lista = document.createElement("ul");
+                lista.style.color = "#000000";
+                lista.style.fontSize = "18px";
+                lista.style.lineHeight = "1.6";
+
+                for (const consejo of capitulo.consejos) {
+                    const item = document.createElement("li");
+                    item.textContent = consejo;
+                    lista.appendChild(item);
+                }
+                hoja.appendChild(lista);
+            }
+
+            // ERRORES COMUNES
+            if (capitulo.erroresComunes && capitulo.erroresComunes.length > 0) {
+                const tituloErrores = document.createElement("h2");
+                tituloErrores.textContent = "Errores comunes";
+                tituloErrores.style.color = "#000000";
+                tituloErrores.style.marginTop = "30px";
+                hoja.appendChild(tituloErrores);
+
+                const lista = document.createElement("ul");
+                lista.style.color = "#000000";
+                lista.style.fontSize = "18px";
+                lista.style.lineHeight = "1.6";
+
+                for (const errorComun of capitulo.erroresComunes) {
+                    const item = document.createElement("li");
+                    item.textContent = errorComun;
+                    lista.appendChild(item);
+                }
+                hoja.appendChild(lista);
+            }
+
+            // RESUMEN
+            if (capitulo.resumen) {
+                const tituloResumen = document.createElement("h2");
+                tituloResumen.textContent = "Resumen";
+                tituloResumen.style.color = "#000000";
+                tituloResumen.style.marginTop = "30px";
+                hoja.appendChild(tituloResumen);
+
+                const resumen = document.createElement("div");
+                resumen.textContent = capitulo.resumen;
+                resumen.style.color = "#000000";
+                resumen.style.fontSize = "18px";
+                resumen.style.lineHeight = "1.6";
+                resumen.style.whiteSpace = "pre-line";
+                hoja.appendChild(resumen);
+            }
+
+            // EJERCICIO
+            if (capitulo.ejercicio) {
+                const tituloEjercicio = document.createElement("h2");
+                tituloEjercicio.textContent = "Ejercicio";
+                tituloEjercicio.style.color = "#000000";
+                tituloEjercicio.style.marginTop = "30px";
+                hoja.appendChild(tituloEjercicio);
+
+                if (capitulo.ejercicio.titulo) {
+                    const nombreEjercicio = document.createElement("h3");
+                    nombreEjercicio.textContent = capitulo.ejercicio.titulo;
+                    nombreEjercicio.style.color = "#000000";
+                    hoja.appendChild(nombreEjercicio);
+                }
+
+                if (capitulo.ejercicio.descripcion) {
+                    const descripcion = document.createElement("div");
+                    descripcion.textContent = capitulo.ejercicio.descripcion;
+                    descripcion.style.color = "#000000";
+                    descripcion.style.fontSize = "18px";
+                    descripcion.style.lineHeight = "1.6";
+                    descripcion.style.whiteSpace = "pre-line";
+                    hoja.appendChild(descripcion);
+                }
+            }
+
+            // FRASE FINAL
+            if (capitulo.fraseFinal) {
+                const fraseFinal = document.createElement("div");
+                fraseFinal.textContent = capitulo.fraseFinal;
+                fraseFinal.style.color = "#000000";
+                fraseFinal.style.fontSize = "20px";
+                fraseFinal.style.fontStyle = "italic";
+                fraseFinal.style.fontWeight = "bold";
+                fraseFinal.style.lineHeight = "1.6";
+                fraseFinal.style.marginTop = "40px";
+                fraseFinal.style.paddingTop = "20px";
+                fraseFinal.style.borderTop = "2px solid #cccccc";
+                hoja.appendChild(fraseFinal);
+            }
+
+            // Agregar la hoja del capítulo actual al contenedor
+            contenedor.appendChild(hoja);
+        }
 
         monitorPIXELLAB(
             "Editorial",
             "estado",
             "Capítulo",
-            "Capítulo cargado de forma continua correctamente"
+            "Carga de capítulos completada"
         );
 
     } catch (error) {
@@ -4193,6 +4169,7 @@ async function cargarPaginaCapitulo(
         );
     }
 }
+
 
 
 async function cargarPaginaConclusion(proyecto) {
