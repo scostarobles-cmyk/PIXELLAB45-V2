@@ -3300,9 +3300,7 @@ async function cargarSeccion(
             );
 
             await cargarPaginaCapitulo(
-                proyecto,
-                1,
-                8
+                proyecto
             );
 
             break;
