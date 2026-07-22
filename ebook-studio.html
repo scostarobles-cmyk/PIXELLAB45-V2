@@ -3,7 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Viewport forzado a 1200px para replicar exactamente la vista de escritorio en móviles -->
+    <meta name="viewport" content="width=1200, initial-scale=0.35, maximum-scale=2.0">
+
     <title>PIXELLAB45 eBook Studio</title>
 
     <link rel="stylesheet" href="styles.css?v=1">
@@ -13,7 +15,7 @@
     <script src="https://js.puter.com/v2/"></script>
 </head>
 
-<body>
+<body style="min-width: 1200px; width: 1200px; margin: 0 auto;">
 
     <header class="navbar">
         <button class="menu-toggle" onclick="toggleMenu()">☰</button>
@@ -33,9 +35,9 @@
     </section>
 
     <!-- =================================================== -->
-    <!-- MENU PRINCIPAL: 4 TARJETAS                         -->
+    <!-- MENU PRINCIPAL: 4 TARJETAS EN MODO ESCRITORIO       -->
     <!-- =================================================== -->
-    <main id="dashboard" class="ai-grid" style="padding: 20px; max-width: 1200px; margin: 0 auto;">
+    <main id="dashboard" class="ai-grid" style="padding: 20px; width: 1200px; margin: 0 auto; box-sizing: border-box; display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
 
         <!-- TARJETA 1: GENERADOR -->
         <div class="ai-card">
@@ -98,7 +100,7 @@
     <!-- =================================================== -->
     <!-- BLOQUE 1: GENERADOR IA                              -->
     <!-- =================================================== -->
-    <div id="bloque-generador" class="seccion-modulo" style="display: none; padding: 20px; max-width: 1200px; margin: 0 auto;">
+    <div id="bloque-generador" class="seccion-modulo" style="display: none; padding: 20px; width: 1200px; margin: 0 auto; box-sizing: border-box;">
         <button class="boton-accion" onclick="mostrarSeccion('dashboard')" style="margin-bottom: 15px;">⬅️ Volver al Panel</button>
         
         <div class="ai-card">
@@ -156,10 +158,10 @@
     <!-- =================================================== -->
     <!-- BLOQUE 2: MONITOR DE PROCESOS                       -->
     <!-- =================================================== -->
-    <div id="bloque-monitor" class="seccion-modulo" style="display: none; padding: 20px; max-width: 1200px; margin: 0 auto;">
+    <div id="bloque-monitor" class="seccion-modulo" style="display: none; padding: 20px; width: 1200px; margin: 0 auto; box-sizing: border-box;">
         <button class="boton-accion" onclick="mostrarSeccion('dashboard')" style="margin-bottom: 15px;">⬅️ Volver al Panel</button>
         
-        <div class="ai-grid">
+        <div class="ai-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
             <div class="ai-card">
                 <section class="ai-lab">
                     <h2>📊 Pipeline IA</h2>
@@ -191,7 +193,7 @@
     <!-- =================================================== -->
     <!-- BLOQUE 3: BIBLIOTECA EDITORIAL                      -->
     <!-- =================================================== -->
-    <div id="bloque-biblioteca" class="seccion-modulo" style="display: none; padding: 20px; max-width: 1200px; margin: 0 auto;">
+    <div id="bloque-biblioteca" class="seccion-modulo" style="display: none; padding: 20px; width: 1200px; margin: 0 auto; box-sizing: border-box;">
         <button class="boton-accion" onclick="mostrarSeccion('dashboard')" style="margin-bottom: 15px;">⬅️ Volver al Panel</button>
         
         <div class="ai-card">
@@ -217,7 +219,7 @@
     <!-- =================================================== -->
     <!-- BLOQUE 4: EDITOR WORKSPACE                         -->
     <!-- =================================================== -->
-    <div id="bloque-editor" class="seccion-modulo" style="display: none; padding: 20px; max-width: 1200px; margin: 0 auto;">
+    <div id="bloque-editor" class="seccion-modulo" style="display: none; padding: 20px; width: 1200px; margin: 0 auto; box-sizing: border-box;">
         <button class="boton-accion" onclick="mostrarSeccion('dashboard')" style="margin-bottom: 15px;">⬅️ Volver al Panel</button>
         
         <div class="ai-card">
@@ -248,26 +250,23 @@
                     </div>
                 </div>
 
-                <!-- ZONA DE TRABAJO -->
-                <div class="editor-canvas">
-                    <div id="paginaEditor"></div>
+                <!-- ZONA DE TRABAJO (LIENZO CENTRADO) -->
+                <div class="editor-canvas" style="width: 100%; background: #0f172a; padding: 20px; border-radius: 12px; box-sizing: border-box; display: flex; justify-content: center;">
+                    <div id="paginaEditor" style="width: 750px; margin: 0 auto; box-sizing: border-box;"></div>
                 </div>
             </section>
         </div>
     </div>
 
-    <!-- SCRIPT DE NAVEGACIÓN ENTRE BLOQUES -->
+    <!-- SCRIPT DE NAVEGACIÓN -->
     <script>
         function mostrarSeccion(idSeccion) {
-            // 1. Ocultar el Dashboard principal
             const dashboard = document.getElementById('dashboard');
             if (dashboard) dashboard.style.display = 'none';
 
-            // 2. Ocultar todos los módulos
             const modulos = document.querySelectorAll('.seccion-modulo');
             modulos.forEach(mod => mod.style.display = 'none');
 
-            // 3. Mostrar la sección solicitada
             if (idSeccion === 'dashboard') {
                 if (dashboard) dashboard.style.display = 'grid';
             } else {
@@ -275,12 +274,11 @@
                 if (destino) destino.style.display = 'block';
             }
 
-            // Desplazar suavemente arriba
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
 
-    <!-- SCRIPTS CORE DEL SISTEMA -->
+    <!-- SCRIPTS CORE -->
     <script src="pixellab45-core.js?v=__VERSION__"></script>
     <script src="editorial.js?v=__VERSION__"></script>
     <script src="ailab.js?v=__VERSION__"></script>
