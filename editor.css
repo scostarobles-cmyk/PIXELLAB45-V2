@@ -1062,47 +1062,38 @@ width:100%;
 
 }
 /* ===================================================
-   BIBLIOTECA ULTRA COMPACTA (Sin espacio abajo)
+   AJUSTE DE CONTENEDOR DE BIBLIOTECA (Sin achicar tarjetas)
    =================================================== */
 
-/* 1. Reducir la altura máxima del contenedor y ajustar padding */
+/* 1. Ajustar el contenedor de la biblioteca para el scroll horizontal */
 #bibliotecaEditorial {
     display: flex !important;
     flex-direction: row !important;
-    gap: 15px !important;
+    gap: 20px !important;
     overflow-x: auto !important;
     overflow-y: hidden !important;
-    padding: 5px !important;
-    max-height: 180px !important; /* Altura bien chica */
-    align-items: center;
+    padding: 10px 5px !important;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
 }
 
-/* 2. Ajustar el tamaño de cada tarjeta de libro */
+/* 2. Mantener las tarjetas en su tamaño normal/original */
 #bibliotecaEditorial .editorial-card {
-    flex: 0 0 180px !important;
-    min-width: 180px !important;
-    height: 160px !important; /* Mantiene la tarjeta ajustada */
-    padding: 10px !important;
+    flex: 0 0 240px !important; /* Tamaño estándar de la tarjeta */
+    min-width: 240px !important;
     box-sizing: border-box !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: space-between !important;
 }
 
-/* 3. Reducir o limitar la portada visual para que no empuje hacia abajo */
-#bibliotecaEditorial .editorial-cover {
-    height: 60px !important;
-    min-height: 60px !important;
+/* 3. ACHICAR EL CONTENEDOR PADRE (El bloque grande) */
+#bibliotecaEditorialStyle, 
+#bibliotecaEditorial {
+    margin-bottom: 0 !important;
 }
 
-/* 4. Ajustar textos dentro de la tarjeta */
-#bibliotecaEditorial .editorial-info h3 {
-    font-size: 0.9rem !important;
-    margin: 4px 0 !important;
-}
-
-#bibliotecaEditorial .editorial-info p,
-#bibliotecaEditorial .editorial-info span {
-    font-size: 0.75rem !important;
-    margin: 2px 0 !important;
+/* Fuerza al contenedor general a abrazar el alto real de las tarjetas sin dejar aire abajo */
+#bibliotecaEditorial,
+.ai-card:has(#bibliotecaEditorial) {
+    height: auto !important;
+    min-height: initial !important;
+    padding-bottom: 15px !important; /* Margen inferior mínimo y prolijo */
 }
