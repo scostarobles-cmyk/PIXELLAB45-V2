@@ -1,0 +1,128 @@
+/* =====================================
+   PIXELLAB45 - GENERADOR
+===================================== */
+
+/* Botonera de motores IA */
+
+.gallery-filters{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:20px;
+}
+
+.boton-accion{
+    padding:12px 18px;
+    border:1px solid #00d9ff;
+    border-radius:8px;
+    background:#05070d;
+    color:#fff;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.boton-accion:hover{
+    background:#00d9ff;
+    color:#05070d;
+}
+
+/* Estados de los botones */
+
+.gallery-filters button{
+    transition:all .3s ease;
+}
+
+.gallery-filters button.completo{
+    background:#00ff66;
+    color:#000;
+    box-shadow:0 0 15px #00ff66;
+}
+
+.gallery-filters button.proceso{
+    background:#009dff;
+    color:#fff;
+    box-shadow:0 0 15px #009dff;
+}
+
+.gallery-filters button.verde{
+    background:lime !important;
+    color:#000 !important;
+}
+
+.gallery-filters button.azul{
+    background:#009dff;
+    color:#fff;
+    box-shadow:0 0 15px #009dff;
+}
+
+.gallery-filters button.amarillo{
+    background:#ffc107;
+    color:#000;
+    box-shadow:0 0 15px #ffc107;
+}
+
+.gallery-filters button:disabled{
+    cursor:not-allowed;
+    opacity:.85;
+}
+
+#btnProyecto.verde{
+    background:#00b050 !important;
+    color:#000 !important;
+    box-shadow:0 0 15px #00b050 !important;
+}
+
+/* Estado */
+
+.estado-editorial{
+    margin-top:20px;
+}
+
+.error-editorial{
+    margin-top:15px;
+    color:#ff6b6b;
+}
+
+/* Pipeline */
+
+.scroll-box{
+    overflow-y:auto;
+}
+
+.scroll-box p{
+    color:#fff;
+    padding:8px;
+    border-bottom:1px solid rgba(0,217,255,.2);
+}
+
+/* ==============================
+   PIPELINE
+============================== */
+
+.pipeline-editor{
+    width:100%;
+    margin-top:20px;
+    padding:15px;
+    background:#05070d;
+    border:1px solid #00d9ff;
+    border-radius:15px;
+}
+
+.pipeline-editor h3{
+    color:#00d9ff;
+    margin-bottom:15px;
+}
+
+.pipeline-items{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.pipeline-items p{
+    color:#fff;
+    padding:8px 12px;
+    border-bottom:1px solid rgba(0,217,255,.2);
+}
+
+
