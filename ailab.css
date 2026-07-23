@@ -738,3 +738,75 @@ footer{
     color:#d9eaf5;
 
 }
+
+/* =========================
+   NAVBAR MOBILE FIX
+========================= */
+
+.menu-toggle{
+    display:none;
+}
+
+
+@media(max-width:768px){
+
+    .navbar{
+        padding:15px 20px;
+        justify-content:flex-end;
+    }
+
+
+    .menu-toggle{
+
+        display:block;
+
+        background:transparent;
+
+        color:#00d9ff;
+
+        border:1px solid #00d9ff;
+
+        border-radius:8px;
+
+        font-size:28px;
+
+        padding:5px 12px;
+
+        z-index:2000;
+
+    }
+
+
+    .nav-links{
+
+        display:none;
+
+        position:absolute;
+
+        top:70px;
+
+        left:0;
+
+        width:100%;
+
+        flex-direction:column;
+
+        background:#05070d;
+
+        padding:20px;
+
+        gap:15px;
+
+        z-index:1500;
+
+    }
+
+
+    .nav-links.active{
+
+        display:flex;
+
+    }
+
+
+}
