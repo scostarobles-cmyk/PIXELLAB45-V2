@@ -313,7 +313,9 @@ section{
     z-index:2;
 
 }
-
+.hero-left{
+    flex:1;
+}
 
 /* =========================
    RESPONSIVE HERO
