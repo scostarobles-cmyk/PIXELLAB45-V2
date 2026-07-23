@@ -1,5 +1,5 @@
 /* =========================
-   MENU HAMBURGUESA
+   MENU MOBILE
 ========================= */
 
 .menu-toggle{
@@ -7,21 +7,21 @@
 }
 
 
-/* =========================
-   RESPONSIVE MOBILE
-========================= */
-
 @media(max-width:768px){
 
     .navbar{
-        padding:15px 20px;
         justify-content:flex-end;
+        padding:15px 20px;
     }
 
 
     .menu-toggle{
 
-        display:block;
+        display:none ;
+
+        position:relative;
+
+        z-index:2000;
 
         background:transparent;
 
@@ -33,9 +33,7 @@
 
         font-size:28px;
 
-        padding:6px 12px;
-
-        cursor:pointer;
+        padding:5px 12px;
 
     }
 
@@ -43,8 +41,6 @@
     .nav-links{
 
         display:none;
-
-        flex-direction:column;
 
         position:absolute;
 
@@ -54,11 +50,17 @@
 
         width:100%;
 
+        flex-direction:column;
+
+        gap:15px;
+
         padding:20px;
 
         background:#05070d;
 
-        border-top:1px solid #00d9ff;
+        border-bottom:1px solid #00d9ff;
+
+        z-index:1500;
 
     }
 
