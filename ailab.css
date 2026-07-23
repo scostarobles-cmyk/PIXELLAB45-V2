@@ -1220,3 +1220,16 @@ footer{
 .hero-right{
     background:green !important;
 }
+.hero-content{
+    display:flex !important;
+    flex-direction:row !important;
+    flex-wrap:nowrap !important;
+}
+
+.hero-left{
+    width:60% !important;
+}
+
+.hero-right{
+    width:40% !important;
+}
