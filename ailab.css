@@ -60,71 +60,44 @@
    MENU MOBILE
 ========================= */
 
-@media(max-width:768px){
+.menu-toggle{
+    display:none;
+}
+
+@media (max-width:768px){
 
     .navbar{
-
-        justify-content:flex-end;
-
+        justify-content:space-between;
         padding:15px 20px;
-
     }
-
 
     .menu-toggle{
-
         display:block;
-
-        background:transparent;
-
+        background:none;
+        border:none;
         color:#00d9ff;
-
-        border:1px solid #00d9ff;
-
-        border-radius:8px;
-
-        font-size:28px;
-
-        padding:5px 12px;
-
+        font-size:2rem;
         cursor:pointer;
-
-        z-index:2000;
-
+        z-index:2001;
     }
-
 
     .nav-links{
-
         display:none;
-
         position:absolute;
-
         top:70px;
-
         left:0;
-
         width:100%;
-
         flex-direction:column;
-
         align-items:center;
-
-        gap:15px;
-
+        gap:12px;
         padding:20px;
-
         background:#05070d;
-
-        border-bottom:1px solid #00d9ff;
-
+        border-top:1px solid rgba(0,217,255,.3);
+        z-index:2000;
     }
 
-
     .nav-links.active{
-
         display:flex;
-
     }
 
 }
@@ -702,5 +675,67 @@ footer{
 
     color:#d9eaf5;
 
+}
+/* =========================
+   RESPONSIVE GENERAL INDEX
+========================= */
+
+@media (max-width:768px){
+
+    .navbar{
+        padding:10px;
+    }
+
+    .nav-links{
+        gap:8px;
+    }
+
+    .nav-links a{
+        font-size:.8rem;
+        padding:6px 10px;
+    }
+
+    .divider{
+        top:70px;
+    }
+
+    .hero{
+        padding:100px 20px 40px;
+    }
+
+    .hero-content{
+        flex-direction:column;
+        text-align:center;
+    }
+
+    .hero-logo{
+        width:180px;
+        margin:0 auto 25px;
+    }
+
+    .hero-text h1{
+        font-size:2rem;
+    }
+
+    .hero-text p{
+        font-size:.95rem;
+        max-width:100%;
+    }
+
+    .avatar{
+        width:180px;
+    }
+
+    .about{
+        padding:60px 20px;
+    }
+
+    .gallery{
+        padding:60px 20px;
+    }
+
+    .contact{
+        padding:60px 20px;
+    }
 }
 
