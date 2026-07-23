@@ -1209,3 +1209,14 @@ footer{
     }
 
 }
+.hero-content{
+    background:red !important;
+}
+
+.hero-left{
+    background:blue !important;
+}
+
+.hero-right{
+    background:green !important;
+}
