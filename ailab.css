@@ -1,27 +1,79 @@
 /* =========================
-   MENU MOBILE
+   NAVBAR
 ========================= */
 
-.menu-toggle{
-    display:blick;
+.navbar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+
+    padding:15px 40px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:rgba(5,7,13,.9);
+    backdrop-filter:blur(10px);
+
+    z-index:1000;
 }
 
+
+.nav-links{
+
+    display:flex;
+
+    gap:30px;
+
+}
+
+
+.nav-links a{
+
+    color:#fff;
+
+    text-decoration:none;
+
+    padding:10px 20px;
+
+    border:1px solid rgba(0,217,255,.4);
+
+    border-radius:8px;
+
+}
+
+
+/* botón oculto en escritorio */
+
+.menu-toggle{
+
+    display:none;
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
 
 @media(max-width:768px){
 
     .navbar{
+
         justify-content:flex-end;
+
         padding:15px 20px;
+
     }
 
 
     .menu-toggle{
 
-        display:none ;
+        display:block;
 
         position:relative;
-
-        z-index:2000;
 
         background:transparent;
 
@@ -34,6 +86,8 @@
         font-size:28px;
 
         padding:5px 12px;
+
+        z-index:2000;
 
     }
 
@@ -52,15 +106,13 @@
 
         flex-direction:column;
 
+        align-items:center;
+
         gap:15px;
 
         padding:20px;
 
         background:#05070d;
-
-        border-bottom:1px solid #00d9ff;
-
-        z-index:1500;
 
     }
 
@@ -71,11 +123,6 @@
 
     }
 
-}
-
-img{
-    max-width:100%;
-    height:auto;
 }
 /* =========================
    RESET
@@ -739,74 +786,3 @@ footer{
 
 }
 
-/* =========================
-   NAVBAR MOBILE FIX
-========================= */
-
-.menu-toggle{
-    display:none;
-}
-
-
-@media(max-width:768px){
-
-    .navbar{
-        padding:15px 20px;
-        justify-content:flex-end;
-    }
-
-
-    .menu-toggle{
-
-        display:block;
-
-        background:transparent;
-
-        color:#00d9ff;
-
-        border:1px solid #00d9ff;
-
-        border-radius:8px;
-
-        font-size:28px;
-
-        padding:5px 12px;
-
-        z-index:2000;
-
-    }
-
-
-    .nav-links{
-
-        display:none;
-
-        position:absolute;
-
-        top:70px;
-
-        left:0;
-
-        width:100%;
-
-        flex-direction:column;
-
-        background:#05070d;
-
-        padding:20px;
-
-        gap:15px;
-
-        z-index:1500;
-
-    }
-
-
-    .nav-links.active{
-
-        display:flex;
-
-    }
-
-
-}
