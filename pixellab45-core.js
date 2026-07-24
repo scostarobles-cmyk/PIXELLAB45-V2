@@ -1099,20 +1099,47 @@ function actualizarIndicador(id, estado = "verde") {
     if (!indicador) return;
 
 
-    indicador.classList.remove(
-        "verde",
-        "azul",
-        "amarillo",
-        "blanco",
-        "rojo"
-    );
+    let texto =
+        indicador.textContent;
 
 
-    indicador.classList.add(
-        estado
-    );
+    // elimina cualquier círculo de estado al inicio
+    texto =
+        texto.replace(/^[⚪🟢🔵🟡🔴]\s*/, "");
 
-} 
+
+    let circulo = "⚪";
+
+
+    switch (estado) {
+
+        case "verde":
+            circulo = "🟢";
+            break;
+
+        case "azul":
+            circulo = "🔵";
+            break;
+
+        case "amarillo":
+            circulo = "🟡";
+            break;
+
+        case "rojo":
+            circulo = "🔴";
+            break;
+
+        case "blanco":
+            circulo = "⚪";
+            break;
+
+    }
+
+
+    indicador.textContent =
+        circulo + " " + texto;
+
+}
 //====================================================
 // PIXELLAB45 CORE
 // CONTROL DE VERSIÓN Y LIMPIEZA DE CACHÉ
