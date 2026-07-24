@@ -131,10 +131,11 @@ try {
     const resultado = await buscarProyectoActivo(env);
 
     return json({
-        ok: true,
-        proyectoCreado: resultado.proyectoCreado,
-        proyectoProduccion: resultado.proyectoProduccion
-    });
+    ok: true,
+    proyectoCreado: resultado.proyectoCreado,
+    proyectoProduccion: resultado.proyectoProduccion,
+    ultimoProyectoFinalizado: resultado.ultimoProyectoFinalizado
+});
 
 }
 
@@ -1340,38 +1341,34 @@ async function buscarProyectoActivo(env) {
         prefix: "proyectos/"
     });
 
+
     let proyectoCreado = null;
     let proyectoProduccion = null;
+    let ultimoProyectoFinalizado = null;
+
 
     for (const archivo of lista.objects) {
+
 
         if (!archivo.key.endsWith("proyecto.json")) {
             continue;
         }
 
-        const proyecto = await cargarJSON(env, archivo.key);
+
+        const proyecto = await cargarJSON(
+            env,
+            archivo.key
+        );
+
 
         if (!proyecto) {
             continue;
         }
 
-        //------------------------------------
-        // ÚLTIMO PROYECTO CREADO
-        //------------------------------------
 
-        if (proyecto.estado === "creado") {
-
-            if (
-                !proyectoCreado ||
-                new Date(proyecto.fecha) > new Date(proyectoCreado.fecha)
-            ) {
-                proyectoCreado = proyecto;
-            }
-
-        }
 
         //------------------------------------
-        // PROYECTO EN PRODUCCIÓN
+        // PROYECTO ACTUAL EN PRODUCCIÓN
         //------------------------------------
 
         if (proyecto.estado === "produccion") {
@@ -1380,11 +1377,42 @@ async function buscarProyectoActivo(env) {
 
         }
 
+
+
+        //------------------------------------
+        // ÚLTIMO PROYECTO FINALIZADO
+        //------------------------------------
+
+        if (proyecto.estado === "creado") {
+
+
+            if (
+                !ultimoProyectoFinalizado ||
+                new Date(proyecto.fecha) >
+                new Date(ultimoProyectoFinalizado.fecha)
+            ) {
+
+                ultimoProyectoFinalizado = proyecto;
+
+            }
+
+        }
+
+
     }
 
+
     return {
+
+        // se mantiene para no romper el flujo actual
         proyectoCreado,
-        proyectoProduccion
+
+        // proyecto que maneja el pipeline
+        proyectoProduccion,
+
+        // último ebook terminado para mostrar en monitorBotonera
+        ultimoProyectoFinalizado
+
     };
 
 }

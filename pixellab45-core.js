@@ -95,7 +95,8 @@ async function verificarProyecto() {
         const datos = await respuesta.json();
         const proyectoCreado = datos.proyectoCreado;
 const proyectoProduccion = datos.proyectoProduccion;
-
+const ultimoProyectoFinalizado =
+    datos.ultimoProyectoFinalizado;
 
 // ------------------------------------
 // NO HAY PROYECTO EN PRODUCCIÓN
@@ -183,7 +184,32 @@ if (
     return;
 
 }
+if (ultimoProyectoFinalizado) {
 
+    monitorBotonera(
+        "Editorial",
+        "estado",
+        "Último proyecto generado",
+        ultimoProyectoFinalizado.titulo
+    );
+
+
+    monitorBotonera(
+        "Editorial",
+        "info",
+        "Fecha",
+        ultimoProyectoFinalizado.fecha
+    );
+
+
+    monitorBotonera(
+        "Editorial",
+        "proceso",
+        "Siguiente paso",
+        "Genere un nuevo proyecto"
+    );
+
+}
 
 // ------------------------------------
 // INDICE
