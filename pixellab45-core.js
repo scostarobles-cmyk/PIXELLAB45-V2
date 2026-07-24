@@ -604,6 +604,11 @@ if (
 
 }
 
+/* ==========================================================
+   PIXELLAB Monitor v1.2
+   Monitor reutilizable con destino configurable
+========================================================== */
+
 function monitorPIXELLAB(
     modulo,
     nivel,
@@ -625,9 +630,13 @@ function monitorPIXELLAB(
     const niveles = {
 
         info: "ℹ️",
+
         proceso: "🔄",
+
         ok: "✅",
+
         aviso: "⚠️",
+
         error: "❌"
 
     };
@@ -664,12 +673,34 @@ function monitorPIXELLAB(
 `;
 
 
-    monitor.innerHTML += evento;
+/* Monitor principal */
+
+const monitorPrincipal =
+    document.getElementById("monitorPIXELLAB");
+
+if (monitorPrincipal) {
+
+    monitorPrincipal.innerHTML += evento;
+
+    monitorPrincipal.scrollTop =
+        monitorPrincipal.scrollHeight;
+
+}
 
 
-    monitor.scrollTop =
-        monitor.scrollHeight;
+/* Monitor superior */
 
+const monitorBotonera =
+    document.getElementById("monitorBotonera");
+
+if (monitorBotonera) {
+
+    monitorBotonera.innerHTML += evento;
+
+    monitorBotonera.scrollTop =
+        monitorBotonera.scrollHeight;
+
+}
 }
 
 // =====================================
