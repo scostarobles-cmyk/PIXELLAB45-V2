@@ -674,32 +674,15 @@ function monitorPIXELLAB(
 `;
 
 
-/* Monitor principal */
+const destinoMonitor =
+    document.getElementById(destino);
 
-const monitorPrincipal =
-    document.getElementById("monitorPIXELLAB");
+if (destinoMonitor) {
 
-if (monitorPrincipal) {
+    destinoMonitor.innerHTML += evento;
 
-    monitorPrincipal.innerHTML += evento;
-
-    monitorPrincipal.scrollTop =
-        monitorPrincipal.scrollHeight;
-
-}
-
-
-/* Monitor superior */
-
-const monitorBotonera =
-    document.getElementById("monitorBotonera");
-
-if (monitorBotonera) {
-
-    monitorBotonera.innerHTML += evento;
-
-    monitorBotonera.scrollTop =
-        monitorBotonera.scrollHeight;
+    destinoMonitor.scrollTop =
+        destinoMonitor.scrollHeight;
 
 }
 }
