@@ -1092,7 +1092,7 @@ async function cargarJSON(ruta) {
 //=====================================
 
 function actualizarIndicador(id, estado = "verde") {
-
+    
     const indicador =
         document.getElementById(id);
 
@@ -1101,7 +1101,12 @@ function actualizarIndicador(id, estado = "verde") {
 
     let texto =
         indicador.textContent;
-
+monitorPIXELLAB(
+    "CORE",
+    "debug",
+    "Indicador texto recibido",
+    JSON.stringify(indicador.textContent)
+);
 
     // Limpia cualquier círculo o símbolo anterior
     texto =
