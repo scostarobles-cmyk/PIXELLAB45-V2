@@ -105,121 +105,95 @@ async function verificarProyecto() {
 
 
 
-        // ------------------------------------
-        // BLOQUEAR TODO INICIALMENTE
-        // ------------------------------------
+// ------------------------------------
+// PROYECTO
+// ------------------------------------
 
-        [
-            "btnPlan",
-            "btnIndice",
-            "btnLegales",
-            "btnIntroduccion",
-            "btnCapitulos",
-            "btnConclusion"
+if (!proyectoProduccion) {
 
-        ].forEach(id => {
+    botonAzul("btnProyecto");
+    habilitarBoton("btnProyecto");
 
-            deshabilitarBoton(id);
+    return;
+}
 
-        });
+proyectoActual = proyectoProduccion;
+projectIdActual = proyectoActual.projectId;
 
-
-
-        const proyectoProduccion =
-            datos.proyectoProduccion;
+botonVerde("btnProyecto");
+deshabilitarBoton("btnProyecto");
 
 
+// ------------------------------------
+// PLAN
+// ------------------------------------
 
-        // ------------------------------------
-        // NO EXISTE PROYECTO
-        // ------------------------------------
+if (proyectoActual.estructura.plan === "creado") {
 
-        if (!proyectoProduccion) {
+    botonVerde("btnPlan");
+    deshabilitarBoton("btnPlan");
 
+} else {
 
-            actualizarIndicador(
-                "estadoProyecto",
-                "azul"
-            );
+    botonAzul("btnPlan");
+    habilitarBoton("btnPlan");
 
-
-            botonAzul(
-                "btnProyecto"
-            );
-
-
-            habilitarBoton(
-                "btnProyecto"
-            );
+    return;
+}
 
 
-            monitorPIXELLAB(
-                "Editorial",
-                "estado",
-                "Proyecto",
-                "No existe proyecto activo"
-            );
+// ------------------------------------
+// ÍNDICE
+// ------------------------------------
+
+if (proyectoActual.estructura.indice === "creado") {
+
+    botonVerde("btnIndice");
+    deshabilitarBoton("btnIndice");
+
+} else {
+
+    botonAzul("btnIndice");
+    habilitarBoton("btnIndice");
+
+    return;
+}
 
 
-            return;
+// ------------------------------------
+// LEGALES
+// ------------------------------------
 
-        }
+if (proyectoActual.estructura.legales === "creado") {
 
+    botonVerde("btnLegales");
+    deshabilitarBoton("btnLegales");
 
+} else {
 
-        // ------------------------------------
-        // EXISTE PROYECTO
-        // ------------------------------------
+    botonAzul("btnLegales");
+    habilitarBoton("btnLegales");
 
-        proyectoActual =
-            proyectoProduccion;
-
-
-        projectIdActual =
-            proyectoActual.projectId;
-
-
-
-        actualizarIndicador(
-            "estadoProyecto",
-            "verde"
-        );
+    return;
+}
 
 
-        botonVerde(
-            "btnProyecto"
-        );
+// ------------------------------------
+// INTRODUCCIÓN
+// ------------------------------------
 
+if (proyectoActual.estructura.introduccion === "creado") {
 
-        deshabilitarBoton(
-            "btnProyecto"
-        );
+    botonVerde("btnIntroduccion");
+    deshabilitarBoton("btnIntroduccion");
 
+} else {
 
+    botonAzul("btnIntroduccion");
+    habilitarBoton("btnIntroduccion");
 
-        actualizarIndicador(
-            "estadoPlan",
-            "azul"
-        );
-
-
-        botonAzul(
-            "btnPlan"
-        );
-
-
-        habilitarBoton(
-            "btnPlan"
-        );
-
-
-
-        monitorPIXELLAB(
-            "Editorial",
-            "estado",
-            "Proyecto",
-            "Proyecto cargado. Plan habilitado."
-        );
+    return;
+}
 
 
 
