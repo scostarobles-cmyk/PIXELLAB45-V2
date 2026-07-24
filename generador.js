@@ -79,25 +79,7 @@ function obtenerDatosFormulario() {
 }
 
 
-//=====================================================
-// INICIALIZACIÓN DEL GENERADOR
-//=====================================================
 
-window.addEventListener(
-    "load",
-    async () => {
-
-        monitorPIXELLAB(
-            "Editorial",
-            "proceso",
-            "Inicio",
-            "Inicializando generador editorial"
-        );
-
-        await verificarProyecto();
-
-    }
-);
 
 //=====================================================
 // FUNCIÓN: crearProyecto()
@@ -1172,6 +1154,289 @@ async function generarCapitulos() {
 
 
     }
+
+}
+function preguntarSiguienteCapitulo() {
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Capítulos",
+        "Mostrando ventana de continuación"
+    );
+
+
+    // Evitar duplicar el modal
+    if (document.getElementById("modalCapitulos")) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "aviso",
+            "Capítulos",
+            "Modal ya existente"
+        );
+
+        return;
+    }
+
+
+
+    // Agregar estilos una sola vez
+    if (!document.getElementById("estiloModalCapitulos")) {
+
+
+        const style = document.createElement("style");
+
+        style.id = "estiloModalCapitulos";
+
+
+        style.textContent = `
+
+#modalCapitulos{
+
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.75);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    z-index:99999;
+
+    backdrop-filter:blur(4px);
+
+}
+
+#modalCapitulos .ventana{
+
+    width:420px;
+    max-width:90%;
+
+    background:#111827;
+
+    border:2px solid #00d9ff;
+    border-radius:16px;
+
+    padding:25px;
+
+    box-shadow:0 0 30px rgba(0,217,255,.45);
+
+    color:#fff;
+
+    font-family:Arial,sans-serif;
+
+}
+
+#modalCapitulos h2{
+
+    margin:0 0 15px;
+
+    color:#00d9ff;
+
+    text-align:center;
+
+}
+
+#modalCapitulos p{
+
+    text-align:center;
+    line-height:1.5;
+
+}
+
+#modalCapitulos label{
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    margin:20px 0;
+
+}
+
+#modalCapitulos .botones{
+
+    display:flex;
+    justify-content:center;
+    gap:15px;
+
+    margin-top:20px;
+
+}
+
+#modalCapitulos button{
+
+    padding:10px 20px;
+
+    border:none;
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-size:15px;
+    font-weight:bold;
+
+}
+
+#btnContinuarCapitulo{
+
+    background:#00d9ff;
+    color:#000;
+
+}
+
+#btnPausarCapitulo{
+
+    background:#444;
+    color:#fff;
+
+}
+
+#modalCapitulos button:hover{
+
+    transform:scale(1.05);
+
+}
+
+`;
+
+        document.head.appendChild(style);
+
+    }
+
+
+
+    const overlay = document.createElement("div");
+
+    overlay.id = "modalCapitulos";
+
+
+    overlay.innerHTML = `
+
+<div class="ventana">
+
+<h2>📖 Capítulo generado</h2>
+
+<p>
+El capítulo se generó correctamente.<br><br>
+¿Desea continuar con el siguiente capítulo?
+</p>
+
+
+<label>
+
+<input
+type="checkbox"
+id="chkNoPreguntarCapitulos"
+>
+
+No volver a preguntar durante este Ebook
+
+</label>
+
+
+<div class="botones">
+
+
+<button id="btnContinuarCapitulo">
+
+▶ Continuar
+
+</button>
+
+
+<button id="btnPausarCapitulo">
+
+⏸ Pausar
+
+</button>
+
+
+</div>
+
+</div>
+
+`;
+
+
+
+    document.body.appendChild(overlay);
+
+
+
+    //-------------------------------
+    // CONTINUAR
+    //-------------------------------
+
+    document.getElementById(
+        "btnContinuarCapitulo"
+    ).onclick = async () => {
+
+
+        const chk =
+            document.getElementById(
+                "chkNoPreguntarCapitulos"
+            );
+
+
+        if (chk.checked) {
+
+            preguntarContinuarCapitulos = false;
+
+            continuarCapitulosAutomatico = true;
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "estado",
+                "Capítulos",
+                "Modo automático activado"
+            );
+
+        }
+
+
+        overlay.remove();
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Capítulos",
+            "Continuando generación"
+        );
+
+
+        await generarCapitulos();
+
+    };
+
+
+
+    //-------------------------------
+    // PAUSAR
+    //-------------------------------
+
+    document.getElementById(
+        "btnPausarCapitulo"
+    ).onclick = () => {
+
+
+        overlay.remove();
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "aviso",
+            "Capítulos",
+            "Generación pausada por usuario"
+        );
+
+
+    };
+
 
 }
 
