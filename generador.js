@@ -1490,7 +1490,7 @@ function restaurarInterfaz() {
         "btnConclusion"
 
     ];
-
+ 
 
     bloquear.forEach(
         id => {

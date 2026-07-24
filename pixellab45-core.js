@@ -1099,36 +1099,20 @@ function actualizarIndicador(id, estado = "verde") {
     if (!indicador) return;
 
 
-    let texto =
-        indicador.textContent;
+    indicador.classList.remove(
+        "verde",
+        "azul",
+        "amarillo",
+        "blanco",
+        "rojo"
+    );
 
 
-    texto =
-        texto.replace(/^⚪|^🟢|^🔵/, "");
+    indicador.classList.add(
+        estado
+    );
 
-
-    let circulo = "⚪";
-
-
-    if (estado === "verde") {
-        circulo = "🟢";
-    }
-
-
-    if (estado === "azul") {
-        circulo = "🔵";
-    }
-
-
-    if (estado === "blanco") {
-        circulo = "⚪";
-    }
-
-
-    indicador.textContent =
-        circulo + texto;
-
-}
+} 
 //====================================================
 // PIXELLAB45 CORE
 // CONTROL DE VERSIÓN Y LIMPIEZA DE CACHÉ
