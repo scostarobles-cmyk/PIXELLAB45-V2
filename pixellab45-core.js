@@ -1092,60 +1092,47 @@ async function cargarJSON(ruta) {
 //=====================================
 
 function actualizarIndicador(id, estado = "verde") {
-    
+
     const indicador =
         document.getElementById(id);
 
     if (!indicador) return;
 
 
-    let texto =
-        indicador.textContent;
-monitorPIXELLAB(
-    "CORE",
-    "debug",
-    "Indicador texto recibido",
-    JSON.stringify(indicador.textContent)
-);
-
-    // Limpia cualquier círculo o símbolo anterior
-    texto =
-        texto.replace(
-            /^[⚪🟢🔵🟡🔴]\s*/,
-            ""
-        );
+    // Guardar solo el nombre sin estado
+    const nombres = {
+        estadoProyecto: "Proyecto",
+        estadoPlan: "Planificador",
+        estadoIndice: "Índice",
+        estadoLegales: "Legales",
+        estadoIntro: "Introducción",
+        estadoCapitulos: "Capítulos",
+        estadoConclusion: "Conclusión"
+    };
 
 
     let circulo = "⚪";
 
 
-    switch (estado) {
+    if (estado === "verde") {
+        circulo = "🟢";
+    }
 
-        case "verde":
-            circulo = "🟢";
-            break;
+    if (estado === "azul") {
+        circulo = "🔵";
+    }
 
-        case "azul":
-            circulo = "🔵";
-            break;
+    if (estado === "amarillo") {
+        circulo = "🟡";
+    }
 
-        case "amarillo":
-            circulo = "🟡";
-            break;
-
-        case "rojo":
-            circulo = "🔴";
-            break;
-
-        case "blanco":
-            circulo = "⚪";
-            break;
-
+    if (estado === "rojo") {
+        circulo = "🔴";
     }
 
 
     indicador.textContent =
-        circulo + " " + texto;
+        circulo + " " + (nombres[id] || id);
 
 }
 //====================================================
