@@ -97,6 +97,12 @@ async function verificarProyecto() {
 const proyectoProduccion = datos.proyectoProduccion;
 const ultimoProyectoFinalizado =
     datos.ultimoProyectoFinalizado;
+    monitorPIXELLAB(
+    "Editorial",
+    "debug",
+    "Último proyecto",
+    JSON.stringify(ultimoProyectoFinalizado)
+);
 
 // ------------------------------------
 // NO HAY PROYECTO EN PRODUCCIÓN
