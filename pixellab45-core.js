@@ -94,70 +94,136 @@ async function verificarProyecto() {
 
         const datos = await respuesta.json();
         const proyectoCreado = datos.proyectoCreado;
-        const proyectoProduccion = datos.proyectoProduccion;
+const proyectoProduccion = datos.proyectoProduccion;
 
 
-        monitorPIXELLAB(
-            "Editorial",
-            "debug",
-            "Respuesta Worker",
-            JSON.stringify(datos)
-        );
+// ------------------------------------
+// NO HAY PROYECTO EN PRODUCCIÓN
+// ------------------------------------
 
+if (!proyectoProduccion) {
+
+    actualizarIndicador(
+        "estadoProyecto",
+        "azul"
+    );
+
+    botonAzul(
+        "btnProyecto"
+    );
+
+    habilitarBoton(
+        "btnProyecto"
+    );
+
+    return;
+}
 
 
 // ------------------------------------
 // PROYECTO
 // ------------------------------------
 
-if (!proyectoProduccion) {
-
-    botonAzul("btnProyecto");
-    habilitarBoton("btnProyecto");
-
-    return;
-}
-
 proyectoActual = proyectoProduccion;
+
 projectIdActual = proyectoActual.projectId;
 
-botonVerde("btnProyecto");
-deshabilitarBoton("btnProyecto");
+
+actualizarIndicador(
+    "estadoProyecto",
+    "verde"
+);
+
+botonVerde(
+    "btnProyecto"
+);
+
+deshabilitarBoton(
+    "btnProyecto"
+);
 
 
 // ------------------------------------
 // PLAN
 // ------------------------------------
 
-if (proyectoActual.estructura.plan === "creado") {
+if (
+    proyectoActual.estructura.plan === "creado"
+) {
 
-    botonVerde("btnPlan");
-    deshabilitarBoton("btnPlan");
+    actualizarIndicador(
+        "estadoPlan",
+        "verde"
+    );
+
+    botonVerde(
+        "btnPlan"
+    );
+
+    deshabilitarBoton(
+        "btnPlan"
+    );
+
 
 } else {
 
-    botonAzul("btnPlan");
-    habilitarBoton("btnPlan");
+    actualizarIndicador(
+        "estadoPlan",
+        "azul"
+    );
+
+    botonAzul(
+        "btnPlan"
+    );
+
+    habilitarBoton(
+        "btnPlan"
+    );
 
     return;
+
 }
 
 
 // ------------------------------------
-// ÍNDICE
+// INDICE
 // ------------------------------------
 
-if (proyectoActual.estructura.indice === "creado") {
+if (
+    proyectoActual.estructura.indice === "creado"
+) {
 
-    botonVerde("btnIndice");
-    deshabilitarBoton("btnIndice");
+    actualizarIndicador(
+        "estadoIndice",
+        "verde"
+    );
+
+    botonVerde(
+        "btnIndice"
+    );
+
+    deshabilitarBoton(
+        "btnIndice"
+    );
+
 
 } else {
 
-    botonAzul("btnIndice");
-    habilitarBoton("btnIndice");
+    actualizarIndicador(
+        "estadoIndice",
+        "azul"
+    );
+
+    botonAzul(
+        "btnIndice"
+    );
+
+    habilitarBoton(
+        "btnIndice"
+    );
 
     return;
+
 }
 
 
@@ -165,17 +231,41 @@ if (proyectoActual.estructura.indice === "creado") {
 // LEGALES
 // ------------------------------------
 
-if (proyectoActual.estructura.legales === "creado") {
+if (
+    proyectoActual.estructura.legales === "creado"
+) {
 
-    botonVerde("btnLegales");
-    deshabilitarBoton("btnLegales");
+    actualizarIndicador(
+        "estadoLegales",
+        "verde"
+    );
+
+    botonVerde(
+        "btnLegales"
+    );
+
+    deshabilitarBoton(
+        "btnLegales"
+    );
+
 
 } else {
 
-    botonAzul("btnLegales");
-    habilitarBoton("btnLegales");
+    actualizarIndicador(
+        "estadoLegales",
+        "azul"
+    );
+
+    botonAzul(
+        "btnLegales"
+    );
+
+    habilitarBoton(
+        "btnLegales"
+    );
 
     return;
+
 }
 
 
@@ -183,17 +273,41 @@ if (proyectoActual.estructura.legales === "creado") {
 // INTRODUCCIÓN
 // ------------------------------------
 
-if (proyectoActual.estructura.introduccion === "creado") {
+if (
+    proyectoActual.estructura.introduccion === "creado"
+) {
 
-    botonVerde("btnIntroduccion");
-    deshabilitarBoton("btnIntroduccion");
+    actualizarIndicador(
+        "estadoIntro",
+        "verde"
+    );
+
+    botonVerde(
+        "btnIntroduccion"
+    );
+
+    deshabilitarBoton(
+        "btnIntroduccion"
+    );
+
 
 } else {
 
-    botonAzul("btnIntroduccion");
-    habilitarBoton("btnIntroduccion");
+    actualizarIndicador(
+        "estadoIntro",
+        "azul"
+    );
+
+    botonAzul(
+        "btnIntroduccion"
+    );
+
+    habilitarBoton(
+        "btnIntroduccion"
+    );
 
     return;
+
 }
 
 
