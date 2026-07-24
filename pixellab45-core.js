@@ -604,20 +604,16 @@ if (
 
 }
 
-/* ==========================================================
-   PIXELLAB Monitor v1.3
-   Monitor global reutilizable
-========================================================== */
-
 function monitorPIXELLAB(
     modulo,
     nivel,
     operacion,
-    mensaje
+    mensaje,
+    destino = "monitorPIXELLAB"
 ){
 
     const monitor =
-        document.getElementById("monitorPIXELLAB");
+        document.getElementById(destino);
 
     if(!monitor) return;
 
@@ -632,8 +628,7 @@ function monitorPIXELLAB(
         proceso: "🔄",
         ok: "✅",
         aviso: "⚠️",
-        error: "❌",
-        debug: "🔎"
+        error: "❌"
 
     };
 
@@ -648,9 +643,7 @@ function monitorPIXELLAB(
 
     <div class="monitor-header">
 
-        <span class="monitor-hora">
-            ${hora}
-        </span>
+        <span>${hora}</span>
 
         <span class="monitor-modulo">
             ${modulo}
@@ -658,11 +651,9 @@ function monitorPIXELLAB(
 
     </div>
 
-
     <div class="monitor-operacion">
         ${icono} ${operacion}
     </div>
-
 
     <div class="monitor-mensaje">
         ${mensaje}
@@ -1138,8 +1129,3 @@ window.addEventListener(
 
     }
 )
-//====================================================
-// PIXELLAB45 CORE
-// GESTIÓN DE VERSIÓN Y CACHE
-//====================================================
-
