@@ -514,7 +514,47 @@ if (
 
 
             }
-            
+            // ------------------------------------
+// CONCLUSIÓN
+// ------------------------------------
+
+if (
+    proyectoActual.estructura.conclusion === "creado"
+) {
+
+    actualizarIndicador(
+        "estadoConclusion",
+        "verde"
+    );
+
+    botonVerde(
+        "btnConclusion"
+    );
+
+    deshabilitarBoton(
+        "btnConclusion"
+    );
+
+
+} else {
+
+    actualizarIndicador(
+        "estadoConclusion",
+        "azul"
+    );
+
+    botonAzul(
+        "btnConclusion"
+    );
+
+    habilitarBoton(
+        "btnConclusion"
+    );
+
+
+    return;
+
+}
 
 
     } catch(error) {
