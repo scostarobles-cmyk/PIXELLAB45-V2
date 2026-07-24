@@ -1,131 +1,1518 @@
+/* ==========================================================
+   PIXELLAB45
+   GENERADOR EDITORIAL
+   BLOQUE 1
+   Variables globales y utilidades
+========================================================== */
+
+//=====================================================
+// VARIABLES GLOBALES
+//=====================================================
+
 let proyectoActual = null;
+let projectIdActual = null;
+let plan = null;
 
-function mostrarEstadoEditorial(mensaje, esError = false) {
-  const contenedor = esError
-    ? document.getElementById("errorEditorial")
-    : document.getElementById("estadoEditorial");
+// Control de generación de capítulos
 
-  if (!contenedor) return;
+let preguntarContinuarCapitulos = true;
+let continuarCapitulosAutomatico = false;
 
-  contenedor.textContent = mensaje;
-  contenedor.style.display = "block";
+
+//=====================================================
+// MOSTRAR ESTADO EDITORIAL
+//=====================================================
+
+function mostrarEstadoEditorial(
+    mensaje,
+    esError = false
+) {
+
+    const contenedor = esError
+        ? document.getElementById("errorEditorial")
+        : document.getElementById("estadoEditorial");
+
+    if (!contenedor) return;
+
+    contenedor.textContent = mensaje;
+    contenedor.style.display = "block";
+
 }
+
+
+//=====================================================
+// OBTENER DATOS DEL FORMULARIO
+//=====================================================
 
 function obtenerDatosFormulario() {
-  return {
-    tema: document.getElementById("temaEbook")?.value.trim() || "",
-    autor: document.getElementById("autorEbook")?.value.trim() || "",
-    paginas: document.getElementById("paginasEbook")?.value || 100,
-    idioma: document.getElementById("idiomaEbook")?.value || "Español",
-    tono: document.getElementById("tonoEbook")?.value || "Profesional",
-    publico: document.getElementById("publicoEbook")?.value || "General"
-  };
+
+    return {
+
+        tema:
+            document.getElementById("temaEbook")
+            ?.value.trim() || "",
+
+        autor:
+            document.getElementById("autorEbook")
+            ?.value.trim() || "",
+
+        paginas:
+            parseInt(
+                document.getElementById("paginasEbook")
+                ?.value
+            ) || 100,
+
+        idioma:
+            document.getElementById("idiomaEbook")
+            ?.value || "Español",
+
+        tono:
+            document.getElementById("tonoEbook")
+            ?.value || "Profesional",
+
+        publico:
+            document.getElementById("publicoEbook")
+            ?.value || "General"
+
+    };
+
 }
 
-function crearProyecto() {
-  const datos = obtenerDatosFormulario();
 
-  if (!datos.tema) {
-    mostrarEstadoEditorial("Ingresa un tema para el eBook", true);
-    return;
-  }
+//=====================================================
+// INICIALIZACIÓN DEL GENERADOR
+//=====================================================
 
-  proyectoActual = {
-    ...datos,
-    id: Date.now()
-  };
+window.addEventListener(
+    "load",
+    async () => {
 
-  mostrarEstadoEditorial(`Proyecto "${datos.tema}" creado exitosamente.`);
-  actualizarIndicador("estadoProyecto", "verde");
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Inicio",
+            "Inicializando generador editorial"
+        );
+
+        await verificarProyecto();
+
+    }
+);
+
+//=====================================================
+// FUNCIÓN: crearProyecto()
+// Descripción:
+// Crea un nuevo proyecto editorial y lo guarda en R2.
+//=====================================================
+
+async function crearProyecto() {
+
+    botonVerde("btnProyecto");
+    actualizarIndicador(
+        "estadoProyecto",
+        "verde"
+    );
+
+    botonAzul("btnPlan");
+    actualizarIndicador(
+        "estadoPlan",
+        "azul"
+    );
+
+    habilitarBoton("btnPlan");
+
+
+    const btn =
+        document.getElementById("btnProyecto");
+
+    const estado =
+        document.getElementById("estadoProyecto");
+
+
+    const datos =
+        obtenerDatosFormulario();
+
+
+    if (!datos.tema) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Proyecto",
+            "Debe ingresar el título del eBook"
+        );
+
+        return;
+
+    }
+
+
+    if (!datos.autor) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Proyecto",
+            "Debe ingresar el autor"
+        );
+
+        return;
+
+    }
+
+
+    btn.disabled = true;
+    btn.innerHTML = "📁 Generando proyecto...";
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Proyecto",
+        "Creando proyecto..."
+    );
+
+
+    try {
+
+        const projectId =
+            "PROY-" + Date.now();
+
+
+        const proyecto = {
+
+            projectId,
+
+            titulo: datos.tema,
+
+            autor: datos.autor,
+
+            paginas: datos.paginas,
+
+            idioma: datos.idioma,
+
+            tono: datos.tono,
+
+            publico: datos.publico,
+
+            estado: "produccion",
+
+            estructura: {
+
+                plan: "pendiente",
+
+                indice: "pendiente",
+
+                legales: "pendiente",
+
+                introduccion: "pendiente",
+
+                capitulos: "pendiente",
+
+                conclusion: "pendiente"
+
+            },
+
+            fecha:
+                new Date().toISOString()
+
+        };
+
+
+        const guardado =
+            await guardarJSON(
+                `proyectos/${projectId}/proyecto.json`,
+                proyecto
+            );
+
+
+        if (!guardado) {
+
+            throw new Error(
+                "No se pudo guardar proyecto.json"
+            );
+
+        }
+
+
+        proyectoActual = proyecto;
+        projectIdActual = projectId;
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Proyecto",
+            "Proyecto creado correctamente: " +
+            projectId
+        );
+
+
+        mostrarEstadoEditorial(
+            `Proyecto "${datos.tema}" creado correctamente.`
+        );
+
+
+        estado.innerHTML =
+            "🟢 Proyecto creado";
+
+
+        btn.classList.add("completo");
+        btn.innerHTML = "✅ Proyecto creado";
+
+
+        await verificarProyecto();
+
+
+    } catch (err) {
+
+        console.error(err);
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Proyecto",
+            err.message
+        );
+
+
+        mostrarEstadoEditorial(
+            err.message,
+            true
+        );
+
+
+        estado.innerHTML = "🔴 Error";
+
+
+        btn.innerHTML = "❌ Error";
+
+
+        btn.disabled = false;
+
+    }
+
 }
 
-function generarPlan2() {
-  if (!proyectoActual) {
-    mostrarEstadoEditorial("Crea un proyecto primero", true);
-    return;
-  }
+//=====================================
+// GENERAR PLAN
+//=====================================
 
-  mostrarEstadoEditorial("Generando plan con IA...");
+async function generarPlan2() {
 
-  setTimeout(() => {
-    mostrarEstadoEditorial("Plan de contenidos generado.");
-    actualizarIndicador("estadoPlan", "verde");
-  }, 1500);
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Plan",
+        "Iniciando generación de plan"
+    );
+
+
+    if (!projectIdActual) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Plan",
+            "No existe proyecto activo"
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+
+        const respuesta =
+            await fetch(
+                WORKER_URL,
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        action: "generar-plan"
+                    })
+
+                }
+            );
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Plan",
+            "Respuesta recibida del Worker"
+        );
+
+
+
+        const datos =
+            await respuesta.json();
+
+
+
+        if (!datos.ok) {
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "error",
+                "Plan",
+                "Error generando plan"
+            );
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "info",
+                "Respuesta Worker",
+                JSON.stringify(datos)
+            );
+
+
+            return;
+
+        }
+
+
+
+        plan =
+            datos.plan || datos.json || null;
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Plan",
+            "Plan generado correctamente"
+        );
+
+
+
+        actualizarIndicador(
+            "estadoPlan",
+            "verde"
+        );
+
+
+
+        const btn =
+            document.getElementById(
+                "btnPlan"
+            );
+
+
+        if (btn) {
+
+            btn.classList.add(
+                "completo"
+            );
+
+
+            btn.innerHTML =
+                "✅ Plan generado";
+
+
+            btn.disabled = true;
+
+        }
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Verificación",
+            "Actualizando estado del proyecto"
+        );
+
+
+        await verificarProyecto();
+
+
+
+    } catch(error) {
+
+
+        console.error(error);
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Plan",
+            "Error comunicando con Worker: " +
+            error.message
+        );
+
+
+    }
+
 }
 
-function generarIndice() {
-  if (!proyectoActual) {
-    mostrarEstadoEditorial("Crea un proyecto primero", true);
-    return;
-  }
+//=====================================
+// GENERAR ÍNDICE
+//=====================================
 
-  mostrarEstadoEditorial("Generando índice estructurado...");
+async function generarIndice() {
 
-  setTimeout(() => {
-    mostrarEstadoEditorial("Índice completado.");
-    actualizarIndicador("estadoIndice", "verde");
-  }, 1200);
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Índice",
+        "Iniciando generación de índice"
+    );
+
+
+    if (!projectIdActual) {
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Índice",
+            "No existe proyecto activo"
+        );
+
+
+        return;
+
+    }
+
+
+
+    try {
+
+
+        const respuesta =
+            await fetch(
+                WORKER_URL,
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        action: "generar-indice"
+
+                    })
+
+                }
+            );
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Índice",
+            "Respuesta recibida del Worker"
+        );
+
+
+
+        const datos =
+            await respuesta.json();
+
+
+
+        if (!datos.ok) {
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "error",
+                "Índice",
+                "Error generando índice"
+            );
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "info",
+                "Respuesta Worker",
+                JSON.stringify(datos)
+            );
+
+
+            return;
+
+        }
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Índice",
+            "Índice generado correctamente"
+        );
+
+
+
+        actualizarIndicador(
+            "estadoIndice",
+            "verde"
+        );
+
+
+
+        const btn =
+            document.getElementById(
+                "btnIndice"
+            );
+
+
+        if (btn) {
+
+
+            btn.classList.add(
+                "completo"
+            );
+
+
+            btn.innerHTML =
+                "✅ Índice generado";
+
+
+            btn.disabled = true;
+
+
+        }
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Verificación",
+            "Actualizando estado del proyecto"
+        );
+
+
+
+        await verificarProyecto();
+
+
+
+    } catch(error) {
+
+
+        console.error(error);
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Índice",
+            "Error de conexión: " +
+            error.message
+        );
+
+
+    }
+
 }
 
-function generarLegales() {
-  if (!proyectoActual) {
-    mostrarEstadoEditorial("Crea un proyecto primero", true);
-    return;
-  }
+//=====================================
+// GENERAR LEGALES
+//=====================================
 
-  mostrarEstadoEditorial("Redactando textos legales...");
+async function generarLegales() {
 
-  setTimeout(() => {
-    mostrarEstadoEditorial("Sección de legales terminada.");
-    actualizarIndicador("estadoLegales", "verde");
-  }, 1000);
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Legales",
+        "Iniciando generación de legales"
+    );
+
+
+    if (!projectIdActual) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Legales",
+            "No existe proyecto activo"
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+
+        const respuesta =
+            await fetch(
+                WORKER_URL,
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        action: "generar-legales"
+
+                    })
+
+                }
+            );
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Legales",
+            "Respuesta recibida del Worker"
+        );
+
+
+
+        const datos =
+            await respuesta.json();
+
+
+
+        if (!datos.ok) {
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "error",
+                "Legales",
+                "Error generando legales: " +
+                datos.error
+            );
+
+
+            return;
+
+        }
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Legales",
+            "Legales generado correctamente"
+        );
+
+
+
+        if (
+            typeof actualizarIndicador === "function"
+        ) {
+
+            actualizarIndicador(
+                "estadoLegales",
+                "verde"
+            );
+
+        }
+
+
+
+        const btn =
+            document.getElementById(
+                "btnLegales"
+            );
+
+
+        if (btn) {
+
+            btn.classList.add(
+                "completo"
+            );
+
+
+            btn.innerHTML =
+                "✅ Legales generado";
+
+
+            btn.disabled = true;
+
+        }
+
+
+
+        if (
+            typeof verificarProyecto === "function"
+        ) {
+
+            await verificarProyecto();
+
+        }
+
+
+
+    } catch(error) {
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Legales",
+            "Error de conexión: " +
+            error.message
+        );
+
+
+    }
+
 }
 
-function generarIntroduccion() {
-  if (!proyectoActual) {
-    mostrarEstadoEditorial("Crea un proyecto primero", true);
-    return;
-  }
+//=====================================
+// GENERAR INTRODUCCIÓN
+//=====================================
 
-  mostrarEstadoEditorial("Generando introducción...");
+async function generarIntroduccion() {
 
-  setTimeout(() => {
-    mostrarEstadoEditorial("Introducción lista.");
-    actualizarIndicador("estadoIntro", "verde");
-  }, 1500);
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Introducción",
+        "Iniciando generación de introducción"
+    );
+
+
+    if (!projectIdActual) {
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Introducción",
+            "No existe proyecto activo"
+        );
+
+
+        return;
+
+    }
+
+
+
+    try {
+
+
+        const respuesta =
+            await fetch(
+                WORKER_URL,
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        action: "generar-introduccion"
+
+                    })
+
+                }
+            );
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Introducción",
+            "Respuesta recibida del Worker"
+        );
+
+
+
+        const datos =
+            await respuesta.json();
+
+
+
+        if (!datos.ok) {
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "error",
+                "Introducción",
+                "Error generando introducción: " +
+                datos.error
+            );
+
+
+            return;
+
+        }
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Introducción",
+            "Introducción creada correctamente"
+        );
+
+
+
+        if (
+            typeof actualizarIndicador === "function"
+        ) {
+
+
+            actualizarIndicador(
+                "estadoIntro",
+                "verde"
+            );
+
+        }
+
+
+
+        const btn =
+            document.getElementById(
+                "btnIntroduccion"
+            );
+
+
+        if (btn) {
+
+
+            btn.classList.add(
+                "completo"
+            );
+
+
+            btn.innerHTML =
+                "✅ Introducción generada";
+
+
+            btn.disabled = true;
+
+
+        }
+
+
+
+        if (
+            typeof verificarProyecto === "function"
+        ) {
+
+
+            await verificarProyecto();
+
+
+        }
+
+
+
+    } catch(error) {
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Introducción",
+            "Error de conexión: " +
+            error.message
+        );
+
+
+    }
+
 }
 
-function generarCapitulos() {
-  if (!proyectoActual) {
-    mostrarEstadoEditorial("Crea un proyecto primero", true);
-    return;
-  }
+//=====================================
+// GENERAR CAPÍTULOS
+//=====================================
 
-  mostrarEstadoEditorial("Redactando capítulos...");
+async function generarCapitulos() {
 
-  setTimeout(() => {
-    mostrarEstadoEditorial("Capítulos generados correctamente.");
-    actualizarIndicador("estadoCapitulos", "verde");
-  }, 2500);
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Capítulos",
+        "Iniciando generación de capítulo"
+    );
+
+
+    if (!projectIdActual) {
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Capítulos",
+            "No existe proyecto activo"
+        );
+
+
+        return;
+
+    }
+
+
+
+    if (typeof botonAmarillo === "function") {
+
+        botonAmarillo(
+            "btnCapitulos"
+        );
+
+    }
+
+
+    if (typeof actualizarIndicador === "function") {
+
+        actualizarIndicador(
+            "estadoCapitulos",
+            "amarillo"
+        );
+
+    }
+
+
+
+    try {
+
+
+        const respuesta =
+            await fetch(
+                WORKER_URL,
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        action: "generar-capitulo"
+
+                    })
+
+                }
+            );
+
+
+
+        const resultado =
+            await respuesta.json();
+
+
+
+        if (!resultado.ok) {
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "error",
+                "Capítulos",
+                "Error generando capítulo: " +
+                resultado.error
+            );
+
+
+            return;
+
+        }
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Capítulos",
+            `Capítulo ${resultado.numero} generado correctamente`
+        );
+
+
+
+        //=====================================
+        // MODO MANUAL
+        //=====================================
+
+        if (preguntarContinuarCapitulos) {
+
+
+            preguntarSiguienteCapitulo();
+
+
+            return;
+
+        }
+
+
+
+        //=====================================
+        // MODO AUTOMÁTICO
+        //=====================================
+
+
+        const planActual =
+            await cargarJSON(
+                `proyectos/${projectIdActual}/plan.json`
+            );
+
+
+
+        if (
+            !planActual ||
+            !planActual.capitulos
+        ) {
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "error",
+                "Capítulos",
+                "No se pudo cargar plan.json"
+            );
+
+
+            return;
+
+        }
+
+
+
+        const pendientes =
+            planActual.capitulos.some(
+                capitulo =>
+                    capitulo.estado !== "creado"
+            );
+
+
+
+        if (pendientes) {
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "proceso",
+                "Capítulos",
+                "Continuando siguiente capítulo"
+            );
+
+
+            await generarCapitulos();
+
+
+        } else {
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "ok",
+                "Capítulos",
+                "Todos los capítulos generados"
+            );
+
+
+            if (
+                typeof actualizarIndicador === "function"
+            ) {
+
+                actualizarIndicador(
+                    "estadoCapitulos",
+                    "verde"
+                );
+
+            }
+
+
+            await verificarProyecto();
+
+
+        }
+
+
+
+    } catch(error) {
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Capítulos",
+            error.message
+        );
+
+
+    }
+
 }
 
-function generarConclusion() {
-  if (!proyectoActual) {
-    mostrarEstadoEditorial("Crea un proyecto primero", true);
-    return;
-  }
+//=====================================
+// GENERAR CONCLUSIÓN
+//=====================================
 
-  mostrarEstadoEditorial("Sintetizando conclusión...");
+async function generarConclusion() {
 
-  setTimeout(() => {
-    mostrarEstadoEditorial("Conclusión finalizada.");
-    actualizarIndicador("estadoConclusion", "verde");
-  }, 1000);
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Conclusión",
+        "Iniciando generación de conclusión"
+    );
+
+
+    if (!projectIdActual) {
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Conclusión",
+            "No existe proyecto activo"
+        );
+
+
+        return;
+
+    }
+
+
+
+    try {
+
+
+        const respuesta =
+            await fetch(
+                WORKER_URL,
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        action: "generar-conclusion"
+
+                    })
+
+                }
+            );
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Conclusión",
+            "Respuesta recibida del Worker"
+        );
+
+
+
+        const resultado =
+            await respuesta.json();
+
+
+
+        if (!resultado.ok) {
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "error",
+                "Conclusión",
+                "Error generando conclusión: " +
+                resultado.error
+            );
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "info",
+                "Respuesta Worker",
+                JSON.stringify(resultado)
+            );
+
+
+            return;
+
+        }
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Conclusión",
+            "Conclusión creada correctamente"
+        );
+
+
+
+        if (
+            typeof actualizarEstadoProyecto === "function"
+        ) {
+
+
+            actualizarEstadoProyecto(
+                "conclusion",
+                "creado"
+            );
+
+
+        }
+
+
+
+        if (
+            typeof actualizarIndicador === "function"
+        ) {
+
+
+            actualizarIndicador(
+                "estadoConclusion",
+                "verde"
+            );
+
+
+        }
+
+
+
+        const btn =
+            document.getElementById(
+                "btnConclusion"
+            );
+
+
+        if (btn) {
+
+
+            btn.classList.add(
+                "completo"
+            );
+
+
+            btn.innerHTML =
+                "✅ Conclusión generada";
+
+
+            btn.disabled = true;
+
+
+        }
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Verificación",
+            "Actualizando estado final del proyecto"
+        );
+
+
+
+        await verificarProyecto();
+
+
+
+    } catch(error) {
+
+
+        console.error(error);
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Conclusión",
+            "Error de conexión: " +
+            error.message
+        );
+
+
+    }
+
 }
 
-function limpiarMonitorPIXELLAB() {
-  const monitor = document.getElementById("monitorPIXELLAB");
-  if (monitor) {
-    monitor.innerHTML = "";
-  }
+//=====================================
+// RESTAURAR INTERFAZ
+//=====================================
+
+function restaurarInterfaz() {
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Restaurar",
+        "Restaurando interfaz editorial"
+    );
+
+
+
+    //==========================
+    // Limpiar variables
+    //==========================
+
+    proyectoActual = null;
+    projectIdActual = null;
+    plan = null;
+
+
+
+    //==========================
+    // Restaurar indicadores
+    //==========================
+
+    const indicadores = [
+
+        "estadoProyecto",
+        "estadoPlan",
+        "estadoIndice",
+        "estadoLegales",
+        "estadoIntro",
+        "estadoCapitulos",
+        "estadoConclusion"
+
+    ];
+
+
+    indicadores.forEach(
+        id => {
+
+            if (
+                typeof actualizarIndicador === "function"
+            ) {
+
+                actualizarIndicador(
+                    id,
+                    "blanco"
+                );
+
+            }
+
+        }
+    );
+
+
+
+    //==========================
+    // Restaurar botones
+    //==========================
+
+    const botones = [
+
+        "btnProyecto",
+        "btnPlan",
+        "btnIndice",
+        "btnLegales",
+        "btnIntroduccion",
+        "btnCapitulos",
+        "btnConclusion"
+
+    ];
+
+
+    botones.forEach(
+        id => {
+
+            if (
+                typeof botonNormal === "function"
+            ) {
+
+                botonNormal(id);
+
+            }
+
+        }
+    );
+
+
+
+    //==========================
+    // Estado botones
+    //==========================
+
+
+    if (
+        typeof habilitarBoton === "function"
+    ) {
+
+        habilitarBoton(
+            "btnProyecto"
+        );
+
+    }
+
+
+
+    const bloquear = [
+
+        "btnPlan",
+        "btnIndice",
+        "btnLegales",
+        "btnIntroduccion",
+        "btnCapitulos",
+        "btnConclusion"
+
+    ];
+
+
+    bloquear.forEach(
+        id => {
+
+            if (
+                typeof deshabilitarBoton === "function"
+            ) {
+
+                deshabilitarBoton(id);
+
+            }
+
+        }
+    );
+
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Restaurar",
+        "Sistema listo para crear nuevo eBook"
+    );
+
 }
