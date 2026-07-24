@@ -309,7 +309,39 @@ if (
     return;
 
 }
+// ------------------------------------
+// CAPÍTULOS - PRIMERA ETAPA
+// ------------------------------------
 
+if (
+    proyectoActual.estructura.capitulos === "pendiente"
+) {
+
+    actualizarIndicador(
+        "estadoCapitulos",
+        "azul"
+    );
+
+    botonAzul(
+        "btnCapitulos"
+    );
+
+    habilitarBoton(
+        "btnCapitulos"
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Capítulos",
+        "Listo para generar capítulos"
+    );
+
+
+    return;
+
+}
 
 
     } catch(error) {
