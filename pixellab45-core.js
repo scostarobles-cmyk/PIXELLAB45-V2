@@ -30,51 +30,7 @@ monitorPIXELLAB(
     "Carga",
     "pixellab45-core.js ejecutándose"
 );
-// =====================================
-// PIXELLAB EDITORIAL
-// VARIABLES DEL EDITOR
-// =====================================
 
-let proyectoActual = null;
-
-let projectIdActual = null;
-
-let continuarCapitulosAutomatico = false;
-
-let preguntarContinuarCapitulos = true;
-
-monitorPIXELLAB(
-    "Editorial",
-    "info",
-    "Carga script",
-    "editorial.js comenzó a ejecutarse",
-    "monitorBotonera"
-);
-// =====================================
-// ARRANQUE DEL MÓDULO EDITORIAL
-// =====================================
-
-async function iniciarCargaEditorial() {
-
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Módulo Editorial iniciado"
-    );
-
-  
-    
-    await verificarProyecto();
-    
-    await cargarGaleriaEditorial();
-
-}
-
-
-window.addEventListener(
-    "load",
-    iniciarCargaEditorial
-);
 //=====================================================
 // LIMPIAR MONITOR PIXELLAB
 //=====================================================
