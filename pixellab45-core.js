@@ -1333,7 +1333,7 @@ window.addEventListener(
         await verificarProyecto();
 
     }
-);
+)
 //====================================================
 // PIXELLAB45 CORE
 // GESTIÓN DE VERSIÓN Y CACHE
