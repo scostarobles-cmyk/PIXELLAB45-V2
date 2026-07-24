@@ -342,6 +342,179 @@ if (
     return;
 
 }
+             //------------------------------------
+            // CARGAR PLAN ANTES DE CAPÍTULOS
+            //------------------------------------
+
+            const plan = await cargarJSON(
+                `proyectos/${projectIdActual}/plan.json`
+            );
+
+
+
+
+            //------------------------------------
+            // CAPÍTULOS
+            //------------------------------------
+
+            if (
+                proyectoActual.estructura.capitulos === "pendiente"
+            ) {
+
+
+                actualizarIndicador(
+                    "estadoCapitulos",
+                    "azul"
+                );
+
+
+                botonAzul(
+                    "btnCapitulos"
+                );
+
+
+                habilitarBoton(
+                    "btnCapitulos"
+                );
+
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "proceso",
+                    "Capítulos",
+                    "Falta generar capítulos"
+                );
+
+
+                return;
+
+            }
+
+
+
+            if (
+                proyectoActual.estructura.capitulos === "produccion"
+            ) {
+
+
+                actualizarIndicador(
+                    "estadoCapitulos",
+                    "amarillo"
+                );
+
+
+                botonAmarillo(
+                    "btnCapitulos"
+                );
+
+
+                habilitarBoton(
+                    "btnCapitulos"
+                );
+
+
+                if (
+                    !plan ||
+                    !plan.capitulos
+                ) {
+
+
+                    monitorPIXELLAB(
+                        "Editorial",
+                        "error",
+                        "Capítulos",
+                        "No se recibió el plan"
+                    );
+
+
+                    return;
+
+                }
+
+
+
+                for (
+                    const capitulo of plan.capitulos
+                ) {
+
+
+                    if (
+                        capitulo.estado !== "creado"
+                    ) {
+
+
+                        monitorPIXELLAB(
+                            "Editorial",
+                            "proceso",
+                            "Capítulos",
+                            "Capítulos en producción"
+                        );
+
+
+                        monitorPIXELLAB(
+                            "Editorial",
+                            "info",
+                            "Próximo capítulo",
+                            `${capitulo.numero} - ${capitulo.titulo}`
+                        );
+
+
+
+                        if (
+                            typeof preguntarSiguienteCapitulo === "function"
+                            &&
+                            preguntarContinuarCapitulos
+                        ) {
+
+
+                            preguntarSiguienteCapitulo();
+
+
+                        }
+
+
+                        return;
+
+                    }
+
+                }
+
+            }
+            //------------------------------------
+            // TODOS LOS CAPÍTULOS TERMINADOS
+            //------------------------------------
+
+            if (
+                proyectoActual.estructura.capitulos === "creado"
+            ) {
+
+
+                actualizarIndicador(
+                    "estadoCapitulos",
+                    "verde"
+                );
+
+
+                botonVerde(
+                    "btnCapitulos"
+                );
+
+
+                deshabilitarBoton(
+                    "btnCapitulos"
+                );
+
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "estado",
+                    "Capítulos",
+                    "Capítulos generados"
+                );
+
+
+            }
+            
 
 
     } catch(error) {
