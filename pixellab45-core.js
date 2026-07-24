@@ -31,6 +31,28 @@ monitorPIXELLAB(
     "pixellab45-core.js ejecutándose"
 );
 //=====================================================
+// LIMPIAR MONITOR PIXELLAB
+//=====================================================
+
+function limpiarMonitorPIXELLAB(){
+
+    const monitor =
+        document.getElementById(
+            "monitorPIXELLAB"
+        );
+
+
+    if(!monitor) {
+
+        return;
+
+    }
+
+
+    monitor.innerHTML = "";
+
+}
+//=====================================================
 // FUNCIÓN: verificarProyecto()
 // Descripción:
 // Solicita al Worker la búsqueda del proyecto activo
@@ -838,20 +860,19 @@ async function verificarProyecto() {
 
 
 /* ==========================================================
-   PIXELLAB Monitor v1.2
-   Monitor reutilizable con destino configurable
+   PIXELLAB Monitor v1.3
+   Monitor global reutilizable
 ========================================================== */
 
 function monitorPIXELLAB(
     modulo,
     nivel,
     operacion,
-    mensaje,
-    destino = "monitorPIXELLAB"
+    mensaje
 ){
 
     const monitor =
-        document.getElementById(destino);
+        document.getElementById("monitorPIXELLAB");
 
     if(!monitor) return;
 
@@ -863,14 +884,11 @@ function monitorPIXELLAB(
     const niveles = {
 
         info: "ℹ️",
-
         proceso: "🔄",
-
         ok: "✅",
-
         aviso: "⚠️",
-
-        error: "❌"
+        error: "❌",
+        debug: "🔎"
 
     };
 
@@ -885,7 +903,9 @@ function monitorPIXELLAB(
 
     <div class="monitor-header">
 
-        <span>${hora}</span>
+        <span class="monitor-hora">
+            ${hora}
+        </span>
 
         <span class="monitor-modulo">
             ${modulo}
@@ -893,9 +913,11 @@ function monitorPIXELLAB(
 
     </div>
 
+
     <div class="monitor-operacion">
         ${icono} ${operacion}
     </div>
+
 
     <div class="monitor-mensaje">
         ${mensaje}
@@ -906,34 +928,12 @@ function monitorPIXELLAB(
 `;
 
 
-/* Monitor principal */
-
-const monitorPrincipal =
-    document.getElementById("monitorPIXELLAB");
-
-if (monitorPrincipal) {
-
-    monitorPrincipal.innerHTML += evento;
-
-    monitorPrincipal.scrollTop =
-        monitorPrincipal.scrollHeight;
-
-}
+    monitor.innerHTML += evento;
 
 
-/* Monitor superior */
+    monitor.scrollTop =
+        monitor.scrollHeight;
 
-const monitorBotonera =
-    document.getElementById("monitorBotonera");
-
-if (monitorBotonera) {
-
-    monitorBotonera.innerHTML += evento;
-
-    monitorBotonera.scrollTop =
-        monitorBotonera.scrollHeight;
-
-}
 }
 
 // =====================================

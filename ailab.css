@@ -1223,3 +1223,148 @@ footer{
 .hero-right{
     width:40% !important;
 }
+
+/* =====================================
+   PIXELLAB45 MONITOR GLOBAL
+===================================== */
+
+
+#monitorPIXELLAB{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+    padding:15px;
+
+    overflow-y:auto;
+
+    font-family:Arial,sans-serif;
+
+}
+
+
+
+/* TARJETA */
+
+.monitor-evento{
+
+    background:#111827;
+
+    border-left:5px solid #00d9ff;
+
+    border-radius:12px;
+
+    padding:12px;
+
+    color:white;
+
+    box-shadow:
+    0 0 12px rgba(0,217,255,.15);
+
+}
+
+
+
+/* CABECERA */
+
+.monitor-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    font-size:12px;
+
+    opacity:.8;
+
+}
+
+
+
+.monitor-modulo{
+
+    color:#00d9ff;
+
+    font-weight:bold;
+
+}
+
+
+
+/* OPERACIÓN */
+
+.monitor-operacion{
+
+    margin-top:8px;
+
+    font-weight:bold;
+
+    font-size:15px;
+
+}
+
+
+
+/* MENSAJE */
+
+.monitor-mensaje{
+
+    margin-top:6px;
+
+    font-size:14px;
+
+    line-height:1.4;
+
+    word-break:break-word;
+
+}
+
+
+
+/* NIVELES */
+
+.monitor-ok{
+
+    border-left-color:#00ff88;
+
+}
+
+
+.monitor-error{
+
+    border-left-color:#ff3344;
+
+    background:#251018;
+
+}
+
+
+.monitor-aviso{
+
+    border-left-color:#ffaa00;
+
+}
+
+
+.monitor-info{
+
+    border-left-color:#00d9ff;
+
+}
+
+
+.monitor-proceso{
+
+    border-left-color:#0099ff;
+
+}
+
+
+.monitor-debug{
+
+    border-left-color:#aa66ff;
+
+}
