@@ -93,7 +93,8 @@ async function verificarProyecto() {
 
 
         const datos = await respuesta.json();
-
+        const proyectoCreado = datos.proyectoCreado;
+        const proyectoProduccion = datos.proyectoProduccion;
 
 
         monitorPIXELLAB(
