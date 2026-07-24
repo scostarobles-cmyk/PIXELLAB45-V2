@@ -1325,7 +1325,7 @@ async function iniciarCargaEditorial() {
         "Módulo Editorial iniciado"
     );
     
-     await gestionarVersionCachePIXELLAB();
+   //  await gestionarVersionCachePIXELLAB();
 
     await verificarProyecto();
 
