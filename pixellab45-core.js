@@ -1103,9 +1103,12 @@ function actualizarIndicador(id, estado = "verde") {
         indicador.textContent;
 
 
-    // elimina cualquier círculo de estado al inicio
+    // Limpia cualquier círculo o símbolo anterior
     texto =
-        texto.replace(/^[⚪🟢🔵🟡🔴]\s*/, "");
+        texto.replace(
+            /^[⚪🟢🔵🟡🔴]\s*/,
+            ""
+        );
 
 
     let circulo = "⚪";
