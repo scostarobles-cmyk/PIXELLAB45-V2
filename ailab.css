@@ -356,7 +356,20 @@ section{
     }
 
 }
+.ailab-hero{
+    padding:40px 60px;
+    text-align:center;
+}
 
+
+/* MÓVIL */
+@media(max-width:768px){
+
+    .ailab-hero{
+        padding-top:90px;
+    }
+
+}
 /* =========================
    SECTION DIVIDER
 ========================= */
