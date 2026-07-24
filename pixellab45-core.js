@@ -1328,7 +1328,7 @@ window.addEventListener(
             "Inicializando generador editorial"
         );
         
-        await gestionarVersionCachePIXELLAB()?
+   //     await gestionarVersionCachePIXELLAB()?
 
         await verificarProyecto();
 
