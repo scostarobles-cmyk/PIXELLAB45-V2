@@ -1141,13 +1141,35 @@ function actualizarIndicador(id, estado = "verde") {
 //====================================================
 
 const PIXELLAB45_VERSION = "__VERSION__";
-
+monitorPIXELLAB(
+    "CORE",
+    "info",
+    "Cache",
+    "Versión actual: " + PIXELLAB45_VERSION
+);
 (async function () {
+
+
+  monitorPIXELLAB(
+      "CORE",
+      "proceso",
+      "Cache",
+      "Entró al control de versión"
+  );
+
 
   try {
 
     const versionAnterior =
-      localStorage.getItem("PL45_VERSION");
+    localStorage.getItem("PL45_VERSION");
+
+
+monitorPIXELLAB(
+    "CORE",
+    "info",
+    "Cache",
+    "Versión anterior: " + versionAnterior
+);
 
     if (versionAnterior !== PIXELLAB45_VERSION) {
 
@@ -1166,7 +1188,12 @@ const PIXELLAB45_VERSION = "__VERSION__";
         );
 
         // Limpiar Cache Storage
-        if ("caches" in window) {
+        if ("caches" in window) {monitorPIXELLAB(
+    "CORE",
+    "info",
+    "Cache",
+    "Versión actual: " + PIXELLAB45_VERSION
+);
 
           const nombres = await caches.keys();
 
