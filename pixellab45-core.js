@@ -1137,96 +1137,159 @@ function actualizarIndicador(id, estado = "verde") {
 }
 //====================================================
 // PIXELLAB45 CORE
-// CONTROL DE VERSIÓN Y LIMPIEZA DE CACHÉ
+// GESTIÓN DE VERSIÓN Y CACHE EN R2
 //====================================================
 
-const PIXELLAB45_VERSION = "__VERSION__";
-monitorPIXELLAB(
-    "CORE",
-    "info",
-    "Cache",
-    "Versión actual: " + PIXELLAB45_VERSION
-);
-(async function () {
+async function gestionarVersionCachePIXELLAB(){
+
+    let versionActiva = PIXELLAB45_VERSION;
 
 
-  monitorPIXELLAB(
-      "CORE",
-      "proceso",
-      "Cache",
-      "Entró al control de versión"
-  );
+    //------------------------------------
+    // CASO 1
+    // GitHub entregó versión correcta
+    //------------------------------------
 
+    if(
+        versionActiva &&
+        versionActiva !== "__VERSION__"
+    ){
 
-  try {
-
-    const versionAnterior =
-    localStorage.getItem("PL45_VERSION");
-
-
-monitorPIXELLAB(
-    "CORE",
-    "info",
-    "Cache",
-    "Versión anterior: " + versionAnterior
-);
-
-    if (versionAnterior !== PIXELLAB45_VERSION) {
-
-      // Guardar nueva versión
-      localStorage.setItem(
-        "PL45_VERSION",
-        PIXELLAB45_VERSION
-      );
-
-      // Evitar recarga infinita
-      if (!sessionStorage.getItem("PL45_CACHE_REFRESH")) {
-
-        sessionStorage.setItem(
-          "PL45_CACHE_REFRESH",
-          "OK"
+        await guardarJSON(
+            "cache/version.json",
+            {
+                version: Number(versionActiva),
+                origen: "github",
+                fecha: new Date().toISOString()
+            }
         );
 
-        // Limpiar Cache Storage
-        if ("caches" in window) {monitorPIXELLAB(
-    "CORE",
-    "info",
-    "Cache",
-    "Versión actual: " + PIXELLAB45_VERSION
-);
 
-          const nombres = await caches.keys();
+        monitorPIXELLAB(
+            "CORE",
+            "ok",
+            "Versión",
+            "Versión GitHub guardada: " + versionActiva
+        );
 
-          for (const nombre of nombres) {
-            await caches.delete(nombre);
-          }
 
-        }
-
-        // Recargar una sola vez
-        location.reload();
-
-      }
-
-    } else {
-
-      // Preparado para la próxima actualización
-      sessionStorage.removeItem(
-        "PL45_CACHE_REFRESH"
-      );
+        return String(versionActiva);
 
     }
 
-  } catch (err) {
 
-    console.error(
-      "PIXELLAB45 Core:",
-      err
+
+    //------------------------------------
+    // CASO 2 y 3
+    // GitHub falló
+    //------------------------------------
+
+    monitorPIXELLAB(
+        "CORE",
+        "aviso",
+        "Versión",
+        "Versión GitHub no disponible"
     );
 
-  }
 
-})
+
+    let registro = null;
+
+
+    try {
+
+        registro =
+            await cargarJSON(
+                "cache/version.json"
+            );
+
+    } catch(e){
+
+        registro = null;
+
+    }
+
+
+
+    let nuevaVersion;
+
+
+
+    //------------------------------------
+    // Existe registro anterior
+    //------------------------------------
+
+    if(
+        registro &&
+        registro.version
+    ){
+
+        nuevaVersion =
+            Number(registro.version) + 1;
+
+
+        monitorPIXELLAB(
+            "CORE",
+            "proceso",
+            "Cache",
+            "Incrementando versión de respaldo"
+        );
+
+
+    }
+
+
+    //------------------------------------
+    // Primer arranque sin registro
+    //------------------------------------
+
+    else {
+
+
+        nuevaVersion =
+            Math.floor(
+                Math.random() * 900000
+            ) + 100000;
+
+
+        monitorPIXELLAB(
+            "CORE",
+            "proceso",
+            "Cache",
+            "Creando versión inicial de respaldo"
+        );
+
+
+    }
+
+
+
+    //------------------------------------
+    // Guardar nueva versión
+    //------------------------------------
+
+    await guardarJSON(
+        "cache/version.json",
+        {
+            version: nuevaVersion,
+            origen: "respaldo",
+            fecha: new Date().toISOString()
+        }
+    );
+
+
+
+    monitorPIXELLAB(
+        "CORE",
+        "ok",
+        "Versión activa",
+        String(nuevaVersion)
+    );
+
+
+    return String(nuevaVersion);
+
+}
 
 // =========================
 // MENÚ HAMBURGUESA
@@ -1260,10 +1323,14 @@ async function iniciarCargaEditorial() {
         "proceso",
         "Módulo Editorial iniciado"
     );
+    
+     await gestionarVersionCachePIXELLAB();
 
     await verificarProyecto();
 
     await cargarGaleriaEditorial();
+    
+    
 
 }
 
