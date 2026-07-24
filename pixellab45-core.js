@@ -1088,6 +1088,66 @@ async function cargarJSON(ruta) {
     return datos.json;
 
 }
+
+// =====================================================
+// FUNCIÓN: guardarJSON()
+// Descripción:
+// Toma una ruta y un objeto JSON,
+// y guarda el objeto en R2.
+// =====================================================
+
+async function guardarJSON(ruta, datos) {
+
+
+    const respuesta = await fetch(
+        WORKER_URL,
+        {
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                action: "guardar-json",
+                ruta: ruta,
+                json: datos
+            })
+        }
+    );
+
+
+    const resultado =
+        await respuesta.json();
+
+
+    if (!resultado.ok) {
+
+
+        monitorPIXELLAB(
+            "Core",
+            "error",
+            "guardarJSON",
+            "Error guardando: " + ruta
+        );
+
+
+        return false;
+
+    }
+
+
+    monitorPIXELLAB(
+        "Core",
+        "ok",
+        "guardarJSON",
+        "Guardado correctamente: " + ruta
+    );
+
+
+    return true;
+
+}
 //=====================================
 // ACTUALIZAR INDICADOR PIPELINE
 //=====================================
