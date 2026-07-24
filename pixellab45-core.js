@@ -63,7 +63,6 @@ function limpiarMonitorPIXELLAB(){
 
 async function verificarProyecto() {
 
-    // Limpiar monitor antes de la prueba
     limpiarMonitorPIXELLAB();
 
 
@@ -71,7 +70,7 @@ async function verificarProyecto() {
         "Editorial",
         "proceso",
         "Verificación",
-        "Prueba inicial de interfaz"
+        "Prueba estado proyecto creado"
     );
 
 
@@ -79,7 +78,7 @@ async function verificarProyecto() {
 
 
         // ------------------------------------
-        // BLOQUEAR TODOS LOS BOTONES
+        // BLOQUEAR TODO INICIALMENTE
         // ------------------------------------
 
         const botonesBloqueados = [
@@ -103,32 +102,94 @@ async function verificarProyecto() {
 
 
         // ------------------------------------
-        // HABILITAR SOLO PROYECTO
+        // SIMULACIÓN: PROYECTO CREADO
         // ------------------------------------
 
-        actualizarIndicador(
-            "estadoProyecto",
-            "azul"
-        );
-
-
-        botonAzul(
-            "btnProyecto"
-        );
-
-
-        habilitarBoton(
-            "btnProyecto"
-        );
+        const proyectoCreado = true;
 
 
 
-        monitorPIXELLAB(
-            "Editorial",
-            "estado",
-            "Interfaz",
-            "Proyecto habilitado. Resto de botones bloqueados."
-        );
+        if (proyectoCreado) {
+
+
+            // Proyecto terminado
+
+            actualizarIndicador(
+                "estadoProyecto",
+                "verde"
+            );
+
+
+            botonVerde(
+                "btnProyecto"
+            );
+
+
+            deshabilitarBoton(
+                "btnProyecto"
+            );
+
+
+
+            // Siguiente paso: Plan
+
+            actualizarIndicador(
+                "estadoPlan",
+                "azul"
+            );
+
+
+            botonAzul(
+                "btnPlan"
+            );
+
+
+            habilitarBoton(
+                "btnPlan"
+            );
+
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "estado",
+                "Prueba",
+                "Proyecto verde. Plan azul habilitado."
+            );
+
+
+
+        } else {
+
+
+            // Estado inicial
+
+            actualizarIndicador(
+                "estadoProyecto",
+                "azul"
+            );
+
+
+            botonAzul(
+                "btnProyecto"
+            );
+
+
+            habilitarBoton(
+                "btnProyecto"
+            );
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "estado",
+                "Prueba",
+                "Proyecto azul habilitado."
+            );
+
+
+        }
+
 
 
     } catch(error) {
@@ -145,7 +206,6 @@ async function verificarProyecto() {
     }
 
 }
-
 
 /* ==========================================================
    PIXELLAB Monitor v1.3
