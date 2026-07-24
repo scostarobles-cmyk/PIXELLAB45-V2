@@ -1313,30 +1313,184 @@ function toggleMenu() {
 
 
 
-// =====================================
-// ARRANQUE DEL MÓDULO EDITORIAL
-// =====================================
-
-async function iniciarCargaEditorial() {
-
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Módulo Editorial iniciado"
-    );
-    
-   //  await gestionarVersionCachePIXELLAB();
-
-    await verificarProyecto();
-
-    await cargarGaleriaEditorial();
-    
-    
-
-}
-
+//=====================================================
+// INICIALIZACIÓN DEL GENERADOR
+//=====================================================
 
 window.addEventListener(
     "load",
-    iniciarCargaEditorial
+    async () => {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Inicio",
+            "Inicializando generador editorial"
+        );
+        
+        await gestionarVersionCachePIXELLAB()?
+
+        await verificarProyecto();
+
+    }
 );
+//====================================================
+// PIXELLAB45 CORE
+// GESTIÓN DE VERSIÓN Y CACHE
+//====================================================
+
+async function gestionarVersionCachePIXELLAB(){
+
+    monitorPIXELLAB(
+        "CORE",
+        "proceso",
+        "Cache",
+        "Entró a gestionarVersionCachePIXELLAB"
+    );
+
+    let versionActiva = PIXELLAB45_VERSION;
+
+
+    //------------------------------------
+    // CASO 1
+    // GitHub entregó versión válida
+    //------------------------------------
+
+    if(
+        versionActiva &&
+        versionActiva !== "__VERSION__"
+    ){
+
+        await guardarJSON(
+            "cache/version.json",
+            {
+                version: Number(versionActiva),
+                origen: "github",
+                fecha: new Date().toISOString()
+            }
+        );
+
+        monitorPIXELLAB(
+            "CORE",
+            "ok",
+            "Versión",
+            "Versión GitHub guardada: " + versionActiva
+        );
+
+        return String(versionActiva);
+
+    }
+
+
+    //------------------------------------
+    // CASO 2 y 3
+    // GitHub falló
+    //------------------------------------
+
+    monitorPIXELLAB(
+        "CORE",
+        "aviso",
+        "Versión",
+        "GitHub no entregó versión válida"
+    );
+
+
+    let registro = null;
+
+
+    try {
+
+        registro =
+            await cargarJSON(
+                "cache/version.json"
+            );
+
+    } catch(error){
+
+        registro = null;
+
+    }
+
+
+    let nuevaVersion;
+
+
+    //------------------------------------
+    // Existe respaldo
+    //------------------------------------
+
+    if(
+        registro &&
+        registro.version
+    ){
+
+        nuevaVersion =
+            Number(registro.version) + 1;
+
+
+        monitorPIXELLAB(
+            "CORE",
+            "proceso",
+            "Cache",
+            "Usando respaldo y sumando 1"
+        );
+
+    }
+
+
+    //------------------------------------
+    // No existe respaldo
+    //------------------------------------
+
+    else {
+
+
+        nuevaVersion =
+            Math.floor(
+                Math.random() * 900000
+            ) + 100000;
+
+
+        monitorPIXELLAB(
+            "CORE",
+            "proceso",
+            "Cache",
+            "Creando versión inicial"
+        );
+
+    }
+
+
+    //------------------------------------
+    // Guardar respaldo
+    //------------------------------------
+
+    monitorPIXELLAB(
+        "CORE",
+        "proceso",
+        "Cache",
+        "Guardando cache/version.json"
+    );
+
+
+    await guardarJSON(
+        "cache/version.json",
+        {
+            version: nuevaVersion,
+            origen: "respaldo",
+            fecha: new Date().toISOString()
+        }
+    );
+
+
+    monitorPIXELLAB(
+        "CORE",
+        "ok",
+        "Versión activa",
+        String(nuevaVersion)
+    );
+
+
+    return String(nuevaVersion);
+
+}
