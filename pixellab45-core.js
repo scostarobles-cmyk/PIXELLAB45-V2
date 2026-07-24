@@ -70,19 +70,46 @@ async function verificarProyecto() {
         "Editorial",
         "proceso",
         "Verificación",
-        "Prueba estado proyecto creado"
+        "Buscando proyecto en R2"
     );
 
 
     try {
 
 
+        const respuesta = await fetch(WORKER_URL, {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                action: "verificar-proyecto"
+            })
+
+        });
+
+
+        const datos = await respuesta.json();
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "debug",
+            "Respuesta Worker",
+            JSON.stringify(datos)
+        );
+
+
+
         // ------------------------------------
         // BLOQUEAR TODO INICIALMENTE
         // ------------------------------------
 
-        const botonesBloqueados = [
-
+        [
             "btnPlan",
             "btnIndice",
             "btnLegales",
@@ -90,10 +117,7 @@ async function verificarProyecto() {
             "btnCapitulos",
             "btnConclusion"
 
-        ];
-
-
-        botonesBloqueados.forEach(id => {
+        ].forEach(id => {
 
             deshabilitarBoton(id);
 
@@ -101,68 +125,17 @@ async function verificarProyecto() {
 
 
 
+        const proyectoProduccion =
+            datos.proyectoProduccion;
+
+
+
         // ------------------------------------
-        // SIMULACIÓN: PROYECTO CREADO
+        // NO EXISTE PROYECTO
         // ------------------------------------
 
-        const proyectoCreado = true;
+        if (!proyectoProduccion) {
 
-
-
-        if (proyectoCreado) {
-
-
-            // Proyecto terminado
-
-            actualizarIndicador(
-                "estadoProyecto",
-                "verde"
-            );
-
-
-            botonVerde(
-                "btnProyecto"
-            );
-
-
-            deshabilitarBoton(
-                "btnProyecto"
-            );
-
-
-
-            // Siguiente paso: Plan
-
-            actualizarIndicador(
-                "estadoPlan",
-                "azul"
-            );
-
-
-            botonAzul(
-                "btnPlan"
-            );
-
-
-            habilitarBoton(
-                "btnPlan"
-            );
-
-
-
-            monitorPIXELLAB(
-                "Editorial",
-                "estado",
-                "Prueba",
-                "Proyecto verde. Plan azul habilitado."
-            );
-
-
-
-        } else {
-
-
-            // Estado inicial
 
             actualizarIndicador(
                 "estadoProyecto",
@@ -183,12 +156,70 @@ async function verificarProyecto() {
             monitorPIXELLAB(
                 "Editorial",
                 "estado",
-                "Prueba",
-                "Proyecto azul habilitado."
+                "Proyecto",
+                "No existe proyecto activo"
             );
 
+
+            return;
 
         }
+
+
+
+        // ------------------------------------
+        // EXISTE PROYECTO
+        // ------------------------------------
+
+        proyectoActual =
+            proyectoProduccion;
+
+
+        projectIdActual =
+            proyectoActual.projectId;
+
+
+
+        actualizarIndicador(
+            "estadoProyecto",
+            "verde"
+        );
+
+
+        botonVerde(
+            "btnProyecto"
+        );
+
+
+        deshabilitarBoton(
+            "btnProyecto"
+        );
+
+
+
+        actualizarIndicador(
+            "estadoPlan",
+            "azul"
+        );
+
+
+        botonAzul(
+            "btnPlan"
+        );
+
+
+        habilitarBoton(
+            "btnPlan"
+        );
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Proyecto",
+            "Proyecto cargado. Plan habilitado."
+        );
 
 
 
