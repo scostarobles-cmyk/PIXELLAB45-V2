@@ -70,8 +70,8 @@ async function verificarProyecto() {
         "Editorial",
         "proceso",
         "Verificación",
-        "Buscando proyecto en R2
-        "monitorBotonera
+        "Buscando proyecto en R2",
+        "monitorBotonera"
     );
 
 
