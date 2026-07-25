@@ -1,4 +1,4 @@
-async function generarImagenPuter() {
+async function generarImagenPuter() { 
 
   const prompt = document.getElementById("promptImagen").value.trim();
   const categoria = document.getElementById("categoriaImagen").value;
