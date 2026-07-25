@@ -184,7 +184,6 @@ async function verificarProyecto() {
         "proceso",
         "Verificación",
         "Buscando proyecto en R2",
-        "monitorBotonera"
     );
 
 
