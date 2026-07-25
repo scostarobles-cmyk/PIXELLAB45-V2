@@ -1610,7 +1610,17 @@ async function generarConclusion() {
 
 
          restaurarInterfaz();
-        await verificarProyecto();
+
+await verificarProyecto();
+
+monitorPIXELLAB(
+    "Editorial",
+    "info",
+    "DEBUG",
+    "Primera verificación terminada"
+);
+
+//await verificarProyecto();
         
 
 
