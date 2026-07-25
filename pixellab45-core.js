@@ -272,7 +272,7 @@ async function verificarProyecto() {
 
 if (!proyectoProduccion) {
 
-
+restaurarInterfaz();
     actualizarIndicador(
         "estadoProyecto",
         "azul"
@@ -953,10 +953,7 @@ monitorPIXELLAB(
         ${proyectoActual.titulo}
         `
     );
-    proyectoActual = null;
-projectIdActual = null;
-plan = null;
-
+    
     return;
 
 } 
