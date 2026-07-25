@@ -30,7 +30,45 @@ monitorPIXELLAB(
     "Carga",
     "pixellab45-core.js ejecutándose"
 );
+//=====================================================
+// INICIALIZACIÓN DEL GENERADOR
+//=====================================================
 
+window.addEventListener(
+    "load",
+    async () => {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Inicio",
+            "Inicializando generador editorial"
+        );
+        
+   //     await gestionarVersionCachePIXELLAB()?
+
+        await verificarProyecto();
+
+    }
+)
+// =========================
+// MENÚ HAMBURGUESA
+// =========================
+function toggleMenu() {
+
+    monitorPIXELLAB(
+        "Core",
+        "proceso",
+        "Menú",
+        "Botón hamburguesa presionado"
+    );
+
+    document
+        .querySelector(".nav-links")
+        .classList
+        .toggle("active");
+
+}
 //=====================================================
 // LIMPIAR MONITOR PIXELLAB
 //=====================================================
@@ -1101,201 +1139,3 @@ function actualizarIndicador(id, estado = "verde") {
         circulo + " " + (nombres[id] || id);
 
 }
-//====================================================
-// PIXELLAB45 CORE
-// GESTIÓN DE VERSIÓN Y CACHE EN R2
-//====================================================
-
-async function gestionarVersionCachePIXELLAB(){
-
-    let versionActiva = PIXELLAB45_VERSION;
-
-
-    //------------------------------------
-    // CASO 1
-    // GitHub entregó versión correcta
-    //------------------------------------
-
-    if(
-        versionActiva &&
-        versionActiva !== "__VERSION__"
-    ){
-
-        await guardarJSON(
-            "cache/version.json",
-            {
-                version: Number(versionActiva),
-                origen: "github",
-                fecha: new Date().toISOString()
-            }
-        );
-
-
-        monitorPIXELLAB(
-            "CORE",
-            "ok",
-            "Versión",
-            "Versión GitHub guardada: " + versionActiva
-        );
-
-
-        return String(versionActiva);
-
-    }
-
-
-
-    //------------------------------------
-    // CASO 2 y 3
-    // GitHub falló
-    //------------------------------------
-
-    monitorPIXELLAB(
-        "CORE",
-        "aviso",
-        "Versión",
-        "Versión GitHub no disponible"
-    );
-
-
-
-    let registro = null;
-
-
-    try {
-
-        registro =
-            await cargarJSON(
-                "cache/version.json"
-            );
-
-    } catch(e){
-
-        registro = null;
-
-    }
-
-
-
-    let nuevaVersion;
-
-
-
-    //------------------------------------
-    // Existe registro anterior
-    //------------------------------------
-
-    if(
-        registro &&
-        registro.version
-    ){
-
-        nuevaVersion =
-            Number(registro.version) + 1;
-
-
-        monitorPIXELLAB(
-            "CORE",
-            "proceso",
-            "Cache",
-            "Incrementando versión de respaldo"
-        );
-
-
-    }
-
-
-    //------------------------------------
-    // Primer arranque sin registro
-    //------------------------------------
-
-    else {
-
-
-        nuevaVersion =
-            Math.floor(
-                Math.random() * 900000
-            ) + 100000;
-
-
-        monitorPIXELLAB(
-            "CORE",
-            "proceso",
-            "Cache",
-            "Creando versión inicial de respaldo"
-        );
-
-
-    }
-
-
-
-    //------------------------------------
-    // Guardar nueva versión
-    //------------------------------------
-
-    await guardarJSON(
-        "cache/version.json",
-        {
-            version: nuevaVersion,
-            origen: "respaldo",
-            fecha: new Date().toISOString()
-        }
-    );
-
-
-
-    monitorPIXELLAB(
-        "CORE",
-        "ok",
-        "Versión activa",
-        String(nuevaVersion)
-    );
-
-
-    return String(nuevaVersion);
-
-}
-
-// =========================
-// MENÚ HAMBURGUESA
-// =========================
-function toggleMenu() {
-
-    monitorPIXELLAB(
-        "Core",
-        "proceso",
-        "Menú",
-        "Botón hamburguesa presionado"
-    );
-
-    document
-        .querySelector(".nav-links")
-        .classList
-        .toggle("active");
-
-}
-
-
-
-//=====================================================
-// INICIALIZACIÓN DEL GENERADOR
-//=====================================================
-
-window.addEventListener(
-    "load",
-    async () => {
-
-        monitorPIXELLAB(
-            "Editorial",
-            "proceso",
-            "Inicio",
-            "Inicializando generador editorial"
-        );
-        
-   //     await gestionarVersionCachePIXELLAB()?
-
-        await verificarProyecto();
-
-    }
-)
