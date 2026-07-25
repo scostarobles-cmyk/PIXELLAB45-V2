@@ -339,6 +339,12 @@ case "plan":
     // ==========================
     // PLAN CREADO
     // ==========================
+    monitorPIXELLAB(
+    "Editorial",
+    "debug",
+    "Estado Plan",
+    proyectoActual.estructura.plan
+);
 
     if (
         proyectoActual.estructura.plan === "creado"
