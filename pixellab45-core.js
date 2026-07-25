@@ -143,7 +143,7 @@ function actualizarMonitorBotonera(
     if(!monitor) return;
 
 
-    monitor.innerHTML = `
+    monitor.innerHTML += `
 
 <div class="monitor-evento">
 
