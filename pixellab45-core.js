@@ -53,6 +53,119 @@ function limpiarMonitorPIXELLAB(){
     monitor.innerHTML = "";
 
 }
+/* ==========================================================
+   PIXELLAB Monitor v1.2
+   Monitor reutilizable con destino configurable
+========================================================== */
+
+function monitorPIXELLAB(
+    modulo,
+    nivel,
+    operacion,
+    mensaje
+){
+
+    const monitor =
+        document.getElementById("monitorPIXELLAB");
+
+    if(!monitor) return;
+
+
+    const hora =
+        new Date().toLocaleTimeString();
+
+
+    const niveles = {
+
+        info: "ℹ️",
+        proceso: "🔄",
+        ok: "✅",
+        aviso: "⚠️",
+        error: "❌"
+
+    };
+
+
+    const icono =
+        niveles[nivel] || "•";
+
+
+    const evento = `
+
+<div class="monitor-evento monitor-${nivel}">
+
+    <div class="monitor-header">
+
+        <span>${hora}</span>
+
+        <span class="monitor-modulo">
+            ${modulo}
+        </span>
+
+    </div>
+
+
+    <div class="monitor-operacion">
+
+        ${icono} ${operacion}
+
+    </div>
+
+
+    <div class="monitor-mensaje">
+
+        ${mensaje}
+
+    </div>
+
+
+</div>
+
+`;
+
+
+    monitor.innerHTML += evento;
+
+
+    monitor.scrollTop =
+        monitor.scrollHeight;
+
+}
+
+function actualizarMonitorBotonera(
+    titulo,
+    mensaje
+){
+
+    const monitor =
+        document.getElementById("monitorBotonera");
+
+    if(!monitor) return;
+
+
+    monitor.innerHTML = `
+
+<div class="monitor-evento">
+
+    <div class="monitor-operacion">
+
+        ${titulo}
+
+    </div>
+
+
+    <div class="monitor-mensaje">
+
+        ${mensaje}
+
+    </div>
+
+
+</div>
+
+`;
+
+}
 //=====================================================
 // FUNCIÓN: verificarProyecto()
 // Descripción:
@@ -605,87 +718,6 @@ if (
 
 }
 
-/* ==========================================================
-   PIXELLAB Monitor v1.2
-   Monitor reutilizable con destino configurable
-========================================================== */
-
-function monitorPIXELLAB(
-    modulo,
-    nivel,
-    operacion,
-    mensaje,
-    destino = "monitorPIXELLAB"
-){
-
-    const monitor =
-        document.getElementById(destino);
-
-    if(!monitor) return;
-
-
-    const hora =
-        new Date().toLocaleTimeString();
-
-
-    const niveles = {
-
-        info: "ℹ️",
-
-        proceso: "🔄",
-
-        ok: "✅",
-
-        aviso: "⚠️",
-
-        error: "❌"
-
-    };
-
-
-    const icono =
-        niveles[nivel] || "•";
-
-
-    const evento = `
-
-<div class="monitor-evento monitor-${nivel}">
-
-    <div class="monitor-header">
-
-        <span>${hora}</span>
-
-        <span class="monitor-modulo">
-            ${modulo}
-        </span>
-
-    </div>
-
-    <div class="monitor-operacion">
-        ${icono} ${operacion}
-    </div>
-
-    <div class="monitor-mensaje">
-        ${mensaje}
-    </div>
-
-</div>
-
-`;
-
-
-const destinoMonitor =
-    document.getElementById(destino);
-
-if (destinoMonitor) {
-
-    destinoMonitor.innerHTML += evento;
-
-    destinoMonitor.scrollTop =
-        destinoMonitor.scrollHeight;
-
-}
-}
 
 // =====================================
 // PIXELLAB CORE
