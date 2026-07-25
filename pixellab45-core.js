@@ -728,6 +728,111 @@ if (
     return;
 
 }
+//------------------------------------
+// CARGAR PLAN ANTES DE CAPÍTULOS
+//------------------------------------
+
+const plan = await cargarJSON(
+    `proyectos/${projectIdActual}/plan.json`
+);
+
+
+//------------------------------------
+// CAPÍTULOS EN PRODUCCIÓN
+//------------------------------------
+
+if (
+    proyectoActual.estructura.capitulos === "produccion"
+) {
+
+    actualizarIndicador(
+        "estadoCapitulos",
+        "amarillo"
+    );
+
+    botonAmarillo(
+        "btnCapitulos"
+    );
+
+    habilitarBoton(
+        "btnCapitulos"
+    );
+
+
+    if (
+        !plan ||
+        !plan.capitulos
+    ) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Capítulos",
+            "No se recibió el plan"
+        );
+
+        actualizarMonitorBotonera(
+            "Error",
+            `
+            ❌ No se recibió el plan de capítulos
+            `
+        );
+
+        return;
+
+    }
+
+
+    for (
+        const capitulo of plan.capitulos
+    ) {
+
+        if (
+            capitulo.estado !== "creado"
+        ) {
+
+            monitorPIXELLAB(
+                "Editorial",
+                "proceso",
+                "Capítulos",
+                "Capítulos en producción"
+            );
+
+            monitorPIXELLAB(
+                "Editorial",
+                "info",
+                "Próximo capítulo",
+                `${capitulo.numero} - ${capitulo.titulo}`
+            );
+
+            actualizarMonitorBotonera(
+                "Capítulos en producción",
+                `
+                📖 Generando capítulos
+                <br><br>
+                Próximo capítulo:
+                <br>
+                ${capitulo.numero} - ${capitulo.titulo}
+                `
+            );
+
+            if (
+                typeof preguntarSiguienteCapitulo === "function"
+                &&
+                preguntarContinuarCapitulos
+            ) {
+
+                preguntarSiguienteCapitulo();
+
+            }
+
+            return;
+
+        }
+
+    }
+
+}
     } // ← ESTA ES LA LLAVE QUE CIERRA EL TRY
 
     catch (error) {
