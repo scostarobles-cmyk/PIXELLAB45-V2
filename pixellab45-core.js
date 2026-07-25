@@ -607,6 +607,85 @@ if (
     return;
 
 }
+// ------------------------------------
+// INTRODUCCIÓN
+// ------------------------------------
+
+if (
+    proyectoActual.estructura.introduccion === "creado"
+) {
+
+    actualizarIndicador(
+        "estadoIntro",
+        "verde"
+    );
+
+    botonVerde(
+        "btnIntroduccion"
+    );
+
+    deshabilitarBoton(
+        "btnIntroduccion"
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Introducción",
+        "Introducción generada correctamente"
+    );
+
+
+    actualizarMonitorBotonera(
+        "Introducción completada",
+        `
+        📝 Introducción generada correctamente
+        <br><br>
+        Proyecto:
+        <br>
+        ${proyectoActual.titulo}
+        `
+    );
+
+} else {
+
+    actualizarIndicador(
+        "estadoIntro",
+        "azul"
+    );
+
+    botonAzul(
+        "btnIntroduccion"
+    );
+
+    habilitarBoton(
+        "btnIntroduccion"
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Introducción",
+        "Listo para generar introducción"
+    );
+
+
+    actualizarMonitorBotonera(
+        "Siguiente paso",
+        `
+        📝 Generar introducción del proyecto
+        <br><br>
+        Proyecto:
+        <br>
+        ${proyectoActual.titulo}
+        `
+    );
+
+    return;
+
+}
 
     } // ← ESTA ES LA LLAVE QUE CIERRA EL TRY
 
