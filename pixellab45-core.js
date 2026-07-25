@@ -334,7 +334,86 @@ async function verificarProyecto() {
 
                 return;
 
+case "plan":
 
+    // ==========================
+    // PLAN CREADO
+    // ==========================
+
+    if (
+        proyectoActual.estructura.plan === "creado"
+    ) {
+
+        actualizarIndicador(
+            "estadoPlan",
+            "verde"
+        );
+
+        botonVerde(
+            "btnPlan"
+        );
+
+        deshabilitarBoton(
+            "btnPlan"
+        );
+
+
+        actualizarIndicador(
+            "estadoIndice",
+            "azul"
+        );
+
+        botonAzul(
+            "btnIndice"
+        );
+
+        habilitarBoton(
+            "btnIndice"
+        );
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Plan",
+            "Plan generado correctamente"
+        );
+
+
+        return;
+
+    }
+
+
+    // ==========================
+    // PLAN PENDIENTE
+    // ==========================
+
+    actualizarIndicador(
+        "estadoPlan",
+        "azul"
+    );
+
+    botonAzul(
+        "btnPlan"
+    );
+
+    habilitarBoton(
+        "btnPlan"
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Plan",
+        "Listo para generar plan"
+    );
+
+
+    return;
+    
+    
 
             default:
 
