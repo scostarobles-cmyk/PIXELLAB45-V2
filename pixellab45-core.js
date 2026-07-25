@@ -225,6 +225,7 @@ async function verificarProyecto() {
         "Verificación",
         "Buscando estado del proyecto..."
     );
+  
 
     try {
 
@@ -238,10 +239,33 @@ async function verificarProyecto() {
         // Capítulos
         // Conclusión
         // ==========================
+        const respuesta = await fetch(WORKER_URL, {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                action: "verificar-proyecto"
+            })
+
+        });
+
+
         const datos = await respuesta.json();
 
-const proyectoProduccion = datos.proyectoProduccion;
-const ultimoProyectoFinalizado = datos.ultimoProyectoFinalizado;
+
+        // ==============================
+        // DATOS RECIBIDOS DEL WORKER
+        // ==============================
+
+        const proyectoProduccion =
+            datos.proyectoProduccion;
+
+        const ultimoProyectoFinalizado =
+            datos.ultimoProyectoFinalizado;
 // ------------------------------------
 // NO HAY PROYECTO EN PRODUCCIÓN
 // ------------------------------------
