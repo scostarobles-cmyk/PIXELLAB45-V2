@@ -881,6 +881,12 @@ if (
     proyectoActual.estructura.conclusion === "creado"
 ) {
 
+monitorPIXELLAB(
+        "Editorial",
+        "info",
+        "DEBUG Conclusión",
+        "Entró al bloque de conclusión pendiente"
+    );
     actualizarIndicador(
         "estadoConclusion",
         "verde"
