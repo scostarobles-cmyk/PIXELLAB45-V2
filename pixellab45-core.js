@@ -898,7 +898,18 @@ if (
 
     actualizarMonitorBotonera(
         "Siguiente paso",
-       
+        `
+        📘 Generar conclusión del proyecto
+        <br><br>
+        Proyecto:
+        <br>
+        ${proyectoActual.titulo}
+        `
+    );
+
+    return;
+
+} 
     } // ← ESTA ES LA LLAVE QUE CIERRA EL TRY
 
     catch (error) {
