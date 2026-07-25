@@ -268,7 +268,42 @@ async function verificarProyecto() {
 
             return;
         }
+     // ------------------------------------
+// PROYECTO ACTIVO
+// ------------------------------------
 
+proyectoActual = proyectoProduccion;
+
+projectIdActual = proyectoActual.projectId;
+
+monitorPIXELLAB(
+    "Editorial",
+    "estado",
+    "Proyecto activo",
+    proyectoActual.titulo + " en producción"
+);
+
+actualizarMonitorBotonera(
+    "Proyecto activo",
+    `
+    📚 ${proyectoActual.titulo}
+    <br>
+    Estado: En producción
+    `
+);
+
+actualizarIndicador(
+    "estadoProyecto",
+    "verde"
+);
+
+botonVerde(
+    "btnProyecto"
+);
+
+deshabilitarBoton(
+    "btnProyecto"
+);
     } catch (error) {
 
         monitorPIXELLAB(
