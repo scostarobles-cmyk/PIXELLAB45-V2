@@ -1613,7 +1613,7 @@ async function generarConclusion() {
 
 await verificarProyecto();
 restaurarInterfaz();
-
+await verificarProyecto();
 
     } catch(error) {
 
