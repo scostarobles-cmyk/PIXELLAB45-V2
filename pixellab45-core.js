@@ -833,6 +833,46 @@ if (
     }
 
 }
+//------------------------------------
+// TODOS LOS CAPÍTULOS TERMINADOS
+//------------------------------------
+
+if (
+    proyectoActual.estructura.capitulos === "creado"
+) {
+
+    actualizarIndicador(
+        "estadoCapitulos",
+        "verde"
+    );
+
+    botonVerde(
+        "btnCapitulos"
+    );
+
+    deshabilitarBoton(
+        "btnCapitulos"
+    );
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Capítulos",
+        "Capítulos generados"
+    );
+
+    actualizarMonitorBotonera(
+        "Capítulos completos",
+        `
+        📖 Todos los capítulos fueron generados correctamente
+        <br><br>
+        Proyecto:
+        <br>
+        ${proyectoActual.titulo}
+        `
+    );
+
+}
 // ------------------------------------
 // CONCLUSIÓN
 // ------------------------------------
