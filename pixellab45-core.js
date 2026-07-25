@@ -447,6 +447,88 @@ if (
 
     return;
 }
+// ------------------------------------
+// INDICE
+// ------------------------------------
+
+if (
+    proyectoActual.estructura.indice === "creado"
+) {
+
+    actualizarIndicador(
+        "estadoIndice",
+        "verde"
+    );
+
+    botonVerde(
+        "btnIndice"
+    );
+
+    deshabilitarBoton(
+        "btnIndice"
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Índice",
+        "Índice generado correctamente"
+    );
+
+
+    actualizarMonitorBotonera(
+        "Índice completo",
+        `
+        📑 Índice generado correctamente
+        <br><br>
+        Proyecto:
+        <br>
+        ${proyectoActual.titulo}
+        `
+    );
+
+
+} else {
+
+    actualizarIndicador(
+        "estadoIndice",
+        "azul"
+    );
+
+    botonAzul(
+        "btnIndice"
+    );
+
+    habilitarBoton(
+        "btnIndice"
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Índice",
+        "Listo para generar índice del proyecto"
+    );
+
+
+    actualizarMonitorBotonera(
+        "Siguiente paso",
+        `
+        📑 Generar índice del proyecto
+        <br><br>
+        Proyecto:
+        <br>
+        ${proyectoActual.titulo}
+        `
+    );
+
+
+    return;
+
+}
+
     } // ← ESTA ES LA LLAVE QUE CIERRA EL TRY
 
     catch (error) {
