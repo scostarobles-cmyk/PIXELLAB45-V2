@@ -218,6 +218,12 @@ const ultimoProyectoFinalizado =
     JSON.stringify(ultimoProyectoFinalizado)
 );
 
+
+actualizarMonitorBotonera(
+    "Verificación",
+    "Buscando estado del proyecto..."
+);
+
 // ------------------------------------
 // NO HAY PROYECTO EN PRODUCCIÓN
 // ------------------------------------
@@ -237,8 +243,42 @@ if (!proyectoProduccion) {
         "btnProyecto"
     );
 
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Proyecto",
+        "No hay proyecto en producción"
+    );
+
+
+    actualizarMonitorBotonera(
+        "Nuevo proyecto",
+        ultimoProyectoFinalizado
+            ?
+            `
+            📚 Último proyecto listo:
+            <br>
+            ${ultimoProyectoFinalizado.titulo}
+            <br><br>
+            Estado:
+            <br>
+            ✅ Disponible para edición
+            <br><br>
+            👉 Genere un nuevo proyecto
+            `
+            :
+            `
+            No hay proyectos activos.
+            <br><br>
+            👉 Genere un nuevo proyecto
+            `
+    );
+
+
     return;
 }
+
 
 
 // ------------------------------------
@@ -248,6 +288,24 @@ if (!proyectoProduccion) {
 proyectoActual = proyectoProduccion;
 
 projectIdActual = proyectoActual.projectId;
+
+
+monitorPIXELLAB(
+    "Editorial",
+    "estado",
+    "Proyecto activo",
+    proyectoActual.titulo + " en producción"
+);
+
+
+actualizarMonitorBotonera(
+    "Proyecto activo",
+    `
+    📚 ${proyectoActual.titulo}
+    <br>
+    Estado: En producción
+    `
+);
 
 
 actualizarIndicador(
@@ -286,6 +344,26 @@ if (
     );
 
 
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Plan",
+        "Plan generado correctamente"
+    );
+
+
+    actualizarMonitorBotonera(
+        "Plan completado",
+        `
+        📋 Plan generado correctamente
+        <br><br>
+        Proyecto:
+        <br>
+        ${proyectoActual.titulo}
+        `
+    );
+
+
 } else {
 
     actualizarIndicador(
@@ -301,32 +379,55 @@ if (
         "btnPlan"
     );
 
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Plan",
+        "Listo para generar plan del proyecto"
+    );
+
+
+    actualizarMonitorBotonera(
+        "Siguiente paso",
+        `
+        📋 Generar plan del proyecto
+        <br><br>
+        Proyecto:
+        <br>
+        ${proyectoActual.titulo}
+        `
+    );
+
+
     return;
 
 }
+
+
+// ------------------------------------
+// ÚLTIMO PROYECTO FINALIZADO
+// ------------------------------------
+
 if (ultimoProyectoFinalizado) {
 
-    monitorBotonera(
+    monitorPIXELLAB(
         "Editorial",
         "estado",
-        "Último proyecto generado",
+        "Último proyecto listo",
         ultimoProyectoFinalizado.titulo
     );
 
 
-    monitorBotonera(
-        "Editorial",
-        "info",
-        "Fecha",
-        ultimoProyectoFinalizado.fecha
-    );
-
-
-    monitorBotonera(
-        "Editorial",
-        "proceso",
-        "Siguiente paso",
-        "Genere un nuevo proyecto"
+    actualizarMonitorBotonera(
+        "Proyecto listo para edición",
+        `
+        📚 ${ultimoProyectoFinalizado.titulo}
+        <br><br>
+        Estado:
+        <br>
+        ✅ Disponible para editar
+        `
     );
 
 }
@@ -353,6 +454,26 @@ if (
     );
 
 
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Índice",
+        "Índice generado correctamente"
+    );
+
+
+    actualizarMonitorBotonera(
+        "Índice completo",
+        `
+        📑 Índice generado correctamente
+        <br><br>
+        Proyecto:
+        <br>
+        ${proyectoActual.titulo}
+        `
+    );
+
+
 } else {
 
     actualizarIndicador(
@@ -367,6 +488,27 @@ if (
     habilitarBoton(
         "btnIndice"
     );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Índice",
+        "Listo para generar índice del proyecto"
+    );
+
+
+    actualizarMonitorBotonera(
+        "Siguiente paso",
+        `
+        📑 Generar índice del proyecto
+        <br><br>
+        Proyecto:
+        <br>
+        ${proyectoActual.titulo}
+        `
+    );
+
 
     return;
 
@@ -395,6 +537,26 @@ if (
     );
 
 
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Legales",
+        "Legales generados correctamente"
+    );
+
+
+    actualizarMonitorBotonera(
+        "Legales completados",
+        `
+        ⚖️ Legales generados correctamente
+        <br><br>
+        Proyecto:
+        <br>
+        ${proyectoActual.titulo}
+        `
+    );
+
+
 } else {
 
     actualizarIndicador(
@@ -409,6 +571,27 @@ if (
     habilitarBoton(
         "btnLegales"
     );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Legales",
+        "Listo para generar legales"
+    );
+
+
+    actualizarMonitorBotonera(
+        "Siguiente paso",
+        `
+        ⚖️ Generar legales del proyecto
+        <br><br>
+        Proyecto:
+        <br>
+        ${proyectoActual.titulo}
+        `
+    );
+
 
     return;
 
@@ -437,6 +620,26 @@ if (
     );
 
 
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Introducción",
+        "Introducción generada correctamente"
+    );
+
+
+    actualizarMonitorBotonera(
+        "Introducción completada",
+        `
+        📝 Introducción generada correctamente
+        <br><br>
+        Proyecto:
+        <br>
+        ${proyectoActual.titulo}
+        `
+    );
+
+
 } else {
 
     actualizarIndicador(
@@ -452,9 +655,32 @@ if (
         "btnIntroduccion"
     );
 
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Introducción",
+        "Listo para generar introducción"
+    );
+
+
+    actualizarMonitorBotonera(
+        "Siguiente paso",
+        `
+        📝 Generar introducción del proyecto
+        <br><br>
+        Proyecto:
+        <br>
+        ${proyectoActual.titulo}
+        `
+    );
+
+
     return;
 
 }
+
+
 // ------------------------------------
 // CAPÍTULOS - PRIMERA ETAPA
 // ------------------------------------
@@ -485,182 +711,243 @@ if (
     );
 
 
+    actualizarMonitorBotonera(
+        "Siguiente paso",
+        `
+        📖 Generar capítulos del proyecto
+        <br><br>
+        Proyecto:
+        <br>
+        ${proyectoActual.titulo}
+        `
+    );
+
+
     return;
 
 }
-             //------------------------------------
-            // CARGAR PLAN ANTES DE CAPÍTULOS
-            //------------------------------------
 
-            const plan = await cargarJSON(
-                `proyectos/${projectIdActual}/plan.json`
+             //------------------------------------
+// CARGAR PLAN ANTES DE CAPÍTULOS
+//------------------------------------
+
+const plan = await cargarJSON(
+    `proyectos/${projectIdActual}/plan.json`
+);
+
+
+//------------------------------------
+// CAPÍTULOS
+//------------------------------------
+
+if (
+    proyectoActual.estructura.capitulos === "pendiente"
+) {
+
+
+    actualizarIndicador(
+        "estadoCapitulos",
+        "azul"
+    );
+
+
+    botonAzul(
+        "btnCapitulos"
+    );
+
+
+    habilitarBoton(
+        "btnCapitulos"
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Capítulos",
+        "Falta generar capítulos"
+    );
+
+
+    actualizarMonitorBotonera(
+        "Siguiente paso",
+        `
+        📖 Generar capítulos del proyecto
+        <br><br>
+        Proyecto:
+        <br>
+        ${proyectoActual.titulo}
+        `
+    );
+
+
+    return;
+
+}
+
+
+
+            //------------------------------------
+// CAPÍTULOS EN PRODUCCIÓN
+//------------------------------------
+
+if (
+    proyectoActual.estructura.capitulos === "produccion"
+) {
+
+
+    actualizarIndicador(
+        "estadoCapitulos",
+        "amarillo"
+    );
+
+
+    botonAmarillo(
+        "btnCapitulos"
+    );
+
+
+    habilitarBoton(
+        "btnCapitulos"
+    );
+
+
+    if (
+        !plan ||
+        !plan.capitulos
+    ) {
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Capítulos",
+            "No se recibió el plan"
+        );
+
+
+        actualizarMonitorBotonera(
+            "Error",
+            `
+            ❌ No se recibió el plan de capítulos
+            `
+        );
+
+
+        return;
+
+    }
+
+
+
+    for (
+        const capitulo of plan.capitulos
+    ) {
+
+
+        if (
+            capitulo.estado !== "creado"
+        ) {
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "proceso",
+                "Capítulos",
+                "Capítulos en producción"
+            );
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "info",
+                "Próximo capítulo",
+                `${capitulo.numero} - ${capitulo.titulo}`
+            );
+
+
+            actualizarMonitorBotonera(
+                "Capítulos en producción",
+                `
+                📖 Generando capítulos
+                <br><br>
+                Próximo capítulo:
+                <br>
+                ${capitulo.numero} - ${capitulo.titulo}
+                `
             );
 
 
 
-
-            //------------------------------------
-            // CAPÍTULOS
-            //------------------------------------
-
             if (
-                proyectoActual.estructura.capitulos === "pendiente"
+                typeof preguntarSiguienteCapitulo === "function"
+                &&
+                preguntarContinuarCapitulos
             ) {
 
 
-                actualizarIndicador(
-                    "estadoCapitulos",
-                    "azul"
-                );
+                preguntarSiguienteCapitulo();
 
-
-                botonAzul(
-                    "btnCapitulos"
-                );
-
-
-                habilitarBoton(
-                    "btnCapitulos"
-                );
-
-
-                monitorPIXELLAB(
-                    "Editorial",
-                    "proceso",
-                    "Capítulos",
-                    "Falta generar capítulos"
-                );
-
-
-                return;
 
             }
 
 
+            return;
 
-            if (
-                proyectoActual.estructura.capitulos === "produccion"
-            ) {
+        }
 
+    }
 
-                actualizarIndicador(
-                    "estadoCapitulos",
-                    "amarillo"
-                );
+}
 
 
-                botonAmarillo(
-                    "btnCapitulos"
-                );
+//------------------------------------
+// TODOS LOS CAPÍTULOS TERMINADOS
+//------------------------------------
+
+if (
+    proyectoActual.estructura.capitulos === "creado"
+) {
 
 
-                habilitarBoton(
-                    "btnCapitulos"
-                );
+    actualizarIndicador(
+        "estadoCapitulos",
+        "verde"
+    );
 
 
-                if (
-                    !plan ||
-                    !plan.capitulos
-                ) {
+    botonVerde(
+        "btnCapitulos"
+    );
 
 
-                    monitorPIXELLAB(
-                        "Editorial",
-                        "error",
-                        "Capítulos",
-                        "No se recibió el plan"
-                    );
+    deshabilitarBoton(
+        "btnCapitulos"
+    );
 
 
-                    return;
-
-                }
-
-
-
-                for (
-                    const capitulo of plan.capitulos
-                ) {
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Capítulos",
+        "Capítulos generados"
+    );
 
 
-                    if (
-                        capitulo.estado !== "creado"
-                    ) {
+    actualizarMonitorBotonera(
+        "Capítulos completos",
+        `
+        📖 Todos los capítulos fueron generados correctamente
+        <br><br>
+        Proyecto:
+        <br>
+        ${proyectoActual.titulo}
+        `
+    );
 
 
-                        monitorPIXELLAB(
-                            "Editorial",
-                            "proceso",
-                            "Capítulos",
-                            "Capítulos en producción"
-                        );
-
-
-                        monitorPIXELLAB(
-                            "Editorial",
-                            "info",
-                            "Próximo capítulo",
-                            `${capitulo.numero} - ${capitulo.titulo}`
-                        );
-
-
-
-                        if (
-                            typeof preguntarSiguienteCapitulo === "function"
-                            &&
-                            preguntarContinuarCapitulos
-                        ) {
-
-
-                            preguntarSiguienteCapitulo();
-
-
-                        }
-
-
-                        return;
-
-                    }
-
-                }
-
-            }
-            //------------------------------------
-            // TODOS LOS CAPÍTULOS TERMINADOS
-            //------------------------------------
-
-            if (
-                proyectoActual.estructura.capitulos === "creado"
-            ) {
-
-
-                actualizarIndicador(
-                    "estadoCapitulos",
-                    "verde"
-                );
-
-
-                botonVerde(
-                    "btnCapitulos"
-                );
-
-
-                deshabilitarBoton(
-                    "btnCapitulos"
-                );
-
-
-                monitorPIXELLAB(
-                    "Editorial",
-                    "estado",
-                    "Capítulos",
-                    "Capítulos generados"
-                );
-
-
-            }
-            // ------------------------------------
+}
+// ------------------------------------
 // CONCLUSIÓN
 // ------------------------------------
 
@@ -682,6 +969,28 @@ if (
     );
 
 
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Conclusión",
+        "Conclusión generada correctamente"
+    );
+
+
+    actualizarMonitorBotonera(
+        "Proceso finalizado",
+        `
+        📘 Conclusión generada correctamente
+        <br><br>
+        Proyecto:
+        <br>
+        ${proyectoActual.titulo}
+        <br><br>
+        ✅ Ebook completo
+        `
+    );
+
+
 } else {
 
     actualizarIndicador(
@@ -698,23 +1007,27 @@ if (
     );
 
 
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Conclusión",
+        "Listo para generar conclusión"
+    );
+
+
+    actualizarMonitorBotonera(
+        "Siguiente paso",
+        `
+        📘 Generar conclusión del proyecto
+        <br><br>
+        Proyecto:
+        <br>
+        ${proyectoActual.titulo}
+        `
+    );
+
+
     return;
-
-}
-
-
-    } catch(error) {
-
-
-        monitorPIXELLAB(
-            "Editorial",
-            "error",
-            "Verificación",
-            error.message
-        );
-
-
-    }
 
 }
 
