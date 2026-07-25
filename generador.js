@@ -1561,7 +1561,7 @@ async function generarConclusion() {
 
 
 
-        if (
+/*        if (
             typeof actualizarIndicador === "function"
         ) {
 
@@ -1597,7 +1597,7 @@ async function generarConclusion() {
             btn.disabled = true;
 
 
-        }
+        }*/
 
 
 
@@ -1613,7 +1613,7 @@ async function generarConclusion() {
 
 await verificarProyecto();
 restaurarInterfaz();
-await verificarProyecto();
+
 
     } catch(error) {
 
