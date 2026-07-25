@@ -833,6 +833,72 @@ if (
     }
 
 }
+// ------------------------------------
+// CONCLUSIÓN
+// ------------------------------------
+
+if (
+    proyectoActual.estructura.conclusion === "creado"
+) {
+
+    actualizarIndicador(
+        "estadoConclusion",
+        "verde"
+    );
+
+    botonVerde(
+        "btnConclusion"
+    );
+
+    deshabilitarBoton(
+        "btnConclusion"
+    );
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Conclusión",
+        "Conclusión generada correctamente"
+    );
+
+    actualizarMonitorBotonera(
+        "Proceso finalizado",
+        `
+        📘 Conclusión generada correctamente
+        <br><br>
+        Proyecto:
+        <br>
+        ${proyectoActual.titulo}
+        <br><br>
+        ✅ Ebook completo
+        `
+    );
+
+} else {
+
+    actualizarIndicador(
+        "estadoConclusion",
+        "azul"
+    );
+
+    botonAzul(
+        "btnConclusion"
+    );
+
+    habilitarBoton(
+        "btnConclusion"
+    );
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Conclusión",
+        "Listo para generar conclusión"
+    );
+
+    actualizarMonitorBotonera(
+        "Siguiente paso",
+       
     } // ← ESTA ES LA LLAVE QUE CIERRA EL TRY
 
     catch (error) {
