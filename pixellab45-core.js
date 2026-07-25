@@ -238,6 +238,10 @@ async function verificarProyecto() {
         // Capítulos
         // Conclusión
         // ==========================
+        const datos = await respuesta.json();
+
+const proyectoProduccion = datos.proyectoProduccion;
+const ultimoProyectoFinalizado = datos.ultimoProyectoFinalizado;
 // ------------------------------------
 // NO HAY PROYECTO EN PRODUCCIÓN
 // ------------------------------------
