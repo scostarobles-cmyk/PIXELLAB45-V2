@@ -183,7 +183,7 @@ async function verificarProyecto() {
         "Editorial",
         "proceso",
         "Verificación",
-        "Buscando proyecto en R2",
+        "Buscando proyecto en R2"
     );
 
 
@@ -734,55 +734,6 @@ const plan = await cargarJSON(
     `proyectos/${projectIdActual}/plan.json`
 );
 
-
-//------------------------------------
-// CAPÍTULOS
-//------------------------------------
-
-if (
-    proyectoActual.estructura.capitulos === "pendiente"
-) {
-
-
-    actualizarIndicador(
-        "estadoCapitulos",
-        "azul"
-    );
-
-
-    botonAzul(
-        "btnCapitulos"
-    );
-
-
-    habilitarBoton(
-        "btnCapitulos"
-    );
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Capítulos",
-        "Falta generar capítulos"
-    );
-
-
-    actualizarMonitorBotonera(
-        "Siguiente paso",
-        `
-        📖 Generar capítulos del proyecto
-        <br><br>
-        Proyecto:
-        <br>
-        ${proyectoActual.titulo}
-        `
-    );
-
-
-    return;
-
-}
 
 
 
