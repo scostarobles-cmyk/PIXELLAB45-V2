@@ -212,7 +212,7 @@ function actualizarMonitorBotonera(
 //=====================================================*/
 async function verificarProyecto() {
 
-    limpiarMonitorPIXELLAB();
+//    limpiarMonitorPIXELLAB();
 
     monitorPIXELLAB(
         "Editorial",
