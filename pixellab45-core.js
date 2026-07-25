@@ -210,7 +210,77 @@ function actualizarMonitorBotonera(
 // Solicita al Worker la búsqueda del proyecto activo
 // en R2 y continúa según el estado del proyecto.
 //=====================================================*/
+async function verificarProyecto() {
 
+    limpiarMonitorPIXELLAB();
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Verificación",
+        "Buscando proyecto en R2"
+    );
+
+    actualizarMonitorBotonera(
+        "Verificación",
+        "Buscando estado del proyecto..."
+    );
+
+    try {
+
+        const respuesta = await fetch(WORKER_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                action: "verificar-proyecto"
+            })
+        });
+
+        const datos = await respuesta.json();
+
+        const proyectoProduccion = datos.proyectoProduccion;
+        const ultimoProyectoFinalizado = datos.ultimoProyectoFinalizado;
+
+        if (!proyectoProduccion) {
+
+            actualizarIndicador("estadoProyecto", "azul");
+            botonAzul("btnProyecto");
+            habilitarBoton("btnProyecto");
+
+            actualizarMonitorBotonera(
+                "Nuevo proyecto",
+                ultimoProyectoFinalizado
+                    ? `
+                    📚 Último proyecto listo:
+                    <br>
+                    ${ultimoProyectoFinalizado.titulo}
+                    <br><br>
+                    👉 Genere un nuevo proyecto
+                    `
+                    : `
+                    No hay proyectos activos.
+                    <br><br>
+                    👉 Genere un nuevo proyecto
+                    `
+            );
+
+            return;
+        }
+
+    } catch (error) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Verificación",
+            error.message
+        );
+
+    }
+
+}
 
 
 
