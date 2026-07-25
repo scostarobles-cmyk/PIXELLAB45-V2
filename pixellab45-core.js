@@ -272,6 +272,9 @@ async function verificarProyecto() {
 
 if (!proyectoProduccion) {
 
+proyectoActual = null;
+projectIdActual = null;
+plan = null;
     actualizarIndicador(
         "estadoProyecto",
         "azul"
