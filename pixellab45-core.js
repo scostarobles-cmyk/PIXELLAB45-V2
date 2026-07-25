@@ -686,7 +686,48 @@ if (
     return;
 
 }
+// ------------------------------------
+// CAPÍTULOS - PRIMERA ETAPA
+// ------------------------------------
 
+if (
+    proyectoActual.estructura.capitulos === "pendiente"
+) {
+
+    actualizarIndicador(
+        "estadoCapitulos",
+        "azul"
+    );
+
+    botonAzul(
+        "btnCapitulos"
+    );
+
+    habilitarBoton(
+        "btnCapitulos"
+    );
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Capítulos",
+        "Listo para generar capítulos"
+    );
+
+    actualizarMonitorBotonera(
+        "Siguiente paso",
+        `
+        📖 Generar capítulos del proyecto
+        <br><br>
+        Proyecto:
+        <br>
+        ${proyectoActual.titulo}
+        `
+    );
+
+    return;
+
+}
     } // ← ESTA ES LA LLAVE QUE CIERRA EL TRY
 
     catch (error) {
