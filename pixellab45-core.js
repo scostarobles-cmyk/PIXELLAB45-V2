@@ -212,24 +212,7 @@ function actualizarMonitorBotonera(
 //=====================================================*/
 
 
-async function verificarProyecto(){
 
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Prueba",
-        "La función verificarProyecto está entrando"
-    );
-
-
-    actualizarMonitorBotonera(
-        "Prueba",
-        `
-        ✅ Verificar proyecto funciona
-        `
-    );
-
-}
 
 
 // =====================================
