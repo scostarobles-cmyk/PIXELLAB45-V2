@@ -334,10 +334,21 @@ botonVerde(
 deshabilitarBoton(
     "btnProyecto"
 );
+monitorPIXELLAB(
+    "Editorial",
+    "debug",
+    "Flujo",
+    "Llegó antes de Plan"
+);
 // ------------------------------------
 // PLAN
 // ------------------------------------
-
+monitorPIXELLAB(
+    "Editorial",
+    "debug",
+    "Flujo",
+    "Entrando a Plan"
+);
 if (
     proyectoActual.estructura.plan === "creado"
 ) {
