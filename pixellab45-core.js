@@ -528,6 +528,85 @@ if (
     return;
 
 }
+// ------------------------------------
+// LEGALES
+// ------------------------------------
+
+if (
+    proyectoActual.estructura.legales === "creado"
+) {
+
+    actualizarIndicador(
+        "estadoLegales",
+        "verde"
+    );
+
+    botonVerde(
+        "btnLegales"
+    );
+
+    deshabilitarBoton(
+        "btnLegales"
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Legales",
+        "Legales generados correctamente"
+    );
+
+
+    actualizarMonitorBotonera(
+        "Legales completados",
+        `
+        ⚖️ Legales generados correctamente
+        <br><br>
+        Proyecto:
+        <br>
+        ${proyectoActual.titulo}
+        `
+    );
+
+} else {
+
+    actualizarIndicador(
+        "estadoLegales",
+        "azul"
+    );
+
+    botonAzul(
+        "btnLegales"
+    );
+
+    habilitarBoton(
+        "btnLegales"
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Legales",
+        "Listo para generar legales"
+    );
+
+
+    actualizarMonitorBotonera(
+        "Siguiente paso",
+        `
+        ⚖️ Generar legales del proyecto
+        <br><br>
+        Proyecto:
+        <br>
+        ${proyectoActual.titulo}
+        `
+    );
+
+    return;
+
+}
 
     } // ← ESTA ES LA LLAVE QUE CIERRA EL TRY
 
