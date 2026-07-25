@@ -272,7 +272,7 @@ async function verificarProyecto() {
 
 if (!proyectoProduccion) {
 
-restaurarInterfaz();
+
     actualizarIndicador(
         "estadoProyecto",
         "azul"
@@ -285,7 +285,18 @@ restaurarInterfaz();
     habilitarBoton(
         "btnProyecto"
     );
+actualizarIndicador(
+    "estadoConclusion",
+    "blanco"
+);
 
+botonNormal(
+    "btnConclusion"
+);
+
+deshabilitarBoton(
+    "btnConclusion"
+);
 
     monitorPIXELLAB(
         "Editorial",
