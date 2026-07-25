@@ -371,12 +371,7 @@ monitorPIXELLAB(
 // ------------------------------------
 // PLAN
 // ------------------------------------
-monitorPIXELLAB(
-    "Editorial",
-    "debug",
-    "Flujo",
-    "Entrando a Plan"
-);
+
 if (
     proyectoActual.estructura.plan === "creado"
 ) {
@@ -450,9 +445,7 @@ if (
         `
     );
 
-
     return;
-
 }
     } // ← ESTA ES LA LLAVE QUE CIERRA EL TRY
 
