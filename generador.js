@@ -1609,9 +1609,9 @@ async function generarConclusion() {
         );
 
 
-
+         restaurarInterfaz();
         await verificarProyecto();
-        restaurarInterfaz();
+        
 
 
 
