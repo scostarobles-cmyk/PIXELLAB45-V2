@@ -212,8 +212,6 @@ function actualizarMonitorBotonera(
 //=====================================================*/
 async function verificarProyecto() {
 
-//    limpiarMonitorPIXELLAB();
-
     monitorPIXELLAB(
         "Editorial",
         "proceso",
@@ -221,756 +219,132 @@ async function verificarProyecto() {
         "Buscando proyecto en R2"
     );
 
-    actualizarMonitorBotonera(
-        "Verificación",
-        "Buscando estado del proyecto..."
-    );
-  
 
     try {
 
-        // ==========================
-        // TODO EL CÓDIGO DE verificarProyecto()
-        // Proyecto
-        // Plan
-        // Índice
-        // Legales
-        // Introducción
-        // Capítulos
-        // Conclusión
-        // ==========================
-        const respuesta = await fetch(WORKER_URL, {
-
-            method: "POST",
-
-            headers: {
-                "Content-Type": "application/json"
-            },
-
-            body: JSON.stringify({
-                action: "verificar-proyecto"
-            })
-
-        });
+        const respuesta = await fetch(
+            WORKER_URL,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    action: "verificar-proyecto"
+                })
+            }
+        );
 
 
         const datos = await respuesta.json();
 
 
-        // ==============================
-        // DATOS RECIBIDOS DEL WORKER
-        // ==============================
-
         const proyectoProduccion =
             datos.proyectoProduccion;
 
-        const ultimoProyectoFinalizado =
-            datos.ultimoProyectoFinalizado;
-// ------------------------------------
-// NO HAY PROYECTO EN PRODUCCIÓN
-// ------------------------------------
 
-if (!proyectoProduccion) {
+        // ==========================
+        // NO HAY PROYECTO
+        // ==========================
 
+        if (!proyectoProduccion) {
 
-    actualizarIndicador(
-        "estadoProyecto",
-        "azul"
-    );
+            switch ("default") {
 
-    botonAzul(
-        "btnProyecto"
-    );
+                default:
 
-    habilitarBoton(
-        "btnProyecto"
-    );
-actualizarIndicador(
-    "estadoConclusion",
-    "blanco"
-);
+                    proyectoActual = null;
+                    projectIdActual = null;
 
-botonNormal(
-    "btnConclusion"
-);
+                    actualizarIndicador(
+                        "estadoProyecto",
+                        "azul"
+                    );
 
-deshabilitarBoton(
-    "btnConclusion"
-);
+                    botonAzul(
+                        "btnProyecto"
+                    );
 
-    monitorPIXELLAB(
-        "Editorial",
-        "estado",
-        "Proyecto",
-        "No hay proyecto en producción"
-    );
+                    habilitarBoton(
+                        "btnProyecto"
+                    );
 
-
-    actualizarMonitorBotonera(
-        "Nuevo proyecto",
-        ultimoProyectoFinalizado
-            ?
-            `
-            📚 Último proyecto listo:
-            <br>
-            ${ultimoProyectoFinalizado.titulo}
-            <br><br>
-            Estado:
-            <br>
-            ✅ Disponible para edición
-            <br><br>
-            👉 Genere un nuevo proyecto
-            `
-            :
-            `
-            No hay proyectos activos.
-            <br><br>
-            👉 Genere un nuevo proyecto
-            `
-    );
-
-
-    return;
-
-}
-// ------------------------------------
-// PROYECTO ACTIVO
-// ------------------------------------
-
-proyectoActual = proyectoProduccion;
-
-projectIdActual = proyectoActual.projectId;
-
-
-monitorPIXELLAB(
-    "Editorial",
-    "estado",
-    "Proyecto activo",
-    proyectoActual.titulo + " en producción"
-);
-
-
-actualizarMonitorBotonera(
-    "Proyecto activo",
-    `
-    📚 ${proyectoActual.titulo}
-    <br>
-    Estado: En producción
-    `
-);
-
-
-actualizarIndicador(
-    "estadoProyecto",
-    "verde"
-);
-
-
-botonVerde(
-    "btnProyecto"
-);
-
-
-deshabilitarBoton(
-    "btnProyecto"
-);
-monitorPIXELLAB(
-    "Editorial",
-    "debug",
-    "Flujo",
-    "Llegó antes de Plan"
-);
-// ------------------------------------
-// PLAN
-// ------------------------------------
-
-if (
-    proyectoActual.estructura.plan === "creado"
-) {
-
-    actualizarIndicador(
-        "estadoPlan",
-        "verde"
-    );
-
-    botonVerde(
-        "btnPlan"
-    );
-
-    deshabilitarBoton(
-        "btnPlan"
-    );
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "ok",
-        "Plan",
-        "Plan generado correctamente"
-    );
-
-
-    actualizarMonitorBotonera(
-        "Plan completado",
-        `
-        📋 Plan generado correctamente
-        <br><br>
-        Proyecto:
-        <br>
-        ${proyectoActual.titulo}
-        `
-    );
-
-
-} else {
-
-    actualizarIndicador(
-        "estadoPlan",
-        "azul"
-    );
-
-    botonAzul(
-        "btnPlan"
-    );
-
-    habilitarBoton(
-        "btnPlan"
-    );
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Plan",
-        "Listo para generar plan del proyecto"
-    );
-
-
-    actualizarMonitorBotonera(
-        "Siguiente paso",
-        `
-        📋 Generar plan del proyecto
-        <br><br>
-        Proyecto:
-        <br>
-        ${proyectoActual.titulo}
-        `
-    );
-
-    return;
-}
-// ------------------------------------
-// INDICE
-// ------------------------------------
-
-if (
-    proyectoActual.estructura.indice === "creado"
-) {
-
-    actualizarIndicador(
-        "estadoIndice",
-        "verde"
-    );
-
-    botonVerde(
-        "btnIndice"
-    );
-
-    deshabilitarBoton(
-        "btnIndice"
-    );
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "ok",
-        "Índice",
-        "Índice generado correctamente"
-    );
-
-
-    actualizarMonitorBotonera(
-        "Índice completo",
-        `
-        📑 Índice generado correctamente
-        <br><br>
-        Proyecto:
-        <br>
-        ${proyectoActual.titulo}
-        `
-    );
-
-
-} else {
-
-    actualizarIndicador(
-        "estadoIndice",
-        "azul"
-    );
-
-    botonAzul(
-        "btnIndice"
-    );
-
-    habilitarBoton(
-        "btnIndice"
-    );
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Índice",
-        "Listo para generar índice del proyecto"
-    );
-
-
-    actualizarMonitorBotonera(
-        "Siguiente paso",
-        `
-        📑 Generar índice del proyecto
-        <br><br>
-        Proyecto:
-        <br>
-        ${proyectoActual.titulo}
-        `
-    );
-
-
-    return;
-
-}
-// ------------------------------------
-// LEGALES
-// ------------------------------------
-
-if (
-    proyectoActual.estructura.legales === "creado"
-) {
-
-    actualizarIndicador(
-        "estadoLegales",
-        "verde"
-    );
-
-    botonVerde(
-        "btnLegales"
-    );
-
-    deshabilitarBoton(
-        "btnLegales"
-    );
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "ok",
-        "Legales",
-        "Legales generados correctamente"
-    );
-
-
-    actualizarMonitorBotonera(
-        "Legales completados",
-        `
-        ⚖️ Legales generados correctamente
-        <br><br>
-        Proyecto:
-        <br>
-        ${proyectoActual.titulo}
-        `
-    );
-
-} else {
-
-    actualizarIndicador(
-        "estadoLegales",
-        "azul"
-    );
-
-    botonAzul(
-        "btnLegales"
-    );
-
-    habilitarBoton(
-        "btnLegales"
-    );
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Legales",
-        "Listo para generar legales"
-    );
-
-
-    actualizarMonitorBotonera(
-        "Siguiente paso",
-        `
-        ⚖️ Generar legales del proyecto
-        <br><br>
-        Proyecto:
-        <br>
-        ${proyectoActual.titulo}
-        `
-    );
-
-    return;
-
-}
-// ------------------------------------
-// INTRODUCCIÓN
-// ------------------------------------
-
-if (
-    proyectoActual.estructura.introduccion === "creado"
-) {
-
-    actualizarIndicador(
-        "estadoIntro",
-        "verde"
-    );
-
-    botonVerde(
-        "btnIntroduccion"
-    );
-
-    deshabilitarBoton(
-        "btnIntroduccion"
-    );
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "ok",
-        "Introducción",
-        "Introducción generada correctamente"
-    );
-
-
-    actualizarMonitorBotonera(
-        "Introducción completada",
-        `
-        📝 Introducción generada correctamente
-        <br><br>
-        Proyecto:
-        <br>
-        ${proyectoActual.titulo}
-        `
-    );
-
-} else {
-
-    actualizarIndicador(
-        "estadoIntro",
-        "azul"
-    );
-
-    botonAzul(
-        "btnIntroduccion"
-    );
-
-    habilitarBoton(
-        "btnIntroduccion"
-    );
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Introducción",
-        "Listo para generar introducción"
-    );
-
-
-    actualizarMonitorBotonera(
-        "Siguiente paso",
-        `
-        📝 Generar introducción del proyecto
-        <br><br>
-        Proyecto:
-        <br>
-        ${proyectoActual.titulo}
-        `
-    );
-
-    return;
-
-}
-// ------------------------------------
-// CAPÍTULOS - PRIMERA ETAPA
-// ------------------------------------
-
-if (
-    proyectoActual.estructura.capitulos === "pendiente"
-) {
-
-    actualizarIndicador(
-        "estadoCapitulos",
-        "azul"
-    );
-
-    botonAzul(
-        "btnCapitulos"
-    );
-
-    habilitarBoton(
-        "btnCapitulos"
-    );
-
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Capítulos",
-        "Listo para generar capítulos"
-    );
-
-    actualizarMonitorBotonera(
-        "Siguiente paso",
-        `
-        📖 Generar capítulos del proyecto
-        <br><br>
-        Proyecto:
-        <br>
-        ${proyectoActual.titulo}
-        `
-    );
-
-    return;
-
-}
-//------------------------------------
-// CARGAR PLAN ANTES DE CAPÍTULOS
-//------------------------------------
-
-const plan = await cargarJSON(
-    `proyectos/${projectIdActual}/plan.json`
-);
-
-
-//------------------------------------
-// CAPÍTULOS EN PRODUCCIÓN
-//------------------------------------
-
-if (
-    proyectoActual.estructura.capitulos === "produccion"
-) {
-
-    actualizarIndicador(
-        "estadoCapitulos",
-        "amarillo"
-    );
-
-    botonAmarillo(
-        "btnCapitulos"
-    );
-
-    habilitarBoton(
-        "btnCapitulos"
-    );
-
-
-    if (
-        !plan ||
-        !plan.capitulos
-    ) {
-
-        monitorPIXELLAB(
-            "Editorial",
-            "error",
-            "Capítulos",
-            "No se recibió el plan"
-        );
-
-        actualizarMonitorBotonera(
-            "Error",
-            `
-            ❌ No se recibió el plan de capítulos
-            `
-        );
-
-        return;
-
-    }
-
-
-    for (
-        const capitulo of plan.capitulos
-    ) {
-
-        if (
-            capitulo.estado !== "creado"
-        ) {
-
-            monitorPIXELLAB(
-                "Editorial",
-                "proceso",
-                "Capítulos",
-                "Capítulos en producción"
-            );
-
-            monitorPIXELLAB(
-                "Editorial",
-                "info",
-                "Próximo capítulo",
-                `${capitulo.numero} - ${capitulo.titulo}`
-            );
-
-            actualizarMonitorBotonera(
-                "Capítulos en producción",
-                `
-                📖 Generando capítulos
-                <br><br>
-                Próximo capítulo:
-                <br>
-                ${capitulo.numero} - ${capitulo.titulo}
-                `
-            );
-
-            if (
-                typeof preguntarSiguienteCapitulo === "function"
-                &&
-                preguntarContinuarCapitulos
-            ) {
-
-                preguntarSiguienteCapitulo();
-
+                    return;
             }
-
-            return;
 
         }
 
-    }
 
-}
-//------------------------------------
-// TODOS LOS CAPÍTULOS TERMINADOS
-//------------------------------------
+        // ==========================
+        // CARGAR VARIABLES GLOBALES
+        // ==========================
 
-if (
-    proyectoActual.estructura.capitulos === "creado"
-) {
+        proyectoActual = proyectoProduccion;
 
-    actualizarIndicador(
-        "estadoCapitulos",
-        "verde"
-    );
+        projectIdActual =
+            proyectoActual.projectId;
 
-    botonVerde(
-        "btnCapitulos"
-    );
 
-    deshabilitarBoton(
-        "btnCapitulos"
-    );
+        let siguientePaso = "proyecto";
 
-    monitorPIXELLAB(
-        "Editorial",
-        "estado",
-        "Capítulos",
-        "Capítulos generados"
-    );
 
-    actualizarMonitorBotonera(
-        "Capítulos completos",
-        `
-        📖 Todos los capítulos fueron generados correctamente
-        <br><br>
-        Proyecto:
-        <br>
-        ${proyectoActual.titulo}
-        `
-    );
+        // ==========================
+        // SWITCH PRINCIPAL
+        // ==========================
 
-}
-// ------------------------------------
-// CONCLUSIÓN
-// ------------------------------------
+        switch (siguientePaso) {
 
-if (
-    proyectoActual.estructura.conclusion === "creado"
-) {
 
-monitorPIXELLAB(
-        "Editorial",
-        "info",
-        "DEBUG Conclusión",
-        "Entró al bloque de conclusión pendiente"
-    );
-    actualizarIndicador(
-        "estadoConclusion",
-        "verde"
-    );
+            case "proyecto":
 
-    botonVerde(
-        "btnConclusion"
-    );
 
-    deshabilitarBoton(
-        "btnConclusion"
-    );
+                actualizarIndicador(
+                    "estadoProyecto",
+                    "verde"
+                );
 
-    monitorPIXELLAB(
-        "Editorial",
-        "ok",
-        "Conclusión",
-        "Conclusión generada correctamente"
-    );
 
-    actualizarMonitorBotonera(
-        "Proceso finalizado",
-        `
-        📘 Conclusión generada correctamente
-        <br><br>
-        Proyecto:
-        <br>
-        ${proyectoActual.titulo}
-        <br><br>
-        ✅ Ebook completo
-        `
-    );
+                botonVerde(
+                    "btnProyecto"
+                );
 
-} else {
 
-    actualizarIndicador(
-        "estadoConclusion",
-        "azul"
-    );
+                deshabilitarBoton(
+                    "btnProyecto"
+                );
 
-    botonAzul(
-        "btnConclusion"
-    );
 
-    habilitarBoton(
-        "btnConclusion"
-    );
+                botonAzul(
+                    "btnPlan"
+                );
 
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Conclusión",
-        "Listo para generar conclusión"
-    );
 
-    actualizarMonitorBotonera(
-        "Siguiente paso",
-        `
-        📘 Generar conclusión del proyecto
-        <br><br>
-        Proyecto:
-        <br>
-        ${proyectoActual.titulo}
-        `
-    );
-    
-    return;
+                habilitarBoton(
+                    "btnPlan"
+                );
 
-} 
-    } // ← ESTA ES LA LLAVE QUE CIERRA EL TRY
 
-    catch (error) {
+                monitorPIXELLAB(
+                    "Editorial",
+                    "estado",
+                    "Proyecto",
+                    "Proyecto encontrado en producción"
+                );
+
+
+                return;
+
+
+
+            default:
+
+                return;
+
+        }
+
+
+    } catch(error) {
+
 
         monitorPIXELLAB(
             "Editorial",
@@ -982,7 +356,6 @@ monitorPIXELLAB(
     }
 
 }
-
 
 
 
