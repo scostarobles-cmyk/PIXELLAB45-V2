@@ -210,9 +210,7 @@ function actualizarMonitorBotonera(
 // Solicita al Worker la búsqueda del proyecto activo
 // en R2 y continúa según el estado del proyecto.
 //=====================================================*/
-//=====================================
-// VERIFICAR PROYECTO
-//=====================================
+
 
 async function verificarProyecto() {
 
@@ -252,63 +250,132 @@ async function verificarProyecto() {
 
 
 
-        //=====================================
-        // NO EXISTE PROYECTO
-        //=====================================
+//=====================================
+// NO EXISTE PROYECTO EN PRODUCCIÓN
+//=====================================
 
-        if(!proyectoProduccion){
-
-
-            proyectoActual = null;
-            projectIdActual = null;
+if(!proyectoProduccion){
 
 
-            restaurarInterfaz();
+    const proyectoFinalizado =
+        datos.ultimoProyectoFinalizado;
 
 
-            actualizarIndicador(
-                "estadoProyecto",
-                "azul"
-            );
+    //=====================================
+    // EXISTE ÚLTIMO EBOOK FINALIZADO
+    //=====================================
 
+    if(proyectoFinalizado){
 
-            botonAzul(
-                "btnProyecto"
-            );
-
-
-            habilitarBoton(
-                "btnProyecto"
-            );
-
-
-            monitorPIXELLAB(
-                "Editorial",
-                "estado",
-                "Proyecto",
-                "No hay proyecto activo"
-            );
-
-
-            return;
-
-        }
-
-
-
-        //=====================================
-        // CARGAR PROYECTO
-        //=====================================
 
         proyectoActual =
-            proyectoProduccion;
+            proyectoFinalizado;
 
 
         projectIdActual =
-            proyectoActual.projectId;
+            proyectoFinalizado.projectId;
+
+
+        restaurarInterfaz();
+
+
+        actualizarIndicador(
+            "estadoProyecto",
+            "verde"
+        );
+
+        actualizarIndicador(
+            "estadoPlan",
+            "verde"
+        );
+
+        actualizarIndicador(
+            "estadoIndice",
+            "verde"
+        );
+
+        actualizarIndicador(
+            "estadoLegales",
+            "verde"
+        );
+
+        actualizarIndicador(
+            "estadoIntro",
+            "verde"
+        );
+
+        actualizarIndicador(
+            "estadoCapitulos",
+            "verde"
+        );
+
+        actualizarIndicador(
+            "estadoConclusion",
+            "verde"
+        );
+
+
+        botonAzul(
+            "btnProyecto"
+        );
+
+        habilitarBoton(
+            "btnProyecto"
+        );
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "finalizado",
+            "eBook",
+            `Último eBook generado: ${proyectoFinalizado.titulo} - ${proyectoFinalizado.fecha}`
+        );
+
+
+        return;
+
+    }
 
 
 
+    //=====================================
+    // NO EXISTE NINGÚN PROYECTO
+    //=====================================
+
+    proyectoActual = null;
+    projectIdActual = null;
+
+
+    restaurarInterfaz();
+
+
+    actualizarIndicador(
+        "estadoProyecto",
+        "azul"
+    );
+
+
+    botonAzul(
+        "btnProyecto"
+    );
+
+
+    habilitarBoton(
+        "btnProyecto"
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Proyecto",
+        "No hay proyecto activo"
+    );
+
+
+    return;
+
+}
         //=====================================
         // DETERMINAR ETAPA
         //=====================================

@@ -1611,7 +1611,7 @@ async function generarConclusion() {
 
          
 
-//await verificarProyecto();
+await verificarProyecto();
 
 
 
