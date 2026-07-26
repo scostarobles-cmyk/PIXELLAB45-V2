@@ -118,11 +118,12 @@ function monitorPIXELLAB(
         destino === "monitorBotonera"
     ){
 
-        if(
-            nivel !== "ok" &&
-            nivel !== "error" &&
-            nivel !== "aviso"
-        ){
+if(
+    nivel !== "ok" &&
+    nivel !== "finalizado" &&
+    nivel !== "error" &&
+    nivel !== "aviso"
+){
             return;
         }
 
