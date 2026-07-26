@@ -100,13 +100,33 @@ function monitorPIXELLAB(
     modulo,
     nivel,
     operacion,
-    mensaje
+    mensaje,
+    destino = "monitorPIXELLAB"
 ){
 
     const monitor =
-        document.getElementById("monitorPIXELLAB");
+        document.getElementById(destino);
 
     if(!monitor) return;
+
+
+    // ==========================
+    // FILTRO PARA BOTONERA
+    // ==========================
+
+    if(
+        destino === "monitorBotonera"
+    ){
+
+        if(
+            nivel !== "ok" &&
+            nivel !== "error" &&
+            nivel !== "aviso"
+        ){
+            return;
+        }
+
+    }
 
 
     const hora =
@@ -170,40 +190,7 @@ function monitorPIXELLAB(
 
 }
 
-function actualizarMonitorBotonera(
-    titulo,
-    mensaje
-){
 
-    const monitor =
-        document.getElementById("monitorBotonera");
-
-    if(!monitor) return;
-
-
-    monitor.innerHTML += `
-
-<div class="monitor-evento">
-
-    <div class="monitor-operacion">
-
-        ${titulo}
-
-    </div>
-
-
-    <div class="monitor-mensaje">
-
-        ${mensaje}
-
-    </div>
-
-
-</div>
-
-`;
-
-}
 //=====================================================
 // FUNCIÓN: verificarProyecto()
 // Descripción:
@@ -220,6 +207,13 @@ async function verificarProyecto() {
         "proceso",
         "Verificación",
         "Buscando proyecto en R2"
+    );
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Verificación",
+        "Buscando proyecto en R2",
+        "monitorBotonera"
     );
 
 
@@ -330,7 +324,14 @@ actualizarIndicador(
             "eBook",
             `Último eBook generado: ${proyectoFinalizado.titulo} - ${proyectoFinalizado.fecha}`
         );
-
+        
+monitorPIXELLAB(
+        "Editorial",
+      "estado",
+       "eBook",
+            `Último eBook generado: ${proyectoFinalizado.titulo} - ${proyectoFinalizado.fecha}`,
+        "monitorBotonera"
+    );
 
         return;
 
@@ -371,7 +372,13 @@ actualizarIndicador(
         "Proyecto",
         "No hay proyecto activo"
     );
-
+monitorPIXELLAB(
+        "Editorial",
+      "estado",
+                 "Proyecto",
+        "No hay proyecto activo",
+        "monitorBotonera"
+    );
 
     return;
 
@@ -608,6 +615,13 @@ case "legales":
         "Legales",
         "Listo para generar legales"
     );
+    monitorPIXELLAB(
+        "Editorial",
+      "estado",
+                    "Legales",
+        "Listo para generar legales",
+        "monitorBotonera"
+    );
 
 
     return;
@@ -675,6 +689,13 @@ actualizarIndicador(
         "Introducción",
         "Lista para generar introducción"
     );
+    monitorPIXELLAB(
+        "Editorial",
+      "estado",
+              "Introducción",
+        "Lista para generar introducción",
+        "monitorBotonera"
+    );
 
     return;
     case "capitulos":
@@ -736,7 +757,13 @@ actualizarIndicador(
             "Capítulos",
             `${capitulosCreados}/${totalCapitulos} capítulos creados`
         );
-
+monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Capítulos",
+        `${capitulosCreados}/${totalCapitulos} capítulos creados`,
+        "monitorBotonera"
+    );
 
     } else {
 
@@ -854,7 +881,13 @@ case "conclusion":
             "Conclusión",
             "eBook terminado correctamente"
         );
-
+          monitorPIXELLAB(
+        "Editorial",
+         "finalizado",
+            "Conclusión",
+            "eBook terminado correctamente",
+        "monitorBotonera"
+    );
 
     } else {
 
@@ -879,6 +912,13 @@ case "conclusion":
             "Conclusión",
             "Lista para generar conclusión"
         );
+        monitorPIXELLAB(
+        "Editorial",
+         "finalizado",
+            "Conclusión",
+     "Lista para generar conclusión",
+        "monitorBotonera"
+    );
 
     }
 
@@ -900,6 +940,13 @@ case "conclusion":
             "Verificación",
             "Estado actualizado correctamente"
         );
+        monitorPIXELLAB(
+        "Editorial",
+      "estado",
+            "Verificación",
+            "Estado actualizado correctamente",
+        "monitorBotonera"
+    );
 
 
     }
@@ -912,6 +959,13 @@ case "conclusion":
             "Verificación",
             error.message
         );
+        monitorPIXELLAB(
+        "Editorial",
+      "error",
+            "Verificación",
+            error.message,
+        "monitorBotonera"
+    );
 
 
     }
