@@ -329,11 +329,15 @@ if (
 ){
     etapaActual = "legales";
 }
+
+
 if (
     proyectoActual.estructura.legales === "creado"
 ){
     etapaActual = "introduccion";
-} 
+}
+
+
 if (
     proyectoActual.estructura.introduccion === "creado"
 ){
@@ -353,6 +357,23 @@ if (projectIdActual) {
         `proyectos/${projectIdActual}/plan.json`;
 
     plan = await cargarJSON(rutaPlan);
+
+}
+
+
+// ==========================
+// TRANSICIÓN CAPÍTULOS → CONCLUSIÓN
+// ==========================
+
+if (
+    etapaActual === "capitulos" &&
+    plan &&
+    plan.capitulos.every(
+        cap => cap.estado === "creado"
+    )
+){
+
+    etapaActual = "conclusion";
 
 }
 
@@ -684,7 +705,67 @@ actualizarIndicador(
 
     return;
     
+case "conclusion":
 
+    // Proyecto
+    actualizarIndicador("estadoProyecto","verde");
+    botonVerde("btnProyecto");
+    deshabilitarBoton("btnProyecto");
+
+
+    // Plan
+    actualizarIndicador("estadoPlan","verde");
+    botonVerde("btnPlan");
+    deshabilitarBoton("btnPlan");
+
+
+    // Índice
+    actualizarIndicador("estadoIndice","verde");
+    botonVerde("btnIndice");
+    deshabilitarBoton("btnIndice");
+
+
+    // Legales
+    actualizarIndicador("estadoLegales","verde");
+    botonVerde("btnLegales");
+    deshabilitarBoton("btnLegales");
+
+
+    // Introducción
+    actualizarIndicador("estadoIntro","verde");
+    botonVerde("btnIntroduccion");
+    deshabilitarBoton("btnIntroduccion");
+
+
+    // Capítulos
+    actualizarIndicador("estadoCapitulos","verde");
+    botonVerde("btnCapitulos");
+    deshabilitarBoton("btnCapitulos");
+
+
+    // Conclusión
+    actualizarIndicador(
+        "estadoConclusion",
+        "azul"
+    );
+
+    botonAzul(
+        "btnConclusion"
+    );
+
+    habilitarBoton(
+        "btnConclusion"
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Conclusión",
+        "Lista para generar conclusión"
+    );
+
+    return;
             default:
 
 
