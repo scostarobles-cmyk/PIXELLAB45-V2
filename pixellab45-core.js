@@ -576,44 +576,102 @@ actualizarIndicador(
     return;
     case "capitulos":
 
-    actualizarIndicador("estadoProyecto","verde");
-    botonVerde("btnProyecto");
-    deshabilitarBoton("btnProyecto");
+    // ==========================
+// VERIFICAR CAPÍTULOS DESDE PLAN.JSON
+// ==========================
+
+const rutaPlan =
+    `proyectos/${projectIdActual}/plan.json`;
+
+const plan =
+    await cargarJSON(rutaPlan);
 
 
-    actualizarIndicador("estadoPlan","verde");
-    botonVerde("btnPlan");
-    deshabilitarBoton("btnPlan");
+const totalCapitulos =
+    plan.capitulos.length;
 
 
-    actualizarIndicador("estadoIndice","verde");
-    botonVerde("btnIndice");
-    deshabilitarBoton("btnIndice");
+const capitulosCreados =
+    plan.capitulos.filter(
+        cap => cap.estado === "creado"
+    ).length;
 
 
-    actualizarIndicador("estadoLegales","verde");
-    botonVerde("btnLegales");
-    deshabilitarBoton("btnLegales");
+// ==========================
+// CAPÍTULOS EN PROCESO
+// ==========================
 
+if (
+    capitulosCreados < totalCapitulos
+) {
 
-    actualizarIndicador("estadoIntro","verde");
-    botonVerde("btnIntroduccion");
-    deshabilitarBoton("btnIntroduccion");
+    actualizarIndicador(
+        "estadoCapitulos",
+        "amarillo"
+    );
 
+    botonAmarillo(
+        "btnCapitulos"
+    );
 
-    actualizarIndicador("estadoCapitulos","azul");
-    botonAzul("btnCapitulos");
-    habilitarBoton("btnCapitulos");
+    habilitarBoton(
+        "btnCapitulos"
+    );
 
 
     monitorPIXELLAB(
         "Editorial",
-        "estado",
+        "proceso",
         "Capítulos",
-        "Listo para generar capítulos"
+        `${capitulosCreados}/${totalCapitulos} capítulos creados`
     );
 
+
     return;
+
+}
+
+
+// ==========================
+// TODOS LOS CAPÍTULOS TERMINADOS
+// ==========================
+
+actualizarIndicador(
+    "estadoCapitulos",
+    "verde"
+);
+
+botonVerde(
+    "btnCapitulos"
+);
+
+deshabilitarBoton(
+    "btnCapitulos"
+);
+
+
+actualizarIndicador(
+    "estadoConclusion",
+    "azul"
+);
+
+botonAzul(
+    "btnConclusion"
+);
+
+habilitarBoton(
+    "btnConclusion"
+);
+
+
+monitorPIXELLAB(
+    "Editorial",
+    "estado",
+    "Capítulos",
+    "Todos los capítulos generados correctamente"
+);
+
+return;
     
 
             default:
