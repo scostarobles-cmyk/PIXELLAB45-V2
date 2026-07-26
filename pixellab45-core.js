@@ -707,63 +707,114 @@ actualizarIndicador(
     
 case "conclusion":
 
-    // Proyecto
-    actualizarIndicador("estadoProyecto","verde");
+    // ==========================
+    // PIPELINE ANTERIOR
+    // ==========================
+
+    actualizarIndicador(
+        "estadoProyecto",
+        "verde"
+    );
     botonVerde("btnProyecto");
     deshabilitarBoton("btnProyecto");
 
 
-    // Plan
-    actualizarIndicador("estadoPlan","verde");
+    actualizarIndicador(
+        "estadoPlan",
+        "verde"
+    );
     botonVerde("btnPlan");
     deshabilitarBoton("btnPlan");
 
 
-    // Índice
-    actualizarIndicador("estadoIndice","verde");
+    actualizarIndicador(
+        "estadoIndice",
+        "verde"
+    );
     botonVerde("btnIndice");
     deshabilitarBoton("btnIndice");
 
 
-    // Legales
-    actualizarIndicador("estadoLegales","verde");
+    actualizarIndicador(
+        "estadoLegales",
+        "verde"
+    );
     botonVerde("btnLegales");
     deshabilitarBoton("btnLegales");
 
 
-    // Introducción
-    actualizarIndicador("estadoIntro","verde");
+    actualizarIndicador(
+        "estadoIntro",
+        "verde"
+    );
     botonVerde("btnIntroduccion");
     deshabilitarBoton("btnIntroduccion");
 
 
-    // Capítulos
-    actualizarIndicador("estadoCapitulos","verde");
+    actualizarIndicador(
+        "estadoCapitulos",
+        "verde"
+    );
     botonVerde("btnCapitulos");
     deshabilitarBoton("btnCapitulos");
 
 
-    // Conclusión
-    actualizarIndicador(
-        "estadoConclusion",
-        "azul"
-    );
+    // ==========================
+    // CONCLUSIÓN
+    // ==========================
 
-    botonAzul(
-        "btnConclusion"
-    );
+    if (
+        proyectoActual.estructura.conclusion === "creado"
+    ) {
 
-    habilitarBoton(
-        "btnConclusion"
-    );
+        actualizarIndicador(
+            "estadoConclusion",
+            "verde"
+        );
+
+        botonVerde(
+            "btnConclusion"
+        );
+
+        deshabilitarBoton(
+            "btnConclusion"
+        );
 
 
-    monitorPIXELLAB(
-        "Editorial",
-        "estado",
-        "Conclusión",
-        "Lista para generar conclusión"
-    );
+        monitorPIXELLAB(
+            "Editorial",
+            "finalizado",
+            "Conclusión",
+            "eBook terminado correctamente"
+        );
+
+
+    } else {
+
+
+        actualizarIndicador(
+            "estadoConclusion",
+            "azul"
+        );
+
+        botonAzul(
+            "btnConclusion"
+        );
+
+        habilitarBoton(
+            "btnConclusion"
+        );
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Conclusión",
+            "Lista para generar conclusión"
+        );
+
+    }
+
 
     return;
             default:
