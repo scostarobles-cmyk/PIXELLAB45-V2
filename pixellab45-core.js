@@ -314,20 +314,21 @@ async function verificarProyecto() {
         //=====================================
 
 
-        let etapaActual =
-            "proyecto";
+        let etapaActual = "proyecto";
 
 
+if (
+    proyectoActual.estructura.plan === "creado"
+){
+    etapaActual = "indice";
+}
 
-        if(
-            proyectoActual.estructura.plan === "creado"
-        ){
 
-            etapaActual =
-                "plan";
-
-        }
-
+if (
+    proyectoActual.estructura.indice === "creado"
+){
+    etapaActual = "legales";
+}
 
 
         //=====================================
@@ -409,7 +410,25 @@ async function verificarProyecto() {
 
 
                 break;
+case "indice":
 
+    // Proyecto
+    actualizarIndicador("estadoProyecto","verde");
+    botonVerde("btnProyecto");
+
+
+    // Plan
+    actualizarIndicador("estadoPlan","verde");
+    botonVerde("btnPlan");
+
+
+    // Índice pendiente
+    actualizarIndicador("estadoIndice","azul");
+    botonAzul("btnIndice");
+    habilitarBoton("btnIndice");
+
+
+    break;
 
 
             default:
