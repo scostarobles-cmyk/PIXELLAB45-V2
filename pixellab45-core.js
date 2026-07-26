@@ -242,6 +242,8 @@ async function verificarProyecto() {
 
         const proyectoProduccion =
             datos.proyectoProduccion;
+            const proyectoFinalizado =
+    datos.ultimoProyectoFinalizado;
 
 //=====================================
 // CARGAR PROYECTO EN PRODUCCIÓN
