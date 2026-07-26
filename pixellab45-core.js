@@ -114,7 +114,7 @@ function monitorPIXELLAB(
     // FILTRO PARA BOTONERA
     // ==========================
 
-    if(
+/*    if(
         destino === "monitorBotonera"
     ){
 
@@ -127,7 +127,7 @@ if(
             return;
         }
 
-    }
+    }*/
 
 
     const hora =
