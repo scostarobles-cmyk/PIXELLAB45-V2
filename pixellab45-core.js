@@ -1236,6 +1236,12 @@ function resetEditorialCompleto(){
 
         }
     );
+    monitorPIXELLAB(
+    "DEBUG",
+    "ok",
+    "Reset",
+    "Reset terminado"
+);
 
 
 }
