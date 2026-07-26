@@ -9,9 +9,9 @@
 // VARIABLES GLOBALES
 //=====================================================
 
-//let proyectoActual = null;
-//let projectIdActual = null;
-//let plan = null;
+let proyectoActual = null;
+let projectIdActual = null;
+let plan = null;
 
 // Control de generación de capítulos
 
@@ -123,13 +123,6 @@ async function crearProyecto() {
             "Proyecto",
             "Debe ingresar el título del eBook"
         );
-        monitorPIXELLAB(
-        "Editorial",
-                    "error",
-           "Proyecto",
-            "Debe ingresar el título del eBook",
-        "monitorBotonera"
-    );
 
         return;
 
@@ -144,13 +137,6 @@ async function crearProyecto() {
             "Proyecto",
             "Debe ingresar el autor"
         );
-        monitorPIXELLAB(
-        "Editorial",
-                    "error",
-           "Proyecto",
-  "Debe ingresar el autor",
-        "monitorBotonera"
-    );
 
         return;
 
@@ -166,13 +152,6 @@ async function crearProyecto() {
         "proceso",
         "Proyecto",
         "Creando proyecto..."
-    );
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Proyecto",
-        "Creando proyecto...",
-        "monitorBotonera"
     );
 
 
@@ -249,16 +228,12 @@ async function crearProyecto() {
             "Proyecto creado correctamente: " +
             projectId
         );
-monitorPIXELLAB(
-        "Editorial",
-            "ok",
-            "Proyecto",
-            "Proyecto creado correctamente: " +
-            projectId,
-        "monitorBotonera"
-    );
 
-        
+
+        mostrarEstadoEditorial(
+            `Proyecto "${datos.tema}" creado correctamente.`
+        );
+
 
         estado.innerHTML =
             "🟢 Proyecto creado";
@@ -282,16 +257,23 @@ monitorPIXELLAB(
             "Proyecto",
             err.message
         );
-        monitorPIXELLAB(
-        "Editorial",
-            "ok",
-            "Proyecto",
-err.message,
-        "monitorBotonera"
-    );
 
 
-        
+        mostrarEstadoEditorial(
+            err.message,
+            true
+        );
+
+
+        estado.innerHTML = "🔴 Error";
+
+
+        btn.innerHTML = "❌ Error";
+
+
+        btn.disabled = false;
+
+    }
 
 }
 
@@ -307,13 +289,6 @@ async function generarPlan2() {
         "Plan",
         "Iniciando generación de plan"
     );
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Plan",
-        "Iniciando generación de plan",
-        "monitorBotonera"
-    );
 
 
     if (!projectIdActual) {
@@ -323,13 +298,6 @@ async function generarPlan2() {
             "error",
             "Plan",
             "No existe proyecto activo"
-        );
-        monitorPIXELLAB(
-            "Editorial",
-            "error",
-            "Plan",
-            "No existe proyecto activo",
-            "monitorBotonera"
         );
 
         return;
@@ -366,13 +334,6 @@ async function generarPlan2() {
             "Plan",
             "Respuesta recibida del Worker"
         );
-        monitorPIXELLAB(
-            "Editorial",
-            "proceso",
-            "Plan",
-            "Respuesta recibida del Worker",
-            "monitorBotonera"
-        );
 
 
 
@@ -390,13 +351,6 @@ async function generarPlan2() {
                 "Plan",
                 "Error generando plan"
             );
-            monitorPIXELLAB(
-                "Editorial",
-                "error",
-                "Plan",
-                "Error generando plan",
-                "monitorBotonera"
-            );
 
 
             monitorPIXELLAB(
@@ -404,13 +358,6 @@ async function generarPlan2() {
                 "info",
                 "Respuesta Worker",
                 JSON.stringify(datos)
-            );
-            monitorPIXELLAB(
-                "Editorial",
-                "info",
-                "Respuesta Worker",
-                JSON.stringify(datos),
-                "monitorBotonera"
             );
 
 
@@ -430,13 +377,6 @@ async function generarPlan2() {
             "ok",
             "Plan",
             "Plan generado correctamente"
-        );
-        monitorPIXELLAB(
-            "Editorial",
-            "ok",
-            "Plan",
-            "Plan generado correctamente",
-            "monitorBotonera"
         );
 
 
@@ -477,13 +417,6 @@ async function generarPlan2() {
             "Verificación",
             "Actualizando estado del proyecto"
         );
-        monitorPIXELLAB(
-            "Editorial",
-            "proceso",
-            "Verificación",
-            "Actualizando estado del proyecto",
-            "monitorBotonera"
-        );
 
 
         await verificarProyecto();
@@ -503,7 +436,6 @@ async function generarPlan2() {
             "Error comunicando con Worker: " +
             error.message
         );
-        
 
 
     }
