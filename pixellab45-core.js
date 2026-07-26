@@ -243,7 +243,19 @@ async function verificarProyecto() {
         const proyectoProduccion =
             datos.proyectoProduccion;
 
+//=====================================
+// CARGAR PROYECTO EN PRODUCCIÓN
+//=====================================
 
+if(proyectoProduccion){
+
+    proyectoActual =
+        proyectoProduccion;
+
+    projectIdActual =
+        proyectoProduccion.projectId;
+
+}
 
 //=====================================
 // NO EXISTE PROYECTO EN PRODUCCIÓN
@@ -345,12 +357,7 @@ monitorPIXELLAB(
     //=====================================
 
     
-    
-
-
  
-
-
     actualizarIndicador(
         "estadoProyecto",
         "azul"
