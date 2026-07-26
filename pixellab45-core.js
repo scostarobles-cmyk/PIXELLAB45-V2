@@ -259,7 +259,7 @@ if(proyectoProduccion){
 
 }
 
-if(proyectoFinalizado){
+else if(proyectoFinalizado){
 
 
     proyectoActual =
