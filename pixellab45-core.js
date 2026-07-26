@@ -334,6 +334,11 @@ if (
 ){
     etapaActual = "introduccion";
 } 
+if (
+    proyectoActual.estructura.introduccion === "creado"
+){
+    etapaActual = "capitulos";
+}
 
 
         //=====================================
@@ -535,6 +540,43 @@ case "legales":
         "estado",
         "Introducción",
         "Lista para generar introducción"
+    );
+
+    return;
+    case "capitulos":
+
+    // Proyecto
+    actualizarIndicador("estadoProyecto","verde");
+    botonVerde("btnProyecto");
+    deshabilitarBoton("btnProyecto");
+
+    // Plan
+    actualizarIndicador("estadoPlan","verde");
+    botonVerde("btnPlan");
+    deshabilitarBoton("btnPlan");
+
+    // Índice
+    actualizarIndicador("estadoIndice","verde");
+    botonVerde("btnIndice");
+    deshabilitarBoton("btnIndice");
+
+    // Legales
+    botonVerde("btnLegales");
+    deshabilitarBoton("btnLegales");
+
+    // Introducción
+    botonVerde("btnIntroduccion");
+    deshabilitarBoton("btnIntroduccion");
+
+    // Capítulos
+    botonAzul("btnCapitulos");
+    habilitarBoton("btnCapitulos");
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Capítulos",
+        "Listo para generar capítulos"
     );
 
     return;
