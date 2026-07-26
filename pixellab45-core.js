@@ -210,7 +210,12 @@ function actualizarMonitorBotonera(
 // Solicita al Worker la búsqueda del proyecto activo
 // en R2 y continúa según el estado del proyecto.
 //=====================================================*/
+//=====================================
+// VERIFICAR PROYECTO
+//=====================================
+
 async function verificarProyecto() {
+
 
     monitorPIXELLAB(
         "Editorial",
@@ -222,89 +227,114 @@ async function verificarProyecto() {
 
     try {
 
+
         const respuesta = await fetch(
             WORKER_URL,
             {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
                 },
-                body: JSON.stringify({
-                    action: "verificar-proyecto"
+                body:JSON.stringify({
+                    action:"verificar-proyecto"
                 })
             }
         );
 
 
-        const datos = await respuesta.json();
+        const datos =
+            await respuesta.json();
+
 
 
         const proyectoProduccion =
             datos.proyectoProduccion;
 
 
-        // ==========================
-        // NO HAY PROYECTO
-        // ==========================
 
-        if (!proyectoProduccion) {
+        //=====================================
+        // NO EXISTE PROYECTO
+        //=====================================
 
-            switch ("default") {
+        if(!proyectoProduccion){
 
-                default:
 
-                    proyectoActual = null;
-                    projectIdActual = null;
+            proyectoActual = null;
+            projectIdActual = null;
 
-                    actualizarIndicador(
-                        "estadoProyecto",
-                        "azul"
-                    );
 
-                    botonAzul(
-                        "btnProyecto"
-                    );
+            restaurarInterfaz();
 
-                    habilitarBoton(
-                        "btnProyecto"
-                    );
 
-                    return;
-            }
+            actualizarIndicador(
+                "estadoProyecto",
+                "azul"
+            );
+
+
+            botonAzul(
+                "btnProyecto"
+            );
+
+
+            habilitarBoton(
+                "btnProyecto"
+            );
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "estado",
+                "Proyecto",
+                "No hay proyecto activo"
+            );
+
+
+            return;
 
         }
 
 
-// ==========================
-// CARGAR VARIABLES GLOBALES
-// ==========================
 
-proyectoActual = proyectoProduccion;
+        //=====================================
+        // CARGAR PROYECTO
+        //=====================================
 
-projectIdActual =
-    proyectoActual.projectId;
-
-
-// ==========================
-// DETERMINAR ETAPA
-// ==========================
-
-let siguientePaso = "proyecto";
+        proyectoActual =
+            proyectoProduccion;
 
 
-if (
-    proyectoActual.estructura.plan === "creado"
-) {
+        projectIdActual =
+            proyectoActual.projectId;
 
-    siguientePaso = "plan";
 
-}
 
-        // ==========================
-        // SWITCH PRINCIPAL
-        // ==========================
+        //=====================================
+        // DETERMINAR ETAPA
+        //=====================================
 
-        switch (siguientePaso) {
+
+        let etapaActual =
+            "proyecto";
+
+
+
+        if(
+            proyectoActual.estructura.plan === "creado"
+        ){
+
+            etapaActual =
+                "plan";
+
+        }
+
+
+
+        //=====================================
+        // SWITCH DE ETAPA
+        //=====================================
+
+        switch(etapaActual){
 
 
             case "proyecto":
@@ -321,11 +351,6 @@ if (
                 );
 
 
-                deshabilitarBoton(
-                    "btnProyecto"
-                );
-
-
                 botonAzul(
                     "btnPlan"
                 );
@@ -336,111 +361,77 @@ if (
                 );
 
 
-                monitorPIXELLAB(
-                    "Editorial",
-                    "estado",
-                    "Proyecto",
-                    "Proyecto encontrado en producción"
+                break;
+
+
+
+            case "plan":
+
+
+                actualizarIndicador(
+                    "estadoProyecto",
+                    "verde"
                 );
 
 
-                return;
-
-case "plan":
-
-    // ==========================
-    // PLAN CREADO
-    // ==========================
-    monitorPIXELLAB(
-    "Editorial",
-    "debug",
-    "Estado Plan",
-    proyectoActual.estructura.plan
-);
-
-    if (
-        proyectoActual.estructura.plan === "creado"
-    ) {
-
-        actualizarIndicador(
-            "estadoPlan",
-            "verde"
-        );
-
-        botonVerde(
-            "btnPlan"
-        );
-
-        deshabilitarBoton(
-            "btnPlan"
-        );
+                botonVerde(
+                    "btnProyecto"
+                );
 
 
-        actualizarIndicador(
-            "estadoIndice",
-            "azul"
-        );
 
-        botonAzul(
-            "btnIndice"
-        );
+                actualizarIndicador(
+                    "estadoPlan",
+                    "verde"
+                );
 
-        habilitarBoton(
-            "btnIndice"
-        );
+
+                botonVerde(
+                    "btnPlan"
+                );
+
+
+
+                actualizarIndicador(
+                    "estadoIndice",
+                    "azul"
+                );
+
+
+                botonAzul(
+                    "btnIndice"
+                );
+
+
+                habilitarBoton(
+                    "btnIndice"
+                );
+
+
+                break;
+
+
+
+            default:
+
+
+                break;
+
+
+        }
+
 
 
         monitorPIXELLAB(
             "Editorial",
             "estado",
-            "Plan",
-            "Plan generado correctamente"
+            "Verificación",
+            "Estado actualizado correctamente"
         );
 
 
-        return;
-
     }
-
-
-    // ==========================
-    // PLAN PENDIENTE
-    // ==========================
-
-    actualizarIndicador(
-        "estadoPlan",
-        "azul"
-    );
-
-    botonAzul(
-        "btnPlan"
-    );
-
-    habilitarBoton(
-        "btnPlan"
-    );
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Plan",
-        "Listo para generar plan"
-    );
-
-
-    return;
-    
-    
-
-            default:
-
-                return;
-
-        }
-
-
-    } catch(error) {
+    catch(error){
 
 
         monitorPIXELLAB(
@@ -450,7 +441,9 @@ case "plan":
             error.message
         );
 
+
     }
+
 
 }
 
