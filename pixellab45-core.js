@@ -465,44 +465,32 @@ case "indice":
     break;
 case "legales":
 
+    actualizarIndicador("estadoProyecto","verde");
+    botonVerde("btnProyecto");
+
+
+    actualizarIndicador("estadoPlan","verde");
+    botonVerde("btnPlan");
+
+
+    actualizarIndicador("estadoIndice","verde");
+    botonVerde("btnIndice");
+
+
+    botonAzul(
+        "btnLegales"
+    );
+
+    habilitarBoton(
+        "btnLegales"
+    );
+
+
     monitorPIXELLAB(
         "Editorial",
         "estado",
         "Legales",
-        "Entró al case legales"
-    );
-
-
-    actualizarIndicador(
-        "estadoProyecto",
-        "verde"
-    );
-
-
-    botonVerde(
-        "btnProyecto"
-    );
-
-
-    actualizarIndicador(
-        "estadoPlan",
-        "verde"
-    );
-
-
-    botonVerde(
-        "btnPlan"
-    );
-
-
-    actualizarIndicador(
-        "estadoIndice",
-        "verde"
-    );
-
-
-    botonVerde(
-        "btnIndice"
+        "Listo para generar legales"
     );
 
 
