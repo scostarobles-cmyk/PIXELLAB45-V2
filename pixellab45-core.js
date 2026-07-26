@@ -487,6 +487,9 @@ case "legales":
     botonVerde("btnIndice");
 
 
+    actualizarIndicador("estadoLegales","azul");
+
+
     botonAzul(
         "btnLegales"
     );
