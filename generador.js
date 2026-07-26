@@ -1615,7 +1615,7 @@ async function generarConclusion() {
 
 
          
-
+restaurarInterfaz();
 await verificarProyecto();
 
 monitorPIXELLAB(
