@@ -341,6 +341,21 @@ if (
 }
 
 
+// ==========================
+// CARGAS PREVIAS DEL VERIFICADOR
+// ==========================
+
+let plan = null;
+
+if (projectIdActual) {
+
+    const rutaPlan =
+        `proyectos/${projectIdActual}/plan.json`;
+
+    plan = await cargarJSON(rutaPlan);
+
+}
+
         //=====================================
         // SWITCH DE ETAPA
         //=====================================
@@ -576,102 +591,98 @@ actualizarIndicador(
     return;
     case "capitulos":
 
-    // ==========================
-// VERIFICAR CAPÍTULOS DESDE PLAN.JSON
-// ==========================
-
-const rutaPlan =
-    `proyectos/${projectIdActual}/plan.json`;
-
-const plan =
-    await cargarJSON(rutaPlan);
+    actualizarIndicador("estadoProyecto","verde");
+    botonVerde("btnProyecto");
+    deshabilitarBoton("btnProyecto");
 
 
-const totalCapitulos =
-    plan.capitulos.length;
+    actualizarIndicador("estadoPlan","verde");
+    botonVerde("btnPlan");
+    deshabilitarBoton("btnPlan");
 
 
-const capitulosCreados =
-    plan.capitulos.filter(
-        cap => cap.estado === "creado"
-    ).length;
+    actualizarIndicador("estadoIndice","verde");
+    botonVerde("btnIndice");
+    deshabilitarBoton("btnIndice");
 
 
-// ==========================
-// CAPÍTULOS EN PROCESO
-// ==========================
-
-if (
-    capitulosCreados < totalCapitulos
-) {
-
-    actualizarIndicador(
-        "estadoCapitulos",
-        "amarillo"
-    );
-
-    botonAmarillo(
-        "btnCapitulos"
-    );
-
-    habilitarBoton(
-        "btnCapitulos"
-    );
+    actualizarIndicador("estadoLegales","verde");
+    botonVerde("btnLegales");
+    deshabilitarBoton("btnLegales");
 
 
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Capítulos",
-        `${capitulosCreados}/${totalCapitulos} capítulos creados`
-    );
+    actualizarIndicador("estadoIntro","verde");
+    botonVerde("btnIntroduccion");
+    deshabilitarBoton("btnIntroduccion");
+
+
+    const totalCapitulos =
+        plan.capitulos.length;
+
+
+    const capitulosCreados =
+        plan.capitulos.filter(
+            cap => cap.estado === "creado"
+        ).length;
+
+
+    if (capitulosCreados < totalCapitulos) {
+
+        actualizarIndicador(
+            "estadoCapitulos",
+            "amarillo"
+        );
+
+        botonAmarillo(
+            "btnCapitulos"
+        );
+
+        habilitarBoton(
+            "btnCapitulos"
+        );
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Capítulos",
+            `${capitulosCreados}/${totalCapitulos} capítulos creados`
+        );
+
+
+    } else {
+
+        actualizarIndicador(
+            "estadoCapitulos",
+            "verde"
+        );
+
+        botonVerde(
+            "btnCapitulos"
+        );
+
+        deshabilitarBoton(
+            "btnCapitulos"
+        );
+
+
+        actualizarIndicador(
+            "estadoConclusion",
+            "azul"
+        );
+
+        botonAzul(
+            "btnConclusion"
+        );
+
+        habilitarBoton(
+            "btnConclusion"
+        );
+
+    }
 
 
     return;
-
-}
-
-
-// ==========================
-// TODOS LOS CAPÍTULOS TERMINADOS
-// ==========================
-
-actualizarIndicador(
-    "estadoCapitulos",
-    "verde"
-);
-
-botonVerde(
-    "btnCapitulos"
-);
-
-deshabilitarBoton(
-    "btnCapitulos"
-);
-
-
-actualizarIndicador(
-    "estadoConclusion",
-    "azul"
-);
-
-botonAzul(
-    "btnConclusion"
-);
-
-habilitarBoton(
-    "btnConclusion"
-);
-
-
-monitorPIXELLAB(
-    "Editorial",
-    "estado",
-    "Capítulos",
-    "Todos los capítulos generados correctamente"
-);
-
-return;
     
 
             default:
