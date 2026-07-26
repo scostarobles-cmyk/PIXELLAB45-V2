@@ -444,12 +444,7 @@ case "indice":
 
 
     } else {
-monitorPIXELLAB(
-        "Editorial",
-        "estado",
-        "Indice",
-        "Entra en el else"
-    );
+
 
         actualizarIndicador(
             "estadoIndice",
@@ -474,8 +469,42 @@ case "legales":
         "Editorial",
         "estado",
         "Legales",
-        "Etapa detectada correctamente. Pendiente de implementación."
+        "Entró al case legales"
     );
+
+
+    actualizarIndicador(
+        "estadoProyecto",
+        "verde"
+    );
+
+
+    botonVerde(
+        "btnProyecto"
+    );
+
+
+    actualizarIndicador(
+        "estadoPlan",
+        "verde"
+    );
+
+
+    botonVerde(
+        "btnPlan"
+    );
+
+
+    actualizarIndicador(
+        "estadoIndice",
+        "verde"
+    );
+
+
+    botonVerde(
+        "btnIndice"
+    );
+
 
     return;
 
