@@ -415,21 +415,64 @@ case "indice":
     // Proyecto
     actualizarIndicador("estadoProyecto","verde");
     botonVerde("btnProyecto");
+    deshabilitarBoton("btnProyecto");
 
 
     // Plan
     actualizarIndicador("estadoPlan","verde");
     botonVerde("btnPlan");
+    deshabilitarBoton("btnPlan");
 
 
-    // Índice pendiente
-    actualizarIndicador("estadoIndice","azul");
-    botonAzul("btnIndice");
-    habilitarBoton("btnIndice");
+    // Índice
+    if (
+        proyectoActual.estructura.indice === "creado"
+    ) {
+
+        actualizarIndicador(
+            "estadoIndice",
+            "verde"
+        );
+
+        botonVerde(
+            "btnIndice"
+        );
+
+        deshabilitarBoton(
+            "btnIndice"
+        );
+
+
+    } else {
+
+
+        actualizarIndicador(
+            "estadoIndice",
+            "azul"
+        );
+
+        botonAzul(
+            "btnIndice"
+        );
+
+        habilitarBoton(
+            "btnIndice"
+        );
+
+    }
 
 
     break;
+case "legales":
 
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Legales",
+        "Etapa detectada correctamente. Pendiente de implementación."
+    );
+
+    return;
 
             default:
 
