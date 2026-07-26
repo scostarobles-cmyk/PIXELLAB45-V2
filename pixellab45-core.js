@@ -257,136 +257,36 @@ if(proyectoProduccion){
 
 }
 
-//=====================================
-// NO EXISTE PROYECTO EN PRODUCCIÓN
-//=====================================
-
-if(!proyectoProduccion){
+if(proyectoFinalizado){
 
 
-    const proyectoFinalizado =
-        datos.ultimoProyectoFinalizado;
+    proyectoActual =
+        proyectoFinalizado;
 
 
-    //=====================================
-    // EXISTE ÚLTIMO EBOOK FINALIZADO
-    //=====================================
-
-    if(proyectoFinalizado){
+    projectIdActual =
+        proyectoFinalizado.projectId;
 
 
-        proyectoActual =
-            proyectoFinalizado;
+    resetEditorialCompleto();
 
 
-        projectIdActual =
-            proyectoFinalizado.projectId;
-
-
-        
-
-
-        actualizarIndicador(
-    "estadoProyecto",
-    "azul"
-);
-
-actualizarIndicador(
-    "estadoPlan",
-    "blanco"
-);
-
-actualizarIndicador(
-    "estadoIndice",
-    "blanco"
-);
-
-actualizarIndicador(
-    "estadoLegales",
-    "blanco"
-);
-
-actualizarIndicador(
-    "estadoIntro",
-    "blanco"
-);
-
-actualizarIndicador(
-    "estadoCapitulos",
-    "blanco"
-);
-
-actualizarIndicador(
-    "estadoConclusion",
-    "blanco"
-);
-
-
-        botonAzul(
-            "btnProyecto"
-        );
-
-        habilitarBoton(
-            "btnProyecto"
-        );
-
-
-        monitorPIXELLAB(
-            "Editorial",
-            "finalizado",
-            "eBook",
-            `Último eBook generado: ${proyectoFinalizado.titulo} - ${proyectoFinalizado.fecha}`
-        );
-        
-monitorPIXELLAB(
+    monitorPIXELLAB(
         "Editorial",
-      "estado",
-       "eBook",
-            `Último eBook generado: ${proyectoFinalizado.titulo} - ${proyectoFinalizado.fecha}`,
-        "monitorBotonera"
-    );
-
-        return;
-
-    }
-
-
-
-    //=====================================
-    // NO EXISTE NINGÚN PROYECTO
-    //=====================================
-
-    
- 
-    actualizarIndicador(
-        "estadoProyecto",
-        "azul"
-    );
-
-
-    botonAzul(
-        "btnProyecto"
-    );
-
-
-    habilitarBoton(
-        "btnProyecto"
+        "finalizado",
+        "eBook",
+        `Último eBook generado: ${proyectoFinalizado.titulo} - ${proyectoFinalizado.fecha}`
     );
 
 
     monitorPIXELLAB(
         "Editorial",
         "estado",
-        "Proyecto",
-        "No hay proyecto activo"
-    );
-monitorPIXELLAB(
-        "Editorial",
-      "estado",
-                 "Proyecto",
-        "No hay proyecto activo",
+        "eBook",
+        `Último eBook generado: ${proyectoFinalizado.titulo} - ${proyectoFinalizado.fecha}`,
         "monitorBotonera"
     );
+
 
     return;
 
@@ -554,13 +454,7 @@ case "indice":
     actualizarIndicador("estadoPlan","verde");
     botonVerde("btnPlan");
     deshabilitarBoton("btnPlan");
-monitorPIXELLAB(
-    "DEBUG",
-    "ok",
-    "Plan",
-    "btnPlan deshabilitado",
-    "monitorBotonera'"
-);
+
 
     // Índice
     if (
@@ -1250,5 +1144,96 @@ function actualizarIndicador(id, estado = "verde") {
 
     indicador.textContent =
         circulo + " " + (nombres[id] || id);
+
+}
+//=====================================
+// RESET COMPLETO EDITORIAL
+// Deja la botonera lista para nuevo proyecto
+//=====================================
+
+function resetEditorialCompleto(){
+
+
+    //==============================
+    // PIPELINE
+    //==============================
+
+    actualizarIndicador(
+        "estadoProyecto",
+        "azul"
+    );
+
+    actualizarIndicador(
+        "estadoPlan",
+        "blanco"
+    );
+
+    actualizarIndicador(
+        "estadoIndice",
+        "blanco"
+    );
+
+    actualizarIndicador(
+        "estadoLegales",
+        "blanco"
+    );
+
+    actualizarIndicador(
+        "estadoIntro",
+        "blanco"
+    );
+
+    actualizarIndicador(
+        "estadoCapitulos",
+        "blanco"
+    );
+
+    actualizarIndicador(
+        "estadoConclusion",
+        "blanco"
+    );
+
+
+
+    //==============================
+    // BOTON PROYECTO
+    //==============================
+
+    botonAzul(
+        "btnProyecto"
+    );
+
+    habilitarBoton(
+        "btnProyecto"
+    );
+
+
+
+    //==============================
+    // RESTO DE BOTONES
+    //==============================
+
+    const botones = [
+
+        "btnPlan",
+        "btnIndice",
+        "btnLegales",
+        "btnIntroduccion",
+        "btnCapitulos",
+        "btnConclusion"
+
+    ];
+
+
+    botones.forEach(
+        id => {
+
+            botonNormal(id);
+
+            deshabilitarBoton(id);
+
+        }
+    );
+
 
 }
