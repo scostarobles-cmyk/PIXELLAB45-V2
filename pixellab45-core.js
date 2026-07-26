@@ -280,39 +280,39 @@ if(!proyectoProduccion){
 
 
         actualizarIndicador(
-            "estadoProyecto",
-            "verde"
-        );
+    "estadoProyecto",
+    "azul"
+);
 
-        actualizarIndicador(
-            "estadoPlan",
-            "verde"
-        );
+actualizarIndicador(
+    "estadoPlan",
+    "blanco"
+);
 
-        actualizarIndicador(
-            "estadoIndice",
-            "verde"
-        );
+actualizarIndicador(
+    "estadoIndice",
+    "blanco"
+);
 
-        actualizarIndicador(
-            "estadoLegales",
-            "verde"
-        );
+actualizarIndicador(
+    "estadoLegales",
+    "blanco"
+);
 
-        actualizarIndicador(
-            "estadoIntro",
-            "verde"
-        );
+actualizarIndicador(
+    "estadoIntro",
+    "blanco"
+);
 
-        actualizarIndicador(
-            "estadoCapitulos",
-            "verde"
-        );
+actualizarIndicador(
+    "estadoCapitulos",
+    "blanco"
+);
 
-        actualizarIndicador(
-            "estadoConclusion",
-            "verde"
-        );
+actualizarIndicador(
+    "estadoConclusion",
+    "blanco"
+);
 
 
         botonAzul(
