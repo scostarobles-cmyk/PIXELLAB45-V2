@@ -344,8 +344,8 @@ monitorPIXELLAB(
     // NO EXISTE NINGÚN PROYECTO
     //=====================================
 
-    proyectoActual = null;
-    projectIdActual = null;
+    
+    
 
 
  
