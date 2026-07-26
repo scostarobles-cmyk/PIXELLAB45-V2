@@ -433,7 +433,7 @@ if (
 
 let plan = null;
 
-if (projectIdActual) {
+if (etapaActual === "capitulos") {
 
     const rutaPlan =
         `proyectos/${projectIdActual}/plan.json`;
