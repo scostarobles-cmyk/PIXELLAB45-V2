@@ -1618,7 +1618,12 @@ async function generarConclusion() {
 
 await verificarProyecto();
 
-
+monitorPIXELLAB(
+    "DEBUG",
+    "ok",
+    "Flujo",
+    "Después de verificar"
+);
 
     } catch(error) {
 
