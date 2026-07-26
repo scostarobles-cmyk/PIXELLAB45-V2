@@ -506,6 +506,34 @@ case "legales":
 
     return;
     case "introduccion":
+    // ==========================
+// PIPELINE
+// ==========================
+
+actualizarIndicador(
+    "estadoProyecto",
+    "verde"
+);
+
+actualizarIndicador(
+    "estadoPlan",
+    "verde"
+);
+
+actualizarIndicador(
+    "estadoIndice",
+    "verde"
+);
+
+actualizarIndicador(
+    "estadoLegales",
+    "verde"
+);
+
+actualizarIndicador(
+    "estadoIntroduccion",
+    "azul"
+);
 
     // Proyecto
     actualizarIndicador("estadoProyecto","verde");
