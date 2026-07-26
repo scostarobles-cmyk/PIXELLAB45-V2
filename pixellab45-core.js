@@ -275,18 +275,30 @@ async function verificarProyecto() {
         }
 
 
-        // ==========================
-        // CARGAR VARIABLES GLOBALES
-        // ==========================
+// ==========================
+// CARGAR VARIABLES GLOBALES
+// ==========================
 
-        proyectoActual = proyectoProduccion;
+proyectoActual = proyectoProduccion;
 
-        projectIdActual =
-            proyectoActual.projectId;
+projectIdActual =
+    proyectoActual.projectId;
 
 
-        let siguientePaso = "plan";
+// ==========================
+// DETERMINAR ETAPA
+// ==========================
 
+let siguientePaso = "proyecto";
+
+
+if (
+    proyectoActual.estructura.plan === "creado"
+) {
+
+    siguientePaso = "plan";
+
+}
 
         // ==========================
         // SWITCH PRINCIPAL
