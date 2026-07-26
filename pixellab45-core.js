@@ -473,6 +473,10 @@ if (
                     "estadoProyecto",
                     "verde"
                 );
+                actualizarIndicador(
+                    "estadoPlan",
+                    "azul"
+                );
 
 
                 botonVerde(
