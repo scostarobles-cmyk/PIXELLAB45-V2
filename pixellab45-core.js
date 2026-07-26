@@ -531,7 +531,7 @@ actualizarIndicador(
 );
 
 actualizarIndicador(
-    "estadoIntroduccion",
+    "estadoIntro",
     "azul"
 );
 
