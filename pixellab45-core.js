@@ -285,7 +285,7 @@ async function verificarProyecto() {
             proyectoActual.projectId;
 
 
-        let siguientePaso = "proyecto";
+        let siguientePaso = "plan";
 
 
         // ==========================
