@@ -329,6 +329,11 @@ if (
 ){
     etapaActual = "legales";
 }
+if (
+    proyectoActual.estructura.legales === "creado"
+){
+    etapaActual = "introduccion";
+} te
 
 
         //=====================================
@@ -497,19 +502,33 @@ case "legales":
     return;
     case "introduccion":
 
+    // Proyecto
     actualizarIndicador("estadoProyecto","verde");
     botonVerde("btnProyecto");
+    deshabilitarBoton("btnProyecto");
 
+
+    // Plan
     actualizarIndicador("estadoPlan","verde");
     botonVerde("btnPlan");
+    deshabilitarBoton("btnPlan");
 
+
+    // Índice
     actualizarIndicador("estadoIndice","verde");
     botonVerde("btnIndice");
+    deshabilitarBoton("btnIndice");
 
+
+    // Legales
     botonVerde("btnLegales");
+    deshabilitarBoton("btnLegales");
 
+
+    // Introducción
     botonAzul("btnIntroduccion");
     habilitarBoton("btnIntroduccion");
+
 
     monitorPIXELLAB(
         "Editorial",
