@@ -554,7 +554,13 @@ case "indice":
     actualizarIndicador("estadoPlan","verde");
     botonVerde("btnPlan");
     deshabilitarBoton("btnPlan");
-
+monitorPIXELLAB(
+    "DEBUG",
+    "ok",
+    "Plan",
+    "btnPlan deshabilitado",
+    "monitorBotonera'"
+);
 
     // Índice
     if (
