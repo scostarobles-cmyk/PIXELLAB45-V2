@@ -123,6 +123,13 @@ async function crearProyecto() {
             "Proyecto",
             "Debe ingresar el título del eBook"
         );
+        monitorPIXELLAB(
+        "Editorial",
+                    "error",
+           "Proyecto",
+            "Debe ingresar el título del eBook",
+        "monitorBotonera"
+    );
 
         return;
 
@@ -137,6 +144,13 @@ async function crearProyecto() {
             "Proyecto",
             "Debe ingresar el autor"
         );
+        monitorPIXELLAB(
+        "Editorial",
+                    "error",
+           "Proyecto",
+  "Debe ingresar el autor",
+        "monitorBotonera"
+    );
 
         return;
 
@@ -152,6 +166,13 @@ async function crearProyecto() {
         "proceso",
         "Proyecto",
         "Creando proyecto..."
+    );
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Proyecto",
+        "Creando proyecto...",
+        "monitorBotonera"
     );
 
 
@@ -228,7 +249,14 @@ async function crearProyecto() {
             "Proyecto creado correctamente: " +
             projectId
         );
-
+monitorPIXELLAB(
+        "Editorial",
+            "ok",
+            "Proyecto",
+            "Proyecto creado correctamente: " +
+            projectId,
+        "monitorBotonera"
+    );
 
         mostrarEstadoEditorial(
             `Proyecto "${datos.tema}" creado correctamente.`
@@ -257,6 +285,13 @@ async function crearProyecto() {
             "Proyecto",
             err.message
         );
+        monitorPIXELLAB(
+        "Editorial",
+            "ok",
+            "Proyecto",
+err.message,
+        "monitorBotonera"
+    );
 
 
         mostrarEstadoEditorial(
