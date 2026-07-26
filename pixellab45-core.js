@@ -271,7 +271,7 @@ if(!proyectoProduccion){
             proyectoFinalizado.projectId;
 
 
-        restaurarInterfaz();
+        
 
 
         actualizarIndicador(
@@ -348,7 +348,7 @@ monitorPIXELLAB(
     projectIdActual = null;
 
 
-    restaurarInterfaz();
+ 
 
 
     actualizarIndicador(
