@@ -495,6 +495,30 @@ case "legales":
 
 
     return;
+    case "introduccion":
+
+    actualizarIndicador("estadoProyecto","verde");
+    botonVerde("btnProyecto");
+
+    actualizarIndicador("estadoPlan","verde");
+    botonVerde("btnPlan");
+
+    actualizarIndicador("estadoIndice","verde");
+    botonVerde("btnIndice");
+
+    botonVerde("btnLegales");
+
+    botonAzul("btnIntroduccion");
+    habilitarBoton("btnIntroduccion");
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Introducción",
+        "Lista para generar introducción"
+    );
+
+    return;
 
             default:
 
