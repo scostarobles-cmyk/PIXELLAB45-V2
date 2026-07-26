@@ -333,7 +333,7 @@ if (
     proyectoActual.estructura.legales === "creado"
 ){
     etapaActual = "introduccion";
-} te
+} 
 
 
         //=====================================
