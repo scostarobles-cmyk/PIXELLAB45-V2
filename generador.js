@@ -9,9 +9,9 @@
 // VARIABLES GLOBALES
 //=====================================================
 
-let proyectoActual = null;
-let projectIdActual = null;
-let plan = null;
+//let proyectoActual = null;
+//let projectIdActual = null;
+//let plan = null;
 
 // Control de generación de capítulos
 
