@@ -444,7 +444,12 @@ case "indice":
 
 
     } else {
-
+monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Indice",
+        "Entra en el else"
+    );
 
         actualizarIndicador(
             "estadoIndice",
