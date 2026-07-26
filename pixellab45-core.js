@@ -576,32 +576,35 @@ actualizarIndicador(
     return;
     case "capitulos":
 
-    // Proyecto
     actualizarIndicador("estadoProyecto","verde");
     botonVerde("btnProyecto");
     deshabilitarBoton("btnProyecto");
 
-    // Plan
+
     actualizarIndicador("estadoPlan","verde");
     botonVerde("btnPlan");
     deshabilitarBoton("btnPlan");
 
-    // Índice
+
     actualizarIndicador("estadoIndice","verde");
     botonVerde("btnIndice");
     deshabilitarBoton("btnIndice");
 
-    // Legales
+
+    actualizarIndicador("estadoLegales","verde");
     botonVerde("btnLegales");
     deshabilitarBoton("btnLegales");
 
-    // Introducción
+
+    actualizarIndicador("estadoIntro","verde");
     botonVerde("btnIntroduccion");
     deshabilitarBoton("btnIntroduccion");
 
-    // Capítulos
+
+    actualizarIndicador("estadoCapitulos","azul");
     botonAzul("btnCapitulos");
     habilitarBoton("btnCapitulos");
+
 
     monitorPIXELLAB(
         "Editorial",
@@ -611,6 +614,7 @@ actualizarIndicador(
     );
 
     return;
+    
 
             default:
 
