@@ -4,7 +4,12 @@
    BLOQUE 1
    Variables globales y utilidades
 ========================================================== */
-
+monitorPIXELLAB(
+    "CORE",
+    "info",
+    "Carga",
+    "generador.js ejecutándose"
+);
 //=====================================================
 // VARIABLES GLOBALES
 //=====================================================
