@@ -503,14 +503,7 @@ async function generarPlan2() {
             "Error comunicando con Worker: " +
             error.message
         );
-        monitorPIXELLAB(
-            "Editorial",
-            "error",
-            "Plan",
-            "Error comunicando con Worker: " +
-            error.message,
-            "monitorBotonera"
-        );
+        
 
 
     }
