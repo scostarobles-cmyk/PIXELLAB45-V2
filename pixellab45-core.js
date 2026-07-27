@@ -49,7 +49,7 @@ window.addEventListener(
 
         await verificarProyecto();
         await cargarBibliotecaEditorial();
-      await   iniciarCargaEditorial()?
+      
 
     }
 )
