@@ -8,7 +8,7 @@ async function cargarGaleriaEditorial() {
     );
     
 
-    try {
+/*    try {
 
 
         monitorPIXELLAB(
@@ -88,7 +88,7 @@ async function cargarGaleriaEditorial() {
 
         console.error(error);
 
-    }
+    }*/
 
 }
 let bibliotecaEditorial = [];
