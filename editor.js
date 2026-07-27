@@ -5,7 +5,7 @@ monitorPIXELLAB(
     "editor.js cargado",
     "monitorEditor"
 );
-let bibliotecaEditorial = [];
+//let bibliotecaEditorial = [];
 
 async function cargarGaleriaEditorial() {
 	monitorPIXELLAB(
