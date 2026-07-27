@@ -239,134 +239,48 @@
 
 .editorial-card {
 
-    flex: 0 0 220px;
-
-    background: #0b101a;
-
-    border-radius: 12px;
-
-    overflow: hidden;
+    flex: 0 0 150px;
 
 }
-
 
 
 /* PORTADA */
 
 .editorial-cover {
 
-    width: 100%;
-
-    height: 300px;
-
-    overflow: hidden;
+    height: 210px;
 
 }
-
-
-
-.editorial-cover img {
-
-    width: 100%;
-
-    height: 100%;
-
-    object-fit: cover;
-
-}
-
 
 
 /* INFORMACIÓN */
 
 .editorial-info {
 
-    padding: 12px;
+    padding: 8px;
 
 }
 
 
 .editorial-info h3 {
 
-    font-size: 16px;
-
-    margin: 0 0 8px 0;
+    font-size: 13px;
 
 }
 
 
 .editorial-info p {
 
-    font-size: 13px;
+    font-size: 11px;
 
 }
 
 
 .editorial-info span {
 
-    font-size: 12px;
+    font-size: 10px;
 
 }
-
-
-
-.portada-editorial{
-
-    width:100%;
-
-    height:100%;
-
-    object-fit:cover;
-
-    display:block;
-
-}
-
-
-
-.editorial-info{
-
-    padding:20px;
-
-    text-align:center;
-
-}
-
-
-.editorial-info h3{
-
-    color:#00d9ff;
-
-    font-size:22px;
-
-    margin-bottom:10px;
-
-}
-
-
-.editorial-info p{
-
-    color:white;
-
-    font-size:15px;
-
-}
-
-
-.editorial-info span{
-
-    display:block;
-
-    color:#00d9ff;
-
-    margin:15px 0;
-
-    font-size:13px;
-
-    letter-spacing:1px;
-
-}
-
 
 
 /* ===========================
