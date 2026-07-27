@@ -40,3 +40,25 @@
     overflow: hidden;
 
 }
+.editorial-cover {
+
+    width: 160px;
+    height: 220px;
+
+    overflow: hidden;
+
+    margin: 0 auto;
+
+}
+
+
+.portada-editorial {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+
+    display: block;
+
+}
