@@ -1,4 +1,8 @@
 #editorial {
+    border: 3px solid red;
+    padding: 20px;
+}
+#editorial {
     width: 100%;
 }
 .editorial-title {
@@ -10,4 +14,17 @@
     grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: 20px;
     padding: 20px;
+}
+.editorial-card {
+
+}
+.editorial-cover {
+
+}
+
+.portada-editorial {
+
+}
+#monitorEditor {
+
 }
