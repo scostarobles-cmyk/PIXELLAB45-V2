@@ -70,8 +70,14 @@ monitorPIXELLAB(
     "Después de verificarProyecto",
     "monitorEditor"
 );
-
-await cargarGaleriaEditorial2();
+monitorPIXELLAB(
+    "Editorial",
+    "debug",
+    "Core",
+    "cargarGaleriaEditorial = " + cargarGaleriaEditorial,
+    "monitorEditor"
+);
+await cargarGaleriaEditorial();
         
       
 

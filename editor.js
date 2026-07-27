@@ -1,4 +1,4 @@
-async function cargarGaleriaEditorial2() {
+async function cargarGaleriaEditorial() {
 	monitorPIXELLAB(
         "Editorial",
         "debug",
