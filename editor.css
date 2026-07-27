@@ -32,16 +32,44 @@
 }
 .editorial-card {
 
+    background: rgba(255,255,255,0.05);
+
+    border-radius: 12px;
+
+    padding: 15px;
+
     display: flex;
+
     flex-direction: column;
 
     align-items: center;
 
-    width: 100%;
-
-    max-width: 220px;
+    gap: 12px;
 
 }
+.editorial-info {
+
+    width: 100%;
+
+    text-align: center;
+
+}
+.editorial-info h3 {
+
+    font-size: 1rem;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    display: -webkit-box;
+
+    -webkit-line-clamp: 2;
+
+    -webkit-box-orient: vertical;
+
+}
+
 .editorial-cover {
 
     width: 160px;
