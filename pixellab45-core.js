@@ -113,7 +113,13 @@ function toggleMenu() {
 //=====================================================
 
 function limpiarMonitorPIXELLAB(modo = "general") {
-
+monitorPIXELLAB(
+    "Core",
+    "info",
+    "Limpiador",
+    `Modo recibido: ${modo}`,
+    "monitorEditor"
+);
 
     if(modo === "general") {
 
