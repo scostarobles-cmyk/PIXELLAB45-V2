@@ -230,7 +230,7 @@ monitorPIXELLAB(
     "Editorial",
     "info",
     "Portada",
-    "Ruta: " + "${ebook.portada ",
+    "Ruta: " + ebook.portada,
     "monitorEditor"
 );
 
