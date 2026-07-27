@@ -62,8 +62,16 @@ window.addEventListener(
    //     await gestionarVersionCachePIXELLAB()?
 
         await verificarProyecto();
-    //    await cargarGaleriaEditorial();
 
+monitorPIXELLAB(
+    "Editorial",
+    "debug",
+    "Core",
+    "Después de verificarProyecto",
+    "monitorEditor"
+);
+
+await cargarGaleriaEditorial();
         
       
 
