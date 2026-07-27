@@ -96,19 +96,143 @@ AI Publishing Workspace
 
     </div>
 
+<!-- ===============================
+     BIBLIOTECA EDITORIAL
+================================ -->
 
-    <div id="bibliotecaEditorial">
+<div id="editorBiblioteca">
+
+    <h2 class="editor-title">
+        📚 Biblioteca Editorial
+    </h2>
+
+    <p class="editor-subtitle">
+        Proyectos listos para edición.
+    </p>
+
+    <div id="bibliotecaEditorial" class="biblioteca-grid">
+
+        <!-- Las tarjetas se generan dinámicamente desde
+             mostrarProyectosEditorial() -->
 
     </div>
 
-
-  
-<div id="monitorEditor" class="scroll-box" style="height:350px; width:100%; margin-top: 10px;"></div>
+</div>
 
 
-    <div id="zonaEditor">
+ <!-- ===============================
+     MONITOR EDITORIAL
+================================ -->
+
+<h2>
+📟 Monitor Editorial
+</h2>
+
+<p class="editor-subtitle">
+Estado del proceso de edición.
+</p>
+
+<div class="gallery-filters">
+
+    <button
+        class="boton-accion"
+        onclick="limpiarMonitorEditor()">
+
+        🗑 Limpiar
+
+    </button>
+
+</div>
+
+<div
+    id="monitorEditor"
+    class="scroll-box">
+
+</div>
+
+   <!-- ===============================
+     ZONA DEL EDITOR
+================================ -->
+
+<div id="editorTrabajo" style="display:none;">
+
+    <h2 class="editor-title">
+        ✏️ PIXELLAB Editorial Workspace
+    </h2>
+
+    <p class="editor-subtitle">
+        Editor profesional de publicaciones digitales.
+    </p>
+
+    <!-- BOTONERA -->
+
+    <div class="editor-toolbar-editor">
+
+        <button class="editor-menu">📄 Portada</button>
+
+        <button class="editor-menu">⚖️ Legales</button>
+
+        <button class="editor-menu">📑 Índice</button>
+
+        <button class="editor-menu">📝 Capítulos</button>
+
+        <button class="editor-menu">🖼️ Imágenes</button>
+
+        <button class="editor-menu">🎨 Diseño</button>
 
     </div>
+
+    <!-- PIPELINE -->
+
+    <div class="pipeline-editor">
+
+        <h3>
+            ⚙️ Pipeline Editorial
+        </h3>
+
+        <div class="pipeline-items">
+
+            <p id="editorProyecto">
+                ⚪ Proyecto cargado
+            </p>
+
+            <p id="editorTexto">
+                ⚪ Texto
+            </p>
+
+            <p id="editorImagenes">
+                ⚪ Imágenes
+            </p>
+
+            <p id="editorDiseno">
+                ⚪ Diseño
+            </p>
+
+            <p id="editorRevision">
+                ⚪ Revisión
+            </p>
+
+            <p id="editorExportacion">
+                ⚪ Exportación
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- LIENZO DEL EDITOR -->
+
+    <div class="editor-canvas">
+
+        <div id="paginaEditor">
+
+            <!-- cargarLibroCompleto() construye aquí el libro -->
+
+        </div>
+
+    </div>
+
+</div>
 
 </section>
 
