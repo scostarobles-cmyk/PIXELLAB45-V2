@@ -74,11 +74,18 @@ monitorPIXELLAB(
     "Editorial",
     "debug",
     "Core",
-    "cargarGaleriaEditorial = " + cargarGaleriaEditorial,
+    "Tipo galeria: " + typeof cargarGaleriaEditorial,
     "monitorEditor"
 );
+
 await cargarGaleriaEditorial();
-        
+    monitorPIXELLAB(
+    "Editorial",
+    "debug",
+    "Core",
+    "Llamada terminada",
+    "monitorEditor"
+);    
       
 
     }
