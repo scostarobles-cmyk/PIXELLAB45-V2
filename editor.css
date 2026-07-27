@@ -16,19 +16,15 @@
 
     grid-template-columns: repeat(
         auto-fit,
-        minmax(160px, 1fr)
+        minmax(180px, 220px)
     );
 
-    gap: 20px;
+    gap: 25px;
 
-    padding: 10px;
+    justify-content: center;
 
-}
-#bibliotecaEditorial {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 20px;
     padding: 20px;
+
 }
 .editorial-card {
 
