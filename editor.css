@@ -1,3 +1,7 @@
 #editorial {
     width: 100%;
 }
+.editorial-title {
+    text-align: center;
+    padding: 20px;
+}
