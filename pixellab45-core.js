@@ -73,22 +73,53 @@ function toggleMenu() {
 // LIMPIAR MONITOR PIXELLAB
 //=====================================================
 
-function limpiarMonitorPIXELLAB(){
-
-    const monitor =
-        document.getElementById(
-            "monitorPIXELLAB"
-        );
+function limpiarMonitorPIXELLAB(modo = "general") {
 
 
-    if(!monitor) {
+    if(modo === "general") {
 
-        return;
+
+        const monitor =
+            document.getElementById(
+                "monitorPIXELLAB"
+            );
+
+
+        if(!monitor) {
+
+            return;
+
+        }
+
+
+        monitor.innerHTML = "";
+
 
     }
 
 
-    monitor.innerHTML = "";
+
+    if(modo === "botonera") {
+
+
+        const monitor =
+            document.getElementById(
+                "monitorBotonera"
+            );
+
+
+        if(!monitor) {
+
+            return;
+
+        }
+
+
+        monitor.innerHTML = "";
+
+
+    }
+
 
 }
 /* ==========================================================

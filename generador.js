@@ -352,34 +352,7 @@ async function generarPlan2() {
 
 
 
-        actualizarIndicador(
-            "estadoPlan",
-            "verde"
-        );
-
-
-
-        const btn =
-            document.getElementById(
-                "btnPlan"
-            );
-
-
-        if (btn) {
-
-            btn.classList.add(
-                "completo"
-            );
-
-
-            btn.innerHTML =
-                "✅ Plan generado";
-
-
-            btn.disabled = true;
-
-        }
-
+        
 
 
         monitorPIXELLAB(
@@ -518,35 +491,7 @@ async function generarIndice() {
 
 
 
-        actualizarIndicador(
-            "estadoIndice",
-            "verde"
-        );
-
-
-
-        const btn =
-            document.getElementById(
-                "btnIndice"
-            );
-
-
-        if (btn) {
-
-
-            btn.classList.add(
-                "completo"
-            );
-
-
-            btn.innerHTML =
-                "✅ Índice generado";
-
-
-            btn.disabled = true;
-
-
-        }
+        
 
 
 
