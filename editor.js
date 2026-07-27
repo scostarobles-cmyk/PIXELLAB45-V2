@@ -178,3 +178,50 @@ async function cargarBibliotecaEditorial() {
     }
 
 }
+async function cargarPaginaPortada(proyecto) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Portada",
+        "Cargando portada"
+    );
+
+    const pagina = document.getElementById("paginaEditor");
+
+    if (!pagina) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Portada",
+            "No existe paginaEditor"
+        );
+
+        return;
+
+    }
+
+    pagina.innerHTML = "";
+
+    const hoja = document.createElement("div");
+    hoja.className = "pl45-hoja-portada";
+
+    const img = document.createElement("img");
+
+    img.src = `${WORKER_URL}/proyectos/${proyecto.projectId}/portada.png`;
+
+    img.alt = proyecto.titulo || "Portada";
+    img.className = "portada-editor";
+
+    hoja.appendChild(img);
+    pagina.appendChild(hoja);
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Portada",
+        "Portada cargada"
+    );
+
+}
