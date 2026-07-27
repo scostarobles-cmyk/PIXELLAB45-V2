@@ -94,19 +94,7 @@ function obtenerDatosFormulario() {
 
 async function crearProyecto() {
 
-    botonVerde("btnProyecto");
-    actualizarIndicador(
-        "estadoProyecto",
-        "verde"
-    );
-
-    botonAzul("btnPlan");
-    actualizarIndicador(
-        "estadoPlan",
-        "azul"
-    );
-
-    habilitarBoton("btnPlan");
+    
 
 
     const btn =
@@ -148,16 +136,7 @@ async function crearProyecto() {
     }
 
 
-    btn.disabled = true;
-    btn.innerHTML = "📁 Generando proyecto...";
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Proyecto",
-        "Creando proyecto..."
-    );
+    
 
 
     try {
@@ -240,12 +219,7 @@ async function crearProyecto() {
         );
 
 
-        estado.innerHTML =
-            "🟢 Proyecto creado";
-
-
-        btn.classList.add("completo");
-        btn.innerHTML = "✅ Proyecto creado";
+        
 
 
         await verificarProyecto();
@@ -270,13 +244,7 @@ async function crearProyecto() {
         );
 
 
-        estado.innerHTML = "🔴 Error";
-
-
-        btn.innerHTML = "❌ Error";
-
-
-        btn.disabled = false;
+        
 
     }
 
