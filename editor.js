@@ -1,15 +1,4 @@
-async function iniciarCargaEditorial() {
 
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Biblioteca",
-        "Iniciando carga editorial"
-    );
-
-    await cargarGaleriaEditorial();
-
-}
 async function mostrarProyectosEditorial(proyectos) {
 
     const contenedor =
