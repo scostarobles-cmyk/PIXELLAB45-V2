@@ -874,3 +874,77 @@ function cargarPaginaPortada(proyecto) {
     );
 
 }
+let proyectoEditorialActivo = null;
+
+async function seleccionarProyectoEditorial(projectId) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Abriendo proyecto",
+        projectId
+    );
+
+    const proyecto =
+        bibliotecaEditorial.find(
+            p => p.projectId === projectId
+        );
+
+    if (!proyecto) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Proyecto",
+            "No encontrado"
+        );
+
+        return;
+
+    }
+
+
+
+
+
+    // ==========================
+    // Abrir editor
+    // ==========================
+
+    proyectoEditorialActivo = projectId;
+
+    const editor =
+        document.getElementById(
+            "editorTrabajo"
+        );
+
+    if (!editor) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Editor",
+            "No existe editorTrabajo"
+        );
+
+        return;
+
+    }
+
+    editor.style.display = "block";
+
+    document.querySelector(
+        "#editorTrabajo h2"
+    ).textContent =
+        "✏️ " + proyecto.titulo;
+
+    await cargarLibroCompleto(proyecto);
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Editor abierto",
+        proyecto.titulo
+    );
+
+}
