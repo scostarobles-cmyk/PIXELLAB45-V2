@@ -226,6 +226,13 @@ async function cargarBibliotecaEditorial() {
                         "article"
                     );
 
+monitorPIXELLAB(
+    "Editorial",
+    "info",
+    "Portada",
+    "Ruta: " + "${ebook.portada ",
+    "monitorEditor"
+);
 
                 tarjeta.className =
                     "editorial-card";
