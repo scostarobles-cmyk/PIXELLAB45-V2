@@ -805,43 +805,7 @@ async function generarIntroduccion() {
 
 
 
-        if (
-            typeof actualizarIndicador === "function"
-        ) {
-
-
-            actualizarIndicador(
-                "estadoIntro",
-                "verde"
-            );
-
-        }
-
-
-
-        const btn =
-            document.getElementById(
-                "btnIntroduccion"
-            );
-
-
-        if (btn) {
-
-
-            btn.classList.add(
-                "completo"
-            );
-
-
-            btn.innerHTML =
-                "✅ Introducción generada";
-
-
-            btn.disabled = true;
-
-
-        }
-
+     
 
 
         if (
@@ -904,23 +868,10 @@ async function generarCapitulos() {
 
 
 
-    if (typeof botonAmarillo === "function") {
-
-        botonAmarillo(
-            "btnCapitulos"
-        );
-
-    }
+    
 
 
-    if (typeof actualizarIndicador === "function") {
-
-        actualizarIndicador(
-            "estadoCapitulos",
-            "amarillo"
-        );
-
-    }
+    
 
 
 
@@ -1062,16 +1013,7 @@ async function generarCapitulos() {
             );
 
 
-            if (
-                typeof actualizarIndicador === "function"
-            ) {
-
-                actualizarIndicador(
-                    "estadoCapitulos",
-                    "verde"
-                );
-
-            }
+            
 
 
             await verificarProyecto();
@@ -1485,58 +1427,14 @@ async function generarConclusion() {
 
 
 
-        if (
-            typeof actualizarEstadoProyecto === "function"
-        ) {
+        
 
 
-            actualizarEstadoProyecto(
-                "conclusion",
-                "creado"
-            );
-
-
-        }
+        
 
 
 
-/*        if (
-            typeof actualizarIndicador === "function"
-        ) {
 
-
-            actualizarIndicador(
-                "estadoConclusion",
-                "verde"
-            );
-
-
-        }
-
-
-
-        const btn =
-            document.getElementById(
-                "btnConclusion"
-            );
-
-
-        if (btn) {
-
-
-            btn.classList.add(
-                "completo"
-            );
-
-
-            btn.innerHTML =
-                "✅ Conclusión generada";
-
-
-            btn.disabled = true;
-
-
-        }*/
 
 
 
