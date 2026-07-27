@@ -258,7 +258,7 @@ for (const libro of bibliotecaEditorial) {
 
 }
 }
-async function cargarGaleriaEditorial() {
+async function cargarGaleriaEditorial2() {
 
     try {
 

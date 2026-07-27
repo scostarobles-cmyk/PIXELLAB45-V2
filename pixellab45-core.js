@@ -71,7 +71,7 @@ monitorPIXELLAB(
     "monitorEditor"
 );
 
-await cargarGaleriaEditorial();
+await cargarGaleriaEditorial2();
         
       
 
