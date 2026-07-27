@@ -158,6 +158,26 @@ function limpiarMonitorPIXELLAB(modo = "general") {
 
 
     }
+        if(modo === "editor") {
+
+
+        const monitor =
+            document.getElementById(
+                "monitorEditor"
+            );
+
+
+        if(!monitor) {
+
+            return;
+
+        }
+
+
+        monitor.innerHTML = "";
+
+
+    }
 
 
 }
