@@ -71,7 +71,8 @@ async function cargarGaleriaEditorial() {
         "Editorial",
         "proceso",
         "Biblioteca",
-        "Cargando proyectos"
+        "Cargando proyectos",
+        "monitorEditor"
     );
 
     try {
@@ -97,7 +98,8 @@ async function cargarGaleriaEditorial() {
                 "Editorial",
                 "error",
                 "Biblioteca",
-                "No se pudieron obtener proyectos"
+                "No se pudieron obtener proyectos",
+                      "monitorEditor"
             );
 
             return;
@@ -114,7 +116,8 @@ async function cargarGaleriaEditorial() {
             "Editorial",
             "error",
             "Biblioteca",
-            error.message
+            error.message,
+                  "monitorEditor"
         );
 
     }
@@ -136,7 +139,8 @@ async function cargarBibliotecaEditorial() {
         "Editorial",
         "proceso",
         "Biblioteca",
-        "Iniciando carga de biblioteca editorial"
+        "Iniciando carga de biblioteca editorial",
+              "monitorEditor"
     );
 
 
@@ -173,7 +177,9 @@ async function cargarBibliotecaEditorial() {
                 "Editorial",
                 "error",
                 "Biblioteca",
-                "No se pudieron cargar los eBooks"
+                "No se pudieron cargar los eBooks",
+                      "monitorEditor"
+                
             );
 
 
@@ -196,7 +202,8 @@ async function cargarBibliotecaEditorial() {
                 "Editorial",
                 "error",
                 "Biblioteca",
-                "No existe bibliotecaEditorial"
+                "No existe bibliotecaEditorial",
+                      "monitorEditor"
             );
 
 
@@ -282,7 +289,8 @@ async function cargarBibliotecaEditorial() {
             "Biblioteca",
             "Biblioteca cargada correctamente: " +
             datos.ebooks.length +
-            " eBooks"
+            " eBooks",
+                  "monitorEditor"
         );
 
 
@@ -293,7 +301,8 @@ async function cargarBibliotecaEditorial() {
             "Editorial",
             "error",
             "Biblioteca",
-            error.message
+            error.message,
+                  "monitorEditor"
         );
 
 
