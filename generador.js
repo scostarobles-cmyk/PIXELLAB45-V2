@@ -929,7 +929,13 @@ async function generarCapitulos() {
             "Capítulos",
             `Capítulo ${resultado.numero} generado correctamente`
         );
-
+         monitorPIXELLAB(
+    "Editorial",
+    "proceso",
+    "Capítulos",
+    `Generado capítulo ${resultado.numero} de 8`,
+    "monitorBotonera"
+);
 
 
         //=====================================

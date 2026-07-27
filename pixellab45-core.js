@@ -665,19 +665,7 @@ actualizarIndicador(
         );
 
 
-        monitorPIXELLAB(
-            "Editorial",
-            "proceso",
-            "Capítulos",
-            `${capitulosCreados}/${totalCapitulos} capítulos creados`
-        );
-monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Capítulos",
-        `${capitulosCreados}/${totalCapitulos} capítulos creados`,
-        "monitorBotonera"
-    );
+        
 
     } else {
 
