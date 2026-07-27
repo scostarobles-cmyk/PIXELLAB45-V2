@@ -30,7 +30,14 @@
     gap: 20px;
     padding: 20px;
 }
-.editorial-card {
+..editorial-card {
+
+    width: 100%;
+    max-width: 220px;
+
+    margin: auto;
+
+    overflow: hidden;
 
 }
 .editorial-cover {
