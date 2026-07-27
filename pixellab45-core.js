@@ -62,7 +62,7 @@ window.addEventListener(
    //     await gestionarVersionCachePIXELLAB()?
 
         await verificarProyecto();
-        await cargarGaleriaEditorial();
+    //    await cargarGaleriaEditorial();
 
         
       
