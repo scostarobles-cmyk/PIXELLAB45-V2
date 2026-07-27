@@ -5,7 +5,7 @@ monitorPIXELLAB(
     "editor.js cargado",
     "monitorEditor"
 );
-//let bibliotecaEditorial = [];
+
 
 async function cargarGaleriaEditorial() {
 	monitorPIXELLAB(
@@ -149,7 +149,7 @@ async function mostrarProyectosEditorial(proyectos) {
 
 
     let cantidad = 0;
-bibliotecaEditorial = [];
+let bibliotecaEditorial = [];
 
     for (const proyecto of proyectos) {
     	
@@ -358,5 +358,4 @@ for (const libro of bibliotecaEditorial) {
     );
 
 
-}
 }
