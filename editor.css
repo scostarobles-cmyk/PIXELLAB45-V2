@@ -206,70 +206,105 @@
 
 
 
-/* ===========================
-   BIBLIOTECA EDITORIAL
-=========================== */
+/* =====================================
+   BIBLIOTECA EDITORIAL - CARRUSEL
+===================================== */
+
+.biblioteca-grid {
+
+    display: flex;
+
+    gap: 20px;
+
+    overflow-x: auto;
+
+    padding: 10px;
+
+    scroll-behavior: smooth;
+
+}
 
 
-.biblioteca-grid{
+/* Ocultar scrollbar pero mantener desplazamiento */
 
-    display:grid;
+.biblioteca-grid::-webkit-scrollbar {
 
-    grid-template-columns:
-    repeat(auto-fit,minmax(260px,1fr));
-
-    gap:20px;
-
-    margin-top:20px;
+    height: 8px;
 
 }
 
 
 
-.editorial-card{
+/* TARJETA */
 
-    background:#05070d;
+.editorial-card {
 
-    border:1px solid #00d9ff;
+    flex: 0 0 220px;
 
-    border-radius:15px;
+    background: #0b101a;
 
-    overflow:hidden;
+    border-radius: 12px;
 
-    box-shadow:
-    0 0 15px rgba(0,217,255,.35);
-
-    transition:.3s;
+    overflow: hidden;
 
 }
 
 
 
-.editorial-card:hover{
+/* PORTADA */
 
-    transform:translateY(-5px);
+.editorial-cover {
 
-    box-shadow:
-    0 0 25px rgba(0,217,255,.7);
+    width: 100%;
+
+    height: 300px;
+
+    overflow: hidden;
 
 }
 
 
 
-.editorial-cover{
+.editorial-cover img {
 
-    height:180px;
+    width: 100%;
 
-    background:
-    linear-gradient(
-    180deg,
-    rgba(0,217,255,.15),
-    transparent
-    );
+    height: 100%;
 
-    border-bottom:1px solid #00d9ff;
+    object-fit: cover;
 
-    overflow:hidden;
+}
+
+
+
+/* INFORMACIÓN */
+
+.editorial-info {
+
+    padding: 12px;
+
+}
+
+
+.editorial-info h3 {
+
+    font-size: 16px;
+
+    margin: 0 0 8px 0;
+
+}
+
+
+.editorial-info p {
+
+    font-size: 13px;
+
+}
+
+
+.editorial-info span {
+
+    font-size: 12px;
 
 }
 
