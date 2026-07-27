@@ -214,9 +214,7 @@ async function crearProyecto() {
         );
 
 
-        mostrarEstadoEditorial(
-            `Proyecto "${datos.tema}" creado correctamente.`
-        );
+        
 
 
         
@@ -679,39 +677,7 @@ async function generarLegales() {
 
 
 
-        if (
-            typeof actualizarIndicador === "function"
-        ) {
-
-            actualizarIndicador(
-                "estadoLegales",
-                "verde"
-            );
-
-        }
-
-
-
-        const btn =
-            document.getElementById(
-                "btnLegales"
-            );
-
-
-        if (btn) {
-
-            btn.classList.add(
-                "completo"
-            );
-
-
-            btn.innerHTML =
-                "✅ Legales generado";
-
-
-            btn.disabled = true;
-
-        }
+ 
 
 
 
