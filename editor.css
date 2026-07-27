@@ -235,117 +235,44 @@
 
 
 
-/* TARJETA */
-
 .editorial-card {
 
-    flex: 0 0 150px;
+    flex: 0 0 90px;
 
 }
-
-
-/* PORTADA */
 
 .editorial-cover {
 
-    height: 210px;
+    height: 130px;
 
 }
-
-
-/* INFORMACIÓN */
 
 .editorial-info {
 
-    padding: 8px;
+    padding: 4px;
 
 }
-
 
 .editorial-info h3 {
-
-    font-size: 13px;
-
-}
-
-
-.editorial-info p {
-
-    font-size: 11px;
-
-}
-
-
-.editorial-info span {
 
     font-size: 10px;
 
 }
 
+.editorial-info p,
+.editorial-info span {
 
-/* ===========================
-   EDITOR
-=========================== */
-
-
-#editorTrabajo{
-
-    width:100%;
-
-    max-width:100%;
-
-    padding:20px;
-
-    box-sizing:border-box;
+    display: none;
 
 }
 
+.editorial-info .boton-accion {
 
+    font-size: 10px;
 
-.editor-toolbar-editor{
-
-    display:flex;
-
-    gap:12px;
-
-    overflow-x:auto;
-
-    padding:10px 0;
+    padding: 4px 6px;
 
 }
-
-
-
-.editor-menu{
-
-    flex:0 0 auto;
-
-    padding:12px 18px;
-
-    background:#05070d;
-
-    border:1px solid #00d9ff;
-
-    border-radius:8px;
-
-    color:white;
-
-    cursor:pointer;
-
-}
-
-
-
-.editor-menu:hover{
-
-    background:#00d9ff;
-
-    color:#05070d;
-
-}
-
-
-
 /* ===========================
    CANVAS
 =========================== */
