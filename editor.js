@@ -1,3 +1,136 @@
+async function iniciarCargaEditorial() {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Biblioteca",
+        "Iniciando carga editorial"
+    );
+
+    await cargarGaleriaEditorial();
+
+}
+async function mostrarProyectosEditorial(proyectos) {
+
+    const contenedor =
+        document.getElementById(
+            "bibliotecaEditorial"
+        );
+
+    contenedor.innerHTML = "";
+
+    for (const proyecto of proyectos) {
+
+        const tarjeta =
+            document.createElement("article");
+
+        tarjeta.className =
+            "editorial-card";
+
+        const imagen =
+            document.createElement("img");
+
+        const rutaPortada =
+            `proyectos/${proyecto.projectId}/imagenes/portada.png`;
+
+        const urlPortada =
+            `${R2_EBOOKS_URL}/${rutaPortada}`;
+
+        imagen.src = urlPortada;
+
+        imagen.onerror = async () => {
+
+            const nuevaPortada =
+                await generarPortadaProyecto(
+                    proyecto
+                );
+
+            if (nuevaPortada) {
+
+                imagen.src =
+                    `${R2_EBOOKS_URL}/${nuevaPortada}`;
+
+            }
+
+        };
+
+        const info =
+            document.createElement("div");
+
+        info.className =
+            "editorial-info";
+
+        info.innerHTML = `
+            <h3>${proyecto.titulo}</h3>
+            <p>${proyecto.autor}</p>
+            <button class="boton-accion">
+                ✏️ Editar
+            </button>
+        `;
+
+        tarjeta.appendChild(imagen);
+        tarjeta.appendChild(info);
+
+        contenedor.appendChild(tarjeta);
+
+    }
+
+}
+async function cargarGaleriaEditorial() {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Biblioteca",
+        "Cargando proyectos"
+    );
+
+    try {
+
+        const respuesta = await fetch(
+            WORKER_URL,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    action: "listar-proyectos"
+                })
+            }
+        );
+
+        const datos = await respuesta.json();
+
+        if (!datos.ok) {
+
+            monitorPIXELLAB(
+                "Editorial",
+                "error",
+                "Biblioteca",
+                "No se pudieron obtener proyectos"
+            );
+
+            return;
+
+        }
+
+        mostrarProyectosEditorial(
+            datos.proyectos || []
+        );
+
+    } catch (error) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Biblioteca",
+            error.message
+        );
+
+    }
+
+}
 //=====================================================
 // PIXELLAB45 EDITORIAL
 // FUNCIÓN: cargarBibliotecaEditorial()
