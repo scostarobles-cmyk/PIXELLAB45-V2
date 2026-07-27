@@ -367,7 +367,8 @@ async function generarPortadaProyecto(proyecto) {
             "Editorial",
             "proceso",
             "Inicio",
-            "Comenzando generación de portada para: " + proyecto.titulo
+            "Comenzando generación de portada para: " + proyecto.titulo,
+            "monitorEditor"
         );
 
 
@@ -390,7 +391,8 @@ Tema:
             "Editorial",
             "proceso",
             "Prompt creado",
-            "Prompt base generado para portada"
+            "Prompt base generado para portada",
+                       "monitorEditor"
         );
 
 
@@ -399,7 +401,8 @@ Tema:
             "Editorial",
             "proceso",
             "Visuales",
-            "Enviando prompt al generador de visuales"
+            "Enviando prompt al generador de visuales",
+                       "monitorEditor"
         );
 
 
@@ -430,7 +433,8 @@ Tema:
             "Editorial",
             "estado",
             "Visual generado",
-            "Prompt visual recibido correctamente"
+            "Prompt visual recibido correctamente",
+                       "monitorEditor"
         );
 
 
@@ -439,7 +443,8 @@ Tema:
             "Editorial",
             "proceso",
             "Generando imagen",
-            "Enviando solicitud a Imagen 4"
+            "Enviando solicitud a Imagen 4",
+                       "monitorEditor"
         );
 
 
@@ -454,7 +459,8 @@ monitorPIXELLAB(
     "Editorial",
     "info",
     "Prompt portada",
-    promptImagenFinal
+    promptImagenFinal,
+               "monitorEditor"
 );
 const imagen = await puter.ai.txt2img(
     promptImagenFinal,
@@ -504,7 +510,8 @@ isolated object
             "Editorial",
             "proceso",
             "Conversión",
-            "Imagen convertida a Base64"
+            "Imagen convertida a Base64",
+                       "monitorEditor"
         );
 
 
@@ -517,7 +524,8 @@ isolated object
             "Editorial",
             "proceso",
             "Guardando",
-            ruta
+            ruta,
+                       "monitorEditor"
         );
 
 
@@ -555,7 +563,8 @@ isolated object
             "Editorial",
             "estado",
             "Finalizado",
-            "Portada guardada correctamente"
+            "Portada guardada correctamente",
+                       "monitorEditor"
         );
 
 
@@ -569,7 +578,8 @@ isolated object
             "Editorial",
             "error",
             "Generación portada",
-            error.message
+            error.message,
+                       "monitorEditor"
         );
 
 
