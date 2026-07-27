@@ -359,7 +359,7 @@ for (const libro of bibliotecaEditorial) {
 // Construye las tarjetas de biblioteca.
 //=====================================================
 
-async function cargarBibliotecaEditorial() {
+/*async function cargarBibliotecaEditorial() {
 
 
     monitorPIXELLAB(
@@ -542,7 +542,7 @@ monitorPIXELLAB(
 
     }
 
-}
+}*/
 async function cargarPaginaPortada(proyecto) {
 
     monitorPIXELLAB(
