@@ -1,3 +1,10 @@
+monitorPIXELLAB(
+    "Editorial",
+    "debug",
+    "EditorJS",
+    "editor.js cargado",
+    "monitorEditor"
+);
 async function cargarGaleriaEditorial() {
 	monitorPIXELLAB(
         "Editorial",
