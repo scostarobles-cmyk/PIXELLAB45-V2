@@ -44,6 +44,20 @@ window.addEventListener(
             "Inicio",
             "Inicializando generador editorial"
         );
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Inicio",
+            "Inicializando generador editorial",
+            "monitorBotonera"
+        );
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Inicio",
+            "Inicializando generador editorial",
+            "monitorEditor"
+        );
         
    //     await gestionarVersionCachePIXELLAB()?
 

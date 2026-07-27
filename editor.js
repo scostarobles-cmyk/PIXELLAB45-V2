@@ -7,7 +7,8 @@ async function mostrarProyectosEditorial(proyectos) {
         "Editorial",
         "proceso",
         "Inicio",
-        "Entró a mostrar proyectos editoriales"
+        "Entró a mostrar proyectos editoriales",
+        "monitorEditor"
     );
 
 
@@ -23,7 +24,8 @@ async function mostrarProyectosEditorial(proyectos) {
             "Editorial",
             "error",
             "Contenedor no encontrado",
-            "No existe bibliotecaEditorial"
+            "No existe bibliotecaEditorial",
+                    "monitorEditor"
         );
 
         return;
@@ -74,7 +76,9 @@ bibliotecaEditorial = [];
             "Editorial",
             "proceso",
             "Creando tarjeta",
-            proyecto.titulo
+            proyecto.titulo,
+                    "monitorEditor"
+            
         );
 
 
@@ -150,7 +154,8 @@ bibliotecaEditorial = [];
             "Editorial",
             "proceso",
             "Verificando portada",
-            urlPortada
+            urlPortada,
+                    "monitorEditor"
         );
 
 
@@ -164,7 +169,8 @@ bibliotecaEditorial = [];
                     "Editorial",
                     "estado",
                     "Portada encontrada",
-                    proyecto.titulo
+                    proyecto.titulo,
+                            "monitorEditor"
                 );
 
 
@@ -201,7 +207,8 @@ bibliotecaEditorial = [];
                         "Editorial",
                         "estado",
                         "Portada cargada",
-                        nuevaPortada
+                        nuevaPortada,
+                                "monitorEditor"
                     );
 
                 }
@@ -223,7 +230,8 @@ monitorPIXELLAB(
     "Editorial",
     "ok",
     "Array Editorial",
-    `${bibliotecaEditorial.length} eBooks cargados en memoria`
+    `${bibliotecaEditorial.length} eBooks cargados en memoria`,
+            "monitorEditor"
 );
 
 for (const libro of bibliotecaEditorial) {
@@ -232,7 +240,9 @@ for (const libro of bibliotecaEditorial) {
         "Editorial",
         "info",
         libro.projectId,
-        `${libro.titulo} | ${libro.paginas} páginas`
+        `${libro.titulo} | ${libro.paginas} páginas`,
+                "monitorEditor"
+        
     );
 
 }
@@ -241,7 +251,8 @@ for (const libro of bibliotecaEditorial) {
         "Editorial",
         "estado",
         "Biblioteca mostrada",
-        "Cantidad de eBooks renderizados: " + cantidad
+        "Cantidad de eBooks renderizados: " + cantidad,
+                "monitorEditor"
     );
 
 
@@ -256,7 +267,9 @@ async function cargarGaleriaEditorial() {
             "Editorial",
             "proceso",
             "Inicio",
-            "Solicitando eBooks al Worker"
+            "Solicitando eBooks al Worker",
+                    "monitorEditor"
+            
         );
 
 
@@ -294,7 +307,8 @@ async function cargarGaleriaEditorial() {
             "estado",
             "Lista generada",
             "eBooks encontrados: " +
-            data.ebooks.length
+            data.ebooks.length,
+                    "monitorEditor"
         );
 
 
@@ -307,7 +321,8 @@ async function cargarGaleriaEditorial() {
             "Editorial",
             "estado",
             "Enviado a mostrar",
-            "Datos enviados a tarjetas editoriales"
+            "Datos enviados a tarjetas editoriales",
+                    "monitorEditor"
         );
 
 
@@ -318,7 +333,8 @@ async function cargarGaleriaEditorial() {
             "Editorial",
             "error",
             "Carga galería editorial",
-            error.message
+            error.message,
+                    "monitorEditor"
         );
 
 
