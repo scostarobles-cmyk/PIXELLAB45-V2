@@ -567,31 +567,20 @@ async function abrirEditorEditorial(projectId) {
 
     pagina.innerHTML = `
 
-        <div style="
-            width:210mm;
-            min-height:297mm;
-            background:#111;
-            color:white;
-            margin:20px auto;
-            padding:20px;
-            box-sizing:border-box;
-            border:2px solid #00d9ff;
-        ">
+<div class="hoja-editor">
 
-            <h1>
-                PIXELLAB EDITOR
-            </h1>
+    <h1>PIXELLAB EDITOR</h1>
 
-            <p>
-                Hoja de prueba del editor.
-            </p>
+    <p>
+        Hoja A4 de prueba
+    </p>
 
-            <p>
-                Proyecto: ${projectId}
-            </p>
+    <p>
+        Proyecto: ${projectId}
+    </p>
 
-        </div>
+</div>
 
-    `;
+`;
 
 }
