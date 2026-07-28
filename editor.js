@@ -186,7 +186,7 @@ let bibliotecaEditorial = [];
             "Editorial",
             "proceso",
             "Creando tarjeta",
-            $(proyecto.projectid),
+            proyecto.projectId,
                     "monitorEditor"
             
         );
