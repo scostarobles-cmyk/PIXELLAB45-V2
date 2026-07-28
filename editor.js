@@ -969,36 +969,35 @@ async function cargarPaginaLegales(proyecto) {
         }
 
 
-        // Crear hoja nueva
+     // Crear hoja A4
 
-        const hoja =
-            document.createElement(
-                "div"
-            );
-
-
-        hoja.className =
-            "pagina-editor";
+const hoja =
+    document.createElement(
+        "div"
+    );
 
 
-        // Estilos de prueba visual
-
-        hoja.style.background =
-            "#ffffff";
-
-        hoja.style.color =
-            "#000000";
-
-        hoja.style.padding =
-            "40px";
-
-        hoja.style.marginBottom =
-            "20px";
-
-        hoja.style.minHeight =
-            "900px";
+hoja.className = "pl45-hoja-portada";
 
 
+Object.assign(hoja.style, {
+
+    width: "100%",
+    maxWidth: "794px",
+    aspectRatio: "210 / 297",
+
+    margin: "0 auto 20px auto",
+
+    background: "#ffffff",
+    color: "#000000",
+
+    padding: "40px",
+
+    boxSizing: "border-box",
+
+    overflow: "hidden"
+
+});
         // Crear título
 
         const titulo =
