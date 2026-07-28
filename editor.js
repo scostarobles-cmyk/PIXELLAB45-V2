@@ -603,7 +603,7 @@ const SECCIONES_LIBRO = [
   //     "prueba",
    "portada",
    "legales",
-  //  "indice",
+   "indice",
  //  "introduccion",
     //"capitulos",
   //  "conclusion"
