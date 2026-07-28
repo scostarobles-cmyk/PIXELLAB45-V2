@@ -2521,8 +2521,7 @@ async function listarEbooks(data, env) {
 
 
             const rutaPortada =
-                `proyectos/${projectId}/portada.png`;
-
+    `proyectos/${projectId}/imagenes/portada.png`;
 
             const portada =
                 await env.EBOOKS.head(
