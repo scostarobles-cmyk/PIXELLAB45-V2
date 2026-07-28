@@ -539,7 +539,27 @@ async function abrirEditorEditorial(projectId) {
         "Editorial",
         "proceso",
         "Editor",
-        `Abriendo editor: ${projectId}`,
+        "Botón editar ejecutado: " + projectId,
+        "monitorEditor"
+    );
+
+
+    const proyecto = {
+        projectId: projectId,
+        titulo: "Prueba Editor"
+    };
+
+
+    await cargarPaginaPrueba(proyecto);
+
+}
+async function cargarPaginaPrueba(proyecto) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Prueba",
+        "Entró a cargarPaginaPrueba",
         "monitorEditor"
     );
 
@@ -553,7 +573,7 @@ async function abrirEditorEditorial(projectId) {
         monitorPIXELLAB(
             "Editorial",
             "error",
-            "Editor",
+            "Prueba",
             "No existe paginaEditor",
             "monitorEditor"
         );
@@ -562,25 +582,43 @@ async function abrirEditorEditorial(projectId) {
     }
 
 
-    pagina.style.display = "block";
+    pagina.innerHTML = "";
 
 
-    pagina.innerHTML = `
+    const hoja =
+        document.createElement("div");
 
-<div class="hoja-editor">
 
-    <h1>PIXELLAB EDITOR</h1>
+    hoja.className = "hoja-editor";
 
-    <p>
-        Hoja A4 de prueba
-    </p>
 
-    <p>
-        Proyecto: ${projectId}
-    </p>
+    hoja.innerHTML = `
 
-</div>
+        <h1>
+            PIXELLAB EDITOR
+        </h1>
 
-`;
+        <p>
+            Hoja de prueba cargada desde cargarLibroCompleto()
+        </p>
+
+        <p>
+            Proyecto:
+            ${proyecto.projectId || ""}
+        </p>
+
+    `;
+
+
+    pagina.appendChild(hoja);
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Prueba",
+        "Hoja de prueba agregada correctamente",
+        "monitorEditor"
+    );
 
 }
