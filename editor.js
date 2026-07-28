@@ -182,6 +182,14 @@ let bibliotecaEditorial = [];
                     "monitorEditor"
             
         );
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Creando tarjeta",
+            proyecto.projectid,
+                    "monitorEditor"
+            
+        );
 
 
         const tarjeta =
@@ -874,7 +882,7 @@ function cargarPaginaPortada(proyecto) {
     );
 
 }
-//let proyectoEditorialActivo = null;
+let proyectoEditorialActivo = null;
 
 async function seleccionarProyectoEditorial(projectId) {
 
