@@ -539,18 +539,155 @@ async function abrirEditorEditorial(projectId) {
         "Editorial",
         "proceso",
         "Editor",
-        "Botón editar ejecutado: " + projectId,
+        "Abriendo proyecto: " + projectId,
         "monitorEditor"
     );
 
 
-    const proyecto = {
-        projectId: projectId,
-        titulo: "Prueba Editor"
-    };
+    const proyecto =
+        await cargarJSON(
+            `proyectos/${projectId}/proyecto.json`
+        );
 
+
+    if (!proyecto) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Editor",
+            "No se pudo cargar proyecto.json",
+            "monitorEditor"
+        );
+
+        return;
+    }
+
+
+    await cargarLibroCompleto(proyecto);
+
+}
+/*
+=========================================================
+PIXELLAB Editorial
+ETAPA 1 · Carga completa del libro
+
+Objetivo:
+Reconstruir completamente el eBook en memoria
+leyendo todos los archivos JSON del proyecto.
+
+Flujo:
+
+1. Portada
+2. Legales
+3. Índice
+4. Introducción
+5. Capítulos
+6. Conclusión
+
+Cada hoja tendrá su propia función de carga.
+
+La única excepción son los capítulos, que se
+recorrerán automáticamente leyendo plan.json.
+
+En esta etapa:
+
+✓ Carga contenido
+✗ No aplica estilos
+✗ No guarda cambios
+✗ No realiza edición
+
+=========================================================
+*/
+const SECCIONES_LIBRO = [
+       "prueba",
+  //  "portada",
+   // "legales",
+  //  "indice",
+ //  "introduccion",
+    //"capitulos",
+  //  "conclusion"
+];
+/* ==========================
+   CARGA DEL LIBRO
+========================== */
+
+async function cargarLibroCompleto(proyecto) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Libro",
+        "Comenzando carga completa"
+    );
+
+    for (const seccion of SECCIONES_LIBRO) {
+
+        await cargarSeccion(
+            proyecto,
+            seccion
+        );
+
+    }
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Libro",
+        "Carga completa finalizada"
+    );
+
+}
+async function cargarSeccion(
+    proyecto,
+    seccion
+) {
+
+    switch (seccion) {
+    	
+         case "prueba":
 
     await cargarPaginaPrueba(proyecto);
+
+    break;
+        case "portada":
+            await cargarPaginaPortada(proyecto);
+            break;
+
+        case "legales":
+            await cargarPaginaLegales(proyecto);
+            break;
+
+        case "indice":
+            await cargarPaginaIndice(proyecto);
+            break;
+
+        case "introduccion":
+            await cargarPaginaIntroduccion(proyecto);
+            break;
+
+        case "capitulos":
+
+            monitorPIXELLAB(
+                "Editorial",
+                "proceso",
+                "Capitulos",
+                "Pendiente"
+            );
+
+            await cargarPaginaCapitulo(
+                proyecto,
+                1,
+                8
+            );
+
+            break;
+
+        case "conclusion":
+            await cargarPaginaConclusion(proyecto);
+            break;
+
+    }
 
 }
 async function cargarPaginaPrueba(proyecto) {
