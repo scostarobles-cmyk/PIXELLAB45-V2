@@ -904,7 +904,8 @@ async function cargarPaginaLegales(proyecto) {
             "Editorial",
             "proceso",
             "Legales",
-            "Cargando: " + ruta
+            "Cargando: " + ruta,
+            "monitorEditor"
         );
 
 
@@ -1049,7 +1050,8 @@ Object.assign(hoja.style, {
             "Editorial",
             "estado",
             "Legales",
-            "Página cargada correctamente"
+            "Página cargada correctamente",
+                        "monitorEditor"
         );
 
 
@@ -1060,6 +1062,240 @@ Object.assign(hoja.style, {
             "Editorial",
             "error",
             "Legales",
+            error.message,
+                        "monitorEditor"
+        );
+
+
+    }
+
+}
+/* ==========================
+   PÁGINA ÍNDICE
+========================== */
+
+async function cargarPaginaIndice(proyecto) {
+
+    monitorPIXELLAB(
+        "Editor",
+        "proceso",
+        "Indice",
+        "Entró a cargarPaginaIndice"
+    );
+
+
+    try {
+
+
+        const ruta =
+            `proyectos/${proyecto.projectId}/indice.json`;
+
+
+        monitorPIXELLAB(
+            "Editor",
+            "proceso",
+            "Indice",
+            "Cargando: " + ruta
+        );
+
+
+        const respuesta =
+            await fetch(WORKER_URL, {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    action: "cargar-json",
+
+                    ruta: ruta
+
+                })
+
+            });
+
+
+        const datos =
+            await respuesta.json();
+
+
+        if (!datos.ok) {
+
+            throw new Error(
+                "No se pudo cargar indice"
+            );
+
+        }
+
+
+        const indice =
+            datos.json;
+
+
+        if (!indice) {
+
+            throw new Error(
+                "JSON indice vacio"
+            );
+
+        }
+
+
+        const contenedor =
+            document.getElementById(
+                "paginaEditor"
+            );
+
+
+        if (!contenedor) {
+
+            throw new Error(
+                "No existe paginaEditor"
+            );
+
+        }
+
+
+        // Crear hoja A4
+
+        const hoja =
+            document.createElement(
+                "div"
+            );
+
+
+        hoja.className =
+            "pl45-hoja-portada";
+
+
+        Object.assign(hoja.style, {
+
+            width: "100%",
+            maxWidth: "794px",
+            aspectRatio: "210 / 297",
+
+            margin: "0 auto 20px auto",
+
+            background: "#ffffff",
+            color: "#000000",
+
+            padding: "40px",
+
+            boxSizing: "border-box",
+
+            overflow: "hidden"
+
+        });
+
+
+        // Crear título
+
+        const titulo =
+            document.createElement(
+                "h1"
+            );
+
+
+        titulo.textContent =
+            "Índice";
+
+
+        titulo.style.color =
+            "#000000";
+
+
+        // Crear contenido
+
+        const texto =
+            document.createElement(
+                "div"
+            );
+
+
+        texto.style.whiteSpace =
+            "pre-line";
+
+
+        texto.style.color =
+            "#000000";
+
+
+        if (
+            indice.capitulos &&
+            indice.capitulos.length > 0
+        ) {
+
+
+            for (const capitulo of indice.capitulos) {
+
+
+                const linea =
+                    document.createElement(
+                        "p"
+                    );
+
+
+                linea.textContent =
+                    `${capitulo.numero}. ${capitulo.titulo}`;
+
+
+                linea.style.color =
+                    "#000000";
+
+
+                linea.style.fontSize =
+                    "18px";
+
+
+                linea.style.margin =
+                    "0 0 12px 0";
+
+
+                texto.appendChild(
+                    linea
+                );
+
+
+            }
+
+
+        }
+
+
+        hoja.appendChild(
+            titulo
+        );
+
+
+        hoja.appendChild(
+            texto
+        );
+
+
+        contenedor.appendChild(
+            hoja
+        );
+
+
+        monitorPIXELLAB(
+            "Editor",
+            "estado",
+            "Indice",
+            "Pagina cargada correctamente"
+        );
+
+
+    } catch(error) {
+
+
+        monitorPIXELLAB(
+            "Editor",
+            "error",
+            "Indice",
             error.message
         );
 
