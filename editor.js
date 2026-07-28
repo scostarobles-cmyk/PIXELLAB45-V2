@@ -542,11 +542,10 @@ async function abrirEditorEditorial(projectId) {
         `Abriendo proyecto: ${projectId}`,
         "monitorEditor"
     );
-    const editor = document.getElementById("editorEditorial");
+    const editor = document.getElementById("paginaEditor");
 
 if (editor) {
 
-    editor.style.display = "block";
     editor.innerHTML = `
         <div style="
             width:100%;
@@ -563,6 +562,18 @@ if (editor) {
             Proyecto: ${projectId}
         </div>
     `;
+
+} else {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "error",
+        "Editor",
+        "No existe paginaEditor",
+        "monitorEditor"
+    );
+
+}
 
 } else {
 
