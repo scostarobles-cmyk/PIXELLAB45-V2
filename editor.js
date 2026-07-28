@@ -2312,10 +2312,11 @@ monitorPIXELLAB(
 async function cargarPaginaConclusion(proyecto) {
 
     monitorPIXELLAB(
-        "Editorial",
+        "Editor",
         "proceso",
         "Conclusión",
-        "Entró a cargarPaginaConclusion"
+        "Entró a cargarPaginaConclusion",
+        "monitorEditor"
     );
 
     try {
@@ -2324,11 +2325,13 @@ async function cargarPaginaConclusion(proyecto) {
             `proyectos/${proyecto.projectId}/conclusion.json`;
 
         monitorPIXELLAB(
-            "Editorial",
+            "Editor",
             "proceso",
             "Conclusión",
-            "Cargando: " + ruta
+            "Cargando: " + ruta,
+            "monitorEditor"
         );
+
 
         const respuesta =
             await fetch(WORKER_URL, {
@@ -2349,8 +2352,10 @@ async function cargarPaginaConclusion(proyecto) {
 
             });
 
+
         const datos =
             await respuesta.json();
+
 
         if (!datos.ok) {
 
@@ -2360,8 +2365,10 @@ async function cargarPaginaConclusion(proyecto) {
 
         }
 
+
         const conclusion =
             datos.json;
+
 
         if (!conclusion) {
 
@@ -2371,10 +2378,12 @@ async function cargarPaginaConclusion(proyecto) {
 
         }
 
+
         const contenedor =
             document.getElementById(
                 "paginaEditor"
             );
+
 
         if (!contenedor) {
 
@@ -2384,17 +2393,16 @@ async function cargarPaginaConclusion(proyecto) {
 
         }
 
-        // Crear hoja nueva
 
         const hoja =
             document.createElement(
                 "div"
             );
 
+
         hoja.className =
             "pagina-editor";
 
-        // Estilos de prueba visual
 
         hoja.style.background =
             "#ffffff";
@@ -2411,110 +2419,133 @@ async function cargarPaginaConclusion(proyecto) {
         hoja.style.minHeight =
             "900px";
 
-        // Crear título
 
         const titulo =
             document.createElement(
                 "h1"
             );
 
+
         titulo.textContent =
             conclusion.titulo;
+
 
         titulo.style.color =
             "#000000";
 
-        // Crear contenido
 
         const texto =
             document.createElement(
                 "div"
             );
 
+
         let contenido = "";
+
 
         contenido +=
             conclusion.agradecimiento + "\n\n";
 
+
         contenido +=
             conclusion.resumen + "\n\n";
+
 
         contenido +=
             "Aprendizajes clave:\n\n";
 
-        conclusion.aprendizajesClave.forEach(
 
-            item => {
+        if (conclusion.aprendizajesClave) {
 
-                contenido +=
-                    "• " + item + "\n";
+            conclusion.aprendizajesClave.forEach(
 
-            }
+                item => {
 
-        );
+                    contenido +=
+                        "• " + item + "\n";
+
+                }
+
+            );
+
+        }
+
 
         contenido +=
             "\n" +
             conclusion.proximosPasos +
             "\n\n";
 
+
         contenido +=
             conclusion.motivacionFinal +
             "\n\n";
+
 
         contenido +=
             conclusion.llamadoALaAccion +
             "\n\n";
 
+
         contenido +=
             conclusion.despedida;
+
 
         texto.textContent =
             contenido;
 
+
         texto.style.whiteSpace =
             "pre-line";
+
 
         texto.style.color =
             "#000000";
 
+
         texto.style.lineHeight =
             "1.6";
+
 
         texto.style.fontSize =
             "18px";
 
-        // Armar hoja
 
         hoja.appendChild(
             titulo
         );
 
+
         hoja.appendChild(
             texto
         );
 
-        // Agregar debajo de lo existente
 
         contenedor.appendChild(
             hoja
         );
 
+
         monitorPIXELLAB(
-            "Editorial",
+            "Editor",
             "estado",
             "Conclusión",
-            "Página cargada correctamente"
+            "Página cargada correctamente",
+            "monitorEditor"
         );
+
 
     } catch(error) {
 
+
         monitorPIXELLAB(
-            "Editorial",
+            "Editor",
             "error",
             "Conclusión",
-            error.message
+            error.message,
+            "monitorEditor"
         );
+
 
     }
 
