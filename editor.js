@@ -182,14 +182,7 @@ let bibliotecaEditorial = [];
                     "monitorEditor"
             
         );
-        monitorPIXELLAB(
-            "Editorial",
-            "proceso",
-            "Creando tarjeta",
-            proyecto.projectId,
-                    "monitorEditor"
-            
-        );
+        
 
 
         const tarjeta =
