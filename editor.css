@@ -198,3 +198,28 @@
 
 }
 
+/* ==========================
+   MODO EDICIÓN PORTADA
+========================== */
+
+.editor-toolbar-editor.modo-portada {
+
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+
+}
+
+
+.editor-toolbar-editor.modo-portada .editor-menu {
+
+    flex: 0 0 auto;
+
+}
+
+
+.editor-portada-activa {
+
+    display: block !important;
+
+}

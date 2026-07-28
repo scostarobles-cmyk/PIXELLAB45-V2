@@ -154,11 +154,11 @@ Estado del proceso de edición.
     </p>
 
     <!-- BOTONERA -->
-
-    <div class="editor-toolbar-editor">
-
-        <button class="editor-menu">📄 Portada</button>
-
+    
+      <div class="editor-toolbar-editor" id="editorToolbar">
+    
+        <button class="editor-menu" onclick="activarModoPortadaEditor()">📄 Portada</button>
+          
         <button class="editor-menu">⚖️ Legales</button>
 
         <button class="editor-menu">📑 Índice</button>
@@ -168,6 +168,8 @@ Estado del proceso de edición.
         <button class="editor-menu">🖼️ Imágenes</button>
 
         <button class="editor-menu">🎨 Diseño</button>
+          
+        <button class="editor-menu" id="btnVolverEditor" style="display:none;"> ⬅ Volver</button>
 
     </div>
 
