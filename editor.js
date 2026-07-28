@@ -233,11 +233,14 @@ let bibliotecaEditorial = [];
         </div>
 
         `;
+const boton = tarjeta.querySelector(".boton-accion");
 
+boton.disabled = false;
+boton.removeAttribute("disabled");
 
-        contenedor.appendChild(
-            tarjeta
-        );
+contenedor.appendChild(tarjeta);
+
+        
 
 
         const imagen =
