@@ -22,7 +22,7 @@ async function listarProyectosEditorial() {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            action: "listar-proyectos-editorial"
+            action: "listar-ebooks"
         })
     });
 
