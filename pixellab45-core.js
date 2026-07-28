@@ -62,14 +62,8 @@ window.addEventListener(
    //     await gestionarVersionCachePIXELLAB()?
 
         await verificarProyecto();
-        monitorPIXELLAB(
-    "Editorial",
-    "Inicio",
-    "Core",
-    "Listar Proyectos "l,
-    "monitorEditor"
-);
-        await listarProyectosEditorial();
+        
+   //     await listarProyectosEditorial();
 
 
 
