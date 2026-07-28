@@ -1732,51 +1732,43 @@ let numeroPagina =
 function crearNuevaPagina() {
 
     const nuevaHoja =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
     nuevaHoja.className =
-    "pl45-hoja-portada";
+        "pl45-hoja-portada";
 
+    Object.assign(nuevaHoja.style, {
 
-    nuevaHoja.style.background =
-        "#ffffff";
+        width: "100%",
+        maxWidth: "794px",
+        aspectRatio: "210 / 297",
 
+        margin: "0 auto 20px auto",
 
-    nuevaHoja.style.color =
-        "#000000";
+        background: "#ffffff",
+        color: "#000000",
 
+        padding: margenPagina + "px",
 
-    nuevaHoja.style.padding =
-        margenPagina + "px";
+        boxSizing: "border-box",
 
+        overflow: "hidden"
 
-    nuevaHoja.style.marginBottom =
-        "20px";
-
-
-    nuevaHoja.style.minHeight =
-        altoPagina + "px";
-
+    });
 
     contenedor.appendChild(
         nuevaHoja
     );
 
-
     paginaActual =
         nuevaHoja;
-
 
     altoUsado =
         0;
 
-
     numeroPagina++;
 
 }
-
 
 // Crear primera página
 
