@@ -741,11 +741,9 @@ function cargarPaginaPortada(proyecto) {
 
     Object.assign(hoja.style, {
 
-        width: "210mm",
-        height: "297mm",
-        position: "relative",
-        overflow: "hidden",
-        margin: "auto",
+    width: "100%",
+    maxWidth: "794px",
+    aspectRatio: "210 / 297",
         background: "white",
         transformOrigin: "top center"
 
