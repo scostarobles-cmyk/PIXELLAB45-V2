@@ -169,7 +169,7 @@ case "generar-conclusion": {
     return json(resultado);
 
 }
-case "listar-ebooks":
+case "listar-Ebooks":
     return await listarEbooks(data, env);
 
 
