@@ -533,7 +533,7 @@ isolated object
 }
 
 
-async function abrirEditorEditorial(projectId) {
+/*async function abrirEditorEditorial(projectId) {
 
     monitorPIXELLAB(
         "Editorial",
@@ -606,4 +606,4 @@ if (editor) {
 
     await cargarLibroCompleto(projectId);
 
-}
+}*/
