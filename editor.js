@@ -533,77 +533,65 @@ isolated object
 }
 
 
-/*async function abrirEditorEditorial(projectId) {
+async function abrirEditorEditorial(projectId) {
 
     monitorPIXELLAB(
         "Editorial",
         "proceso",
-        "Editar proyecto",
-        `Abriendo proyecto: ${projectId}`,
+        "Editor",
+        `Abriendo editor: ${projectId}`,
         "monitorEditor"
     );
-    monitorPIXELLAB(
-    "Editorial",
-    "info",
-    "Prueba editor",
-    "Entró a crear contenido en paginaEditor",
-    "monitorEditor"
-);
 
-const editor = document.getElementById("paginaEditor");
 
-monitorPIXELLAB(
-    "Editorial",
-    "info",
-    "paginaEditor",
-    editor ? "Encontrado" : "NO encontrado",
-    "monitorEditor"
-);
+    const pagina =
+        document.getElementById("paginaEditor");
 
-if (editor) {
 
-    editor.innerHTML = `
+    if (!pagina) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Editor",
+            "No existe paginaEditor",
+            "monitorEditor"
+        );
+
+        return;
+    }
+
+
+    pagina.style.display = "block";
+
+
+    pagina.innerHTML = `
+
         <div style="
-            width:100%;
-            height:400px;
-            background:#05070d;
-            border:2px solid #00d9ff;
-            display:flex;
-            align-items:center;
-            justify-content:center;
+            width:210mm;
+            min-height:297mm;
+            background:#111;
             color:white;
-            font-size:20px;
+            margin:20px auto;
+            padding:20px;
+            box-sizing:border-box;
+            border:2px solid #00d9ff;
         ">
-            EDITOR ABIERTO<br>
-            Proyecto: ${projectId}
+
+            <h1>
+                PIXELLAB EDITOR
+            </h1>
+
+            <p>
+                Hoja de prueba del editor.
+            </p>
+
+            <p>
+                Proyecto: ${projectId}
+            </p>
+
         </div>
+
     `;
 
-} else {
-
-    monitorPIXELLAB(
-        "Editorial",
-        "error",
-        "Editor",
-        "No existe paginaEditor",
-        "monitorEditor"
-    );
-
 }
-
-} else {
-
-    monitorPIXELLAB(
-        "Editorial",
-        "error",
-        "Editor",
-        "No existe editorEditorial",
-        "monitorEditor"
-    );
-
-}
-
-
-    await cargarLibroCompleto(projectId);
-
-}*/
