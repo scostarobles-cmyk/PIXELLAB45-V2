@@ -604,7 +604,7 @@ const SECCIONES_LIBRO = [
    "portada",
    "legales",
    "indice",
- //  "introduccion",
+  "introduccion",
     //"capitulos",
   //  "conclusion"
 ];
@@ -1296,6 +1296,206 @@ async function cargarPaginaIndice(proyecto) {
             "Editor",
             "error",
             "Indice",
+            error.message
+        );
+
+
+    }
+
+}
+
+async function cargarPaginaIntroduccion(proyecto) {
+
+    monitorPIXELLAB(
+        "Editor",
+        "proceso",
+        "Introduccion",
+        "Entro a cargarPaginaIntroduccion"
+    );
+
+
+    try {
+
+
+        const ruta =
+            `proyectos/${proyecto.projectId}/introduccion.json`;
+
+
+        monitorPIXELLAB(
+            "Editor",
+            "proceso",
+            "Introduccion",
+            "Cargando: " + ruta
+        );
+
+
+        const respuesta =
+            await fetch(WORKER_URL, {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    action: "cargar-json",
+
+                    ruta: ruta
+
+                })
+
+            });
+
+
+        const datos =
+            await respuesta.json();
+
+
+        if (!datos.ok) {
+
+            throw new Error(
+                "No se pudo cargar introduccion"
+            );
+
+        }
+
+
+        const introduccion =
+            datos.json;
+
+
+        if (!introduccion) {
+
+            throw new Error(
+                "JSON introduccion vacio"
+            );
+
+        }
+
+
+        const contenedor =
+            document.getElementById(
+                "paginaEditor"
+            );
+
+
+        if (!contenedor) {
+
+            throw new Error(
+                "No existe paginaEditor"
+            );
+
+        }
+
+
+        // Crear hoja A4
+
+        const hoja =
+            document.createElement(
+                "div"
+            );
+
+
+        hoja.className =
+            "pl45-hoja-portada";
+
+
+        Object.assign(hoja.style, {
+
+            width: "100%",
+            maxWidth: "794px",
+            aspectRatio: "210 / 297",
+
+            margin: "0 auto 20px auto",
+
+            background: "#ffffff",
+            color: "#000000",
+
+            padding: "40px",
+
+            boxSizing: "border-box",
+
+            overflow: "hidden"
+
+        });
+
+
+        // Crear titulo
+
+        const titulo =
+            document.createElement(
+                "h1"
+            );
+
+
+        titulo.textContent =
+            introduccion.titulo;
+
+
+        titulo.style.color =
+            "#000000";
+
+
+        // Crear contenido
+
+        const texto =
+            document.createElement(
+                "div"
+            );
+
+
+        texto.textContent =
+            introduccion.contenido;
+
+
+        texto.style.whiteSpace =
+            "pre-line";
+
+
+        texto.style.color =
+            "#000000";
+
+
+        texto.style.lineHeight =
+            "1.6";
+
+
+        texto.style.fontSize =
+            "18px";
+
+
+        hoja.appendChild(
+            titulo
+        );
+
+
+        hoja.appendChild(
+            texto
+        );
+
+
+        contenedor.appendChild(
+            hoja
+        );
+
+
+        monitorPIXELLAB(
+            "Editor",
+            "estado",
+            "Introduccion",
+            "Pagina cargada correctamente"
+        );
+
+
+    } catch(error) {
+
+
+        monitorPIXELLAB(
+            "Editor",
+            "error",
+            "Introduccion",
             error.message
         );
 
