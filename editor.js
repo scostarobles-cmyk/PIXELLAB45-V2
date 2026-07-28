@@ -604,8 +604,8 @@ const SECCIONES_LIBRO = [
    "portada",
    "legales",
    "indice",
-  "introduccion",
-    //"capitulos",
+   "introduccion",
+    "capitulos",
   //  "conclusion"
 ];
 /* ==========================
@@ -670,21 +670,9 @@ async function cargarSeccion(
 
         case "capitulos":
 
-            monitorPIXELLAB(
-                "Editorial",
-                "proceso",
-                "Capitulos",
-                "Pendiente",
-                        "monitorEditor"
-            );
+    await cargarPaginaCapitulos(proyecto);
 
-            await cargarPaginaCapitulo(
-                proyecto,
-                1,
-                8
-            );
-
-            break;
+    break;
 
         case "conclusion":
             await cargarPaginaConclusion(proyecto);
@@ -1503,7 +1491,1032 @@ async function cargarPaginaIntroduccion(proyecto) {
     }
 
 }
+/* ==========================
+   CARGAR TODOS LOS CAPÍTULOS
+========================== */
 
+async function cargarPaginaCapitulos(proyecto) {
+
+    monitorPIXELLAB(
+        "Editor",
+        "proceso",
+        "Capitulos",
+        "Entró a cargarPaginaCapitulos"
+    );
+
+    try {
+
+        const ruta =
+            `proyectos/${proyecto.projectId}/plan.json`;
+
+        monitorPIXELLAB(
+            "Editor",
+            "proceso",
+            "Capitulos",
+            "Cargando: " + ruta
+        );
+
+        const respuesta =
+            await fetch(WORKER_URL, {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    action: "cargar-json",
+
+                    ruta: ruta
+
+                })
+
+            });
+
+        const datos =
+            await respuesta.json();
+
+        if (!datos.ok) {
+
+            throw new Error(
+                "No se pudo cargar plan.json"
+            );
+
+        }
+
+        const plan =
+            datos.json;
+
+        if (
+            !plan ||
+            !plan.capitulos ||
+            plan.capitulos.length === 0
+        ) {
+
+            throw new Error(
+                "Plan sin capítulos"
+            );
+
+        }
+
+        monitorPIXELLAB(
+            "Editor",
+            "proceso",
+            "Capitulos",
+            "Capítulos encontrados: " +
+            plan.capitulos.length
+        );
+
+        for (const capitulo of plan.capitulos) {
+
+            monitorPIXELLAB(
+                "Editor",
+                "proceso",
+                "Capitulos",
+                "Generando capítulo " +
+                capitulo.numero
+            );
+
+            await cargarPaginaCapitulo(
+
+                proyecto,
+
+                capitulo.numero,
+
+                capitulo.paginas
+
+            );
+
+        }
+
+        monitorPIXELLAB(
+            "Editor",
+            "estado",
+            "Capitulos",
+            "Todos los capítulos cargados"
+        );
+
+    } catch(error) {
+
+        monitorPIXELLAB(
+            "Editor",
+            "error",
+            "Capitulos",
+            error.message
+        );
+
+    }
+
+}
+
+async function cargarPaginaCapitulo(
+    proyecto,
+    numeroCapitulo,
+    paginasPlan
+) {
+
+    monitorPIXELLAB(
+    "Editorial",
+    "proceso",
+    "Capítulo",
+    "Entró a cargarPaginaCapitulo",
+    "monitorEditor"
+);
+
+    try {
+
+        /* ======================================================
+           1. CARGAR JSON DEL CAPÍTULO
+        ====================================================== */
+
+    const archivo =
+    `capitulo-${String(numeroCapitulo).padStart(3,"0")}.json`;
+
+const ruta =
+    `proyectos/${proyecto.projectId}/capitulos/${archivo}`;
+    
+monitorPIXELLAB(
+    "Editorial",
+    "proceso",
+    "Capítulo",
+    "Cargando: " + ruta,
+    "monitorEditor"
+);
+
+const respuesta =
+    await fetch(WORKER_URL, {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+
+            action: "cargar-json",
+
+            ruta: ruta
+
+        })
+
+    });
+
+const datos =
+    await respuesta.json();
+
+if (!datos.ok) {
+
+    throw new Error(
+        "No se pudo cargar el capítulo"
+    );
+
+}
+
+const capitulo =
+    datos.json;
+
+if (!capitulo) {
+
+    throw new Error(
+        "JSON capítulo vacío"
+    );
+
+}
+
+
+        /* ======================================================
+           2. OBTENER paginaEditor
+        ====================================================== */
+
+   const contenedor =
+    document.getElementById(
+        "paginaEditor"
+    );
+
+if (!contenedor) {
+
+    throw new Error(
+        "No existe paginaEditor"
+    );
+
+}
+
+
+// ===============================
+// CONFIGURACIÓN DE PÁGINA A4
+// ===============================
+
+const altoPagina =
+    900;
+
+const margenPagina =
+    40;
+
+let paginaActual =
+    null;
+
+let altoUsado =
+    0;
+
+let numeroPagina =
+    1;
+
+
+// ===============================
+// CREAR NUEVA PÁGINA
+// ===============================
+
+function crearNuevaPagina() {
+
+    const nuevaHoja =
+        document.createElement(
+            "div"
+        );
+
+    nuevaHoja.className =
+    "pl45-hoja-portada";
+
+
+    nuevaHoja.style.background =
+        "#ffffff";
+
+
+    nuevaHoja.style.color =
+        "#000000";
+
+
+    nuevaHoja.style.padding =
+        margenPagina + "px";
+
+
+    nuevaHoja.style.marginBottom =
+        "20px";
+
+
+    nuevaHoja.style.minHeight =
+        altoPagina + "px";
+
+
+    contenedor.appendChild(
+        nuevaHoja
+    );
+
+
+    paginaActual =
+        nuevaHoja;
+
+
+    altoUsado =
+        0;
+
+
+    numeroPagina++;
+
+}
+
+
+// Crear primera página
+
+crearNuevaPagina();
+// ===============================
+// AGREGAR CONTENIDO A LA PÁGINA
+// ===============================
+
+function agregarBloquePagina(elemento) {
+
+    // Agrega el bloque
+    paginaActual.appendChild(elemento);
+
+    // Mide la altura ocupada
+    const altoUsado = paginaActual.scrollHeight;
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Maquetación",
+        "Alto usado: " + altoUsado,
+        "monitorEditor"
+    );
+
+    // ¿Se pasó de la hoja?
+    if (altoUsado > altoPagina) {
+
+        // Sacar el bloque
+        paginaActual.removeChild(elemento);
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Maquetación",
+            "Nueva página",
+            "monitorEditor"
+        );
+
+        // Crear hoja nueva
+        crearNuevaPagina();
+
+        // Volver a agregar el bloque completo
+        paginaActual.appendChild(elemento);
+
+    }
+
+}
+
+        /* ======================================================
+           4. TÍTULO DEL CAPÍTULO
+        ====================================================== */
+
+ const titulo =
+    document.createElement(
+        "h1"
+    );
+
+titulo.textContent =
+    capitulo.titulo;
+
+titulo.style.color =
+    "#000000";
+
+agregarBloquePagina(
+    titulo
+);
+
+
+        /* ======================================================
+           5. INTRODUCCIÓN
+        ====================================================== */
+
+const introduccion =
+    document.createElement(
+        "div"
+    );
+
+introduccion.textContent =
+    capitulo.introduccion;
+
+introduccion.style.color =
+    "#000000";
+
+introduccion.style.fontSize =
+    "18px";
+
+introduccion.style.lineHeight =
+    "1.6";
+
+introduccion.style.whiteSpace =
+    "pre-line";
+
+introduccion.style.marginBottom =
+    "30px";
+
+agregarBloquePagina(
+    introduccion
+);
+
+
+        /* ======================================================
+           6. SECCIONES
+        ====================================================== */
+
+  for (const seccion of capitulo.secciones) {
+
+    const bloqueSeccion =
+        document.createElement("div");
+
+    const subtitulo =
+        document.createElement("h2");
+
+    subtitulo.textContent =
+        `${seccion.numero}. ${seccion.titulo}`;
+
+    subtitulo.style.color = "#000000";
+    subtitulo.style.marginTop = "30px";
+
+    bloqueSeccion.appendChild(
+        subtitulo
+    );
+
+    const contenido =
+        document.createElement("div");
+
+    contenido.textContent =
+        seccion.contenido;
+
+    contenido.style.color = "#000000";
+    contenido.style.fontSize = "18px";
+    contenido.style.lineHeight = "1.6";
+    contenido.style.whiteSpace = "pre-line";
+
+    bloqueSeccion.appendChild(
+        contenido
+    );
+
+    agregarBloquePagina(
+        bloqueSeccion
+    );
+
+}
+
+
+        /* ======================================================
+           7. EJEMPLOS
+        ====================================================== */
+
+  if (
+    capitulo.ejemplos &&
+    capitulo.ejemplos.length > 0
+) {
+
+    const tituloEjemplos =
+        document.createElement(
+            "h2"
+        );
+
+    tituloEjemplos.textContent =
+        "Ejemplos";
+
+    tituloEjemplos.style.color =
+        "#000000";
+
+    tituloEjemplos.style.marginTop =
+        "30px";
+
+    agregarBloquePagina(
+    tituloEjemplos
+);
+
+
+    for (const ejemplo of capitulo.ejemplos) {
+
+        const subtitulo =
+            document.createElement(
+                "h3"
+            );
+
+        subtitulo.textContent =
+            ejemplo.titulo;
+
+        subtitulo.style.color =
+            "#000000";
+
+        agregarBloquePagina(
+    subtitulo
+);
+
+
+        const contenido =
+            document.createElement(
+                "div"
+            );
+
+        contenido.textContent =
+            ejemplo.contenido;
+
+        contenido.style.color =
+            "#000000";
+
+        contenido.style.fontSize =
+            "18px";
+
+        contenido.style.lineHeight =
+            "1.6";
+
+        contenido.style.whiteSpace =
+            "pre-line";
+
+        agregarBloquePagina(
+    contenido
+);
+
+    }
+
+}
+
+
+        /* ======================================================
+           8. CONSEJOS
+        ====================================================== */
+
+if (
+    capitulo.consejos &&
+    capitulo.consejos.length > 0
+) {
+
+    const tituloConsejos =
+        document.createElement(
+            "h2"
+        );
+
+    tituloConsejos.textContent =
+        "Consejos";
+
+    tituloConsejos.style.color =
+        "#000000";
+
+    tituloConsejos.style.marginTop =
+        "30px";
+
+    agregarBloquePagina(
+    tituloConsejos
+);
+
+
+    const lista =
+        document.createElement(
+            "ul"
+        );
+
+    lista.style.color =
+        "#000000";
+
+    lista.style.fontSize =
+        "18px";
+
+    lista.style.lineHeight =
+        "1.6";
+
+
+    for (const consejo of capitulo.consejos) {
+
+        const item =
+            document.createElement(
+                "li"
+            );
+
+        item.textContent =
+            consejo;
+
+        lista.appendChild(
+            item
+        );
+
+    }
+
+
+        /* ======================================================
+           9. ERRORES COMUNES
+        ====================================================== */
+
+ if (
+    capitulo.erroresComunes &&
+    capitulo.erroresComunes.length > 0
+) {
+
+    const tituloErrores =
+        document.createElement(
+            "h2"
+        );
+
+    tituloErrores.textContent =
+        "Errores comunes";
+
+    tituloErrores.style.color =
+        "#000000";
+
+    tituloErrores.style.marginTop =
+        "30px";
+
+    agregarBloquePagina(
+    tituloErrores
+);
+
+
+    const lista =
+        document.createElement(
+            "ul"
+        );
+
+    lista.style.color =
+        "#000000";
+
+    lista.style.fontSize =
+        "18px";
+
+    lista.style.lineHeight =
+        "1.6";
+
+
+    for (const errorComun of capitulo.erroresComunes) {
+
+        const item =
+            document.createElement(
+                "li"
+            );
+
+        item.textContent =
+            errorComun;
+
+        lista.appendChild(
+            item
+        );
+
+    }
+
+
+    agregarBloquePagina(
+    lista
+);
+
+
+}
+
+
+        /* ======================================================
+           10. RESUMEN
+        ====================================================== */
+
+   if (capitulo.resumen) {
+
+    const tituloResumen =
+        document.createElement(
+            "h2"
+        );
+
+    tituloResumen.textContent =
+        "Resumen";
+
+    tituloResumen.style.color =
+        "#000000";
+
+    tituloResumen.style.marginTop =
+        "30px";
+
+    agregarBloquePagina(
+    tituloResumen
+);
+
+
+    const resumen =
+        document.createElement(
+            "div"
+        );
+
+    resumen.textContent =
+        capitulo.resumen;
+
+    resumen.style.color =
+        "#000000";
+
+    resumen.style.fontSize =
+        "18px";
+
+    resumen.style.lineHeight =
+        "1.6";
+
+    resumen.style.whiteSpace =
+        "pre-line";
+
+    agregarBloquePagina(
+    resumen
+);
+
+}
+
+
+        /* ======================================================
+           11. EJERCICIO
+        ====================================================== */
+
+if (capitulo.ejercicio) {
+
+    const tituloEjercicio =
+        document.createElement(
+            "h2"
+        );
+
+    tituloEjercicio.textContent =
+        "Ejercicio";
+
+    tituloEjercicio.style.color =
+        "#000000";
+
+    tituloEjercicio.style.marginTop =
+        "30px";
+
+    agregarBloquePagina(
+    tituloEjercicio
+);
+
+
+    const nombreEjercicio =
+        document.createElement(
+            "h3"
+        );
+
+    nombreEjercicio.textContent =
+        capitulo.ejercicio.titulo;
+
+    nombreEjercicio.style.color =
+        "#000000";
+
+    agregarBloquePagina(
+    nombreEjercicio
+);
+
+
+    const descripcion =
+        document.createElement(
+            "div"
+        );
+
+    descripcion.textContent =
+        capitulo.ejercicio.descripcion;
+
+    descripcion.style.color =
+        "#000000";
+
+    descripcion.style.fontSize =
+        "18px";
+
+    descripcion.style.lineHeight =
+        "1.6";
+
+    descripcion.style.whiteSpace =
+        "pre-line";
+
+    agregarBloquePagina(
+    descripcion
+);
+
+}
+
+
+        /* ======================================================
+           12. FRASE FINAL
+        ====================================================== */
+
+  if (capitulo.fraseFinal) {
+
+    const fraseFinal =
+        document.createElement(
+            "div"
+        );
+
+    Object.assign(nuevaHoja.style, {
+
+    width: "100%",
+    maxWidth: "794px",
+    aspectRatio: "210 / 297",
+
+    margin: "0 auto 20px auto",
+
+    background: "#ffffff",
+    color: "#000000",
+
+    padding: margenPagina + "px",
+
+    boxSizing: "border-box",
+
+    overflow: "hidden"
+
+});
+
+}
+
+
+        /* ======================================================
+           13. AGREGAR LA HOJA AL EDITOR
+        ====================================================== */
+
+   
+
+monitorPIXELLAB(
+    "Editorial",
+    "estado",
+    "Capítulo",
+    "Página cargada correctamente",
+    "monitorEditor"
+);
+
+
+       } 
+
+    } catch(error) {
+
+        monitorPIXELLAB(
+    "Editorial",
+    "error",
+    "Capítulo",
+    error.message,
+    "monitorEditor"
+);
+
+    }
+
+}
+async function cargarPaginaConclusion(proyecto) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Conclusión",
+        "Entró a cargarPaginaConclusion"
+    );
+
+    try {
+
+        const ruta =
+            `proyectos/${proyecto.projectId}/conclusion.json`;
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Conclusión",
+            "Cargando: " + ruta
+        );
+
+        const respuesta =
+            await fetch(WORKER_URL, {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    action: "cargar-json",
+
+                    ruta: ruta
+
+                })
+
+            });
+
+        const datos =
+            await respuesta.json();
+
+        if (!datos.ok) {
+
+            throw new Error(
+                "No se pudo cargar conclusión"
+            );
+
+        }
+
+        const conclusion =
+            datos.json;
+
+        if (!conclusion) {
+
+            throw new Error(
+                "JSON conclusión vacío"
+            );
+
+        }
+
+        const contenedor =
+            document.getElementById(
+                "paginaEditor"
+            );
+
+        if (!contenedor) {
+
+            throw new Error(
+                "No existe paginaEditor"
+            );
+
+        }
+
+        // Crear hoja nueva
+
+        const hoja =
+            document.createElement(
+                "div"
+            );
+
+        hoja.className =
+            "pagina-editor";
+
+        // Estilos de prueba visual
+
+        hoja.style.background =
+            "#ffffff";
+
+        hoja.style.color =
+            "#000000";
+
+        hoja.style.padding =
+            "40px";
+
+        hoja.style.marginBottom =
+            "20px";
+
+        hoja.style.minHeight =
+            "900px";
+
+        // Crear título
+
+        const titulo =
+            document.createElement(
+                "h1"
+            );
+
+        titulo.textContent =
+            conclusion.titulo;
+
+        titulo.style.color =
+            "#000000";
+
+        // Crear contenido
+
+        const texto =
+            document.createElement(
+                "div"
+            );
+
+        let contenido = "";
+
+        contenido +=
+            conclusion.agradecimiento + "\n\n";
+
+        contenido +=
+            conclusion.resumen + "\n\n";
+
+        contenido +=
+            "Aprendizajes clave:\n\n";
+
+        conclusion.aprendizajesClave.forEach(
+
+            item => {
+
+                contenido +=
+                    "• " + item + "\n";
+
+            }
+
+        );
+
+        contenido +=
+            "\n" +
+            conclusion.proximosPasos +
+            "\n\n";
+
+        contenido +=
+            conclusion.motivacionFinal +
+            "\n\n";
+
+        contenido +=
+            conclusion.llamadoALaAccion +
+            "\n\n";
+
+        contenido +=
+            conclusion.despedida;
+
+        texto.textContent =
+            contenido;
+
+        texto.style.whiteSpace =
+            "pre-line";
+
+        texto.style.color =
+            "#000000";
+
+        texto.style.lineHeight =
+            "1.6";
+
+        texto.style.fontSize =
+            "18px";
+
+        // Armar hoja
+
+        hoja.appendChild(
+            titulo
+        );
+
+        hoja.appendChild(
+            texto
+        );
+
+        // Agregar debajo de lo existente
+
+        contenedor.appendChild(
+            hoja
+        );
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Conclusión",
+            "Página cargada correctamente"
+        );
+
+    } catch(error) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Conclusión",
+            error.message
+        );
+
+    }
+
+}
 async function cargarPaginaPrueba(proyecto) {
 
     monitorPIXELLAB(
