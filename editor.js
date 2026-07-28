@@ -709,13 +709,19 @@ function cargarPaginaPortada(proyecto) {
         "proceso",
         "Portada",
         "Entró a cargarPaginaPortada",
-        
-    );        "monitorEditor"
+                "monitorEditor"
+    );
 
 
     const pagina = document.getElementById("paginaEditor");
     const canvas = document.querySelector(".editor-canvas");
-
+monitorPIXELLAB(
+    "Editorial",
+    "info",
+    "Portada ruta",
+    proyecto.portada,
+    "monitorEditor"
+);
 
     if (!pagina) {
 
@@ -753,13 +759,7 @@ function cargarPaginaPortada(proyecto) {
 
 
     const img = document.createElement("img");
-monitorPIXELLAB(
-    "Editorial",
-    "info",
-    "Portada ruta",
-    proyecto.portada,
-    "monitorEditor"
-);
+
 
     img.src = proyecto.portada;
     img.alt = proyecto.titulo || "Portada";
