@@ -100,6 +100,7 @@ async function cargarBibliotecaEditorial(proyectos) {
             autor: proyecto.autor,
             paginas: proyecto.paginas,
             estructura: proyecto.estructura,
+            tienePortada: proyecto.tienePortada,
 
             portada:
                 `${R2_EBOOKS_URL}/proyectos/${proyecto.projectId}/imagenes/portada.png`
