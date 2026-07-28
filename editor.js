@@ -28,7 +28,7 @@ async function listarProyectosEditorial() {
 
             body: JSON.stringify({
 
-                action: "listarEbooks"
+                action: "listar-Ebooks"
 
             })
 
