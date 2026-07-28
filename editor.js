@@ -600,8 +600,8 @@ En esta etapa:
 =========================================================
 */
 const SECCIONES_LIBRO = [
-       "prueba",
-  //  "portada",
+  //     "prueba",
+   "portada",
    // "legales",
   //  "indice",
  //  "introduccion",
@@ -618,7 +618,8 @@ async function cargarLibroCompleto(proyecto) {
         "Editorial",
         "proceso",
         "Libro",
-        "Comenzando carga completa"
+        "Comenzando carga completa",
+                "monitorEditor"
     );
 
     for (const seccion of SECCIONES_LIBRO) {
@@ -634,7 +635,8 @@ async function cargarLibroCompleto(proyecto) {
         "Editorial",
         "estado",
         "Libro",
-        "Carga completa finalizada"
+        "Carga completa finalizada",
+                "monitorEditor"
     );
 
 }
@@ -672,7 +674,8 @@ async function cargarSeccion(
                 "Editorial",
                 "proceso",
                 "Capitulos",
-                "Pendiente"
+                "Pendiente",
+                        "monitorEditor"
             );
 
             await cargarPaginaCapitulo(
@@ -688,6 +691,179 @@ async function cargarSeccion(
             break;
 
     }
+
+}
+// =====================================================
+// PIXELLAB45 EDITORIAL
+// FUNCIÓN: Cargar página de portada en editor A4
+// UBICACIÓN: Editor de eBooks
+// CREA: Hoja A4 (210x297mm) + imagen de portada
+// ADAPTA: Vista móvil manteniendo proporción A4
+// BUSCAR: PORTADA A4
+// =====================================================
+
+function cargarPaginaPortada(proyecto) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Portada",
+        "Entró a cargarPaginaPortada",
+        
+    );        "monitorEditor"
+
+
+    const pagina = document.getElementById("paginaEditor");
+    const canvas = document.querySelector(".editor-canvas");
+
+
+    if (!pagina) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Portada",
+            "No existe paginaEditor",
+                    "monitorEditor"
+        );
+
+        return;
+    }
+
+
+    pagina.innerHTML = "";
+
+
+    const hoja = document.createElement("div");
+
+    hoja.className = "pl45-hoja-portada";
+
+
+    Object.assign(hoja.style, {
+
+        width: "210mm",
+        height: "297mm",
+        position: "relative",
+        overflow: "hidden",
+        margin: "auto",
+        background: "white",
+        transformOrigin: "top center"
+
+    });
+
+
+    const img = document.createElement("img");
+
+
+    img.src = proyecto.portada;
+    img.alt = proyecto.titulo || "Portada";
+    img.className = "portada-editor";
+
+
+    Object.assign(img.style, {
+
+        width: "100%",
+        height: "100%",
+        display: "block",
+        objectFit: "cover"
+
+    });
+
+
+    img.onload = () => {
+    	monitorPIXELLAB(
+    "Editorial",
+    "info",
+    "Medidas imagen",
+    "Imagen real: " +
+    img.naturalWidth +
+    " x " +
+    img.naturalHeight,
+            "monitorEditor"
+);
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Portada",
+            "Imagen cargada correctamente",
+                    "monitorEditor"
+        );
+
+
+        const esMovil = window.innerWidth <= 768;
+
+
+        if (canvas && esMovil) {
+
+
+            const anchoHoja = hoja.offsetWidth;
+            const anchoDisponible = canvas.clientWidth - 20;
+
+
+            if (anchoHoja > 0 && anchoDisponible > 0) {
+
+
+                const escala =
+                    anchoDisponible / anchoHoja;
+
+
+                hoja.style.transform =
+                    `scale(${Math.min(1, escala)})`;
+
+
+                hoja.style.marginBottom =
+                    `-${hoja.offsetHeight * (1 - escala)}px`;
+
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "info",
+                    "Portada",
+                    "Escala móvil aplicada: " + escala,
+                            "monitorEditor"
+                );
+
+            }
+
+
+        } else {
+
+
+            hoja.style.transform = "scale(1)";
+
+
+        }
+
+
+    };
+
+
+    img.onerror = () => {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Portada",
+            "No se pudo cargar la imagen",
+                    "monitorEditor"
+        );
+
+    };
+
+
+    hoja.appendChild(img);
+
+    pagina.appendChild(hoja);
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Portada",
+        "Hoja A4 agregada correctamente",
+        "monitorEditor"
+    );
 
 }
 async function cargarPaginaPrueba(proyecto) {
