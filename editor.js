@@ -2236,35 +2236,45 @@ if (capitulo.ejercicio) {
 }
 
 
-        /* ======================================================
-           12. FRASE FINAL
-        ====================================================== */
+/* ======================================================
+   12. FRASE FINAL
+====================================================== */
 
-  if (capitulo.fraseFinal) {
+if (capitulo.fraseFinal) {
 
     const fraseFinal =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
-    Object.assign(nuevaHoja.style, {
+    fraseFinal.textContent =
+        capitulo.fraseFinal;
 
-    width: "100%",
-    maxWidth: "794px",
-    aspectRatio: "210 / 297",
+    fraseFinal.style.color =
+        "#000000";
 
-    margin: "0 auto 20px auto",
+    fraseFinal.style.fontSize =
+        "20px";
 
-    background: "#ffffff",
-    color: "#000000",
+    fraseFinal.style.fontStyle =
+        "italic";
 
-    padding: margenPagina + "px",
+    fraseFinal.style.fontWeight =
+        "bold";
 
-    boxSizing: "border-box",
+    fraseFinal.style.lineHeight =
+        "1.6";
 
-    overflow: "hidden"
+    fraseFinal.style.marginTop =
+        "40px";
 
-});
+    fraseFinal.style.paddingTop =
+        "20px";
+
+    fraseFinal.style.borderTop =
+        "2px solid #cccccc";
+
+    agregarBloquePagina(
+        fraseFinal
+    );
 
 }
 
