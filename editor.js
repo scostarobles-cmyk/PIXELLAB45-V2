@@ -217,6 +217,15 @@ function mostrarTarjetasEditorial() {
         const urlPortada =
             `${R2_EBOOKS_URL}/${rutaPortada}`;
 
+monitorPIXELLAB(
+    "Editorial",
+    "info",
+    "Estado portada",
+    `${libro.projectId} | tienePortada: ${libro.tienePortada}`,
+    "monitorEditor"
+);
+
+
 
 
         if (libro.tienePortada) {
