@@ -679,6 +679,7 @@ async function cargarSeccion(
             break;
 
     }
+    activarBotoneraEditor();
 
 }
 // =====================================================
@@ -2550,6 +2551,229 @@ async function cargarPaginaConclusion(proyecto) {
     }
 
 }
+
+
+
+function activarModoPortadaEditor() {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Editor",
+        "Entrando modo portada",
+        "monitorEditor"
+    );
+
+
+    const biblioteca =
+        document.getElementById(
+            "editorBiblioteca"
+        );
+
+
+    const monitor =
+        document.getElementById(
+            "monitorEditor"
+        );
+
+
+    const toolbar =
+        document.getElementById(
+            "editorToolbar"
+        );
+
+
+    const pipeline =
+        document.querySelector(
+            ".pipeline-editor"
+        );
+
+
+    const hojas =
+        document.querySelectorAll(
+            "#paginaEditor > div"
+        );
+
+
+    if (biblioteca)
+        biblioteca.style.display = "none";
+
+
+    if (monitor)
+        monitor.parentElement.style.display = "none";
+
+
+    // Ocultar todas las páginas menos portada
+
+    hojas.forEach(
+        (hoja,index)=>{
+
+            if(index === 0){
+
+                hoja.style.display =
+                    "block";
+
+            }else{
+
+                hoja.style.display =
+                    "none";
+
+            }
+
+        }
+    );
+
+
+    if(toolbar){
+
+        toolbar.classList.add(
+            "modo-portada"
+        );
+
+    }
+
+
+    if(pipeline){
+
+        pipeline.style.display =
+            "flex";
+
+    }
+
+
+    const volver =
+        document.getElementById(
+            "btnVolverEditor"
+        );
+
+
+    if(volver){
+
+        volver.style.display =
+            "block";
+
+        volver.onclick =
+            salirModoPortadaEditor;
+
+    }
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Editor",
+        "Portada activa",
+        "monitorEditor"
+    );
+
+}
+
+function salirModoPortadaEditor(){
+
+    const biblioteca =
+        document.getElementById(
+            "editorBiblioteca"
+        );
+
+
+    const monitor =
+        document.getElementById(
+            "monitorEditor"
+        );
+
+
+    const toolbar =
+        document.getElementById(
+            "editorToolbar"
+        );
+
+
+    const hojas =
+        document.querySelectorAll(
+            "#paginaEditor > div"
+        );
+
+
+    if(biblioteca)
+        biblioteca.style.display =
+            "block";
+
+
+    if(monitor)
+        monitor.parentElement.style.display =
+            "block";
+
+
+    hojas.forEach(
+        hoja=>{
+
+            hoja.style.display =
+                "block";
+
+        }
+    );
+
+
+    if(toolbar){
+
+        toolbar.classList.remove(
+            "modo-portada"
+        );
+
+    }
+
+
+    const volver =
+        document.getElementById(
+            "btnVolverEditor"
+        );
+
+
+    if(volver){
+
+        volver.style.display =
+            "none";
+
+    }
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Editor",
+        "Editor restaurado",
+        "monitorEditor"
+    );
+
+}
+
+function activarBotoneraEditor(){
+
+    const botones =
+        document.querySelectorAll(".editor-menu");
+
+    botones.forEach(boton => {
+
+        boton.disabled = false;
+
+        boton.style.opacity = "1";
+
+        boton.style.cursor = "pointer";
+
+    });
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Botonera",
+        "Botones editor activados",
+        "monitorEditor"
+    );
+
+}
+
+
+
 async function cargarPaginaPrueba(proyecto) {
 
     monitorPIXELLAB(
