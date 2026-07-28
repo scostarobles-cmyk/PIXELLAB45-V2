@@ -223,7 +223,7 @@ let bibliotecaEditorial = [];
 
             <button
             class="boton-accion"
-            onclick="seleccionarProyectoEditorial('${proyecto.projectId}')">
+            onclick="alert('${proyecto.projectId}">
 
                 ✏️ Editar
 
