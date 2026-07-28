@@ -156,6 +156,13 @@ function mostrarTarjetasEditorial() {
         const tarjeta =
             document.createElement("article");
 
+monitorPIXELLAB(
+    "Editorial",
+    "info",
+    "Tarjeta creada",
+    libro.titulo,
+    "monitorEditor"
+);
 
         tarjeta.className =
             "editorial-card";
@@ -203,7 +210,13 @@ function mostrarTarjetasEditorial() {
 
         contenedor.appendChild(tarjeta);
 
-
+monitorPIXELLAB(
+    "Editorial",
+    "ok",
+    "Tarjeta agregada",
+    libro.titulo,
+    "monitorEditor"
+);
 
         const imagen =
             tarjeta.querySelector(
