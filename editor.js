@@ -130,6 +130,7 @@ function mostrarTarjetasEditorial() {
     const contenedor =
         document.getElementById("bibliotecaEditorial");
 
+
     if (!contenedor) {
 
         monitorPIXELLAB(
@@ -144,53 +145,133 @@ function mostrarTarjetasEditorial() {
 
     }
 
+
     contenedor.innerHTML = "";
+
 
     for (const libro of bibliotecaEditorial) {
 
-        const tarjeta = document.createElement("article");
 
-        tarjeta.className = "editorial-card";
+        const tarjeta =
+            document.createElement("article");
+
+
+        tarjeta.className =
+            "editorial-card";
+
 
         tarjeta.innerHTML = `
 
         <div class="editorial-cover">
 
-            <img
-                class="portada-editorial"
-                src="${R2_EBOOKS_URL}/proyectos/${libro.projectId}/portada.png">
+            <img class="portada-editorial">
 
         </div>
 
+
         <div class="editorial-info">
 
-            <h3>${libro.titulo}</h3>
+            <h3>
+                ${libro.titulo}
+            </h3>
 
-            <p>Ebook • ${libro.autor}</p>
 
-            <span>PIXELLAB Editorial</span>
+            <p>
+                Ebook • ${libro.autor}
+            </p>
+
+
+            <span>
+                PIXELLAB Editorial
+            </span>
+
 
             <button
                 class="boton-accion"
-                onclick="seleccionarProyectoEditorial('${libro.projectId}')">
+                onclick="abrirEditorEditorial('${libro.projectId}')">
 
                 ✏️ Editar
 
             </button>
 
+
         </div>
 
         `;
 
+
         contenedor.appendChild(tarjeta);
 
+
+
+        const imagen =
+            tarjeta.querySelector(
+                ".portada-editorial"
+            );
+
+
+        const rutaPortada =
+            `proyectos/${libro.projectId}/imagenes/portada.png`;
+
+
+        const urlPortada =
+            `${R2_EBOOKS_URL}/${rutaPortada}`;
+
+
+
+        if (libro.tienePortada) {
+
+
+            imagen.src = urlPortada;
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "ok",
+                "Portada cargada",
+                libro.titulo,
+                "monitorEditor"
+            );
+
+
+        } else {
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "proceso",
+                "Generando portada",
+                libro.titulo,
+                "monitorEditor"
+            );
+
+
+            generarPortadaProyecto(libro)
+            .then((nuevaPortada)=>{
+
+
+                if(nuevaPortada){
+
+                    imagen.src =
+                    `${R2_EBOOKS_URL}/${nuevaPortada}`;
+
+                }
+
+
+            });
+
+
+        }
+
+
     }
+
 
     monitorPIXELLAB(
         "Editorial",
         "ok",
-        "Biblioteca",
-        `${bibliotecaEditorial.length} tarjetas creadas`,
+        "Tarjetas creadas",
+        `${bibliotecaEditorial.length} tarjetas mostradas`,
         "monitorEditor"
     );
 
