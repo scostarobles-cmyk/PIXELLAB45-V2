@@ -125,3 +125,73 @@ async function cargarBibliotecaEditorial(proyectos) {
     );
 
 }
+function mostrarTarjetasEditorial() {
+
+    const contenedor =
+        document.getElementById("bibliotecaEditorial");
+
+    if (!contenedor) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Biblioteca",
+            "No existe bibliotecaEditorial",
+            "monitorEditor"
+        );
+
+        return;
+
+    }
+
+    contenedor.innerHTML = "";
+
+    for (const libro of bibliotecaEditorial) {
+
+        const tarjeta = document.createElement("article");
+
+        tarjeta.className = "editorial-card";
+
+        tarjeta.innerHTML = `
+
+        <div class="editorial-cover">
+
+            <img
+                class="portada-editorial"
+                src="${R2_EBOOKS_URL}/proyectos/${libro.projectId}/portada.png">
+
+        </div>
+
+        <div class="editorial-info">
+
+            <h3>${libro.titulo}</h3>
+
+            <p>Ebook • ${libro.autor}</p>
+
+            <span>PIXELLAB Editorial</span>
+
+            <button
+                class="boton-accion"
+                onclick="seleccionarProyectoEditorial('${libro.projectId}')">
+
+                ✏️ Editar
+
+            </button>
+
+        </div>
+
+        `;
+
+        contenedor.appendChild(tarjeta);
+
+    }
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Biblioteca",
+        `${bibliotecaEditorial.length} tarjetas creadas`,
+        "monitorEditor"
+    );
+
+}
