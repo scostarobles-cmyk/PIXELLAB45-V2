@@ -715,13 +715,7 @@ function cargarPaginaPortada(proyecto) {
 
     const pagina = document.getElementById("paginaEditor");
     const canvas = document.querySelector(".editor-canvas");
-monitorPIXELLAB(
-    "Editorial",
-    "info",
-    "Portada ruta",
-    proyecto.portada,
-    "monitorEditor"
-);
+
 
     if (!pagina) {
 
@@ -756,12 +750,13 @@ monitorPIXELLAB(
         transformOrigin: "top center"
 
     });
-
+const rutaPortada =
+    `${R2_EBOOKS_URL}/proyectos/${proyecto.projectId}/imagenes/portada.png`;
 
     const img = document.createElement("img");
 
 
-    img.src = proyecto.portada;
+    img.src = rutaPortada;
     img.alt = proyecto.titulo || "Portada";
     img.className = "portada-editor";
 
