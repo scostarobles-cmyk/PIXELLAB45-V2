@@ -299,3 +299,17 @@ monitorPIXELLAB(
     );
 
 }
+async function abrirEditorEditorial(projectId) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Editar proyecto",
+        `Abriendo proyecto: ${projectId}`,
+        "monitorEditor"
+    );
+
+
+    await cargarLibroCompleto(projectId);
+
+}
