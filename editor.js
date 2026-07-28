@@ -606,7 +606,7 @@ const SECCIONES_LIBRO = [
    "indice",
    "introduccion",
     "capitulos",
-  //  "conclusion"
+    "conclusion"
 ];
 /* ==========================
    CARGA DEL LIBRO
