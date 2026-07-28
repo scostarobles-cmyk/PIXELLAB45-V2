@@ -221,13 +221,14 @@ let bibliotecaEditorial = [];
             </span>
 
 
-            <button
-            class="boton-accion"
-            onclick="alert('${proyecto.projectId}">
+     <button
+    class="boton-accion"
+    disabled="false"
+    onclick="seleccionarProyectoEditorial('${proyecto.projectId}')">
 
-                ✏️ Editar
+    ✏️ Editar
 
-            </button>
+</button>
 
         </div>
 
