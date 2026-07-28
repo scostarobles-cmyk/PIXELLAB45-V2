@@ -1,4 +1,4 @@
-html{  
+html{ 
     scroll-behavior:smooth;
 }
 
@@ -1255,6 +1255,24 @@ footer{
     overflow-y:auto;
 
     font-family:Arial,sans-serif;
+
+}
+#monitorEditor{
+
+    height: 220px;
+
+    overflow-y: auto;
+
+    overflow-x: hidden;
+
+    padding: 10px;
+
+    border: 1px solid rgba(255,255,255,0.15);
+
+    border-radius: 10px;
+
+    background: rgba(0,0,0,0.25);
+    monitor.scrollTop = monitor.scrollHeight;
 
 }
 

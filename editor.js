@@ -2552,15 +2552,17 @@ async function cargarPaginaConclusion(proyecto) {
 
 }
 
+/* ==========================================
+   MODO EDICIÓN PORTADA
+========================================== */
 
-
-function activarModoPortadaEditor() {
+function abrirModoPortada() {
 
     monitorPIXELLAB(
         "Editorial",
         "proceso",
-        "Editor",
-        "Entrando modo portada",
+        "Portada",
+        "Entró a modo edición portada",
         "monitorEditor"
     );
 
@@ -2570,16 +2572,208 @@ function activarModoPortadaEditor() {
             "editorBiblioteca"
         );
 
-
     const monitor =
         document.getElementById(
             "monitorEditor"
         );
 
+    const paginaEditor =
+        document.getElementById(
+            "paginaEditor"
+        );
 
     const toolbar =
+        document.querySelector(
+            ".editor-toolbar-editor"
+        );
+
+    const pipeline =
+        document.querySelector(
+            ".pipeline-editor"
+        );
+
+
+    if (!paginaEditor) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Portada",
+            "No existe paginaEditor",
+            "monitorEditor"
+        );
+
+        return;
+
+    }
+
+
+    // Ocultar solamente biblioteca y monitor
+
+    if (biblioteca) {
+
+        biblioteca.style.display =
+            "none";
+
+    }
+
+
+    const bloqueMonitor =
+        monitor?.closest("section") ||
+        monitor?.parentElement;
+
+
+    if (bloqueMonitor) {
+
+        bloqueMonitor.style.display =
+            "none";
+
+    }
+
+
+    // Botonera horizontal
+
+    if (toolbar) {
+
+        toolbar.style.display =
+            "flex";
+
+        toolbar.style.flexWrap =
+            "nowrap";
+
+        toolbar.style.overflowX =
+            "auto";
+
+        toolbar.style.justifyContent =
+            "flex-start";
+
+    }
+
+
+    // Pipeline horizontal
+
+    if (pipeline) {
+
+        pipeline.style.display =
+            "block";
+
+
+        const items =
+            pipeline.querySelector(
+                ".pipeline-items"
+            );
+
+
+        if (items) {
+
+            items.style.display =
+                "flex";
+
+            items.style.flexWrap =
+                "nowrap";
+
+            items.style.overflowX =
+                "auto";
+
+            items.style.gap =
+                "15px";
+
+        }
+
+    }
+
+
+    // Mostrar solamente la portada
+
+    const hojas =
+        paginaEditor.querySelectorAll(
+            ".pl45-hoja-portada"
+        );
+
+
+    hojas.forEach(
+        (hoja, indice) => {
+
+            hoja.style.display =
+                indice === 0
+                    ? "block"
+                    : "none";
+
+        }
+    );
+
+
+    // Agregar botón volver
+
+    let botonVolver =
         document.getElementById(
-            "editorToolbar"
+            "btnVolverEditor"
+        );
+
+
+    if (!botonVolver) {
+
+        botonVolver =
+            document.createElement(
+                "button"
+            );
+
+        botonVolver.id =
+            "btnVolverEditor";
+
+        botonVolver.className =
+            "editor-menu";
+
+        botonVolver.textContent =
+            "⬅ Volver";
+
+
+        botonVolver.onclick =
+            cerrarModoPortada;
+
+
+        toolbar.prepend(
+            botonVolver
+        );
+
+    }
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Portada",
+        "Modo portada activo",
+        "monitorEditor"
+    );
+
+}
+
+
+
+
+/* ==========================================
+   SALIR DE MODO PORTADA
+========================================== */
+
+function cerrarModoPortada() {
+
+
+    const biblioteca =
+        document.getElementById(
+            "editorBiblioteca"
+        );
+
+
+    const paginaEditor =
+        document.getElementById(
+            "paginaEditor"
+        );
+
+
+    const toolbar =
+        document.querySelector(
+            ".editor-toolbar-editor"
         );
 
 
@@ -2589,91 +2783,12 @@ function activarModoPortadaEditor() {
         );
 
 
-    const hojas =
-        document.querySelectorAll(
-            "#paginaEditor > div"
-        );
+    if (biblioteca) {
 
-
-    if (biblioteca)
-        biblioteca.style.display = "none";
-
-
-    if (monitor)
-        monitor.parentElement.style.display = "none";
-
-
-    // Ocultar todas las páginas menos portada
-
-    hojas.forEach(
-        (hoja,index)=>{
-
-            if(index === 0){
-
-                hoja.style.display =
-                    "block";
-
-            }else{
-
-                hoja.style.display =
-                    "none";
-
-            }
-
-        }
-    );
-
-
-    if(toolbar){
-
-        toolbar.classList.add(
-            "modo-portada"
-        );
-
-    }
-
-
-    if(pipeline){
-
-        pipeline.style.display =
-            "flex";
-
-    }
-
-
-    const volver =
-        document.getElementById(
-            "btnVolverEditor"
-        );
-
-
-    if(volver){
-
-        volver.style.display =
+        biblioteca.style.display =
             "block";
 
-        volver.onclick =
-            salirModoPortadaEditor;
-
     }
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "estado",
-        "Editor",
-        "Portada activa",
-        "monitorEditor"
-    );
-
-}
-
-function salirModoPortadaEditor(){
-
-    const biblioteca =
-        document.getElementById(
-            "editorBiblioteca"
-        );
 
 
     const monitor =
@@ -2682,57 +2797,61 @@ function salirModoPortadaEditor(){
         );
 
 
-    const toolbar =
-        document.getElementById(
-            "editorToolbar"
-        );
+    const bloqueMonitor =
+        monitor?.closest("section") ||
+        monitor?.parentElement;
 
 
-    const hojas =
-        document.querySelectorAll(
-            "#paginaEditor > div"
-        );
+    if (bloqueMonitor) {
 
-
-    if(biblioteca)
-        biblioteca.style.display =
+        bloqueMonitor.style.display =
             "block";
 
-
-    if(monitor)
-        monitor.parentElement.style.display =
-            "block";
+    }
 
 
-    hojas.forEach(
-        hoja=>{
+    if (paginaEditor) {
 
-            hoja.style.display =
-                "block";
-
-        }
-    );
+        const hojas =
+            paginaEditor.querySelectorAll(
+                ".pl45-hoja-portada"
+            );
 
 
-    if(toolbar){
+        hojas.forEach(
+            hoja => {
 
-        toolbar.classList.remove(
-            "modo-portada"
+                hoja.style.display =
+                    "block";
+
+            }
         );
 
     }
 
 
-    const volver =
-        document.getElementById(
-            "btnVolverEditor"
-        );
+    if (toolbar) {
+
+        toolbar.style.flexWrap =
+            "wrap";
+
+    }
 
 
-    if(volver){
+    if (pipeline) {
 
-        volver.style.display =
-            "none";
+        const items =
+            pipeline.querySelector(
+                ".pipeline-items"
+            );
+
+
+        if (items) {
+
+            items.style.display =
+                "block";
+
+        }
 
     }
 
@@ -2740,12 +2859,14 @@ function salirModoPortadaEditor(){
     monitorPIXELLAB(
         "Editorial",
         "estado",
-        "Editor",
-        "Editor restaurado",
+        "Portada",
+        "Modo portada cerrado",
         "monitorEditor"
     );
 
 }
+
+
 
 function activarBotoneraEditor(){
 
