@@ -542,7 +542,23 @@ async function abrirEditorEditorial(projectId) {
         `Abriendo proyecto: ${projectId}`,
         "monitorEditor"
     );
-    const editor = document.getElementById("paginaEditor");
+    monitorPIXELLAB(
+    "Editorial",
+    "info",
+    "Prueba editor",
+    "Entró a crear contenido en paginaEditor",
+    "monitorEditor"
+);
+
+const editor = document.getElementById("paginaEditor");
+
+monitorPIXELLAB(
+    "Editorial",
+    "info",
+    "paginaEditor",
+    editor ? "Encontrado" : "NO encontrado",
+    "monitorEditor"
+);
 
 if (editor) {
 
