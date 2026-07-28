@@ -12,47 +12,71 @@ async function listarProyectosEditorial() {
         "Editorial",
         "proceso",
         "Biblioteca",
-        "Solicitando proyectos al Worker",
+        "Solicitando listado de eBooks",
         "monitorEditor"
     );
 
-    const respuesta = await fetch(WORKER_URL, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            action: "listar-ebooks"
-        })
-    });
+    try {
 
-    const datos = await respuesta.json();
+        const respuesta = await fetch(WORKER_URL, {
 
-    if (!datos.success) {
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+
+                action: "listarEbooks"
+
+            })
+
+        });
+
+        const datos = await respuesta.json();
+
+
+        if (!datos.ok) {
+
+            monitorPIXELLAB(
+                "Editorial",
+                "error",
+                "Biblioteca",
+                datos.error,
+                "monitorEditor"
+            );
+
+            return;
+
+        }
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Biblioteca",
+            `Se pudieron listar ${datos.ebooks.length} proyectos editoriales`,
+            "monitorEditor"
+        );
+
+
+        cargarBibliotecaEditorial(datos.ebooks);
+
+        mostrarTarjetasEditorial();
+
+    }
+    catch (error) {
 
         monitorPIXELLAB(
             "Editorial",
             "error",
             "Biblioteca",
-            "No se pudieron obtener los proyectos",
+            error.message,
             "monitorEditor"
         );
 
-        return;
-
     }
-
-    monitorPIXELLAB(
-        "Editorial",
-        "ok",
-        "Biblioteca",
-        `${datos.proyectos.length} proyectos encontrados`,
-        "monitorEditor"
-    );
-
-    cargarBibliotecaEditorial(datos.proyectos);
-
-    mostrarTarjetasEditorial();
 
 }
 async function cargarBibliotecaEditorial(proyectos) {
