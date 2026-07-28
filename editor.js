@@ -874,7 +874,7 @@ function cargarPaginaPortada(proyecto) {
     );
 
 }
-let proyectoEditorialActivo = null;
+//let proyectoEditorialActivo = null;
 
 async function seleccionarProyectoEditorial(projectId) {
 
