@@ -2655,7 +2655,19 @@ function abrirModoPortada() {
     // Mostrar botonera edición
 
     mostrarBotoneraEdicionPortada();
+const botoneraEdicion =
+    document.getElementById("botoneraEdicion");
 
+if (botoneraEdicion) {
+
+    botoneraEdicion.style.display = "flex";
+    botoneraEdicion.style.flexDirection = "row";
+    botoneraEdicion.style.flexWrap = "nowrap";
+    botoneraEdicion.style.overflowX = "auto";
+    botoneraEdicion.style.alignItems = "center";
+    botoneraEdicion.style.gap = "10px";
+
+}
 
     monitorPIXELLAB(
         "Editorial",
