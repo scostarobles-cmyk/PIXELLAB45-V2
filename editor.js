@@ -2715,50 +2715,42 @@ alert(toolbar);
     // ==========================
     // BOTÓN VOLVER
     // ==========================
-alert("Creando botón volver");
-    if (
-        toolbar &&
-        !document.getElementById(
-            "btnVolverEditor"
-        )
-    ) {
 
-        const volver =
-            document.createElement(
-                "button"
-            );
+    // ==========================
+// CREAR BOTÓN VOLVER
+// ==========================
+
+const toolbar =
+    document.querySelector(
+        ".editor-toolbar-editor"
+    );
 
 
-        volver.id =
-            "btnVolverEditor";
+if (toolbar) {
 
-
-        volver.className =
-            "editor-menu";
-
-
-        volver.textContent =
-            "⬅ Volver";
-
-
-        volver.onclick =
-            cerrarModoPortada;
-
-
-        toolbar.prepend(
-            volver
+    const botonVolver =
+        document.createElement(
+            "button"
         );
 
-    }
+
+    botonVolver.className =
+        "editor-menu";
 
 
-    monitorPIXELLAB(
-        "Editorial",
-        "estado",
-        "Portada",
-        "Modo portada activo",
-        "monitorEditor"
+    botonVolver.textContent =
+        "⬅ Volver";
+
+
+    botonVolver.onclick =
+        cerrarModoPortada;
+
+
+    toolbar.prepend(
+        botonVolver
     );
+
+}
 
 }
 
