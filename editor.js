@@ -2589,7 +2589,6 @@ function abrirModoPortada() {
 
     modoPortadaActivo = true;
 
-
     const paginaEditor =
         document.getElementById("paginaEditor");
 
@@ -2599,11 +2598,17 @@ function abrirModoPortada() {
     const monitor =
         document.getElementById("monitorEditor");
 
+    const toolbar =
+        document.querySelector(".editor-toolbar-editor");
+
+    const pipeline =
+        document.querySelector(".pipeline-editor");
+
     const botonPortada =
         document.querySelector(".editor-menu");
 
 
-    // ocultar biblioteca
+    // Ocultar biblioteca
 
     if (biblioteca) {
 
@@ -2612,7 +2617,7 @@ function abrirModoPortada() {
     }
 
 
-    // ocultar monitor
+    // Ocultar monitor
 
     if (monitor) {
 
@@ -2621,33 +2626,101 @@ function abrirModoPortada() {
     }
 
 
-    // mostrar únicamente portada
+    // BOTONERA PRINCIPAL EN HORIZONTAL
 
-    if (paginaEditor) {
+    if (toolbar) {
 
-        const hojas =
-            paginaEditor.children;
+        toolbar.style.display =
+            "flex";
+
+        toolbar.style.flexDirection =
+            "row";
+
+        toolbar.style.flexWrap =
+            "nowrap";
+
+        toolbar.style.justifyContent =
+            "flex-start";
+
+        toolbar.style.alignItems =
+            "center";
+
+        toolbar.style.overflowX =
+            "auto";
+
+        toolbar.style.overflowY =
+            "hidden";
+
+        toolbar.style.gap =
+            "10px";
 
 
-        for (let i = 0; i < hojas.length; i++) {
+        const botones =
+            toolbar.querySelectorAll(".editor-menu");
 
-            hojas[i].style.display =
-                i === 0
-                ? "block"
-                : "none";
+        botones.forEach(
+            boton => {
+
+                boton.style.flex =
+                    "0 0 auto";
+
+            }
+        );
+
+    }
+
+
+    // PIPELINE EN HORIZONTAL
+
+    if (pipeline) {
+
+        const items =
+            pipeline.querySelector(".pipeline-items");
+
+        if (items) {
+
+            items.style.display =
+                "flex";
+
+            items.style.flexDirection =
+                "row";
+
+            items.style.flexWrap =
+                "nowrap";
+
+            items.style.overflowX =
+                "auto";
 
         }
 
     }
 
 
-    // cambiar Portada a Volver
+    // Mostrar únicamente portada
+
+    if (paginaEditor) {
+
+        const hojas =
+            paginaEditor.children;
+
+        for (let i = 0; i < hojas.length; i++) {
+
+            hojas[i].style.display =
+                i === 0
+                    ? "block"
+                    : "none";
+
+        }
+
+    }
+
+
+    // Cambiar Portada → Volver
 
     if (botonPortada) {
 
         botonPortada.textContent =
             "⬅ Volver";
-
 
         botonPortada.onclick =
             cerrarModoPortada;
@@ -2655,50 +2728,9 @@ function abrirModoPortada() {
     }
 
 
-    // mostrar botonera edición portada
+    // Mostrar botonera edición
 
     mostrarBotoneraEdicionPortada();
-
-
-    // colocar botonera horizontal
-
-    const botoneraEdicion =
-        document.getElementById("botoneraEdicion");
-
-
-    if (botoneraEdicion) {
-
-        botoneraEdicion.style.display =
-            "flex";
-
-        botoneraEdicion.style.flexDirection =
-            "row";
-
-        botoneraEdicion.style.flexWrap =
-            "nowrap";
-
-        botoneraEdicion.style.overflowX =
-            "auto";
-
-        botoneraEdicion.style.overflowY =
-            "hidden";
-
-        botoneraEdicion.style.alignItems =
-            "center";
-
-
-        const botones =
-            botoneraEdicion.children;
-
-
-        for (let i = 0; i < botones.length; i++) {
-
-            botones[i].style.flex =
-                "0 0 auto";
-
-        }
-
-    }
 
 
     monitorPIXELLAB(
