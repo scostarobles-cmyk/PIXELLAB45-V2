@@ -2606,19 +2606,25 @@ function abrirModoPortada() {
         document.querySelector(".editor-menu");
 
 
-    // Ocultar sectores
+    // Ocultar biblioteca
 
     if (biblioteca) {
+
         biblioteca.style.display = "none";
+
     }
 
+
+    // Ocultar monitor
 
     if (monitor) {
+
         monitor.style.display = "none";
+
     }
 
 
-    // Mostrar solamente la primera hoja (portada)
+    // Mostrar solamente portada
 
     if (paginaEditor) {
 
@@ -2652,22 +2658,61 @@ function abrirModoPortada() {
     }
 
 
-    // Mostrar botonera edición
+    // Mostrar botonera edición portada
 
     mostrarBotoneraEdicionPortada();
-const botoneraEdicion =
-    document.getElementById("botoneraEdicion");
 
-if (botoneraEdicion) {
 
-    botoneraEdicion.style.display = "flex";
-    botoneraEdicion.style.flexDirection = "row";
-    botoneraEdicion.style.flexWrap = "nowrap";
-    botoneraEdicion.style.overflowX = "auto";
-    botoneraEdicion.style.alignItems = "center";
-    botoneraEdicion.style.gap = "10px";
+    // Botonera horizontal
 
-}
+    const botoneraEdicion =
+        document.getElementById("botoneraEdicion");
+
+
+    if (botoneraEdicion) {
+
+        botoneraEdicion.style.display =
+            "flex";
+
+        botoneraEdicion.style.flexDirection =
+            "row";
+
+        botoneraEdicion.style.flexWrap =
+            "nowrap";
+
+        botoneraEdicion.style.overflowX =
+            "auto";
+
+        botoneraEdicion.style.overflowY =
+            "hidden";
+
+        botoneraEdicion.style.alignItems =
+            "center";
+
+        botoneraEdicion.style.justifyContent =
+            "flex-start";
+
+        botoneraEdicion.style.gap =
+            "10px";
+
+
+        const botones =
+            botoneraEdicion.querySelectorAll(
+                "button"
+            );
+
+
+        botones.forEach(
+            boton => {
+
+                boton.style.flex =
+                    "0 0 auto";
+
+            }
+        );
+
+    }
+
 
     monitorPIXELLAB(
         "Editorial",
