@@ -152,27 +152,51 @@ Estado del proceso de edición.
     <p class="editor-subtitle">
         Editor profesional de publicaciones digitales.
     </p>
+<!-- BOTONERA PRINCIPAL -->
 
-    <!-- BOTONERA -->
-    
-      <div class="editor-toolbar-editor" id="editorToolbar">
-    
-      <button 
-class="editor-menu" onclick="abrirModoPortada()">📄 Portada</button>
-          
-        <button class="editor-menu">⚖️ Legales</button>
+<div class="editor-toolbar-editor" id="editorToolbar">
 
-        <button class="editor-menu">📑 Índice</button>
+    <button class="editor-menu" onclick="abrirModoPortada()">
+        <span>📄</span>
+        <small>Portada</small>
+    </button>
 
-        <button class="editor-menu">📝 Capítulos</button>
+    <button class="editor-menu">
+        <span>⚖️</span>
+        <small>Legales</small>
+    </button>
 
-        <button class="editor-menu">🖼️ Imágenes</button>
+    <button class="editor-menu">
+        <span>📑</span>
+        <small>Índice</small>
+    </button>
 
-        <button class="editor-menu">🎨 Diseño</button>
-          
-        <button class="editor-menu" id="btnVolverEditor" style="display:none;"> ⬅ Volver</button>
+    <button class="editor-menu">
+        <span>📝</span>
+        <small>Capítulos</small>
+    </button>
 
-    </div>
+    <button class="editor-menu">
+        <span>🖼️</span>
+        <small>Imágenes</small>
+    </button>
+
+    <button class="editor-menu">
+        <span>🎨</span>
+        <small>Diseño</small>
+    </button>
+
+    <button class="editor-menu" id="btnVolverEditor" style="display:none;">
+        <span>⬅</span>
+        <small>Volver</small>
+    </button>
+
+</div>
+
+
+<!-- BOTONERA EDICIÓN -->
+
+<div id="botoneraEdicion"></div>
         <div id="botoneraEdicion"></div>
     <!-- PIPELINE -->
 
