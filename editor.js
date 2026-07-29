@@ -2552,189 +2552,141 @@ async function cargarPaginaConclusion(proyecto) {
 
 }
 
-/* ==========================================
-   MODO EDICIÓN PORTADA
-========================================== */
-
 function abrirModoPortada() {
 
     monitorPIXELLAB(
         "Editorial",
         "proceso",
         "Portada",
-        "Entró a modo edición portada",
+        "Entrando a modo portada",
         "monitorEditor"
     );
 
 
     const biblioteca =
-        document.getElementById(
-            "editorBiblioteca"
-        );
+        document.getElementById("editorBiblioteca");
 
     const monitor =
-        document.getElementById(
-            "monitorEditor"
-        );
+        document.getElementById("monitorEditor");
 
     const paginaEditor =
-        document.getElementById(
-            "paginaEditor"
-        );
+        document.getElementById("paginaEditor");
 
     const toolbar =
-        document.querySelector(
-            ".editor-toolbar-editor"
-        );
+        document.querySelector(".editor-toolbar-editor");
 
     const pipeline =
-        document.querySelector(
-            ".pipeline-editor"
-        );
+        document.querySelector(".pipeline-editor");
 
 
-    if (!paginaEditor) {
-
-        monitorPIXELLAB(
-            "Editorial",
-            "error",
-            "Portada",
-            "No existe paginaEditor",
-            "monitorEditor"
-        );
-
-        return;
-
-    }
-
-
-    // Ocultar solamente biblioteca y monitor
+    // OCULTAR SOLO BIBLIOTECA
 
     if (biblioteca) {
+        biblioteca.style.display = "none";
+    }
 
-        biblioteca.style.display =
-            "none";
+
+    // OCULTAR SOLO MONITOR Y SU TITULO/BLOQUE
+    if (monitor) {
+
+        monitor.style.display = "none";
+
+        const tituloMonitor =
+            monitor.previousElementSibling;
+
+        if (tituloMonitor) {
+
+            tituloMonitor.style.display = "none";
+
+        }
 
     }
 
 
-    const bloqueMonitor =
-        monitor?.closest("section") ||
-        monitor?.parentElement;
-
-
-    if (bloqueMonitor) {
-
-        bloqueMonitor.style.display =
-            "none";
-
-    }
-
-
-    // Botonera horizontal
+    // BOTONERA HORIZONTAL
 
     if (toolbar) {
 
-        toolbar.style.display =
-            "flex";
-
-        toolbar.style.flexWrap =
-            "nowrap";
-
-        toolbar.style.overflowX =
-            "auto";
-
-        toolbar.style.justifyContent =
-            "flex-start";
+        toolbar.style.display = "flex";
+        toolbar.style.flexWrap = "nowrap";
+        toolbar.style.overflowX = "auto";
+        toolbar.style.justifyContent = "flex-start";
 
     }
 
 
-    // Pipeline horizontal
+    // PIPELINE HORIZONTAL
 
     if (pipeline) {
 
-        pipeline.style.display =
-            "block";
-
+        pipeline.style.display = "block";
 
         const items =
-            pipeline.querySelector(
-                ".pipeline-items"
-            );
-
+            pipeline.querySelector(".pipeline-items");
 
         if (items) {
 
-            items.style.display =
-                "flex";
-
-            items.style.flexWrap =
-                "nowrap";
-
-            items.style.overflowX =
-                "auto";
-
-            items.style.gap =
-                "15px";
+            items.style.display = "flex";
+            items.style.flexWrap = "nowrap";
+            items.style.overflowX = "auto";
+            items.style.gap = "15px";
 
         }
 
     }
 
 
-    // Mostrar solamente la portada
+    // MOSTRAR SOLO LA PRIMERA HOJA
 
-    const hojas =
-        paginaEditor.querySelectorAll(
-            ".pl45-hoja-portada"
-        );
+    if (paginaEditor) {
 
-
-    hojas.forEach(
-        (hoja, indice) => {
-
-            hoja.style.display =
-                indice === 0
-                    ? "block"
-                    : "none";
-
-        }
-    );
-
-
-    // Agregar botón volver
-
-    let botonVolver =
-        document.getElementById(
-            "btnVolverEditor"
-        );
-
-
-    if (!botonVolver) {
-
-        botonVolver =
-            document.createElement(
-                "button"
+        const hojas =
+            paginaEditor.querySelectorAll(
+                ".pl45-hoja-portada"
             );
 
-        botonVolver.id =
+
+        hojas.forEach(
+            (hoja, index) => {
+
+                hoja.style.display =
+                    index === 0
+                        ? "block"
+                        : "none";
+
+            }
+        );
+
+    }
+
+
+    // CREAR BOTÓN VOLVER SI NO EXISTE
+
+    if (toolbar &&
+        !document.getElementById("btnVolverEditor")) {
+
+
+        const volver =
+            document.createElement("button");
+
+
+        volver.id =
             "btnVolverEditor";
 
-        botonVolver.className =
+
+        volver.className =
             "editor-menu";
 
-        botonVolver.textContent =
+
+        volver.textContent =
             "⬅ Volver";
 
 
-        botonVolver.onclick =
+        volver.onclick =
             cerrarModoPortada;
 
 
-        toolbar.prepend(
-            botonVolver
-        );
+        toolbar.prepend(volver);
 
     }
 
@@ -2748,7 +2700,6 @@ function abrirModoPortada() {
     );
 
 }
-
 
 
 
