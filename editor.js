@@ -2617,8 +2617,6 @@ function abrirModoPortada() {
         );
 
 
-    // OCULTAR BIBLIOTECA
-
     if (biblioteca) {
 
         biblioteca.style.display =
@@ -2626,8 +2624,6 @@ function abrirModoPortada() {
 
     }
 
-
-    // OCULTAR MONITOR
 
     if (monitor) {
 
@@ -2637,50 +2633,18 @@ function abrirModoPortada() {
     }
 
 
-    // BOTONERA HORIZONTAL
-
     if (toolbar) {
 
         toolbar.style.display =
             "flex";
 
-        toolbar.style.flexWrap =
-            "nowrap";
-
-        toolbar.style.overflowX =
-            "auto";
-
-        toolbar.style.justifyContent =
-            "flex-start";
-
     }
 
 
-    // PIPELINE HORIZONTAL
-
     if (pipeline) {
 
-        const items =
-            pipeline.querySelector(
-                ".pipeline-items"
-            );
-
-
-        if (items) {
-
-            items.style.display =
-                "flex";
-
-            items.style.flexDirection =
-                "row";
-
-            items.style.flexWrap =
-                "nowrap";
-
-            items.style.overflowX =
-                "auto";
-
-        }
+        pipeline.style.display =
+            "flex";
 
     }
 
@@ -2690,60 +2654,45 @@ function abrirModoPortada() {
     if (paginaEditor) {
 
         const hojas =
-            paginaEditor.querySelectorAll(
-                ".pl45-hoja-portada"
-            );
+            paginaEditor.children;
 
 
-        hojas.forEach(
-            (hoja, index)=>{
+        for (let i = 0; i < hojas.length; i++) {
 
-                hoja.style.display =
-                    index === 0
-                        ? "block"
-                        : "none";
+            hojas[i].style.display =
+                i === 0
+                    ? "block"
+                    : "none";
 
-            }
-        );
+        }
 
     }
 
 
-    // CAMBIAR PORTADA A VOLVER SIN PERDER ICONO
+    // PORTADA -> VOLVER
 
-    if (toolbar) {
-
-        const botones =
-            toolbar.querySelectorAll(
-                ".editor-menu"
-            );
-
-
-        botones.forEach(
-            boton => {
-
-                if (
-                    boton.textContent.includes(
-                        "Portada"
-                    )
-                ) {
-
-                    boton.innerHTML =
-                        `
-                        <span>⬅</span>
-                        <small>Volver</small>
-                        `;
-
-
-                    boton.onclick =
-                        cerrarModoPortada;
-
-                }
-
-            }
+    const botonPortada =
+        document.querySelector(
+            ".editor-menu"
         );
 
+
+    if (botonPortada) {
+
+        botonPortada.innerHTML =
+            `
+            <span>⬅</span>
+            <small>Volver</small>
+            `;
+
+
+        botonPortada.onclick =
+            cerrarModoPortada;
+
     }
+
+
+    mostrarBotoneraEdicionPortada();
 
 
     monitorPIXELLAB(
@@ -2755,9 +2704,9 @@ function abrirModoPortada() {
     );
 
 }
-/* ==========================================
-   SALIR DE MODO PORTADA
-========================================== */
+
+
+
 
 function cerrarModoPortada() {
 
@@ -2791,21 +2740,31 @@ function cerrarModoPortada() {
     }
 
 
-    const hojas =
-        document.querySelectorAll(
-            ".pl45-hoja-portada"
+    // RESTAURAR TODAS LAS HOJAS
+
+    const paginaEditor =
+        document.getElementById(
+            "paginaEditor"
         );
 
 
-    hojas.forEach(
-        hoja => {
+    if (paginaEditor) {
 
-            hoja.style.display =
+        const hojas =
+            paginaEditor.children;
+
+
+        for (let i = 0; i < hojas.length; i++) {
+
+            hojas[i].style.display =
                 "block";
 
         }
-    );
 
+    }
+
+
+    // VOLVER A PORTADA CON ICONO
 
     const botonPortada =
         document.querySelector(
@@ -2815,8 +2774,11 @@ function cerrarModoPortada() {
 
     if (botonPortada) {
 
-        botonPortada.textContent =
-            "Portada";
+        botonPortada.innerHTML =
+            `
+            <span>📄</span>
+            <small>Portada</small>
+            `;
 
 
         botonPortada.onclick =
