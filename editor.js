@@ -2599,14 +2599,11 @@ function abrirModoPortada() {
     const monitor =
         document.getElementById("monitorEditor");
 
-    const toolbar =
-        document.querySelector(".editor-toolbar-editor");
-
     const botonPortada =
         document.querySelector(".editor-menu");
 
 
-    // Ocultar biblioteca
+    // ocultar biblioteca
 
     if (biblioteca) {
 
@@ -2615,7 +2612,7 @@ function abrirModoPortada() {
     }
 
 
-    // Ocultar monitor
+    // ocultar monitor
 
     if (monitor) {
 
@@ -2624,7 +2621,7 @@ function abrirModoPortada() {
     }
 
 
-    // Mostrar solamente portada
+    // mostrar únicamente portada
 
     if (paginaEditor) {
 
@@ -2644,7 +2641,7 @@ function abrirModoPortada() {
     }
 
 
-    // Mantener botón Portada visible y cambiarlo
+    // cambiar Portada a Volver
 
     if (botonPortada) {
 
@@ -2658,12 +2655,12 @@ function abrirModoPortada() {
     }
 
 
-    // Mostrar botonera edición portada
+    // mostrar botonera edición portada
 
     mostrarBotoneraEdicionPortada();
 
 
-    // Botonera horizontal
+    // colocar botonera horizontal
 
     const botoneraEdicion =
         document.getElementById("botoneraEdicion");
@@ -2689,27 +2686,17 @@ function abrirModoPortada() {
         botoneraEdicion.style.alignItems =
             "center";
 
-        botoneraEdicion.style.justifyContent =
-            "flex-start";
-
-        botoneraEdicion.style.gap =
-            "10px";
-
 
         const botones =
-            botoneraEdicion.querySelectorAll(
-                "button"
-            );
+            botoneraEdicion.children;
 
 
-        botones.forEach(
-            boton => {
+        for (let i = 0; i < botones.length; i++) {
 
-                boton.style.flex =
-                    "0 0 auto";
+            botones[i].style.flex =
+                "0 0 auto";
 
-            }
-        );
+        }
 
     }
 
