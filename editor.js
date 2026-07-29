@@ -2585,57 +2585,27 @@ function abrirModoPortada() {
 
 
 
-function cerrarModoPortada() {
-
-    modoPortadaActivo = false;
-
-
-    const botonPortada =
-        document.querySelector(
-            ".editor-menu"
-        );
-
-
-    if (botonPortada) {
-
-        botonPortada.textContent =
-            "📄 Portada";
-
-        botonPortada.onclick =
-            abrirModoPortada;
-
-    }
-
-    // restaurar estado normal
-
-
-
+function abrirModoPortada() {
 
     const biblioteca =
         document.getElementById(
             "editorBiblioteca"
         );
 
-
     const monitor =
         document.getElementById(
             "monitorEditor"
         );
 
-
     const toolbar =
-    document.querySelector(
-        ".editor-toolbar-editor"
-    );
-
-alert(toolbar);
-
+        document.querySelector(
+            ".editor-toolbar-editor"
+        );
 
     const pipeline =
         document.querySelector(
             ".pipeline-editor"
         );
-
 
     const paginaEditor =
         document.getElementById(
@@ -2643,9 +2613,7 @@ alert(toolbar);
         );
 
 
-    // ==========================
     // OCULTAR BIBLIOTECA
-    // ==========================
 
     if (biblioteca) {
 
@@ -2655,33 +2623,17 @@ alert(toolbar);
     }
 
 
-    // ==========================
     // OCULTAR MONITOR
-    // ==========================
 
     if (monitor) {
 
         monitor.style.display =
             "none";
 
-
-        const tituloMonitor =
-            monitor.previousElementSibling;
-
-
-        if (tituloMonitor) {
-
-            tituloMonitor.style.display =
-                "none";
-
-        }
-
     }
 
 
-    // ==========================
     // BOTONERA HORIZONTAL
-    // ==========================
 
     if (toolbar) {
 
@@ -2700,9 +2652,7 @@ alert(toolbar);
     }
 
 
-    // ==========================
     // PIPELINE HORIZONTAL
-    // ==========================
 
     if (pipeline) {
 
@@ -2726,17 +2676,12 @@ alert(toolbar);
             items.style.overflowX =
                 "auto";
 
-            items.style.gap =
-                "15px";
-
         }
 
     }
 
 
-    // ==========================
     // MOSTRAR SOLO PORTADA
-    // ==========================
 
     if (paginaEditor) {
 
@@ -2760,111 +2705,36 @@ alert(toolbar);
     }
 
 
-
-
-}
-
-
-/* ==========================================
-   SALIR DE MODO PORTADA
-========================================== */
-
-function cerrarModoPortada() {
-
-
-    const biblioteca =
-        document.getElementById(
-            "editorBiblioteca"
-        );
-
-
-    const paginaEditor =
-        document.getElementById(
-            "paginaEditor"
-        );
-
-
-    const toolbar =
-        document.querySelector(
-            ".editor-toolbar-editor"
-        );
-
-
-    const pipeline =
-        document.querySelector(
-            ".pipeline-editor"
-        );
-
-
-    if (biblioteca) {
-
-        biblioteca.style.display =
-            "block";
-
-    }
-
-
-    const monitor =
-        document.getElementById(
-            "monitorEditor"
-        );
-
-
-    const bloqueMonitor =
-        monitor?.closest("section") ||
-        monitor?.parentElement;
-
-
-    if (bloqueMonitor) {
-
-        bloqueMonitor.style.display =
-            "block";
-
-    }
-
-
-    if (paginaEditor) {
-
-        const hojas =
-            paginaEditor.querySelectorAll(
-                ".pl45-hoja-portada"
-            );
-
-
-        hojas.forEach(
-            hoja => {
-
-                hoja.style.display =
-                    "block";
-
-            }
-        );
-
-    }
-
+    // CAMBIAR BOTÓN PORTADA A VOLVER
 
     if (toolbar) {
 
-        toolbar.style.flexWrap =
-            "wrap";
-
-    }
-
-
-    if (pipeline) {
-
-        const items =
-            pipeline.querySelector(
-                ".pipeline-items"
+        const botones =
+            toolbar.querySelectorAll(
+                ".editor-menu"
             );
 
 
-        if (items) {
+        botones.forEach(
+            boton => {
 
-            items.style.display =
-                "block";
+                if (
+                    boton.textContent.includes(
+                        "Portada"
+                    )
+                ) {
 
-        }
+                    boton.textContent =
+                        "⬅ Volver";
+
+
+                    boton.onclick =
+                        cerrarModoPortada;
+
+                }
+
+            }
+        );
 
     }
 
@@ -2873,9 +2743,19 @@ function cerrarModoPortada() {
         "Editorial",
         "estado",
         "Portada",
-        "Modo portada cerrado",
+        "Modo portada activo",
         "monitorEditor"
     );
+
+}
+
+/* ==========================================
+   SALIR DE MODO PORTADA
+========================================== */
+
+function cerrarModoPortada() {
+
+    location.reload();
 
 }
 
