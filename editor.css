@@ -104,122 +104,148 @@
 
 }
 
-/* ==========================
-   BOTONERA EDITOR EDITORIAL
-========================== */
+/* =================================
+   BOTONERA PRINCIPAL Y EDICIÓN
+================================= */
 
-.editor-toolbar-editor {
-
-    width: 100%;
+.editor-toolbar-editor,
+#botoneraEdicion {
 
     display: flex;
 
-    flex-wrap: wrap;
+    flex-direction: row;
 
-    justify-content: center;
+    flex-wrap: nowrap;
 
-    gap: 12px;
+    align-items: center;
 
-    margin-top: 20px;
+    justify-content: flex-start;
 
-    margin-bottom: 25px;
+    gap: 10px;
 
-    padding: 15px;
+    width: 100%;
 
-    background: rgba(255,255,255,0.04);
+    overflow-x: auto;
 
-    border-radius: 14px;
+    overflow-y: hidden;
+
+    padding: 8px 0;
 
 }
 
 
-/* BOTONES EDITOR */
+/* BOTONES CUADRADOS */
 
 .editor-menu {
 
-    min-width: 130px;
+    width: 80px;
 
-    padding: 12px 18px;
+    height: 70px;
 
-    border-radius: 10px;
-
-    border: 1px solid rgba(0,217,255,0.5);
-
-    background: rgba(0,217,255,0.08);
-
-    color: white;
-
-    font-size: 15px;
-
-    font-weight: 600;
-
-    cursor: pointer;
-
-    transition: all 0.3s ease;
-
-}
-
-
-/* EFECTO HOVER */
-
-.editor-menu:hover {
-
-    background: rgba(0,217,255,0.2);
-
-    transform: translateY(-2px);
-
-}
-
-
-/* MÓVIL */
-
-@media (max-width:768px) {
-
-    .editor-toolbar-editor {
-
-        gap: 10px;
-
-        padding: 12px;
-
-        margin-bottom: 20px;
-
-    }
-
-
-    .editor-menu {
-
-        width: 100%;
-
-        min-width: unset;
-
-        font-size: 14px;
-
-    }
-
-}
-
-/* ==========================
-   MODO EDICIÓN PORTADA
-========================== */
-
-.editor-toolbar-editor.modo-portada {
-
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    justify-content: flex-start;
-
-}
-
-
-.editor-toolbar-editor.modo-portada .editor-menu {
+    min-width: 80px;
 
     flex: 0 0 auto;
 
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 5px;
+
+    border-radius: 12px;
+
+    border: 1px solid #00d9ff;
+
+    background: #0b63ce;
+
+    color: white;
+
+    cursor: pointer;
+
+    font-size: 13px;
+
 }
 
 
-.editor-portada-activa {
+/* ICONO DEL BOTÓN */
 
-    display: block !important;
+.editor-menu span:first-child {
+
+    font-size: 26px;
+
+    line-height: 1;
+
+}
+
+
+/* TEXTO DEL BOTÓN */
+
+.editor-menu small,
+.editor-menu .texto-boton {
+
+    font-size: 12px;
+
+    white-space: nowrap;
+
+}
+
+
+/* EFECTO AL TOCAR */
+
+.editor-menu:active {
+
+    transform: scale(0.95);
+
+}
+
+
+
+/* =================================
+   PIPELINE HORIZONTAL SIEMPRE
+================================= */
+
+.pipeline-editor {
+
+    width: 100%;
+
+}
+
+
+.pipeline-items {
+
+    display: flex;
+
+    flex-direction: row;
+
+    flex-wrap: nowrap;
+
+    align-items: center;
+
+    gap: 10px;
+
+    width: 100%;
+
+    overflow-x: auto;
+
+    overflow-y: hidden;
+
+}
+
+
+.pipeline-items p {
+
+    flex: 0 0 auto;
+
+    white-space: nowrap;
+
+    padding: 10px 15px;
+
+    margin: 0;
+
+    border-radius: 10px;
 
 }
