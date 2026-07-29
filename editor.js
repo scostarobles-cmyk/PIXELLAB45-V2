@@ -2648,64 +2648,7 @@ function abrirModoPortada() {
             "flex-start";
 
     }
-// ==========================
-// CREAR BOTÓN VOLVER
-// ==========================
-alert("Creando botón volver");
-const toolbar =
-    document.querySelector(
-        ".editor-toolbar-editor"
-    );
 
-
-if (toolbar) {
-
-    let botonVolver =
-        document.getElementById( 
-            "btnVolverEditor"
-        );
-
-
-    if (!botonVolver) {
-
-        botonVolver =
-            document.createElement(
-                "button"
-            );
-
-
-        botonVolver.id =
-            "btnVolverEditor";
-
-
-        botonVolver.className =
-            "editor-menu";
-
-
-        botonVolver.textContent =
-            "⬅ Volver";
-
-
-        botonVolver.onclick =
-            cerrarModoPortada;
-
-
-        toolbar.prepend(
-            botonVolver
-        );
-
-
-        monitorPIXELLAB(
-            "Editorial",
-            "estado",
-            "Portada",
-            "Botón volver creado",
-            "monitorEditor"
-        );
-
-    }
-
-}
 
     // ==========================
     // PIPELINE HORIZONTAL
@@ -2767,7 +2710,53 @@ if (toolbar) {
     }
 
 
+    // ==========================
+    // BOTÓN VOLVER
+    // ==========================
+alert("Creando botón volver");
+    if (
+        toolbar &&
+        !document.getElementById(
+            "btnVolverEditor"
+        )
+    ) {
 
+        const volver =
+            document.createElement(
+                "button"
+            );
+
+
+        volver.id =
+            "btnVolverEditor";
+
+
+        volver.className =
+            "editor-menu";
+
+
+        volver.textContent =
+            "⬅ Volver";
+
+
+        volver.onclick =
+            cerrarModoPortada;
+
+
+        toolbar.prepend(
+            volver
+        );
+
+    }
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Portada",
+        "Modo portada activo",
+        "monitorEditor"
+    );
 
 }
 
