@@ -829,8 +829,8 @@ function cargarPaginaPortada(proyecto) {
                     `scale(${Math.min(1, escala)})`;
 
 
-                hoja.style.marginBottom =
-                    `-${hoja.offsetHeight * (1 - escala)}px`;
+        //        hoja.style.marginBottom =
+    //                `-${hoja.offsetHeight * (1 - escala)}px`;
 
             }
 
