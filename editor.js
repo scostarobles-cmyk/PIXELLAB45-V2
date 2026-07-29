@@ -2777,6 +2777,7 @@ function abrirModoPortada() {
         "Modo portada activo",
         "monitorEditor"
     );
+    mostrarBotoneraEdicionPortada();
 
 }
 
@@ -2960,6 +2961,42 @@ function activarBotoneraEditor(){
     );
 
 }
+
+function mostrarBotoneraEdicionPortada() {
+
+    const botonera =
+        document.getElementById("botoneraEdicion");
+
+    if (!botonera) return;
+
+    botonera.innerHTML = "";
+
+    const botones = [
+        "➕ Título",
+        "✍ Autor",
+        "🔷 Logo",
+        "🖼 Imagen",
+        "💾 Guardar"
+    ];
+
+    botones.forEach(texto => {
+
+        const boton =
+            document.createElement("button");
+
+        boton.textContent = texto;
+
+        boton.className =
+            "btn-editor-portada";
+
+        botonera.appendChild(boton);
+
+    });
+
+    botonera.style.display = "flex";
+
+}
+
 
 
 
