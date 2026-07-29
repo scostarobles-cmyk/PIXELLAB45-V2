@@ -698,104 +698,131 @@ function cargarPaginaPortada(proyecto) {
         "proceso",
         "Portada",
         "Entró a cargarPaginaPortada",
-                "monitorEditor"
+        "monitorEditor"
     );
 
 
-    const pagina = document.getElementById("paginaEditor");
-    const canvas = document.querySelector(".editor-canvas");
+    const contenedor =
+        document.getElementById(
+            "paginaEditor"
+        );
 
 
-    if (!pagina) {
+    const canvas =
+        document.querySelector(
+            ".editor-canvas"
+        );
+
+
+    if (!contenedor) {
 
         monitorPIXELLAB(
             "Editorial",
             "error",
             "Portada",
             "No existe paginaEditor",
-                    "monitorEditor"
+            "monitorEditor"
         );
 
         return;
+
     }
 
 
-    pagina.innerHTML = "";
-
-
-    const hoja = document.createElement("div");
-
-    hoja.className = "pl45-hoja-portada";
-
-
-    Object.assign(hoja.style, {
-
-    width: "100%",
-    maxWidth: "794px",
-    aspectRatio: "210 / 297",
-    margin: "0 auto 20px auto",
-        background: "white",
-        transformOrigin: "top center"
-        
-
-    });
-const rutaPortada =
-    `${R2_EBOOKS_URL}/proyectos/${proyecto.projectId}/imagenes/portada.png`;
-
-    const img = document.createElement("img");
-
-
-    img.src = rutaPortada;
-    img.alt = proyecto.titulo || "Portada";
-    img.className = "portada-editor";
-
-
-    Object.assign(img.style, {
-
-        width: "100%",
-        height: "100%",
-        display: "block",
-        objectFit: "cover"
-
-    });
-
-
-    img.onload = () => {
-    	monitorPIXELLAB(
-    "Editorial",
-    "info",
-    "Medidas imagen",
-    "Imagen real: " +
-    img.naturalWidth +
-    " x " +
-    img.naturalHeight,
-            "monitorEditor"
-);
-
-        monitorPIXELLAB(
-            "Editorial",
-            "estado",
-            "Portada",
-            "Imagen cargada correctamente",
-                    "monitorEditor"
+    const hoja =
+        document.createElement(
+            "div"
         );
 
 
-        const esMovil = window.innerWidth <= 768;
+    hoja.className =
+        "pl45-hoja-portada";
 
 
-        if (canvas && esMovil) {
+    Object.assign(
+        hoja.style,
+        {
+
+            width: "100%",
+            maxWidth: "794px",
+            aspectRatio: "210 / 297",
+
+            margin:
+                "0 auto 20px auto",
+
+            background:
+                "white",
+
+            transformOrigin:
+                "top center"
+
+        }
+    );
 
 
-            const anchoHoja = hoja.offsetWidth;
-            const anchoDisponible = canvas.clientWidth - 20;
+    const rutaPortada =
+        `${R2_EBOOKS_URL}/proyectos/${proyecto.projectId}/imagenes/portada.png`;
 
 
-            if (anchoHoja > 0 && anchoDisponible > 0) {
+    const img =
+        document.createElement(
+            "img"
+        );
 
+
+    img.src =
+        rutaPortada;
+
+
+    img.alt =
+        proyecto.titulo ||
+        "Portada";
+
+
+    img.className =
+        "portada-editor";
+
+
+    Object.assign(
+        img.style,
+        {
+
+            width: "100%",
+            height: "100%",
+            display: "block",
+            objectFit: "cover"
+
+        }
+    );
+
+
+    img.onload = () => {
+
+        const esMovil =
+            window.innerWidth <= 768;
+
+
+        if (
+            canvas &&
+            esMovil
+        ) {
+
+            const anchoHoja =
+                hoja.offsetWidth;
+
+
+            const anchoDisponible =
+                canvas.clientWidth - 20;
+
+
+            if (
+                anchoHoja > 0 &&
+                anchoDisponible > 0
+            ) {
 
                 const escala =
-                    anchoDisponible / anchoHoja;
+                    anchoDisponible /
+                    anchoHoja;
 
 
                 hoja.style.transform =
@@ -805,26 +832,24 @@ const rutaPortada =
                 hoja.style.marginBottom =
                     `-${hoja.offsetHeight * (1 - escala)}px`;
 
-
-                monitorPIXELLAB(
-                    "Editorial",
-                    "info",
-                    "Portada",
-                    "Escala móvil aplicada: " + escala,
-                            "monitorEditor"
-                );
-
             }
 
+        }
+        else {
 
-        } else {
-
-
-            hoja.style.transform = "scale(1)";
-
+            hoja.style.transform =
+                "scale(1)";
 
         }
 
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Portada",
+            "Imagen cargada correctamente",
+            "monitorEditor"
+        );
 
     };
 
@@ -836,27 +861,31 @@ const rutaPortada =
             "error",
             "Portada",
             "No se pudo cargar la imagen",
-                    "monitorEditor"
+            "monitorEditor"
         );
 
     };
 
 
-    hoja.appendChild(img);
+    hoja.appendChild(
+        img
+    );
 
-    pagina.appendChild(hoja);
+
+    contenedor.appendChild(
+        hoja
+    );
 
 
     monitorPIXELLAB(
         "Editorial",
         "proceso",
         "Portada",
-        "Hoja A4 agregada correctamente",
+        "Hoja agregada al editor",
         "monitorEditor"
     );
 
 }
-
 /*
 =========================================================
 PIXELLAB Editorial
