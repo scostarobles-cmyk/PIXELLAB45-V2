@@ -2590,27 +2590,6 @@ function abrirModoPortada() {
 
     modoPortadaActivo = true;
 
-    const botonPortada =
-        document.querySelector(
-            ".editor-menu"
-        );
-
-
-    if (botonPortada) {
-
-        botonPortada.textContent =
-            "⬅ Volver";
-
-        botonPortada.onclick =
-            cerrarModoPortada;
-
-    }
-
-    // aquí queda la lógica que ya funciona:
-    // ocultar biblioteca
-    // ocultar monitor
-    // mostrar solo portada
-    // acomodar botonera/pipeline
 
     const biblioteca =
         document.getElementById(
@@ -2658,21 +2637,12 @@ function abrirModoPortada() {
     }
 
 
-    // BOTONERA HORIZONTAL
+    // MOSTRAR TOOLBAR
 
     if (toolbar) {
 
         toolbar.style.display =
             "flex";
-
-        toolbar.style.flexWrap =
-            "nowrap";
-
-        toolbar.style.overflowX =
-            "auto";
-
-        toolbar.style.justifyContent =
-            "flex-start";
 
     }
 
@@ -2706,7 +2676,7 @@ function abrirModoPortada() {
     }
 
 
-    // MOSTRAR SOLO PORTADA
+    // MOSTRAR ÚNICAMENTE PORTADA
 
     if (paginaEditor) {
 
@@ -2721,8 +2691,8 @@ function abrirModoPortada() {
 
                 hoja.style.display =
                     index === 0
-                        ? "block"
-                        : "none";
+                    ? "block"
+                    : "none";
 
             }
         );
@@ -2730,38 +2700,29 @@ function abrirModoPortada() {
     }
 
 
-    // CAMBIAR BOTÓN PORTADA A VOLVER
+    // BOTÓN PORTADA → VOLVER
 
-    if (toolbar) {
-
-        const botones =
-            toolbar.querySelectorAll(
-                ".editor-menu"
-            );
-
-
-        botones.forEach(
-            boton => {
-
-                if (
-                    boton.textContent.includes(
-                        "Portada"
-                    )
-                ) {
-
-                    boton.textContent =
-                        "⬅ Volver";
-
-
-                    boton.onclick =
-                        cerrarModoPortada;
-
-                }
-
-            }
+    const botonPortada =
+        document.querySelector(
+            ".editor-menu"
         );
 
+
+    if (botonPortada) {
+
+        botonPortada.textContent =
+            "⬅ Volver";
+
+
+        botonPortada.onclick =
+            cerrarModoPortada;
+
     }
+
+
+    // MOSTRAR BOTONERA DE EDICIÓN
+
+    mostrarBotoneraEdicionPortada();
 
 
     monitorPIXELLAB(
@@ -2773,12 +2734,14 @@ function abrirModoPortada() {
     );
 
 }
-
 /* ==========================================
    SALIR DE MODO PORTADA
 ========================================== */
 
 function cerrarModoPortada() {
+
+    modoPortadaActivo = false;
+
 
     const biblioteca =
         document.getElementById(
@@ -2790,130 +2753,69 @@ function cerrarModoPortada() {
             "monitorEditor"
         );
 
-    const toolbar =
-        document.querySelector(
-            ".editor-toolbar-editor"
-        );
-
-    const pipeline =
-        document.querySelector(
-            ".pipeline-editor"
-        );
-
-    const paginaEditor =
-        document.getElementById(
-            "paginaEditor"
-        );
-
-
-    // MOSTRAR BIBLIOTECA
 
     if (biblioteca) {
 
         biblioteca.style.display =
-            "block";
+            "";
 
     }
 
-
-    // MOSTRAR MONITOR
 
     if (monitor) {
 
         monitor.style.display =
-            "block";
+            "";
 
     }
 
 
-    // RESTAURAR BOTONERA
-
-    if (toolbar) {
-
-        toolbar.style.flexWrap =
-            "wrap";
-
-        toolbar.style.overflowX =
-            "visible";
-
-        toolbar.style.justifyContent =
-            "center";
-
-
-        const botones =
-            toolbar.querySelectorAll(
-                ".editor-menu"
-            );
-
-
-        botones.forEach(
-            boton => {
-
-                if (
-                    boton.textContent.includes(
-                        "Volver"
-                    )
-                ) {
-
-                    boton.textContent =
-                        "📄 Portada";
-
-
-                    boton.onclick =
-                        abrirModoPortada;
-
-                }
-
-            }
+    const hojas =
+        document.querySelectorAll(
+            ".pl45-hoja-portada"
         );
 
-    }
 
+    hojas.forEach(
+        hoja => {
 
-    // RESTAURAR PIPELINE
-
-    if (pipeline) {
-
-        const items =
-            pipeline.querySelector(
-                ".pipeline-items"
-            );
-
-
-        if (items) {
-
-            items.style.display =
-                "flex";
-
-            items.style.flexDirection =
-                "column";
-
-            items.style.overflowX =
-                "visible";
+            hoja.style.display =
+                "block";
 
         }
+    );
+
+
+    const botonPortada =
+        document.querySelector(
+            ".editor-menu"
+        );
+
+
+    if (botonPortada) {
+
+        botonPortada.textContent =
+            "Portada";
+
+
+        botonPortada.onclick =
+            abrirModoPortada;
 
     }
 
 
-    // MOSTRAR TODAS LAS HOJAS
-
-    if (paginaEditor) {
-
-        const hojas =
-            paginaEditor.querySelectorAll(
-                ".pl45-hoja-portada"
-            );
-
-
-        hojas.forEach(
-            hoja => {
-
-                hoja.style.display =
-                    "block";
-
-            }
+    const botoneraEdicion =
+        document.getElementById(
+            "botoneraEdicion"
         );
+
+
+    if (botoneraEdicion) {
+
+        botoneraEdicion.innerHTML = "";
+
+        botoneraEdicion.style.display =
+            "none";
 
     }
 
@@ -2921,8 +2823,8 @@ function cerrarModoPortada() {
     monitorPIXELLAB(
         "Editorial",
         "estado",
-        "Editor",
-        "Volvió al estado normal",
+        "Portada",
+        "Modo normal restaurado",
         "monitorEditor"
     );
 
