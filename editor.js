@@ -2755,7 +2755,151 @@ function abrirModoPortada() {
 
 function cerrarModoPortada() {
 
-    location.reload();
+    const biblioteca =
+        document.getElementById(
+            "editorBiblioteca"
+        );
+
+    const monitor =
+        document.getElementById(
+            "monitorEditor"
+        );
+
+    const toolbar =
+        document.querySelector(
+            ".editor-toolbar-editor"
+        );
+
+    const pipeline =
+        document.querySelector(
+            ".pipeline-editor"
+        );
+
+    const paginaEditor =
+        document.getElementById(
+            "paginaEditor"
+        );
+
+
+    // MOSTRAR BIBLIOTECA
+
+    if (biblioteca) {
+
+        biblioteca.style.display =
+            "block";
+
+    }
+
+
+    // MOSTRAR MONITOR
+
+    if (monitor) {
+
+        monitor.style.display =
+            "block";
+
+    }
+
+
+    // RESTAURAR BOTONERA
+
+    if (toolbar) {
+
+        toolbar.style.flexWrap =
+            "wrap";
+
+        toolbar.style.overflowX =
+            "visible";
+
+        toolbar.style.justifyContent =
+            "center";
+
+
+        const botones =
+            toolbar.querySelectorAll(
+                ".editor-menu"
+            );
+
+
+        botones.forEach(
+            boton => {
+
+                if (
+                    boton.textContent.includes(
+                        "Volver"
+                    )
+                ) {
+
+                    boton.textContent =
+                        "📄 Portada";
+
+
+                    boton.onclick =
+                        abrirModoPortada;
+
+                }
+
+            }
+        );
+
+    }
+
+
+    // RESTAURAR PIPELINE
+
+    if (pipeline) {
+
+        const items =
+            pipeline.querySelector(
+                ".pipeline-items"
+            );
+
+
+        if (items) {
+
+            items.style.display =
+                "flex";
+
+            items.style.flexDirection =
+                "column";
+
+            items.style.overflowX =
+                "visible";
+
+        }
+
+    }
+
+
+    // MOSTRAR TODAS LAS HOJAS
+
+    if (paginaEditor) {
+
+        const hojas =
+            paginaEditor.querySelectorAll(
+                ".pl45-hoja-portada"
+            );
+
+
+        hojas.forEach(
+            hoja => {
+
+                hoja.style.display =
+                    "block";
+
+            }
+        );
+
+    }
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Editor",
+        "Volvió al estado normal",
+        "monitorEditor"
+    );
 
 }
 
