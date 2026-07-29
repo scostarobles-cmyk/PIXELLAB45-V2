@@ -2552,15 +2552,63 @@ async function cargarPaginaConclusion(proyecto) {
 
 }
 
+let modoPortadaActivo = false;
+
+
 function abrirModoPortada() {
 
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Portada",
-        "Entró a modo portada",
-        "monitorEditor"
-    );
+    modoPortadaActivo = true;
+
+    const botonPortada =
+        document.querySelector(
+            ".editor-menu"
+        );
+
+
+    if (botonPortada) {
+
+        botonPortada.textContent =
+            "⬅ Volver";
+
+        botonPortada.onclick =
+            cerrarModoPortada;
+
+    }
+
+    // aquí queda la lógica que ya funciona:
+    // ocultar biblioteca
+    // ocultar monitor
+    // mostrar solo portada
+    // acomodar botonera/pipeline
+
+}
+
+
+
+function cerrarModoPortada() {
+
+    modoPortadaActivo = false;
+
+
+    const botonPortada =
+        document.querySelector(
+            ".editor-menu"
+        );
+
+
+    if (botonPortada) {
+
+        botonPortada.textContent =
+            "📄 Portada";
+
+        botonPortada.onclick =
+            abrirModoPortada;
+
+    }
+
+    // restaurar estado normal
+
+
 
 
     const biblioteca =
@@ -2712,45 +2760,7 @@ alert(toolbar);
     }
 
 
-    // ==========================
-    // BOTÓN VOLVER
-    // ==========================
 
-    // ==========================
-// CREAR BOTÓN VOLVER
-// ==========================
-
-const toolbar =
-    document.querySelector(
-        ".editor-toolbar-editor"
-    );
-
-
-if (toolbar) {
-
-    const botonVolver =
-        document.createElement(
-            "button"
-        );
-
-
-    botonVolver.className =
-        "editor-menu";
-
-
-    botonVolver.textContent =
-        "⬅ Volver";
-
-
-    botonVolver.onclick =
-        cerrarModoPortada;
-
-
-    toolbar.prepend(
-        botonVolver
-    );
-
-}
 
 }
 
