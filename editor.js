@@ -2590,27 +2590,7 @@ function abrirModoPortada() {
 
     modoPortadaActivo = true;
 
-    const botonPortada =
-        document.querySelector(
-            ".editor-menu"
-        );
 
-
-    if (botonPortada) {
-
-        botonPortada.textContent =
-            "⬅ Volver";
-
-        botonPortada.onclick =
-            cerrarModoPortada;
-
-    }
-
-    // aquí queda la lógica que ya funciona:
-    // ocultar biblioteca
-    // ocultar monitor
-    // mostrar solo portada
-    // acomodar botonera/pipeline
     const biblioteca =
         document.getElementById(
             "editorBiblioteca"
@@ -2729,7 +2709,7 @@ function abrirModoPortada() {
     }
 
 
-    // CAMBIAR BOTÓN PORTADA A VOLVER
+    // CAMBIAR PORTADA A VOLVER SIN PERDER ICONO
 
     if (toolbar) {
 
@@ -2748,8 +2728,11 @@ function abrirModoPortada() {
                     )
                 ) {
 
-                    boton.textContent =
-                        "⬅ Volver";
+                    boton.innerHTML =
+                        `
+                        <span>⬅</span>
+                        <small>Volver</small>
+                        `;
 
 
                     boton.onclick =
