@@ -2594,7 +2594,7 @@ function abrirModoPortada() {
         document.querySelector(
             ".editor-menu"
         );
-
+mostrarBotoneraEdicionPortada();
 
     if (botonPortada) {
 
@@ -2603,6 +2603,17 @@ function abrirModoPortada() {
 
         botonPortada.onclick =
             cerrarModoPortada;
+            
+            const botoneraEdicion =
+    document.getElementById("botoneraEdicion");
+
+if (botoneraEdicion) {
+
+    botoneraEdicion.innerHTML = "";
+
+    botoneraEdicion.style.display = "none";
+
+}
 
     }
 
