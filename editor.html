@@ -154,25 +154,39 @@ Estado del proceso de edición.
     </p>
 
     <!-- BOTONERA -->
-    
-      <div class="editor-toolbar-editor" id="editorToolbar">
-    
-      <button 
-class="editor-menu" onclick="abrirModoPortada()">📄 Portada</button>
-          
-        <button class="editor-menu">⚖️ Legales</button>
+    <div class="editor-toolbar-editor" id="editorToolbar">
 
-        <button class="editor-menu">📑 Índice</button>
+    <button class="editor-menu" onclick="abrirModoPortada()">📄 Portada</button>
 
-        <button class="editor-menu">📝 Capítulos</button>
+    <button class="editor-menu">⚖️ Legales</button>
 
-        <button class="editor-menu">🖼️ Imágenes</button>
+    <button class="editor-menu">📑 Índice</button>
 
-        <button class="editor-menu">🎨 Diseño</button>
-          
-        <button class="editor-menu" id="btnVolverEditor" style="display:none;"> ⬅ Volver</button>
+    <button class="editor-menu">📝 Capítulos</button>
 
-    </div>
+    <button class="editor-menu">🖼️ Imágenes</button>
+
+    <button class="editor-menu">🎨 Diseño</button>
+
+</div>
+
+<div id="botoneraEdicion" class="editor-toolbar-editor" style="display:block;">
+
+    <button class="editor-menu" onclick="cerrarModoPortada()">⬅</button>
+
+    <button class="editor-menu">🖼</button>
+
+    <button class="editor-menu">⚖️</button>
+
+    <button class="editor-menu">📑</button>
+
+    <button class="editor-menu">📝</button>
+
+    <button class="editor-menu">🖼️</button>
+
+    <button class="editor-menu">🎨</button>
+
+</div>
         <div id="botoneraEdicion"></div>
     <!-- PIPELINE -->
 
@@ -182,7 +196,7 @@ class="editor-menu" onclick="abrirModoPortada()">📄 Portada</button>
             ⚙️ Pipeline Editorial
         </h3>
 
-        <div class="pipeline-items">
+        <div class="pipeline-items" id="pipelineItems">
 
             <p id="editorProyecto">
                 ⚪ Proyecto cargado
