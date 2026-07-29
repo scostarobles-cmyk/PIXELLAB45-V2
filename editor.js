@@ -2788,7 +2788,7 @@ function abrirModoPortada() {
         "Modo portada activo",
         "monitorEditor"
     );
-    mostrarBotoneraEdicionPortada();
+
 
 }
 
