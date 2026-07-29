@@ -2661,7 +2661,7 @@ const toolbar =
 if (toolbar) {
 
     let botonVolver =
-        document.getElementById(
+        document.getElementById( 
             "btnVolverEditor"
         );
 
@@ -2768,6 +2768,8 @@ if (toolbar) {
 
 
 
+
+}
 
 
 /* ==========================================
