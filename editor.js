@@ -2847,29 +2847,55 @@ function mostrarBotoneraEdicionPortada() {
 
     if (!botonera) return;
 
+
     botonera.innerHTML = "";
 
+
     const botones = [
-        "➕ Título",
-        "✍ Autor",
-        "🔷 Logo",
-        "🖼 Imagen",
-        "💾 Guardar"
+        {
+            icono: "➕",
+            texto: "Título"
+        },
+        {
+            icono: "✍️",
+            texto: "Autor"
+        },
+        {
+            icono: "🔷",
+            texto: "Logo"
+        },
+        {
+            icono: "🖼️",
+            texto: "Imagen"
+        },
+        {
+            icono: "💾",
+            texto: "Guardar"
+        }
     ];
 
-    botones.forEach(texto => {
+
+    botones.forEach(item => {
 
         const boton =
             document.createElement("button");
 
-        boton.textContent = texto;
 
         boton.className =
             "btn-editor-portada";
 
+
+        boton.innerHTML =
+            `
+            <span>${item.icono}</span>
+            <small>${item.texto}</small>
+            `;
+
+
         botonera.appendChild(boton);
 
     });
+
 
     botonera.style.display = "flex";
 

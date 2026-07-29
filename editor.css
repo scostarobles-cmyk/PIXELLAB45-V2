@@ -304,3 +304,25 @@
     }
 
 }
+.btn-editor-portada {
+
+    width:78px;
+    height:78px;
+    min-width:78px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    gap:5px;
+
+    border-radius:14px;
+
+    background:rgba(255,255,255,0.06);
+
+    border:1px solid #00d9ff;
+
+    color:white;
+
+}
