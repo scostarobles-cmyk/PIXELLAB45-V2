@@ -2612,12 +2612,6 @@ function abrirModoPortada() {
     // mostrar solo portada
     // acomodar botonera/pipeline
 
-}
-
-
-
-function abrirModoPortada() {
-
     const biblioteca =
         document.getElementById(
             "editorBiblioteca"
