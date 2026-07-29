@@ -2661,9 +2661,21 @@ function abrirModoPortada() {
         for (let i = 0; i < hojas.length; i++) {
 
             hojas[i].style.display =
-                i === 0
-                    ? "block"
-                    : "none";
+                "none";
+
+        }
+
+
+        const portada =
+            paginaEditor.querySelector(
+                ".pl45-hoja-portada"
+            );
+
+
+        if (portada) {
+
+            portada.style.display =
+                "block";
 
         }
 
@@ -2705,7 +2717,6 @@ function abrirModoPortada() {
     );
 
 }
-
 
 
 
