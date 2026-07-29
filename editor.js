@@ -2852,27 +2852,28 @@ function mostrarBotoneraEdicionPortada() {
 
 
     const botones = [
-        {
-            icono: "➕",
-            texto: "Título"
-        },
-        {
-            icono: "✍️",
-            texto: "Autor"
-        },
-        {
-            icono: "🔷",
-            texto: "Logo"
-        },
-        {
-            icono: "🖼️",
-            texto: "Imagen"
-        },
-        {
-            icono: "💾",
-            texto: "Guardar"
-        }
-    ];
+    {
+        icono: "➕",
+        texto: "Título",
+        accion: agregarTituloPortada
+    },
+    {
+        icono: "✍️",
+        texto: "Autor"
+    },
+    {
+        icono: "🔷",
+        texto: "Logo"
+    },
+    {
+        icono: "🖼️",
+        texto: "Imagen"
+    },
+    {
+        icono: "💾",
+        texto: "Guardar"
+    }
+];
 
 
     botones.forEach(item => {
@@ -2890,6 +2891,12 @@ function mostrarBotoneraEdicionPortada() {
             <span>${item.icono}</span>
             <small>${item.texto}</small>
             `;
+            if (item.accion) {
+
+    boton.onclick =
+        item.accion;
+
+}
 
 
         botonera.appendChild(boton);
