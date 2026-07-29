@@ -2585,97 +2585,106 @@ async function cargarPaginaConclusion(proyecto) {
 
 let modoPortadaActivo = false;
 
+
 function abrirModoPortada() {
 
     modoPortadaActivo = true;
 
-    const paginaEditor =
-        document.getElementById("paginaEditor");
+    const botonPortada =
+        document.querySelector(
+            ".editor-menu"
+        );
 
+
+    if (botonPortada) {
+
+        botonPortada.textContent =
+            "⬅ Volver";
+
+        botonPortada.onclick =
+            cerrarModoPortada;
+
+    }
+
+    // aquí queda la lógica que ya funciona:
+    // ocultar biblioteca
+    // ocultar monitor
+    // mostrar solo portada
+    // acomodar botonera/pipeline
     const biblioteca =
-        document.getElementById("editorBiblioteca");
+        document.getElementById(
+            "editorBiblioteca"
+        );
 
     const monitor =
-        document.getElementById("monitorEditor");
+        document.getElementById(
+            "monitorEditor"
+        );
 
     const toolbar =
-        document.querySelector(".editor-toolbar-editor");
+        document.querySelector(
+            ".editor-toolbar-editor"
+        );
 
     const pipeline =
-        document.querySelector(".pipeline-editor");
+        document.querySelector(
+            ".pipeline-editor"
+        );
 
-    const botonPortada =
-        document.querySelector(".editor-menu");
+    const paginaEditor =
+        document.getElementById(
+            "paginaEditor"
+        );
 
 
-    // Ocultar biblioteca
+    // OCULTAR BIBLIOTECA
 
     if (biblioteca) {
 
-        biblioteca.style.display = "none";
+        biblioteca.style.display =
+            "none";
 
     }
 
 
-    // Ocultar monitor
+    // OCULTAR MONITOR
 
     if (monitor) {
 
-        monitor.style.display = "none";
+        monitor.style.display =
+            "none";
 
     }
 
 
-    // BOTONERA PRINCIPAL EN HORIZONTAL
+    // BOTONERA HORIZONTAL
 
     if (toolbar) {
 
         toolbar.style.display =
             "flex";
 
-        toolbar.style.flexDirection =
-            "row";
-
         toolbar.style.flexWrap =
             "nowrap";
-
-        toolbar.style.justifyContent =
-            "flex-start";
-
-        toolbar.style.alignItems =
-            "center";
 
         toolbar.style.overflowX =
             "auto";
 
-        toolbar.style.overflowY =
-            "hidden";
-
-        toolbar.style.gap =
-            "10px";
-
-
-        const botones =
-            toolbar.querySelectorAll(".editor-menu");
-
-        botones.forEach(
-            boton => {
-
-                boton.style.flex =
-                    "0 0 auto";
-
-            }
-        );
+        toolbar.style.justifyContent =
+            "flex-start";
 
     }
 
 
-    // PIPELINE EN HORIZONTAL
+    // PIPELINE HORIZONTAL
 
     if (pipeline) {
 
         const items =
-            pipeline.querySelector(".pipeline-items");
+            pipeline.querySelector(
+                ".pipeline-items"
+            );
+
 
         if (items) {
 
@@ -2696,48 +2705,69 @@ function abrirModoPortada() {
     }
 
 
-    // Mostrar únicamente portada
+    // MOSTRAR SOLO PORTADA
 
     if (paginaEditor) {
 
         const hojas =
-            paginaEditor.children;
-
-        for (let i = 0; i < hojas.length; i++) {
-
-            hojas[i].style.display =
-                i === 0
-                    ? "block"
-                    : "none";
-
-        }
-
-    }
+            paginaEditor.querySelectorAll(
+                ".pl45-hoja-portada"
+            );
 
 
-    // Cambiar Portada → Volver
+        hojas.forEach(
+            (hoja, index)=>{
 
-    if (botonPortada) {
+                hoja.style.display =
+                    index === 0
+                        ? "block"
+                        : "none";
 
-        botonPortada.textContent =
-            "⬅ Volver";
-
-        botonPortada.onclick =
-            cerrarModoPortada;
+            }
+        );
 
     }
 
 
-    // Mostrar botonera edición
+    // CAMBIAR BOTÓN PORTADA A VOLVER
 
-    mostrarBotoneraEdicionPortada();
+    if (toolbar) {
+
+        const botones =
+            toolbar.querySelectorAll(
+                ".editor-menu"
+            );
+
+
+        botones.forEach(
+            boton => {
+
+                if (
+                    boton.textContent.includes(
+                        "Portada"
+                    )
+                ) {
+
+                    boton.textContent =
+                        "⬅ Volver";
+
+
+                    boton.onclick =
+                        cerrarModoPortada;
+
+                }
+
+            }
+        );
+
+    }
 
 
     monitorPIXELLAB(
         "Editorial",
         "estado",
         "Portada",
-        "Entró en modo edición portada",
+        "Modo portada activo",
         "monitorEditor"
     );
 
