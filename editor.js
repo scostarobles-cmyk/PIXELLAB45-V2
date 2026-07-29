@@ -2592,62 +2592,69 @@ function abrirModoPortada() {
 
 
     const biblioteca =
-        document.getElementById(
-            "editorBiblioteca"
-        );
+        document.getElementById("editorBiblioteca");
 
     const monitor =
-        document.getElementById(
-            "monitorEditor"
-        );
+        document.getElementById("monitorEditor");
 
     const toolbar =
-        document.querySelector(
-            ".editor-toolbar-editor"
-        );
+        document.querySelector(".editor-toolbar-editor");
 
     const pipeline =
-        document.querySelector(
-            ".pipeline-editor"
-        );
+        document.querySelector(".pipeline-editor");
 
     const paginaEditor =
-        document.getElementById(
-            "paginaEditor"
-        );
+        document.getElementById("paginaEditor");
 
 
-    // OCULTAR BIBLIOTECA
+    // ocultar biblioteca
 
     if (biblioteca) {
-
-        biblioteca.style.display =
-            "none";
-
+        biblioteca.style.display = "none";
     }
 
 
-    // OCULTAR MONITOR
+    // ocultar monitor
 
     if (monitor) {
+        monitor.style.display = "none";
+    }
 
-        monitor.style.display =
-            "none";
+
+    // mostrar solo portada
+
+    if (paginaEditor) {
+
+        const hojas =
+            paginaEditor.querySelectorAll(
+                ".pl45-hoja-portada"
+            );
+
+
+        hojas.forEach((hoja, index) => {
+
+            hoja.style.display =
+                index === 0
+                ? "block"
+                : "none";
+
+        });
 
     }
 
 
-    // MOSTRAR TOOLBAR
+    // mantener toolbar
 
     if (toolbar) {
 
-        toolbar.style.display =
-            "flex";
+        toolbar.style.display = "flex";
+        toolbar.style.flexWrap = "nowrap";
+        toolbar.style.overflowX = "auto";
 
     }
 
 
-    // PIPELINE HORIZONTAL
+    // pipeline horizontal
 
     if (pipeline) {
 
@@ -2659,53 +2666,20 @@ function abrirModoPortada() {
 
         if (items) {
 
-            items.style.display =
-                "flex";
-
-            items.style.flexDirection =
-                "row";
-
-            items.style.flexWrap =
-                "nowrap";
-
-            items.style.overflowX =
-                "auto";
+            items.style.display = "flex";
+            items.style.flexDirection = "row";
+            items.style.flexWrap = "nowrap";
+            items.style.overflowX = "auto";
 
         }
 
     }
 
 
-    // MOSTRAR ÚNICAMENTE PORTADA
-
-    if (paginaEditor) {
-
-        const hojas =
-            paginaEditor.querySelectorAll(
-                ".pl45-hoja-portada"
-            );
-
-
-        hojas.forEach(
-            (hoja, index)=>{
-
-                hoja.style.display =
-                    index === 0
-                    ? "block"
-                    : "none";
-
-            }
-        );
-
-    }
-
-
-    // BOTÓN PORTADA → VOLVER
+    // cambiar botón a volver
 
     const botonPortada =
-        document.querySelector(
-            ".editor-menu"
-        );
+        document.querySelector(".editor-menu");
 
 
     if (botonPortada) {
@@ -2713,14 +2687,13 @@ function abrirModoPortada() {
         botonPortada.textContent =
             "⬅ Volver";
 
-
         botonPortada.onclick =
             cerrarModoPortada;
 
     }
 
 
-    // MOSTRAR BOTONERA DE EDICIÓN
+    // mostrar botonera edición portada
 
     mostrarBotoneraEdicionPortada();
 
