@@ -2911,7 +2911,72 @@ function mostrarBotoneraEdicionPortada() {
 
 }
 
+function agregarTituloPortada() {
 
+    const portada =
+        document.querySelector(
+            ".pl45-hoja-portada"
+        );
+
+
+    if (!portada) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Portada",
+            "No se encontró la hoja de portada",
+            "monitorEditor"
+        );
+
+        return;
+
+    }
+
+
+    let titulo =
+        portada.querySelector(
+            ".titulo-portada-editor"
+        );
+
+
+    if (!titulo) {
+
+        titulo =
+            document.createElement("div");
+
+
+        titulo.className =
+            "titulo-portada-editor";
+
+
+        titulo.contentEditable =
+            true;
+
+
+        titulo.innerText =
+            "Nuevo título";
+
+
+        portada.appendChild(
+            titulo
+        );
+
+    }
+
+
+    titulo.focus();
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Portada",
+        "Título agregado a portada",
+        "monitorEditor"
+    );
+
+}
 
 async function cargarPaginaPrueba(proyecto) {
 
