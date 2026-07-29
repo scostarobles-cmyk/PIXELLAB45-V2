@@ -2585,11 +2585,13 @@ async function cargarPaginaConclusion(proyecto) {
 
 let modoPortadaActivo = false;
 
-
 function abrirModoPortada() {
 
     modoPortadaActivo = true;
 
+
+    const paginaEditor =
+        document.getElementById("paginaEditor");
 
     const biblioteca =
         document.getElementById("editorBiblioteca");
@@ -2600,92 +2602,49 @@ function abrirModoPortada() {
     const toolbar =
         document.querySelector(".editor-toolbar-editor");
 
-    const pipeline =
-        document.querySelector(".pipeline-editor");
-
-    const paginaEditor =
-        document.getElementById("paginaEditor");
+    const botonPortada =
+        document.querySelector(".editor-menu");
 
 
-    // ocultar biblioteca
+    // Ocultar sectores
 
     if (biblioteca) {
         biblioteca.style.display = "none";
     }
 
 
-    // ocultar monitor
-
     if (monitor) {
         monitor.style.display = "none";
     }
 
 
-    // mostrar solo portada
+    // Mostrar solamente la primera hoja (portada)
 
     if (paginaEditor) {
 
         const hojas =
-            paginaEditor.querySelectorAll(
-                ".pl45-hoja-portada"
-            );
+            paginaEditor.children;
 
 
-        hojas.forEach((hoja, index) => {
+        for (let i = 0; i < hojas.length; i++) {
 
-            hoja.style.display =
-                index === 0
+            hojas[i].style.display =
+                i === 0
                 ? "block"
                 : "none";
-
-        });
-
-    }
-
-
-    // mantener toolbar
-
-    if (toolbar) {
-
-        toolbar.style.display = "flex";
-        toolbar.style.flexWrap = "nowrap";
-        toolbar.style.overflowX = "auto";
-
-    }
-
-
-    // pipeline horizontal
-
-    if (pipeline) {
-
-        const items =
-            pipeline.querySelector(
-                ".pipeline-items"
-            );
-
-
-        if (items) {
-
-            items.style.display = "flex";
-            items.style.flexDirection = "row";
-            items.style.flexWrap = "nowrap";
-            items.style.overflowX = "auto";
 
         }
 
     }
 
 
-    // cambiar botón a volver
-
-    const botonPortada =
-        document.querySelector(".editor-menu");
-
+    // Mantener botón Portada visible y cambiarlo
 
     if (botonPortada) {
 
         botonPortada.textContent =
             "⬅ Volver";
+
 
         botonPortada.onclick =
             cerrarModoPortada;
@@ -2693,7 +2652,7 @@ function abrirModoPortada() {
     }
 
 
-    // mostrar botonera edición portada
+    // Mostrar botonera edición
 
     mostrarBotoneraEdicionPortada();
 
@@ -2702,7 +2661,7 @@ function abrirModoPortada() {
         "Editorial",
         "estado",
         "Portada",
-        "Modo portada activo",
+        "Entró en modo edición portada",
         "monitorEditor"
     );
 
