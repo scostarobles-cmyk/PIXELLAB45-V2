@@ -104,9 +104,16 @@
 
 }
 
-/* =================================
-   BOTONERA PRINCIPAL Y EDICIÓN
-================================= */
+/* =========================================
+   PIXELLAB45 EDITOR
+   BOTONERAS + PIPELINE HORIZONTAL
+========================================= */
+
+
+/* ===============================
+   BOTONERA PRINCIPAL
+   Y BOTONERA DE EDICIÓN
+================================ */
 
 .editor-toolbar-editor,
 #botoneraEdicion {
@@ -121,7 +128,7 @@
 
     justify-content: flex-start;
 
-    gap: 10px;
+    gap: 12px;
 
     width: 100%;
 
@@ -129,20 +136,22 @@
 
     overflow-y: hidden;
 
-    padding: 8px 0;
+    padding: 10px 0;
 
 }
 
 
-/* BOTONES CUADRADOS */
+/* ===============================
+   BOTONES CUADRADOS
+================================ */
 
 .editor-menu {
 
-    width: 80px;
+    width: 78px;
 
-    height: 70px;
+    height: 78px;
 
-    min-width: 80px;
+    min-width: 78px;
 
     flex: 0 0 auto;
 
@@ -150,63 +159,74 @@
 
     flex-direction: column;
 
-    justify-content: center;
-
     align-items: center;
+
+    justify-content: center;
 
     gap: 5px;
 
-    border-radius: 12px;
+
+    background: rgba(255,255,255,0.06);
 
     border: 1px solid #00d9ff;
 
-    background: #0b63ce;
+    border-radius: 14px;
+
 
     color: white;
 
     cursor: pointer;
 
-    font-size: 13px;
+    transition: .2s;
 
 }
 
 
-/* ICONO DEL BOTÓN */
+/* Ícono */
 
-.editor-menu span:first-child {
+.editor-menu::first-line {
 
     font-size: 26px;
 
-    line-height: 1;
-
 }
 
 
-/* TEXTO DEL BOTÓN */
+/* Texto */
 
-.editor-menu small,
-.editor-menu .texto-boton {
+.editor-menu small {
 
-    font-size: 12px;
+    font-size: 11px;
 
     white-space: nowrap;
 
 }
 
 
-/* EFECTO AL TOCAR */
+.editor-menu:hover {
 
-.editor-menu:active {
+    background: rgba(0,217,255,0.18);
 
-    transform: scale(0.95);
+    transform: translateY(-2px);
 
 }
 
 
 
-/* =================================
-   PIPELINE HORIZONTAL SIEMPRE
-================================= */
+/* ===============================
+   BOTONERA EDICIÓN
+================================ */
+
+#botoneraEdicion {
+
+    display: none;
+
+}
+
+
+
+/* ===============================
+   PIPELINE HORIZONTAL
+================================ */
 
 .pipeline-editor {
 
@@ -225,13 +245,15 @@
 
     align-items: center;
 
-    gap: 10px;
+    gap: 12px;
 
     width: 100%;
 
     overflow-x: auto;
 
     overflow-y: hidden;
+
+    padding: 8px 0;
 
 }
 
@@ -240,12 +262,45 @@
 
     flex: 0 0 auto;
 
-    white-space: nowrap;
-
-    padding: 10px 15px;
-
     margin: 0;
 
-    border-radius: 10px;
+    padding: 10px 16px;
+
+    white-space: nowrap;
+
+    border-radius: 12px;
+
+    background: rgba(255,255,255,0.06);
+
+    border: 1px solid rgba(0,217,255,0.5);
+
+    color:white;
+
+}
+
+
+
+/* ===============================
+   MÓVIL
+================================ */
+
+@media(max-width:600px){
+
+    .editor-menu {
+
+        width:70px;
+
+        height:70px;
+
+        min-width:70px;
+
+    }
+
+
+    .pipeline-items p {
+
+        font-size:13px;
+
+    }
 
 }
