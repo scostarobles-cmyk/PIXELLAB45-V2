@@ -733,8 +733,10 @@ function cargarPaginaPortada(proyecto) {
     width: "100%",
     maxWidth: "794px",
     aspectRatio: "210 / 297",
+    margin: "0 auto 20px auto",
         background: "white",
         transformOrigin: "top center"
+        
 
     });
 const rutaPortada =
