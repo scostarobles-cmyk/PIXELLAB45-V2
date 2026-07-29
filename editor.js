@@ -2576,9 +2576,11 @@ function abrirModoPortada() {
 
 
     const toolbar =
-        document.querySelector(
-            ".editor-toolbar-editor"
-        );
+    document.querySelector(
+        ".editor-toolbar-editor"
+    );
+
+alert(toolbar);
 
 
     const pipeline =
