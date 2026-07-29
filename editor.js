@@ -2594,7 +2594,7 @@ function abrirModoPortada() {
         document.querySelector(
             ".editor-menu"
         );
-mostrarBotoneraEdicionPortada();
+
 
     if (botonPortada) {
 
@@ -2603,17 +2603,6 @@ mostrarBotoneraEdicionPortada();
 
         botonPortada.onclick =
             cerrarModoPortada;
-            
-            const botoneraEdicion =
-    document.getElementById("botoneraEdicion");
-
-if (botoneraEdicion) {
-
-    botoneraEdicion.innerHTML = "";
-
-    botoneraEdicion.style.display = "none";
-
-}
 
     }
 
@@ -2788,7 +2777,6 @@ function abrirModoPortada() {
         "Modo portada activo",
         "monitorEditor"
     );
-
 
 }
 
