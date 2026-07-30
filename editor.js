@@ -5,6 +5,7 @@ monitorPIXELLAB(
     "editor.js cargado",
     "monitorEditor"
 );
+let project_id = null;
 
 async function listarProyectosEditorial() {
 
@@ -542,7 +543,8 @@ async function abrirEditorEditorial(projectId) {
         "Abriendo proyecto: " + projectId,
         "monitorEditor"
     );
-
+ 
+ project_id = projectId;
 
     const proyecto =
         await cargarJSON(
@@ -2705,7 +2707,7 @@ function abrirModoPortada() {
     }
 
 
-    mostrarBotoneraEdicionPortada(projectId);
+    mostrarBotoneraEdicionPortada(project_id);
 
 
     monitorPIXELLAB(
@@ -2852,7 +2854,7 @@ function activarBotoneraEditor(){
 
 }
 
-function mostrarBotoneraEdicionPortada(projectId) {
+function mostrarBotoneraEdicionPortada(project_Id) {
 
 monitorPIXELLAB(
         "Editorial",
@@ -2864,7 +2866,7 @@ monitorPIXELLAB(
 
     const botonera =
         document.getElementById("botoneraEdicion");
-   const proyectoSeleccionado = projectId;
+//   const proyectoSeleccionado = projectId;
     if (!botonera) return;
 
 
@@ -2892,7 +2894,7 @@ monitorPIXELLAB(
      {
     icono: "💾",
     texto: "Guardar",
-    accion: () => guardarEditorPortada(proyectoSeleccionado)
+    accion: () => guardarEditorPortada(project_id)
 }
     ];
 
@@ -3085,7 +3087,7 @@ function asignarClasesPaginasEditorial() {
 }
 
 
-async function guardarEditorPortada(projectId) {
+async function guardarEditorPortada(project_Id) {
 
     if (!projectId) {
 
