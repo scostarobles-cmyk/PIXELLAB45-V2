@@ -3190,19 +3190,8 @@ async function guardarEditorPortada(project_id) {
 }
 function mostrarPanelEstilosTexto() {
 
-    monitorPIXELLAB(
-        "Editorial",
-        "estado",
-        "Editor",
-        "Mostrando panel de estilos de texto",
-        "monitorEditor"
-    );
-
-
     const panel =
-        document.getElementById(
-            "panelEstilosTexto"
-        );
+        document.getElementById("panelEstilosTexto");
 
 
     if (!panel) {
@@ -3220,28 +3209,45 @@ function mostrarPanelEstilosTexto() {
     }
 
 
+    if (!elementoTextoActivo) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Editor",
+            "No hay texto seleccionado",
+            "monitorEditor"
+        );
+
+        panel.style.display = "none";
+
+        return;
+
+    }
+
+
     panel.innerHTML = `
 
         <div class="editor-estilos">
 
-            <button class="estilo-btn">
+            <button class="btn-estilo-editor">
                 🔤 Fuente
             </button>
 
-            <button class="estilo-btn">
+            <button class="btn-estilo-editor">
                 🔠 Tamaño
             </button>
 
-            <button class="estilo-btn">
+            <button class="btn-estilo-editor">
                 🎨 Color
             </button>
 
-            <button class="estilo-btn">
-                B
+            <button class="btn-estilo-editor">
+                <b>B</b>
             </button>
 
-            <button class="estilo-btn">
-                I
+            <button class="btn-estilo-editor">
+                <i>I</i>
             </button>
 
         </div>
@@ -3249,14 +3255,14 @@ function mostrarPanelEstilosTexto() {
     `;
 
 
-    panel.style.display = "block";
+    panel.style.display = "flex";
 
 
     monitorPIXELLAB(
         "Editorial",
-        "ok",
+        "estado",
         "Editor",
-        "Panel estilos visible",
+        "Botonera estilos mostrada",
         "monitorEditor"
     );
 
