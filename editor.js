@@ -2705,7 +2705,7 @@ function abrirModoPortada() {
     }
 
 
-    mostrarBotoneraEdicionPortada();
+    mostrarBotoneraEdicionPortada(projectId);
 
 
     monitorPIXELLAB(
@@ -2852,7 +2852,7 @@ function activarBotoneraEditor(){
 
 }
 
-function mostrarBotoneraEdicionPortada() {
+function mostrarBotoneraEdicionPortada(projectId) {
 
     const botonera =
         document.getElementById("botoneraEdicion");
