@@ -5,6 +5,7 @@ monitorPIXELLAB(
     "editor.js cargado",
     "monitorEditor"
 );
+let project_id = null;
 
 async function listarProyectosEditorial() {
 
@@ -542,7 +543,8 @@ async function abrirEditorEditorial(projectId) {
         "Abriendo proyecto: " + projectId,
         "monitorEditor"
     );
-
+ 
+ project_id = projectId;
 
     const proyecto =
         await cargarJSON(
@@ -2626,12 +2628,7 @@ function abrirModoPortada() {
     }
 
 
-    if (monitor) {
-
-        monitor.style.display =
-            "none";
-
-    }
+    
 
 
     if (toolbar) {
@@ -2650,20 +2647,25 @@ function abrirModoPortada() {
     }
 
 
-    // MOSTRAR SOLO PORTADA
+    // MOSTRAR SOLO PORTADA POR CLASE
 
     if (paginaEditor) {
 
+
         const hojas =
-            paginaEditor.children;
+            paginaEditor.querySelectorAll(
+                ".pl45-hoja"
+            );
 
 
-        for (let i = 0; i < hojas.length; i++) {
+        hojas.forEach(
+            hoja => {
 
-            hojas[i].style.display =
-                "none";
+                hoja.style.display =
+                    "none";
 
-        }
+            }
+        );
 
 
         const portada =
@@ -2705,7 +2707,7 @@ function abrirModoPortada() {
     }
 
 
-    mostrarBotoneraEdicionPortada();
+    mostrarBotoneraEdicionPortada(project_id);
 
 
     monitorPIXELLAB(
@@ -2717,7 +2719,6 @@ function abrirModoPortada() {
     );
 
 }
-
 
 
 function cerrarModoPortada() {
@@ -2830,8 +2831,9 @@ function cerrarModoPortada() {
 function activarBotoneraEditor(){
 
     const botones =
-        document.querySelectorAll(".editor-menu");
-
+    document.querySelectorAll(
+        ".editor-menu, .btn-editor-portada"
+    );
     botones.forEach(boton => {
 
         boton.disabled = false;
@@ -2852,11 +2854,19 @@ function activarBotoneraEditor(){
 
 }
 
-function mostrarBotoneraEdicionPortada() {
+function mostrarBotoneraEdicionPortada(project_Id) {
+
+monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Botonera",
+        "mostrando los botones de edición",
+        "monitorEditor"
+    );
 
     const botonera =
         document.getElementById("botoneraEdicion");
-
+//   const proyectoSeleccionado = projectId;
     if (!botonera) return;
 
 
@@ -2881,10 +2891,11 @@ function mostrarBotoneraEdicionPortada() {
             icono: "🖼️",
             texto: "Imagen"
         },
-        {
-            icono: "💾",
-            texto: "Guardar"
-        }
+     {
+    icono: "💾",
+    texto: "Guardar",
+    accion: () => guardarEditorPortada(project_id)
+}
     ];
 
 
@@ -2905,12 +2916,12 @@ function mostrarBotoneraEdicionPortada() {
             `;
 
 
-        if (item.accion) {
+   if (item.accion) {
 
-            boton.onclick =
-                () => item.accion();
+    boton.onclick =
+        () => item.accion();
 
-        }
+}
 
 
         botonera.appendChild(boton);
@@ -3076,6 +3087,106 @@ function asignarClasesPaginasEditorial() {
 }
 
 
+async function guardarEditorPortada(project_id) {
+
+    if (!project_id) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "guardarEditorPortada",
+            "No hay proyecto activo",
+            "monitorEditor"
+        );
+
+        return;
+
+    }
+
+
+    const titulo =
+        document.querySelector(
+            ".titulo-portada-editor"
+        );
+
+
+    const editorJSON = {
+
+        portada: {
+
+            titulo: {
+
+                texto:
+                    titulo
+                        ? titulo.innerText
+                        : "",
+
+
+                estilo: {
+
+                    x:
+                        titulo
+                            ? titulo.style.left
+                            : "",
+
+                    y:
+                        titulo
+                            ? titulo.style.top
+                            : "",
+
+                    fontSize:
+                        titulo
+                            ? titulo.style.fontSize
+                            : "",
+
+                    color:
+                        titulo
+                            ? titulo.style.color
+                            : "",
+
+                    fontFamily:
+                        titulo
+                            ? titulo.style.fontFamily
+                            : "",
+
+                    fontWeight:
+                        titulo
+                            ? titulo.style.fontWeight
+                            : ""
+
+                }
+
+            }
+
+        }
+
+    };
+
+
+    const ruta =
+        `proyectos/${project_id}/editor.json`;
+
+
+    const guardado =
+        await guardarJSON(
+            ruta,
+            editorJSON
+        );
+
+
+    if (guardado) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Editor portada",
+            "Estado de portada guardado",
+            "monitorEditor"
+        );
+
+    }
+
+}
 
 async function cargarPaginaPrueba(proyecto) {
 
