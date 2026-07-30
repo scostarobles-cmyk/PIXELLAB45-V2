@@ -3087,9 +3087,9 @@ function asignarClasesPaginasEditorial() {
 }
 
 
-async function guardarEditorPortada(project_Id) {
+async function guardarEditorPortada(project_id) {
 
-    if (!project_Id) {
+    if (!project_id) {
 
         monitorPIXELLAB(
             "Editorial",
@@ -3106,7 +3106,7 @@ async function guardarEditorPortada(project_Id) {
 
     const titulo =
         document.querySelector(
-            ".pl45-titulo-portada"
+            ".titulo-portada-editor"
         );
 
 
@@ -3129,30 +3129,25 @@ async function guardarEditorPortada(project_Id) {
                             ? titulo.style.left
                             : "",
 
-
                     y:
                         titulo
                             ? titulo.style.top
                             : "",
-
 
                     fontSize:
                         titulo
                             ? titulo.style.fontSize
                             : "",
 
-
                     color:
                         titulo
                             ? titulo.style.color
                             : "",
 
-
                     fontFamily:
                         titulo
                             ? titulo.style.fontFamily
                             : "",
-
 
                     fontWeight:
                         titulo
@@ -3169,7 +3164,7 @@ async function guardarEditorPortada(project_Id) {
 
 
     const ruta =
-        `proyectos/${project_Id}/editor.json`;
+        `proyectos/${project_id}/editor.json`;
 
 
     const guardado =
