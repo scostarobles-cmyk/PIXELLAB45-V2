@@ -2854,6 +2854,14 @@ function activarBotoneraEditor(){
 
 function mostrarBotoneraEdicionPortada(projectId) {
 
+monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Botonera",
+        "mostrando los botones de edición",
+        "monitorEditor"
+    );
+
     const botonera =
         document.getElementById("botoneraEdicion");
    const proyectoSeleccionado = projectId;
