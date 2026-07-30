@@ -3005,7 +3005,7 @@ function agregarTituloPortada() {
         "Título agregado a portada",
         "monitorEditor"
     );
-    elementoTextoActivo = titulo;
+    
 
 mostrarPanelEstilosTexto();
 
