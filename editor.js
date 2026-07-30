@@ -2834,8 +2834,9 @@ function cerrarModoPortada() {
 function activarBotoneraEditor(){
 
     const botones =
-        document.querySelectorAll(".editor-menu");
-
+    document.querySelectorAll(
+        ".editor-menu, .btn-editor-portada"
+    );
     botones.forEach(boton => {
 
         boton.disabled = false;
