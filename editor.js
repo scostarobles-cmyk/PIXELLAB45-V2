@@ -3209,45 +3209,28 @@ function mostrarPanelEstilosTexto() {
     }
 
 
-    if (!elementoTextoActivo) {
-
-        monitorPIXELLAB(
-            "Editorial",
-            "error",
-            "Editor",
-            "No hay texto seleccionado",
-            "monitorEditor"
-        );
-
-        panel.style.display = "none";
-
-        return;
-
-    }
-
-
     panel.innerHTML = `
 
         <div class="editor-estilos">
 
-            <button class="btn-estilo-editor">
+            <button class="btn-estilo">
                 🔤 Fuente
             </button>
 
-            <button class="btn-estilo-editor">
-                🔠 Tamaño
+            <button class="btn-estilo">
+                🔼 Tamaño
             </button>
 
-            <button class="btn-estilo-editor">
+            <button class="btn-estilo">
                 🎨 Color
             </button>
 
-            <button class="btn-estilo-editor">
-                <b>B</b>
+            <button class="btn-estilo">
+                B
             </button>
 
-            <button class="btn-estilo-editor">
-                <i>I</i>
+            <button class="btn-estilo">
+                I
             </button>
 
         </div>
@@ -3255,19 +3238,18 @@ function mostrarPanelEstilosTexto() {
     `;
 
 
-    panel.style.display = "flex";
+    panel.style.display = "block";
 
 
     monitorPIXELLAB(
         "Editorial",
         "estado",
         "Editor",
-        "Botonera estilos mostrada",
+        "Botonera de estilos mostrada correctamente",
         "monitorEditor"
     );
 
 }
-
 async function cargarPaginaPrueba(proyecto) {
 
     monitorPIXELLAB(
