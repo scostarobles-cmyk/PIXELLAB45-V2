@@ -3194,58 +3194,30 @@ async function guardarEditorPortada(project_id) {
     }
 
 }
-function mostrarBotoneraEstilosTexto() {
+function mostrarBotoneraEstilosTexto(){
 
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Estilos",
-        "Creando botonera estilos independiente",
-        "monitorEditor"
-    );
-
-
-    let botoneraEstilos =
+    const botonera =
         document.getElementById(
             "botoneraEstilosTexto"
         );
 
 
-    if (!botoneraEstilos) {
+    if(!botonera){
 
-        botoneraEstilos =
-            document.createElement("div");
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Estilos",
+            "No existe botoneraEstilosTexto",
+            "monitorEditor"
+        );
 
-        botoneraEstilos.id =
-            "botoneraEstilosTexto";
-
-
-        const panel =
-            document.getElementById(
-                "panelEstilosTexto"
-            );
-
-
-        if (panel) {
-
-            panel.appendChild(
-                botoneraEstilos
-            );
-
-        } else {
-
-            document
-            .getElementById("editorTrabajo")
-            .appendChild(
-                botoneraEstilos
-            );
-
-        }
+        return;
 
     }
 
 
-    botoneraEstilos.innerHTML = `
+    botonera.innerHTML = `
 
         <button class="btn-editor-portada">
             🔤 Fuente
@@ -3270,27 +3242,18 @@ function mostrarBotoneraEstilosTexto() {
     `;
 
 
-    botoneraEstilos.style.display =
-        "flex";
-
-
-    botoneraEstilos.style.flexDirection =
-        "row";
-
-
-    botoneraEstilos.style.gap =
-        "10px";
-
-
-    botoneraEstilos.style.justifyContent =
-        "center";
+    botonera.style.display = "flex";
+    botonera.style.flexDirection = "row";
+    botonera.style.gap = "10px";
+    botonera.style.justifyContent = "center";
+    botonera.style.marginTop = "15px";
 
 
     monitorPIXELLAB(
         "Editorial",
         "ok",
         "Estilos",
-        "Botonera estilos visible sin modificar portada",
+        "Tercera botonera mostrada",
         "monitorEditor"
     );
 
