@@ -2877,7 +2877,13 @@ monitorPIXELLAB(
         {
             icono: "➕",
             texto: "Título",
-            accion: agregarTituloPortada
+            accion: function(){
+
+    agregarTituloPortada();
+
+    mostrarBotoneraEstilosTexto();
+
+}
         },
         {
             icono: "✍️",
@@ -2984,7 +2990,7 @@ function agregarTituloPortada() {
         portada.appendChild(
             titulo
         );
-        mostrarBotoneraEdicion();
+        
 
     }
 
