@@ -2884,7 +2884,7 @@ function mostrarBotoneraEdicionPortada() {
        {
             icono: "💾",
             texto: "Guardar",
-            accion: guardarEditorPortada
+            accion: guardarEditorPortada(projectId)
         }
     ];
 
@@ -3077,9 +3077,9 @@ function asignarClasesPaginasEditorial() {
 }
 
 
-async function guardarEditorPortada() {
+async function guardarEditorPortada(projectId) {
 
-    if (!projectIdActual) {
+    if (!projectId) {
 
         monitorPIXELLAB(
             "Editorial",
@@ -3159,7 +3159,7 @@ async function guardarEditorPortada() {
 
 
     const ruta =
-        `proyectos/${projectIdActual}/editor.json`;
+        `proyectos/${projectId}/editor.json`;
 
 
     const guardado =
