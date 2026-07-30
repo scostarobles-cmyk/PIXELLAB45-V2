@@ -2650,14 +2650,14 @@ function abrirModoPortada() {
     }
 
 
-    // MOSTRAR SOLO PORTADA
+    // MOSTRAR SOLO PORTADA POR CLASE
 
     if (paginaEditor) {
 
 
         const hojas =
             paginaEditor.querySelectorAll(
-                "[class*='pl45-hoja-']"
+                ".pl45-hoja"
             );
 
 
