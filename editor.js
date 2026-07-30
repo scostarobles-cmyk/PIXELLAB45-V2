@@ -3188,7 +3188,7 @@ async function guardarEditorPortada(project_id) {
     }
 
 }
-function mostrarPanelEstilosTexto() {
+function mostrarPanelEstilosTexto(textoActivo) {
 
     const panel =
         document.getElementById("panelEstilosTexto");
@@ -3209,28 +3209,32 @@ function mostrarPanelEstilosTexto() {
     }
 
 
+    // Guardamos el texto activo acá
+    elementoTextoActivo = textoActivo;
+
+
     panel.innerHTML = `
 
         <div class="editor-estilos">
 
-            <button class="btn-estilo">
+            <button class="btn-editor-portada">
                 🔤 Fuente
             </button>
 
-            <button class="btn-estilo">
+            <button class="btn-editor-portada">
                 🔼 Tamaño
             </button>
 
-            <button class="btn-estilo">
+            <button class="btn-editor-portada">
                 🎨 Color
             </button>
 
-            <button class="btn-estilo">
-                B
+            <button class="btn-editor-portada">
+                <b>B</b>
             </button>
 
-            <button class="btn-estilo">
-                I
+            <button class="btn-editor-portada">
+                <i>I</i>
             </button>
 
         </div>
@@ -3238,14 +3242,14 @@ function mostrarPanelEstilosTexto() {
     `;
 
 
-    panel.style.display = "block";
+    panel.style.display = "flex";
 
 
     monitorPIXELLAB(
         "Editorial",
         "estado",
         "Editor",
-        "Botonera de estilos mostrada correctamente",
+        "Botonera de estilos mostrada",
         "monitorEditor"
     );
 
