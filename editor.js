@@ -2965,34 +2965,28 @@ function agregarTituloPortada() {
         );
 
 
-    if (!titulo) {
+if (!titulo) {
 
-        titulo =
-            document.createElement("div");
+    titulo = document.createElement("div");
+
+    titulo.className =
+        "titulo-portada-editor";
+
+    titulo.contentEditable = true;
+
+    titulo.innerText =
+        "Nuevo título";
+
+    portada.appendChild(titulo);
+
+}
 
 
-        titulo.className =
-            "titulo-portada-editor";
-
-
-        titulo.contentEditable =
-            true;
-
-
-        titulo.innerText =
-            "Nuevo título";
-
-
-        portada.appendChild(
-            titulo
-        );
-        titulo.onclick = () => {
+titulo.onclick = () => {
 
     seleccionarTextoEditor(titulo);
 
 };
-
-    }
 
 
     titulo.focus();
@@ -3264,6 +3258,11 @@ async function cargarEditorPortada() {
                     document.createElement(
                         "div"
                     );
+                    titulo.onclick = () => {
+
+    seleccionarTextoEditor(titulo);
+
+};
 
 
                 titulo.className =
@@ -3387,15 +3386,16 @@ function mostrarPanelEstilosTexto() {
 
 }
 function seleccionarTextoEditor(texto){
-	monitorPIXELLAB(
-    "Editorial",
-    "estado",
-    "Editor presionando botón texto",
-    "Activo: " + elementoTextoActivo.className,
-    "monitorEditor"
-);
 
     elementoTextoActivo = texto;
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Editor",
+        "Activo: " + elementoTextoActivo.className,
+        "monitorEditor"
+    );
 
     mostrarPanelEstilosTexto();
 
