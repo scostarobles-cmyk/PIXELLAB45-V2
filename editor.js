@@ -2978,16 +2978,14 @@ if (!titulo) {
         "Nuevo título";
 
     portada.appendChild(titulo);
-    elementoTextoActivo = titulo;
+    mostrarBotoneraEdicion();
 
-mostrarPanelEstilosTexto();
+
 
 }
 
 
-titulo.onclick = () => {
 
-    seleccionarTextoEditor(titulo);
 
 };
 
@@ -3261,9 +3259,7 @@ async function cargarEditorPortada() {
                     document.createElement(
                         "div"
                     );
-                    titulo.onclick = () => {
-
-    seleccionarTextoEditor(titulo);
+                    
 
 };
 
@@ -3329,78 +3325,14 @@ async function cargarEditorPortada() {
 
 }
 
-function mostrarPanelEstilosTexto() {
-	monitorPIXELLAB(
-    "Editorial",
-    "estado",
-    "Editor",
-    "Activo: " + elementoTextoActivo.className,
-    "monitorEditor"
-);
-
-    const panel =
-        document.getElementById(
-            "panelEstilosTexto"
-        );
-
-    if (!panel) return;
-
-    if (!elementoTextoActivo) {
-
-        panel.style.display = "none";
-        return;
-
-    }
-
-    panel.innerHTML = `
-
-        <div class="editor-estilos">
-
-            <label>Fuente</label>
-            <select id="editorFuente"></select>
-
-            <label>Tamaño</label>
-            <input
-                type="number"
-                id="editorTamano"
-                min="8"
-                max="200"
-            >
-
-            <label>Color</label>
-            <input
-                type="color"
-                id="editorColor"
-            >
-
-            <button id="editorBold">
-                B
-            </button>
-
-            <button id="editorItalic">
-                I
-            </button>
-
-        </div>
-
-    `;
-
-    panel.style.display = "block";
-
-}
-function seleccionarTextoEditor(texto){
-
-    elementoTextoActivo = texto;
+function mostrarBotoneraEdicion() {
 
     monitorPIXELLAB(
         "Editorial",
         "estado",
-        "Editor",
-        "Activo: " + elementoTextoActivo.className,
+        "Edición",
+        "Función mostrarBotoneraEdicion ejecutada",
         "monitorEditor"
     );
 
-    mostrarPanelEstilosTexto();
-
 }
- 
