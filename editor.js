@@ -2626,12 +2626,7 @@ function abrirModoPortada() {
     }
 
 
-    if (monitor) {
-
-        monitor.style.display =
-            "none";
-
-    }
+    
 
 
     if (toolbar) {
