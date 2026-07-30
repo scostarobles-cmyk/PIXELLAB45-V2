@@ -3188,63 +3188,75 @@ async function guardarEditorPortada(project_id) {
     }
 
 }
-function mostrarBotoneraEdicion(){
-
-    const botonera =
-        document.getElementById("botoneraEdicion");
-
-    if(!botonera){
-
-        monitorPIXELLAB(
-            "Editorial",
-            "error",
-            "Edición",
-            "No existe botoneraEdicion",
-            "monitorEditor"
-        );
-
-        return;
-    }
-
-
-    botonera.innerHTML = `
-
-        <button class="btn-editor-texto">
-            🔤 Fuente
-        </button>
-
-        <button class="btn-editor-texto">
-            📏 Tamaño
-        </button>
-
-        <button class="btn-editor-texto">
-            🎨 Color
-        </button>
-
-        <button class="btn-editor-texto">
-            <b>B</b>
-        </button>
-
-        <button class="btn-editor-texto">
-            <i>I</i>
-        </button>
-
-    `;
-
-
-    botonera.style.display = "flex";
-    botonera.style.position = "relative";
-    botonera.style.zIndex = "20";
-    botonera.style.width = "100%";
-    botonera.style.justifyContent = "center";
-    botonera.style.gap = "10px";
-
+function mostrarPanelEstilosTexto() {
 
     monitorPIXELLAB(
         "Editorial",
         "estado",
-        "Edición",
-        "Botonera edición mostrada correctamente",
+        "Editor",
+        "Mostrando panel de estilos de texto",
+        "monitorEditor"
+    );
+
+
+    const panel =
+        document.getElementById(
+            "panelEstilosTexto"
+        );
+
+
+    if (!panel) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Editor",
+            "No existe panelEstilosTexto",
+            "monitorEditor"
+        );
+
+        return;
+
+    }
+
+
+    panel.innerHTML = `
+
+        <div class="editor-estilos">
+
+            <button class="estilo-btn">
+                🔤 Fuente
+            </button>
+
+            <button class="estilo-btn">
+                🔠 Tamaño
+            </button>
+
+            <button class="estilo-btn">
+                🎨 Color
+            </button>
+
+            <button class="estilo-btn">
+                B
+            </button>
+
+            <button class="estilo-btn">
+                I
+            </button>
+
+        </div>
+
+    `;
+
+
+    panel.style.display = "block";
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Editor",
+        "Panel estilos visible",
         "monitorEditor"
     );
 
