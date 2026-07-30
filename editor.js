@@ -2856,7 +2856,7 @@ function mostrarBotoneraEdicionPortada(projectId) {
 
     const botonera =
         document.getElementById("botoneraEdicion");
-
+   const proyectoSeleccionado = projectId;
     if (!botonera) return;
 
 
@@ -2884,7 +2884,7 @@ function mostrarBotoneraEdicionPortada(projectId) {
      {
     icono: "💾",
     texto: "Guardar",
-    accion: () => guardarEditorPortada(projectId)
+    accion: () => guardarEditorPortada(proyectoSeleccionado)
 }
     ];
 
