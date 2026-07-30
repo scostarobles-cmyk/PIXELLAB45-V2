@@ -2881,11 +2881,11 @@ function mostrarBotoneraEdicionPortada() {
             icono: "🖼️",
             texto: "Imagen"
         },
-       {
-            icono: "💾",
-            texto: "Guardar",
-            accion: guardarEditorPortada(projectId)
-        }
+     {
+    icono: "💾",
+    texto: "Guardar",
+    accion: () => guardarEditorPortada(projectId)
+}
     ];
 
 
@@ -2906,12 +2906,12 @@ function mostrarBotoneraEdicionPortada() {
             `;
 
 
-        if (item.accion) {
+   if (item.accion) {
 
-            boton.onclick =
-                () => item.accion();
+    boton.onclick =
+        () => item.accion();
 
-        }
+}
 
 
         botonera.appendChild(boton);
