@@ -3191,9 +3191,7 @@ async function guardarEditorPortada(project_id) {
 function mostrarBotoneraEdicion(){
 
     const botonera =
-        document.getElementById(
-            "botoneraEdicion"
-        );
+        document.getElementById("botoneraEdicion");
 
     if(!botonera){
 
@@ -3206,44 +3204,47 @@ function mostrarBotoneraEdicion(){
         );
 
         return;
-
     }
 
 
     botonera.innerHTML = `
 
-        <button class="btn-editor-portada">
+        <button class="btn-editor-texto">
             🔤 Fuente
         </button>
 
-        <button class="btn-editor-portada">
+        <button class="btn-editor-texto">
             📏 Tamaño
         </button>
 
-        <button class="btn-editor-portada">
+        <button class="btn-editor-texto">
             🎨 Color
         </button>
 
-        <button class="btn-editor-portada">
-            B
+        <button class="btn-editor-texto">
+            <b>B</b>
         </button>
 
-        <button class="btn-editor-portada">
-            I
+        <button class="btn-editor-texto">
+            <i>I</i>
         </button>
 
     `;
 
 
-    botonera.style.display =
-        "flex";
+    botonera.style.display = "flex";
+    botonera.style.position = "relative";
+    botonera.style.zIndex = "20";
+    botonera.style.width = "100%";
+    botonera.style.justifyContent = "center";
+    botonera.style.gap = "10px";
 
 
     monitorPIXELLAB(
         "Editorial",
         "estado",
         "Edición",
-        "Botonera creada correctamente",
+        "Botonera edición mostrada correctamente",
         "monitorEditor"
     );
 
