@@ -680,6 +680,613 @@ async function cargarSeccion(
 
     }
     activarBotoneraEditor();
+
+}
+// =====================================================
+// PIXELLAB45 EDITORIAL
+// FUNCIÓN: Cargar página de portada en editor A4
+// UBICACIÓN: Editor de eBooks
+// CREA: Hoja A4 (210x297mm) + imagen de portada
+// ADAPTA: Vista móvil manteniendo proporción A4
+// BUSCAR: PORTADA A4
+// =====================================================
+
+function cargarPaginaPortada(proyecto) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Portada",
+        "Entró a cargarPaginaPortada",
+        "monitorEditor"
+    );
+
+
+    const contenedor =
+        document.getElementById(
+            "paginaEditor"
+        );
+
+
+    const canvas =
+        document.querySelector(
+            ".editor-canvas"
+        );
+
+
+    if (!contenedor) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Portada",
+            "No existe paginaEditor",
+            "monitorEditor"
+        );
+
+        return;
+
+    }
+
+
+    const hoja =
+        document.createElement(
+            "div"
+        );
+
+
+    hoja.className =
+        "pl45-hoja-portada";
+
+
+    Object.assign(
+        hoja.style,
+        {
+
+            width: "100%",
+            maxWidth: "794px",
+            aspectRatio: "210 / 297",
+
+            margin:
+                "0 auto 20px auto",
+
+            background:
+                "white",
+
+            transformOrigin:
+                "top center"
+
+        }
+    );
+
+
+    const rutaPortada =
+        `${R2_EBOOKS_URL}/proyectos/${proyecto.projectId}/imagenes/portada.png`;
+
+
+    const img =
+        document.createElement(
+            "img"
+        );
+
+
+    img.src =
+        rutaPortada;
+
+
+    img.alt =
+        proyecto.titulo ||
+        "Portada";
+
+
+    img.className =
+        "portada-editor";
+
+
+    Object.assign(
+        img.style,
+        {
+
+            width: "100%",
+            height: "100%",
+            display: "block",
+            objectFit: "cover"
+
+        }
+    );
+
+
+    img.onload = () => {
+
+        const esMovil =
+            window.innerWidth <= 768;
+
+
+        if (
+            canvas &&
+            esMovil
+        ) {
+
+            const anchoHoja =
+                hoja.offsetWidth;
+
+
+            const anchoDisponible =
+                canvas.clientWidth - 20;
+
+
+            if (
+                anchoHoja > 0 &&
+                anchoDisponible > 0
+            ) {
+
+                const escala =
+                    anchoDisponible /
+                    anchoHoja;
+
+
+                hoja.style.transform =
+                    `scale(${Math.min(1, escala)})`;
+
+
+        //        hoja.style.marginBottom =
+    //                `-${hoja.offsetHeight * (1 - escala)}px`;
+
+            }
+
+        }
+        else {
+
+            hoja.style.transform =
+                "scale(1)";
+
+        }
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Portada",
+            "Imagen cargada correctamente",
+            "monitorEditor"
+        );
+
+    };
+
+
+    img.onerror = () => {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Portada",
+            "No se pudo cargar la imagen",
+            "monitorEditor"
+        );
+
+    };
+
+
+    hoja.appendChild(
+        img
+    );
+
+
+    contenedor.appendChild(
+        hoja
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Portada",
+        "Hoja agregada al editor",
+        "monitorEditor"
+    );
+
+}
+/*
+=========================================================
+PIXELLAB Editorial
+Hoja · Legales
+
+Responsabilidad:
+
+• Cargar legales.json
+• Crear la página de legales
+• Agregar la página al paginaEditor
+
+No guarda cambios.
+No aplica estilos.
+
+=========================================================
+*/
+
+async function cargarPaginaLegales(proyecto) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Legales",
+        "Entró a cargarPaginaLegales"
+    );
+
+
+    try {
+
+
+        const ruta =
+            `proyectos/${proyecto.projectId}/legales.json`;
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Legales",
+            "Cargando: " + ruta,
+            "monitorEditor"
+        );
+
+
+        const respuesta =
+            await fetch(WORKER_URL, {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    action: "cargar-json",
+
+                    ruta: ruta
+
+                })
+
+            });
+
+
+        const datos =
+            await respuesta.json();
+
+
+        if (!datos.ok) {
+
+            throw new Error(
+                "No se pudo cargar legales"
+            );
+
+        }
+
+
+        const legales =
+            datos.json;
+
+
+        if (!legales) {
+
+            throw new Error(
+                "JSON legales vacío"
+            );
+
+        }
+
+
+        const contenedor =
+            document.getElementById(
+                "paginaEditor"
+            );
+
+
+        if (!contenedor) {
+
+            throw new Error(
+                "No existe paginaEditor"
+            );
+
+        }
+
+
+     // Crear hoja A4
+
+const hoja =
+    document.createElement(
+        "div"
+    );
+
+
+hoja.className = "pl45-hoja-portada";
+
+
+Object.assign(hoja.style, {
+
+    width: "100%",
+    maxWidth: "794px",
+    aspectRatio: "210 / 297",
+
+    margin: "0 auto 20px auto",
+
+    background: "#ffffff",
+    color: "#000000",
+
+    padding: "40px",
+
+    boxSizing: "border-box",
+
+    overflow: "hidden"
+
+});
+        // Crear título
+
+        const titulo =
+            document.createElement(
+                "h1"
+            );
+
+
+        titulo.textContent =
+            "Legales";
+
+
+        // Crear contenido
+
+        const texto =
+            document.createElement(
+                "div"
+            );
+
+
+        texto.textContent =
+            legales.contenido;
+
+
+        texto.style.whiteSpace =
+            "pre-line";
+
+
+        // Armar hoja
+
+        hoja.appendChild(
+            titulo
+        );
+
+
+        hoja.appendChild(
+            texto
+        );
+
+
+        // Agregar debajo de lo existente
+
+        contenedor.appendChild(
+            hoja
+        );
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Legales",
+            "Página cargada correctamente",
+                        "monitorEditor"
+        );
+
+
+    } catch(error) {
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Legales",
+            error.message,
+                        "monitorEditor"
+        );
+
+
+    }
+
+}
+/* ==========================
+   PÁGINA ÍNDICE
+========================== */
+
+async function cargarPaginaIndice(proyecto) {
+
+    monitorPIXELLAB(
+        "Editor",
+        "proceso",
+        "Indice",
+        "Entró a cargarPaginaIndice"
+    );
+
+
+    try {
+
+
+        const ruta =
+            `proyectos/${proyecto.projectId}/indice.json`;
+
+
+        monitorPIXELLAB(
+            "Editor",
+            "proceso",
+            "Indice",
+            "Cargando: " + ruta
+        );
+
+
+        const respuesta =
+            await fetch(WORKER_URL, {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    action: "cargar-json",
+
+                    ruta: ruta
+
+                })
+
+            });
+
+
+        const datos =
+            await respuesta.json();
+
+
+        if (!datos.ok) {
+
+            throw new Error(
+                "No se pudo cargar indice"
+            );
+
+        }
+
+
+        const indice =
+            datos.jctos/${projectId}/proyecto.json`
+        );
+
+
+    if (!proyecto) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Editor",
+            "No se pudo cargar proyecto.json",
+            "monitorEditor"
+        );
+
+        return;
+    }
+
+
+    await cargarLibroCompleto(proyecto);
+
+}
+/*
+=========================================================
+PIXELLAB Editorial
+ETAPA 1 · Carga completa del libro
+
+Objetivo:
+Reconstruir completamente el eBook en memoria
+leyendo todos los archivos JSON del proyecto.
+
+Flujo:
+
+1. Portada
+2. Legales
+3. Índice
+4. Introducción
+5. Capítulos
+6. Conclusión
+
+Cada hoja tendrá su propia función de carga.
+
+La única excepción son los capítulos, que se
+recorrerán automáticamente leyendo plan.json.
+
+En esta etapa:
+
+✓ Carga contenido
+✗ No aplica estilos
+✗ No guarda cambios
+✗ No realiza edición
+
+=========================================================
+*/
+const SECCIONES_LIBRO = [
+  //     "prueba",
+   "portada",
+   "legales",
+   "indice",
+   "introduccion",
+    "capitulos",
+    "conclusion"
+];
+/* ==========================
+   CARGA DEL LIBRO
+========================== */
+
+async function cargarLibroCompleto(proyecto) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Libro",
+        "Comenzando carga completa",
+                "monitorEditor"
+    );
+
+    for (const seccion of SECCIONES_LIBRO) {
+
+        await cargarSeccion(
+            proyecto,
+            seccion
+        );
+
+    }
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Libro",
+        "Carga completa finalizada",
+                "monitorEditor"
+    );
+
+}
+async function cargarSeccion(
+    proyecto,
+    seccion
+) {
+
+    switch (seccion) {
+    	
+         case "prueba":
+
+    await cargarPaginaPrueba(proyecto);
+
+    break;
+        case "portada":
+            await cargarPaginaPortada(proyecto);
+            break;
+
+        case "legales":
+            await cargarPaginaLegales(proyecto);
+            break;
+
+        case "indice":
+            await cargarPaginaIndice(proyecto);
+            break;
+
+        case "introduccion":
+            await cargarPaginaIntroduccion(proyecto);
+            break;
+
+        case "capitulos":
+
+    await cargarPaginaCapitulos(proyecto);
+
+    break;
+
+        case "conclusion":
+            await cargarPaginaConclusion(proyecto);
+            break;
+
+    }
+    activarBotoneraEditor();
     asignarClasesPaginasEditorial();
 
 }
