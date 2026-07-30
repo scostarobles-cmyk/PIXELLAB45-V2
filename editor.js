@@ -3188,19 +3188,30 @@ async function guardarEditorPortada(project_id) {
     }
 
 }
-function mostrarPanelEstilosTexto(textoActivo) {
+function mostrarBotoneraEdicionPortada(project_Id) {
 
-    const panel =
-        document.getElementById("panelEstilosTexto");
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Botonera edición",
+        "Cargando botonera de estilos",
+        "monitorEditor"
+    );
 
 
-    if (!panel) {
+    const botonera =
+        document.getElementById(
+            "botoneraEdicion"
+        );
+
+
+    if (!botonera) {
 
         monitorPIXELLAB(
             "Editorial",
             "error",
-            "Editor",
-            "No existe panelEstilosTexto",
+            "Botonera edición",
+            "No existe botoneraEdicion",
             "monitorEditor"
         );
 
@@ -3209,11 +3220,7 @@ function mostrarPanelEstilosTexto(textoActivo) {
     }
 
 
-    // Guardamos el texto activo acá
-    elementoTextoActivo = textoActivo;
-
-
-    panel.innerHTML = `
+    botonera.innerHTML = `
 
         <div class="editor-estilos">
 
@@ -3222,7 +3229,7 @@ function mostrarPanelEstilosTexto(textoActivo) {
             </button>
 
             <button class="btn-editor-portada">
-                🔼 Tamaño
+                📏 Tamaño
             </button>
 
             <button class="btn-editor-portada">
@@ -3242,14 +3249,14 @@ function mostrarPanelEstilosTexto(textoActivo) {
     `;
 
 
-    panel.style.display = "flex";
+    botonera.style.display = "flex";
 
 
     monitorPIXELLAB(
         "Editorial",
-        "estado",
-        "Editor",
-        "Botonera de estilos mostrada",
+        "ok",
+        "Botonera edición",
+        "Botonera de estilos visible",
         "monitorEditor"
     );
 
