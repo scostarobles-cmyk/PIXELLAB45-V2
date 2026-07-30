@@ -2984,6 +2984,7 @@ function agregarTituloPortada() {
         portada.appendChild(
             titulo
         );
+        mostrarBotoneraEdicion();
 
     }
 
@@ -3185,6 +3186,17 @@ async function guardarEditorPortada(project_id) {
         );
 
     }
+
+}
+function mostrarBotoneraEdicion(){
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Edición",
+        "Botonera de edición ejecutada",
+        "monitorEditor"
+    );
 
 }
 
