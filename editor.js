@@ -2978,6 +2978,9 @@ if (!titulo) {
         "Nuevo título";
 
     portada.appendChild(titulo);
+    elementoTextoActivo = titulo;
+
+mostrarPanelEstilosTexto();
 
 }
 
