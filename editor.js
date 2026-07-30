@@ -3190,11 +3190,60 @@ async function guardarEditorPortada(project_id) {
 }
 function mostrarBotoneraEdicion(){
 
+    const botonera =
+        document.getElementById(
+            "botoneraEdicion"
+        );
+
+    if(!botonera){
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Edición",
+            "No existe botoneraEdicion",
+            "monitorEditor"
+        );
+
+        return;
+
+    }
+
+
+    botonera.innerHTML = `
+
+        <button class="btn-editor-portada">
+            🔤 Fuente
+        </button>
+
+        <button class="btn-editor-portada">
+            📏 Tamaño
+        </button>
+
+        <button class="btn-editor-portada">
+            🎨 Color
+        </button>
+
+        <button class="btn-editor-portada">
+            B
+        </button>
+
+        <button class="btn-editor-portada">
+            I
+        </button>
+
+    `;
+
+
+    botonera.style.display =
+        "flex";
+
+
     monitorPIXELLAB(
         "Editorial",
         "estado",
         "Edición",
-        "Botonera de edición ejecutada",
+        "Botonera creada correctamente",
         "monitorEditor"
     );
 
