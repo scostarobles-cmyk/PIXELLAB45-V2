@@ -3188,75 +3188,103 @@ async function guardarEditorPortada(project_id) {
     }
 
 }
-function mostrarBotoneraEdicionPortada(project_Id) {
+function mostrarBotoneraEstilosTexto() {
 
     monitorPIXELLAB(
         "Editorial",
         "proceso",
-        "Botonera edición",
-        "Cargando botonera de estilos",
+        "Estilos",
+        "Creando botonera estilos independiente",
         "monitorEditor"
     );
 
 
-    const botonera =
+    let botoneraEstilos =
         document.getElementById(
-            "botoneraEdicion"
+            "botoneraEstilosTexto"
         );
 
 
-    if (!botonera) {
+    if (!botoneraEstilos) {
 
-        monitorPIXELLAB(
-            "Editorial",
-            "error",
-            "Botonera edición",
-            "No existe botoneraEdicion",
-            "monitorEditor"
-        );
+        botoneraEstilos =
+            document.createElement("div");
 
-        return;
+        botoneraEstilos.id =
+            "botoneraEstilosTexto";
+
+
+        const panel =
+            document.getElementById(
+                "panelEstilosTexto"
+            );
+
+
+        if (panel) {
+
+            panel.appendChild(
+                botoneraEstilos
+            );
+
+        } else {
+
+            document
+            .getElementById("editorTrabajo")
+            .appendChild(
+                botoneraEstilos
+            );
+
+        }
 
     }
 
 
-    botonera.innerHTML = `
+    botoneraEstilos.innerHTML = `
 
-        <div class="editor-estilos">
+        <button class="btn-editor-portada">
+            🔤 Fuente
+        </button>
 
-            <button class="btn-editor-portada">
-                🔤 Fuente
-            </button>
+        <button class="btn-editor-portada">
+            📏 Tamaño
+        </button>
 
-            <button class="btn-editor-portada">
-                📏 Tamaño
-            </button>
+        <button class="btn-editor-portada">
+            🎨 Color
+        </button>
 
-            <button class="btn-editor-portada">
-                🎨 Color
-            </button>
+        <button class="btn-editor-portada">
+            <b>B</b>
+        </button>
 
-            <button class="btn-editor-portada">
-                <b>B</b>
-            </button>
-
-            <button class="btn-editor-portada">
-                <i>I</i>
-            </button>
-
-        </div>
+        <button class="btn-editor-portada">
+            <i>I</i>
+        </button>
 
     `;
 
 
-    botonera.style.display = "flex";
+    botoneraEstilos.style.display =
+        "flex";
+
+
+    botoneraEstilos.style.flexDirection =
+        "row";
+
+
+    botoneraEstilos.style.gap =
+        "10px";
+
+
+    botoneraEstilos.style.justifyContent =
+        "center";
 
 
     monitorPIXELLAB(
         "Editorial",
         "ok",
-        "Botonera edición",
-        "Botonera de estilos visible",
+        "Estilos",
+        "Botonera estilos visible sin modificar portada",
         "monitorEditor"
     );
 
