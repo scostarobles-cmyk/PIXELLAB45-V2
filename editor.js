@@ -2881,9 +2881,10 @@ function mostrarBotoneraEdicionPortada() {
             icono: "🖼️",
             texto: "Imagen"
         },
-        {
+       {
             icono: "💾",
-            texto: "Guardar"
+            texto: "Guardar",
+            accion: guardarEditorPortada
         }
     ];
 
@@ -3143,6 +3144,82 @@ async function cargarPaginaPrueba(proyecto) {
         "Prueba",
         "Hoja de prueba agregada correctamente",
         "monitorEditor"
+    );
+
+}
+async function guardarEditorPortada() {
+
+    if (!projectIdActual) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "guardarEditorPortada",
+            "No hay proyecto activo"
+        );
+
+        return;
+    }
+
+
+    const titulo =
+        document.querySelector(
+            ".pl45-titulo-portada"
+        );
+
+
+    const editorJSON = {
+
+        portada: {
+
+            titulo: {
+
+                texto: titulo
+                    ? titulo.innerText
+                    : "",
+
+                estilo: {
+
+                    x: titulo
+                        ? titulo.style.left
+                        : "",
+
+                    y: titulo
+                        ? titulo.style.top
+                        : "",
+
+                    fontSize: titulo
+                        ? titulo.style.fontSize
+                        : "",
+
+                    color: titulo
+                        ? titulo.style.color
+                        : "",
+
+                    fontFamily: titulo
+                        ? titulo.style.fontFamily
+                        : "",
+
+                    fontWeight: titulo
+                        ? titulo.style.fontWeight
+                        : ""
+
+                }
+
+            }
+
+        }
+
+    };
+
+
+    const ruta =
+        `proyectos/${projectIdActual}/editor.json`;
+
+
+    await guardarJSON(
+        ruta,
+        editorJSON
     );
 
 }
