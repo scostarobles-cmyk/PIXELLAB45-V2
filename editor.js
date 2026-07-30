@@ -3075,78 +3075,6 @@ function asignarClasesPaginasEditorial() {
     }
 
 }
-
-
-
-async function cargarPaginaPrueba(proyecto) {
-
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Prueba",
-        "Entró a cargarPaginaPrueba",
-        "monitorEditor"
-    );
-
-
-    const pagina =
-        document.getElementById("paginaEditor");
-
-
-    if (!pagina) {
-
-        monitorPIXELLAB(
-            "Editorial",
-            "error",
-            "Prueba",
-            "No existe paginaEditor",
-            "monitorEditor"
-        );
-
-        return;
-    }
-
-
-    pagina.innerHTML = "";
-
-
-    const hoja =
-        document.createElement("div");
-
-
-    hoja.className = "hoja-editor";
-
-
-    hoja.innerHTML = `
-
-        <h1>
-            PIXELLAB EDITOR
-        </h1>
-
-        <p>
-            Hoja de prueba cargada desde cargarLibroCompleto()
-        </p>
-
-        <p>
-            Proyecto:
-            ${proyecto.projectId || ""}
-        </p>
-
-    `;
-
-
-    pagina.appendChild(hoja);
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "estado",
-        "Prueba",
-        "Hoja de prueba agregada correctamente",
-        "monitorEditor"
-    );
-
-}
 async function guardarEditorPortada() {
 
     if (!projectIdActual) {
@@ -3220,6 +3148,78 @@ async function guardarEditorPortada() {
     await guardarJSON(
         ruta,
         editorJSON
+    );
+
+}
+
+
+
+async function cargarPaginaPrueba(proyecto) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Prueba",
+        "Entró a cargarPaginaPrueba",
+        "monitorEditor"
+    );
+
+
+    const pagina =
+        document.getElementById("paginaEditor");
+
+
+    if (!pagina) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Prueba",
+            "No existe paginaEditor",
+            "monitorEditor"
+        );
+
+        return;
+    }
+
+
+    pagina.innerHTML = "";
+
+
+    const hoja =
+        document.createElement("div");
+
+
+    hoja.className = "hoja-editor";
+
+
+    hoja.innerHTML = `
+
+        <h1>
+            PIXELLAB EDITOR
+        </h1>
+
+        <p>
+            Hoja de prueba cargada desde cargarLibroCompleto()
+        </p>
+
+        <p>
+            Proyecto:
+            ${proyecto.projectId || ""}
+        </p>
+
+    `;
+
+
+    pagina.appendChild(hoja);
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Prueba",
+        "Hoja de prueba agregada correctamente",
+        "monitorEditor"
     );
 
 }
