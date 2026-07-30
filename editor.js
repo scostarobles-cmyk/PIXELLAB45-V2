@@ -3328,6 +3328,13 @@ async function cargarEditorPortada() {
 }
 
 function mostrarPanelEstilosTexto() {
+	monitorPIXELLAB(
+    "Editorial",
+    "estado",
+    "Editor",
+    "Activo: " + elementoTextoActivo.className,
+    "monitorEditor"
+);
 
     const panel =
         document.getElementById(
@@ -3380,6 +3387,13 @@ function mostrarPanelEstilosTexto() {
 
 }
 function seleccionarTextoEditor(texto){
+	monitorPIXELLAB(
+    "Editorial",
+    "estado",
+    "Editor presionando botón texto",
+    "Activo: " + elementoTextoActivo.className,
+    "monitorEditor"
+);
 
     elementoTextoActivo = texto;
 
