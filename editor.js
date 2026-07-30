@@ -3089,7 +3089,7 @@ function asignarClasesPaginasEditorial() {
 
 async function guardarEditorPortada(project_Id) {
 
-    if (!projectId) {
+    if (!project_Id) {
 
         monitorPIXELLAB(
             "Editorial",
@@ -3169,7 +3169,7 @@ async function guardarEditorPortada(project_Id) {
 
 
     const ruta =
-        `proyectos/${projectId}/editor.json`;
+        `proyectos/${project_Id}/editor.json`;
 
 
     const guardado =
