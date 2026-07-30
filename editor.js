@@ -6,6 +6,7 @@ monitorPIXELLAB(
     "monitorEditor"
 );
 let project_id = null;
+let elementoTextoActivo = null;
 
 async function listarProyectosEditorial() {
 
@@ -2985,6 +2986,11 @@ function agregarTituloPortada() {
         portada.appendChild(
             titulo
         );
+        titulo.onclick = () => {
+
+    seleccionarTextoEditor(titulo);
+
+};
 
     }
 
@@ -2999,6 +3005,9 @@ function agregarTituloPortada() {
         "Título agregado a portada",
         "monitorEditor"
     );
+    elementoTextoActivo = titulo;
+
+mostrarPanelEstilosTexto();
 
 }
 
@@ -3317,3 +3326,64 @@ async function cargarEditorPortada() {
     );
 
 }
+
+function mostrarPanelEstilosTexto() {
+
+    const panel =
+        document.getElementById(
+            "panelEstilosTexto"
+        );
+
+    if (!panel) return;
+
+    if (!elementoTextoActivo) {
+
+        panel.style.display = "none";
+        return;
+
+    }
+
+    panel.innerHTML = `
+
+        <div class="editor-estilos">
+
+            <label>Fuente</label>
+            <select id="editorFuente"></select>
+
+            <label>Tamaño</label>
+            <input
+                type="number"
+                id="editorTamano"
+                min="8"
+                max="200"
+            >
+
+            <label>Color</label>
+            <input
+                type="color"
+                id="editorColor"
+            >
+
+            <button id="editorBold">
+                B
+            </button>
+
+            <button id="editorItalic">
+                I
+            </button>
+
+        </div>
+
+    `;
+
+    panel.style.display = "block";
+
+}
+function seleccionarTextoEditor(texto){
+
+    elementoTextoActivo = texto;
+
+    mostrarPanelEstilosTexto();
+
+}
+ 
