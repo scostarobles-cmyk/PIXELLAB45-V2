@@ -3218,6 +3218,8 @@ function mostrarBotoneraEstilosTexto() {
         "Botonera visible",
         "monitorEditor"
     );
+    inicializarEditorFuente();
+inicializarEditorTamano();
 
 }
 
@@ -3231,6 +3233,65 @@ function ocultarBotoneraEstilosTexto() {
     if (!botonera) return;
 
     botonera.style.display = "none";
+
+}
+function inicializarEditorTamano(){
+
+    const control =
+        document.getElementById(
+            "editorTamano"
+        );
+
+    if(!control){
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Tamaño",
+            "No existe editorTamano",
+            "monitorEditor"
+        );
+
+        return;
+
+    }
+
+    control.oninput = function(){
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Tamaño",
+            "Moviendo tamaño",
+            "monitorEditor"
+        );
+
+        if(!elementoTextoActivo){
+
+            monitorPIXELLAB(
+                "Editorial",
+                "error",
+                "Tamaño",
+                "elementoTextoActivo = NULL",
+                "monitorEditor"
+            );
+
+            return;
+
+        }
+
+        elementoTextoActivo.style.fontSize =
+            control.value + "px";
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Tamaño",
+            "Nuevo tamaño: " + control.value,
+            "monitorEditor"
+        );
+
+    };
 
 }
 async function cargarPaginaPrueba(proyecto) {
