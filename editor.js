@@ -3228,12 +3228,13 @@ function inicializarEditorFuente(){
         );
 
         return;
+
     }
 
 
     if(elementoTextoActivo){
 
-        const fuenteActual =
+        const fuenteComputada =
             getComputedStyle(
                 elementoTextoActivo
             ).fontFamily;
@@ -3243,21 +3244,54 @@ function inicializarEditorFuente(){
             "Editorial",
             "prueba",
             "Fuente",
-            "Fuente actual cargada: [" + fuenteActual + "]",
+            "Activo: " +
+            elementoTextoActivo.className +
+            " | Texto: " +
+            elementoTextoActivo.innerText +
+            " | Fuente: [" +
+            fuenteComputada +
+            "]",
             "monitorEditor"
         );
 
 
-        selector.value =
-            fuenteActual
+        const fuenteSelector =
+            fuenteComputada
                 .split(",")[0]
                 .replaceAll('"',"")
                 .trim();
 
+
+        selector.value =
+            fuenteSelector;
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Fuente",
+            "Selector cargado: " +
+            fuenteSelector,
+            "monitorEditor"
+        );
+
+    }
+    else{
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Fuente",
+            "elementoTextoActivo no existe",
+            "monitorEditor"
+        );
+
     }
 
 
+
     selector.onchange = function(){
+
 
         if(!elementoTextoActivo){
 
@@ -3270,6 +3304,7 @@ function inicializarEditorFuente(){
             );
 
             return;
+
         }
 
 
@@ -3285,7 +3320,9 @@ function inicializarEditorFuente(){
             "monitorEditor"
         );
 
+
     };
+
 
 }
 function mostrarBotoneraEstilosTexto() {
