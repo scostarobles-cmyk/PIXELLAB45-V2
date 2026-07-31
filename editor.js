@@ -2990,15 +2990,17 @@ function agregarTituloPortada() {
 
     titulo.focus();
 
-    monitorPIXELLAB(
-        "Editorial",
-        "estado",
-        "Portada",
-        "Título agregado",
-        "monitorEditor"
-    );
+elementoTextoActivo = titulo;
 
-    mostrarBotoneraEstilosTexto();
+monitorPIXELLAB(
+    "Editorial",
+    "estado",
+    "Portada",
+    "Título agregado",
+    "monitorEditor"
+);
+
+mostrarBotoneraEstilosTexto();
 
 }
 
