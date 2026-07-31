@@ -3007,7 +3007,7 @@ monitorPIXELLAB(
     " | Texto: " + elementoTextoActivo.innerText,
     "monitorEditor"
 );
-
+inicializarEditorFuente();
 
 }
 
@@ -3195,5 +3195,90 @@ async function guardarEditorPortada(project_id) {
         );
 
     }
+
+}
+
+function inicializarEditorFuente(){
+	monitorPIXELLAB(
+    "Editorial",
+    "estado",
+    "Fuente",
+    "Entró a inicializarEditorFuente",
+    "monitorEditor"
+);
+
+    const selector =
+        document.getElementById(
+            "editorFuente"
+        );
+
+    if(!selector){
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Fuente",
+            "No existe editorFuente",
+            "monitorEditor"
+        );
+
+        return;
+    }
+
+
+    // Cargar fuente actual del texto seleccionado
+
+    if(elementoTextoActivo){
+
+        const fuenteActual =
+            getComputedStyle(
+                elementoTextoActivo
+            ).fontFamily;
+
+
+        selector.value =
+            fuenteActual;
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Fuente",
+            "Fuente actual cargada: " + fuenteActual,
+            "monitorEditor"
+        );
+
+    }
+
+
+    selector.onchange = function(){
+
+        if(!elementoTextoActivo){
+
+            monitorPIXELLAB(
+                "Editorial",
+                "error",
+                "Fuente",
+                "No hay texto activo",
+                "monitorEditor"
+            );
+
+            return;
+        }
+
+
+        elementoTextoActivo.style.fontFamily =
+            this.value;
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Fuente",
+            "Fuente aplicada: " + this.value,
+            "monitorEditor"
+        );
+
+    };
 
 }
