@@ -3260,6 +3260,14 @@ function activarCambioFuente(){
 
     selector.onchange = function(){
 
+    monitorPIXELLAB(
+        "Editorial",
+        "prueba",
+        "Fuente",
+        "Cambio detectado: " + this.value,
+        "monitorEditor"
+    );
+
         if(!elementoTextoActivo){
 
             monitorPIXELLAB(
