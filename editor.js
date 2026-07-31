@@ -3201,18 +3201,21 @@ async function guardarEditorPortada(project_id) {
 }
 
 function inicializarEditorFuente(){
-	monitorPIXELLAB(
-    "Editorial",
-    "estado",
-    "Fuente",
-    "Entró a inicializarEditorFuente",
-    "monitorEditor"
-);
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Fuente",
+        "Entró a inicializarEditorFuente",
+        "monitorEditor"
+    );
+
 
     const selector =
         document.getElementById(
             "editorFuente"
         );
+
 
     if(!selector){
 
@@ -3228,38 +3231,28 @@ function inicializarEditorFuente(){
     }
 
 
-    // Cargar fuente actual del texto seleccionado
+    if(elementoTextoActivo){
 
-if(elementoTextoActivo){
+        const fuenteActual =
+            getComputedStyle(
+                elementoTextoActivo
+            ).fontFamily;
 
-    const estilo =
-        getComputedStyle(
-            elementoTextoActivo
-        );
-
-    const fuenteReal =
-        estilo.fontFamily;
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "prueba",
-        "Fuente",
-        "Elemento: " + elementoTextoActivo.className +
-        " | Fuente real: [" + fuenteReal + "]",
-        "monitorEditor"
-    );
-
-
-}
 
         monitorPIXELLAB(
             "Editorial",
-            "estado",
+            "prueba",
             "Fuente",
-            "Fuente actual cargada: " + fuenteActual,
+            "Fuente actual cargada: [" + fuenteActual + "]",
             "monitorEditor"
         );
+
+
+        selector.value =
+            fuenteActual
+                .split(",")[0]
+                .replaceAll('"',"")
+                .trim();
 
     }
 
