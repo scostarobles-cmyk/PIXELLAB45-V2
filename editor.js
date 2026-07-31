@@ -691,8 +691,8 @@ async function cargarSeccion(
 
     }
     
-    activarBotoneraEditor();
-    asignarClasesPaginasEditorial();
+//    activarBotoneraEditor();
+   asignarClasesPaginasEditorial();
     monitorPIXELLAB(
     "Editorial",
     "ok",
