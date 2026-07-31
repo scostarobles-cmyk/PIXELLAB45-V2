@@ -3013,88 +3013,120 @@ mostrarBotoneraEstilosTexto();
 
 }
 
-function asignarClasesPaginasEditorial() {
+function agregarTituloPortada() {
 
-    const paginaEditor =
-        document.getElementById("paginaEditor");
-
-    if (!paginaEditor) return;
-
-
-    const paginas =
-        paginaEditor.children;
-
-
-    for (let i = 0; i < paginas.length; i++) {
-
-        const pagina =
-            paginas[i];
-
-
-        pagina.classList.add(
-            "pl45-hoja"
+    const portada =
+        document.querySelector(
+            ".pl45-hoja-portada"
         );
 
+    if (!portada) {
 
-        pagina.classList.remove(
-            "pl45-hoja-portada",
-            "pl45-hoja-legales",
-            "pl45-hoja-indice",
-            "pl45-hoja-introduccion",
-            "pl45-hoja-capitulo",
-            "pl45-hoja-conclusion"
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Portada",
+            "No se encontró la hoja de portada",
+            "monitorEditor"
         );
 
-
-        if (i === 0) {
-
-            pagina.classList.add(
-                "pl45-hoja-portada"
-            );
-
-        }
-
-        else if (i === 1) {
-
-            pagina.classList.add(
-                "pl45-hoja-legales"
-            );
-
-        }
-
-        else if (i === 2) {
-
-            pagina.classList.add(
-                "pl45-hoja-indice"
-            );
-
-        }
-
-        else if (i === 3) {
-
-            pagina.classList.add(
-                "pl45-hoja-introduccion"
-            );
-
-        }
-
-        else if (i === paginas.length - 1) {
-
-            pagina.classList.add(
-                "pl45-hoja-conclusion"
-            );
-
-        }
-
-        else {
-
-            pagina.classList.add(
-                "pl45-hoja-capitulo"
-            );
-
-        }
+        return;
 
     }
+
+
+    let titulo =
+        portada.querySelector(
+            ".titulo-portada-editor"
+        );
+
+
+    if (!titulo) {
+
+        titulo =
+            document.createElement(
+                "div"
+            );
+
+
+        titulo.className =
+            "titulo-portada-editor";
+
+
+        titulo.contentEditable =
+            true;
+
+
+        titulo.innerText =
+            "Nuevo título";
+
+
+        // POSICIÓN INICIAL DEL TÍTULO
+
+        titulo.style.position =
+            "absolute";
+
+
+        titulo.style.left =
+            "100px";
+
+
+        titulo.style.top =
+            "100px";
+
+
+        portada.appendChild(
+            titulo
+        );
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Posición",
+            "Título creado X: " +
+            titulo.style.left +
+            " Y: " +
+            titulo.style.top,
+            "monitorEditor"
+        );
+
+    }
+
+
+    titulo.focus();
+
+
+    elementoTextoActivo =
+        titulo;
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Portada",
+        "Título agregado",
+        "monitorEditor"
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "prueba",
+        "Texto activo",
+        "Elemento: " +
+        elementoTextoActivo.className +
+        " | Texto: " +
+        elementoTextoActivo.innerText,
+        "monitorEditor"
+    );
+
+
+    inicializarEditorFuente();
+
+
+    mostrarBotoneraEstilosTexto();
+
 
 }
 
