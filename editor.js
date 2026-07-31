@@ -3237,22 +3237,25 @@ function ocultarBotoneraEstilosTexto() {
 
 function activarCambioFuente(){
 
-    const selector =
-        document.getElementById("editorFuente");
+    const selector = document.getElementById("editorFuente");
 
-    monitorPIXELLAB(
-        "Editorial",
-        "prueba",
-        "Fuente",
-        "Selector: " + selector,
-        "monitorEditor"
-    );
+    if(!selector) return;
 
-    if(selector){
+    selector.addEventListener("change", function(){
 
-        selector.style.border = "4px solid red";
+        monitorPIXELLAB(
+            "Editorial",
+            "prueba",
+            "Fuente",
+            "Evento CHANGE detectado",
+            "monitorEditor"
+        );
 
-    }
+        if(!elementoTextoActivo) return;
+
+        elementoTextoActivo.style.fontFamily = selector.value;
+
+    });
 
 }
 function inicializarEditorTamano(){
