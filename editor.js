@@ -2999,7 +2999,14 @@ monitorPIXELLAB(
     "Título agregado",
     "monitorEditor"
 );
-
+monitorPIXELLAB(
+    "Editorial",
+    "prueba",
+    "Texto activo",
+    "Elemento: " + elementoTextoActivo.className +
+    " | Texto: " + elementoTextoActivo.innerText,
+    "monitorEditor"
+);
 
 
 }
