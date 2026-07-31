@@ -3230,19 +3230,32 @@ function inicializarEditorFuente(){
 
     // Cargar fuente actual del texto seleccionado
 
-    if(elementoTextoActivo){
+if(elementoTextoActivo){
 
-        const fuenteActual =
-    getComputedStyle(
-        elementoTextoActivo
-    ).fontFamily
-    .split(",")[0]
-    .replaceAll('"', "")
-    .trim();
+    const estilo =
+        getComputedStyle(
+            elementoTextoActivo
+        );
 
+    const fuenteReal =
+        estilo.fontFamily;
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "prueba",
+        "Fuente",
+        "Elemento: " + elementoTextoActivo.className +
+        " | Fuente real: [" + fuenteReal + "]",
+        "monitorEditor"
+    );
 
 selector.value =
-    fuenteActual;
+    fuenteReal;
+}
+
+
+
 
 
         
