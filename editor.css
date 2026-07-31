@@ -389,9 +389,9 @@
 
 #botoneraEstilosTexto select {
 
-    min-width: 140px;
-
-    cursor: pointer;
+    width:110px;
+    min-width:110px;
+    cursor:pointer;
 
 }
 
@@ -427,5 +427,24 @@
 #botoneraEstilosTexto button:hover {
 
     background:rgba(0,217,255,0.3);
+
+}
+
+@media (max-width:600px){
+
+    #botoneraEstilosTexto select {
+
+        width:100px;
+        min-width:100px;
+        font-size:12px;
+
+    }
+
+
+    #botoneraEstilosTexto input {
+
+        width:65px;
+
+    }
 
 }

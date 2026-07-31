@@ -3233,9 +3233,16 @@ function inicializarEditorFuente(){
     if(elementoTextoActivo){
 
         const fuenteActual =
-            getComputedStyle(
-                elementoTextoActivo
-            ).fontFamily;
+    getComputedStyle(
+        elementoTextoActivo
+    ).fontFamily
+    .split(",")[0]
+    .replaceAll('"', "")
+    .trim();
+
+
+selector.value =
+    fuenteActual;
 
 
         selector.value =
