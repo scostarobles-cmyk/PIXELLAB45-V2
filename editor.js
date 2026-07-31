@@ -691,7 +691,7 @@ async function cargarSeccion(
 
     }
     
-//    activarBotoneraEditor();
+   activarBotoneraEditor();
    asignarClasesPaginasEditorial();
     monitorPIXELLAB(
     "Editorial",
@@ -3030,7 +3030,7 @@ mostrarBotoneraEstilosTexto();
 
 }
 
-function agregarTituloPortada() {
+/*function agregarTituloPortada() {
 
     const portada =
         document.querySelector(
@@ -3145,7 +3145,7 @@ function agregarTituloPortada() {
     mostrarBotoneraEstilosTexto();
 
 
-}
+}*/
 
 
 async function guardarEditorPortada(project_id) {
