@@ -3212,9 +3212,7 @@ function inicializarEditorFuente(){
 
 
     const selector =
-        document.getElementById(
-            "editorFuente"
-        );
+        document.getElementById("editorFuente");
 
 
     if(!selector){
@@ -3228,83 +3226,51 @@ function inicializarEditorFuente(){
         );
 
         return;
-
     }
 
 
     if(elementoTextoActivo){
 
-        const fuenteComputada =
+        const fuenteActual =
             getComputedStyle(
                 elementoTextoActivo
-            ).fontFamily;
-
-
-        monitorPIXELLAB(
-            "Editorial",
-            "prueba",
-            "Fuente",
-            "Activo: " +
-            elementoTextoActivo.className +
-            " | Texto: " +
-            elementoTextoActivo.innerText +
-            " | Fuente: [" +
-            fuenteComputada +
-            "]",
-            "monitorEditor"
-        );
-
-
-        const fuenteSelector =
-            fuenteComputada
-                .split(",")[0]
-                .replaceAll('"',"")
-                .trim();
-
-
-        selector.value =
-            fuenteSelector;
+            ).fontFamily
+            .split(",")[0]
+            .replaceAll('"',"")
+            .trim();
 
 
         monitorPIXELLAB(
             "Editorial",
             "estado",
             "Fuente",
-            "Selector cargado: " +
-            fuenteSelector,
+            "Fuente cargada: " + fuenteActual,
             "monitorEditor"
         );
 
-    }
-    else{
+
+        selector.value =
+            fuenteActual;
+
+
+    } else {
 
         monitorPIXELLAB(
             "Editorial",
             "error",
             "Fuente",
-            "elementoTextoActivo no existe",
+            "No existe elementoTextoActivo",
             "monitorEditor"
         );
 
     }
 
 
-
     selector.onchange = function(){
-
 
         if(!elementoTextoActivo){
 
-            monitorPIXELLAB(
-                "Editorial",
-                "error",
-                "Fuente",
-                "No hay texto activo",
-                "monitorEditor"
-            );
-
             return;
-
         }
 
 
@@ -3320,9 +3286,7 @@ function inicializarEditorFuente(){
             "monitorEditor"
         );
 
-
     };
-
 
 }
 function mostrarBotoneraEstilosTexto() {
