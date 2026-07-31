@@ -626,12 +626,21 @@ async function cargarLibroCompleto(proyecto) {
 
     for (const seccion of SECCIONES_LIBRO) {
 
-        await cargarSeccion(
-            proyecto,
-            seccion
-        );
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Libro",
+        "Cargando sección: " + seccion,
+        "monitorEditor"
+    );
 
-    }
+
+    await cargarSeccion(
+        proyecto,
+        seccion
+    );
+
+}
 
     monitorPIXELLAB(
         "Editorial",
@@ -681,8 +690,16 @@ async function cargarSeccion(
             break;
 
     }
+    
     activarBotoneraEditor();
     asignarClasesPaginasEditorial();
+    monitorPIXELLAB(
+    "Editorial",
+    "ok",
+    "Libro",
+    "Sección finalizada: " + seccion,
+    "monitorEditor"
+);
 
 }
 // =====================================================
