@@ -3008,6 +3008,8 @@ monitorPIXELLAB(
     "monitorEditor"
 );
 inicializarEditorFuente();
+mostrarBotoneraEstilosTexto();
+
 
 }
 
@@ -3280,5 +3282,48 @@ function inicializarEditorFuente(){
         );
 
     };
+
+}
+function mostrarBotoneraEstilosTexto() {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Estilos",
+        "Entró a mostrarBotoneraEstilosTexto",
+        "monitorEditor"
+    );
+
+
+    const botonera =
+        document.getElementById(
+            "botoneraEstilosTexto"
+        );
+
+
+    if (!botonera) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Estilos",
+            "No existe botoneraEstilosTexto",
+            "monitorEditor"
+        );
+
+        return;
+    }
+
+
+    botonera.style.display = "flex";
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Estilos",
+        "Botonera estilos visible",
+        "monitorEditor"
+    );
 
 }
