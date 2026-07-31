@@ -3322,28 +3322,4 @@ function mostrarBotoneraEstilosTexto() {
 
     botonera.style.display = "flex";
 
-
-const selector =
-    document.getElementById(
-        "editorFuente"
-    );
-
-
-if(selector && elementoTextoActivo){
-
-    selector.value =
-        getComputedStyle(
-            elementoTextoActivo
-        ).fontFamily;
-
-    monitorPIXELLAB(
-        "Editorial",
-        "estado",
-        "Fuente",
-        "Fuente cargada: " + selector.value,
-        "monitorEditor"
-    );
-
-}
-
 }
