@@ -3218,8 +3218,7 @@ function mostrarBotoneraEstilosTexto() {
         "Botonera visible",
         "monitorEditor"
     );
-    inicializarEditorFuente();
-inicializarEditorTamano();
+    activarCambioFuente();
 
 }
 
@@ -3233,6 +3232,62 @@ function ocultarBotoneraEstilosTexto() {
     if (!botonera) return;
 
     botonera.style.display = "none";
+
+}
+
+function activarCambioFuente(){
+
+    const selector =
+        document.getElementById(
+            "editorFuente"
+        );
+
+
+    if(!selector){
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Fuente",
+            "No existe editorFuente",
+            "monitorEditor"
+        );
+
+        return;
+
+    }
+
+
+    selector.onchange = function(){
+
+        if(!elementoTextoActivo){
+
+            monitorPIXELLAB(
+                "Editorial",
+                "error",
+                "Fuente",
+                "No hay texto seleccionado",
+                "monitorEditor"
+            );
+
+            return;
+
+        }
+
+
+        elementoTextoActivo.style.fontFamily =
+            this.value;
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Fuente",
+            "Aplicada: " + this.value,
+            "monitorEditor"
+        );
+
+    };
 
 }
 function inicializarEditorTamano(){
