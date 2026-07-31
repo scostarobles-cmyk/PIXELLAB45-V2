@@ -2947,7 +2947,6 @@ function agregarTituloPortada() {
             ".pl45-hoja-portada"
         );
 
-
     if (!portada) {
 
         monitorPIXELLAB(
@@ -2962,49 +2961,44 @@ function agregarTituloPortada() {
 
     }
 
-
     let titulo =
         portada.querySelector(
             ".titulo-portada-editor"
         );
 
-
     if (!titulo) {
 
         titulo =
-            document.createElement("div");
-
+            document.createElement(
+                "div"
+            );
 
         titulo.className =
             "titulo-portada-editor";
 
-
         titulo.contentEditable =
             true;
-
 
         titulo.innerText =
             "Nuevo título";
 
-
         portada.appendChild(
             titulo
         );
-        
 
     }
 
-
     titulo.focus();
-
 
     monitorPIXELLAB(
         "Editorial",
         "estado",
         "Portada",
-        "Título agregado a portada",
+        "Título agregado",
         "monitorEditor"
     );
+
+    mostrarBotoneraEstilosTexto();
 
 }
 
@@ -3194,41 +3188,62 @@ async function guardarEditorPortada(project_id) {
     }
 
 }
-function mostrarBotoneraEstilosTexto(){
+function mostrarBotoneraEstilosTexto() {
 
-    const botonera =
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Botonera estilos",
+        "Creando botonera de estilos",
+        "monitorEditor"
+    );
+
+    let botonera =
         document.getElementById(
             "botoneraEstilosTexto"
         );
 
+    if (!botonera) {
 
-    if(!botonera){
+        botonera =
+            document.createElement("div");
 
-        monitorPIXELLAB(
-            "Editorial",
-            "error",
-            "Estilos",
-            "No existe botoneraEstilosTexto",
-            "monitorEditor"
-        );
+        botonera.id =
+            "botoneraEstilosTexto";
 
-        return;
+        botonera.className =
+            "editor-toolbar-editor";
+
+        const panel =
+            document.getElementById(
+                "panelEstilosTexto"
+            );
+
+        if (panel) {
+
+            panel.appendChild(
+                botonera
+            );
+
+        }
 
     }
-
 
     botonera.innerHTML = `
 
         <button class="btn-editor-portada">
-            🔤 Fuente
+            🔤
+            <small>Fuente</small>
         </button>
 
         <button class="btn-editor-portada">
-            📏 Tamaño
+            📏
+            <small>Tamaño</small>
         </button>
 
         <button class="btn-editor-portada">
-            🎨 Color
+            🎨
+            <small>Color</small>
         </button>
 
         <button class="btn-editor-portada">
@@ -3241,19 +3256,13 @@ function mostrarBotoneraEstilosTexto(){
 
     `;
 
-
     botonera.style.display = "flex";
-    botonera.style.flexDirection = "row";
-    botonera.style.gap = "10px";
-    botonera.style.justifyContent = "center";
-    botonera.style.marginTop = "15px";
-
 
     monitorPIXELLAB(
         "Editorial",
         "ok",
-        "Estilos",
-        "Tercera botonera mostrada",
+        "Botonera estilos",
+        "Botonera creada",
         "monitorEditor"
     );
 
