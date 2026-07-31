@@ -3250,16 +3250,8 @@ if(elementoTextoActivo){
         "monitorEditor"
     );
 
-selector.value =
-    fuenteReal;
+
 }
-
-
-
-
-
-        
-
 
         monitorPIXELLAB(
             "Editorial",
