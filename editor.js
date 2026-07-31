@@ -2992,13 +2992,17 @@ function agregarTituloPortada() {
     titulo.focus();
 
 
-    monitorPIXELLAB(
-        "Editorial",
-        "estado",
-        "Portada",
-        "Título agregado a portada",
-        "monitorEditor"
-    );
+    elementoTextoActivo = titulo;
+
+monitorPIXELLAB(
+    "Editorial",
+    "estado",
+    "Texto activo",
+    "Elemento seleccionado: " + elementoTextoActivo.className,
+    "monitorEditor"
+);
+
+mostrarBotoneraEstilosTexto();
 
 }
 
