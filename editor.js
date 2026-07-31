@@ -2814,7 +2814,7 @@ function cerrarModoPortada() {
             "none";
 
     }
-
+ocultarBotoneraEstilosTexto();
 
     monitorPIXELLAB(
         "Editorial",
@@ -3190,71 +3190,24 @@ async function guardarEditorPortada(project_id) {
 }
 function mostrarBotoneraEstilosTexto() {
 
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Botonera estilos",
-        "Creando botonera de estilos",
-        "monitorEditor"
-    );
-
-    let botonera =
+    const botonera =
         document.getElementById(
             "botoneraEstilosTexto"
         );
 
     if (!botonera) {
 
-        botonera =
-            document.createElement("div");
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Botonera estilos",
+            "No existe botoneraEstilosTexto",
+            "monitorEditor"
+        );
 
-        botonera.id =
-            "botoneraEstilosTexto";
-
-        botonera.className =
-            "editor-toolbar-editor";
-
-        const panel =
-            document.getElementById(
-                "panelEstilosTexto"
-            );
-
-        if (panel) {
-
-            panel.appendChild(
-                botonera
-            );
-
-        }
+        return;
 
     }
-
-    botonera.innerHTML = `
-
-        <button class="btn-editor-portada">
-            🔤
-            <small>Fuente</small>
-        </button>
-
-        <button class="btn-editor-portada">
-            📏
-            <small>Tamaño</small>
-        </button>
-
-        <button class="btn-editor-portada">
-            🎨
-            <small>Color</small>
-        </button>
-
-        <button class="btn-editor-portada">
-            <b>B</b>
-        </button>
-
-        <button class="btn-editor-portada">
-            <i>I</i>
-        </button>
-
-    `;
 
     botonera.style.display = "flex";
 
@@ -3262,9 +3215,22 @@ function mostrarBotoneraEstilosTexto() {
         "Editorial",
         "ok",
         "Botonera estilos",
-        "Botonera creada",
+        "Botonera visible",
         "monitorEditor"
     );
+
+}
+
+function ocultarBotoneraEstilosTexto() {
+
+    const botonera =
+        document.getElementById(
+            "botoneraEstilosTexto"
+        );
+
+    if (!botonera) return;
+
+    botonera.style.display = "none";
 
 }
 async function cargarPaginaPrueba(proyecto) {
