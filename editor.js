@@ -3245,8 +3245,7 @@ selector.value =
     fuenteActual;
 
 
-        selector.value =
-            fuenteActual;
+        
 
 
         monitorPIXELLAB(
