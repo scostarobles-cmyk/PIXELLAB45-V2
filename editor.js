@@ -711,7 +711,7 @@ async function cargarSeccion(
 // BUSCAR: PORTADA A4
 // =====================================================
 
-function cargarPaginaPortada(proyecto) {
+async function cargarPaginaPortada(proyecto) {
 
     monitorPIXELLAB(
         "Editorial",
@@ -3030,7 +3030,7 @@ mostrarBotoneraEstilosTexto();
 
 }
 
-/*function agregarTituloPortada() {
+function agregarTituloPortada() {
 
     const portada =
         document.querySelector(
@@ -3145,7 +3145,7 @@ mostrarBotoneraEstilosTexto();
     mostrarBotoneraEstilosTexto();
 
 
-}*/
+}
 
 
 async function guardarEditorPortada(project_id) {
