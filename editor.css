@@ -366,3 +366,66 @@
     position: relative;
 
 }
+#botoneraEstilosTexto select,
+#botoneraEstilosTexto input,
+#botoneraEstilosTexto button {
+
+    height: 42px;
+
+    border-radius: 10px;
+
+    border: 1px solid rgba(0,217,255,0.4);
+
+    background: #05070d;
+
+    color: white;
+
+    padding: 8px 12px;
+
+    font-size: 14px;
+
+}
+
+
+#botoneraEstilosTexto select {
+
+    min-width: 140px;
+
+    cursor: pointer;
+
+}
+
+
+#botoneraEstilosTexto {
+
+    display:flex;
+
+    flex-direction:row;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+
+    margin-top:12px;
+
+}
+
+
+#botoneraEstilosTexto button {
+
+    cursor:pointer;
+
+    background:rgba(0,217,255,0.12);
+
+}
+
+
+#botoneraEstilosTexto button:hover {
+
+    background:rgba(0,217,255,0.3);
+
+}
