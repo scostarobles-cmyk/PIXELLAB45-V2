@@ -2380,27 +2380,15 @@ async function inicializarEditor(){
         "Editorial",
         "proceso",
         "Editor",
-        "Entrando a inicializarEditor()",
+        "Inicializando editor",
         "monitorEditor"
     );
-
 
     const rutaEditor =
         `proyectos/${project_id}/editor.json`;
 
-
-    monitorPIXELLAB(
-        "Editorial",
-        "estado",
-        "Editor",
-        "Buscando archivo: " + rutaEditor,
-        "monitorEditor"
-    );
-
-
-    const editor =
+    let editor =
         await cargarJSON(rutaEditor);
-
 
     if(editor){
 
@@ -2412,17 +2400,76 @@ async function inicializarEditor(){
             "monitorEditor"
         );
 
-    }else{
+        return editor;
+
+    }
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Editor",
+        "editor.json no existe. Creando...",
+        "monitorEditor"
+    );
+
+    const proyecto =
+        await cargarJSON(
+            `proyectos/${project_id}/proyecto.json`
+        );
+
+    if(!proyecto){
 
         monitorPIXELLAB(
             "Editorial",
-            "aviso",
+            "error",
             "Editor",
-            "editor.json no existe",
+            "No se pudo cargar proyecto.json",
             "monitorEditor"
         );
 
+        return null;
+
     }
+
+    editor = {
+
+        portada:{
+
+            titulo:{
+
+                texto:
+                    proyecto.titulo,
+
+                estilo:{
+
+                    fuente:"Arial",
+                    tamano:38,
+                    color:"#ffffff",
+                    x:40,
+                    y:80
+
+                }
+
+            }
+
+        }
+
+    };
+
+    await guardarJSON(
+        rutaEditor,
+        editor
+    );
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Editor",
+        "editor.json creado correctamente",
+        "monitorEditor"
+    );
+
+    return editor;
 
 }
 
