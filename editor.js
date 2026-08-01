@@ -1957,7 +1957,7 @@ function editarPortada(){
         "Entrando a edición de portada",
         "monitorEditor"
     );
-//await cargarEditor();
+await cargarEditor();
 
     actualizarEstadoPipelineEditorial(
         "editorPortada",
@@ -2442,7 +2442,7 @@ function activarEdicionColorPortada(){
 
 //Aquí va x e y
 
-/*async function cargarEditor(){
+async function cargarEditor(){
 
     monitorPIXELLAB(
         "Editorial",
@@ -2618,7 +2618,7 @@ function activarEdicionColorPortada(){
 
     return editor;
 
-}*
+}
 
 
 /* ==========================
