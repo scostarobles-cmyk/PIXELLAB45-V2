@@ -651,7 +651,16 @@ async function cargarLibroCompleto(proyecto) {
 
     activarBotoneraPrincipal();
     
-    actualizarEstadoPipelineEditorial(
+    monitorPIXELLAB(
+    "Editorial",
+    "prueba",
+    "Pipeline",
+    "Antes de llamar actualizarEstadoPipelineEditorial",
+    "monitorEditor"
+);
+
+
+actualizarEstadoPipelineEditorial(
     "editorProyecto",
     "completo",
     "Proyecto cargado"
