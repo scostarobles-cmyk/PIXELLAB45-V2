@@ -1,4 +1,3 @@
-
 monitorPIXELLAB(
     "Editorial",
     "debug",
@@ -187,7 +186,7 @@ monitorPIXELLAB(
 
 
             <p>
-                Ebook • ${libro.autor}
+                Ebook â€¢ ${libro.autor}
             </p>
 
 
@@ -200,7 +199,7 @@ monitorPIXELLAB(
     class="boton-accion"
     onclick="abrirEditorEditorial('${libro.projectId}')">
 
-    📖 Abrir libro
+    ðŸ“– Abrir libro
 
 </button>
 
@@ -308,7 +307,7 @@ async function generarPortadaProyecto(proyecto) {
             "Editorial",
             "proceso",
             "Inicio",
-            "Comenzando generación de portada para: " + proyecto.titulo,
+            "Comenzando generaciÃ³n de portada para: " + proyecto.titulo,
             "monitorEditor"
         );
 
@@ -317,11 +316,11 @@ async function generarPortadaProyecto(proyecto) {
         const prompt = `
 Genera un prompt visual para crear el ARTE FINAL.
 
-No describas un libro físico.
+No describas un libro fÃ­sico.
 No describas una hoja de papel.
 No describas una portada impresa.
 No describas un mockup.
-No describas una fotografía.
+No describas una fotografÃ­a.
 
 Tema:
 "${proyecto.titulo}"
@@ -363,7 +362,7 @@ Tema:
 
 
         if (!dataVisual.resultado) {
-            throw new Error("Visuales no devolvió un prompt.");
+            throw new Error("Visuales no devolviÃ³ un prompt.");
         }
 
 
@@ -393,7 +392,7 @@ Tema:
     promptVisual +
     `
 
-], composición vertical, diseño a sangrado completo, de borde a borde, ocupando todo el lienzo sin marcos ni bordes blancos --ar 3:4
+], composiciÃ³n vertical, diseÃ±o a sangrado completo, de borde a borde, ocupando todo el lienzo sin marcos ni bordes blancos --ar 3:4
 `;
 
 monitorPIXELLAB(
@@ -450,7 +449,7 @@ isolated object
         monitorPIXELLAB(
             "Editorial",
             "proceso",
-            "Conversión",
+            "ConversiÃ³n",
             "Imagen convertida a Base64",
                        "monitorEditor"
         );
@@ -518,7 +517,7 @@ isolated object
         monitorPIXELLAB(
             "Editorial",
             "error",
-            "Generación portada",
+            "GeneraciÃ³n portada",
             error.message,
                        "monitorEditor"
         );
@@ -571,10 +570,10 @@ async function abrirEditorEditorial(projectId) {
 }
 // =====================================================
 // PIXELLAB45 EDITORIAL
-// FUNCIÓN: Cargar página de portada en editor A4
-// UBICACIÓN: Editor de eBooks
+// FUNCIÃ“N: Cargar pÃ¡gina de portada en editor A4
+// UBICACIÃ“N: Editor de eBooks
 // CREA: Hoja A4 (210x297mm) + imagen de portada
-// ADAPTA: Vista móvil manteniendo proporción A4
+// ADAPTA: Vista mÃ³vil manteniendo proporciÃ³n A4
 // BUSCAR: PORTADA A4
 // =====================================================
 
@@ -584,7 +583,7 @@ function cargarPaginaPortada(proyecto) {
         "Editorial",
         "proceso",
         "Portada",
-        "Entró a cargarPaginaPortada",
+        "EntrÃ³ a cargarPaginaPortada",
         "monitorEditor"
     );
 
@@ -776,13 +775,13 @@ function cargarPaginaPortada(proyecto) {
 /*
 =========================================================
 PIXELLAB Editorial
-Hoja · Legales
+Hoja Â· Legales
 
 Responsabilidad:
 
-• Cargar legales.json
-• Crear la página de legales
-• Agregar la página al paginaEditor
+â€¢ Cargar legales.json
+â€¢ Crear la pÃ¡gina de legales
+â€¢ Agregar la pÃ¡gina al paginaEditor
 
 No guarda cambios.
 No aplica estilos.
@@ -796,7 +795,7 @@ async function cargarPaginaLegales(proyecto) {
         "Editorial",
         "proceso",
         "Legales",
-        "Entró a cargarPaginaLegales"
+        "EntrÃ³ a cargarPaginaLegales"
     );
 
 
@@ -856,7 +855,7 @@ async function cargarPaginaLegales(proyecto) {
         if (!legales) {
 
             throw new Error(
-                "JSON legales vacío"
+                "JSON legales vacÃ­o"
             );
 
         }
@@ -906,7 +905,7 @@ Object.assign(hoja.style, {
     overflow: "hidden"
 
 });
-        // Crear título
+        // Crear tÃ­tulo
 
         const titulo =
             document.createElement(
@@ -957,7 +956,7 @@ Object.assign(hoja.style, {
             "Editorial",
             "estado",
             "Legales",
-            "Página cargada correctamente",
+            "PÃ¡gina cargada correctamente",
                         "monitorEditor"
         );
 
@@ -978,7 +977,7 @@ Object.assign(hoja.style, {
 
 }
 /* ==========================
-   PÁGINA ÍNDICE
+   PÃGINA ÃNDICE
 ========================== */
 
 async function cargarPaginaIndice(proyecto) {
@@ -987,7 +986,7 @@ async function cargarPaginaIndice(proyecto) {
         "Editor",
         "proceso",
         "Indice",
-        "Entró a cargarPaginaIndice"
+        "EntrÃ³ a cargarPaginaIndice"
     );
 
 
@@ -1099,7 +1098,7 @@ async function cargarPaginaIndice(proyecto) {
         });
 
 
-        // Crear título
+        // Crear tÃ­tulo
 
         const titulo =
             document.createElement(
@@ -1108,7 +1107,7 @@ async function cargarPaginaIndice(proyecto) {
 
 
         titulo.textContent =
-            "Índice";
+            "Ãndice";
 
 
         titulo.style.color =
@@ -1411,7 +1410,7 @@ async function cargarPaginaIntroduccion(proyecto) {
 
 }
 
-// aqu� va cap�tulos
+// aquí va capítulos
 
 
 async function cargarPaginaConclusion(proyecto) {
@@ -1419,8 +1418,8 @@ async function cargarPaginaConclusion(proyecto) {
     monitorPIXELLAB(
         "Editor",
         "proceso",
-        "Conclusión",
-        "Entró a cargarPaginaConclusion",
+        "ConclusiÃ³n",
+        "EntrÃ³ a cargarPaginaConclusion",
         "monitorEditor"
     );
 
@@ -1432,7 +1431,7 @@ async function cargarPaginaConclusion(proyecto) {
         monitorPIXELLAB(
             "Editor",
             "proceso",
-            "Conclusión",
+            "ConclusiÃ³n",
             "Cargando: " + ruta,
             "monitorEditor"
         );
@@ -1465,7 +1464,7 @@ async function cargarPaginaConclusion(proyecto) {
         if (!datos.ok) {
 
             throw new Error(
-                "No se pudo cargar conclusión"
+                "No se pudo cargar conclusiÃ³n"
             );
 
         }
@@ -1478,7 +1477,7 @@ async function cargarPaginaConclusion(proyecto) {
         if (!conclusion) {
 
             throw new Error(
-                "JSON conclusión vacío"
+                "JSON conclusiÃ³n vacÃ­o"
             );
 
         }
@@ -1567,7 +1566,7 @@ async function cargarPaginaConclusion(proyecto) {
                 item => {
 
                     contenido +=
-                        "• " + item + "\n";
+                        "â€¢ " + item + "\n";
 
                 }
 
@@ -1634,8 +1633,8 @@ async function cargarPaginaConclusion(proyecto) {
         monitorPIXELLAB(
             "Editor",
             "estado",
-            "Conclusión",
-            "Página cargada correctamente",
+            "ConclusiÃ³n",
+            "PÃ¡gina cargada correctamente",
             "monitorEditor"
         );
 
@@ -1646,7 +1645,7 @@ async function cargarPaginaConclusion(proyecto) {
         monitorPIXELLAB(
             "Editor",
             "error",
-            "Conclusión",
+            "ConclusiÃ³n",
             error.message,
             "monitorEditor"
         );
@@ -1661,7 +1660,7 @@ async function cargarPaginaConclusion(proyecto) {
 /*
 =========================================================
 PIXELLAB Editorial
-ETAPA 1 · Carga completa del libro
+ETAPA 1 Â· Carga completa del libro
 
 Objetivo:
 Reconstruir completamente el eBook en memoria
@@ -1671,22 +1670,22 @@ Flujo:
 
 1. Portada
 2. Legales
-3. Índice
-4. Introducción
-5. Capítulos
-6. Conclusión
+3. Ãndice
+4. IntroducciÃ³n
+5. CapÃ­tulos
+6. ConclusiÃ³n
 
-Cada hoja tendrá su propia función de carga.
+Cada hoja tendrÃ¡ su propia funciÃ³n de carga.
 
-La única excepción son los capítulos, que se
-recorrerán automáticamente leyendo plan.json.
+La Ãºnica excepciÃ³n son los capÃ­tulos, que se
+recorrerÃ¡n automÃ¡ticamente leyendo plan.json.
 
 En esta etapa:
 
-✓ Carga contenido
-✗ No aplica estilos
-✗ No guarda cambios
-✗ No realiza edición
+âœ“ Carga contenido
+âœ— No aplica estilos
+âœ— No guarda cambios
+âœ— No realiza ediciÃ³n
 
 =========================================================
 */
@@ -1814,19 +1813,19 @@ function verificarPipelineEditor(){
         },
         {
             id:"editorIndice",
-            nombre:"Índice"
+            nombre:"Ãndice"
         },
         {
             id:"editorIntroduccion",
-            nombre:"Introducción"
+            nombre:"IntroducciÃ³n"
         },
         {
             id:"editorCapitulos",
-            nombre:"Capítulos"
+            nombre:"CapÃ­tulos"
         },
         {
             id:"editorConclusion",
-            nombre:"Conclusión"
+            nombre:"ConclusiÃ³n"
         }
     ];
 
@@ -1855,14 +1854,14 @@ function verificarPipelineEditor(){
 
 
             elemento.innerHTML =
-                "⚪ " + seccion.nombre;
+                "âšª " + seccion.nombre;
 
 
         }
     );
 
 
-    // Primera sección disponible
+    // Primera secciÃ³n disponible
 
     const portada =
         document.getElementById(
@@ -1873,7 +1872,7 @@ function verificarPipelineEditor(){
     if(portada){
 
         portada.innerHTML =
-            "🔵 Portada";
+            "ðŸ”µ Portada";
 
 
         monitorPIXELLAB(
@@ -1951,7 +1950,7 @@ function editarPortada(){
         "Editorial",
         "proceso",
         "Portada",
-        "Entrando a edici�n de portada",
+        "Entrando a edición de portada",
         "monitorEditor"
     );
 
@@ -2000,7 +1999,7 @@ function editarPortada(){
             "Editorial",
             "ok",
             "Portada",
-            "Mostrando �nicamente portada",
+            "Mostrando únicamente portada",
             "monitorEditor"
         );
 
@@ -2094,7 +2093,7 @@ function asignarClasesPaginasEditorial() {
 
 
 /* ==========================
-   CARGAR TODOS LOS CAPÍTULOS
+   CARGAR TODOS LOS CAPÃTULOS
 ========================== */
 
 async function cargarPaginaCapitulos(proyecto) {
@@ -2103,7 +2102,7 @@ async function cargarPaginaCapitulos(proyecto) {
         "Editor",
         "proceso",
         "Capitulos",
-        "Entró a cargarPaginaCapitulos"
+        "EntrÃ³ a cargarPaginaCapitulos"
     );
 
     try {
@@ -2158,7 +2157,7 @@ async function cargarPaginaCapitulos(proyecto) {
         ) {
 
             throw new Error(
-                "Plan sin capítulos"
+                "Plan sin capÃ­tulos"
             );
 
         }
@@ -2167,7 +2166,7 @@ async function cargarPaginaCapitulos(proyecto) {
             "Editor",
             "proceso",
             "Capitulos",
-            "Capítulos encontrados: " +
+            "CapÃ­tulos encontrados: " +
             plan.capitulos.length
         );
 
@@ -2177,7 +2176,7 @@ async function cargarPaginaCapitulos(proyecto) {
                 "Editor",
                 "proceso",
                 "Capitulos",
-                "Generando capítulo " +
+                "Generando capÃ­tulo " +
                 capitulo.numero
             );
 
@@ -2197,7 +2196,7 @@ async function cargarPaginaCapitulos(proyecto) {
             "Editor",
             "estado",
             "Capitulos",
-            "Todos los capítulos cargados"
+            "Todos los capÃ­tulos cargados"
         );
 
     } catch(error) {
@@ -2222,15 +2221,15 @@ async function cargarPaginaCapitulo(
     monitorPIXELLAB(
     "Editorial",
     "proceso",
-    "Capítulo",
-    "Entró a cargarPaginaCapitulo",
+    "CapÃ­tulo",
+    "EntrÃ³ a cargarPaginaCapitulo",
     "monitorEditor"
 );
 
     try {
 
         /* ======================================================
-           1. CARGAR JSON DEL CAPÍTULO
+           1. CARGAR JSON DEL CAPÃTULO
         ====================================================== */
 
     const archivo =
@@ -2242,7 +2241,7 @@ const ruta =
 monitorPIXELLAB(
     "Editorial",
     "proceso",
-    "Capítulo",
+    "CapÃ­tulo",
     "Cargando: " + ruta,
     "monitorEditor"
 );
@@ -2272,7 +2271,7 @@ const datos =
 if (!datos.ok) {
 
     throw new Error(
-        "No se pudo cargar el capítulo"
+        "No se pudo cargar el capÃ­tulo"
     );
 
 }
@@ -2283,7 +2282,7 @@ const capitulo =
 if (!capitulo) {
 
     throw new Error(
-        "JSON capítulo vacío"
+        "JSON capÃ­tulo vacÃ­o"
     );
 
 }
@@ -2308,7 +2307,7 @@ if (!contenedor) {
 
 
 // ===============================
-// CONFIGURACIÓN DE PÁGINA A4
+// CONFIGURACIÃ“N DE PÃGINA A4
 // ===============================
 
 const altoPagina =
@@ -2328,7 +2327,7 @@ let numeroPagina =
 
 
 // ===============================
-// CREAR NUEVA PÁGINA
+// CREAR NUEVA PÃGINA
 // ===============================
 
 function crearNuevaPagina() {
@@ -2372,11 +2371,11 @@ function crearNuevaPagina() {
 
 }
 
-// Crear primera página
+// Crear primera pÃ¡gina
 
 crearNuevaPagina();
 // ===============================
-// AGREGAR CONTENIDO A LA PÁGINA
+// AGREGAR CONTENIDO A LA PÃGINA
 // ===============================
 
 function agregarBloquePagina(elemento) {
@@ -2390,12 +2389,12 @@ function agregarBloquePagina(elemento) {
     monitorPIXELLAB(
         "Editorial",
         "proceso",
-        "Maquetación",
+        "MaquetaciÃ³n",
         "Alto usado: " + altoUsado,
         "monitorEditor"
     );
 
-    // ¿Se pasó de la hoja?
+    // Â¿Se pasÃ³ de la hoja?
     if (altoUsado > altoPagina) {
 
         // Sacar el bloque
@@ -2404,8 +2403,8 @@ function agregarBloquePagina(elemento) {
         monitorPIXELLAB(
             "Editorial",
             "proceso",
-            "Maquetación",
-            "Nueva página",
+            "MaquetaciÃ³n",
+            "Nueva pÃ¡gina",
             "monitorEditor"
         );
 
@@ -2420,7 +2419,7 @@ function agregarBloquePagina(elemento) {
 }
 
         /* ======================================================
-           4. TÍTULO DEL CAPÍTULO
+           4. TÃTULO DEL CAPÃTULO
         ====================================================== */
 
  const titulo =
@@ -2440,7 +2439,7 @@ agregarBloquePagina(
 
 
         /* ======================================================
-           5. INTRODUCCIÓN
+           5. INTRODUCCIÃ“N
         ====================================================== */
 
 const introduccion =
@@ -2890,8 +2889,8 @@ if (capitulo.fraseFinal) {
 monitorPIXELLAB(
     "Editorial",
     "estado",
-    "Capítulo",
-    "Página cargada correctamente",
+    "CapÃ­tulo",
+    "PÃ¡gina cargada correctamente",
     "monitorEditor"
 );
 
@@ -2903,7 +2902,7 @@ monitorPIXELLAB(
         monitorPIXELLAB(
     "Editorial",
     "error",
-    "Capítulo",
+    "CapÃ­tulo",
     error.message,
     "monitorEditor"
 );
@@ -3023,7 +3022,7 @@ function abrirModoPortada() {
 
         botonPortada.innerHTML =
             `
-            <span>⬅</span>
+            <span>â¬…</span>
             <small>Volver</small>
             `;
 
@@ -3116,7 +3115,7 @@ function cerrarModoPortada() {
 
         botonPortada.innerHTML =
             `
-            <span>📄</span>
+            <span>ðŸ“„</span>
             <small>Portada</small>
             `;
 
@@ -3187,7 +3186,7 @@ monitorPIXELLAB(
         "Editorial",
         "estado",
         "Botonera",
-        "mostrando los botones de edición",
+        "mostrando los botones de ediciÃ³n",
         "monitorEditor"
     );
 
@@ -3202,24 +3201,24 @@ monitorPIXELLAB(
 
     const botones = [
         {
-            icono: "➕",
-            texto: "Título",
+            icono: "âž•",
+            texto: "TÃ­tulo",
             accion: agregarTituloPortada
         },
         {
-            icono: "✍️",
+            icono: "âœï¸",
             texto: "Autor"
         },
         {
-            icono: "🔷",
+            icono: "ðŸ”·",
             texto: "Logo"
         },
         {
-            icono: "🖼️",
+            icono: "ðŸ–¼ï¸",
             texto: "Imagen"
         },
      {
-    icono: "💾",
+    icono: "ðŸ’¾",
     texto: "Guardar",
     accion: () => guardarEditorPortada(project_id)
 }
@@ -3275,7 +3274,7 @@ function agregarTituloPortada() {
             "Editorial",
             "error",
             "Portada",
-            "No se encontró la hoja de portada",
+            "No se encontrÃ³ la hoja de portada",
             "monitorEditor"
         );
 
@@ -3305,7 +3304,7 @@ function agregarTituloPortada() {
 
 
         titulo.innerText =
-            "Nuevo título";
+            "Nuevo tÃ­tulo";
 
 
         portada.appendChild(
@@ -3448,7 +3447,7 @@ function mostrarBotoneraEstilosTexto() {
         "Editorial",
         "estado",
         "Estilos",
-        "Entró a mostrarBotoneraEstilosTexto",
+        "EntrÃ³ a mostrarBotoneraEstilosTexto",
         "monitorEditor"
     );
 
@@ -3492,7 +3491,7 @@ function inicializarEditorFuente(){
         "Editorial",
         "estado",
         "Fuente",
-        "Entró a inicializarEditorFuente",
+        "EntrÃ³ a inicializarEditorFuente",
         "monitorEditor"
     );
 
@@ -3582,8 +3581,8 @@ function inicializarPosicionTexto(){
     monitorPIXELLAB(
         "Editorial",
         "estado",
-        "Posición",
-        "Entró a inicializarPosicionTexto",
+        "PosiciÃ³n",
+        "EntrÃ³ a inicializarPosicionTexto",
         "monitorEditor"
     );
 
@@ -3604,7 +3603,7 @@ function inicializarPosicionTexto(){
         monitorPIXELLAB(
             "Editorial",
             "error",
-            "Posición",
+            "PosiciÃ³n",
             "No existen controles X/Y",
             "monitorEditor"
         );
@@ -3636,7 +3635,7 @@ function inicializarPosicionTexto(){
         monitorPIXELLAB(
             "Editorial",
             "estado",
-            "Posición",
+            "PosiciÃ³n",
             "Cargada X:" +
             inputX.value +
             " Y:" +
@@ -3668,7 +3667,7 @@ function inicializarPosicionTexto(){
         monitorPIXELLAB(
             "Editorial",
             "ok",
-            "Posición",
+            "PosiciÃ³n",
             "Aplicada X:" +
             inputX.value +
             " Y:" +
@@ -3839,7 +3838,7 @@ function inicializarArrastreTexto(){
             "Editorial",
             "ok",
             "Movimiento",
-            "Posición final X:" +
+            "PosiciÃ³n final X:" +
             texto.offsetLeft +
             " Y:" +
             texto.offsetTop,
@@ -3856,7 +3855,7 @@ async function cargarPaginaPrueba(proyecto) {
         "Editorial",
         "proceso",
         "Prueba",
-        "Entró a cargarPaginaPrueba",
+        "EntrÃ³ a cargarPaginaPrueba",
         "monitorEditor"
     );
 
