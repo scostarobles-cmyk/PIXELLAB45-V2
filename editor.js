@@ -2006,7 +2006,7 @@ function editarPortada(){
         "Mostrando únicamente portada",
         "monitorEditor"
     );
-      
+     await  cargarEditor();
     mostrarControlesPortada();
 
 }
@@ -2442,7 +2442,59 @@ function activarEdicionColorPortada(){
 
 //Aquí va x e y
 
+async function cargarEditor(){
 
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Editor",
+        "Entrando a función cargarEditor()",
+        "monitorEditor"
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Editor",
+        "project_id actual: " + project_id,
+        "monitorEditor"
+    );
+
+
+    const rutaEditor =
+        `proyectos/${project_id}/editor.json`;
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Editor",
+        "Ruta editor.json: " + rutaEditor,
+        "monitorEditor"
+    );
+
+
+    const editor =
+        await cargarJSON(
+            rutaEditor
+        );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Editor",
+        editor
+            ? "editor.json encontrado"
+            : "editor.json no existe",
+        "monitorEditor"
+    );
+
+
+    return editor;
+
+}
 
 
 /* ==========================
