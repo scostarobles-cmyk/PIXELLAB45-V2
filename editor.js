@@ -650,6 +650,12 @@ async function cargarLibroCompleto(proyecto) {
     verificarPipelineEditor();
 
     activarBotoneraPrincipal();
+    
+    actualizarEstadoPipelineEditorial(
+    "editorProyecto",
+    "completo",
+    "Proyecto cargado"
+);
 
 }
 async function cargarSeccion(
@@ -804,6 +810,79 @@ function verificarPipelineEditor(){
         );
 
     }
+
+}
+function actualizarEstadoPipelineEditorial(
+    idElemento,
+    estado,
+    mensaje
+){
+
+    const elemento =
+        document.getElementById(
+            idElemento
+        );
+
+
+    if(!elemento){
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Pipeline",
+            "No existe elemento: " + idElemento,
+            "monitorEditor"
+        );
+
+        return;
+
+    }
+
+
+    switch(estado){
+
+
+        case "pendiente":
+
+            elemento.innerHTML =
+                "⚪ " + mensaje;
+
+            break;
+
+
+        case "disponible":
+
+            elemento.innerHTML =
+                "🔵 " + mensaje;
+
+            break;
+
+
+        case "produccion":
+
+            elemento.innerHTML =
+                "🟡 " + mensaje;
+
+            break;
+
+
+        case "completo":
+
+            elemento.innerHTML =
+                "🟢 " + mensaje;
+
+            break;
+
+    }
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Pipeline",
+        mensaje + " → " + estado,
+        "monitorEditor"
+    );
 
 }
 // =====================================================
