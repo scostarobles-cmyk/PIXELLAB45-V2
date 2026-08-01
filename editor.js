@@ -2176,43 +2176,86 @@ function activarEdicionTituloPortada(){
             "editorControles"
         );
 
+    if(!contenedor){
+        return;
+    }
 
     contenedor.innerHTML += `
 
-        <div class="control-titulo-portada">
+        <div class="control-titulo">
 
-            <label>
-                Título:
-            </label>
+            <label>Título</label>
 
-   <input
-    type="text"
-    id="inputTituloPortada"
-    class="control-input-portada"
-    placeholder="Escriba el título">
-
+            <input
+                type="text"
+                id="inputTituloPortada"
+                class="control-input-portada"
+                placeholder="Escriba el título">
 
         </div>
 
     `;
-contenedor
-.querySelectorAll("button")
-.forEach(
-    boton => {
-        boton.disabled = false;
-    }
-);
 
-    monitorPIXELLAB(
-        "Editorial",
-        "ok",
-        "Portada",
-        "Control de título generado",
-        "monitorEditor"
+    const input =
+        document.getElementById(
+            "inputTituloPortada"
+        );
+
+    input.addEventListener(
+        "input",
+        () => {
+
+            crearOActualizarElementoPortada(
+                "pl45-titulo-portada",
+                input.value
+            );
+
+        }
     );
 
 }
+function crearOActualizarElementoPortada(
+    clase,
+    texto
+){
 
+    const portada =
+        document.querySelector(
+            ".pl45-hoja-portada"
+        );
+
+    if(!portada){
+        return;
+    }
+
+    let elemento =
+        portada.querySelector(
+            "." + clase
+        );
+
+    if(!elemento){
+
+        elemento =
+            document.createElement("div");
+
+        elemento.className =
+            clase;
+
+        elemento.innerHTML =
+            texto;
+
+        portada.appendChild(
+            elemento
+        );
+
+    }else{
+
+        elemento.innerHTML =
+            texto;
+
+    }
+
+}
 
 
 /* ==========================
