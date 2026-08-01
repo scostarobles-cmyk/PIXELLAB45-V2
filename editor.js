@@ -7,6 +7,7 @@ monitorPIXELLAB(
     "monitorEditor"
 );
 let project_id = null;
+let editor = null;
 
 async function listarProyectosEditorial() {
 
@@ -2387,8 +2388,8 @@ async function inicializarEditor(){
 
     const rutaEditor =
         `proyectos/${project_id}/editor.json`;
-
-    let editor =
+    
+    editor =
         await cargarJSON(rutaEditor);
 
     if(editor){
@@ -2478,13 +2479,21 @@ async function inicializarEditor(){
 
 }
 
-function aplicarEstadoPortada(editor){
+function aplicarEstadoPortada(){
 
     if(
         !editor ||
         !editor.portada ||
         !editor.portada.titulo
     ){
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Portada",
+            "No existe información de título en editor",
+            "monitorEditor"
+        );
+
         return;
     }
 
@@ -2499,23 +2508,45 @@ function aplicarEstadoPortada(editor){
         );
 
     if(!titulo){
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Portada",
+            "No se encontró elemento título portada",
+            "monitorEditor"
+        );
+
         return;
     }
 
+    const estilo =
+        editor.portada.titulo.estilo;
+
+
     titulo.style.fontFamily =
-        editor.portada.titulo.estilo.fuente;
+        estilo.fuente;
 
     titulo.style.fontSize =
-        editor.portada.titulo.estilo.tamano + "px";
+        estilo.tamano + "px";
 
     titulo.style.color =
-        editor.portada.titulo.estilo.color;
+        estilo.color;
 
     titulo.style.left =
-        editor.portada.titulo.estilo.x + "px";
+        estilo.x + "px";
 
     titulo.style.top =
-        editor.portada.titulo.estilo.y + "px";
+        estilo.y + "px";
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Portada",
+        "Estado de portada aplicado desde editor",
+        "monitorEditor"
+    );
 
 }
 
