@@ -2006,7 +2006,7 @@ function editarPortada(){
         "Mostrando únicamente portada",
         "monitorEditor"
     );
-     await cargarEditor();
+     
     mostrarControlesPortada();
 
 }
@@ -2442,17 +2442,7 @@ function activarEdicionColorPortada(){
 
 //Aquí va x e y
 
-async function cargarEditor(){
 
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Editor",
-        "Entrando a cargarEditor",
-        "monitorEditor"
-    );
-
-}
 
 /* ==========================
    CARGAR TODOS LOS CAPÍTULOS
