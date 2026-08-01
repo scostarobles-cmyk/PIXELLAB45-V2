@@ -824,15 +824,17 @@ function actualizarEstadoPipelineEditorial(
         );
 
 
-    if(!elemento){
+    monitorPIXELLAB(
+        "Editorial",
+        "prueba",
+        "Pipeline",
+        "Buscando: " + idElemento +
+        " | Encontrado: " + !!elemento,
+        "monitorEditor"
+    );
 
-        monitorPIXELLAB(
-            "Editorial",
-            "error",
-            "Pipeline",
-            "No existe elemento: " + idElemento,
-            "monitorEditor"
-        );
+
+    if(!elemento){
 
         return;
 
@@ -841,36 +843,27 @@ function actualizarEstadoPipelineEditorial(
 
     switch(estado){
 
-
         case "pendiente":
-
             elemento.innerHTML =
-                "⚪ " + mensaje;
-
+                " " + mensaje;
             break;
 
 
         case "disponible":
-
             elemento.innerHTML =
-                "🔵 " + mensaje;
-
+                " " + mensaje;
             break;
 
 
         case "produccion":
-
             elemento.innerHTML =
-                "🟡 " + mensaje;
-
+                " " + mensaje;
             break;
 
 
         case "completo":
-
             elemento.innerHTML =
-                "🟢 " + mensaje;
-
+                " " + mensaje;
             break;
 
     }
@@ -878,9 +871,9 @@ function actualizarEstadoPipelineEditorial(
 
     monitorPIXELLAB(
         "Editorial",
-        "estado",
+        "ok",
         "Pipeline",
-        mensaje + " → " + estado,
+        "Actualizado: " + elemento.id,
         "monitorEditor"
     );
 
