@@ -3002,11 +3002,14 @@ monitorPIXELLAB(
     "monitorEditor"
 );
 
+m
 
 inicializarEditorFuente();
 
+inicializarPosicionTexto();
+
 mostrarBotoneraEstilosTexto();
-mostrarBotoneraEstilosTexto();
+
 
 }
 
@@ -3328,6 +3331,118 @@ function inicializarEditorFuente(){
         );
 
     };
+
+}
+
+function inicializarPosicionTexto(){
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Posición",
+        "Entró a inicializarPosicionTexto",
+        "monitorEditor"
+    );
+
+
+    const inputX =
+        document.getElementById(
+            "editorTextoX"
+        );
+
+    const inputY =
+        document.getElementById(
+            "editorTextoY"
+        );
+
+
+    if(!inputX || !inputY){
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Posición",
+            "No existen controles X/Y",
+            "monitorEditor"
+        );
+
+        return;
+    }
+
+
+    if(elementoTextoActivo){
+
+        const estilo =
+            getComputedStyle(
+                elementoTextoActivo
+            );
+
+
+        inputX.value =
+            parseInt(
+                estilo.left
+            ) || 0;
+
+
+        inputY.value =
+            parseInt(
+                estilo.top
+            ) || 0;
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Posición",
+            "Cargada X:" +
+            inputX.value +
+            " Y:" +
+            inputY.value,
+            "monitorEditor"
+        );
+
+    }
+
+
+    function aplicarPosicion(){
+
+        if(!elementoTextoActivo)
+            return;
+
+
+        elementoTextoActivo.style.left =
+            inputX.value + "px";
+
+
+        elementoTextoActivo.style.top =
+            inputY.value + "px";
+
+
+        elementoTextoActivo.style.transform =
+            "none";
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Posición",
+            "Aplicada X:" +
+            inputX.value +
+            " Y:" +
+            inputY.value,
+            "monitorEditor"
+        );
+
+    }
+
+
+    inputX.onchange =
+        aplicarPosicion;
+
+
+    inputY.onchange =
+        aplicarPosicion;
+
 
 }
 

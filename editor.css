@@ -439,3 +439,44 @@
     background:rgba(0,217,255,0.3);
 
 }
+.control-posicion-texto{
+
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+}
+
+
+.control-posicion-texto label{
+
+    display:flex;
+    align-items:center;
+    gap:4px;
+
+    color:white;
+    font-size:14px;
+
+}
+
+
+.control-posicion-texto input{
+
+    width:55px;
+    height:28px;
+
+    padding:3px 5px;
+
+    font-size:14px;
+
+    text-align:center;
+
+    border-radius:6px;
+
+    border:1px solid #00d9ff;
+
+    background:#05070d;
+
+    color:white;
+
+}
