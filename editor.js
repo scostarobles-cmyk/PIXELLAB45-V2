@@ -3002,6 +3002,10 @@ monitorPIXELLAB(
     "monitorEditor"
 );
 
+
+inicializarEditorFuente();
+
+mostrarBotoneraEstilosTexto();
 mostrarBotoneraEstilosTexto();
 
 }
@@ -3233,6 +3237,97 @@ function mostrarBotoneraEstilosTexto() {
         "Botonera estilos visible",
         "monitorEditor"
     );
+
+}
+
+function inicializarEditorFuente(){
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Fuente",
+        "Entró a inicializarEditorFuente",
+        "monitorEditor"
+    );
+
+    const selector =
+        document.getElementById("editorFuente");
+
+    if(!selector){
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Fuente",
+            "No existe editorFuente",
+            "monitorEditor"
+        );
+
+        return;
+    }
+
+    if(elementoTextoActivo){
+
+        const fuenteActual =
+            getComputedStyle(
+                elementoTextoActivo
+            ).fontFamily
+            .split(",")[0]
+            .replaceAll('"',"")
+            .trim();
+
+        selector.value =
+            fuenteActual;
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Fuente",
+            "Fuente cargada: " + fuenteActual,
+            "monitorEditor"
+        );
+
+    }else{
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Fuente",
+            "No existe elementoTextoActivo",
+            "monitorEditor"
+        );
+
+    }
+
+    selector.onchange = null;
+
+    selector.onchange = function(){
+
+        if(!elementoTextoActivo){
+
+            monitorPIXELLAB(
+                "Editorial",
+                "error",
+                "Fuente",
+                "No hay elemento activo",
+                "monitorEditor"
+            );
+
+            return;
+        }
+
+        elementoTextoActivo.style.fontFamily =
+            this.value;
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Fuente",
+            "Fuente aplicada: " + this.value,
+            "monitorEditor"
+        );
+
+    };
 
 }
 
