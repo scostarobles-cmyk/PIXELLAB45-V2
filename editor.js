@@ -2374,13 +2374,22 @@ function activarEdicionTamanoPortada(){
 
 }
 
-function inicializarEditor(){
+async function inicializarEditor(){
 
     monitorPIXELLAB(
         "Editorial",
         "proceso",
         "Editor",
-        "Función inicializarEditor cargada correctamente",
+        "Entrando a inicializarEditor()",
+        "monitorEditor"
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "estado",
+        "Editor",
+        "project_id actual: " + project_id,
         "monitorEditor"
     );
 
