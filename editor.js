@@ -196,14 +196,13 @@ monitorPIXELLAB(
             </span>
 
 
-            <button
-                class="boton-accion"
-                onclick="abrirEditorEditorial('${libro.projectId}')">
+      <button
+    class="boton-accion"
+    onclick="abrirEditorEditorial('${libro.projectId}')">
 
-                ✏️ Editar
+    📖 Abrir libro
 
-            </button>
-
+</button>
 
         </div>
 
@@ -622,8 +621,9 @@ async function cargarLibroCompleto(proyecto) {
         "proceso",
         "Libro",
         "Comenzando carga completa",
-                "monitorEditor"
+        "monitorEditor"
     );
+
 
     for (const seccion of SECCIONES_LIBRO) {
 
@@ -634,13 +634,22 @@ async function cargarLibroCompleto(proyecto) {
 
     }
 
+
+    asignarClasesPaginasEditorial();
+
+
     monitorPIXELLAB(
         "Editorial",
         "estado",
         "Libro",
         "Carga completa finalizada",
-                "monitorEditor"
+        "monitorEditor"
     );
+
+
+    verificarPipelineEditor();
+
+    activarBotoneraPrincipal();
 
 }
 async function cargarSeccion(
@@ -649,41 +658,152 @@ async function cargarSeccion(
 ) {
 
     switch (seccion) {
-    	
-         case "prueba":
 
-    await cargarPaginaPrueba(proyecto);
 
-    break;
-        case "portada":
-            await cargarPaginaPortada(proyecto);
+        case "prueba":
+
+            await cargarPaginaPrueba(proyecto);
+
             break;
+
+
+        case "portada":
+
+            await cargarPaginaPortada(proyecto);
+
+            break;
+
 
         case "legales":
+
             await cargarPaginaLegales(proyecto);
+
             break;
+
 
         case "indice":
+
             await cargarPaginaIndice(proyecto);
+
             break;
 
+
         case "introduccion":
+
             await cargarPaginaIntroduccion(proyecto);
+
             break;
+
 
         case "capitulos":
 
-    await cargarPaginaCapitulos(proyecto);
+            await cargarPaginaCapitulos(proyecto);
 
-    break;
+            break;
+
 
         case "conclusion":
+
             await cargarPaginaConclusion(proyecto);
+
             break;
 
     }
-    activarBotoneraEditor();
-    asignarClasesPaginasEditorial();
+
+}
+function verificarPipelineEditor(){
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Pipeline",
+        "Verificando estados del editor",
+        "monitorEditor"
+    );
+
+
+    const secciones = [
+        {
+            id:"editorPortada",
+            nombre:"Portada"
+        },
+        {
+            id:"editorLegales",
+            nombre:"Legales"
+        },
+        {
+            id:"editorIndice",
+            nombre:"Índice"
+        },
+        {
+            id:"editorIntroduccion",
+            nombre:"Introducción"
+        },
+        {
+            id:"editorCapitulos",
+            nombre:"Capítulos"
+        },
+        {
+            id:"editorConclusion",
+            nombre:"Conclusión"
+        }
+    ];
+
+
+    secciones.forEach(
+        seccion => {
+
+            const elemento =
+                document.getElementById(
+                    seccion.id
+                );
+
+
+            if(!elemento){
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "error",
+                    "Pipeline",
+                    "No existe: " + seccion.id,
+                    "monitorEditor"
+                );
+
+                return;
+            }
+
+
+            elemento.innerHTML =
+                "⚪ " + seccion.nombre;
+
+
+        }
+    );
+
+
+    // Primera sección disponible
+
+    const portada =
+        document.getElementById(
+            "editorPortada"
+        );
+
+
+    if(portada){
+
+        portada.innerHTML =
+            "🔵 Portada";
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Pipeline",
+            "Portada disponible",
+            "monitorEditor"
+        );
+
+    }
 
 }
 // =====================================================
