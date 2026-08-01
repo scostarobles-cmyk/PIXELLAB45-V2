@@ -2194,7 +2194,13 @@ function activarEdicionTituloPortada(){
         </div>
 
     `;
-
+contenedor
+.querySelectorAll("button")
+.forEach(
+    boton => {
+        boton.disabled = false;
+    }
+);
 
     monitorPIXELLAB(
         "Editorial",
