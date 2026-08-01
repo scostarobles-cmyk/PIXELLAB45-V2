@@ -3003,13 +3003,13 @@ monitorPIXELLAB(
 );
 
 
-
 inicializarEditorFuente();
 
 inicializarPosicionTexto();
 
-mostrarBotoneraEstilosTexto();
+inicializarArrastreTexto();
 
+mostrarBotoneraEstilosTexto();
 
 }
 
@@ -3443,6 +3443,150 @@ function inicializarPosicionTexto(){
     inputY.onchange =
         aplicarPosicion;
 
+
+}
+function inicializarArrastreTexto(){
+
+    if(!elementoTextoActivo){
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Movimiento",
+            "No existe elementoTextoActivo",
+            "monitorEditor"
+        );
+
+        return;
+    }
+
+
+    const texto =
+        elementoTextoActivo;
+
+
+    texto.style.cursor =
+        "move";
+
+
+    let moviendo = false;
+
+    let inicioX = 0;
+    let inicioY = 0;
+
+    let posicionX = 0;
+    let posicionY = 0;
+
+
+    texto.onpointerdown = function(e){
+
+        moviendo = true;
+
+        texto.setPointerCapture(
+            e.pointerId
+        );
+
+
+        inicioX =
+            e.clientX;
+
+        inicioY =
+            e.clientY;
+
+
+        posicionX =
+            parseInt(
+                texto.style.left
+            ) || texto.offsetLeft;
+
+
+        posicionY =
+            parseInt(
+                texto.style.top
+            ) || texto.offsetTop;
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "estado",
+            "Movimiento",
+            "Arrastre iniciado",
+            "monitorEditor"
+        );
+
+    };
+
+
+    texto.onpointermove = function(e){
+
+        if(!moviendo)
+            return;
+
+
+        const deltaX =
+            e.clientX - inicioX;
+
+
+        const deltaY =
+            e.clientY - inicioY;
+
+
+        const nuevaX =
+            posicionX + deltaX;
+
+
+        const nuevaY =
+            posicionY + deltaY;
+
+
+        texto.style.left =
+            nuevaX + "px";
+
+
+        texto.style.top =
+            nuevaY + "px";
+
+
+        const inputX =
+            document.getElementById(
+                "editorTextoX"
+            );
+
+        const inputY =
+            document.getElementById(
+                "editorTextoY"
+            );
+
+
+        if(inputX)
+            inputX.value =
+                Math.round(nuevaX);
+
+
+        if(inputY)
+            inputY.value =
+                Math.round(nuevaY);
+
+    };
+
+
+    texto.onpointerup = function(){
+
+        moviendo = false;
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Movimiento",
+            "Posición final X:" +
+            texto.offsetLeft +
+            " Y:" +
+            texto.offsetTop,
+            "monitorEditor"
+        );
+
+    };
 
 }
 
