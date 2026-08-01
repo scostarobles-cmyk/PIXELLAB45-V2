@@ -518,7 +518,7 @@ isolated object
         monitorPIXELLAB(
             "Editorial",
             "error",
-            "GeneraciÛn portada",
+            "Generaci√≥n portada",
             error.message,
                        "monitorEditor"
         );
@@ -978,7 +978,7 @@ Object.assign(hoja.style, {
 
 }
 /* ==========================
-   P¡ÅGINA çNDICE
+   P√ÅGINA √çNDICE
 ========================== */
 
 async function cargarPaginaIndice(proyecto) {
@@ -1099,7 +1099,7 @@ async function cargarPaginaIndice(proyecto) {
         });
 
 
-        // Crear tÌtulo
+        // Crear tÔøΩtulo
 
         const titulo =
             document.createElement(
@@ -1391,7 +1391,7 @@ async function cargarPaginaIntroduccion(proyecto) {
         monitorPIXELLAB(
             "Editor",
             "estado",
-            "Introduccion",
+            "Introducci√≥n",
             "Pagina cargada correctamente"
         );
 
@@ -1402,7 +1402,7 @@ async function cargarPaginaIntroduccion(proyecto) {
         monitorPIXELLAB(
             "Editor",
             "error",
-            "Introduccion",
+            "Introducci√≥n",
             error.message
         );
 
@@ -1411,7 +1411,7 @@ async function cargarPaginaIntroduccion(proyecto) {
 
 }
 
-// aquÌ va capÌtulos
+// aqu√≠ va cap√≠tulos
 
 
 async function cargarPaginaConclusion(proyecto) {
@@ -1432,7 +1432,7 @@ async function cargarPaginaConclusion(proyecto) {
         monitorPIXELLAB(
             "Editor",
             "proceso",
-            "ConclusiÛn",
+            "Conclusi√≥n",
             "Cargando: " + ruta,
             "monitorEditor"
         );
@@ -1465,7 +1465,7 @@ async function cargarPaginaConclusion(proyecto) {
         if (!datos.ok) {
 
             throw new Error(
-                "No se pudo cargar conclusiÛn"
+                "No se pudo cargar conclusi√≥n"
             );
 
         }
@@ -1638,8 +1638,8 @@ async function cargarPaginaConclusion(proyecto) {
         monitorPIXELLAB(
     "Editor",
     "estado",
-    "ConclusiÛn",
-    "P·gina cargada correctamente",
+    "Conclusi√≥n",
+    "P√°gina cargada correctamente",
     "monitorEditor"
 );
 
@@ -1649,7 +1649,7 @@ async function cargarPaginaConclusion(proyecto) {
         monitorPIXELLAB(
     "Editor",
     "error",
-    "ConclusiÛn",
+    "Conclusi√≥n",
     error.message,
     "monitorEditor"
 );
@@ -1817,19 +1817,19 @@ function verificarPipelineEditor(){
     },
     {
         id:"editorIndice",
-        nombre:"Õndice"
+        nombre:"√çndice"
     },
     {
         id:"editorIntroduccion",
-        nombre:"IntroducciÛn"
+        nombre:"Introducci√≥n"
     },
     {
         id:"editorCapitulos",
-        nombre:"CapÌtulos"
+        nombre:"Cap√≠tulos"
     },
     {
         id:"editorConclusion",
-        nombre:"ConclusiÛn"
+        nombre:"Conclusi√≥n"
     }
 ];
 
@@ -1954,7 +1954,7 @@ function editarPortada(){
         "Editorial",
         "proceso",
         "Portada",
-        "Entrando a ediciÛn de portada",
+        "Entrando a edici√≥n de portada",
         "monitorEditor"
     );
 
@@ -2003,7 +2003,7 @@ function editarPortada(){
         "Editorial",
         "ok",
         "Portada",
-        "Mostrando ˙nicamente portada",
+        "Mostrando √∫nicamente portada",
         "monitorEditor"
     );
 
@@ -2127,7 +2127,7 @@ function mostrarControlesPortada(){
     <div id="editorHerramientasPortada">
 
         <button onclick="activarEdicionTituloPortada()">
-            TÌtulo
+            T√≠tulo
         </button>
 
         <button onclick="activarEdicionFuentePortada()">
@@ -2135,7 +2135,7 @@ function mostrarControlesPortada(){
         </button>
 
         <button onclick="activarEdicionTamanoPortada()">
-            TamaÒo
+            Tama√±o
         </button>
 
         <button onclick="activarEdicionColorPortada()">
@@ -2143,7 +2143,7 @@ function mostrarControlesPortada(){
         </button>
 
         <button onclick="activarEdicionPosicionPortada()">
-            PosiciÛn
+            Posici√≥n
         </button>
 
     </div>
@@ -2178,13 +2178,13 @@ function activarEdicionTituloPortada(){
 
         <div class="control-titulo">
 
-            <label>TÌtulo</label>
+            <label>T√≠tulo</label>
 
             <input
                 type="text"
                 id="inputTituloPortada"
                 class="control-input-portada"
-                placeholder="Escriba el tÌtulo">
+                placeholder="Escriba el t√≠tulo">
 
         </div>
 
@@ -2323,7 +2323,7 @@ function activarEdicionTamanoPortada(){
         <div class="control-titulo">
 
             <label>
-                TamaÒo
+                Tama√±o
             </label>
 
             <input
@@ -2369,7 +2369,7 @@ function activarEdicionTamanoPortada(){
         "Editorial",
         "ok",
         "Portada",
-        "Control tamaÒo activado",
+        "Control tama√±o activado",
         "monitorEditor"
     );
 
