@@ -2401,6 +2401,8 @@ async function inicializarEditor(){
             "monitorEditor"
         );
 
+        aplicarEstadoPortada(editor);
+
         return editor;
 
     }
@@ -2470,7 +2472,50 @@ async function inicializarEditor(){
         "monitorEditor"
     );
 
+    aplicarEstadoPortada(editor);
+
     return editor;
+
+}
+
+function aplicarEstadoPortada(editor){
+
+    if(
+        !editor ||
+        !editor.portada ||
+        !editor.portada.titulo
+    ){
+        return;
+    }
+
+    crearOActualizarElementoPortada(
+        "pl45-titulo-portada",
+        editor.portada.titulo.texto
+    );
+
+    const titulo =
+        document.querySelector(
+            ".pl45-titulo-portada"
+        );
+
+    if(!titulo){
+        return;
+    }
+
+    titulo.style.fontFamily =
+        editor.portada.titulo.estilo.fuente;
+
+    titulo.style.fontSize =
+        editor.portada.titulo.estilo.tamano + "px";
+
+    titulo.style.color =
+        editor.portada.titulo.estilo.color;
+
+    titulo.style.left =
+        editor.portada.titulo.estilo.x + "px";
+
+    titulo.style.top =
+        editor.portada.titulo.estilo.y + "px";
 
 }
 
