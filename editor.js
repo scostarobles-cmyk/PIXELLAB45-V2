@@ -829,28 +829,20 @@ function actualizarEstadoPipelineEditorial(
 
     switch(estado){
 
-        case "pendiente":
-            elemento.innerHTML =
-                " " + mensaje;
-            break;
-
-
         case "disponible":
-            elemento.innerHTML =
-                " " + mensaje;
-            break;
+    elemento.innerHTML =
+        "\uD83D\uDD35 " + mensaje; // 
+    break;
 
+case "produccion":
+    elemento.innerHTML =
+        "\uD83D\uDFE1 " + mensaje; // 
+    break;
 
-        case "produccion":
-            elemento.innerHTML =
-                " " + mensaje;
-            break;
-
-
-        case "completo":
-            elemento.innerHTML =
-                " " + mensaje;
-            break;
+case "completo":
+    elemento.innerHTML =
+        "\uD83D\uDFE2 " + mensaje; // 
+    break;
 
     }
 
