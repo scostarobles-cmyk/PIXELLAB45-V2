@@ -2006,7 +2006,7 @@ function editarPortada(){
         "Mostrando únicamente portada",
         "monitorEditor"
     );
-    await inicializarEditor();
+    inicializarEditor();
     mostrarControlesPortada();
 
 }
@@ -2374,7 +2374,7 @@ function activarEdicionTamanoPortada(){
 
 }
 
-async function inicializarEditor(){
+function inicializarEditor(){
 
     monitorPIXELLAB(
         "Editorial",
