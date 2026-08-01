@@ -1957,7 +1957,7 @@ function editarPortada(){
         "Entrando a edición de portada",
         "monitorEditor"
     );
-await cargarEditor();
+//await cargarEditor();
 
     actualizarEstadoPipelineEditorial(
         "editorPortada",
