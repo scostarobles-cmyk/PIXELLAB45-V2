@@ -2125,9 +2125,9 @@ function mostrarControlesPortada(){
 
     contenedor.innerHTML = `
 
-        <button>
-            TÌtulo
-        </button>
+    <button onclick="cargarControlTituloPortada()">
+    TÌtulo
+</button>
 
         <button>
             Autor
@@ -2169,6 +2169,44 @@ function mostrarControlesPortada(){
     );
 
 }
+function activarEdicionTituloPortada(){
+
+    const contenedor =
+        document.getElementById(
+            "editorControles"
+        );
+
+
+    contenedor.innerHTML += `
+
+        <div class="control-titulo-portada">
+
+            <label>
+                TÌtulo:
+            </label>
+
+            <input
+                type="text"
+                id="textoTituloPortada"
+                placeholder="Escriba el tÌtulo">
+
+
+        </div>
+
+    `;
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Portada",
+        "Control de tÌtulo generado",
+        "monitorEditor"
+    );
+
+}
+
+
 
 /* ==========================
    CARGAR TODOS LOS CAP√çTULOS
