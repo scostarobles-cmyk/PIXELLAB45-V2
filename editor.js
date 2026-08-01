@@ -2442,7 +2442,7 @@ function activarEdicionColorPortada(){
 
 //Aquí va x e y
 
-async function cargarEditor(){
+/*async function cargarEditor(){
 
     monitorPIXELLAB(
         "Editorial",
@@ -2618,7 +2618,7 @@ async function cargarEditor(){
 
     return editor;
 
-}
+}*
 
 
 /* ==========================
