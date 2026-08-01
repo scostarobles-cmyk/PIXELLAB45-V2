@@ -1723,7 +1723,7 @@ async function cargarLibroCompleto(proyecto) {
 
     }
 
-
+    asignarClasesPaginasEditorial();
     verificarPipelineEditor();
     
      actualizarEstadoPipelineEditorial(
@@ -1970,16 +1970,138 @@ function editarPortada(){
     );
 
 
-    monitorPIXELLAB(
-        "Editorial",
-        "ok",
-        "Portada",
-        "Modo edición de portada activado",
-        "monitorEditor"
+    const paginas =
+        document.querySelectorAll(
+            ".hoja-editor"
+        );
+
+
+    paginas.forEach(
+        pagina => {
+
+            pagina.style.display = "none";
+
+        }
     );
 
-}
 
+    const portada =
+        document.querySelector(
+            ".pl45-hoja-portada"
+        );
+
+
+    if(portada){
+
+        portada.style.display = "block";
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Portada",
+            "Portada visible, otras páginas ocultas",
+            "monitorEditor"
+        );
+
+    } else {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Portada",
+            "No se encontró la clase pl45-hoja-portada",
+            "monitorEditor"
+        );
+
+    }
+
+
+}
+function asignarClasesPaginasEditorial() {
+
+    const paginaEditor =
+        document.getElementById("paginaEditor");
+
+    if (!paginaEditor) return;
+
+
+    const paginas =
+        paginaEditor.children;
+
+
+    for (let i = 0; i < paginas.length; i++) {
+
+        const pagina =
+            paginas[i];
+
+
+        pagina.classList.add(
+            "pl45-hoja"
+        );
+
+
+        pagina.classList.remove(
+            "pl45-hoja-portada",
+            "pl45-hoja-legales",
+            "pl45-hoja-indice",
+            "pl45-hoja-introduccion",
+            "pl45-hoja-capitulo",
+            "pl45-hoja-conclusion"
+        );
+
+
+        if (i === 0) {
+
+            pagina.classList.add(
+                "pl45-hoja-portada"
+            );
+
+        }
+
+        else if (i === 1) {
+
+            pagina.classList.add(
+                "pl45-hoja-legales"
+            );
+
+        }
+
+        else if (i === 2) {
+
+            pagina.classList.add(
+                "pl45-hoja-indice"
+            );
+
+        }
+
+        else if (i === 3) {
+
+            pagina.classList.add(
+                "pl45-hoja-introduccion"
+            );
+
+        }
+
+        else if (i === paginas.length - 1) {
+
+            pagina.classList.add(
+                "pl45-hoja-conclusion"
+            );
+
+        }
+
+        else {
+
+            pagina.classList.add(
+                "pl45-hoja-capitulo"
+            );
+
+        }
+
+    }
+
+}
 
 
 /* ==========================
@@ -3228,90 +3350,7 @@ mostrarBotoneraEstilosTexto();
 
 }
 
-function asignarClasesPaginasEditorial() {
 
-    const paginaEditor =
-        document.getElementById("paginaEditor");
-
-    if (!paginaEditor) return;
-
-
-    const paginas =
-        paginaEditor.children;
-
-
-    for (let i = 0; i < paginas.length; i++) {
-
-        const pagina =
-            paginas[i];
-
-
-        pagina.classList.add(
-            "pl45-hoja"
-        );
-
-
-        pagina.classList.remove(
-            "pl45-hoja-portada",
-            "pl45-hoja-legales",
-            "pl45-hoja-indice",
-            "pl45-hoja-introduccion",
-            "pl45-hoja-capitulo",
-            "pl45-hoja-conclusion"
-        );
-
-
-        if (i === 0) {
-
-            pagina.classList.add(
-                "pl45-hoja-portada"
-            );
-
-        }
-
-        else if (i === 1) {
-
-            pagina.classList.add(
-                "pl45-hoja-legales"
-            );
-
-        }
-
-        else if (i === 2) {
-
-            pagina.classList.add(
-                "pl45-hoja-indice"
-            );
-
-        }
-
-        else if (i === 3) {
-
-            pagina.classList.add(
-                "pl45-hoja-introduccion"
-            );
-
-        }
-
-        else if (i === paginas.length - 1) {
-
-            pagina.classList.add(
-                "pl45-hoja-conclusion"
-            );
-
-        }
-
-        else {
-
-            pagina.classList.add(
-                "pl45-hoja-capitulo"
-            );
-
-        }
-
-    }
-
-}
 
 
 async function guardarEditorPortada(project_id) {
