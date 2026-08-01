@@ -2006,7 +2006,7 @@ function editarPortada(){
         "Mostrando únicamente portada",
         "monitorEditor"
     );
-     inicializarEditor();
+    await inicializarEditor();
     mostrarControlesPortada();
 
 }
@@ -2385,13 +2385,44 @@ async function inicializarEditor(){
     );
 
 
+    const rutaEditor =
+        `proyectos/${project_id}/editor.json`;
+
+
     monitorPIXELLAB(
         "Editorial",
         "estado",
         "Editor",
-        "project_id actual: " + project_id,
+        "Buscando archivo: " + rutaEditor,
         "monitorEditor"
     );
+
+
+    const editor =
+        await cargarJSON(rutaEditor);
+
+
+    if(editor){
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Editor",
+            "editor.json existe",
+            "monitorEditor"
+        );
+
+    }else{
+
+        monitorPIXELLAB(
+            "Editorial",
+            "aviso",
+            "Editor",
+            "editor.json no existe",
+            "monitorEditor"
+        );
+
+    }
 
 }
 
