@@ -1970,16 +1970,16 @@ function editarPortada(){
     );
 
 
-    const paginas =
+    const hojas =
         document.querySelectorAll(
-            ".hoja-editor"
+            "[class*='pl45-hoja-']"
         );
 
 
-    paginas.forEach(
-        pagina => {
+    hojas.forEach(
+        hoja => {
 
-            pagina.style.display = "none";
+            hoja.style.display = "none";
 
         }
     );
@@ -2000,22 +2000,11 @@ function editarPortada(){
             "Editorial",
             "ok",
             "Portada",
-            "Portada visible, otras páginas ocultas",
-            "monitorEditor"
-        );
-
-    } else {
-
-        monitorPIXELLAB(
-            "Editorial",
-            "error",
-            "Portada",
-            "No se encontró la clase pl45-hoja-portada",
+            "Mostrando únicamente portada",
             "monitorEditor"
         );
 
     }
-
 
 }
 function asignarClasesPaginasEditorial() {
