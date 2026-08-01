@@ -647,9 +647,24 @@ async function cargarLibroCompleto(proyecto) {
     );
 
 
+    try {
+
     verificarPipelineEditor();
 
-   // activarBotoneraPrincipal();
+}
+catch(error){
+
+    monitorPIXELLAB(
+        "Editorial",
+        "error",
+        "Pipeline",
+        "Error: " + error.message,
+        "monitorEditor"
+    );
+
+}
+
+   activarBotoneraPrincipal();
     
     monitorPIXELLAB(
     "Editorial",
