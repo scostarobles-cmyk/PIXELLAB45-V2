@@ -480,3 +480,7 @@
     color:white;
 
 }
+.titulo-portada-editor{
+    touch-action: none;
+    user-select: none;
+}

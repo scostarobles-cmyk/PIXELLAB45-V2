@@ -3482,6 +3482,10 @@ function inicializarArrastreTexto(){
 
         moviendo = true;
 
+
+        texto.contentEditable = false;
+
+
         texto.setPointerCapture(
             e.pointerId
         );
@@ -3504,6 +3508,10 @@ function inicializarArrastreTexto(){
             parseInt(
                 texto.style.top
             ) || texto.offsetTop;
+
+
+        texto.style.transform =
+            "none";
 
 
         monitorPIXELLAB(
@@ -3552,6 +3560,7 @@ function inicializarArrastreTexto(){
                 "editorTextoX"
             );
 
+
         const inputY =
             document.getElementById(
                 "editorTextoY"
@@ -3570,9 +3579,17 @@ function inicializarArrastreTexto(){
     };
 
 
-    texto.onpointerup = function(){
+    texto.onpointerup = function(e){
 
         moviendo = false;
+
+
+        texto.releasePointerCapture(
+            e.pointerId
+        );
+
+
+        texto.contentEditable = true;
 
 
         monitorPIXELLAB(
