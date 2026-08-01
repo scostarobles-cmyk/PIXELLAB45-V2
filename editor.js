@@ -1994,20 +1994,23 @@ function editarPortada(){
         );
 
 
-    if(portada){
+  if(portada){
 
-        portada.style.display = "block";
+    portada.style.display = "block";
 
 
-        monitorPIXELLAB(
-            "Editorial",
-            "ok",
-            "Portada",
-            "Mostrando únicamente portada",
-            "monitorEditor"
-        );
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Portada",
+        "Mostrando únicamente portada",
+        "monitorEditor"
+    );
 
-    }
+
+    mostrarControlesPortada();
+
+}
 
 }
 function asignarClasesPaginasEditorial() {
