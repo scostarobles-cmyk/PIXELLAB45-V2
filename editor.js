@@ -2006,7 +2006,7 @@ function editarPortada(){
         "Mostrando únicamente portada",
         "monitorEditor"
     );
-     
+     inicializarEditor();
     mostrarControlesPortada();
 
 }
@@ -2373,6 +2373,19 @@ function activarEdicionTamanoPortada(){
     );
 
 }
+
+function inicializarEditor(){
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Editor",
+        "Función inicializarEditor cargada correctamente",
+        "monitorEditor"
+    );
+
+}
+
 function activarEdicionColorPortada(){
 
     const panel =
