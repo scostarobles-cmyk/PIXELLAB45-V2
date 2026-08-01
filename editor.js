@@ -2141,9 +2141,9 @@ function mostrarControlesPortada(){
             Imagen
         </button>
 
-        <button>
-            Fuente
-        </button>
+   <button onclick="activarEdicionFuentePortada()">
+    Fuente
+</button>
 
         <button>
             Tamaño
@@ -2254,6 +2254,86 @@ function crearOActualizarElementoPortada(
             texto;
 
     }
+
+}
+function activarEdicionFuentePortada(){
+
+    const contenedor =
+        document.getElementById(
+            "editorControles"
+        );
+
+    if(!contenedor){
+        return;
+    }
+
+    contenedor.innerHTML += `
+
+        <div class="control-fuente">
+
+            <label>
+                Fuente
+            </label>
+
+            <select id="selectorFuentePortada">
+
+                <option value="Arial">
+                    Arial
+                </option>
+
+                <option value="Georgia">
+                    Georgia
+                </option>
+
+                <option value="Verdana">
+                    Verdana
+                </option>
+
+                <option value="Times New Roman">
+                    Times New Roman
+                </option>
+
+                <option value="Courier New">
+                    Courier New
+                </option>
+
+            </select>
+
+        </div>
+
+    `;
+
+    const selector =
+        document.getElementById(
+            "selectorFuentePortada"
+        );
+
+    selector.addEventListener(
+        "change",
+        () => {
+
+            const titulo =
+                document.querySelector(
+                    ".pl45-titulo-portada"
+                );
+
+            if(titulo){
+
+                titulo.style.fontFamily =
+                    selector.value;
+
+            }
+
+        }
+    );
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Portada",
+        "Editor de fuente activado",
+        "monitorEditor"
+    );
 
 }
 
