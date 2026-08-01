@@ -484,3 +484,48 @@
     touch-action: none;
     user-select: none;
 }
+#editorControles{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    justify-content:center;
+    align-items:center;
+
+    padding:15px;
+
+    background:#05070d;
+    border:1px solid #00d9ff;
+    border-radius:12px;
+
+    margin-top:15px;
+}
+
+
+#editorControles button{
+
+    background:#0b1220;
+
+    color:#00d9ff;
+
+    border:1px solid #00d9ff;
+
+    padding:10px 16px;
+
+    border-radius:8px;
+
+    font-size:14px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+
+#editorControles button:hover{
+
+    background:#00d9ff;
+
+    color:#05070d;
+
+}
