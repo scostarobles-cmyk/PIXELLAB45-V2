@@ -2185,10 +2185,11 @@ function activarEdicionTituloPortada(){
                 Título:
             </label>
 
-            <input
-                type="text"
-                id="textoTituloPortada"
-                placeholder="Escriba el título">
+   <input
+    type="text"
+    id="inputTituloPortada"
+    class="control-input-portada"
+    placeholder="Escriba el título">
 
 
         </div>

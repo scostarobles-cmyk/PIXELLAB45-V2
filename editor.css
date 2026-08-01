@@ -529,3 +529,57 @@
     color:#05070d;
 
 }
+.control-titulo{
+
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+
+    padding:12px;
+
+    background:#0b1220;
+
+    border:1px solid #00d9ff;
+
+    border-radius:10px;
+
+}
+
+
+.control-titulo label{
+
+    color:#00d9ff;
+
+    font-size:14px;
+
+    font-weight:bold;
+
+}
+
+
+.control-input-portada{
+
+    width:220px;
+
+    padding:10px;
+
+    border-radius:8px;
+
+    border:1px solid #00d9ff;
+
+    background:#05070d;
+
+    color:white;
+
+    font-size:16px;
+
+    outline:none;
+
+}
+
+
+.control-input-portada:focus{
+
+    box-shadow:0 0 10px #00d9ff;
+
+}
