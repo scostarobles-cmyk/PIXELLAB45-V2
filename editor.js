@@ -2180,7 +2180,7 @@ function activarEdicionTituloPortada(){
         return;
     }
 
-    contenedor.innerHTML += `
+    contenedor.innerHTML = `
 
         <div class="control-titulo">
 
@@ -2267,7 +2267,7 @@ function activarEdicionFuentePortada(){
         return;
     }
 
-    contenedor.innerHTML += `
+    contenedor.innerHTML = `
 
         <div class="control-fuente">
 
