@@ -3002,7 +3002,7 @@ monitorPIXELLAB(
     "monitorEditor"
 );
 
-m
+
 
 inicializarEditorFuente();
 
