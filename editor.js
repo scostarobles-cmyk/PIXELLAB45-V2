@@ -2374,7 +2374,7 @@ function activarEdicionTamanoPortada(){
 
 }
 
-function inicializarEditor(){
+async function inicializarEditor(){
 
     monitorPIXELLAB(
         "Editorial",
@@ -2398,7 +2398,31 @@ function inicializarEditor(){
     );
 
 
-  
+    const editor =
+        await cargarJSON(rutaEditor);
+
+
+    if(editor){
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Editor",
+            "editor.json existe",
+            "monitorEditor"
+        );
+
+    }else{
+
+        monitorPIXELLAB(
+            "Editorial",
+            "aviso",
+            "Editor",
+            "editor.json no existe",
+            "monitorEditor"
+        );
+
+    }
 
 }
 
