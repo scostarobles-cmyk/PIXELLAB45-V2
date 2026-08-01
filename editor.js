@@ -2391,7 +2391,14 @@ async function inicializarEditor(){
     
     editor =
         await cargarJSON(rutaEditor);
-
+    
+monitorPIXELLAB(
+    "Editorial",
+    "estado",
+    "Editor",
+    JSON.stringify(editor),
+    "monitorEditor"
+);
     if(editor){
 
         monitorPIXELLAB(
