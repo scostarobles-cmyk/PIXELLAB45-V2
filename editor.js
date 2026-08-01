@@ -2124,40 +2124,34 @@ function mostrarControlesPortada(){
 
 
     contenedor.innerHTML = `
+    <div id="editorHerramientasPortada">
 
-    <button onclick="activarEdicionTituloPortada()">
-    Título
-</button>
-
-        <button>
-            Autor
+        <button onclick="activarEdicionTituloPortada()">
+            Título
         </button>
 
-        <button>
-            Logo
+        <button onclick="activarEdicionFuentePortada()">
+            Fuente
         </button>
 
-        <button>
-            Imagen
-        </button>
-
-   <button onclick="activarEdicionFuentePortada()">
-    Fuente
-</button>
-
-        <button>
+        <button onclick="activarEdicionTamanoPortada()">
             Tamaño
         </button>
 
-        <button>
+        <button onclick="activarEdicionColorPortada()">
+            Color
+        </button>
+
+        <button onclick="activarEdicionPosicionPortada()">
             Posición
         </button>
 
-        <button>
-            Guardar
-        </button>
+    </div>
 
-    `;
+    <div id="editorPanelPortada">
+
+    </div>
+`;
 
 
     monitorPIXELLAB(
@@ -2171,16 +2165,16 @@ function mostrarControlesPortada(){
 }
 function activarEdicionTituloPortada(){
 
-    const contenedor =
+    const panel =
         document.getElementById(
-            "editorControles"
+            "editorPanelPortada"
         );
 
-    if(!contenedor){
+    if(!panel){
         return;
     }
 
-    contenedor.innerHTML = `
+    panel.innerHTML = `
 
         <div class="control-titulo">
 
@@ -2258,44 +2252,28 @@ function crearOActualizarElementoPortada(
 }
 function activarEdicionFuentePortada(){
 
-    const contenedor =
+    const panel =
         document.getElementById(
-            "editorControles"
+            "editorPanelPortada"
         );
 
-    if(!contenedor){
+    if(!panel){
         return;
     }
 
-    contenedor.innerHTML = `
+    panel.innerHTML = `
 
-        <div class="control-fuente">
+        <div class="control-titulo">
 
-            <label>
-                Fuente
-            </label>
+            <label>Fuente</label>
 
             <select id="selectorFuentePortada">
 
-                <option value="Arial">
-                    Arial
-                </option>
-
-                <option value="Georgia">
-                    Georgia
-                </option>
-
-                <option value="Verdana">
-                    Verdana
-                </option>
-
-                <option value="Times New Roman">
-                    Times New Roman
-                </option>
-
-                <option value="Courier New">
-                    Courier New
-                </option>
+                <option value="Arial">Arial</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Verdana">Verdana</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Courier New">Courier New</option>
 
             </select>
 
@@ -2325,14 +2303,6 @@ function activarEdicionFuentePortada(){
             }
 
         }
-    );
-
-    monitorPIXELLAB(
-        "Editorial",
-        "ok",
-        "Portada",
-        "Editor de fuente activado",
-        "monitorEditor"
     );
 
 }
