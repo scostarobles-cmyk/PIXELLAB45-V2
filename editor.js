@@ -2374,6 +2374,73 @@ function activarEdicionTamanoPortada(){
     );
 
 }
+function activarEdicionColorPortada(){
+
+    const panel =
+        document.getElementById(
+            "editorPanelPortada"
+        );
+
+    if(!panel){
+        return;
+    }
+
+
+    panel.innerHTML = `
+
+        <div class="control-titulo">
+
+            <label>
+                Color
+            </label>
+
+            <input
+                type="color"
+                id="colorTituloPortada"
+                value="#ffffff">
+
+        </div>
+
+    `;
+
+
+    const selector =
+        document.getElementById(
+            "colorTituloPortada"
+        );
+
+
+    selector.addEventListener(
+        "input",
+        () => {
+
+            const titulo =
+                document.querySelector(
+                    ".pl45-titulo-portada"
+                );
+
+
+            if(titulo){
+
+                titulo.style.color =
+                    selector.value;
+
+            }
+
+        }
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Portada",
+        "Control color activado",
+        "monitorEditor"
+    );
+
+}
+
 
 /* ==========================
    CARGAR TODOS LOS CAPÍTULOS
