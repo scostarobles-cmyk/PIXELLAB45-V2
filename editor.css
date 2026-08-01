@@ -583,3 +583,32 @@
     box-shadow:0 0 10px #00d9ff;
 
 }
+.pl45-titulo-portada{
+
+    position:absolute;
+
+    top:80px;
+
+    left:40px;
+
+    width:80%;
+
+    background:transparent;
+
+    border:none;
+
+    color:#ffffff;
+
+    font-size:38px;
+
+    font-family:Arial, sans-serif;
+
+    font-weight:bold;
+
+    text-align:center;
+
+    z-index:100;
+
+    pointer-events:none;
+
+}
