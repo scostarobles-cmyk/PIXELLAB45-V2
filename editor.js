@@ -635,32 +635,9 @@ async function cargarLibroCompleto(proyecto) {
     }
 
 
-    asignarClasesPaginasEditorial();
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "estado",
-        "Libro",
-        "Carga completa finalizada",
-        "monitorEditor"
-    );
-
-
+    verificarPipelineEditor();
     
-
-   activarBotoneraPrincipal();
-    
-    monitorPIXELLAB(
-    "Editorial",
-    "prueba",
-    "Pipeline",
-    "Antes de llamar actualizarEstadoPipelineEditorial",
-    "monitorEditor"
-);
-
-
-actualizarEstadoPipelineEditorial(
+     actualizarEstadoPipelineEditorial(
     "editorProyecto",
     "completo",
     "Proyecto cargado"
