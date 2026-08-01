@@ -569,293 +569,6 @@ async function abrirEditorEditorial(projectId) {
     await cargarLibroCompleto(proyecto);
 
 }
-/*
-=========================================================
-PIXELLAB Editorial
-ETAPA 1 · Carga completa del libro
-
-Objetivo:
-Reconstruir completamente el eBook en memoria
-leyendo todos los archivos JSON del proyecto.
-
-Flujo:
-
-1. Portada
-2. Legales
-3. Índice
-4. Introducción
-5. Capítulos
-6. Conclusión
-
-Cada hoja tendrá su propia función de carga.
-
-La única excepción son los capítulos, que se
-recorrerán automáticamente leyendo plan.json.
-
-En esta etapa:
-
-✓ Carga contenido
-✗ No aplica estilos
-✗ No guarda cambios
-✗ No realiza edición
-
-=========================================================
-*/
-const SECCIONES_LIBRO = [
-  //     "prueba",
-   "portada",
-   "legales",
-   "indice",
-   "introduccion",
-    "capitulos",
-    "conclusion"
-];
-/* ==========================
-   CARGA DEL LIBRO
-========================== */
-
-async function cargarLibroCompleto(proyecto) {
-
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Libro",
-        "Comenzando carga completa",
-        "monitorEditor"
-    );
-
-
-    for (const seccion of SECCIONES_LIBRO) {
-
-        await cargarSeccion(
-            proyecto,
-            seccion
-        );
-
-    }
-
-
-    verificarPipelineEditor();
-    
-     actualizarEstadoPipelineEditorial(
-    "editorProyecto",
-    "completo",
-    "Proyecto cargado"
-);
-
-}
-async function cargarSeccion(
-    proyecto,
-    seccion
-) {
-
-    switch (seccion) {
-
-
-        case "prueba":
-
-            await cargarPaginaPrueba(proyecto);
-
-            break;
-
-
-        case "portada":
-
-            await cargarPaginaPortada(proyecto);
-
-            break;
-
-
-        case "legales":
-
-            await cargarPaginaLegales(proyecto);
-
-            break;
-
-
-        case "indice":
-
-            await cargarPaginaIndice(proyecto);
-
-            break;
-
-
-        case "introduccion":
-
-            await cargarPaginaIntroduccion(proyecto);
-
-            break;
-
-
-        case "capitulos":
-
-            await cargarPaginaCapitulos(proyecto);
-
-            break;
-
-
-        case "conclusion":
-
-            await cargarPaginaConclusion(proyecto);
-
-            break;
-
-    }
-
-}
-function verificarPipelineEditor(){
-
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Pipeline",
-        "Verificando estados del editor",
-        "monitorEditor"
-    );
-
-
-    const secciones = [
-        {
-            id:"editorPortada",
-            nombre:"Portada"
-        },
-        {
-            id:"editorLegales",
-            nombre:"Legales"
-        },
-        {
-            id:"editorIndice",
-            nombre:"Índice"
-        },
-        {
-            id:"editorIntroduccion",
-            nombre:"Introducción"
-        },
-        {
-            id:"editorCapitulos",
-            nombre:"Capítulos"
-        },
-        {
-            id:"editorConclusion",
-            nombre:"Conclusión"
-        }
-    ];
-
-
-    secciones.forEach(
-        seccion => {
-
-            const elemento =
-                document.getElementById(
-                    seccion.id
-                );
-
-
-            if(!elemento){
-
-                monitorPIXELLAB(
-                    "Editorial",
-                    "error",
-                    "Pipeline",
-                    "No existe: " + seccion.id,
-                    "monitorEditor"
-                );
-
-                return;
-            }
-
-
-            elemento.innerHTML =
-                "⚪ " + seccion.nombre;
-
-
-        }
-    );
-
-
-    // Primera sección disponible
-
-    const portada =
-        document.getElementById(
-            "editorPortada"
-        );
-
-
-    if(portada){
-
-        portada.innerHTML =
-            "🔵 Portada";
-
-
-        monitorPIXELLAB(
-            "Editorial",
-            "ok",
-            "Pipeline",
-            "Portada disponible",
-            "monitorEditor"
-        );
-
-    }
-
-}
-function actualizarEstadoPipelineEditorial(
-    idElemento,
-    estado,
-    mensaje
-){
-
-    const elemento =
-        document.getElementById(
-            idElemento
-        );
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "prueba",
-        "Pipeline",
-        "Buscando: " + idElemento +
-        " | Encontrado: " + !!elemento,
-        "monitorEditor"
-    );
-
-
-    if(!elemento){
-
-        return;
-
-    }
-
-
-    switch(estado){
-
-        case "disponible":
-    elemento.innerHTML =
-        "\uD83D\uDD35 " + mensaje; // 
-    break;
-
-case "produccion":
-    elemento.innerHTML =
-        "\uD83D\uDFE1 " + mensaje; // 
-    break;
-
-case "completo":
-    elemento.innerHTML =
-        "\uD83D\uDFE2 " + mensaje; // 
-    break;
-
-    }
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "ok",
-        "Pipeline",
-        "Actualizado: " + elemento.id,
-        "monitorEditor"
-    );
-
-}
 // =====================================================
 // PIXELLAB45 EDITORIAL
 // FUNCIÓN: Cargar página de portada en editor A4
@@ -1697,6 +1410,578 @@ async function cargarPaginaIntroduccion(proyecto) {
     }
 
 }
+
+// aqu� va cap�tulos
+
+
+async function cargarPaginaConclusion(proyecto) {
+
+    monitorPIXELLAB(
+        "Editor",
+        "proceso",
+        "Conclusión",
+        "Entró a cargarPaginaConclusion",
+        "monitorEditor"
+    );
+
+    try {
+
+        const ruta =
+            `proyectos/${proyecto.projectId}/conclusion.json`;
+
+        monitorPIXELLAB(
+            "Editor",
+            "proceso",
+            "Conclusión",
+            "Cargando: " + ruta,
+            "monitorEditor"
+        );
+
+
+        const respuesta =
+            await fetch(WORKER_URL, {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    action: "cargar-json",
+
+                    ruta: ruta
+
+                })
+
+            });
+
+
+        const datos =
+            await respuesta.json();
+
+
+        if (!datos.ok) {
+
+            throw new Error(
+                "No se pudo cargar conclusión"
+            );
+
+        }
+
+
+        const conclusion =
+            datos.json;
+
+
+        if (!conclusion) {
+
+            throw new Error(
+                "JSON conclusión vacío"
+            );
+
+        }
+
+
+        const contenedor =
+            document.getElementById(
+                "paginaEditor"
+            );
+
+
+        if (!contenedor) {
+
+            throw new Error(
+                "No existe paginaEditor"
+            );
+
+        }
+
+
+        const hoja =
+            document.createElement(
+                "div"
+            );
+
+
+        hoja.className =
+    "pl45-hoja-portada";
+
+
+        hoja.style.background =
+            "#ffffff";
+
+        hoja.style.color =
+            "#000000";
+
+        hoja.style.padding =
+            "40px";
+
+        hoja.style.marginBottom =
+            "20px";
+
+        hoja.style.minHeight =
+            "900px";
+
+
+        const titulo =
+            document.createElement(
+                "h1"
+            );
+
+
+        titulo.textContent =
+            conclusion.titulo;
+
+
+        titulo.style.color =
+            "#000000";
+
+
+        const texto =
+            document.createElement(
+                "div"
+            );
+
+
+        let contenido = "";
+
+
+        contenido +=
+            conclusion.agradecimiento + "\n\n";
+
+
+        contenido +=
+            conclusion.resumen + "\n\n";
+
+
+        contenido +=
+            "Aprendizajes clave:\n\n";
+
+
+        if (conclusion.aprendizajesClave) {
+
+            conclusion.aprendizajesClave.forEach(
+
+                item => {
+
+                    contenido +=
+                        "• " + item + "\n";
+
+                }
+
+            );
+
+        }
+
+
+        contenido +=
+            "\n" +
+            conclusion.proximosPasos +
+            "\n\n";
+
+
+        contenido +=
+            conclusion.motivacionFinal +
+            "\n\n";
+
+
+        contenido +=
+            conclusion.llamadoALaAccion +
+            "\n\n";
+
+
+        contenido +=
+            conclusion.despedida;
+
+
+        texto.textContent =
+            contenido;
+
+
+        texto.style.whiteSpace =
+            "pre-line";
+
+
+        texto.style.color =
+            "#000000";
+
+
+        texto.style.lineHeight =
+            "1.6";
+
+
+        texto.style.fontSize =
+            "18px";
+
+
+        hoja.appendChild(
+            titulo
+        );
+
+
+        hoja.appendChild(
+            texto
+        );
+
+
+        contenedor.appendChild(
+            hoja
+        );
+
+
+        monitorPIXELLAB(
+            "Editor",
+            "estado",
+            "Conclusión",
+            "Página cargada correctamente",
+            "monitorEditor"
+        );
+
+
+    } catch(error) {
+
+
+        monitorPIXELLAB(
+            "Editor",
+            "error",
+            "Conclusión",
+            error.message,
+            "monitorEditor"
+        );
+
+
+    }
+
+}
+
+
+
+/*
+=========================================================
+PIXELLAB Editorial
+ETAPA 1 · Carga completa del libro
+
+Objetivo:
+Reconstruir completamente el eBook en memoria
+leyendo todos los archivos JSON del proyecto.
+
+Flujo:
+
+1. Portada
+2. Legales
+3. Índice
+4. Introducción
+5. Capítulos
+6. Conclusión
+
+Cada hoja tendrá su propia función de carga.
+
+La única excepción son los capítulos, que se
+recorrerán automáticamente leyendo plan.json.
+
+En esta etapa:
+
+✓ Carga contenido
+✗ No aplica estilos
+✗ No guarda cambios
+✗ No realiza edición
+
+=========================================================
+*/
+const SECCIONES_LIBRO = [
+  //     "prueba",
+   "portada",
+   "legales",
+   "indice",
+   "introduccion",
+    "capitulos",
+    "conclusion"
+];
+/* ==========================
+   CARGA DEL LIBRO
+========================== */
+
+async function cargarLibroCompleto(proyecto) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Libro",
+        "Comenzando carga completa",
+        "monitorEditor"
+    );
+
+
+    for (const seccion of SECCIONES_LIBRO) {
+
+        await cargarSeccion(
+            proyecto,
+            seccion
+        );
+
+    }
+
+
+    verificarPipelineEditor();
+    
+     actualizarEstadoPipelineEditorial(
+    "editorProyecto",
+    "completo",
+    "Proyecto cargado"
+);
+
+}
+async function cargarSeccion(
+    proyecto,
+    seccion
+) {
+
+    switch (seccion) {
+
+
+        case "prueba":
+
+            await cargarPaginaPrueba(proyecto);
+
+            break;
+
+
+        case "portada":
+
+            await cargarPaginaPortada(proyecto);
+
+            break;
+
+
+        case "legales":
+
+            await cargarPaginaLegales(proyecto);
+
+            break;
+
+
+        case "indice":
+
+            await cargarPaginaIndice(proyecto);
+
+            break;
+
+
+        case "introduccion":
+
+            await cargarPaginaIntroduccion(proyecto);
+
+            break;
+
+
+        case "capitulos":
+
+            await cargarPaginaCapitulos(proyecto);
+
+            break;
+
+
+        case "conclusion":
+
+            await cargarPaginaConclusion(proyecto);
+
+            break;
+
+    }
+
+}
+function verificarPipelineEditor(){
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Pipeline",
+        "Verificando estados del editor",
+        "monitorEditor"
+    );
+
+
+    const secciones = [
+        {
+            id:"editorPortada",
+            nombre:"Portada"
+        },
+        {
+            id:"editorLegales",
+            nombre:"Legales"
+        },
+        {
+            id:"editorIndice",
+            nombre:"Índice"
+        },
+        {
+            id:"editorIntroduccion",
+            nombre:"Introducción"
+        },
+        {
+            id:"editorCapitulos",
+            nombre:"Capítulos"
+        },
+        {
+            id:"editorConclusion",
+            nombre:"Conclusión"
+        }
+    ];
+
+
+    secciones.forEach(
+        seccion => {
+
+            const elemento =
+                document.getElementById(
+                    seccion.id
+                );
+
+
+            if(!elemento){
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "error",
+                    "Pipeline",
+                    "No existe: " + seccion.id,
+                    "monitorEditor"
+                );
+
+                return;
+            }
+
+
+            elemento.innerHTML =
+                "⚪ " + seccion.nombre;
+
+
+        }
+    );
+
+
+    // Primera sección disponible
+
+    const portada =
+        document.getElementById(
+            "editorPortada"
+        );
+
+
+    if(portada){
+
+        portada.innerHTML =
+            "🔵 Portada";
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Pipeline",
+            "Portada disponible",
+            "monitorEditor"
+        );
+
+    }
+
+}
+function actualizarEstadoPipelineEditorial(
+    idElemento,
+    estado,
+    mensaje
+){
+
+    const elemento =
+        document.getElementById(
+            idElemento
+        );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "prueba",
+        "Pipeline",
+        "Buscando: " + idElemento +
+        " | Encontrado: " + !!elemento,
+        "monitorEditor"
+    );
+
+
+    if(!elemento){
+
+        return;
+
+    }
+
+
+    switch(estado){
+
+        case "disponible":
+    elemento.innerHTML =
+        "\uD83D\uDD35 " + mensaje; // 
+    break;
+
+case "produccion":
+    elemento.innerHTML =
+        "\uD83D\uDFE1 " + mensaje; // 
+    break;
+
+case "completo":
+    elemento.innerHTML =
+        "\uD83D\uDFE2 " + mensaje; // 
+    break;
+
+    }
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Pipeline",
+        "Actualizado: " + elemento.id,
+        "monitorEditor"
+    );
+
+}
+function editarPortada(){
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Portada",
+        "Entrando a edici�n de portada",
+        "monitorEditor"
+    );
+
+
+    actualizarEstadoPipelineEditorial(
+        "editorPortada",
+        "produccion",
+        "Portada"
+    );
+
+
+    actualizarEstadoPipelineEditorial(
+        "editorTexto",
+        "produccion",
+        "Texto"
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Portada",
+        "Modo edici�n de portada activado",
+        "monitorEditor"
+    );
+
+}
+
+
+
 /* ==========================
    CARGAR TODOS LOS CAPÍTULOS
 ========================== */
@@ -2515,247 +2800,7 @@ monitorPIXELLAB(
     }
 
 }
-async function cargarPaginaConclusion(proyecto) {
 
-    monitorPIXELLAB(
-        "Editor",
-        "proceso",
-        "Conclusión",
-        "Entró a cargarPaginaConclusion",
-        "monitorEditor"
-    );
-
-    try {
-
-        const ruta =
-            `proyectos/${proyecto.projectId}/conclusion.json`;
-
-        monitorPIXELLAB(
-            "Editor",
-            "proceso",
-            "Conclusión",
-            "Cargando: " + ruta,
-            "monitorEditor"
-        );
-
-
-        const respuesta =
-            await fetch(WORKER_URL, {
-
-                method: "POST",
-
-                headers: {
-                    "Content-Type": "application/json"
-                },
-
-                body: JSON.stringify({
-
-                    action: "cargar-json",
-
-                    ruta: ruta
-
-                })
-
-            });
-
-
-        const datos =
-            await respuesta.json();
-
-
-        if (!datos.ok) {
-
-            throw new Error(
-                "No se pudo cargar conclusión"
-            );
-
-        }
-
-
-        const conclusion =
-            datos.json;
-
-
-        if (!conclusion) {
-
-            throw new Error(
-                "JSON conclusión vacío"
-            );
-
-        }
-
-
-        const contenedor =
-            document.getElementById(
-                "paginaEditor"
-            );
-
-
-        if (!contenedor) {
-
-            throw new Error(
-                "No existe paginaEditor"
-            );
-
-        }
-
-
-        const hoja =
-            document.createElement(
-                "div"
-            );
-
-
-        hoja.className =
-    "pl45-hoja-portada";
-
-
-        hoja.style.background =
-            "#ffffff";
-
-        hoja.style.color =
-            "#000000";
-
-        hoja.style.padding =
-            "40px";
-
-        hoja.style.marginBottom =
-            "20px";
-
-        hoja.style.minHeight =
-            "900px";
-
-
-        const titulo =
-            document.createElement(
-                "h1"
-            );
-
-
-        titulo.textContent =
-            conclusion.titulo;
-
-
-        titulo.style.color =
-            "#000000";
-
-
-        const texto =
-            document.createElement(
-                "div"
-            );
-
-
-        let contenido = "";
-
-
-        contenido +=
-            conclusion.agradecimiento + "\n\n";
-
-
-        contenido +=
-            conclusion.resumen + "\n\n";
-
-
-        contenido +=
-            "Aprendizajes clave:\n\n";
-
-
-        if (conclusion.aprendizajesClave) {
-
-            conclusion.aprendizajesClave.forEach(
-
-                item => {
-
-                    contenido +=
-                        "• " + item + "\n";
-
-                }
-
-            );
-
-        }
-
-
-        contenido +=
-            "\n" +
-            conclusion.proximosPasos +
-            "\n\n";
-
-
-        contenido +=
-            conclusion.motivacionFinal +
-            "\n\n";
-
-
-        contenido +=
-            conclusion.llamadoALaAccion +
-            "\n\n";
-
-
-        contenido +=
-            conclusion.despedida;
-
-
-        texto.textContent =
-            contenido;
-
-
-        texto.style.whiteSpace =
-            "pre-line";
-
-
-        texto.style.color =
-            "#000000";
-
-
-        texto.style.lineHeight =
-            "1.6";
-
-
-        texto.style.fontSize =
-            "18px";
-
-
-        hoja.appendChild(
-            titulo
-        );
-
-
-        hoja.appendChild(
-            texto
-        );
-
-
-        contenedor.appendChild(
-            hoja
-        );
-
-
-        monitorPIXELLAB(
-            "Editor",
-            "estado",
-            "Conclusión",
-            "Página cargada correctamente",
-            "monitorEditor"
-        );
-
-
-    } catch(error) {
-
-
-        monitorPIXELLAB(
-            "Editor",
-            "error",
-            "Conclusión",
-            error.message,
-            "monitorEditor"
-        );
-
-
-    }
-
-}
 
 let modoPortadaActivo = false;
 
