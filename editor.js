@@ -2094,7 +2094,78 @@ function asignarClasesPaginasEditorial() {
     }
 
 }
+function mostrarControlesPortada(){
 
+    const contenedor =
+        document.getElementById(
+            "editorControles"
+        );
+
+
+    if(!contenedor){
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Controles",
+            "No existe editorControles",
+            "monitorEditor"
+        );
+
+        return;
+
+    }
+
+
+    contenedor.style.display = "flex";
+
+
+    contenedor.innerHTML = `
+
+        <button>
+            TÌtulo
+        </button>
+
+        <button>
+            Autor
+        </button>
+
+        <button>
+            Logo
+        </button>
+
+        <button>
+            Imagen
+        </button>
+
+        <button>
+            Fuente
+        </button>
+
+        <button>
+            TamaÒo
+        </button>
+
+        <button>
+            PosiciÛn
+        </button>
+
+        <button>
+            Guardar
+        </button>
+
+    `;
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Controles",
+        "Controles de portada mostrados",
+        "monitorEditor"
+    );
+
+}
 
 /* ==========================
    CARGAR TODOS LOS CAP√çTULOS
