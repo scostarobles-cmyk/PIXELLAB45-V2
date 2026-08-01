@@ -649,7 +649,7 @@ async function cargarLibroCompleto(proyecto) {
 
     verificarPipelineEditor();
 
-    activarBotoneraPrincipal();
+   // activarBotoneraPrincipal();
     
     monitorPIXELLAB(
     "Editorial",
