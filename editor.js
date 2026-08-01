@@ -2125,7 +2125,7 @@ function mostrarControlesPortada(){
 
     contenedor.innerHTML = `
 
-    <button onclick="cargarControlTituloPortada()">
+    <button onclick="activarEdicionTituloPortada()">
     Título
 </button>
 
