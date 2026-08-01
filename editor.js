@@ -2306,7 +2306,74 @@ function activarEdicionFuentePortada(){
     );
 
 }
+function activarEdicionTamanoPortada(){
 
+    const panel =
+        document.getElementById(
+            "editorPanelPortada"
+        );
+
+    if(!panel){
+        return;
+    }
+
+
+    panel.innerHTML = `
+
+        <div class="control-titulo">
+
+            <label>
+                TamaÒo
+            </label>
+
+            <input
+                type="number"
+                id="tamanioTituloPortada"
+                value="38"
+                min="10"
+                max="120">
+
+        </div>
+
+    `;
+
+
+    const input =
+        document.getElementById(
+            "tamanioTituloPortada"
+        );
+
+
+    input.addEventListener(
+        "input",
+        () => {
+
+            const titulo =
+                document.querySelector(
+                    ".pl45-titulo-portada"
+                );
+
+
+            if(titulo){
+
+                titulo.style.fontSize =
+                    input.value + "px";
+
+            }
+
+        }
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Portada",
+        "Control tamaÒo activado",
+        "monitorEditor"
+    );
+
+}
 
 /* ==========================
    CARGAR TODOS LOS CAP√çTULOS
