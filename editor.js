@@ -1734,6 +1734,7 @@ async function cargarLibroCompleto(proyecto) {
     "completo",
     "Proyecto cargado"
 );
+    inicializarEditor();
 
 }
 async function cargarSeccion(
@@ -2006,7 +2007,7 @@ function editarPortada(){
         "Mostrando únicamente portada",
         "monitorEditor"
     );
-    inicializarEditor();
+    
     mostrarControlesPortada();
 
 }
