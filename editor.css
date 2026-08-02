@@ -639,3 +639,8 @@
     box-shadow:0 0 10px #00d9ff;
 
 }
+
+.pl45-logo-portada{
+    object-fit:contain;
+    z-index:50;
+}
