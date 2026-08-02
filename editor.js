@@ -2192,21 +2192,9 @@ function mostrarControlesPortada(){
         Posición
     </button>
     
-    <select id="selectorAlineacionPortada">
-
-    <option value="left">
-        Izquierda
-    </option>
-
-    <option value="center">
-        Centro
-    </option>
-
-    <option value="right">
-        Derecha
-    </option>
-
-</select>
+   <button onclick="activarEdicionAlineacionPortada()">
+    Alineación
+</button>
 
 <button onclick="activarEdicionNegritaPortada()">
     Negrita
