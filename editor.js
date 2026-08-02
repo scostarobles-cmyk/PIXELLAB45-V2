@@ -3087,8 +3087,20 @@ function activarMovimientoElemento(elemento, callbackGuardar){
     "Motor movimiento activado para: " + elemento.className,
     "monitorEditor"
 );
-    elemento.style.position = "absolute";
-    elemento.style.cursor = "move";
+    if(elemento.classList.contains("pl45-titulo-portada")){
+
+    editor.portada.titulo.estilo.x = nuevaX;
+    editor.portada.titulo.estilo.y = nuevaY;
+
+}
+
+
+if(elemento.classList.contains("pl45-logo-portada")){
+
+    editor.portada.logo.estilo.x = nuevaX;
+    editor.portada.logo.estilo.y = nuevaY;
+
+}
 
     let moviendo = false;
 
@@ -3584,6 +3596,14 @@ function activarLogoPortada(){
         editor.portada.logo.estilo.alto + "px";
 
 
+    // ===========================
+    // ACTIVAR MOVIMIENTO DEL LOGO
+    // ===========================
+
+    activarMovimientoElemento(
+        logo
+    );
+
 
     monitorPIXELLAB(
         "Editorial",
@@ -3594,7 +3614,6 @@ function activarLogoPortada(){
     );
 
 }
-
 
 /* ==========================
    CARGAR TODOS LOS CAPÍTULOS
