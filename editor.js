@@ -2143,7 +2143,18 @@ function mostrarControlesPortada(){
             Color
         </button>
 
-        <button onclick="activarEdicionPosicionPortada()">
+        <button onclick="activarMovimientoElemento(
+
+    document.querySelector(".pl45-titulo-portada"),
+
+    (x,y)=>{
+
+        editor.portada.titulo.estilo.x = x;
+        editor.portada.titulo.estilo.y = y;
+
+    }
+
+);">
             Posición
         </button>
 
@@ -2688,6 +2699,156 @@ function activarEdicionColorPortada(){
 
 }
 //Aquí va x e y
+function activarMovimientoElemento(elemento, callbackGuardar){
+
+    if(!elemento){
+        return;
+    }
+
+    let moviendo = false;
+
+    let offsetX = 0;
+    let offsetY = 0;
+
+    function comenzar(x,y){
+
+        moviendo = true;
+
+        const rect =
+            elemento.getBoundingClientRect();
+
+        offsetX =
+            x - rect.left;
+
+        offsetY =
+            y - rect.top;
+
+    }
+
+    function mover(x,y){
+
+        if(!moviendo){
+            return;
+        }
+
+        const contenedor =
+            elemento.parentElement;
+
+        const rect =
+            contenedor.getBoundingClientRect();
+
+        const izquierda =
+            x - rect.left - offsetX;
+
+        const arriba =
+            y - rect.top - offsetY;
+
+        elemento.style.left =
+            izquierda + "px";
+
+        elemento.style.top =
+            arriba + "px";
+
+        if(callbackGuardar){
+
+            callbackGuardar(
+                izquierda,
+                arriba
+            );
+
+        }
+
+    }
+
+    function terminar(){
+
+        moviendo = false;
+
+    }
+
+    /* ===========================
+       MOUSE
+    =========================== */
+
+    elemento.addEventListener(
+        "mousedown",
+        e=>{
+
+            e.preventDefault();
+
+            comenzar(
+                e.clientX,
+                e.clientY
+            );
+
+        }
+    );
+
+    document.addEventListener(
+        "mousemove",
+        e=>{
+
+            mover(
+                e.clientX,
+                e.clientY
+            );
+
+        }
+    );
+
+    document.addEventListener(
+        "mouseup",
+        terminar
+    );
+
+    /* ===========================
+       TOUCH
+    =========================== */
+
+    elemento.addEventListener(
+        "touchstart",
+        e=>{
+
+            const t =
+                e.touches[0];
+
+            comenzar(
+                t.clientX,
+                t.clientY
+            );
+
+        },
+        {passive:false}
+    );
+
+    document.addEventListener(
+        "touchmove",
+        e=>{
+
+            if(!moviendo){
+                return;
+            }
+
+            const t =
+                e.touches[0];
+
+            mover(
+                t.clientX,
+                t.clientY
+            );
+
+            e.preventDefault();
+
+        },
+        {passive:false}
+    );
+
+    document.addEventListener(
+        "touchend",
+        terminar
+    );
+
+}
 
 
 
