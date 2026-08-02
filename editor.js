@@ -2793,6 +2793,7 @@ function activarEdicionColorPortada(){
     }
 
 
+
     selector.addEventListener(
         "input",
         ()=>{
@@ -2805,25 +2806,78 @@ function activarEdicionColorPortada(){
     );
 
 
+
     async function cargarColores(){
 
         try{
 
-            const respuesta =
-                await fetch(
+
+            let datos =
+                await cargarJSON(
                     "config/editor/colores.json"
                 );
 
 
-            const datos =
-                await respuesta.json();
+
+            if(
+                !datos ||
+                !datos.colores ||
+                !Array.isArray(datos.colores)
+            ){
+
+
+                datos = {
+
+                    colores:[
+
+                        {
+                            nombre:"Blanco",
+                            valor:"#FFFFFF"
+                        },
+
+                        {
+                            nombre:"Negro",
+                            valor:"#000000"
+                        },
+
+                        {
+                            nombre:"Azul PIXELLAB45",
+                            valor:"#00D9FF"
+                        }
+
+                    ]
+
+                };
+
+
+
+                guardarJSON(
+                    "config/editor/colores.json",
+                    datos
+                );
+
+
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "ok",
+                    "Portada",
+                    "colores.json creado por formato inválido",
+                    "monitorEditor"
+                );
+
+            }
+
+
 
 
             paleta.innerHTML = "";
 
 
+
             datos.colores.forEach(
                 color=>{
+
 
                     const boton =
                         document.createElement(
@@ -2836,7 +2890,7 @@ function activarEdicionColorPortada(){
 
 
                     boton.dataset.color =
-                        color.hex;
+                        color.valor;
 
 
                     boton.title =
@@ -2844,7 +2898,7 @@ function activarEdicionColorPortada(){
 
 
                     boton.style.background =
-                        color.hex;
+                        color.valor;
 
 
                     boton.style.width =
@@ -2860,31 +2914,37 @@ function activarEdicionColorPortada(){
                         "1px solid white";
 
 
+
                     boton.addEventListener(
                         "click",
                         ()=>{
 
+
                             aplicarColor(
-                                color.hex
+                                color.valor
                             );
 
 
                             selector.value =
-                                color.hex;
+                                color.valor;
+
 
                         }
                     );
+
 
 
                     paleta.appendChild(
                         boton
                     );
 
+
                 }
             );
 
 
         }catch(error){
+
 
             monitorPIXELLAB(
                 "Editorial",
@@ -2894,12 +2954,15 @@ function activarEdicionColorPortada(){
                 "monitorEditor"
             );
 
+
         }
 
     }
 
 
+
     cargarColores();
+
 
 
     monitorPIXELLAB(
