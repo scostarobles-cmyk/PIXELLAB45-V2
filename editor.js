@@ -2305,9 +2305,27 @@ function activarEdicionFuentePortada(){
             "selectorFuentePortada"
         );
 
+    /* ===========================
+       CARGAR ESTADO ACTUAL
+    =========================== */
+
+    if(
+        editor &&
+        editor.portada &&
+        editor.portada.titulo
+    ){
+
+        selector.value =
+            editor.portada.titulo.estilo.fuente;
+
+    }
+
     selector.addEventListener(
         "change",
         () => {
+
+            editor.portada.titulo.estilo.fuente =
+                selector.value;
 
             const titulo =
                 document.querySelector(
