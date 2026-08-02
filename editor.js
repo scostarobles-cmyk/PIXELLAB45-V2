@@ -2254,17 +2254,45 @@ function crearOActualizarElementoPortada(
         elemento.className =
             clase;
 
-        elemento.innerHTML =
-            texto;
-
         portada.appendChild(
             elemento
         );
 
-    }else{
+    }
 
-        elemento.innerHTML =
-            texto;
+    elemento.innerHTML =
+        texto;
+
+
+    /* ===========================
+       POSICIONAMIENTO EDITABLE
+    =========================== */
+
+    elemento.style.position =
+        "absolute";
+
+
+    if(
+        editor &&
+        editor.portada &&
+        editor.portada.titulo &&
+        clase === "pl45-titulo-portada"
+    ){
+
+        elemento.style.left =
+            editor.portada.titulo.estilo.x + "px";
+
+        elemento.style.top =
+            editor.portada.titulo.estilo.y + "px";
+
+        elemento.style.fontFamily =
+            editor.portada.titulo.estilo.fuente;
+
+        elemento.style.fontSize =
+            editor.portada.titulo.estilo.tamano + "px";
+
+        elemento.style.color =
+            editor.portada.titulo.estilo.color;
 
     }
 
