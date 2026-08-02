@@ -2843,23 +2843,21 @@ monitorPIXELLAB(
 );
     if(editor){
 
-        monitorPIXELLAB(
-            "Editorial",
-            "ok",
-            "Editor",
-            "editor.json existe",
-            "monitorEditor"
-        );
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Editor",
+        "editor.json existe",
+        "monitorEditor"
+    );
 
-        aplicarEstadoPortada(editor);
+    aplicarEstadoPortada(editor);
 
-crearOActualizarAutorPortada();
+    activarLogoPortada();
 
-activarLogoPortada();
+    return editor;
 
-        return editor;
-
-    }
+}
 
     monitorPIXELLAB(
         "Editorial",
