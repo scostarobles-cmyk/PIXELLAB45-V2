@@ -2799,6 +2799,8 @@ function activarMovimientoElemento(elemento, callbackGuardar){
     if(!elemento){
         return;
     }
+    elemento.style.position = "absolute";
+    elemento.style.cursor = "move";
 
     let moviendo = false;
 
@@ -2903,7 +2905,7 @@ function activarMovimientoElemento(elemento, callbackGuardar){
     elemento.addEventListener(
         "touchstart",
         e=>{
-
+            e.preventDefault();
             const t =
                 e.touches[0];
 
