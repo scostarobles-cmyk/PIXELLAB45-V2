@@ -2425,6 +2425,7 @@ function activarEdicionTamanoPortada(){
 
 }
 
+
 async function inicializarEditor(){
 
     monitorPIXELLAB(
@@ -2618,7 +2619,6 @@ function activarEdicionColorPortada(){
         return;
     }
 
-
     panel.innerHTML = `
 
         <div class="control-titulo">
@@ -2636,33 +2636,47 @@ function activarEdicionColorPortada(){
 
     `;
 
-
-    const selector =
+    const input =
         document.getElementById(
             "colorTituloPortada"
         );
 
+    /* ===========================
+       CARGAR ESTADO ACTUAL
+    =========================== */
 
-    selector.addEventListener(
+    if(
+        editor &&
+        editor.portada &&
+        editor.portada.titulo
+    ){
+
+        input.value =
+            editor.portada.titulo.estilo.color;
+
+    }
+
+    input.addEventListener(
         "input",
         () => {
+
+            editor.portada.titulo.estilo.color =
+                input.value;
 
             const titulo =
                 document.querySelector(
                     ".pl45-titulo-portada"
                 );
 
-
             if(titulo){
 
                 titulo.style.color =
-                    selector.value;
+                    input.value;
 
             }
 
         }
     );
-
 
     monitorPIXELLAB(
         "Editorial",
@@ -2673,7 +2687,6 @@ function activarEdicionColorPortada(){
     );
 
 }
-
 //Aquí va x e y
 
 
