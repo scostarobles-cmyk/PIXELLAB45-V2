@@ -1660,7 +1660,44 @@ async function cargarPaginaConclusion(proyecto) {
 
 }
 
+function guardarLibro(){
 
+    if(
+        !editor ||
+        !project_id
+    ){
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Editor",
+            "No existe editor o project_id",
+            "monitorEditor"
+        );
+
+        return;
+    }
+
+
+    const rutaEditor =
+        `proyectos/${project_id}/editor.json`;
+
+
+    guardarJSON(
+        rutaEditor,
+        editor
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Editor",
+        "Libro guardado correctamente",
+        "monitorEditor"
+    );
+
+}
 
 /*
 =========================================================
