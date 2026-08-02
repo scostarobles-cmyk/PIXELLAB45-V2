@@ -3087,21 +3087,7 @@ function activarMovimientoElemento(elemento, callbackGuardar){
     "Motor movimiento activado para: " + elemento.className,
     "monitorEditor"
 );
-    if(elemento.classList.contains("pl45-titulo-portada")){
-
-    editor.portada.titulo.estilo.x = nuevaX;
-    editor.portada.titulo.estilo.y = nuevaY;
-
-}
-
-
-if(elemento.classList.contains("pl45-logo-portada")){
-
-    editor.portada.logo.estilo.x = nuevaX;
-    editor.portada.logo.estilo.y = nuevaY;
-
-}
-
+    
     let moviendo = false;
 
     let offsetX = 0;
@@ -3124,38 +3110,70 @@ if(elemento.classList.contains("pl45-logo-portada")){
 
     function mover(x,y){
 
-        if(!moviendo){
-            return;
-        }
+    if(!moviendo){
+        return;
+    }
 
-        const contenedor =
-            elemento.parentElement;
+    const contenedor =
+        elemento.parentElement;
 
-        const rect =
-            contenedor.getBoundingClientRect();
+    const rect =
+        contenedor.getBoundingClientRect();
 
-        const izquierda =
-            x - rect.left - offsetX;
+    const nuevaX =
+        x - rect.left - offsetX;
 
-        const arriba =
-            y - rect.top - offsetY;
+    const nuevaY =
+        y - rect.top - offsetY;
 
-        elemento.style.left =
-            izquierda + "px";
 
-        elemento.style.top =
-            arriba + "px";
+    elemento.style.left =
+        nuevaX + "px";
 
-        if(callbackGuardar){
+    elemento.style.top =
+        nuevaY + "px";
 
-            callbackGuardar(
-                izquierda,
-                arriba
-            );
 
-        }
+    if(
+        elemento.classList.contains(
+            "pl45-titulo-portada"
+        )
+    ){
+
+        editor.portada.titulo.estilo.x =
+            nuevaX;
+
+        editor.portada.titulo.estilo.y =
+            nuevaY;
 
     }
+
+
+    if(
+        elemento.classList.contains(
+            "pl45-logo-portada"
+        )
+    ){
+
+        editor.portada.logo.estilo.x =
+            nuevaX;
+
+        editor.portada.logo.estilo.y =
+            nuevaY;
+
+    }
+
+
+    if(callbackGuardar){
+
+        callbackGuardar(
+            nuevaX,
+            nuevaY
+        );
+
+    }
+
+}
 
     function terminar(){
 
