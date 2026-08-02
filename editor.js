@@ -2546,6 +2546,7 @@ monitorPIXELLAB(
         );
 
         aplicarEstadoPortada(editor);
+        activarLogoPortada()
 
         return editor;
 
