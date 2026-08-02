@@ -2196,9 +2196,27 @@ function activarEdicionTituloPortada(){
             "inputTituloPortada"
         );
 
+    /* ===========================
+       CARGAR ESTADO ACTUAL
+    =========================== */
+
+    if(
+        editor &&
+        editor.portada &&
+        editor.portada.titulo
+    ){
+
+        input.value =
+            editor.portada.titulo.texto;
+
+    }
+
     input.addEventListener(
         "input",
         () => {
+
+            editor.portada.titulo.texto =
+                input.value;
 
             crearOActualizarElementoPortada(
                 "pl45-titulo-portada",
@@ -2388,6 +2406,7 @@ async function inicializarEditor(){
 
     const rutaEditor =
         `proyectos/${project_id}/editor.json`;
+    
     
     editor =
         await cargarJSON(rutaEditor);
