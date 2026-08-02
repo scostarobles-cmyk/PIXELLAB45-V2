@@ -2192,9 +2192,21 @@ function mostrarControlesPortada(){
         Posición
     </button>
     
-    <button onclick="activarEdicionAlineacionPortada()">
-    Alineación
-</button>
+    <select id="selectorAlineacionPortada">
+
+    <option value="left">
+        Izquierda
+    </option>
+
+    <option value="center">
+        Centro
+    </option>
+
+    <option value="right">
+        Derecha
+    </option>
+
+</select>
 
 <button onclick="activarEdicionNegritaPortada()">
     Negrita
@@ -3045,7 +3057,86 @@ function activarMovimientoElemento(elemento, callbackGuardar){
 
 }
 //Aquí finaliza x e y
+function activarEdicionAlineacionPortada(){
 
+    const panel =
+        document.getElementById(
+            "editorPanelPortada"
+        );
+
+    if(!panel){
+        return;
+    }
+
+    panel.innerHTML = `
+
+        <div class="control-titulo">
+
+            <label>
+                Alineación
+            </label>
+
+            <select
+                id="selectorAlineacionPortada">
+
+                <option value="left">
+                    Izquierda
+                </option>
+
+                <option value="center">
+                    Centro
+                </option>
+
+                <option value="right">
+                    Derecha
+                </option>
+
+            </select>
+
+        </div>
+
+    `;
+
+    const selector =
+        document.getElementById(
+            "selectorAlineacionPortada"
+        );
+
+    if(
+        editor &&
+        editor.portada &&
+        editor.portada.titulo &&
+        editor.portada.titulo.estilo
+    ){
+
+        selector.value =
+            editor.portada.titulo.estilo.alineacion || "left";
+
+    }
+
+    selector.addEventListener(
+        "change",
+        ()=>{
+
+            const titulo =
+                document.querySelector(
+                    ".pl45-titulo-portada"
+                );
+
+            if(!titulo){
+                return;
+            }
+
+            titulo.style.textAlign =
+                selector.value;
+
+            editor.portada.titulo.estilo.alineacion =
+                selector.value;
+
+        }
+    );
+
+}
 
 /* ==========================
    CARGAR TODOS LOS CAPÍTULOS
