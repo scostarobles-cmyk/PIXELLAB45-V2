@@ -2299,19 +2299,63 @@ function mostrarControlesPortada(){
 
 function volverControlesPortada(){
 
-    document.getElementById(
-        "botonesSeleccionPortada"
-    ).style.display = "flex";
+    const seleccion =
+        document.getElementById(
+            "botonesSeleccionPortada"
+        );
+
+    const texto =
+        document.getElementById(
+            "botonesEdicionTextoPortada"
+        );
+
+    const logo =
+        document.getElementById(
+            "botonesEdicionLogoPortada"
+        );
 
 
-    document.getElementById(
-        "botonesEdicionTextoPortada"
-    ).style.display = "none";
+    if(seleccion){
+
+        seleccion.style.display = "flex";
+
+    }
 
 
-    document.getElementById(
-        "botonesEdicionLogoPortada"
-    ).style.display = "none";
+    if(texto){
+
+        texto.style.display = "none";
+
+    }
+
+
+    if(logo){
+
+        logo.style.display = "none";
+
+    }
+
+
+    const panel =
+        document.getElementById(
+            "editorPanelPortada"
+        );
+
+
+    if(panel){
+
+        panel.innerHTML = "";
+
+    }
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Portada",
+        "Controles de portada restaurados",
+        "monitorEditor"
+    );
 
 }
 
@@ -2368,122 +2412,43 @@ function activarEdicionAutorPortada(){
         "botonesSeleccionPortada"
     ).style.display = "none";
 
+
     document.getElementById(
         "botonesEdicionTextoPortada"
     ).style.display = "flex";
 
 
-    const panel =
-        document.getElementById(
-            "editorPanelPortada"
+    const autor =
+        document.querySelector(
+            ".pl45-autor-portada"
         );
 
-    if(!panel){
+
+    if(!autor){
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Portada",
+            "No existe elemento autor portada",
+            "monitorEditor"
+        );
+
         return;
-    }
-
-
-    panel.innerHTML = `
-
-        <div class="control-titulo">
-
-            <label>Autor</label>
-
-            <input
-                type="text"
-                id="inputAutorPortada"
-                class="control-input-portada"
-                placeholder="Escriba el autor">
-
-        </div>
-
-    `;
-
-
-    const input =
-        document.getElementById(
-            "inputAutorPortada"
-        );
-
-
-    /* ===========================
-       SI NO EXISTE EN EDITOR,
-       LO TOMA DE PROYECTO
-    =========================== */
-
-    if(
-        !editor.portada.autor
-    ){
-
-        editor.portada.autor = {
-
-            texto:
-                proyecto.autor || "",
-
-            estilo:{
-
-                fuente:"Arial",
-
-                tamano:24,
-
-                color:"#ffffff",
-
-                x:40,
-
-                y:220
-
-            }
-
-        };
-
-        guardarJSON(
-            rutaEditor,
-            editor
-        );
 
     }
 
 
-    /* ===========================
-       CARGAR ESTADO ACTUAL
-    =========================== */
-
-    input.value =
-        editor.portada.autor.texto;
-
-
-    input.addEventListener(
-        "input",
-        ()=>{
-
-            editor.portada.autor.texto =
-                input.value;
-
-            crearOActualizarElementoPortada(
-
-                "pl45-autor-portada",
-
-                input.value
-
-            );
-
-        }
-
-    );
+    elementoActivoPortada =
+        autor;
 
 
     monitorPIXELLAB(
-
         "Editorial",
-
         "ok",
-
         "Portada",
-
-        "Editor autor activado",
-
+        "Autor seleccionado para edición",
         "monitorEditor"
-
     );
 
 }
