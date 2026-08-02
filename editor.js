@@ -2831,8 +2831,46 @@ async function inicializarEditor(){
         `proyectos/${project_id}/editor.json`;
     
     
-    editor =
-        await cargarJSON(rutaEditor);
+    if(
+    editor &&
+    editor.portada &&
+    !editor.portada.autor
+){
+
+    const proyecto =
+        await cargarJSON(
+            `proyectos/${project_id}/proyecto.json`
+        );
+
+
+    editor.portada.autor = {
+
+        texto:
+            proyecto.autor || "",
+
+        estilo:{
+
+            fuente:"Arial",
+
+            tamano:24,
+
+            color:"#ffffff",
+
+            x:40,
+
+            y:180
+
+        }
+
+    };
+
+
+    await guardarJSON(
+        rutaEditor,
+        editor
+    );
+
+}
     
 monitorPIXELLAB(
     "Editorial",
