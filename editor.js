@@ -2162,51 +2162,118 @@ function mostrarControlesPortada(){
 
 
     contenedor.innerHTML = `
+
     <div id="editorHerramientasPortada">
 
-    <button onclick="activarEdicionTituloPortada()">
-        Título
-    </button>
 
-    <button onclick="activarEdicionAutorPortada()">
-        Autor
-    </button>
+        <div id="botonesSeleccionPortada">
 
-    <button onclick="activarLogoPortada()">
-        Logo
-    </button>
+            <button onclick="activarEdicionTituloPortada()">
+                Título
+            </button>
 
-    <button onclick="activarEdicionFuentePortada()">
-        Fuente
-    </button>
 
-    <button onclick="activarEdicionTamanoPortada()">
-        Tamaño
-    </button>
+            <button onclick="activarEdicionAutorPortada()">
+                Autor
+            </button>
 
-    <button onclick="activarEdicionColorPortada()">
-        Color
-    </button>
 
-    <button onclick="activarEdicionPosicionPortada()">
-        Posición
-    </button>
-    
-   <button onclick="activarEdicionAlineacionPortada()">
-    Alineación
-</button>
+            <button onclick="activarLogoPortada()">
+                Logo
+            </button>
 
-<button onclick="aplicarNegritaPortada()">B</button>
+        </div>
 
-<button onclick="aplicarItalicaPortada()">I</button>
 
-<button onclick="aplicarSubrayadoPortada()">U</button>
 
-</div>
+        <div id="botonesEdicionTextoPortada"
+             style="display:none">
+
+
+            <button onclick="activarEdicionFuentePortada()">
+                Fuente
+            </button>
+
+
+            <button onclick="activarEdicionTamanoPortada()">
+                Tamaño
+            </button>
+
+
+            <button onclick="activarEdicionColorPortada()">
+                Color
+            </button>
+
+
+            <button onclick="activarEdicionPosicionPortada()">
+                Posición
+            </button>
+
+
+            <button onclick="activarEdicionAlineacionPortada()">
+                Alineación
+            </button>
+
+
+            <button onclick="aplicarNegritaPortada()">
+                B
+            </button>
+
+
+            <button onclick="aplicarItalicaPortada()">
+                I
+            </button>
+
+
+            <button onclick="aplicarSubrayadoPortada()">
+                U
+            </button>
+
+
+            <button onclick="volverControlesPortada()">
+                Volver
+            </button>
+
+
+        </div>
+
+
+
+        <div id="botonesEdicionLogoPortada"
+             style="display:none">
+
+
+            <button onclick="activarEdicionDimensionesLogo()">
+                Dimensiones
+            </button>
+
+
+            <button onclick="activarEdicionPosicionPortada()">
+                Posición
+            </button>
+
+
+            <button onclick="activarMovimientoLogo()">
+                Movimiento
+            </button>
+
+
+            <button onclick="volverControlesPortada()">
+                Volver
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+
     <div id="editorPanelPortada">
 
     </div>
-`;
+
+    `;
 
 
     monitorPIXELLAB(
@@ -2218,6 +2285,25 @@ function mostrarControlesPortada(){
     );
 
 }
+
+function volverControlesPortada(){
+
+    document.getElementById(
+        "botonesSeleccionPortada"
+    ).style.display = "flex";
+
+
+    document.getElementById(
+        "botonesEdicionTextoPortada"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "botonesEdicionLogoPortada"
+    ).style.display = "none";
+
+}
+
 function activarEdicionTituloPortada(){
 
     const panel =
