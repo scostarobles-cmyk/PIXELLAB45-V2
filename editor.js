@@ -2164,28 +2164,35 @@ function mostrarControlesPortada(){
     contenedor.innerHTML = `
     <div id="editorHerramientasPortada">
 
-        <button onclick="activarEdicionTituloPortada()">
-            Título
-        </button>
+    <button onclick="activarEdicionTituloPortada()">
+        Título
+    </button>
 
-        <button onclick="activarEdicionFuentePortada()">
-            Fuente
-        </button>
+    <button onclick="activarEdicionAutorPortada()">
+        Autor
+    </button>
 
-        <button onclick="activarEdicionTamanoPortada()">
-            Tamaño
-        </button>
+    <button onclick="activarEdicionLogoPortada()">
+        Logo
+    </button>
 
-        <button onclick="activarEdicionColorPortada()">
-            Color
-        </button>
+    <button onclick="activarEdicionFuentePortada()">
+        Fuente
+    </button>
 
-        <button onclick="activarEdicionPosicionPortada()">
-            Posición
-        </button>
+    <button onclick="activarEdicionTamanoPortada()">
+        Tamaño
+    </button>
 
-    </div>
+    <button onclick="activarEdicionColorPortada()">
+        Color
+    </button>
 
+    <button onclick="activarEdicionPosicionPortada()">
+        Posición
+    </button>
+
+</div>
     <div id="editorPanelPortada">
 
     </div>
