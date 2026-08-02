@@ -2461,6 +2461,7 @@ function crearOActualizarElementoPortada(
         document.querySelector(
             ".pl45-hoja-portada"
         );
+    
 
     if(!portada){
         return;
@@ -2521,6 +2522,25 @@ function crearOActualizarElementoPortada(
 
         elemento.style.color =
             editor.portada.titulo.estilo.color;
+
+    }
+        if(
+        !elemento.dataset.editorActivo
+    ){
+
+        elemento.addEventListener(
+            "click",
+            ()=>{
+
+                activarEdicionTextoDirecto(
+                    elemento
+                );
+
+            }
+        );
+
+
+        elemento.dataset.editorActivo = "true";
 
     }
 
