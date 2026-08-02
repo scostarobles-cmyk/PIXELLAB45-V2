@@ -3468,6 +3468,133 @@ function aplicarSubrayadoPortada(){
 
 }
 
+function activarLogoPortada(){
+
+    const portada =
+        document.querySelector(
+            ".pl45-hoja-portada"
+        );
+
+
+    if(!portada){
+        return;
+    }
+
+
+    if(
+        !editor.portada
+    ){
+
+        editor.portada = {};
+
+    }
+
+
+
+    if(
+        !editor.portada.logo
+    ){
+
+        editor.portada.logo = {
+
+            src:"assets/img/logo.png",
+
+            estilo:{
+
+                x:40,
+
+                y:40,
+
+                ancho:120,
+
+                alto:120
+
+            }
+
+        };
+
+
+        guardarJSON(
+            rutaEditor,
+            editor
+        );
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Portada",
+            "Logo agregado al editor.json",
+            "monitorEditor"
+        );
+
+    }
+
+
+
+    let logo =
+        portada.querySelector(
+            ".pl45-logo-portada"
+        );
+
+
+
+    if(!logo){
+
+        logo =
+            document.createElement(
+                "img"
+            );
+
+
+        logo.className =
+            "pl45-logo-portada";
+
+
+        portada.appendChild(
+            logo
+        );
+
+    }
+
+
+
+    logo.src =
+        editor.portada.logo.src;
+
+
+
+    logo.style.position =
+        "absolute";
+
+
+    logo.style.left =
+        editor.portada.logo.estilo.x + "px";
+
+
+    logo.style.top =
+        editor.portada.logo.estilo.y + "px";
+
+
+    logo.style.width =
+        editor.portada.logo.estilo.ancho + "px";
+
+
+    logo.style.height =
+        editor.portada.logo.estilo.alto + "px";
+
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Portada",
+        "Logo cargado en portada",
+        "monitorEditor"
+    );
+
+}
+
 
 /* ==========================
    CARGAR TODOS LOS CAPÍTULOS
@@ -5226,132 +5353,6 @@ function inicializarArrastreTexto(){
 
 }
 
-function activarLogoPortada(){
-
-    const portada =
-        document.querySelector(
-            ".pl45-hoja-portada"
-        );
-
-
-    if(!portada){
-        return;
-    }
-
-
-    if(
-        !editor.portada
-    ){
-
-        editor.portada = {};
-
-    }
-
-
-
-    if(
-        !editor.portada.logo
-    ){
-
-        editor.portada.logo = {
-
-            src:"assets/logo.png",
-
-            estilo:{
-
-                x:40,
-
-                y:40,
-
-                ancho:120,
-
-                alto:120
-
-            }
-
-        };
-
-
-        guardarJSON(
-            rutaEditor,
-            editor
-        );
-
-
-        monitorPIXELLAB(
-            "Editorial",
-            "ok",
-            "Portada",
-            "Logo agregado al editor.json",
-            "monitorEditor"
-        );
-
-    }
-
-
-
-    let logo =
-        portada.querySelector(
-            ".pl45-logo-portada"
-        );
-
-
-
-    if(!logo){
-
-        logo =
-            document.createElement(
-                "img"
-            );
-
-
-        logo.className =
-            "pl45-logo-portada";
-
-
-        portada.appendChild(
-            logo
-        );
-
-    }
-
-
-
-    logo.src =
-        editor.portada.logo.src;
-
-
-
-    logo.style.position =
-        "absolute";
-
-
-    logo.style.left =
-        editor.portada.logo.estilo.x + "px";
-
-
-    logo.style.top =
-        editor.portada.logo.estilo.y + "px";
-
-
-    logo.style.width =
-        editor.portada.logo.estilo.ancho + "px";
-
-
-    logo.style.height =
-        editor.portada.logo.estilo.alto + "px";
-
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "ok",
-        "Portada",
-        "Logo cargado en portada",
-        "monitorEditor"
-    );
-
-}
 
 async function cargarPaginaPrueba(proyecto) {
 
