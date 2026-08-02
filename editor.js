@@ -2354,7 +2354,6 @@ function activarEdicionTamanoPortada(){
         return;
     }
 
-
     panel.innerHTML = `
 
         <div class="control-titulo">
@@ -2374,22 +2373,37 @@ function activarEdicionTamanoPortada(){
 
     `;
 
-
     const input =
         document.getElementById(
             "tamanioTituloPortada"
         );
 
+    /* ===========================
+       CARGAR ESTADO ACTUAL
+    =========================== */
+
+    if(
+        editor &&
+        editor.portada &&
+        editor.portada.titulo
+    ){
+
+        input.value =
+            editor.portada.titulo.estilo.tamano;
+
+    }
 
     input.addEventListener(
         "input",
         () => {
 
+            editor.portada.titulo.estilo.tamano =
+                parseInt(input.value);
+
             const titulo =
                 document.querySelector(
                     ".pl45-titulo-portada"
                 );
-
 
             if(titulo){
 
@@ -2400,7 +2414,6 @@ function activarEdicionTamanoPortada(){
 
         }
     );
-
 
     monitorPIXELLAB(
         "Editorial",
