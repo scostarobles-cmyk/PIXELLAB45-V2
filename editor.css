@@ -679,3 +679,34 @@
     gap:8px;
 
 }
+#botonesEdicionTextoPortada,
+#botonesEdicionLogoPortada{
+
+    display:grid !important;
+
+    grid-template-columns: repeat(2, 45px);
+
+    justify-content:center;
+
+    gap:8px;
+
+    width:100%;
+
+}
+
+
+#botonesEdicionTextoPortada button,
+#botonesEdicionLogoPortada button{
+
+    width:45px;
+    height:45px;
+
+    padding:0;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
