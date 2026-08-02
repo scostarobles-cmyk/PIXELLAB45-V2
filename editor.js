@@ -2270,7 +2270,10 @@ function crearOActualizarElementoPortada(
 
     elemento.style.position =
         "absolute";
-
+    elemento.style.zIndex = "10";
+    elemento.style.pointerEvents = "auto";
+    elemento.style.userSelect = "none";
+    elemento.style.touchAction = "none";
 
     if(
         editor &&
