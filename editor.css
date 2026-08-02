@@ -644,3 +644,18 @@
     object-fit:contain;
     z-index:50;
 }
+#editorHerramientasPortada{
+
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    justify-content:center;
+    align-items:center;
+
+}
+#editorHerramientasPortada{
+
+    max-height:140px;
+    overflow-y:auto;
+
+}
