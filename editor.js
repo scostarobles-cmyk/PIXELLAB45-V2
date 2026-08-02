@@ -2710,6 +2710,7 @@ function activarEdicionColorPortada(){
         return;
     }
 
+
     panel.innerHTML = `
 
         <div class="control-titulo">
@@ -2718,56 +2719,140 @@ function activarEdicionColorPortada(){
                 Color
             </label>
 
+
             <input
                 type="color"
-                id="colorTituloPortada"
-                value="#ffffff">
+                id="selectorColorPortada"
+                class="control-input-portada">
+
+
+            <div class="paleta-colores">
+
+                <button
+                    class="color-opcion"
+                    data-color="#00d9ff"
+                    style="
+                    background:#00d9ff;
+                    width:35px;
+                    height:35px;
+                    border-radius:50%;
+                    border:1px solid white;
+                    ">
+                </button>
+
+
+                <button
+                    class="color-opcion"
+                    data-color="#ffffff"
+                    style="
+                    background:#ffffff;
+                    width:35px;
+                    height:35px;
+                    border-radius:50%;
+                    border:1px solid white;
+                    ">
+                </button>
+
+
+                <button
+                    class="color-opcion"
+                    data-color="#000000"
+                    style="
+                    background:#000000;
+                    width:35px;
+                    height:35px;
+                    border-radius:50%;
+                    border:1px solid white;
+                    ">
+                </button>
+
+            </div>
 
         </div>
 
     `;
 
-    const input =
+
+    const selector =
         document.getElementById(
-            "colorTituloPortada"
+            "selectorColorPortada"
         );
 
-    /* ===========================
-       CARGAR ESTADO ACTUAL
-    =========================== */
+
+    const titulo =
+        document.querySelector(
+            ".pl45-titulo-portada"
+        );
+
 
     if(
         editor &&
         editor.portada &&
-        editor.portada.titulo
+        editor.portada.titulo &&
+        editor.portada.titulo.estilo
     ){
 
-        input.value =
-            editor.portada.titulo.estilo.color;
+        selector.value =
+            editor.portada.titulo.estilo.color || "#ffffff";
 
     }
 
-    input.addEventListener(
+
+    function aplicarColor(color){
+
+        if(titulo){
+
+            titulo.style.color =
+                color;
+
+        }
+
+
+        editor.portada.titulo.estilo.color =
+            color;
+
+    }
+
+
+    selector.addEventListener(
         "input",
-        () => {
+        ()=>{
 
-            editor.portada.titulo.estilo.color =
-                input.value;
-
-            const titulo =
-                document.querySelector(
-                    ".pl45-titulo-portada"
-                );
-
-            if(titulo){
-
-                titulo.style.color =
-                    input.value;
-
-            }
+            aplicarColor(
+                selector.value
+            );
 
         }
     );
+
+
+    const colores =
+        document.querySelectorAll(
+            ".color-opcion"
+        );
+
+
+    colores.forEach(
+        boton=>{
+
+            boton.addEventListener(
+                "click",
+                ()=>{
+
+                    aplicarColor(
+                        boton.dataset.color
+                    );
+
+
+                    selector.value =
+                        boton.dataset.color;
+
+                }
+            );
+
+        }
+    );
+
 
     monitorPIXELLAB(
         "Editorial",
