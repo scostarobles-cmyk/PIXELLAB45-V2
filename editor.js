@@ -2196,17 +2196,11 @@ function mostrarControlesPortada(){
     Alineación
 </button>
 
-<button onclick="activarEdicionNegritaPortada()">
-    Negrita
-</button>
+<button onclick="aplicarNegritaPortada()">B</button>
 
-<button onclick="activarEdicionItalicaPortada()">
-    Itálica
-</button>
+<button onclick="aplicarItalicaPortada()">I</button>
 
-<button onclick="activarEdicionSubrayadoPortada()">
-    Subrayado
-</button>
+<button onclick="aplicarSubrayadoPortada()">U</button>
 
 </div>
     <div id="editorPanelPortada">
