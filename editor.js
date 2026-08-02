@@ -2163,110 +2163,121 @@ function mostrarControlesPortada(){
 
     contenedor.innerHTML = `
 
-    <div id="editorHerramientasPortada">
+   <div id="editorHerramientasPortada">
 
+    <div id="botonesSeleccionPortada">
 
-        <div id="botonesSeleccionPortada">
+        <button class="btn-editor-icono"
+                title="Título"
+                onclick="activarEdicionTituloPortada()">
+            🅣
+        </button>
 
-            <button onclick="activarEdicionTituloPortada()">
-                Título
-            </button>
+        <button class="btn-editor-icono"
+                title="Autor"
+                onclick="activarEdicionAutorPortada()">
+            👤
+        </button>
 
-
-            <button onclick="activarEdicionAutorPortada()">
-                Autor
-            </button>
-
-
-            <button onclick="activarLogoPortada()">
-                Logo
-            </button>
-
-        </div>
-
-
-
-        <div id="botonesEdicionTextoPortada"
-             style="display:none">
-
-
-            <button onclick="activarEdicionFuentePortada()">
-                Fuente
-            </button>
-
-
-            <button onclick="activarEdicionTamanoPortada()">
-                Tamaño
-            </button>
-
-
-            <button onclick="activarEdicionColorPortada()">
-                Color
-            </button>
-
-
-            <button onclick="activarEdicionPosicionPortada()">
-                Posición
-            </button>
-
-
-            <button onclick="activarEdicionAlineacionPortada()">
-                Alineación
-            </button>
-
-
-            <button onclick="aplicarNegritaPortada()">
-                B
-            </button>
-
-
-            <button onclick="aplicarItalicaPortada()">
-                I
-            </button>
-
-
-            <button onclick="aplicarSubrayadoPortada()">
-                U
-            </button>
-
-
-            <button onclick="volverControlesPortada()">
-                Volver
-            </button>
-
-
-        </div>
-
-
-
-        <div id="botonesEdicionLogoPortada"
-             style="display:none">
-
-
-            <button onclick="activarEdicionDimensionesLogo()">
-                Dimensiones
-            </button>
-
-
-            <button onclick="activarEdicionPosicionPortada()">
-                Posición
-            </button>
-
-
-            <button onclick="activarMovimientoLogo()">
-                Movimiento
-            </button>
-
-
-            <button onclick="volverControlesPortada()">
-                Volver
-            </button>
-
-
-        </div>
-
+        <button class="btn-editor-icono"
+                title="Logo"
+                onclick="activarLogoPortada()">
+            🖼
+        </button>
 
     </div>
+
+
+    <div id="botonesEdicionTextoPortada"
+         style="display:none">
+
+        <button class="btn-editor-icono"
+                title="Fuente"
+                onclick="activarEdicionFuentePortada()">
+            🔤
+        </button>
+
+        <button class="btn-editor-icono"
+                title="Tamaño"
+                onclick="activarEdicionTamanoPortada()">
+            🔠
+        </button>
+
+        <button class="btn-editor-icono"
+                title="Color"
+                onclick="activarEdicionColorPortada()">
+            🎨
+        </button>
+
+        <button class="btn-editor-icono"
+                title="Posición"
+                onclick="activarEdicionPosicionPortada()">
+            📍
+        </button>
+
+        <button class="btn-editor-icono"
+                title="Alineación"
+                onclick="activarEdicionAlineacionPortada()">
+            ↔
+        </button>
+
+        <button class="btn-editor-icono"
+                title="Negrita"
+                onclick="aplicarNegritaPortada()">
+            🅑
+        </button>
+
+        <button class="btn-editor-icono"
+                title="Itálica"
+                onclick="aplicarItalicaPortada()">
+            🅘
+        </button>
+
+        <button class="btn-editor-icono"
+                title="Subrayado"
+                onclick="aplicarSubrayadoPortada()">
+            🅤
+        </button>
+
+        <button class="btn-editor-icono"
+                title="Volver"
+                onclick="volverControlesPortada()">
+            ↩
+        </button>
+
+    </div>
+
+
+    <div id="botonesEdicionLogoPortada"
+         style="display:none">
+
+        <button class="btn-editor-icono"
+                title="Dimensiones">
+            📐
+        </button>
+
+        <button class="btn-editor-icono"
+                title="Posición"
+                onclick="activarEdicionPosicionPortada()">
+            📍
+        </button>
+
+        <button class="btn-editor-icono"
+                title="Movimiento">
+            ✋
+        </button>
+
+        <button class="btn-editor-icono"
+                title="Volver"
+                onclick="volverControlesPortada()">
+            ↩
+        </button>
+
+    </div>
+
+</div>
+
+<div id="editorPanelPortada"></div>
 
 
     <div id="editorPanelPortada">
