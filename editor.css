@@ -695,18 +695,25 @@
 }
 
 
-#botonesEdicionTextoPortada button,
-#botonesEdicionLogoPortada button{
+##botonesEdicionTextoPortada{
 
-    width:45px;
-    height:45px;
+    display:flex !important;
 
-    padding:0;
-
-    display:flex;
+    flex-wrap:wrap;
 
     justify-content:center;
 
-    align-items:center;
+    gap:8px;
+
+    width:100%;
+
+}
+
+
+#botonesEdicionTextoPortada button{
+
+    width:45px;
+
+    height:45px;
 
 }
