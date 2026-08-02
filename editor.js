@@ -2543,8 +2543,123 @@ function crearOActualizarElementoPortada(
         elemento.dataset.editorActivo = "true";
 
     }
+    if(
+    editor &&
+    editor.portada &&
+    editor.portada.autor &&
+    clase === "pl45-autor-portada"
+){
+
+    elemento.style.left =
+        editor.portada.autor.estilo.x + "px";
+
+
+    elemento.style.top =
+        editor.portada.autor.estilo.y + "px";
+
+
+    elemento.style.fontFamily =
+        editor.portada.autor.estilo.fuente;
+
+
+    elemento.style.fontSize =
+        editor.portada.autor.estilo.tamano + "px";
+
+
+    elemento.style.color =
+        editor.portada.autor.estilo.color;
 
 }
+
+}
+
+function crearOActualizarAutorPortada(){
+
+    const portada =
+        document.querySelector(
+            ".pl45-hoja-portada"
+        );
+
+
+    if(!portada){
+        return;
+    }
+
+
+    if(!editor.portada){
+        editor.portada = {};
+    }
+
+
+    if(!editor.portada.autor){
+
+        editor.portada.autor = {
+
+            texto: proyectoActual.autor || "",
+
+            estilo:{
+
+                x:40,
+
+                y:180,
+
+                fuente:"Arial",
+
+                tamano:24,
+
+                color:"#ffffff"
+
+            }
+
+        };
+
+
+        guardarJSON(
+            rutaEditor,
+            editor
+        );
+
+    }
+
+
+    crearOActualizarElementoPortada(
+        "pl45-autor-portada",
+        editor.portada.autor.texto
+    );
+
+
+    const autor =
+        portada.querySelector(
+            ".pl45-autor-portada"
+        );
+
+
+    if(autor){
+
+        autor.addEventListener(
+            "click",
+            ()=>{
+
+                activarEdicionTextoDirecto(
+                    autor
+                );
+
+            }
+        );
+
+    }
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Portada",
+        "Autor cargado en portada",
+        "monitorEditor"
+    );
+
+}
+
 function activarEdicionFuentePortada(){
 
     const panel =
