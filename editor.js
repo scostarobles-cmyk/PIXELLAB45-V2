@@ -2316,67 +2316,49 @@ function volverControlesPortada(){
 }
 
 function activarEdicionTituloPortada(){
-    document.getElementById("botonesSeleccionPortada").style.display = "none";
-document.getElementById("botonesEdicionTextoPortada").style.display = "flex";
 
-    const panel =
-        document.getElementById(
-            "editorPanelPortada"
+    document.getElementById(
+        "botonesSeleccionPortada"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "botonesEdicionTextoPortada"
+    ).style.display = "flex";
+
+
+    const titulo =
+        document.querySelector(
+            ".pl45-titulo-portada"
         );
 
-    if(!panel){
+
+    if(!titulo){
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Portada",
+            "No existe elemento título portada",
+            "monitorEditor"
+        );
+
         return;
-    }
-
-    panel.innerHTML = `
-
-        <div class="control-titulo">
-
-            <label>Título</label>
-
-            <input
-                type="text"
-                id="inputTituloPortada"
-                class="control-input-portada"
-                placeholder="Escriba el título">
-
-        </div>
-
-    `;
-
-    const input =
-        document.getElementById(
-            "inputTituloPortada"
-        );
-
-    /* ===========================
-       CARGAR ESTADO ACTUAL
-    =========================== */
-
-    if(
-        editor &&
-        editor.portada &&
-        editor.portada.titulo
-    ){
-
-        input.value =
-            editor.portada.titulo.texto;
 
     }
 
-    input.addEventListener(
-        "input",
-        () => {
 
-            editor.portada.titulo.texto =
-                input.value;
+    // Elemento activo para edición
+    elementoActivoPortada =
+        titulo;
 
-            crearOActualizarElementoPortada(
-                "pl45-titulo-portada",
-                input.value
-            );
 
-        }
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Portada",
+        "Título seleccionado para edición",
+        "monitorEditor"
     );
 
 }
