@@ -2821,6 +2821,7 @@ function aplicarEstadoPortada(){
         document.querySelector(
             ".pl45-titulo-portada"
         );
+    
 
     if(!titulo){
 
@@ -3667,6 +3668,71 @@ function aplicarSubrayadoPortada(){
             !activo;
 
     }
+
+}
+
+function activarEdicionTextoDirecto(elemento){
+
+    if(!elemento){
+        return;
+    }
+
+
+    elemento.contentEditable = true;
+
+
+    elemento.focus();
+
+
+    elemento.classList.add(
+        "texto-editando-portada"
+    );
+
+
+    elemento.addEventListener(
+        "input",
+        ()=>{
+
+            if(
+                elemento.classList.contains(
+                    "pl45-titulo-portada"
+                )
+            ){
+
+                editor.portada.titulo.texto =
+                    elemento.innerText;
+
+            }
+
+
+            if(
+                elemento.classList.contains(
+                    "pl45-autor-portada"
+                )
+            ){
+
+                editor.portada.autor.texto =
+                    elemento.innerText;
+
+            }
+
+
+            guardarJSON(
+                rutaEditor,
+                editor
+            );
+
+        }
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Portada",
+        "Edición directa activada",
+        "monitorEditor"
+    );
 
 }
 
