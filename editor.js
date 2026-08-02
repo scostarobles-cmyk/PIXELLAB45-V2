@@ -3363,6 +3363,118 @@ function activarEdicionAlineacionPortada(){
 
 }
 
+function aplicarNegritaPortada(){
+
+    const titulo =
+        document.querySelector(
+            ".pl45-titulo-portada"
+        );
+
+
+    if(!titulo){
+        return;
+    }
+
+
+    const activo =
+        titulo.style.fontWeight === "bold";
+
+
+    titulo.style.fontWeight =
+        activo
+        ? "normal"
+        : "bold";
+
+
+    if(
+        editor &&
+        editor.portada &&
+        editor.portada.titulo &&
+        editor.portada.titulo.estilo
+    ){
+
+        editor.portada.titulo.estilo.negrita =
+            !activo;
+
+    }
+
+}
+
+function aplicarItalicaPortada(){
+
+    const titulo =
+        document.querySelector(
+            ".pl45-titulo-portada"
+        );
+
+
+    if(!titulo){
+        return;
+    }
+
+
+    const activo =
+        titulo.style.fontStyle === "italic";
+
+
+    titulo.style.fontStyle =
+        activo
+        ? "normal"
+        : "italic";
+
+
+    if(
+        editor &&
+        editor.portada &&
+        editor.portada.titulo &&
+        editor.portada.titulo.estilo
+    ){
+
+        editor.portada.titulo.estilo.italica =
+            !activo;
+
+    }
+
+}
+
+function aplicarSubrayadoPortada(){
+
+    const titulo =
+        document.querySelector(
+            ".pl45-titulo-portada"
+        );
+
+
+    if(!titulo){
+        return;
+    }
+
+
+    const activo =
+        titulo.style.textDecoration === "underline";
+
+
+    titulo.style.textDecoration =
+        activo
+        ? "none"
+        : "underline";
+
+
+    if(
+        editor &&
+        editor.portada &&
+        editor.portada.titulo &&
+        editor.portada.titulo.estilo
+    ){
+
+        editor.portada.titulo.estilo.subrayado =
+            !activo;
+
+    }
+
+}
+
+
 /* ==========================
    CARGAR TODOS LOS CAPÍTULOS
 ========================== */
