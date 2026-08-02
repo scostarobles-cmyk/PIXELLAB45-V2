@@ -2827,6 +2827,13 @@ function activarMovimientoElemento(elemento, callbackGuardar){
     if(!elemento){
         return;
     }
+    monitorPIXELLAB(
+    "Editorial",
+    "ok",
+    "Portada",
+    "Motor movimiento activado para: " + elemento.className,
+    "monitorEditor"
+);
     elemento.style.position = "absolute";
     elemento.style.cursor = "move";
 
