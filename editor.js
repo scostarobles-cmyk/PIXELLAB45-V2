@@ -2191,6 +2191,22 @@ function mostrarControlesPortada(){
     <button onclick="activarEdicionPosicionPortada()">
         Posición
     </button>
+    
+    <button onclick="activarEdicionAlineacionPortada()">
+    Alineación
+</button>
+
+<button onclick="activarEdicionNegritaPortada()">
+    Negrita
+</button>
+
+<button onclick="activarEdicionItalicaPortada()">
+    Itálica
+</button>
+
+<button onclick="activarEdicionSubrayadoPortada()">
+    Subrayado
+</button>
 
 </div>
     <div id="editorPanelPortada">
