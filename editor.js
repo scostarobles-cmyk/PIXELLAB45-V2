@@ -2726,45 +2726,9 @@ function activarEdicionColorPortada(){
                 class="control-input-portada">
 
 
-            <div class="paleta-colores">
-
-                <button
-                    class="color-opcion"
-                    data-color="#00d9ff"
-                    style="
-                    background:#00d9ff;
-                    width:35px;
-                    height:35px;
-                    border-radius:50%;
-                    border:1px solid white;
-                    ">
-                </button>
-
-
-                <button
-                    class="color-opcion"
-                    data-color="#ffffff"
-                    style="
-                    background:#ffffff;
-                    width:35px;
-                    height:35px;
-                    border-radius:50%;
-                    border:1px solid white;
-                    ">
-                </button>
-
-
-                <button
-                    class="color-opcion"
-                    data-color="#000000"
-                    style="
-                    background:#000000;
-                    width:35px;
-                    height:35px;
-                    border-radius:50%;
-                    border:1px solid white;
-                    ">
-                </button>
+            <div 
+                class="paleta-colores"
+                id="paletaColoresPortada">
 
             </div>
 
@@ -2776,6 +2740,12 @@ function activarEdicionColorPortada(){
     const selector =
         document.getElementById(
             "selectorColorPortada"
+        );
+
+
+    const paleta =
+        document.getElementById(
+            "paletaColoresPortada"
         );
 
 
@@ -2808,8 +2778,17 @@ function activarEdicionColorPortada(){
         }
 
 
-        editor.portada.titulo.estilo.color =
-            color;
+        if(
+            editor &&
+            editor.portada &&
+            editor.portada.titulo &&
+            editor.portada.titulo.estilo
+        ){
+
+            editor.portada.titulo.estilo.color =
+                color;
+
+        }
 
     }
 
@@ -2826,32 +2805,101 @@ function activarEdicionColorPortada(){
     );
 
 
-    const colores =
-        document.querySelectorAll(
-            ".color-opcion"
-        );
+    async function cargarColores(){
+
+        try{
+
+            const respuesta =
+                await fetch(
+                    "config/editor/colores.json"
+                );
 
 
-    colores.forEach(
-        boton=>{
+            const datos =
+                await respuesta.json();
 
-            boton.addEventListener(
-                "click",
-                ()=>{
 
-                    aplicarColor(
-                        boton.dataset.color
+            paleta.innerHTML = "";
+
+
+            datos.colores.forEach(
+                color=>{
+
+                    const boton =
+                        document.createElement(
+                            "button"
+                        );
+
+
+                    boton.className =
+                        "color-opcion";
+
+
+                    boton.dataset.color =
+                        color.hex;
+
+
+                    boton.title =
+                        color.nombre;
+
+
+                    boton.style.background =
+                        color.hex;
+
+
+                    boton.style.width =
+                        "35px";
+
+                    boton.style.height =
+                        "35px";
+
+                    boton.style.borderRadius =
+                        "50%";
+
+                    boton.style.border =
+                        "1px solid white";
+
+
+                    boton.addEventListener(
+                        "click",
+                        ()=>{
+
+                            aplicarColor(
+                                color.hex
+                            );
+
+
+                            selector.value =
+                                color.hex;
+
+                        }
                     );
 
 
-                    selector.value =
-                        boton.dataset.color;
+                    paleta.appendChild(
+                        boton
+                    );
 
                 }
             );
 
+
+        }catch(error){
+
+            monitorPIXELLAB(
+                "Editorial",
+                "error",
+                "Portada",
+                "Error cargando colores.json",
+                "monitorEditor"
+            );
+
         }
-    );
+
+    }
+
+
+    cargarColores();
 
 
     monitorPIXELLAB(
