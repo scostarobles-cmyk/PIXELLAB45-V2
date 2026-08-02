@@ -2852,7 +2852,10 @@ monitorPIXELLAB(
         );
 
         aplicarEstadoPortada(editor);
-        activarLogoPortada()
+
+crearOActualizarAutorPortada();
+
+activarLogoPortada();
 
         return editor;
 
@@ -2887,28 +2890,43 @@ monitorPIXELLAB(
 
     editor = {
 
-        portada:{
+    portada:{
 
-            titulo:{
+        titulo:{
 
-                texto:
-                    proyecto.titulo,
+            texto:
+                proyecto.titulo,
 
-                estilo:{
+            estilo:{
+                fuente:"Arial",
+                tamano:38,
+                color:"#ffffff",
+                x:40,
+                y:80
+            }
 
-                    fuente:"Arial",
-                    tamano:38,
-                    color:"#ffffff",
-                    x:40,
-                    y:80
+        },
 
-                }
+        autor:{
+
+            texto:
+                proyecto.autor || "",
+
+            estilo:{
+
+                fuente:"Arial",
+                tamano:24,
+                color:"#ffffff",
+                x:40,
+                y:180
 
             }
 
         }
 
-    };
+    }
+
+};
 
     await guardarJSON(
         rutaEditor,
