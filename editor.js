@@ -3006,6 +3006,68 @@ function aplicarEstadoPortada(){
     titulo.style.top =
         estilo.y + "px";
 
+    if(
+    editor.portada.autor
+){
+
+    crearOActualizarElementoPortada(
+        "pl45-autor-portada",
+        editor.portada.autor.texto
+    );
+
+
+    const autor =
+        document.querySelector(
+            ".pl45-autor-portada"
+        );
+
+
+    if(autor){
+
+        const estiloAutor =
+            editor.portada.autor.estilo;
+
+
+        autor.style.fontFamily =
+            estiloAutor.fuente;
+
+        autor.style.fontSize =
+            estiloAutor.tamano + "px";
+
+        autor.style.color =
+            estiloAutor.color;
+
+        autor.style.left =
+            estiloAutor.x + "px";
+
+        autor.style.top =
+            estiloAutor.y + "px";
+
+
+        if(
+            !autor.dataset.editorActivo
+        ){
+
+            autor.addEventListener(
+                "click",
+                ()=>{
+
+                    activarEdicionTextoDirecto(
+                        autor
+                    );
+
+                }
+            );
+
+
+            autor.dataset.editorActivo =
+                "true";
+
+        }
+
+    }
+
+}
 
     monitorPIXELLAB(
         "Editorial",
