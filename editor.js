@@ -3077,7 +3077,8 @@ function activarEdicionAlineacionPortada(){
             </label>
 
             <select
-                id="selectorAlineacionPortada">
+                id="selectorAlineacionPortada"
+                class="control-input-portada">
 
                 <option value="left">
                     Izquierda
@@ -3127,13 +3128,53 @@ function activarEdicionAlineacionPortada(){
                 return;
             }
 
-            titulo.style.textAlign =
-                selector.value;
+            switch(selector.value){
+
+                case "left":
+
+                    titulo.style.textAlign =
+                        "left";
+
+                    titulo.style.transform =
+                        "translateX(0%)";
+
+                break;
+
+                case "center":
+
+                    titulo.style.textAlign =
+                        "center";
+
+                    titulo.style.transform =
+                        "translateX(-50%)";
+
+                break;
+
+                case "right":
+
+                    titulo.style.textAlign =
+                        "right";
+
+                    titulo.style.transform =
+                        "translateX(-100%)";
+
+                break;
+
+            }
 
             editor.portada.titulo.estilo.alineacion =
                 selector.value;
 
         }
+
+    );
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Portada",
+        "Control alineación activado",
+        "monitorEditor"
     );
 
 }

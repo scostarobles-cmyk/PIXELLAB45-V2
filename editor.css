@@ -614,20 +614,28 @@
 }
 .control-titulo select{
 
-    width:100%;
+    width:220px;
 
     padding:10px;
 
-    background:#05070d;
-
-    color:#ffffff;
+    border-radius:8px;
 
     border:1px solid #00d9ff;
 
-    border-radius:8px;
+    background:#05070d;
+
+    color:white;
 
     font-size:16px;
 
-    font-family:inherit;
+    outline:none;
+
+    cursor:pointer;
+
+}
+
+.control-titulo select:focus{
+
+    box-shadow:0 0 10px #00d9ff;
 
 }
