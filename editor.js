@@ -2305,6 +2305,8 @@ function volverControlesPortada(){
 }
 
 function activarEdicionTituloPortada(){
+    document.getElementById("botonesSeleccionPortada").style.display = "none";
+document.getElementById("botonesEdicionTextoPortada").style.display = "flex";
 
     const panel =
         document.getElementById(
@@ -2364,6 +2366,131 @@ function activarEdicionTituloPortada(){
             );
 
         }
+    );
+
+}
+function activarEdicionAutorPortada(){
+
+    document.getElementById(
+        "botonesSeleccionPortada"
+    ).style.display = "none";
+
+    document.getElementById(
+        "botonesEdicionTextoPortada"
+    ).style.display = "flex";
+
+
+    const panel =
+        document.getElementById(
+            "editorPanelPortada"
+        );
+
+    if(!panel){
+        return;
+    }
+
+
+    panel.innerHTML = `
+
+        <div class="control-titulo">
+
+            <label>Autor</label>
+
+            <input
+                type="text"
+                id="inputAutorPortada"
+                class="control-input-portada"
+                placeholder="Escriba el autor">
+
+        </div>
+
+    `;
+
+
+    const input =
+        document.getElementById(
+            "inputAutorPortada"
+        );
+
+
+    /* ===========================
+       SI NO EXISTE EN EDITOR,
+       LO TOMA DE PROYECTO
+    =========================== */
+
+    if(
+        !editor.portada.autor
+    ){
+
+        editor.portada.autor = {
+
+            texto:
+                proyecto.autor || "",
+
+            estilo:{
+
+                fuente:"Arial",
+
+                tamano:24,
+
+                color:"#ffffff",
+
+                x:40,
+
+                y:220
+
+            }
+
+        };
+
+        guardarJSON(
+            rutaEditor,
+            editor
+        );
+
+    }
+
+
+    /* ===========================
+       CARGAR ESTADO ACTUAL
+    =========================== */
+
+    input.value =
+        editor.portada.autor.texto;
+
+
+    input.addEventListener(
+        "input",
+        ()=>{
+
+            editor.portada.autor.texto =
+                input.value;
+
+            crearOActualizarElementoPortada(
+
+                "pl45-autor-portada",
+
+                input.value
+
+            );
+
+        }
+
+    );
+
+
+    monitorPIXELLAB(
+
+        "Editorial",
+
+        "ok",
+
+        "Portada",
+
+        "Editor autor activado",
+
+        "monitorEditor"
+
     );
 
 }
