@@ -2143,18 +2143,7 @@ function mostrarControlesPortada(){
             Color
         </button>
 
-        <button onclick="activarMovimientoElemento(
-
-    document.querySelector(".pl45-titulo-portada"),
-
-    (x,y)=>{
-
-        editor.portada.titulo.estilo.x = x;
-        editor.portada.titulo.estilo.y = y;
-
-    }
-
-);">
+        <button onclick="activarEdicionPosicionPortada()">
             Posición
         </button>
 
@@ -2699,6 +2688,112 @@ function activarEdicionColorPortada(){
 
 }
 //Aquí va x e y
+function activarEdicionPosicionPortada(){
+
+    const panel =
+        document.getElementById(
+            "editorPanelPortada"
+        );
+
+    if(!panel){
+        return;
+    }
+
+
+    panel.innerHTML = `
+
+        <div class="control-titulo">
+
+            <label>
+                Posición
+            </label>
+
+            <button
+                id="activarMoverTituloPortada"
+                class="boton-editor">
+
+                Mover título
+
+            </button>
+
+        </div>
+
+    `;
+
+
+    const boton =
+        document.getElementById(
+            "activarMoverTituloPortada"
+        );
+
+
+    boton.addEventListener(
+        "click",
+        ()=>{
+
+
+            const titulo =
+                document.querySelector(
+                    ".pl45-titulo-portada"
+                );
+
+
+            if(!titulo){
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "error",
+                    "Portada",
+                    "No existe elemento título para mover",
+                    "monitorEditor"
+                );
+
+                return;
+
+            }
+
+
+            activarMovimientoElemento(
+
+                titulo,
+
+                (x,y)=>{
+
+
+                    if(
+                        editor &&
+                        editor.portada &&
+                        editor.portada.titulo
+                    ){
+
+                        editor.portada.titulo.estilo.x =
+                            Math.round(x);
+
+                        editor.portada.titulo.estilo.y =
+                            Math.round(y);
+
+                    }
+
+
+                }
+
+            );
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "ok",
+                "Portada",
+                "Movimiento de título activado",
+                "monitorEditor"
+            );
+
+
+        }
+    );
+
+
+}
 function activarMovimientoElemento(elemento, callbackGuardar){
 
     if(!elemento){
@@ -2849,7 +2944,7 @@ function activarMovimientoElemento(elemento, callbackGuardar){
     );
 
 }
-
+//Aquí finaliza x e y
 
 
 /* ==========================
