@@ -2172,7 +2172,7 @@ function mostrarControlesPortada(){
         Autor
     </button>
 
-    <button onclick="activarEdicionLogoPortada()">
+    <button onclick="activarLogoPortada()">
         Logo
     </button>
 
