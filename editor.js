@@ -35,7 +35,15 @@ async function iniciarEditor(){
 );
           generarTarjetasEditor();
     
-    
+    monitorPIXELLAB(
+    "Editorial",
+    "proceso",
+    "Verificar pipelines",
+    "Inicializando estado de los pipelines editoriales",
+    "monitorPIXELLAB"
+);
+
+verificarPipelines();
 
     monitorPIXELLAB(
         "Editorial",
@@ -452,36 +460,13 @@ async function generarTarjetasEditor(){
     }
 
 
-        monitorPIXELLAB(
+    monitorPIXELLAB(
         "Editorial",
         "ok",
         "Biblioteca",
         `${bibliotecaEditor.length} tarjetas generadas`,
         "monitorEditor"
     );
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "info",
-        "Pipeline",
-        "Antes de ejecutar verificarPipelines",
-        "monitorEditor"
-    );
-
-
-    verificarPipelines();
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "info",
-        "Pipeline",
-        "Después de ejecutar verificarPipelines",
-        "monitorEditor"
-    );
-
-}
 
 }
 async function generarPortadaProyecto(proyecto) {
@@ -873,6 +858,16 @@ async function cargarLibroCompleto(proyecto) {
     asignarClasesPaginasEditorial();
 
 
+
+ //   verificarPipelineEditor();
+
+
+
+  /*  actualizarEstadoPipelineEditorial(
+        "editorProyecto",
+        "completo",
+        "Proyecto cargado"
+    );*/
 
 
 
