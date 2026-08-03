@@ -26,6 +26,7 @@ async function iniciarEditor(){
 
     await generarBibliotecaEditor();
     await verificarEditorJSON();
+          generarTarjetasEditor();
 
     monitorPIXELLAB(
         "Editorial",
@@ -311,5 +312,73 @@ function generarEditorJSON(ebook){
         }
 
     };
+
+}
+
+function generarTarjetasEditor(){
+
+    const contenedor =
+        document.getElementById("bibliotecaEditor");
+
+
+    contenedor.innerHTML = "";
+
+
+    for(const ebook of bibliotecaEditor){
+
+
+        const tarjeta = document.createElement("div");
+
+        tarjeta.className = "tarjeta-editor";
+
+
+        tarjeta.innerHTML = `
+
+            <h3>${ebook.titulo}</h3>
+
+            <p>${ebook.autor}</p>
+
+            <p>ID: ${ebook.projectId}</p>
+        <button class="btn-abrir-libro">
+                <span>📖</span>
+                Abrir libro
+        </button>
+
+        `;
+
+
+        tarjeta.querySelector("button")
+        .addEventListener(
+            "click",
+            ()=>{
+
+                proyectoEditorActual = ebook.projectId;
+
+
+                monitorPIXELLAB(
+                    "Editorial",
+                    "ok",
+                    "Tarjeta",
+                    "Proyecto seleccionado: " + ebook.projectId,
+                    "monitorEditor"
+                );
+
+            }
+        );
+
+
+        contenedor.appendChild(tarjeta);
+
+
+    }
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Biblioteca",
+        "Tarjetas generadas: " + bibliotecaEditor.length,
+        "monitorEditor"
+    );
 
 }
