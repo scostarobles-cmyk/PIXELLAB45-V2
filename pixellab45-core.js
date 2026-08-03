@@ -41,7 +41,7 @@ monitorPIXELLAB(
 // INICIALIZACIÓN DEL GENERADOR
 //=====================================================
 
-window.addEventListener(
+/*window.addEventListener(
     "load",
     async () => {
 
@@ -59,13 +59,13 @@ window.addEventListener(
        // await verificarProyecto();
         
       // await listarProyectosEditorial();
-iniciarEditor()
+//iniciarEditor()
 
 
       
 
     }
-)
+)*/
 // =========================
 // MENÚ HAMBURGUESA
 // =========================
