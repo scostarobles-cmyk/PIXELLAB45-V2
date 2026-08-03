@@ -746,3 +746,38 @@
 }
 
 
+/* =========================================
+   ESTADOS PIPELINE
+========================================= */
+
+.pipeline-azul {
+
+    background:rgba(0,217,255,0.20) !important;
+
+    border:1px solid #00d9ff !important;
+
+    color:#00d9ff !important;
+
+}
+
+
+.pipeline-verde {
+
+    background:rgba(0,255,100,0.20) !important;
+
+    border:1px solid #00ff66 !important;
+
+    color:#00ff66 !important;
+
+}
+
+
+.pipeline-amarillo {
+
+    background:rgba(255,210,0,0.20) !important;
+
+    border:1px solid #ffd200 !important;
+
+    color:#ffd200 !important;
+
+}

@@ -1408,28 +1408,18 @@ function seleccionarPortada() {
    LIMPIAR PIPELINE EDITORIAL
 ========================================== */
 
-function limpiarPipelineEditorial() {
+function limpiarPipelineEditorial(){
 
-    const elementos = [
-        "editorProyecto",
-        "editorTexto",
-        "editorImagenes",
-        "editorDiseno",
-        "editorRevision",
-        "editorExportacion"
-    ];
+    const elementos = document.querySelectorAll(
+        ".pipeline-editor .pipeline-items p"
+    );
 
-    elementos.forEach(id => {
-
-        const elemento = document.getElementById(id);
-
-        if (!elemento) return;
+    elementos.forEach(elemento=>{
 
         elemento.classList.remove(
-            "estado-azul",
-            "estado-verde",
-            "estado-amarillo",
-            "estado-rojo"
+            "pipeline-azul",
+            "pipeline-verde",
+            "pipeline-amarillo"
         );
 
     });
@@ -1445,17 +1435,14 @@ function habilitarPasoEditorial(id, color) {
 
     if (!elemento) return;
 
-
     elemento.classList.remove(
-        "estado-azul",
-        "estado-verde",
-        "estado-amarillo",
-        "estado-rojo"
+        "pipeline-azul",
+        "pipeline-verde",
+        "pipeline-amarillo"
     );
 
-
     elemento.classList.add(
-        "estado-" + color
+        "pipeline-" + color
     );
 
 }
