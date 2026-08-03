@@ -322,33 +322,139 @@ function generarEditorJSON(ebook){
 
 }
 
-function generarTarjetasEditor(){
+async function generarTarjetasEditor(){
 
-    const contenedor = document.getElementById("editorBiblioteca");
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "datos",
-        "Tarjetas",
-        "Contenido antes: " + contenedor.innerHTML,
-        "monitorEditor"
-    );
+    const contenedor =
+        document.getElementById("bibliotecaEditorial");
 
 
-    contenedor.innerHTML = `
-        <div>
-            <h1>PRUEBA TARJETA</h1>
-            <p>Contenido visible</p>
+    if (!contenedor) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Biblioteca",
+            "No existe bibliotecaEditorial",
+            "monitorEditor"
+        );
+
+        return;
+
+    }
+
+
+    contenedor.innerHTML = "";
+
+
+    for (const libro of bibliotecaEditor) {
+
+
+        const tarjeta =
+            document.createElement("article");
+
+
+        tarjeta.className =
+            "editorial-card";
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "info",
+            "Tarjeta creada",
+            libro.titulo,
+            "monitorEditor"
+        );
+
+
+        tarjeta.innerHTML = `
+
+        <div class="editorial-cover">
+
+            <img class="portada-editorial">
+
         </div>
-    `;
+
+
+        <div class="editorial-info">
+
+            <h3>
+                ${libro.titulo}
+            </h3>
+
+
+            <p>
+                Ebook • ${libro.autor}
+            </p>
+
+
+            <span>
+                PIXELLAB Editorial
+            </span>
+
+
+            <button
+            class="boton-accion"
+            onclick="abrirEditorEditorial('${libro.projectId}')">
+
+                📖 Abrir libro
+
+            </button>
+
+
+        </div>
+
+        `;
+
+
+        contenedor.appendChild(tarjeta);
+
+
+
+        const imagen =
+            tarjeta.querySelector(
+                ".portada-editorial"
+            );
+
+
+        if (libro.tienePortada) {
+
+
+            imagen.src =
+            `${R2_EBOOKS_URL}/proyectos/${libro.projectId}/imagenes/portada.png`;
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "ok",
+                "Portada cargada",
+                libro.titulo,
+                "monitorEditor"
+            );
+
+
+        } else {
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "info",
+                "Sin portada",
+                libro.titulo,
+                "monitorEditor"
+            );
+
+
+        }
+
+
+    }
 
 
     monitorPIXELLAB(
         "Editorial",
         "ok",
-        "Tarjetas",
-        "Contenido después: " + contenedor.innerHTML,
+        "Biblioteca",
+        `${bibliotecaEditor.length} tarjetas generadas`,
         "monitorEditor"
     );
 
