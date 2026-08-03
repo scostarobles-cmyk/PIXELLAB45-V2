@@ -333,7 +333,7 @@ function generarTarjetasEditor(){
     );
 
 
-    const contenedor = document.getElementById("bibliotecaEditor");
+    const contenedor = document.getElementById("editorBiblioteca");
 
 
     if(!contenedor){
