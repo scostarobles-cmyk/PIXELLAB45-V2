@@ -324,40 +324,31 @@ function generarEditorJSON(ebook){
 
 function generarTarjetasEditor(){
 
+    const contenedor = document.getElementById("editorBiblioteca");
+
+
     monitorPIXELLAB(
         "Editorial",
-        "proceso",
+        "datos",
         "Tarjetas",
-        "Entró a generar tarjetas",
+        "Contenido antes: " + contenedor.innerHTML,
         "monitorEditor"
     );
 
 
-    const contenedor = document.getElementById("editorBiblioteca");
-
-
-    if(!contenedor){
-
-        monitorPIXELLAB(
-            "Editorial",
-            "error",
-            "Tarjetas",
-            "No existe contenedor bibliotecaEditor",
-            "monitorEditor"
-        );
-
-        return;
-    }
-
-
-    contenedor.innerHTML = "Tarjeta de prueba";
+    contenedor.innerHTML = `
+        <div>
+            <h1>PRUEBA TARJETA</h1>
+            <p>Contenido visible</p>
+        </div>
+    `;
 
 
     monitorPIXELLAB(
         "Editorial",
         "ok",
         "Tarjetas",
-        "Tarjeta generada correctamente",
+        "Contenido después: " + contenedor.innerHTML,
         "monitorEditor"
     );
 
