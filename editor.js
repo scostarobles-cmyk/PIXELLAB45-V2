@@ -35,7 +35,11 @@ async function iniciarEditor(){
 
 
 }
+<<<<<<< HEAD
+
+=======
 window.addEventListener(
     "load",
     iniciarEditor
 );
+>>>>>>> 42d9ecd619121cc502438737f44be678b678470d
