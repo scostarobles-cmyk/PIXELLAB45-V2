@@ -26,6 +26,13 @@ async function iniciarEditor(){
 
     await generarBibliotecaEditor();
     await verificarEditorJSON();
+    monitorPIXELLAB(
+    "Editorial",
+    "proceso",
+    "Tarjetas",
+    "Llamando generarTarjetasEditor()",
+    "monitorEditor"
+);
           generarTarjetasEditor();
 
     monitorPIXELLAB(
