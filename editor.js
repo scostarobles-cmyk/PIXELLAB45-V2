@@ -1442,16 +1442,18 @@ function habilitarPasoEditorial(id, color) {
 
     if (!elemento) return;
 
-    elemento.classList.add("estado-" + color);
 
-    let icono = "⚪";
+    elemento.classList.remove(
+        "estado-azul",
+        "estado-verde",
+        "estado-amarillo",
+        "estado-rojo"
+    );
 
-    if (color === "azul") icono = "🔵";
-    if (color === "verde") icono = "🟢";
-    if (color === "amarillo") icono = "🟡";
 
-    elemento.textContent =
-        icono + " " + elemento.textContent.replace(/^[🔵🟢🟡⚪]\s*/, "");
+    elemento.classList.add(
+        "estado-" + color
+    );
 
 }
 /* ==========================================
@@ -1495,16 +1497,18 @@ function habilitarPasoEdicion(id, color) {
 
     if (!elemento) return;
 
-    elemento.classList.add("estado-" + color);
 
-    let icono = "⚪";
+    elemento.classList.remove(
+        "estado-azul",
+        "estado-verde",
+        "estado-amarillo",
+        "estado-rojo"
+    );
 
-    if (color === "azul") icono = "🔵";
-    if (color === "verde") icono = "🟢";
-    if (color === "amarillo") icono = "🟡";
 
-    elemento.textContent =
-        icono + " " + elemento.textContent.replace(/^[🔵🟢🟡⚪]\s*/, "");
+    elemento.classList.add(
+        "estado-" + color
+    );
 
 }
 
