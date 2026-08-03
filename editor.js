@@ -1423,11 +1423,14 @@ function limpiarPipelineEditorial() {
 
         const elemento = document.getElementById(id);
 
-        if (elemento) {
-            elemento.className = "";
-            elemento.textContent =
-                "⚪ " + elemento.textContent.replace(/^[🔵🟢🟡🟠⚪]\s*/, "");
-        }
+        if (!elemento) return;
+
+        elemento.classList.remove(
+            "estado-azul",
+            "estado-verde",
+            "estado-amarillo",
+            "estado-rojo"
+        );
 
     });
 
@@ -1475,14 +1478,14 @@ function limpiarPipelineEdicion() {
 
         const elemento = document.getElementById(id);
 
-        if (elemento) {
+        if (!elemento) return;
 
-            elemento.className = "";
-
-            elemento.textContent =
-                "⚪ " + elemento.textContent.replace(/^[🔵🟢🟡⚪]\s*/, "");
-
-        }
+        elemento.classList.remove(
+            "estado-azul",
+            "estado-verde",
+            "estado-amarillo",
+            "estado-rojo"
+        );
 
     });
 
