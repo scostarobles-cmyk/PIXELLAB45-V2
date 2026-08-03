@@ -732,21 +732,23 @@ isolated object
 
 /*
 =========================================================
-PIXELLAB45 EDITORIAL
+PIXELLAB Editorial
+ETAPA 1 · Carga completa del libro
 
-ETAPA 1 · Carga del libro
+Objetivo:
+Cargar el estado de edición desde editor.json
+y reconstruir el libro sección por sección.
 
-Prueba actual:
-✓ Carga proyecto
-✓ Limpia editor
-✓ Carga portada
+Flujo:
 
-Pendiente:
-- Legales
-- Índice
-- Introducción
-- Capítulos
-- Conclusión
+1. Portada
+2. Legales
+3. Índice
+4. Introducción
+5. Capítulos
+6. Conclusión
+
+Los capítulos serán recorridos mediante plan.json.
 
 =========================================================
 */
@@ -754,15 +756,12 @@ Pendiente:
 
 const SECCIONES_LIBRO = [
 
-    "portada"
-
-    /*
+    "portada",
     "legales",
     "indice",
     "introduccion",
     "capitulos",
     "conclusion"
-    */
 
 ];
 
@@ -784,6 +783,40 @@ async function cargarLibroCompleto(proyecto) {
     );
 
 
+    const editor =
+        await cargarJSON(
+            `proyectos/${proyecto.projectId}/editor.json`
+        );
+
+
+    if (!editor) {
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Editor",
+            "No se pudo cargar editor.json",
+            "monitorEditor"
+        );
+
+
+        return;
+
+    }
+
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Editor",
+        "editor.json cargado correctamente",
+        "monitorEditor"
+    );
+
+
+
     const contenedor =
         document.getElementById(
             "paginaEditor"
@@ -802,7 +835,7 @@ async function cargarLibroCompleto(proyecto) {
 
 
         await cargarSeccion(
-            proyecto,
+            editor,
             seccion
         );
 
@@ -814,28 +847,30 @@ async function cargarLibroCompleto(proyecto) {
     asignarClasesPaginasEditorial();
 
 
+
+ //   verificarPipelineEditor();
+
+
+
+  /*  actualizarEstadoPipelineEditorial(
+        "editorProyecto",
+        "completo",
+        "Proyecto cargado"
+    );*/
+
+
+
+    inicializarEditor();
+
+
+
     monitorPIXELLAB(
         "Editorial",
         "ok",
         "Libro",
-        "Portada cargada correctamente",
+        "Carga completa finalizada",
         "monitorEditor"
     );
-
-
-    /*
-    verificarPipelineEditor();
-
-
-    actualizarEstadoPipelineEditorial(
-        "editorProyecto",
-        "completo",
-        "Proyecto cargado"
-    );
-
-
-    inicializarEditor();
-    */
 
 
 }
@@ -843,20 +878,25 @@ async function cargarLibroCompleto(proyecto) {
 
 
 
+/* ==========================
+   CARGA DE SECCIONES
+========================== */
+
 async function cargarSeccion(
-    proyecto,
+    editor,
     seccion
 ) {
 
 
-    switch(seccion){
+    switch(seccion) {
+
 
 
         case "portada":
 
 
             await cargarPaginaPortada(
-                proyecto
+                editor
             );
 
 
@@ -864,12 +904,13 @@ async function cargarSeccion(
 
 
 
-        /*
         case "legales":
 
+
             await cargarPaginaLegales(
-                proyecto
+                editor
             );
+
 
         break;
 
@@ -877,9 +918,11 @@ async function cargarSeccion(
 
         case "indice":
 
+
             await cargarPaginaIndice(
-                proyecto
+                editor
             );
+
 
         break;
 
@@ -887,9 +930,11 @@ async function cargarSeccion(
 
         case "introduccion":
 
+
             await cargarPaginaIntroduccion(
-                proyecto
+                editor
             );
+
 
         break;
 
@@ -897,9 +942,11 @@ async function cargarSeccion(
 
         case "capitulos":
 
+
             await cargarPaginaCapitulos(
-                proyecto
+                editor
             );
+
 
         break;
 
@@ -907,19 +954,20 @@ async function cargarSeccion(
 
         case "conclusion":
 
+
             await cargarPaginaConclusion(
-                proyecto
+                editor
             );
 
+
         break;
-        */
 
 
     }
 
 
 }
-
+           
 
 // =====================================================
 // PIXELLAB45 EDITORIAL
@@ -930,27 +978,23 @@ async function cargarSeccion(
 // BUSCAR: PORTADA A4
 // =====================================================
 
-function cargarPaginaPortada(proyecto) {
+function cargarPaginaPortada(editor) {
 
     monitorPIXELLAB(
         "Editorial",
         "proceso",
         "Portada",
-        "Entra a cargarPaginaPortada",
+        "Cargando portada desde editor.json",
         "monitorEditor"
     );
 
 
     const contenedor =
-        document.getElementById(
-            "paginaEditor"
-        );
+        document.getElementById("paginaEditor");
 
 
     const canvas =
-        document.querySelector(
-            ".editor-canvas"
-        );
+        document.querySelector(".editor-canvas");
 
 
     if (!contenedor) {
@@ -968,147 +1012,161 @@ function cargarPaginaPortada(proyecto) {
     }
 
 
+
     const hoja =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
 
     hoja.className =
         "pl45-hoja-portada";
 
 
+
     Object.assign(
         hoja.style,
         {
-
             width: "100%",
             maxWidth: "794px",
             aspectRatio: "210 / 297",
-
-            margin:
-                "0 auto 20px auto",
-
-            background:
-                "white",
-
-            transformOrigin:
-                "top center"
-
+            margin: "0 auto 20px auto",
+            background: "white",
+            position: "relative",
+            overflow: "hidden",
+            transformOrigin: "top center"
         }
     );
 
 
-    const rutaPortada =
-        `${R2_EBOOKS_URL}/proyectos/${proyecto.projectId}/imagenes/portada.png`;
+
+    const portada =
+        editor.portada || {};
 
 
-    const img =
-        document.createElement(
-            "img"
-        );
+
+    const imagen =
+        document.createElement("img");
 
 
-    img.src =
-        rutaPortada;
+    imagen.src =
+        `${R2_EBOOKS_URL}/proyectos/${editor.projectId}/imagenes/portada.png`;
 
 
-    img.alt =
-        proyecto.titulo ||
-        "Portada";
-
-
-    img.className =
+    imagen.className =
         "portada-editor";
 
 
     Object.assign(
-        img.style,
+        imagen.style,
         {
-
             width: "100%",
             height: "100%",
             display: "block",
-            objectFit: "cover"
-
+            objectFit: "cover",
+            position: "absolute",
+            top: "0",
+            left: "0"
         }
     );
 
 
-    img.onload = () => {
 
-        const esMovil =
-            window.innerWidth <= 768;
+    hoja.appendChild(imagen);
 
 
-        if (
-            canvas &&
-            esMovil
-        ) {
 
-            const anchoHoja =
-                hoja.offsetWidth;
+    // =========================
+    // TITULO
+    // =========================
 
-
-            const anchoDisponible =
-                canvas.clientWidth - 20;
+    const titulo =
+        document.createElement("h1");
 
 
-            if (
-                anchoHoja > 0 &&
-                anchoDisponible > 0
-            ) {
-
-                const escala =
-                    anchoDisponible /
-                    anchoHoja;
+    titulo.textContent =
+        portada.titulo?.texto || "";
 
 
-                hoja.style.transform =
-                    `scale(${Math.min(1, escala)})`;
+    Object.assign(
+        titulo.style,
+        {
+            position: "absolute",
+            left: portada.titulo?.estilo?.x + "px",
+            top: portada.titulo?.estilo?.y + "px",
+            fontFamily: portada.titulo?.estilo?.fuente,
+            fontSize: portada.titulo?.estilo?.tamano + "px",
+            color: portada.titulo?.estilo?.color,
+            margin: "0"
+        }
+    );
 
 
-        //        hoja.style.marginBottom =
-    //                `-${hoja.offsetHeight * (1 - escala)}px`;
+    hoja.appendChild(titulo);
 
+
+
+    // =========================
+    // AUTOR
+    // =========================
+
+    const autor =
+        document.createElement("p");
+
+
+    autor.textContent =
+        portada.autor?.texto || "";
+
+
+    Object.assign(
+        autor.style,
+        {
+            position: "absolute",
+            left: portada.autor?.estilo?.x + "px",
+            top: portada.autor?.estilo?.y + "px",
+            fontFamily: portada.autor?.estilo?.fuente,
+            fontSize: portada.autor?.estilo?.tamano + "px",
+            color: portada.autor?.estilo?.color,
+            margin: "0"
+        }
+    );
+
+
+    hoja.appendChild(autor);
+
+
+
+    // =========================
+    // LOGO
+    // =========================
+
+    if (
+        portada.logo?.url
+    ) {
+
+
+        const logo =
+            document.createElement("img");
+
+
+        logo.src =
+            portada.logo.url;
+
+
+        Object.assign(
+            logo.style,
+            {
+                position: "absolute",
+                left: portada.logo.x + "px",
+                top: portada.logo.y + "px",
+                width: portada.logo.ancho + "px",
+                height: portada.logo.alto + "px"
             }
-
-        }
-        else {
-
-            hoja.style.transform =
-                "scale(1)";
-
-        }
-
-
-        monitorPIXELLAB(
-            "Editorial",
-            "estado",
-            "Portada",
-            "Imagen cargada correctamente",
-            "monitorEditor"
         );
 
-    };
 
+        hoja.appendChild(logo);
 
-    img.onerror = () => {
+    }
 
-        monitorPIXELLAB(
-            "Editorial",
-            "error",
-            "Portada",
-            "No se pudo cargar la imagen",
-            "monitorEditor"
-        );
-
-    };
-
-
-    hoja.appendChild(
-        img
-    );
 
 
     contenedor.appendChild(
@@ -1116,16 +1174,57 @@ function cargarPaginaPortada(proyecto) {
     );
 
 
+
+    // Escala móvil
+
+    if (canvas) {
+
+        const ajustar =
+            () => {
+
+                if(window.innerWidth <= 768){
+
+                    const escala =
+                        (canvas.clientWidth - 20)
+                        /
+                        hoja.offsetWidth;
+
+
+                    hoja.style.transform =
+                        `scale(${Math.min(1, escala)})`;
+
+                }
+                else {
+
+                    hoja.style.transform =
+                        "scale(1)";
+
+                }
+
+            };
+
+
+        ajustar();
+
+
+        window.addEventListener(
+            "resize",
+            ajustar
+        );
+
+    }
+
+
+
     monitorPIXELLAB(
         "Editorial",
-        "proceso",
+        "ok",
         "Portada",
-        "Hoja agregada al editor",
+        "Portada generada desde editor.json",
         "monitorEditor"
     );
 
 }
-
 function asignarClasesPaginasEditorial() {
 
     const paginaEditor =
