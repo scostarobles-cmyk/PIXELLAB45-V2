@@ -22,7 +22,7 @@ async function iniciarEditor(){
         "Iniciando editor...",
         "monitorEditor"
     );
-verificarPipelines();
+//verificarPipelines();
 
     monitorPIXELLAB(
         "Editorial",
