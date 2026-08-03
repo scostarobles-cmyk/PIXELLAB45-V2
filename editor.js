@@ -22,7 +22,15 @@ async function iniciarEditor(){
         "Iniciando editor...",
         "monitorEditor"
     );
+verificarPipelines();
 
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Editor",
+        "Editor iniciado correctamente",
+        "monitorEditor"
+    );
 
     await generarBibliotecaEditor();
     await verificarEditorJSON();
@@ -43,15 +51,7 @@ async function iniciarEditor(){
     "monitorPIXELLAB"
 );
 
-verificarPipelines();
 
-    monitorPIXELLAB(
-        "Editorial",
-        "ok",
-        "Editor",
-        "Editor iniciado correctamente",
-        "monitorEditor"
-    );
 
 }
 let bibliotecaEditor = [];
