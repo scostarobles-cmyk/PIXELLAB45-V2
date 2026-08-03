@@ -41,7 +41,7 @@ async function generarBibliotecaEditor(){
                     },
                     body: JSON.stringify({
 
-                        tipo:"listar-Ebooks",
+                        action:"listar-Ebooks",
 
                         data:{}
 
