@@ -22,7 +22,7 @@ async function iniciarEditor(){
         "Iniciando editor...",
         "monitorEditor"
     );
-//verificarPipelines();
+
 
     monitorPIXELLAB(
         "Editorial",
@@ -41,7 +41,7 @@ async function iniciarEditor(){
     "Llamando generarTarjetasEditor()",
     "monitorEditor"
 );
-          generarTarjetasEditor();
+    await generarTarjetasEditor();
     
     monitorPIXELLAB(
     "Editorial",
@@ -50,7 +50,7 @@ async function iniciarEditor(){
     "Inicializando estado de los pipelines editoriales",
     "monitorPIXELLAB"
 );
-
+verificarPipelines();
 
 
 }
@@ -1327,8 +1327,37 @@ function asignarClasesPaginasEditorial() {
 
 function verificarPipelines() {
 
+    monitorPIXELLAB(
+        "Editorial",
+        "info",
+        "Pipeline",
+        "Entró a verificarPipelines",
+        "monitorEditor"
+    );
+
+
     verificarPipelineEditorial();
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "info",
+        "Pipeline",
+        "Terminó verificarPipelineEditorial",
+        "monitorEditor"
+    );
+
+
     verificarPipelineEdicion();
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "info",
+        "Pipeline",
+        "Terminó verificarPipelineEdicion",
+        "monitorEditor"
+    );
 
 }
 
