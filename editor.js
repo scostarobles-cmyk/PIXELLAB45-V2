@@ -1365,16 +1365,26 @@ function verificarPipelines() {
    VERIFICAR PIPELINE EDITORIAL
 ========================================== */
 
-function verificarPipelineEditorial() {
+function verificarPipelineEditorial(){
 
     limpiarPipelineEditorial();
 
+
     if (!proyectoActual) {
-        habilitarPasoEditorial("proyecto", "azul");
+
+        habilitarPasoEditorial(
+            "editorProyecto",
+            "azul"
+        );
+
         return;
     }
 
-    habilitarPasoEditorial("proyecto", "verde");
+
+    habilitarPasoEditorial(
+        "editorProyecto",
+        "verde"
+    );
 
 }
 
@@ -1431,15 +1441,37 @@ function limpiarPipelineEditorial(){
 
 function habilitarPasoEditorial(id, color) {
 
+    monitorPIXELLAB(
+        "Editorial",
+        "info",
+        "Pipeline",
+        "Cambiando estado " + id + " a " + color,
+        "monitorEditor"
+    );
+
+
     const elemento = document.getElementById(id);
 
-    if (!elemento) return;
+    if (!elemento) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Pipeline",
+            "No existe elemento " + id,
+            "monitorEditor"
+        );
+
+        return;
+    }
+
 
     elemento.classList.remove(
         "pipeline-azul",
         "pipeline-verde",
         "pipeline-amarillo"
     );
+
 
     elemento.classList.add(
         "pipeline-" + color
