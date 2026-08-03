@@ -25,7 +25,7 @@ async function iniciarEditor(){
 
 
     await generarBibliotecaEditor();
-
+    await verificarEditorJSON();
 
     monitorPIXELLAB(
         "Editorial",
@@ -124,5 +124,91 @@ async function generarBibliotecaEditor(){
 
 
     }
+
+}
+async function verificarEditorJSON(){
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Editor JSON",
+        "Verificando editor.json...",
+        "monitorEditor"
+    );
+
+
+    for(const ebook of bibliotecaEditor){
+
+
+        const rutaEditor =
+            `proyectos/${ebook.projectId}/editor.json`;
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "Editor JSON",
+            "Buscando: " + rutaEditor,
+            "monitorEditor"
+        );
+
+
+        const editor =
+            await cargarJSON(rutaEditor);
+
+
+
+        if(editor){
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "ok",
+                "Editor JSON",
+                "Existe editor.json: " + ebook.titulo,
+                "monitorEditor"
+            );
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "datos",
+                "Editor JSON",
+                JSON.stringify(
+                    editor,
+                    null,
+                    2
+                ),
+                "monitorEditor"
+            );
+
+
+        }else{
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "aviso",
+                "Editor JSON",
+                "No existe editor.json: " + ebook.titulo,
+                "monitorEditor"
+            );
+
+
+        }
+
+
+    }
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Editor JSON",
+        "Verificación finalizada",
+        "monitorEditor"
+    );
+
 
 }
