@@ -15,7 +15,6 @@ monitorPIXELLAB(
 
 async function iniciarEditor(){
 
-
     monitorPIXELLAB(
         "Editorial",
         "proceso",
@@ -23,6 +22,9 @@ async function iniciarEditor(){
         "Iniciando editor...",
         "monitorEditor"
     );
+
+
+    await generarBibliotecaEditor();
 
 
     monitorPIXELLAB(
@@ -33,5 +35,24 @@ async function iniciarEditor(){
         "monitorEditor"
     );
 
+}
+async function generarBibliotecaEditor(){
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Biblioteca",
+        "Generando biblioteca...",
+        "monitorEditor"
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Biblioteca",
+        "Biblioteca generada correctamente",
+        "monitorEditor"
+    );
 
 }
