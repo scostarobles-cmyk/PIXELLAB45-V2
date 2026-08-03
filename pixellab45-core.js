@@ -59,7 +59,7 @@ window.addEventListener(
        // await verificarProyecto();
         
       // await listarProyectosEditorial();
-await iniciarEditor()
+iniciarEditor()
 
 
       
