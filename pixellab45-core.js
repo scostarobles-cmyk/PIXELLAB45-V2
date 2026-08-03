@@ -1,3 +1,10 @@
+monitorPIXELLAB(
+    "Sistema",
+    "proceso",
+    "core.js",
+    "Iniciando carga...",
+    "monitorEditor"
+);
 // =====================================
 // PIXELLAB45 CORE
 // CONFIGURACIÓN GLOBAL
@@ -38,19 +45,7 @@ window.addEventListener(
     "load",
     async () => {
 
-        monitorPIXELLAB(
-            "Editorial",
-            "proceso",
-            "Inicio",
-            "Inicializando generador editorial"
-        );
-        monitorPIXELLAB(
-            "Editorial",
-            "proceso",
-            "Inicio",
-            "Inicializando generador editorial",
-            "monitorBotonera"
-        );
+        
         monitorPIXELLAB(
             "Editorial",
             "proceso",
@@ -61,10 +56,10 @@ window.addEventListener(
         
    //     await gestionarVersionCachePIXELLAB()?
 
-        await verificarProyecto();
+       // await verificarProyecto();
         
-       await listarProyectosEditorial();
-
+      // await listarProyectosEditorial();
+await iniciarEditor()
 
 
       
@@ -1310,3 +1305,10 @@ function resetEditorialCompleto(){
 
 
 }
+monitorPIXELLAB(
+    "Sistema",
+    "ok",
+    "core.js",
+    "Carga finalizada",
+    "monitorEditor"
+);
