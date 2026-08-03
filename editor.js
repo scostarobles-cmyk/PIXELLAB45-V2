@@ -324,67 +324,40 @@ function generarEditorJSON(ebook){
 
 function generarTarjetasEditor(){
 
-    const contenedor =
-        document.getElementById("bibliotecaEditor");
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Tarjetas",
+        "Entró a generar tarjetas",
+        "monitorEditor"
+    );
 
 
-    contenedor.innerHTML = "";
+    const contenedor = document.getElementById("bibliotecaEditor");
 
 
-    for(const ebook of bibliotecaEditor){
+    if(!contenedor){
 
-
-        const tarjeta = document.createElement("div");
-
-        tarjeta.className = "tarjeta-editor";
-
-
-        tarjeta.innerHTML = `
-
-            <h3>${ebook.titulo}</h3>
-
-            <p>${ebook.autor}</p>
-
-            <p>ID: ${ebook.projectId}</p>
-        <button class="btn-abrir-libro">
-                <span>📖</span>
-                Abrir libro
-        </button>
-
-        `;
-
-
-        tarjeta.querySelector("button")
-        .addEventListener(
-            "click",
-            ()=>{
-
-                proyectoEditorActual = ebook.projectId;
-
-
-                monitorPIXELLAB(
-                    "Editorial",
-                    "ok",
-                    "Tarjeta",
-                    "Proyecto seleccionado: " + ebook.projectId,
-                    "monitorEditor"
-                );
-
-            }
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Tarjetas",
+            "No existe contenedor bibliotecaEditor",
+            "monitorEditor"
         );
 
-
-        contenedor.appendChild(tarjeta);
-
-
+        return;
     }
+
+
+    contenedor.innerHTML = "Tarjeta de prueba";
 
 
     monitorPIXELLAB(
         "Editorial",
         "ok",
-        "Biblioteca",
-        "Tarjetas generadas: " + bibliotecaEditor.length,
+        "Tarjetas",
+        "Tarjeta generada correctamente",
         "monitorEditor"
     );
 
