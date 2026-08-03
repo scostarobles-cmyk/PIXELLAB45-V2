@@ -59,11 +59,7 @@ window.addEventListener(
         await verificarProyecto();
         
        await listarProyectosEditorial();
-       if(typeof iniciarEditor === "function"){
-
-            iniciarEditor();
-
-        }
+       
 
 
 
