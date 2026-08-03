@@ -188,12 +188,43 @@ async function verificarEditorJSON(){
 
 
             monitorPIXELLAB(
-                "Editorial",
-                "aviso",
-                "Editor JSON",
-                "No existe editor.json: " + ebook.titulo,
-                "monitorEditor"
-            );
+    "Editorial",
+    "aviso",
+    "Editor JSON",
+    "No existe. Generando editor.json: " + ebook.titulo,
+    "monitorEditor"
+);
+
+
+const nuevoEditor = generarEditorJSON(ebook);
+
+
+await guardarJSON(
+    rutaEditor,
+    nuevoEditor
+);
+
+
+monitorPIXELLAB(
+    "Editorial",
+    "ok",
+    "Editor JSON",
+    "editor.json creado",
+    "monitorEditor"
+);
+
+
+monitorPIXELLAB(
+    "Editorial",
+    "datos",
+    "Editor JSON",
+    JSON.stringify(
+        nuevoEditor,
+        null,
+        2
+    ),
+    "monitorEditor"
+);
 
 
         }
@@ -210,5 +241,75 @@ async function verificarEditorJSON(){
         "monitorEditor"
     );
 
+
+}
+function generarEditorJSON(ebook){
+
+
+    return {
+
+        projectId: ebook.projectId,
+
+        portada: {
+
+            titulo: {
+
+                texto: ebook.titulo,
+
+                estilo: {
+
+                    fuente: "Arial",
+
+                    tamano: 38,
+
+                    color: "#ffffff",
+
+                    x: 40,
+
+                    y: 80
+
+                }
+
+            },
+
+
+            autor: {
+
+                texto: ebook.autor,
+
+                estilo: {
+
+                    fuente: "Arial",
+
+                    tamano: 24,
+
+                    color: "#ffffff",
+
+                    x: 40,
+
+                    y: 180
+
+                }
+
+            },
+
+
+            logo: {
+
+                url: "",
+
+                x: 40,
+
+                y: 240,
+
+                ancho: 100,
+
+                alto: 100
+
+            }
+
+        }
+
+    };
 
 }
