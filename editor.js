@@ -34,6 +34,16 @@ async function iniciarEditor(){
     "monitorEditor"
 );
           generarTarjetasEditor();
+    
+    monitorPIXELLAB(
+    "Editorial",
+    "proceso",
+    "Verificar pipelines",
+    "Inicializando estado de los pipelines editoriales",
+    "monitorPIXELLAB"
+);
+
+verificarPipelines();
 
     monitorPIXELLAB(
         "Editorial",
@@ -727,6 +737,7 @@ isolated object
 
 
     await cargarLibroCompleto(proyecto);
+    
 
 }
 
@@ -847,16 +858,6 @@ async function cargarLibroCompleto(proyecto) {
     asignarClasesPaginasEditorial();
 
 
-
- //   verificarPipelineEditor();
-
-
-
-  /*  actualizarEstadoPipelineEditorial(
-        "editorProyecto",
-        "completo",
-        "Proyecto cargado"
-    );*/
 
 
 
@@ -1309,4 +1310,163 @@ function asignarClasesPaginasEditorial() {
     }
 
 }
+
+/* ==========================================
+   VERIFICAR PIPELINES
+========================================== */
+
+function verificarPipelines() {
+
+    verificarPipelineEditorial();
+    verificarPipelineEdicion();
+
+}
+
+/* ==========================================
+   VERIFICAR PIPELINE EDITORIAL
+========================================== */
+
+function verificarPipelineEditorial() {
+
+    limpiarPipelineEditorial();
+
+    if (!proyectoActual) {
+        habilitarPasoEditorial("proyecto", "azul");
+        return;
+    }
+
+    habilitarPasoEditorial("proyecto", "verde");
+
+}
+
+/* ==========================================
+   VERIFICAR PIPELINE DE EDICIÓN
+========================================== */
+
+function verificarPipelineEdicion() {
+
+    limpiarPipelineEdicion();
+
+    if (seccionActiva === "portada") {
+        habilitarPasoEdicion("portada", "amarillo");
+    }
+
+}
+
+/* ==========================================
+   SELECCIONAR PORTADA
+========================================== */
+
+function seleccionarPortada() {
+
+    seccionActiva = "portada";
+
+    verificarPipelineEdicion();
+
+}
+
+/* ==========================================
+   LIMPIAR PIPELINE EDITORIAL
+========================================== */
+
+function limpiarPipelineEditorial() {
+
+    const elementos = [
+        "editorProyecto",
+        "editorTexto",
+        "editorImagenes",
+        "editorDiseno",
+        "editorRevision",
+        "editorExportacion"
+    ];
+
+    elementos.forEach(id => {
+
+        const elemento = document.getElementById(id);
+
+        if (elemento) {
+            elemento.className = "";
+            elemento.textContent =
+                "⚪ " + elemento.textContent.replace(/^[🔵🟢🟡🟠⚪]\s*/, "");
+        }
+
+    });
+
+}
+/* ==========================================
+   CAMBIAR ESTADO PIPELINE EDITORIAL
+========================================== */
+
+function habilitarPasoEditorial(id, color) {
+
+    const elemento = document.getElementById(id);
+
+    if (!elemento) return;
+
+    elemento.classList.add("estado-" + color);
+
+    let icono = "⚪";
+
+    if (color === "azul") icono = "🔵";
+    if (color === "verde") icono = "🟢";
+    if (color === "amarillo") icono = "🟡";
+
+    elemento.textContent =
+        icono + " " + elemento.textContent.replace(/^[🔵🟢🟡⚪]\s*/, "");
+
+}
+/* ==========================================
+   LIMPIAR PIPELINE EDICIÓN
+========================================== */
+
+function limpiarPipelineEdicion() {
+
+    const elementos = [
+        "editorPortada",
+        "editorLegales",
+        "editorIndice",
+        "editorIntroduccion",
+        "editorCapitulos",
+        "editorConclusion"
+    ];
+
+    elementos.forEach(id => {
+
+        const elemento = document.getElementById(id);
+
+        if (elemento) {
+
+            elemento.className = "";
+
+            elemento.textContent =
+                "⚪ " + elemento.textContent.replace(/^[🔵🟢🟡⚪]\s*/, "");
+
+        }
+
+    });
+
+}
+/* ==========================================
+   CAMBIAR ESTADO PIPELINE EDICIÓN
+========================================== */
+
+function habilitarPasoEdicion(id, color) {
+
+    const elemento = document.getElementById(id);
+
+    if (!elemento) return;
+
+    elemento.classList.add("estado-" + color);
+
+    let icono = "⚪";
+
+    if (color === "azul") icono = "🔵";
+    if (color === "verde") icono = "🟢";
+    if (color === "amarillo") icono = "🟡";
+
+    elemento.textContent =
+        icono + " " + elemento.textContent.replace(/^[🔵🟢🟡⚪]\s*/, "");
+
+}
+
 
