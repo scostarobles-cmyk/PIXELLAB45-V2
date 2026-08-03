@@ -384,10 +384,7 @@ async function iniciarEditor(){
 
 }
 
-window.addEventListener(
-    "load",
-    iniciarEditor
-);
+
 
 
 monitorPIXELLAB(
