@@ -2481,98 +2481,137 @@ async function listarEbooks(data, env) {
             prefix: "proyectos/"
         });
 
+
         const ebooks = [];
 
+
         for (const archivo of lista.objects) {
+
 
             if (!archivo.key.endsWith("proyecto.json")) {
                 continue;
             }
 
-            const objeto = await env.EBOOKS.get(archivo.key);
 
-            if (!objeto) {
+            const proyecto = await cargarJSON(
+                env,
+                archivo.key
+            );
+
+
+            if (!proyecto) {
                 continue;
             }
 
-            const proyecto = await objeto.json();
 
             if (proyecto.estado !== "creado") {
                 continue;
             }
 
-            const projectId = archivo.key.split("/")[1];
 
-            const base = `proyectos/${projectId}/`;
+            const projectId =
+                archivo.key.split("/")[1];
 
-            const plan = await cargarJSON(env, base + "plan.json");
-            const indice = await cargarJSON(env, base + "indice.json");
-            const legales = await cargarJSON(env, base + "legales.json");
-            const introduccion = await cargarJSON(env, base + "introduccion.json");
-            const conclusion = await cargarJSON(env, base + "conclusion.json");
+
+            const base =
+                `proyectos/${projectId}/`;
+
+
+            const plan = await cargarJSON(
+                env,
+                base + "plan.json"
+            );
+
+
+            const indice = await cargarJSON(
+                env,
+                base + "indice.json"
+            );
+
+
+            const legales = await cargarJSON(
+                env,
+                base + "legales.json"
+            );
+
+
+            const introduccion = await cargarJSON(
+                env,
+                base + "introduccion.json"
+            );
+
+
+            const conclusion = await cargarJSON(
+                env,
+                base + "conclusion.json"
+            );
+
 
             const capitulos = [];
 
-if (plan && plan.capitulos) {
 
-    for (let i = 1; i <= plan.capitulos.length; i++) {
-
-        const nombreArchivo =
-            "capitulo-" +
-            String(i).padStart(3, "0") +
-            ".json";
-
-        const rutaCapitulo = base + nombreArchivo;
+            if (plan && Array.isArray(plan.capitulos)) {
 
 
-        const capitulo = await cargarJSON(
-            env,
-            rutaCapitulo
-        );
+                for (const cap of plan.capitulos) {
 
 
-        if (capitulo) {
+                    const numero =
+                        String(cap.numero).padStart(3,"0");
 
-            capitulos.push(capitulo);
 
-        } else {
+                    const rutaCapitulo =
+                        base +
+                        "capitulo-" +
+                        numero +
+                        ".json";
 
-            capitulos.push({
 
-                numero: i,
+                    const capitulo =
+                        await cargarJSON(
+                            env,
+                            rutaCapitulo
+                        );
 
-                titulo:
-                    plan.capitulos[i - 1].titulo || "",
 
-                estado: "pendiente",
+                    if (capitulo) {
 
-                secciones: []
+                        capitulos.push(capitulo);
 
-            });
+                    }
 
-        }
+                }
 
-    }
+            }
 
-}
 
-            const rutaPortada =
-                `proyectos/${projectId}/imagenes/portada.png`;
+            const portadaPath =
+                base +
+                "imagenes/portada.png";
+
 
             const portada =
-                await env.EBOOKS.head(rutaPortada);
+                await env.EBOOKS.head(
+                    portadaPath
+                );
+
 
             ebooks.push({
 
                 projectId,
 
-                titulo: proyecto.titulo || "",
+                titulo:
+                    proyecto.titulo || "",
 
-                autor: proyecto.autor || "",
+                autor:
+                    proyecto.autor || "",
 
-                ruta: archivo.key,
+                ruta:
+                    archivo.key,
 
-                tienePortada: portada !== null,
+                tienePortada:
+                    portada !== null,
+
 
                 proyecto,
 
@@ -2590,30 +2629,35 @@ if (plan && plan.capitulos) {
 
             });
 
+
         }
+
 
         return new Response(
             JSON.stringify({
-                ok: true,
+                ok:true,
                 ebooks
             }),
             {
-                headers: CORS_HEADERS
+                headers:CORS_HEADERS
             }
         );
 
-    } catch (error) {
+
+    } catch(error) {
+
 
         return new Response(
             JSON.stringify({
-                ok: false,
-                error: error.message
+                ok:false,
+                error:error.message
             }),
             {
-                status: 500,
-                headers: CORS_HEADERS
+                status:500,
+                headers:CORS_HEADERS
             }
         );
+
 
     }
 
