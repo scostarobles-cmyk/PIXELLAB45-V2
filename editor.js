@@ -285,7 +285,10 @@ function generarEditorJSON(ebook){
 
         projectId: ebook.projectId,
 
+
         portada: {
+
+            estado: "pendiente",
 
             titulo: {
 
@@ -294,13 +297,9 @@ function generarEditorJSON(ebook){
                 estilo: {
 
                     fuente: "Arial",
-
                     tamano: 38,
-
                     color: "#ffffff",
-
                     x: 40,
-
                     y: 80
 
                 }
@@ -315,13 +314,9 @@ function generarEditorJSON(ebook){
                 estilo: {
 
                     fuente: "Arial",
-
                     tamano: 24,
-
                     color: "#ffffff",
-
                     x: 40,
-
                     y: 180
 
                 }
@@ -331,19 +326,54 @@ function generarEditorJSON(ebook){
 
             logo: {
 
-                url: "",
+                url: "assets/img/logo.png",
 
                 x: 40,
-
                 y: 240,
-
                 ancho: 100,
-
                 alto: 100
 
             }
 
+        },
+
+
+        legales: {
+
+            estado: "pendiente"
+
+        },
+
+
+        indice: {
+
+            estado: "pendiente"
+
+        },
+
+
+        introduccion: {
+
+            estado: "pendiente"
+
+        },
+
+
+        capitulos: {
+
+            estado: "pendiente",
+
+            lista: []
+
+        },
+
+
+        conclusion: {
+
+            estado: "pendiente"
+
         }
+
 
     };
 
