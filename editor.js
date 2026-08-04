@@ -1403,48 +1403,35 @@ function asignarClasesPaginasEditorial() {
 
 function verificarEstadoEditor() {
 
-    const proyecto = document.getElementById("editorProyecto");
-    const portada = document.getElementById("editorPortada");
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Verificar",
+        "Entró a verificarEstadoEditor()",
+        "monitorEditor"
+    );
 
+    const botonProyecto = document.getElementById("editorProyecto");
 
-    function aplicarEstado(elemento, estado) {
+    if (!botonProyecto) {
 
-        if (!elemento) return;
-
-        elemento.classList.remove(
-            "estado-azul",
-            "estado-verde",
-            "estado-amarillo",
-            "estado-rojo"
-        );
-
-        elemento.classList.add(
-            "estado-" + estado
-        );
-    }
-
-
-    if (!proyectoEditorActual) {
-
-        aplicarEstado(
-            proyecto,
-            "azul"
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Verificar",
+            "NO encontró editorProyecto",
+            "monitorEditor"
         );
 
         return;
     }
 
-
-    aplicarEstado(
-        proyecto,
-        "verde"
-    );
-
-
-    aplicarEstado(
-        portada,
-        "azul"
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Verificar",
+        "Encontró editorProyecto",
+        "monitorEditor"
     );
 
 }
-
