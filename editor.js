@@ -288,18 +288,22 @@ function generarEditorJSON(ebook){
 
         portada: {
 
-            estado: "pendiente",
-
             titulo: {
+
+                estado: "pendiente",
 
                 texto: ebook.titulo,
 
                 estilo: {
 
                     fuente: "Arial",
+
                     tamano: 38,
+
                     color: "#ffffff",
+
                     x: 40,
+
                     y: 80
 
                 }
@@ -309,14 +313,20 @@ function generarEditorJSON(ebook){
 
             autor: {
 
+                estado: "pendiente",
+
                 texto: ebook.autor,
 
                 estilo: {
 
                     fuente: "Arial",
+
                     tamano: 24,
+
                     color: "#ffffff",
+
                     x: 40,
+
                     y: 180
 
                 }
@@ -326,11 +336,16 @@ function generarEditorJSON(ebook){
 
             logo: {
 
+                estado: "pendiente",
+
                 url: "assets/img/logo.png",
 
                 x: 40,
+
                 y: 240,
+
                 ancho: 100,
+
                 alto: 100
 
             }
@@ -378,7 +393,6 @@ function generarEditorJSON(ebook){
     };
 
 }
-
 async function generarTarjetasEditor(){
 
     const contenedor =
