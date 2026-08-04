@@ -1405,10 +1405,9 @@ function asignarClasesPaginasEditorial() {
    VERIFICAR PIPELINES
 ========================================== */
 
-function verificarPipelines(editor) {
+function verificarPipelines(editor = null) {
 
-
-    // BOTÓN GENERAL DEL PROYECTO
+    // 1. BOTÓN GENERAL
 
     if (proyectoEditorActual) {
 
@@ -1424,75 +1423,48 @@ function verificarPipelines(editor) {
             "azul"
         );
 
-    }
-
-
-
-    // BOTÓN PORTADA
-
-    if (!editor || !editor.portada) {
-
-        habilitarPasoEdicion(
-            "editorPortada",
-            "azul"
-        );
-
         return;
-
     }
 
+
+    // 2. PORTADA (solo si ya hay editor cargado)
+
+    if (!editor) {
+        return;
+    }
 
 
     const estados = [
-
         editor.portada.titulo.estado,
         editor.portada.autor.estado,
         editor.portada.logo.estado
-
     ];
 
 
-
-    if (
-        estados.every(
-            estado => estado === "completo"
-        )
-    ) {
-
+    if (estados.every(e => e === "completo")) {
 
         habilitarPasoEdicion(
             "editorPortada",
             "verde"
         );
 
-
-    } else if (
-        estados.some(
-            estado => estado === "edicion"
-        )
-    ) {
-
+    } else if (estados.some(e => e === "edicion")) {
 
         habilitarPasoEdicion(
             "editorPortada",
             "amarillo"
         );
 
-
     } else {
-
 
         habilitarPasoEdicion(
             "editorPortada",
             "azul"
         );
 
-
     }
 
-
 }
-
 /* ==========================================
    VERIFICAR PIPELINE EDITORIAL
 ========================================== */
