@@ -1416,34 +1416,28 @@ function verificarPipelines() {
     );
 
 
-    if (proyectoEditorActual) {
+    const botonProyecto = document.getElementById("editorProyecto");
+    const botonPortada = document.getElementById("editorPortada");
 
-        habilitarPasoEdicion(
-            "editorProyecto",
-            "verde"
+
+    if (!botonProyecto) {
+        return;
+    }
+
+
+    // SIN PROYECTO
+    if (!proyectoEditorActual) {
+
+
+        botonProyecto.classList.remove(
+            "estado-verde",
+            "estado-amarillo",
+            "estado-rojo"
         );
 
 
-        habilitarPasoEdicion(
-            "editorPortada",
-            "azul"
-        );
-
-
-        monitorPIXELLAB(
-            "Editorial",
-            "ok",
-            "Proyecto",
-            "Proyecto cargado",
-            "monitorEditor"
-        );
-
-
-    } else {
-
-        habilitarPasoEdicion(
-            "editorProyecto",
-            "azul"
+        botonProyecto.classList.add(
+            "estado-azul"
         );
 
 
@@ -1451,8 +1445,43 @@ function verificarPipelines() {
             "Editorial",
             "ok",
             "Proyecto",
-            "Sin proyecto",
+            "Sin proyecto - azul aplicado",
             "monitorEditor"
+        );
+
+
+        return;
+
+    }
+
+
+
+    // PROYECTO CARGADO
+
+    botonProyecto.classList.remove(
+        "estado-azul",
+        "estado-amarillo",
+        "estado-rojo"
+    );
+
+
+    botonProyecto.classList.add(
+        "estado-verde"
+    );
+
+
+
+    if (botonPortada) {
+
+        botonPortada.classList.remove(
+            "estado-verde",
+            "estado-amarillo",
+            "estado-rojo"
+        );
+
+
+        botonPortada.classList.add(
+            "estado-azul"
         );
 
     }
@@ -1461,10 +1490,11 @@ function verificarPipelines() {
     monitorPIXELLAB(
         "Editorial",
         "ok",
-        "Verificar",
-        "Fin verificar pipeline",
+        "Proyecto",
+        "Proyecto cargado - verde / portada azul",
         "monitorEditor"
     );
+
 
 }
 /* ==========================================
