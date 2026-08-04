@@ -2473,7 +2473,6 @@ Format:
 }
 
 
-
 async function listarEbooks(data, env) {
 
     try {
@@ -2482,146 +2481,93 @@ async function listarEbooks(data, env) {
             prefix: "proyectos/"
         });
 
-
         const ebooks = [];
 
-
         for (const archivo of lista.objects) {
-
 
             if (!archivo.key.endsWith("proyecto.json")) {
                 continue;
             }
 
-
-            const objeto =
-                await env.EBOOKS.get(
-                    archivo.key
-                );
-
+            const objeto = await env.EBOOKS.get(archivo.key);
 
             if (!objeto) {
                 continue;
             }
 
+            const proyecto = await objeto.json();
 
-            const proyecto =
-                await objeto.json();
-
-
-            if (
-                proyecto.estado !== "creado"
-            ) {
+            if (proyecto.estado !== "creado") {
                 continue;
             }
 
+            const projectId = archivo.key.split("/")[1];
 
-            const projectId =
-                archivo.key.split("/")[1];
+            const base = `proyectos/${projectId}/`;
 
+            const plan = await cargarJSON(env, base + "plan.json");
+            const indice = await cargarJSON(env, base + "indice.json");
+            const legales = await cargarJSON(env, base + "legales.json");
+            const introduccion = await cargarJSON(env, base + "introduccion.json");
+            const conclusion = await cargarJSON(env, base + "conclusion.json");
 
-            const base =
-                `proyectos/${projectId}/`;
+            const capitulos = [];
 
+            if (plan && plan.capitulos) {
 
-            const plan =
-                await cargarJSON(
-                    env.EBOOKS,
-                    base + "plan.json"
-                );
+                for (let i = 1; i <= plan.capitulos.length; i++) {
 
+                    const nombreArchivo =
+                        "capitulo-" +
+                        String(i).padStart(3, "0") +
+                        ".json";
 
-            const legales =
-                await cargarJSON(
-                    env.EBOOKS,
-                    base + "legales.json"
-                );
+                    const capitulo = await cargarJSON(
+                        env,
+                        base + nombreArchivo
+                    );
 
+                    capitulos.push(capitulo);
 
-            const indice =
-                await cargarJSON(
-                    env.EBOOKS,
-                    base + "indice.json"
-                );
+                }
 
-
-            const introduccion =
-                await cargarJSON(
-                    env.EBOOKS,
-                    base + "introduccion.json"
-                );
-
-
-            const capitulos =
-                await cargarJSON(
-                    env.EBOOKS,
-                    base + "capitulos.json"
-                );
-
-
-            const conclusion =
-                await cargarJSON(
-                    env.EBOOKS,
-                    base + "conclusion.json"
-                );
-
+            }
 
             const rutaPortada =
                 `proyectos/${projectId}/imagenes/portada.png`;
 
-
             const portada =
-                await env.EBOOKS.head(
-                    rutaPortada
-                );
-
+                await env.EBOOKS.head(rutaPortada);
 
             ebooks.push({
 
                 projectId,
 
+                titulo: proyecto.titulo || "",
 
-                titulo:
-                    proyecto.titulo || "",
+                autor: proyecto.autor || "",
 
+                ruta: archivo.key,
 
-                autor:
-                    proyecto.autor || "",
-
+                tienePortada: portada !== null,
 
                 proyecto,
 
-
                 plan,
-
-
-                legales,
-
 
                 indice,
 
+                legales,
 
                 introduccion,
 
-
                 capitulos,
 
-
-                conclusion,
-
-
-                ruta:
-                    archivo.key,
-
-
-                tienePortada:
-                    portada !== null
+                conclusion
 
             });
 
-
         }
-
 
         return new Response(
             JSON.stringify({
@@ -2633,9 +2579,7 @@ async function listarEbooks(data, env) {
             }
         );
 
-
     } catch (error) {
-
 
         return new Response(
             JSON.stringify({
@@ -2647,7 +2591,6 @@ async function listarEbooks(data, env) {
                 headers: CORS_HEADERS
             }
         );
-
 
     }
 
