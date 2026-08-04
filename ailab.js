@@ -1,3 +1,10 @@
+monitorPIXELLAB(
+    "Sistema",
+    "proceso",
+    "ailab.js",
+    "Iniciando carga...",
+    "monitorEditor"
+);
 async function generarImagenPuter() { 
 
   const prompt = document.getElementById("promptImagen").value.trim();
@@ -984,4 +991,10 @@ async function cargarGaleriaCompleta() {
       "❌ Error cargando galería";
   }
 }
-
+monitorPIXELLAB(
+    "Sistema",
+    "ok",
+    "ailab.js",
+    "Carga finalizada",
+    "monitorEditor"
+);
