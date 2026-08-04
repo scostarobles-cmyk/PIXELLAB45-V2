@@ -1121,22 +1121,19 @@ isolated object
     );
 
 
-    proyectoEditorActual = projectId;
-
-
-    const proyecto =
+    const libroEditor =
         await cargarJSON(
-            `proyectos/${projectId}/proyecto.json`
+            `proyectos/${projectId}/editor.json`
         );
 
 
-    if (!proyecto) {
+    if (!libroEditor) {
 
         monitorPIXELLAB(
             "Editorial",
             "error",
             "Editor",
-            "No se pudo cargar proyecto.json",
+            "No se pudo cargar editor.json",
             "monitorEditor"
         );
 
@@ -1145,8 +1142,21 @@ isolated object
     }
 
 
-    await cargarLibroCompleto(proyecto);
-    
+    proyectoEditorActual = libroEditor;
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Editor",
+        "Libro cargado en proyectoEditorActual",
+        "monitorEditor"
+    );
+
+
+    await cargarLibroCompleto(
+        proyectoEditorActual
+    );
 
 }
 
@@ -1203,10 +1213,22 @@ async function cargarLibroCompleto(proyecto) {
     );
 
 
-    const editor =
-        await cargarJSON(
-            `proyectos/${proyecto.projectId}/editor.json`
-        );
+    const editor = proyecto;
+
+
+if (!editor) {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "error",
+        "Editor",
+        "No existe libro cargado en memoria",
+        "monitorEditor"
+    );
+
+    return;
+
+}
 
 
     if (!editor) {
@@ -1759,8 +1781,13 @@ function verificarEstadoEditor() {
         "monitorEditor"
     );
 
-    const proyecto = document.getElementById("editorProyecto");
-    const portada = document.getElementById("editorPortada");
+
+    const proyecto =
+        document.getElementById("editorProyecto");
+
+    const portada =
+        document.getElementById("editorPortada");
+
 
     if (!proyecto) {
 
@@ -1776,7 +1803,10 @@ function verificarEstadoEditor() {
 
     }
 
+
+
     // Limpiar estados
+
     proyecto.classList.remove(
         "pipeline-azul",
         "pipeline-verde",
@@ -1784,7 +1814,8 @@ function verificarEstadoEditor() {
         "pipeline-rojo"
     );
 
-    if (portada) {
+
+    if(portada){
 
         portada.classList.remove(
             "pipeline-azul",
@@ -1795,38 +1826,146 @@ function verificarEstadoEditor() {
 
     }
 
-    // SIN PROYECTO
-    if (!proyectoEditorActual) {
 
-        proyecto.classList.add("pipeline-azul");
+
+    // Sin libro cargado
+
+    if(!proyectoEditorActual){
+
+        proyecto.classList.add(
+            "pipeline-azul"
+        );
+
 
         monitorPIXELLAB(
             "Editorial",
             "ok",
             "Verificar",
-            "Sin proyecto → Proyecto AZUL",
+            "Sin libro cargado → Proyecto AZUL",
             "monitorEditor"
         );
+
 
         return;
 
     }
 
-    // CON PROYECTO
-    proyecto.classList.add("pipeline-verde");
 
-    if (portada) {
 
-        portada.classList.add("pipeline-azul");
+    // Libro cargado
+
+    proyecto.classList.add(
+        "pipeline-verde"
+    );
+
+
+
+    // Estado portada
+
+    if(
+        proyectoEditorActual.portada &&
+        proyectoEditorActual.portada.estado === "creado"
+    ){
+
+        portada?.classList.add(
+            "pipeline-verde"
+        );
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "info",
+            "Verificar",
+            "Portada creada",
+            "monitorEditor"
+        );
+
+
+    }else{
+
+
+        portada?.classList.add(
+            "pipeline-azul"
+        );
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "info",
+            "Verificar",
+            "Portada pendiente",
+            "monitorEditor"
+        );
 
     }
+
+
+
+    // Buscar siguiente estado pendiente
+
+    let siguiente = "finalizado";
+
+
+
+    if(
+        proyectoEditorActual.legales?.estado !== "creado"
+    ){
+
+        siguiente = "legales";
+
+    }
+    else if(
+        proyectoEditorActual.indice?.estado !== "creado"
+    ){
+
+        siguiente = "indice";
+
+    }
+    else if(
+        proyectoEditorActual.introduccion?.estado !== "creado"
+    ){
+
+        siguiente = "introduccion";
+
+    }
+    else if(
+        proyectoEditorActual.capitulos?.lista
+    ){
+
+        for(const capitulo of proyectoEditorActual.capitulos.lista){
+
+            if(
+                capitulo.estado !== "creado"
+            ){
+
+                siguiente =
+                    "capitulo-" +
+                    capitulo.numero;
+
+                break;
+
+            }
+
+        }
+
+    }
+    else if(
+        proyectoEditorActual.conclusion?.estado !== "creado"
+    ){
+
+        siguiente = "conclusion";
+
+    }
+
+
 
     monitorPIXELLAB(
         "Editorial",
         "ok",
         "Verificar",
-        "Proyecto VERDE → Portada AZUL",
+        "Proyecto VERDE → Siguiente edición: " + siguiente,
         "monitorEditor"
     );
+
 
 }
