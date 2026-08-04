@@ -1437,7 +1437,7 @@ function verificarEstadoEditor() {
     "pipeline-azul",
     "pipeline-verde",
     "pipeline-amarillo",
-    "pipeline-rojo""
+    "pipeline-rojo"
 );
 
 botonProyecto.classList.add("pipeline-azul");
