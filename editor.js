@@ -1407,91 +1407,47 @@ function asignarClasesPaginasEditorial() {
 
 function verificarPipelines() {
 
-
     monitorPIXELLAB(
         "Editorial",
         "proceso",
         "Verificar",
-        "Inicio verificarPipelines",
+        "Iniciando verificarPipelines",
         "monitorEditor"
     );
 
 
-    /*
-        PIPELINE PROYECTO
-    */
-
     if (proyectoEditorActual) {
-
 
         habilitarPasoEdicion(
             "editorProyecto",
             "verde"
         );
 
-
         monitorPIXELLAB(
             "Editorial",
             "ok",
             "Proyecto",
-            "Proyecto cargado - verde",
+            "Proyecto cargado",
             "monitorEditor"
         );
 
 
     } else {
 
-
         habilitarPasoEdicion(
             "editorProyecto",
             "azul"
         );
 
-
         monitorPIXELLAB(
             "Editorial",
             "ok",
             "Proyecto",
-            "Sin proyecto - azul",
+            "Sin proyecto",
             "monitorEditor"
         );
 
-
-        return;
-
     }
-
-
-
-    /*
-        PIPELINE PORTADA
-
-        Si todavía no se está editando,
-        queda preparada en azul.
-    */
-
-    habilitarPasoEdicion(
-        "editorPortada",
-        "azul"
-    );
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "ok",
-        "Portada",
-        "Portada pendiente - azul",
-        "monitorEditor"
-    );
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "ok",
-        "Verificar",
-        "Fin verificarPipelines",
-        "monitorEditor"
-    );
 
 
 }
