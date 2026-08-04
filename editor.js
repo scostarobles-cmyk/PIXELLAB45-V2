@@ -67,7 +67,7 @@ async function iniciarEditor(){
     "monitorPIXELLAB"
 );
     
-verificarPipelines(null);
+verificarPipelines();
 
 
 }
@@ -939,7 +939,7 @@ monitorPIXELLAB(
 
    
 
-verificarPipelines(editor)
+verificarPipelines();
     
 
 
@@ -1405,64 +1405,83 @@ function asignarClasesPaginasEditorial() {
    VERIFICAR PIPELINES
 ========================================== */
 
-function verificarPipelines(editor = null) {
+function verificarPipelines() {
 
-    // 1. BOTÓN GENERAL
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Verificar",
+        "INICIO verificarPipelines",
+        "monitorEditor"
+    );
+
+
+    if (typeof proyectoEditorActual === "undefined") {
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Verificar",
+            "proyectoEditorActual no existe",
+            "monitorEditor"
+        );
+
+
+        return;
+
+    }
+
+
 
     if (proyectoEditorActual) {
 
+
         habilitarPasoEdicion(
             "botonProyecto",
             "verde"
         );
 
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Verificar",
+            "Proyecto encontrado -> verde",
+            "monitorEditor"
+        );
+
+
     } else {
+
 
         habilitarPasoEdicion(
             "botonProyecto",
             "azul"
         );
 
-        return;
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Verificar",
+            "Sin proyecto -> azul",
+            "monitorEditor"
+        );
+
+
     }
 
 
-    // 2. PORTADA (solo si ya hay editor cargado)
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Verificar",
+        "FIN verificarPipelines",
+        "monitorEditor"
+    );
 
-    if (!editor) {
-        return;
-    }
-
-
-    const estados = [
-        editor.portada.titulo.estado,
-        editor.portada.autor.estado,
-        editor.portada.logo.estado
-    ];
-
-
-    if (estados.every(e => e === "completo")) {
-
-        habilitarPasoEdicion(
-            "editorPortada",
-            "verde"
-        );
-
-    } else if (estados.some(e => e === "edicion")) {
-
-        habilitarPasoEdicion(
-            "editorPortada",
-            "amarillo"
-        );
-
-    } else {
-
-        habilitarPasoEdicion(
-            "editorPortada",
-            "azul"
-        );
-
-    }
 
 }
 /* ==========================================
