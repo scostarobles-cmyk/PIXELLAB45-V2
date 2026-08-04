@@ -67,7 +67,7 @@ async function iniciarEditor(){
     "monitorPIXELLAB"
 );
     
-verificarPipelines();
+verificarEstadoEditor();
 
 
 }
@@ -939,7 +939,7 @@ monitorPIXELLAB(
 
    
 
-verificarPipelines();
+verificarEstadoEditor();
     
 
 
@@ -1401,213 +1401,13 @@ function asignarClasesPaginasEditorial() {
 
 }
 
-/* ==========================================
-   VERIFICAR PIPELINES
-========================================== */
-
-function verificarPipelines() {
-
-    monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Verificar",
-        "Inicio verificar pipeline",
-        "monitorEditor"
-    );
-
+function verificarEstadoEditor() {
 
     const proyecto = document.getElementById("editorProyecto");
     const portada = document.getElementById("editorPortada");
 
 
-    if (!proyecto) return;
-
-
-    // No hay proyecto cargado
-    if (!proyectoEditorActual) {
-
-        habilitarPasoEdicion(
-            "editorProyecto",
-            "azul"
-        );
-
-
-        monitorPIXELLAB(
-            "Editorial",
-            "ok",
-            "Proyecto",
-            "Sin proyecto - azul",
-            "monitorEditor"
-        );
-
-
-        return;
-    }
-
-
-
-    // Hay proyecto cargado
-    habilitarPasoEdicion(
-        "editorProyecto",
-        "verde"
-    );
-
-
-    // Portada todavía no iniciada
-    if (portada) {
-
-        habilitarPasoEdicion(
-            "editorPortada",
-            "azul"
-        );
-
-    }
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "ok",
-        "Proyecto",
-        "Proyecto cargado - verde / portada azul",
-        "monitorEditor"
-    );
-
-}
-/* ==========================================
-   VERIFICAR PIPELINE EDITORIAL
-========================================== */
-
-function verificarPipelineEditorial(){
-
-    limpiarPipelineEditorial();
-
-
-    if (!proyectoEditorActual) {
-
-        habilitarPasoEditorial(
-            "editorProyecto",
-            "azul"
-        );
-
-        return;
-    }
-
-
-    habilitarPasoEditorial(
-        "editorProyecto",
-        "verde"
-    );
-
-}
-
-/* ==========================================
-   VERIFICAR PIPELINE DE EDICIÓN
-========================================== */
-
-function verificarPipelineEdicion() {
-
-    limpiarPipelineEdicion();
-
-    if (seccionActiva === "portada") {
-        habilitarPasoEdicion("portada", "amarillo");
-    }
-
-}
-
-/* ==========================================
-   SELECCIONAR PORTADA
-========================================== */
-
-function seleccionarPortada() {
-
-    seccionActiva = "portada";
-
-    verificarPipelineEdicion();
-
-}
-
-/* ==========================================
-   LIMPIAR PIPELINE EDITORIAL
-========================================== */
-
-function limpiarPipelineEditorial(){
-
-    const elementos = document.querySelectorAll(
-        ".pipeline-editor .pipeline-items p"
-    );
-
-    elementos.forEach(elemento=>{
-
-        elemento.classList.remove(
-            "pipeline-azul",
-            "pipeline-verde",
-            "pipeline-amarillo"
-        );
-
-    });
-
-}
-/* ==========================================
-   CAMBIAR ESTADO PIPELINE EDITORIAL
-========================================== */
-
-function habilitarPasoEditorial(id, color) {
-
-    monitorPIXELLAB(
-        "Editorial",
-        "info",
-        "Pipeline",
-        "Cambiando estado " + id + " a " + color,
-        "monitorEditor"
-    );
-
-
-    const elemento = document.getElementById(id);
-
-    if (!elemento) {
-
-        monitorPIXELLAB(
-            "Editorial",
-            "error",
-            "Pipeline",
-            "No existe elemento " + id,
-            "monitorEditor"
-        );
-
-        return;
-    }
-
-
-    elemento.classList.remove(
-        "pipeline-azul",
-        "pipeline-verde",
-        "pipeline-amarillo"
-    );
-
-
-    elemento.classList.add(
-        "pipeline-" + color
-    );
-
-}
-/* ==========================================
-   LIMPIAR PIPELINE EDICIÓN
-========================================== */
-
-function limpiarPipelineEdicion() {
-
-    const elementos = [
-        "editorPortada",
-        "editorLegales",
-        "editorIndice",
-        "editorIntroduccion",
-        "editorCapitulos",
-        "editorConclusion"
-    ];
-
-    elementos.forEach(id => {
-
-        const elemento = document.getElementById(id);
+    function aplicarEstado(elemento, estado) {
 
         if (!elemento) return;
 
@@ -1618,32 +1418,33 @@ function limpiarPipelineEdicion() {
             "estado-rojo"
         );
 
-    });
-
-}
-/* ==========================================
-   CAMBIAR ESTADO PIPELINE EDICIÓN
-========================================== */
-
-function habilitarPasoEdicion(id, color) {
-
-    const elemento = document.getElementById(id);
-
-    if (!elemento) return;
+        elemento.classList.add(
+            "estado-" + estado
+        );
+    }
 
 
-    elemento.classList.remove(
-        "estado-azul",
-        "estado-verde",
-        "estado-amarillo",
-        "estado-rojo"
+    if (!proyectoEditorActual) {
+
+        aplicarEstado(
+            proyecto,
+            "azul"
+        );
+
+        return;
+    }
+
+
+    aplicarEstado(
+        proyecto,
+        "verde"
     );
 
 
-    elemento.classList.add(
-        "estado-" + color
+    aplicarEstado(
+        portada,
+        "azul"
     );
 
 }
-
 
