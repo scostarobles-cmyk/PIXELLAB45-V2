@@ -1411,45 +1411,74 @@ function verificarEstadoEditor() {
         "monitorEditor"
     );
 
-    const botonProyecto = document.getElementById("editorProyecto");
+    const proyecto = document.getElementById("editorProyecto");
+    const portada = document.getElementById("editorPortada");
 
-    if (!botonProyecto) {
+    if (!proyecto) {
 
         monitorPIXELLAB(
             "Editorial",
             "error",
             "Verificar",
-            "NO encontró editorProyecto",
+            "No encontró editorProyecto",
             "monitorEditor"
         );
 
         return;
+
+    }
+
+    // Limpiar estados
+    proyecto.classList.remove(
+        "pipeline-azul",
+        "pipeline-verde",
+        "pipeline-amarillo",
+        "pipeline-rojo"
+    );
+
+    if (portada) {
+
+        portada.classList.remove(
+            "pipeline-azul",
+            "pipeline-verde",
+            "pipeline-amarillo",
+            "pipeline-rojo"
+        );
+
+    }
+
+    // SIN PROYECTO
+    if (!proyectoEditorActual) {
+
+        proyecto.classList.add("pipeline-azul");
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Verificar",
+            "Sin proyecto → Proyecto AZUL",
+            "monitorEditor"
+        );
+
+        return;
+
+    }
+
+    // CON PROYECTO
+    proyecto.classList.add("pipeline-verde");
+
+    if (portada) {
+
+        portada.classList.add("pipeline-azul");
+
     }
 
     monitorPIXELLAB(
         "Editorial",
         "ok",
         "Verificar",
-        "Encontró editorProyecto",
+        "Proyecto VERDE → Portada AZUL",
         "monitorEditor"
     );
-    botonProyecto.classList.remove(
-    "pipeline-azul",
-    "pipeline-verde",
-    "pipeline-amarillo",
-    "pipeline-rojo"
-);
-
-botonProyecto.classList.add("pipeline-azul");
-
-
-
-monitorPIXELLAB(
-    "Editorial",
-    "ok",
-    "Verificar",
-    "Aplicó estado-azul",
-    "monitorEditor"
-);
 
 }
