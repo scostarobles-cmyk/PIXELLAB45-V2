@@ -862,7 +862,7 @@ async function cargarLibroCompleto(proyecto) {
 
  //   verificarPipelineEditor();
 
-
+verificarPipelines();
 
   /*  actualizarEstadoPipelineEditorial(
         "editorProyecto",
@@ -872,7 +872,7 @@ async function cargarLibroCompleto(proyecto) {
 
 
 
-    inicializarEditor();
+ //   inicializarEditor();
 
 
 
