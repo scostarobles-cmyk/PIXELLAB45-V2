@@ -67,7 +67,7 @@ async function iniciarEditor(){
     "monitorPIXELLAB"
 );
     
-verificarPipelines();
+verificarPipelines(null);
 
 
 }
@@ -939,7 +939,7 @@ monitorPIXELLAB(
 
    
 
-verificarPipelines();
+verificarPipelines(editor)
     
 
 
