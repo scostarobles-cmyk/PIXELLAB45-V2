@@ -288,6 +288,8 @@ function generarEditorJSON(ebook){
 
         portada: {
 
+            estado: "pendiente",
+
             titulo: {
 
                 estado: "pendiente",
@@ -355,21 +357,75 @@ function generarEditorJSON(ebook){
 
         legales: {
 
-            estado: "pendiente"
+            estado: "pendiente",
+
+            contenido: {
+
+                texto: ebook.legales?.texto || "",
+
+                estilo: {
+
+                    fuente: "Arial",
+
+                    tamano: 12,
+
+                    color: "#000000",
+
+                    alineacion: "izquierda"
+
+                }
+
+            }
 
         },
 
 
         indice: {
 
-            estado: "pendiente"
+            estado: "pendiente",
+
+            contenido: {
+
+                texto: ebook.indice?.texto || "",
+
+                estilo: {
+
+                    fuente: "Arial",
+
+                    tamano: 12,
+
+                    color: "#000000",
+
+                    alineacion: "izquierda"
+
+                }
+
+            }
 
         },
 
 
         introduccion: {
 
-            estado: "pendiente"
+            estado: "pendiente",
+
+            contenido: {
+
+                texto: ebook.introduccion?.texto || "",
+
+                estilo: {
+
+                    fuente: "Arial",
+
+                    tamano: 12,
+
+                    color: "#000000",
+
+                    alineacion: "izquierda"
+
+                }
+
+            }
 
         },
 
@@ -378,14 +434,77 @@ function generarEditorJSON(ebook){
 
             estado: "pendiente",
 
-            lista: []
+            lista: ebook.plan?.capitulos?.map(capitulo => ({
+
+
+                numero: capitulo.numero,
+
+                titulo: capitulo.titulo,
+
+                estado: "pendiente",
+
+
+                secciones: capitulo.secciones?.map(seccion => ({
+
+
+                    orden: seccion.orden,
+
+                    titulo: seccion.titulo,
+
+                    estado: "pendiente",
+
+
+                    contenido: {
+
+                        texto: "",
+
+                        estilo: {
+
+                            fuente: "Arial",
+
+                            tamano: 12,
+
+                            color: "#000000",
+
+                            alineacion: "izquierda"
+
+                        }
+
+                    },
+
+
+                    imagenes: []
+
+
+                })) || []
+
+
+            })) || []
 
         },
 
 
         conclusion: {
 
-            estado: "pendiente"
+            estado: "pendiente",
+
+            contenido: {
+
+                texto: ebook.conclusion?.texto || "",
+
+                estilo: {
+
+                    fuente: "Arial",
+
+                    tamano: 12,
+
+                    color: "#000000",
+
+                    alineacion: "izquierda"
+
+                }
+
+            }
 
         }
 
