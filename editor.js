@@ -1405,39 +1405,91 @@ function asignarClasesPaginasEditorial() {
    VERIFICAR PIPELINES
 ========================================== */
 
-function verificarPipelines() {
-
-    monitorPIXELLAB(
-        "Editorial",
-        "info",
-        "Pipeline",
-        "Entró a verificarPipelines",
-        "monitorEditor"
-    );
+function verificarPipelines(editor) {
 
 
-    verificarPipelineEditorial();
+    // BOTÓN GENERAL DEL PROYECTO
+
+    if (proyectoEditorActual) {
+
+        habilitarPasoEdicion(
+            "botonProyecto",
+            "verde"
+        );
+
+    } else {
+
+        habilitarPasoEdicion(
+            "botonProyecto",
+            "azul"
+        );
+
+    }
 
 
-    monitorPIXELLAB(
-        "Editorial",
-        "info",
-        "Pipeline",
-        "Terminó verificarPipelineEditorial",
-        "monitorEditor"
-    );
+
+    // BOTÓN PORTADA
+
+    if (!editor || !editor.portada) {
+
+        habilitarPasoEdicion(
+            "editorPortada",
+            "azul"
+        );
+
+        return;
+
+    }
 
 
-    verificarPipelineEdicion();
+
+    const estados = [
+
+        editor.portada.titulo.estado,
+        editor.portada.autor.estado,
+        editor.portada.logo.estado
+
+    ];
 
 
-    monitorPIXELLAB(
-        "Editorial",
-        "info",
-        "Pipeline",
-        "Terminó verificarPipelineEdicion",
-        "monitorEditor"
-    );
+
+    if (
+        estados.every(
+            estado => estado === "completo"
+        )
+    ) {
+
+
+        habilitarPasoEdicion(
+            "editorPortada",
+            "verde"
+        );
+
+
+    } else if (
+        estados.some(
+            estado => estado === "edicion"
+        )
+    ) {
+
+
+        habilitarPasoEdicion(
+            "editorPortada",
+            "amarillo"
+        );
+
+
+    } else {
+
+
+        habilitarPasoEdicion(
+            "editorPortada",
+            "azul"
+        );
+
+
+    }
+
 
 }
 
