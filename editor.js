@@ -906,13 +906,25 @@ async function cargarSeccion(
 
         case "portada":
 
+    monitorPIXELLAB(
+        "Editorial",
+        "info",
+        "Sección",
+        "Entró a Portada",
+        "monitorEditor"
+    );
 
-            await cargarPaginaPortada(
-                editor
-            );
+    await cargarPaginaPortada(editor);
 
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Sección",
+        "Salió de Portada",
+        "monitorEditor"
+    );
 
-        break;
+break;
 
 
 
