@@ -1416,28 +1416,19 @@ function verificarPipelines() {
     );
 
 
-    const botonProyecto = document.getElementById("editorProyecto");
-    const botonPortada = document.getElementById("editorPortada");
+    const proyecto = document.getElementById("editorProyecto");
+    const portada = document.getElementById("editorPortada");
 
 
-    if (!botonProyecto) {
-        return;
-    }
+    if (!proyecto) return;
 
 
-    // SIN PROYECTO
+    // No hay proyecto cargado
     if (!proyectoEditorActual) {
 
-
-        botonProyecto.classList.remove(
-            "estado-verde",
-            "estado-amarillo",
-            "estado-rojo"
-        );
-
-
-        botonProyecto.classList.add(
-            "estado-azul"
+        habilitarPasoEdicion(
+            "editorProyecto",
+            "azul"
         );
 
 
@@ -1445,43 +1436,29 @@ function verificarPipelines() {
             "Editorial",
             "ok",
             "Proyecto",
-            "Sin proyecto - azul aplicado",
+            "Sin proyecto - azul",
             "monitorEditor"
         );
 
 
         return;
-
     }
 
 
 
-    // PROYECTO CARGADO
-
-    botonProyecto.classList.remove(
-        "estado-azul",
-        "estado-amarillo",
-        "estado-rojo"
+    // Hay proyecto cargado
+    habilitarPasoEdicion(
+        "editorProyecto",
+        "verde"
     );
 
 
-    botonProyecto.classList.add(
-        "estado-verde"
-    );
+    // Portada todavía no iniciada
+    if (portada) {
 
-
-
-    if (botonPortada) {
-
-        botonPortada.classList.remove(
-            "estado-verde",
-            "estado-amarillo",
-            "estado-rojo"
-        );
-
-
-        botonPortada.classList.add(
-            "estado-azul"
+        habilitarPasoEdicion(
+            "editorPortada",
+            "azul"
         );
 
     }
@@ -1494,7 +1471,6 @@ function verificarPipelines() {
         "Proyecto cargado - verde / portada azul",
         "monitorEditor"
     );
-
 
 }
 /* ==========================================
