@@ -2493,10 +2493,11 @@ async function listarEbooks(data, env) {
             }
 
 
-            const proyecto = await cargarJSON(
-                env,
-                archivo.key
-            );
+            const proyecto =
+                await cargarJSON(
+                    env,
+                    archivo.key
+                );
 
 
             if (!proyecto) {
@@ -2517,51 +2518,61 @@ async function listarEbooks(data, env) {
                 `proyectos/${projectId}/`;
 
 
-            const plan = await cargarJSON(
-                env,
-                base + "plan.json"
-            );
+            const plan =
+                await cargarJSON(
+                    env,
+                    base + "plan.json"
+                );
 
 
-            const indice = await cargarJSON(
-                env,
-                base + "indice.json"
-            );
+            const indice =
+                await cargarJSON(
+                    env,
+                    base + "indice.json"
+                );
 
 
-            const legales = await cargarJSON(
-                env,
-                base + "legales.json"
-            );
+            const legales =
+                await cargarJSON(
+                    env,
+                    base + "legales.json"
+                );
 
 
-            const introduccion = await cargarJSON(
-                env,
-                base + "introduccion.json"
-            );
+            const introduccion =
+                await cargarJSON(
+                    env,
+                    base + "introduccion.json"
+                );
 
 
-            const conclusion = await cargarJSON(
-                env,
-                base + "conclusion.json"
-            );
+            const conclusion =
+                await cargarJSON(
+                    env,
+                    base + "conclusion.json"
+                );
 
 
             const capitulos = [];
 
 
-            if (plan && Array.isArray(plan.capitulos)) {
+            if (
+                plan &&
+                Array.isArray(plan.capitulos)
+            ) {
 
 
                 for (const cap of plan.capitulos) {
 
 
                     const numero =
-                        String(cap.numero).padStart(3,"0");
+                        String(cap.numero)
+                        .padStart(3,"0");
 
 
                     const rutaCapitulo =
                         base +
+                        "capitulos/" +
                         "capitulo-" +
                         numero +
                         ".json";
@@ -2576,23 +2587,27 @@ async function listarEbooks(data, env) {
 
                     if (capitulo) {
 
-                        capitulos.push(capitulo);
+                        capitulos.push(
+                            capitulo
+                        );
 
                     }
 
+
                 }
+
 
             }
 
 
-            const portadaPath =
+            const rutaPortada =
                 base +
                 "imagenes/portada.png";
 
 
             const portada =
                 await env.EBOOKS.head(
-                    portadaPath
+                    rutaPortada
                 );
 
 
