@@ -2473,8 +2473,185 @@ Format:
 }
 
 
+async function listarEbooks(data, env) {
 
-async function listarEbooks(data, env) {
+    try {
+
+        const lista = await env.EBOOKS.list({
+            prefix: "proyectos/"
+        });
+
+
+        const ebooks = [];
+
+
+        for (const archivo of lista.objects) {
+
+
+            if (!archivo.key.endsWith("proyecto.json")) {
+                continue;
+            }
+
+
+            const objeto =
+                await env.EBOOKS.get(
+                    archivo.key
+                );
+
+
+            if (!objeto) {
+                continue;
+            }
+
+
+            const proyecto =
+                await objeto.json();
+
+
+            if (
+                proyecto.estado !== "creado"
+            ) {
+                continue;
+            }
+
+
+            const projectId =
+                archivo.key.split("/")[1];
+
+
+            const base =
+                `proyectos/${projectId}/`;
+
+
+            const plan =
+                await cargarJSON(
+                    env.EBOOKS,
+                    base + "plan.json"
+                );
+
+
+            const legales =
+                await cargarJSON(
+                    env.EBOOKS,
+                    base + "legales.json"
+                );
+
+
+            const indice =
+                await cargarJSON(
+                    env.EBOOKS,
+                    base + "indice.json"
+                );
+
+
+            const introduccion =
+                await cargarJSON(
+                    env.EBOOKS,
+                    base + "introduccion.json"
+                );
+
+
+            const capitulos =
+                await cargarJSON(
+                    env.EBOOKS,
+                    base + "capitulos.json"
+                );
+
+
+            const conclusion =
+                await cargarJSON(
+                    env.EBOOKS,
+                    base + "conclusion.json"
+                );
+
+
+            const rutaPortada =
+                `proyectos/${projectId}/imagenes/portada.png`;
+
+
+            const portada =
+                await env.EBOOKS.head(
+                    rutaPortada
+                );
+
+
+            ebooks.push({
+
+                projectId,
+
+
+                titulo:
+                    proyecto.titulo || "",
+
+
+                autor:
+                    proyecto.autor || "",
+
+
+                proyecto,
+
+
+                plan,
+
+
+                legales,
+
+
+                indice,
+
+
+                introduccion,
+
+
+                capitulos,
+
+
+                conclusion,
+
+
+                ruta:
+                    archivo.key,
+
+
+                tienePortada:
+                    portada !== null
+
+            });
+
+
+        }
+
+
+        return new Response(
+            JSON.stringify({
+                ok: true,
+                ebooks
+            }),
+            {
+                headers: CORS_HEADERS
+            }
+        );
+
+
+    } catch (error) {
+
+
+        return new Response(
+            JSON.stringify({
+                ok: false,
+                error: error.message
+            }),
+            {
+                status: 500,
+                headers: CORS_HEADERS
+            }
+        );
+
+
+    }
+
+}
+/*async function listarEbooks(data, env) {
 
     try {
 
@@ -2579,4 +2756,4 @@ async function listarEbooks(data, env) {
 
     }
 
-}
+}*/
