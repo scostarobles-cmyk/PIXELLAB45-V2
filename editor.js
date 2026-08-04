@@ -503,138 +503,242 @@ monitorPIXELLAB(
 function generarEditorJSON(ebook){
 
 
-    return {
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "EditorJSON",
+        "Iniciando generación editor.json",
+        "monitorEditor"
+    );
 
-        projectId: ebook.projectId,
+
+    try {
 
 
-        portada: {
+        monitorPIXELLAB(
+            "Editorial",
+            "datos",
+            "EditorJSON",
+            "Proyecto recibido: " + ebook.projectId,
+            "monitorEditor"
+        );
 
-            estado: "pendiente",
 
-            titulo: {
+        monitorPIXELLAB(
+            "Editorial",
+            "datos",
+            "EditorJSON",
+            "Capítulos recibidos: " + (ebook.capitulos?.length || 0),
+            "monitorEditor"
+        );
+
+
+        const editor = {
+
+
+            projectId: ebook.projectId,
+
+
+            portada: {
 
                 estado: "pendiente",
 
-                texto: ebook.titulo || "",
+                titulo: {
 
-                estilo: {
+                    estado: "pendiente",
 
-                    fuente: "Arial",
+                    texto: ebook.titulo || "",
 
-                    tamano: 38,
+                    estilo: {
 
-                    color: "#ffffff",
+                        fuente: "Arial",
+
+                        tamano: 38,
+
+                        color: "#ffffff",
+
+                        x: 40,
+
+                        y: 80
+
+                    }
+
+                },
+
+
+                autor: {
+
+                    estado: "pendiente",
+
+                    texto: ebook.autor || "",
+
+                    estilo: {
+
+                        fuente: "Arial",
+
+                        tamano: 24,
+
+                        color: "#ffffff",
+
+                        x: 40,
+
+                        y: 180
+
+                    }
+
+                },
+
+
+                logo: {
+
+                    estado: "pendiente",
+
+                    url: "assets/img/logo.png",
 
                     x: 40,
 
-                    y: 80
+                    y: 240,
+
+                    ancho: 100,
+
+                    alto: 100
 
                 }
 
             },
 
 
-            autor: {
+            legales: {
 
                 estado: "pendiente",
 
-                texto: ebook.autor || "",
-
-                estilo: {
-
-                    fuente: "Arial",
-
-                    tamano: 24,
-
-                    color: "#ffffff",
-
-                    x: 40,
-
-                    y: 180
-
-                }
+                contenido: ebook.legales || {}
 
             },
 
 
-            logo: {
+            indice: {
 
                 estado: "pendiente",
 
-                url: "assets/img/logo.png",
+                contenido: ebook.indice || {}
 
-                x: 40,
+            },
 
-                y: 240,
 
-                ancho: 100,
+            introduccion: {
 
-                alto: 100
+                estado: "pendiente",
+
+                contenido: ebook.introduccion || {}
+
+            },
+
+
+            capitulos: {
+
+                estado: "pendiente",
+
+                lista: ebook.capitulos || []
+
+            },
+
+
+            conclusion: {
+
+                estado: "pendiente",
+
+                contenido: ebook.conclusion || {}
 
             }
 
-        },
+
+        };
 
 
-        legales: {
-
-            estado: "pendiente",
-
-            contenido: ebook.legales || {}
-
-        },
-
-
-        indice: {
-
-            estado: "pendiente",
-
-            contenido: ebook.indice || {}
-
-        },
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "EditorJSON",
+            "Portada cargada",
+            "monitorEditor"
+        );
 
 
-        introduccion: {
-
-            estado: "pendiente",
-
-            contenido: ebook.introduccion || {}
-
-        },
-
-
-        capitulos: {
-
-            estado: "pendiente",
-
-            lista: (ebook.capitulos || []).map(capitulo => ({
-
-                numero: capitulo.numero,
-
-                titulo: capitulo.titulo,
-
-                estado: capitulo.estado || "pendiente",
-
-                secciones: capitulo.secciones || [],
-
-                contenido: capitulo.contenido || ""
-
-            }))
-
-        },
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "EditorJSON",
+            "Legales cargado",
+            "monitorEditor"
+        );
 
 
-        conclusion: {
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "EditorJSON",
+            "Indice cargado",
+            "monitorEditor"
+        );
 
-            estado: "pendiente",
 
-            contenido: ebook.conclusion || {}
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "EditorJSON",
+            "Introduccion cargada",
+            "monitorEditor"
+        );
 
-        }
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "EditorJSON",
+            "Capítulos cargados: " + editor.capitulos.lista.length,
+            "monitorEditor"
+        );
 
 
-    };
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "EditorJSON",
+            "Conclusion cargada",
+            "monitorEditor"
+        );
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "EditorJSON",
+            "Editor JSON generado correctamente",
+            "monitorEditor"
+        );
+
+
+        return editor;
+
+
+    } catch(error){
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "EditorJSON",
+            "Error generando editor.json: " + error.message,
+            "monitorEditor"
+        );
+
+
+        return null;
+
+
+    }
+
 
 }
 async function generarTarjetasEditor(){
