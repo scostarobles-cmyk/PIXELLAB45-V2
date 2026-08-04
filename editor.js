@@ -9,6 +9,22 @@ monitorPIXELLAB(
     "editor.js cargado correctamente",
     "monitorEditor"
 );
+/* =========================================
+   PIXELLAB EDITORIAL
+   VARIABLES GLOBALES DEL EDITOR
+========================================= */
+
+
+// Biblioteca de libros disponibles
+let bibliotecaEditor = [];
+
+
+// Proyecto actualmente abierto en el Editor
+let proyectoEditorActual = null;
+
+
+// ID del proyecto actualmente abierto
+let projectIdEditorActual = null;
 // =====================================================
 // INICIO EDITOR
 // =====================================================
@@ -50,12 +66,12 @@ async function iniciarEditor(){
     "Inicializando estado de los pipelines editoriales",
     "monitorPIXELLAB"
 );
-    proyectoActual = null;
+    
 verificarPipelines();
 
 
 }
-let bibliotecaEditor = [];
+
 
 
 async function generarBibliotecaEditor(){
@@ -713,7 +729,7 @@ isolated object
     );
 
 
-    proyectoActual = projectId;
+    proyectoEditorActual = projectId;
 
 
     const proyecto =
@@ -1390,7 +1406,7 @@ function verificarPipelineEditorial(){
     limpiarPipelineEditorial();
 
 
-    if (!proyectoActual) {
+    if (!proyectoEditorActual) {
 
         habilitarPasoEditorial(
             "editorProyecto",
