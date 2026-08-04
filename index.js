@@ -2513,25 +2513,48 @@ async function listarEbooks(data, env) {
 
             const capitulos = [];
 
-            if (plan && plan.capitulos) {
+if (plan && plan.capitulos) {
 
-                for (let i = 1; i <= plan.capitulos.length; i++) {
+    for (let i = 1; i <= plan.capitulos.length; i++) {
 
-                    const nombreArchivo =
-                        "capitulo-" +
-                        String(i).padStart(3, "0") +
-                        ".json";
+        const nombreArchivo =
+            "capitulo-" +
+            String(i).padStart(3, "0") +
+            ".json";
 
-                    const capitulo = await cargarJSON(
-                        env,
-                        base + nombreArchivo
-                    );
+        const rutaCapitulo = base + nombreArchivo;
 
-                    capitulos.push(capitulo);
 
-                }
+        const capitulo = await cargarJSON(
+            env,
+            rutaCapitulo
+        );
 
-            }
+
+        if (capitulo) {
+
+            capitulos.push(capitulo);
+
+        } else {
+
+            capitulos.push({
+
+                numero: i,
+
+                titulo:
+                    plan.capitulos[i - 1].titulo || "",
+
+                estado: "pendiente",
+
+                secciones: []
+
+            });
+
+        }
+
+    }
+
+}
 
             const rutaPortada =
                 `proyectos/${projectId}/imagenes/portada.png`;
