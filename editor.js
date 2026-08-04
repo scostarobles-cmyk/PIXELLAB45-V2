@@ -278,7 +278,7 @@ monitorPIXELLAB(
 
 
 }
-function generarEditorJSON(ebook){
+/*function generarEditorJSON(ebook){
 
 
     return {
@@ -493,6 +493,143 @@ function generarEditorJSON(ebook){
                 alineacion: "izquierda"
 
             }
+
+        }
+
+
+    };
+
+}*/
+function generarEditorJSON(ebook){
+
+
+    return {
+
+        projectId: ebook.projectId,
+
+
+        portada: {
+
+            estado: "pendiente",
+
+            titulo: {
+
+                estado: "pendiente",
+
+                texto: ebook.titulo || "",
+
+                estilo: {
+
+                    fuente: "Arial",
+
+                    tamano: 38,
+
+                    color: "#ffffff",
+
+                    x: 40,
+
+                    y: 80
+
+                }
+
+            },
+
+
+            autor: {
+
+                estado: "pendiente",
+
+                texto: ebook.autor || "",
+
+                estilo: {
+
+                    fuente: "Arial",
+
+                    tamano: 24,
+
+                    color: "#ffffff",
+
+                    x: 40,
+
+                    y: 180
+
+                }
+
+            },
+
+
+            logo: {
+
+                estado: "pendiente",
+
+                url: "assets/img/logo.png",
+
+                x: 40,
+
+                y: 240,
+
+                ancho: 100,
+
+                alto: 100
+
+            }
+
+        },
+
+
+        legales: {
+
+            estado: "pendiente",
+
+            contenido: ebook.legales || {}
+
+        },
+
+
+        indice: {
+
+            estado: "pendiente",
+
+            contenido: ebook.indice || {}
+
+        },
+
+
+        introduccion: {
+
+            estado: "pendiente",
+
+            contenido: ebook.introduccion || {}
+
+        },
+
+
+        capitulos: {
+
+            estado: "pendiente",
+
+            lista: (ebook.capitulos || []).map(capitulo => ({
+
+                numero: capitulo.numero,
+
+                titulo: capitulo.titulo,
+
+                estado: capitulo.estado || "pendiente",
+
+                secciones: capitulo.secciones || [],
+
+                contenido: capitulo.contenido || ""
+
+            }))
+
+        },
+
+
+        conclusion: {
+
+            estado: "pendiente",
+
+            contenido: ebook.conclusion || {}
 
         }
 
