@@ -1433,5 +1433,21 @@ function verificarEstadoEditor() {
         "Encontró editorProyecto",
         "monitorEditor"
     );
+    botonProyecto.classList.remove(
+    "estado-azul",
+    "estado-verde",
+    "estado-amarillo",
+    "estado-rojo"
+);
+
+botonProyecto.classList.add("estado-azul");
+
+monitorPIXELLAB(
+    "Editorial",
+    "ok",
+    "Verificar",
+    "Aplicó estado-azul",
+    "monitorEditor"
+);
 
 }
