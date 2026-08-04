@@ -769,11 +769,11 @@ Los capítulos serán recorridos mediante plan.json.
 const SECCIONES_LIBRO = [
 
     "portada",
-    "legales",
-    "indice",
-    "introduccion",
-    "capitulos",
-    "conclusion"
+  //  "legales",
+  //  "indice",
+  //  "introduccion",
+  //  "capitulos",
+   // "conclusion"
 
 ];
 
