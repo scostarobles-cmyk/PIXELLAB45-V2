@@ -1434,13 +1434,15 @@ function verificarEstadoEditor() {
         "monitorEditor"
     );
     botonProyecto.classList.remove(
-    "estado-azul",
-    "estado-verde",
-    "estado-amarillo",
-    "estado-rojo"
+    "pipeline-azul",
+    "pipeline-verde",
+    "pipeline-amarillo",
+    "pipeline-rojo""
 );
 
-botonProyecto.classList.add("estado-azul");
+botonProyecto.classList.add("pipeline-azul");
+
+
 
 monitorPIXELLAB(
     "Editorial",
