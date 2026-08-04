@@ -845,35 +845,42 @@ async function cargarLibroCompleto(proyecto) {
 
     for (const seccion of SECCIONES_LIBRO) {
 
+    monitorPIXELLAB(
+        "Editorial",
+        "info",
+        "FOR",
+        "Antes de cargar " + seccion,
+        "monitorEditor"
+    );
 
-        await cargarSeccion(
-            editor,
-            seccion
-        );
+    await cargarSeccion(editor, seccion);
 
+    monitorPIXELLAB(
+        "Editorial",
+        "info",
+        "FOR",
+        "Después de cargar " + seccion,
+        "monitorEditor"
+    );
+}
 
-    }
+monitorPIXELLAB(
+    "Editorial",
+    "ok",
+    "FOR",
+    "FOR terminado",
+    "monitorEditor"
+);
 
 
 
     asignarClasesPaginasEditorial();
 
 
-
- //   verificarPipelineEditor();
+   
 
 verificarPipelines();
-
-  /*  actualizarEstadoPipelineEditorial(
-        "editorProyecto",
-        "completo",
-        "Proyecto cargado"
-    );*/
-
-
-
- //   inicializarEditor();
-
+    
 
 
     monitorPIXELLAB(
