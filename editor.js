@@ -359,21 +359,17 @@ function generarEditorJSON(ebook){
 
             estado: "pendiente",
 
-            contenido: {
+            texto: ebook.legales || "",
 
-                texto: ebook.legales?.texto || "",
+            estilo: {
 
-                estilo: {
+                fuente: "Arial",
 
-                    fuente: "Arial",
+                tamano: 12,
 
-                    tamano: 12,
+                color: "#000000",
 
-                    color: "#000000",
-
-                    alineacion: "izquierda"
-
-                }
+                alineacion: "izquierda"
 
             }
 
@@ -384,21 +380,17 @@ function generarEditorJSON(ebook){
 
             estado: "pendiente",
 
-            contenido: {
+            texto: ebook.indice || "",
 
-                texto: ebook.indice?.texto || "",
+            estilo: {
 
-                estilo: {
+                fuente: "Arial",
 
-                    fuente: "Arial",
+                tamano: 12,
 
-                    tamano: 12,
+                color: "#000000",
 
-                    color: "#000000",
-
-                    alineacion: "izquierda"
-
-                }
+                alineacion: "izquierda"
 
             }
 
@@ -409,21 +401,17 @@ function generarEditorJSON(ebook){
 
             estado: "pendiente",
 
-            contenido: {
+            texto: ebook.introduccion || "",
 
-                texto: ebook.introduccion?.texto || "",
+            estilo: {
 
-                estilo: {
+                fuente: "Arial",
 
-                    fuente: "Arial",
+                tamano: 12,
 
-                    tamano: 12,
+                color: "#000000",
 
-                    color: "#000000",
-
-                    alineacion: "izquierda"
-
-                }
+                alineacion: "izquierda"
 
             }
 
@@ -434,52 +422,56 @@ function generarEditorJSON(ebook){
 
             estado: "pendiente",
 
-            lista: ebook.plan?.capitulos?.map(capitulo => ({
+            lista: ebook.plan?.capitulos?.map((planCapitulo, index)=>{
 
 
-                numero: capitulo.numero,
-
-                titulo: capitulo.titulo,
-
-                estado: "pendiente",
+                const capituloContenido = ebook.capitulos?.[index];
 
 
-                secciones: capitulo.secciones?.map(seccion => ({
+                return {
 
 
-                    orden: seccion.orden,
+                    numero: planCapitulo.numero,
 
-                    titulo: seccion.titulo,
+                    titulo: planCapitulo.titulo,
 
                     estado: "pendiente",
 
 
-                    contenido: {
-
-                        texto: "",
-
-                        estilo: {
-
-                            fuente: "Arial",
-
-                            tamano: 12,
-
-                            color: "#000000",
-
-                            alineacion: "izquierda"
-
-                        }
-
-                    },
+                    secciones: capituloContenido?.secciones?.map((seccion)=>{
 
 
-                    imagenes: []
+                        return {
+
+                            titulo: seccion.titulo,
+
+                            estado: "pendiente",
+
+                            texto: seccion.texto || "",
 
 
-                })) || []
+                            estilo: {
+
+                                fuente: "Arial",
+
+                                tamano: 12,
+
+                                color: "#000000",
+
+                                alineacion: "izquierda"
+
+                            }
+
+                        };
 
 
-            })) || []
+                    }) || []
+
+
+                };
+
+
+            }) || []
 
         },
 
@@ -488,21 +480,17 @@ function generarEditorJSON(ebook){
 
             estado: "pendiente",
 
-            contenido: {
+            texto: ebook.conclusion || "",
 
-                texto: ebook.conclusion?.texto || "",
+            estilo: {
 
-                estilo: {
+                fuente: "Arial",
 
-                    fuente: "Arial",
+                tamano: 12,
 
-                    tamano: 12,
+                color: "#000000",
 
-                    color: "#000000",
-
-                    alineacion: "izquierda"
-
-                }
+                alineacion: "izquierda"
 
             }
 
