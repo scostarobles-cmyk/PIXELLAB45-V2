@@ -1411,7 +1411,7 @@ function verificarPipelines() {
         "Editorial",
         "proceso",
         "Verificar",
-        "Iniciando verificarPipelines",
+        "Inicio verificar pipeline",
         "monitorEditor"
     );
 
@@ -1422,6 +1422,13 @@ function verificarPipelines() {
             "editorProyecto",
             "verde"
         );
+
+
+        habilitarPasoEdicion(
+            "editorPortada",
+            "azul"
+        );
+
 
         monitorPIXELLAB(
             "Editorial",
@@ -1439,6 +1446,7 @@ function verificarPipelines() {
             "azul"
         );
 
+
         monitorPIXELLAB(
             "Editorial",
             "ok",
@@ -1449,6 +1457,14 @@ function verificarPipelines() {
 
     }
 
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Verificar",
+        "Fin verificar pipeline",
+        "monitorEditor"
+    );
 
 }
 /* ==========================================
