@@ -50,6 +50,7 @@ async function iniciarEditor(){
     "Inicializando estado de los pipelines editoriales",
     "monitorPIXELLAB"
 );
+    proyectoActual = null;
 verificarPipelines();
 
 
