@@ -1412,20 +1412,20 @@ function verificarPipelines() {
         "Editorial",
         "proceso",
         "Verificar",
-        "Entró a verificarPipelines",
+        "Inicio verificarPipelines",
         "monitorEditor"
     );
 
 
     /*
-        BOTÓN PROYECTO
+        PIPELINE PROYECTO
     */
 
     if (proyectoEditorActual) {
 
 
         habilitarPasoEdicion(
-            "botonProyecto",
+            "editorProyecto",
             "verde"
         );
 
@@ -1434,7 +1434,7 @@ function verificarPipelines() {
             "Editorial",
             "ok",
             "Proyecto",
-            "Proyecto cargado - botón verde",
+            "Proyecto cargado - verde",
             "monitorEditor"
         );
 
@@ -1443,7 +1443,7 @@ function verificarPipelines() {
 
 
         habilitarPasoEdicion(
-            "botonProyecto",
+            "editorProyecto",
             "azul"
         );
 
@@ -1452,7 +1452,7 @@ function verificarPipelines() {
             "Editorial",
             "ok",
             "Proyecto",
-            "Sin proyecto - botón azul",
+            "Sin proyecto - azul",
             "monitorEditor"
         );
 
@@ -1460,6 +1460,38 @@ function verificarPipelines() {
         return;
 
     }
+
+
+
+    /*
+        PIPELINE PORTADA
+
+        Si todavía no se está editando,
+        queda preparada en azul.
+    */
+
+    habilitarPasoEdicion(
+        "editorPortada",
+        "azul"
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Portada",
+        "Portada pendiente - azul",
+        "monitorEditor"
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Verificar",
+        "Fin verificarPipelines",
+        "monitorEditor"
+    );
 
 
 }
