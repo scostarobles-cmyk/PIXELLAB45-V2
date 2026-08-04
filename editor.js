@@ -1412,28 +1412,14 @@ function verificarPipelines() {
         "Editorial",
         "proceso",
         "Verificar",
-        "INICIO verificarPipelines",
+        "Entró a verificarPipelines",
         "monitorEditor"
     );
 
 
-    if (typeof proyectoEditorActual === "undefined") {
-
-
-        monitorPIXELLAB(
-            "Editorial",
-            "error",
-            "Verificar",
-            "proyectoEditorActual no existe",
-            "monitorEditor"
-        );
-
-
-        return;
-
-    }
-
-
+    /*
+        BOTÓN PROYECTO
+    */
 
     if (proyectoEditorActual) {
 
@@ -1447,8 +1433,8 @@ function verificarPipelines() {
         monitorPIXELLAB(
             "Editorial",
             "ok",
-            "Verificar",
-            "Proyecto encontrado -> verde",
+            "Proyecto",
+            "Proyecto cargado - botón verde",
             "monitorEditor"
         );
 
@@ -1465,22 +1451,15 @@ function verificarPipelines() {
         monitorPIXELLAB(
             "Editorial",
             "ok",
-            "Verificar",
-            "Sin proyecto -> azul",
+            "Proyecto",
+            "Sin proyecto - botón azul",
             "monitorEditor"
         );
 
 
+        return;
+
     }
-
-
-    monitorPIXELLAB(
-        "Editorial",
-        "ok",
-        "Verificar",
-        "FIN verificarPipelines",
-        "monitorEditor"
-    );
 
 
 }
