@@ -105,7 +105,18 @@ async function cargarBiblioteca(){
     "Editorial",
     "info",
     "Biblioteca",
-    JSON.stringify(datos, null, 2),
+    `
+Cantidad: ${biblioteca.length}
+
+Primer libro:
+ID: ${biblioteca[0]?.projectId}
+Título: ${biblioteca[0]?.titulo}
+Autor: ${biblioteca[0]?.autor}
+Portada: ${biblioteca[0]?.tienePortada}
+
+Claves:
+${Object.keys(biblioteca[0] || {}).join(", ")}
+`,
     "monitorEditor"
 );
 
