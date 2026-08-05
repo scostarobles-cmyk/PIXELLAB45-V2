@@ -893,6 +893,11 @@ function crearLienzoLibro(totalHojas){
 );
 
 asignarClasesPaginasEditorial();
+    for (let i = 2; i <= totalHojas; i++) {
+
+    document.getElementById("pagina-" + i).style.display = "none";
+
+}
 
 cargarLibroCompleto(projectIdActual);
 
