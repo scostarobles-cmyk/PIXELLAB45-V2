@@ -857,7 +857,7 @@ function crearLienzoLibro(totalHojas){
             hoja
         );
 
-
+hoja.textContent = "Página " + i;
         monitorPIXELLAB(
             "Editorial",
             "datos",
