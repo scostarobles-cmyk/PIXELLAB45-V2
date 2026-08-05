@@ -34,7 +34,7 @@ monitorPIXELLAB(
     "Variable global libro creada",
     "monitorEditor"
 );
-async function iniciarEditor(){
+function iniciarEditor(){
 
     monitorPIXELLAB(
         "Editorial",
@@ -44,6 +44,7 @@ async function iniciarEditor(){
         "monitorEditor"
     );
 
+    cargarBiblioteca();
 
     monitorPIXELLAB(
         "Editorial",
@@ -54,7 +55,6 @@ async function iniciarEditor(){
     );
 
 }
-
 
 window.addEventListener(
     "load",
