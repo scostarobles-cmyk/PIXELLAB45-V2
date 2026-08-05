@@ -100,8 +100,15 @@ async function cargarBiblioteca(){
         );
 
 
-        biblioteca =
-            datos.ebooks || [];
+        monitorPIXELLAB(
+    "Editorial",
+    "info",
+    "Biblioteca",
+    JSON.stringify(datos, null, 2),
+    "monitorEditor"
+);
+
+biblioteca = datos.ebooks || [];
 
 
         monitorPIXELLAB(
