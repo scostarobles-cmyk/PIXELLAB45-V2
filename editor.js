@@ -46,7 +46,7 @@ function iniciarEditor(){
         "monitorEditor"
     );
          
-         await cargarBiblioteca();
+  //       await cargarBiblioteca();
 
     monitorPIXELLAB(
         "Editorial",
@@ -62,7 +62,7 @@ window.addEventListener(
     "load",
     iniciarEditor
 );
-async function cargarBiblioteca(){
+/*async function cargarBiblioteca(){
 
     monitorPIXELLAB(
         "Editorial",
@@ -156,4 +156,4 @@ async function cargarBiblioteca(){
 
     }
 
-}
+}+/
