@@ -884,6 +884,17 @@ function crearLienzoLibro(totalHojas){
         );
 
     }
+    monitorPIXELLAB(
+    "Editorial",
+    "ok",
+    "Lienzo",
+    totalHojas + " hojas creadas",
+    "monitorEditor"
+);
+
+asignarClasesPaginasEditorial();
+
+cargarLibroCompleto(projectIdActual);
 
     monitorPIXELLAB(
         "Editorial",
