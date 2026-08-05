@@ -1333,34 +1333,41 @@ async function cargarPaginaPortada() {
 
     if (canvas) {
 
-        const ajustar = () => {
+    const ajustar = () => {
 
-            if (window.innerWidth <= 768) {
+        if (window.innerWidth <= 768) {
 
-                const escala =
-                    (canvas.clientWidth - 20) /
-                    hoja.offsetWidth;
+            const escalaX =
+                (canvas.clientWidth - 20) /
+                hoja.offsetWidth;
 
-                hoja.style.transform =
-                    `scale(${Math.min(1, escala)})`;
+            const escalaY =
+                (window.innerHeight - 140) /
+                hoja.offsetHeight;
 
-            } else {
+            const escala =
+                Math.min(1, escalaX, escalaY);
 
-                hoja.style.transform =
-                    "scale(1)";
+            hoja.style.transform =
+                `scale(${escala})`;
 
-            }
+        } else {
 
-        };
+            hoja.style.transform =
+                "scale(1)";
 
-        ajustar();
+        }
 
-        window.addEventListener(
-            "resize",
-            ajustar
-        );
+    };
 
-    }
+    ajustar();
+
+    window.addEventListener(
+        "resize",
+        ajustar
+    );
+
+}
 
     monitorPIXELLAB(
         "Editorial",
