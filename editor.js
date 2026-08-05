@@ -278,7 +278,7 @@ async function generarTarjetasEditor(){
                 "monitorEditor"
             );
 
-            generarEditorJSON(libro);
+            verificarEditorJSON(libro);
         } else {
 
 
@@ -575,5 +575,88 @@ function abrirEditorEditorial(projectId){
         "Salió de abrir editor",
         "monitorEditor"
     );
+
+}
+async function verificarEditorJSON(ebook){
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "EditorJSON",
+        "Verificando existencia de editor.json",
+        "monitorEditor"
+    );
+
+
+    try {
+
+
+        const ruta =
+            `proyectos/${ebook.projectId}/editor.json`;
+
+
+        const editorExistente =
+            await cargarJSON(
+                ruta
+            );
+
+
+        if(editorExistente){
+
+
+            monitorPIXELLAB(
+                "Editorial",
+                "info",
+                "EditorJSON",
+                "Editor.json ya existe. Se mantiene.",
+                "monitorEditor"
+            );
+
+
+            return;
+
+
+        }
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "proceso",
+            "EditorJSON",
+            "Editor.json no existe. Generando.",
+            "monitorEditor"
+        );
+
+
+
+        generarEditorJSON(
+            ebook
+        );
+
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "EditorJSON",
+            "Editor.json generado.",
+            "monitorEditor"
+        );
+
+
+    }catch(error){
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "EditorJSON",
+            "Error verificando editor.json: " + error.message,
+            "monitorEditor"
+        );
+
+
+    }
 
 }
