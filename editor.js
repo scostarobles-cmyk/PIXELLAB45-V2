@@ -547,3 +547,33 @@ function generarEditorJSON(ebook){
 
 
 }
+
+function abrirEditorEditorial(projectId){
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "AbrirEditor",
+        "Entró a abrir editor",
+        "monitorEditor"
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "datos",
+        "AbrirEditor",
+        "Libro seleccionado: " + projectId,
+        "monitorEditor"
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "AbrirEditor",
+        "Salió de abrir editor",
+        "monitorEditor"
+    );
+
+}
