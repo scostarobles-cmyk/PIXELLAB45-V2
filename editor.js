@@ -794,6 +794,10 @@ function calcularHojasLibro(plan){
     return total;
 
 }
+/* ==========================
+   CREAR LIENZO DEL LIBRO
+========================== */
+
 function crearLienzoLibro(totalHojas){
 
     monitorPIXELLAB(
@@ -804,10 +808,8 @@ function crearLienzoLibro(totalHojas){
         "monitorEditor"
     );
 
-
     const canvas =
         document.querySelector(".editor-canvas");
-
 
     if(canvas){
 
@@ -816,10 +818,8 @@ function crearLienzoLibro(totalHojas){
 
     }
 
-
     const contenedor =
         document.getElementById("paginaEditor");
-
 
     if(!contenedor){
 
@@ -835,33 +835,20 @@ function crearLienzoLibro(totalHojas){
 
     }
 
-
     contenedor.innerHTML = "";
 
-
     for(let i = 1; i <= totalHojas; i++){
-
 
         const hoja =
             document.createElement("div");
 
-
         hoja.id =
             "pagina-" + i;
 
-
         hoja.dataset.pagina =
             i;
-hoja.style.width = "210mm";
-hoja.style.height = "297mm";
-hoja.style.background = "white";
-hoja.style.border = "1px solid #999";
-hoja.style.margin = "20px auto";
-hoja.textContent = "Página " + i;
-        contenedor.appendChild(
-            hoja
-        );
 
+        contenedor.appendChild(hoja);
 
         monitorPIXELLAB(
             "Editorial",
@@ -871,9 +858,7 @@ hoja.textContent = "Página " + i;
             "monitorEditor"
         );
 
-
     }
-
 
     monitorPIXELLAB(
         "Editorial",
@@ -882,8 +867,6 @@ hoja.textContent = "Página " + i;
         totalHojas + " hojas creadas",
         "monitorEditor"
     );
-    asignarClasesPaginasEditorial();
-    cargarLibroCompleto(projectIdActual);
 
 }
 function asignarClasesPaginasEditorial() {
@@ -1237,6 +1220,7 @@ async function cargarSeccion(
     }
 
 }
+
 /* ==========================
    CARGA PORTADA
 ========================== */
@@ -1247,14 +1231,15 @@ async function cargarPaginaPortada() {
         "Editorial",
         "proceso",
         "Portada",
-        "Iniciando carga de portada",
+        "Cargando portada",
         "monitorEditor"
     );
-
 
     const hoja =
         document.getElementById("pagina-1");
 
+    const canvas =
+        document.querySelector(".editor-canvas");
 
     if (!hoja) {
 
@@ -1270,53 +1255,82 @@ async function cargarPaginaPortada() {
 
     }
 
+    hoja.innerHTML = "";
+
+    Object.assign(
+        hoja.style,
+        {
+            width: "100%",
+            maxWidth: "794px",
+            aspectRatio: "210 / 297",
+            margin: "0 auto 20px auto",
+            background: "white",
+            position: "relative",
+            overflow: "hidden",
+            transformOrigin: "top center"
+        }
+    );
 
     const imagen =
         document.createElement("img");
 
-
     imagen.src =
         `${R2_EBOOKS_URL}/proyectos/${projectIdActual}/imagenes/portada.png`;
 
-
     imagen.className =
-        "pl45-imagen-portada";
+        "portada-editor";
 
-
-    imagen.onload = () => {
-
-        monitorPIXELLAB(
-            "Editorial",
-            "ok",
-            "Portada",
-            "Imagen cargada correctamente",
-            "monitorEditor"
-        );
-
-    };
-
-
-    imagen.onerror = () => {
-
-        monitorPIXELLAB(
-            "Editorial",
-            "error",
-            "Portada",
-            "No se pudo cargar la imagen",
-            "monitorEditor"
-        );
-
-    };
-
+    Object.assign(
+        imagen.style,
+        {
+            width: "100%",
+            height: "100%",
+            display: "block",
+            objectFit: "cover",
+            position: "absolute",
+            top: "0",
+            left: "0"
+        }
+    );
 
     hoja.appendChild(imagen);
 
+    if (canvas) {
+
+        const ajustar = () => {
+
+            if (window.innerWidth <= 768) {
+
+                const escala =
+                    (canvas.clientWidth - 20) /
+                    hoja.offsetWidth;
+
+                hoja.style.transform =
+                    `scale(${Math.min(1, escala)})`;
+
+            } else {
+
+                hoja.style.transform =
+                    "scale(1)";
+
+            }
+
+        };
+
+        ajustar();
+
+        window.addEventListener(
+            "resize",
+            ajustar
+        );
+
+    }
 
     monitorPIXELLAB(
         "Editorial",
         "ok",
         "Portada",
-        "Imagen agregada a la hoja",
+        "Portada cargada",
         "monitorEditor"
     );
 
