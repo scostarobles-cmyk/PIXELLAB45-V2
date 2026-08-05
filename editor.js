@@ -60,3 +60,24 @@ window.addEventListener(
     "load",
     iniciarEditor
 );
+
+function cargarBiblioteca(){
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Biblioteca",
+        "Entró a cargarBiblioteca()",
+        "monitorEditor"
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Biblioteca",
+        "Salió de cargarBiblioteca()",
+        "monitorEditor"
+    );
+
+}
