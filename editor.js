@@ -1001,11 +1001,11 @@ function asignarClasesPaginasEditorial() {
 const SECCIONES_LIBRO = [
 
     "portada",
-    "legales",
-    "indice",
-    "introduccion",
-    "capitulos",
-    "conclusion"
+    //"legales",
+   // "indice",
+  //  "introduccion",
+ //   "capitulos",
+   // "conclusion"
 
 ];
 /* ==========================
@@ -1117,6 +1117,7 @@ async function cargarSeccion(
                 "Entró a PORTADA",
                 "monitorEditor"
             );
+               await cargarPaginaPortada();
 
             monitorPIXELLAB(
                 "Editorial",
@@ -1234,5 +1235,89 @@ async function cargarSeccion(
         break;
 
     }
+
+}
+/* ==========================
+   CARGA PORTADA
+========================== */
+
+async function cargarPaginaPortada() {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Portada",
+        "Iniciando carga de portada",
+        "monitorEditor"
+    );
+
+
+    const hoja =
+        document.getElementById("pagina-1");
+
+
+    if (!hoja) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Portada",
+            "No existe pagina-1",
+            "monitorEditor"
+        );
+
+        return;
+
+    }
+
+
+    const imagen =
+        document.createElement("img");
+
+
+    imagen.src =
+        `${R2_EBOOKS_URL}/proyectos/${projectIdActual}/imagenes/portada.png`;
+
+
+    imagen.className =
+        "pl45-imagen-portada";
+
+
+    imagen.onload = () => {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Portada",
+            "Imagen cargada correctamente",
+            "monitorEditor"
+        );
+
+    };
+
+
+    imagen.onerror = () => {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Portada",
+            "No se pudo cargar la imagen",
+            "monitorEditor"
+        );
+
+    };
+
+
+    hoja.appendChild(imagen);
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Portada",
+        "Imagen agregada a la hoja",
+        "monitorEditor"
+    );
 
 }
