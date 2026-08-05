@@ -36,7 +36,7 @@ monitorPIXELLAB(
     "Inicialización completa. Esperando siguiente paso...",
     "monitorEditor"
 );
-function iniciarEditor(){
+/*function iniciarEditor(){
 
     monitorPIXELLAB(
         "Editorial",
@@ -62,7 +62,7 @@ window.addEventListener(
     "load",
     iniciarEditor
 );
-/*async function cargarBiblioteca(){
+async function cargarBiblioteca(){
 
     monitorPIXELLAB(
         "Editorial",
