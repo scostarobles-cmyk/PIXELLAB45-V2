@@ -848,7 +848,32 @@ function crearLienzoLibro(totalHojas){
         hoja.dataset.pagina =
             i;
 
-        contenedor.appendChild(hoja);
+        /* Tamaño base A4 */
+
+        hoja.style.width =
+            "210mm";
+
+        hoja.style.height =
+            "297mm";
+
+        hoja.style.margin =
+            "20px auto";
+
+        hoja.style.background =
+            "#ffffff";
+
+        hoja.style.border =
+            "1px solid #cccccc";
+
+        hoja.style.position =
+            "relative";
+
+        hoja.style.overflow =
+            "hidden";
+
+        contenedor.appendChild(
+            hoja
+        );
 
         monitorPIXELLAB(
             "Editorial",
