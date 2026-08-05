@@ -36,3 +36,28 @@ monitorPIXELLAB(
     "Inicialización completa. Esperando siguiente paso...",
     "monitorEditor"
 );
+function iniciarEditor(){
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Inicio",
+        "Entró a iniciarEditor()",
+        "monitorEditor"
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Inicio",
+        "Salió de iniciarEditor()",
+        "monitorEditor"
+    );
+
+}
+
+window.addEventListener(
+    "load",
+    iniciarEditor
+);
