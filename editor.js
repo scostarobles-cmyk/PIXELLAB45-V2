@@ -1317,17 +1317,18 @@ async function cargarPaginaPortada() {
         "portada-editor";
 
     Object.assign(
-        imagen.style,
-        {
-            width: "100%",
-            height: "100%",
-            display: "block",
-            objectFit: "cover",
-            position: "absolute",
-            top: "0",
-            left: "0"
-        }
-    );
+    imagen.style,
+    {
+        width: "100%",
+        height: "100%",
+        display: "block",
+        objectFit: "contain",
+        objectPosition: "center",
+        position: "absolute",
+        top: "0",
+        left: "0"
+    }
+);
 
     hoja.appendChild(imagen);
 
