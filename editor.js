@@ -660,3 +660,222 @@ async function verificarEditorJSON(ebook){
     }
 
 }
+
+async function abrirEditorEditorial(projectId){
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "AbrirLibro",
+        "Entró a abrirEditorEditorial()",
+        "monitorEditor"
+    );
+
+
+    projectIdActual = projectId;
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "datos",
+        "AbrirLibro",
+        "ProjectId: " + projectIdActual,
+        "monitorEditor"
+    );
+
+
+    const plan =
+        await cargarJSON(
+            `proyectos/${projectIdActual}/plan.json`
+        );
+
+
+    if(!plan){
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "AbrirLibro",
+            "No se pudo cargar plan.json",
+            "monitorEditor"
+        );
+
+        return;
+
+    }
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "AbrirLibro",
+        "Plan cargado",
+        "monitorEditor"
+    );
+
+
+    const totalHojas =
+        calcularHojasLibro(plan);
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "datos",
+        "AbrirLibro",
+        "Total hojas: " + totalHojas,
+        "monitorEditor"
+    );
+
+
+    crearLienzoLibro(totalHojas);
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "AbrirLibro",
+        "Lienzo creado",
+        "monitorEditor"
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "AbrirLibro",
+        "Salió de abrirEditorEditorial()",
+        "monitorEditor"
+    );
+
+}
+function calcularHojasLibro(plan){
+
+    let total = 0;
+
+    // Portada
+    total++;
+
+    // Legales
+    total++;
+
+    // Índice
+    total++;
+
+    // Introducción
+    total++;
+
+    // Capítulos
+    if(
+        plan &&
+        Array.isArray(plan.capitulos)
+    ){
+
+        for(const capitulo of plan.capitulos){
+
+            total +=
+                capitulo.paginas || 0;
+
+        }
+
+    }
+
+    // Conclusión
+    total++;
+
+    monitorPIXELLAB(
+        "Editorial",
+        "datos",
+        "Calcular hojas",
+        "Total: " + total,
+        "monitorEditor"
+    );
+
+    return total;
+
+}
+function crearLienzoLibro(totalHojas){
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Lienzo",
+        "Creando " + totalHojas + " hojas",
+        "monitorEditor"
+    );
+
+
+    const canvas =
+        document.querySelector(".editor-canvas");
+
+
+    if(canvas){
+
+        canvas.style.display =
+            "block";
+
+    }
+
+
+    const contenedor =
+        document.getElementById("paginaEditor");
+
+
+    if(!contenedor){
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Lienzo",
+            "No existe paginaEditor",
+            "monitorEditor"
+        );
+
+        return;
+
+    }
+
+
+    contenedor.innerHTML = "";
+
+
+    for(let i = 1; i <= totalHojas; i++){
+
+
+        const hoja =
+            document.createElement("div");
+
+
+        hoja.id =
+            "pagina-" + i;
+
+
+        hoja.dataset.pagina =
+            i;
+
+
+        contenedor.appendChild(
+            hoja
+        );
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "datos",
+            "Lienzo",
+            "Hoja creada: " + i,
+            "monitorEditor"
+        );
+
+
+    }
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Lienzo",
+        totalHojas + " hojas creadas",
+        "monitorEditor"
+    );
+
+}
