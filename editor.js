@@ -877,5 +877,118 @@ function crearLienzoLibro(totalHojas){
         totalHojas + " hojas creadas",
         "monitorEditor"
     );
+    asignarClasesPaginasEditorial();
+
+}
+function asignarClasesPaginasEditorial() {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Clases",
+        "Asignando clases a las páginas",
+        "monitorEditor"
+    );
+
+    const paginaEditor =
+        document.getElementById("paginaEditor");
+
+    if (!paginaEditor) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Clases",
+            "No existe paginaEditor",
+            "monitorEditor"
+        );
+
+        return;
+
+    }
+
+
+    const paginas =
+        paginaEditor.children;
+
+
+    for (let i = 0; i < paginas.length; i++) {
+
+        const pagina =
+            paginas[i];
+
+
+        pagina.classList.add(
+            "pl45-hoja"
+        );
+
+
+        pagina.classList.remove(
+            "pl45-hoja-portada",
+            "pl45-hoja-legales",
+            "pl45-hoja-indice",
+            "pl45-hoja-introduccion",
+            "pl45-hoja-capitulo",
+            "pl45-hoja-conclusion"
+        );
+
+
+        if (i === 0) {
+
+            pagina.classList.add(
+                "pl45-hoja-portada"
+            );
+
+        }
+
+        else if (i === 1) {
+
+            pagina.classList.add(
+                "pl45-hoja-legales"
+            );
+
+        }
+
+        else if (i === 2) {
+
+            pagina.classList.add(
+                "pl45-hoja-indice"
+            );
+
+        }
+
+        else if (i === 3) {
+
+            pagina.classList.add(
+                "pl45-hoja-introduccion"
+            );
+
+        }
+
+        else if (i === paginas.length - 1) {
+
+            pagina.classList.add(
+                "pl45-hoja-conclusion"
+            );
+
+        }
+
+        else {
+
+            pagina.classList.add(
+                "pl45-hoja-capitulo"
+            );
+
+        }
+
+    }
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Clases",
+        paginas.length + " páginas clasificadas",
+        "monitorEditor"
+    );
 
 }
