@@ -882,7 +882,7 @@ hoja.textContent = "Página " + i;
         "monitorEditor"
     );
     asignarClasesPaginasEditorial();
-    cargarLibroCompleto(proyecto);
+    await cargarLibroCompleto(editor);
 
 }
 function asignarClasesPaginasEditorial() {
