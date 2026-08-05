@@ -278,7 +278,7 @@ async function generarTarjetasEditor(){
                 "monitorEditor"
             );
 
-
+            generarEditorJSON(libro);
         } else {
 
 
@@ -304,5 +304,246 @@ async function generarTarjetasEditor(){
         `${biblioteca.length} tarjetas generadas`,
         "monitorEditor"
     );
+
+}
+function generarEditorJSON(ebook){
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "EditorJSON",
+        "Iniciando generación editor.json",
+        "monitorEditor"
+    );
+
+
+    try {
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "datos",
+            "EditorJSON",
+            "Proyecto recibido: " + ebook.projectId,
+            "monitorEditor"
+        );
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "datos",
+            "EditorJSON",
+            "Capítulos recibidos: " + (ebook.capitulos?.length || 0),
+            "monitorEditor"
+        );
+
+
+        const editor = {
+
+
+            projectId: ebook.projectId,
+
+
+            portada: {
+
+                estado: "pendiente",
+
+                titulo: {
+
+                    estado: "pendiente",
+
+                    texto: ebook.titulo || "",
+
+                    estilo: {
+
+                        fuente: "Arial",
+
+                        tamano: 38,
+
+                        color: "#ffffff",
+
+                        x: 40,
+
+                        y: 80
+
+                    }
+
+                },
+
+
+                autor: {
+
+                    estado: "pendiente",
+
+                    texto: ebook.autor || "",
+
+                    estilo: {
+
+                        fuente: "Arial",
+
+                        tamano: 24,
+
+                        color: "#ffffff",
+
+                        x: 40,
+
+                        y: 180
+
+                    }
+
+                },
+
+
+                logo: {
+
+                    estado: "pendiente",
+
+                    url: "assets/img/logo.png",
+
+                    x: 40,
+
+                    y: 240,
+
+                    ancho: 100,
+
+                    alto: 100
+
+                }
+
+            },
+
+
+            legales: {
+
+                estado: "pendiente",
+
+                contenido: ebook.legales || {}
+
+            },
+
+
+            indice: {
+
+                estado: "pendiente",
+
+                contenido: ebook.indice || {}
+
+            },
+
+
+            introduccion: {
+
+                estado: "pendiente",
+
+                contenido: ebook.introduccion || {}
+
+            },
+
+
+            capitulos: {
+
+                estado: "pendiente",
+
+                lista: ebook.capitulos || []
+
+            },
+
+
+            conclusion: {
+
+                estado: "pendiente",
+
+                contenido: ebook.conclusion || {}
+
+            }
+
+
+        };
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "EditorJSON",
+            "Portada cargada",
+            "monitorEditor"
+        );
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "EditorJSON",
+            "Legales cargado",
+            "monitorEditor"
+        );
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "EditorJSON",
+            "Indice cargado",
+            "monitorEditor"
+        );
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "EditorJSON",
+            "Introduccion cargada",
+            "monitorEditor"
+        );
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "EditorJSON",
+            "Capítulos cargados: " + editor.capitulos.lista.length,
+            "monitorEditor"
+        );
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "EditorJSON",
+            "Conclusion cargada",
+            "monitorEditor"
+        );
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "EditorJSON",
+            "Editor JSON generado correctamente",
+            "monitorEditor"
+        );
+
+
+        return editor;
+
+
+    } catch(error){
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "EditorJSON",
+            "Error generando editor.json: " + error.message,
+            "monitorEditor"
+        );
+
+
+        return null;
+
+
+    }
+
 
 }
