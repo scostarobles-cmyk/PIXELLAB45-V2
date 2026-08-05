@@ -1,4 +1,4 @@
-monitorPIXELLAB(
+monitorPIXELLAB( 
     "Sistema",
     "proceso",
     "ailab.js",
@@ -991,7 +991,8 @@ async function cargarGaleriaCompleta() {
       "❌ Error cargando galería";
   }
 }
-monitorPIXELLAB(
+
+monitorPIXELLAB(
     "Sistema",
     "ok",
     "ailab.js",
