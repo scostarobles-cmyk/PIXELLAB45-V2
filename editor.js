@@ -45,7 +45,7 @@ function iniciarEditor(){
     );
 
     cargarBiblioteca();
-    generarTarjetasEditor();
+    
 
     monitorPIXELLAB(
         "Editorial",
@@ -165,6 +165,7 @@ biblioteca = datos.ebooks || [];
         "Salió de cargarBiblioteca()",
         "monitorEditor"
     );
+    generarTarjetasEditor();
 
 }
 
