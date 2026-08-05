@@ -1296,14 +1296,11 @@ async function cargarPaginaPortada() {
     Object.assign(
         hoja.style,
         {
-            width: "100%",
-            maxWidth: "794px",
-            aspectRatio: "210 / 297",
-            margin: "0 auto 20px auto",
-            background: "white",
-            position: "relative",
-            overflow: "hidden",
-            transformOrigin: "top center"
+            width: "100%";
+            height: "auto";
+            position: "absolute";
+            top: "0";
+            left: "0";
         }
     );
 
