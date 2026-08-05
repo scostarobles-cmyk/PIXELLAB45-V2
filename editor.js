@@ -851,13 +851,17 @@ function crearLienzoLibro(totalHojas){
 
         hoja.dataset.pagina =
             i;
-
-
+hoja.style.width = "210mm";
+hoja.style.height = "297mm";
+hoja.style.background = "white";
+hoja.style.border = "1px solid #999";
+hoja.style.margin = "20px auto";
+hoja.textContent = "Página " + i;
         contenedor.appendChild(
             hoja
         );
 
-hoja.textContent = "Página " + i;
+
         monitorPIXELLAB(
             "Editorial",
             "datos",
