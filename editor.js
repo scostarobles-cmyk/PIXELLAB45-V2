@@ -34,14 +34,7 @@ monitorPIXELLAB(
     "Variable global libro creada",
     "monitorEditor"
 );
-let projectIdActual = null;
-monitorPIXELLAB(
-    "Editorial",
-    "ok",
-    "Variables",
-    "Variable global projectIdActual creada",
-    "monitorEditor"
-);
+
 function iniciarEditor(){
 
     monitorPIXELLAB(
