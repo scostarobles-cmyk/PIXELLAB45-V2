@@ -82,7 +82,7 @@ async function cargarBiblioteca(){
                         "Content-Type":"application/json"
                     },
                     body: JSON.stringify({
-                        action: "listar-ebooks"
+                        action: "listar-Ebooks"
                     })
                 }
             );
