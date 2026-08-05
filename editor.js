@@ -61,7 +61,7 @@ window.addEventListener(
     iniciarEditor
 );
 
-function cargarBiblioteca(){
+async function cargarBiblioteca(){
 
     monitorPIXELLAB(
         "Editorial",
@@ -70,6 +70,73 @@ function cargarBiblioteca(){
         "Entró a cargarBiblioteca()",
         "monitorEditor"
     );
+
+    try{
+
+        const respuesta =
+            await fetch(
+                WORKER_URL,
+                {
+                    method: "POST",
+                    headers:{
+                        "Content-Type":"application/json"
+                    },
+                    body: JSON.stringify({
+                        action: "listar-ebooks"
+                    })
+                }
+            );
+
+        const datos =
+            await respuesta.json();
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "info",
+            "Biblioteca",
+            "Respuesta recibida del Worker",
+            "monitorEditor"
+        );
+
+
+        biblioteca =
+            datos.ebooks || [];
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Biblioteca",
+            "Biblioteca cargada",
+            "monitorEditor"
+        );
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "info",
+            "Biblioteca",
+            JSON.stringify(
+                biblioteca,
+                null,
+                2
+            ),
+            "monitorEditor"
+        );
+
+    }
+    catch(error){
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Biblioteca",
+            error.message,
+            "monitorEditor"
+        );
+
+    }
 
 
     monitorPIXELLAB(
