@@ -1,4 +1,6 @@
-/* CONTENEDOR CON SCROLL */
+/* =========================================
+   BOTONERA PRINCIPAL
+========================================= */
 
 .editor-toolbar-scroll{
 
@@ -10,15 +12,15 @@
 
     -webkit-overflow-scrolling:touch;
 
-    margin-bottom:15px;
+    padding:8px 0;
 
 }
-
-/* FILA DE BOTONES */
 
 .editor-toolbar-editor{
 
     display:flex;
+
+    flex-direction:row;
 
     flex-wrap:nowrap;
 
@@ -28,8 +30,68 @@
 
     min-width:100%;
 
-    padding:10px 0;
+}
+
+/* =========================================
+   BOTONES
+========================================= */
+
+.editor-menu{
+
+    width:72px;
+
+    height:72px;
+
+    min-width:72px;
+
+    flex:0 0 auto;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:6px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#0b1220;
+
+    color:#ffffff;
+
+    border:1px solid #00d9ff;
+
+    cursor:pointer;
+
+    transition:.25s;
 
 }
 
+.editor-menu span{
 
+    font-size:24px;
+
+    line-height:1;
+
+}
+
+.editor-menu small{
+
+    font-size:11px;
+
+    white-space:nowrap;
+
+}
+
+.editor-menu:hover{
+
+    background:#00d9ff22;
+
+    transform:translateY(-2px);
+
+}
