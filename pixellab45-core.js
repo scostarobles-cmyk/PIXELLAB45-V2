@@ -50,7 +50,7 @@ window.addEventListener(
             "Editorial",
             "proceso",
             "Inicio",
-            "Inicializando generador editorial",
+            "Inicializando generador editorial este es ",
             "monitorEditor"
         );
         
