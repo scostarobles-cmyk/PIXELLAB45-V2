@@ -1204,6 +1204,10 @@ async function cargarSeccion(
     }
 
 }
+/* ==========================
+   VERIFICAR PIPELINE PROYECTO
+========================== */
+
 function verificarPipelineProyecto(){
 
     monitorPIXELLAB(
@@ -1254,6 +1258,20 @@ function verificarPipelineProyecto(){
             "ok",
             "Pipeline",
             "Proyecto en azul",
+            "monitorEditor"
+        );
+
+    }else{
+
+        botonProyecto.classList.add(
+            "verde"
+        );
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Pipeline",
+            "Proyecto en verde",
             "monitorEditor"
         );
 
