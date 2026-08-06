@@ -156,4 +156,57 @@
     white-space:nowrap;
 
 }
+/* =========================================
+   PIPELINE SCROLL
+========================================= */
+
+.pipeline-scroll{
+
+    width:100%;
+
+    overflow-x:auto;
+
+    overflow-y:hidden;
+
+    -webkit-overflow-scrolling:touch;
+
+    padding:8px 0;
+
+}
+
+.pipeline-items{
+
+    display:flex;
+
+    flex-direction:row;
+
+    flex-wrap:nowrap;
+
+    gap:12px;
+
+    width:max-content;
+
+    min-width:100%;
+
+}
+
+.pipeline-items p{
+
+    flex:0 0 auto;
+
+    margin:0;
+
+    padding:10px 16px;
+
+    white-space:nowrap;
+
+    border-radius:12px;
+
+    background:#0b1220;
+
+    border:1px solid #00d9ff;
+
+    color:#ffffff;
+
+}
 
