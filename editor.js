@@ -1209,14 +1209,14 @@ function verificarPipelineProyecto(){
         "Editorial",
         "proceso",
         "Pipeline",
-        "Verificando estado del proyecto",
+        "Verificando proyecto",
         "monitorEditor"
     );
 
-
     const botonProyecto =
-        document.getElementById("btnProyecto");
-
+        document.getElementById(
+            "editorProyecto"
+        );
 
     if(!botonProyecto){
 
@@ -1224,7 +1224,7 @@ function verificarPipelineProyecto(){
             "Editorial",
             "error",
             "Pipeline",
-            "No existe botón Proyecto",
+            "No existe editorProyecto",
             "monitorEditor"
         );
 
@@ -1232,13 +1232,11 @@ function verificarPipelineProyecto(){
 
     }
 
-
     botonProyecto.classList.remove(
         "azul",
         "verde",
         "amarillo"
     );
-
 
     if(
         projectIdActual === null ||
@@ -1250,12 +1248,11 @@ function verificarPipelineProyecto(){
             "azul"
         );
 
-
         monitorPIXELLAB(
             "Editorial",
             "ok",
             "Pipeline",
-            "Proyecto sin ID: azul",
+            "Proyecto en azul",
             "monitorEditor"
         );
 
