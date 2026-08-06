@@ -710,3 +710,159 @@ async function abrirEditorEditorial(projectId){
     );
 
 }
+function calcularHojasLibro(plan){
+
+    let total = 0;
+
+    // Portada
+    total++;
+
+    // Legales
+    total++;
+
+    // Índice
+    total++;
+
+    // Introducción
+    total++;
+
+    // Capítulos
+    if(
+        plan &&
+        Array.isArray(plan.capitulos)
+    ){
+
+        for(const capitulo of plan.capitulos){
+
+            total +=
+                capitulo.paginas || 0;
+
+        }
+
+    }
+
+    // Conclusión
+    total++;
+
+    monitorPIXELLAB(
+        "Editorial",
+        "datos",
+        "Calcular hojas",
+        "Total: " + total,
+        "monitorEditor"
+    );
+
+    return total;
+
+} 
+
+
+/* ==========================
+   CREAR LIENZO DEL LIBRO
+========================== */
+
+function crearLienzoLibro(totalHojas){
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Lienzo",
+        "Creando " + totalHojas + " hojas",
+        "monitorEditor"
+    );
+
+
+    const canvas =
+        document.querySelector(".editor-canvas");
+
+
+    if(canvas){
+
+        canvas.style.display =
+            "block";
+
+    }
+
+
+    const contenedor =
+        document.getElementById("paginaEditor");
+
+
+    if(!contenedor){
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Lienzo",
+            "No existe paginaEditor",
+            "monitorEditor"
+        );
+
+        return;
+
+    }
+
+
+    contenedor.innerHTML = "";
+
+
+    for(let i = 1; i <= totalHojas; i++){
+
+
+        const hoja =
+            document.createElement("div");
+
+
+        hoja.id =
+            "pagina-" + i;
+
+
+        hoja.dataset.pagina =
+            i;
+
+
+        contenedor.appendChild(
+            hoja
+        );
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "datos",
+            "Lienzo",
+            "Hoja creada: " + i,
+            "monitorEditor"
+        );
+
+    }
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Lienzo",
+        totalHojas + " hojas creadas",
+        "monitorEditor"
+    );
+
+
+    asignarClasesPaginasEditorial();
+
+
+    for(let i = 2; i <= totalHojas; i++){
+
+        const pagina =
+            document.getElementById(
+                "pagina-" + i
+            );
+
+
+        if(pagina){
+
+            pagina.style.display = "none";
+
+        }
+
+    }
+
+}
