@@ -675,7 +675,7 @@ async function abrirEditorEditorial(projectId){
 
 
     crearLienzoLibro(totalHojas);
-
+verificarPipelineProyecto();
 
     monitorPIXELLAB(
         "Editorial",
@@ -849,7 +849,7 @@ function crearLienzoLibro(totalHojas){
         }
 
     }
-    cargarLibroCompleto(projectIdActual);
+    
 }
 function asignarClasesPaginasEditorial() {
 
@@ -1053,7 +1053,7 @@ async function cargarLibroCompleto(proyecto) {
         "monitorEditor"
     );
 
-     verificarPipelineProyecto();
+     
     monitorPIXELLAB(
         "Editorial",
         "ok",
