@@ -798,6 +798,10 @@ function calcularHojasLibro(plan){
    CREAR LIENZO DEL LIBRO
 ========================== */
 
+/* ==========================
+   CREAR LIENZO DEL LIBRO
+========================== */
+
 function crearLienzoLibro(totalHojas){
 
     monitorPIXELLAB(
@@ -808,8 +812,10 @@ function crearLienzoLibro(totalHojas){
         "monitorEditor"
     );
 
+
     const canvas =
         document.querySelector(".editor-canvas");
+
 
     if(canvas){
 
@@ -818,8 +824,10 @@ function crearLienzoLibro(totalHojas){
 
     }
 
+
     const contenedor =
         document.getElementById("paginaEditor");
+
 
     if(!contenedor){
 
@@ -835,45 +843,29 @@ function crearLienzoLibro(totalHojas){
 
     }
 
+
     contenedor.innerHTML = "";
 
+
     for(let i = 1; i <= totalHojas; i++){
+
 
         const hoja =
             document.createElement("div");
 
+
         hoja.id =
             "pagina-" + i;
+
 
         hoja.dataset.pagina =
             i;
 
-        /* Tamaño base A4 */
-
-      /*  hoja.style.width =
-            "210mm";
-
-        hoja.style.height =
-            "297mm";*/
-
-        hoja.style.margin =
-            "20px auto";
-
-        hoja.style.background =
-            "#ffffff";
-
-        hoja.style.border =
-            "1px solid #cccccc";
-
-        hoja.style.position =
-            "relative";
-
-        hoja.style.overflow =
-            "hidden";
 
         contenedor.appendChild(
             hoja
         );
+
 
         monitorPIXELLAB(
             "Editorial",
@@ -884,18 +876,35 @@ function crearLienzoLibro(totalHojas){
         );
 
     }
+
+
     monitorPIXELLAB(
-    "Editorial",
-    "ok",
-    "Lienzo",
-    totalHojas + " hojas creadas",
-    "monitorEditor"
-);
+        "Editorial",
+        "ok",
+        "Lienzo",
+        totalHojas + " hojas creadas",
+        "monitorEditor"
+    );
 
-  asignarClasesPaginasEditorial();
-    for (let i = 2; i <= totalHojas; i++) {
 
-    document.getElementById("pagina-" + i).style.display = "none";
+    asignarClasesPaginasEditorial();
+
+
+    for(let i = 2; i <= totalHojas; i++){
+
+        const pagina =
+            document.getElementById(
+                "pagina-" + i
+            );
+
+
+        if(pagina){
+
+            pagina.style.display = "none";
+
+        }
+
+    }
 
 }
   

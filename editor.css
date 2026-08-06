@@ -359,24 +359,32 @@
 
 }
 
+/* =========================================
+   HOJA EDITORIAL PIXELLAB45
+========================================= */
+
 .pl45-hoja{
 
-    position:relative;
-
     width:210mm;
+
     height:297mm;
 
     margin:20px auto;
 
-    background:red;
+    background:#ffffff;
 
-    border:3px solid yellow;
+    border:1px solid #cccccc;
+
+    position:relative;
 
     overflow:hidden;
 
 }
 
-@media (max-width:768px){
+
+/* MODO MÓVIL */
+
+@media(max-width:768px){
 
     .pl45-hoja{
 
@@ -386,6 +394,9 @@
 
         aspect-ratio:210 / 297;
 
+        margin:15px auto;
+
     }
 
 }
+
