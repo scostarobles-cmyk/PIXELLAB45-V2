@@ -28,3 +28,31 @@ monitorPIXELLAB(
     "Variable global libro creada",
     "monitorEditor"
 );
+
+function iniciarEditor(){
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Inicio",
+        "Entró a iniciarEditor()",
+        "monitorEditor"
+    );
+
+    cargarBiblioteca();
+    
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Inicio",
+        "Salió de iniciarEditor()",
+        "monitorEditor"
+    );
+
+}
+
+window.addEventListener(
+    "load",
+    iniciarEditor
+);
