@@ -56,9 +56,9 @@ window.addEventListener(
         
    //     await gestionarVersionCachePIXELLAB()?
 
-        await verificarProyecto();
+        verificarProyecto();
         
-       await listarProyectosEditorial();
+       listarProyectosEditorial();
        
 
 
