@@ -1061,6 +1061,7 @@ async function cargarLibroCompleto(proyecto) {
         "Carga completa finalizada",
         "monitorEditor"
     );
+				verificarPipelineProyecto();
 
 }
 /* ==========================
