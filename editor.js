@@ -63,7 +63,7 @@ function iniciarEditor(){
         "monitorEditor"
     );
 				
-				verificarPipelineProyecto
+				verificarPipelineProyecto();
 				monitorPIXELLAB(
         "Editorial",
         "ok",
@@ -71,13 +71,7 @@ function iniciarEditor(){
         "verificacion estado de pipeline general terminada ",
         "monitorEditor"
     );
-				monitorPIXELLAB(
-        "Editorial",
-        "proceso",
-        "Inicio",
-        "Entró a iniciarEditor()",
-        "monitorEditor"
-    );
+				
 
 }
 
