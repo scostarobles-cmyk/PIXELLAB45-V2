@@ -866,3 +866,355 @@ function crearLienzoLibro(totalHojas){
     }
 
 }
+function asignarClasesPaginasEditorial() {
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Clases",
+        "Asignando clases a las páginas",
+        "monitorEditor"
+    );
+
+    const paginaEditor =
+        document.getElementById("paginaEditor");
+
+    if (!paginaEditor) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Clases",
+            "No existe paginaEditor",
+            "monitorEditor"
+        );
+
+        return;
+
+    }
+
+
+    const paginas =
+        paginaEditor.children;
+
+
+    for (let i = 0; i < paginas.length; i++) {
+
+        const pagina =
+            paginas[i];
+
+
+        pagina.classList.add(
+            "pl45-hoja"
+        );
+
+
+        pagina.classList.remove(
+            "pl45-hoja-portada",
+            "pl45-hoja-legales",
+            "pl45-hoja-indice",
+            "pl45-hoja-introduccion",
+            "pl45-hoja-capitulo",
+            "pl45-hoja-conclusion"
+        );
+
+
+        if (i === 0) {
+
+            pagina.classList.add(
+                "pl45-hoja-portada"
+            );
+
+        }
+
+        else if (i === 1) {
+
+            pagina.classList.add(
+                "pl45-hoja-legales"
+            );
+
+        }
+
+        else if (i === 2) {
+
+            pagina.classList.add(
+                "pl45-hoja-indice"
+            );
+
+        }
+
+        else if (i === 3) {
+
+            pagina.classList.add(
+                "pl45-hoja-introduccion"
+            );
+
+        }
+
+        else if (i === paginas.length - 1) {
+
+            pagina.classList.add(
+                "pl45-hoja-conclusion"
+            );
+
+        }
+
+        else {
+
+            pagina.classList.add(
+                "pl45-hoja-capitulo"
+            );
+
+        }
+
+    }
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Clases",
+        paginas.length + " páginas clasificadas",
+        "monitorEditor"
+    );
+
+}
+
+const SECCIONES_LIBRO = [
+
+    "portada",
+    //"legales",
+   // "indice",
+  //  "introduccion",
+ //   "capitulos",
+   // "conclusion"
+
+];
+/* ==========================
+   CARGA DEL LIBRO COMPLETO
+========================== */
+
+async function cargarLibroCompleto(proyecto) {
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Libro",
+        "Comenzando carga completa",
+        "monitorEditor"
+    );
+
+
+    const editor = proyecto;
+
+
+    if (!editor) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Editor",
+            "No existe libro cargado en memoria",
+            "monitorEditor"
+        );
+
+        return;
+
+    }
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Editor",
+        "editor.json cargado correctamente",
+        "monitorEditor"
+    );
+
+
+    for (const seccion of SECCIONES_LIBRO) {
+
+        monitorPIXELLAB(
+            "Editorial",
+            "info",
+            "FOR",
+            "Antes de cargar " + seccion,
+            "monitorEditor"
+        );
+
+
+        await cargarSeccion(
+            editor,
+            seccion
+        );
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "info",
+            "FOR",
+            "Después de cargar " + seccion,
+            "monitorEditor"
+        );
+
+    }
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "FOR",
+        "FOR terminado",
+        "monitorEditor"
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Libro",
+        "Carga completa finalizada",
+        "monitorEditor"
+    );
+
+}
+/* ==========================
+   CARGA DE SECCIONES
+========================== */
+
+async function cargarSeccion(
+    editor,
+    seccion
+) {
+
+    switch (seccion) {
+
+        case "portada":
+
+            monitorPIXELLAB(
+                "Editorial",
+                "info",
+                "Sección",
+                "Entró a PORTADA",
+                "monitorEditor"
+            );
+               //await cargarPaginaPortada();
+
+            monitorPIXELLAB(
+                "Editorial",
+                "ok",
+                "Sección",
+                "Salió de PORTADA",
+                "monitorEditor"
+            );
+
+        break;
+
+
+        case "legales":
+
+            monitorPIXELLAB(
+                "Editorial",
+                "info",
+                "Sección",
+                "Entró a LEGALES",
+                "monitorEditor"
+            );
+
+            monitorPIXELLAB(
+                "Editorial",
+                "ok",
+                "Sección",
+                "Salió de LEGALES",
+                "monitorEditor"
+            );
+
+        break;
+
+
+        case "indice":
+
+            monitorPIXELLAB(
+                "Editorial",
+                "info",
+                "Sección",
+                "Entró a INDICE",
+                "monitorEditor"
+            );
+
+            monitorPIXELLAB(
+                "Editorial",
+                "ok",
+                "Sección",
+                "Salió de INDICE",
+                "monitorEditor"
+            );
+
+        break;
+
+
+        case "introduccion":
+
+            monitorPIXELLAB(
+                "Editorial",
+                "info",
+                "Sección",
+                "Entró a INTRODUCCION",
+                "monitorEditor"
+            );
+
+            monitorPIXELLAB(
+                "Editorial",
+                "ok",
+                "Sección",
+                "Salió de INTRODUCCION",
+                "monitorEditor"
+            );
+
+        break;
+
+
+        case "capitulos":
+
+            monitorPIXELLAB(
+                "Editorial",
+                "info",
+                "Sección",
+                "Entró a CAPITULOS",
+                "monitorEditor"
+            );
+
+            monitorPIXELLAB(
+                "Editorial",
+                "ok",
+                "Sección",
+                "Salió de CAPITULOS",
+                "monitorEditor"
+            );
+
+        break;
+
+
+        case "conclusion":
+
+            monitorPIXELLAB(
+                "Editorial",
+                "info",
+                "Sección",
+                "Entró a CONCLUSION",
+                "monitorEditor"
+            );
+
+            monitorPIXELLAB(
+                "Editorial",
+                "ok",
+                "Sección",
+                "Salió de CONCLUSION",
+                "monitorEditor"
+            );
+
+        break;
+
+    }
+
+}
