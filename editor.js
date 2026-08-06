@@ -1218,3 +1218,62 @@ async function cargarSeccion(
     }
 
 }
+function verificarPipelineProyecto(){
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Pipeline",
+        "Verificando estado del proyecto",
+        "monitorEditor"
+    );
+
+
+    const botonProyecto =
+        document.getElementById("btnProyecto");
+
+
+    if(!botonProyecto){
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "Pipeline",
+            "No existe botón Proyecto",
+            "monitorEditor"
+        );
+
+        return;
+
+    }
+
+
+    botonProyecto.classList.remove(
+        "azul",
+        "verde",
+        "amarillo"
+    );
+
+
+    if(
+        projectIdActual === null ||
+        projectIdActual === undefined ||
+        projectIdActual === ""
+    ){
+
+        botonProyecto.classList.add(
+            "azul"
+        );
+
+
+        monitorPIXELLAB(
+            "Editorial",
+            "ok",
+            "Pipeline",
+            "Proyecto sin ID: azul",
+            "monitorEditor"
+        );
+
+    }
+
+}
