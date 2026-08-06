@@ -892,12 +892,13 @@ function crearLienzoLibro(totalHojas){
     "monitorEditor"
 );
 
-asignarClasesPaginasEditorial();
+
     for (let i = 2; i <= totalHojas; i++) {
 
     document.getElementById("pagina-" + i).style.display = "none";
 
 }
+    asignarClasesPaginasEditorial();
 
 cargarLibroCompleto(projectIdActual);
 
@@ -1141,7 +1142,7 @@ async function cargarSeccion(
                 "Entró a PORTADA",
                 "monitorEditor"
             );
-               await cargarPaginaPortada();
+               //await cargarPaginaPortada();
 
             monitorPIXELLAB(
                 "Editorial",
