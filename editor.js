@@ -850,11 +850,11 @@ function crearLienzoLibro(totalHojas){
 
         /* Tamaño base A4 */
 
-        hoja.style.width =
+      /*  hoja.style.width =
             "210mm";
 
         hoja.style.height =
-            "297mm";
+            "297mm";*/
 
         hoja.style.margin =
             "20px auto";

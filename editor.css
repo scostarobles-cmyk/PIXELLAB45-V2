@@ -358,3 +358,34 @@
     margin-top:8px;
 
 }
+
+.pl45-hoja{
+
+    position:relative;
+
+    width:210mm;
+    height:297mm;
+
+    margin:20px auto;
+
+    background:red;
+
+    border:3px solid yellow;
+
+    overflow:hidden;
+
+}
+
+@media (max-width:768px){
+
+    .pl45-hoja{
+
+        width:95vw;
+
+        height:auto;
+
+        aspect-ratio:210 / 297;
+
+    }
+
+}
