@@ -849,7 +849,7 @@ function crearLienzoLibro(totalHojas){
         }
 
     }
-
+    cargarLibroCompleto(projectIdActual);
 }
 function asignarClasesPaginasEditorial() {
 
@@ -1053,7 +1053,7 @@ async function cargarLibroCompleto(proyecto) {
         "monitorEditor"
     );
 
-
+     verificarPipelineProyecto();
     monitorPIXELLAB(
         "Editorial",
         "ok",
@@ -1061,7 +1061,7 @@ async function cargarLibroCompleto(proyecto) {
         "Carga completa finalizada",
         "monitorEditor"
     );
-				verificarPipelineProyecto();
+				
 
 }
 /* ==========================
