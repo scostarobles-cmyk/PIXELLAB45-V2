@@ -6,8 +6,6 @@ monitorPIXELLAB(
     "monitorEditor"
 );
 
-
-
 let biblioteca = [];
 
 monitorPIXELLAB(
