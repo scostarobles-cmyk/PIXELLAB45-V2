@@ -38,15 +38,44 @@ function iniciarEditor(){
         "Entró a iniciarEditor()",
         "monitorEditor"
     );
+				monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Inicio",
+        "antes de cargar biblioteca",
+        "monitorEditor"
+    );
 
     cargarBiblioteca();
-    
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Inicio",
+        "despues de cargar biblioteca",
+        "monitorEditor"
+    );
 
     monitorPIXELLAB(
         "Editorial",
         "ok",
         "Inicio",
-        "Salió de iniciarEditor()",
+        "verifica estado de pipeline general",
+        "monitorEditor"
+    );
+				
+				verificarPipelineProyecto
+				monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "Inicio",
+        "verificacion estado de pipeline general terminada ",
+        "monitorEditor"
+    );
+				monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "Inicio",
+        "Entró a iniciarEditor()",
         "monitorEditor"
     );
 
@@ -1218,7 +1247,7 @@ async function cargarSeccion(
     }
 
 }
-function verificarPipelineProyecto(){
+function (){
 
     monitorPIXELLAB(
         "Editorial",
