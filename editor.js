@@ -892,13 +892,13 @@ function crearLienzoLibro(totalHojas){
     "monitorEditor"
 );
 
-
+  asignarClasesPaginasEditorial();
     for (let i = 2; i <= totalHojas; i++) {
 
     document.getElementById("pagina-" + i).style.display = "none";
 
 }
-    asignarClasesPaginasEditorial();
+  
 
 cargarLibroCompleto(projectIdActual);
 
