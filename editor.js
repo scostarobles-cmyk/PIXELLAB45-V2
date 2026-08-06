@@ -623,3 +623,90 @@ async function verificarEditorJSON(ebook){
     }
 
 }
+async function abrirEditorEditorial(projectId){
+
+    monitorPIXELLAB(
+        "Editorial",
+        "proceso",
+        "AbrirLibro",
+        "Entró a abrirEditorEditorial()",
+        "monitorEditor"
+    );
+
+
+    projectIdActual = projectId;
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "datos",
+        "AbrirLibro",
+        "ProjectId: " + projectIdActual,
+        "monitorEditor"
+    );
+
+
+    const plan =
+        await cargarJSON(
+            `proyectos/${projectIdActual}/plan.json`
+        );
+
+
+    if(!plan){
+
+        monitorPIXELLAB(
+            "Editorial",
+            "error",
+            "AbrirLibro",
+            "No se pudo cargar plan.json",
+            "monitorEditor"
+        );
+
+        return;
+
+    }
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "AbrirLibro",
+        "Plan cargado",
+        "monitorEditor"
+    );
+
+
+    const totalHojas =
+        calcularHojasLibro(plan);
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "datos",
+        "AbrirLibro",
+        "Total hojas: " + totalHojas,
+        "monitorEditor"
+    );
+
+
+    crearLienzoLibro(totalHojas);
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "AbrirLibro",
+        "Lienzo creado",
+        "monitorEditor"
+    );
+
+
+    monitorPIXELLAB(
+        "Editorial",
+        "ok",
+        "AbrirLibro",
+        "Salió de abrirEditorEditorial()",
+        "monitorEditor"
+    );
+
+}
